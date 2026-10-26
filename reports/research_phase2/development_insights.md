@@ -4,7 +4,7 @@
 
 Geneformer의 pooled macroF1 .94708은 PCA .93483보다 높지만 모든 lineage에서 recall이 높은 것은 아니다. B-cell recall은 Geneformer .87737, PCA .90889, scGPT .88817이다. 세 모델 모두 틀린 비율은 B에서 .07038, 전체 UMI 최상위 사분위에서 .05438이다. UMI 최하위 사분위의 같은 공통 오류율은 .01580이다. 따라서 단순히 저UMI 세포를 제거하면 오류가 해결된다고 결론 낼 수 없다. Class·donor composition이 이 연관을 설명할 수 있다.
 
-Official Geneformer Ensembl mapping과 token vocabulary를 적용해 입력 coverage를 진단한다. B lineage에서 IGKC, IGHG3, IGHG1 등 풍부한 immunoglobulin gene이 vocabulary 밖에 있음이 확인된다. 이는 원 ID를 임의의 다른 gene token에 대응시킬 근거가 아니다. Coverage와 오류의 관련성은 descriptive이며, 이 유전자들의 누락이 모델 간 성능 차이를 일으켰다는 인과 결론은 내리지 않는다. 상위 gene별 raw-count 비율과 B 내부 coverage 사분위의 모델 오류를 별도 표로 제공한다.
+Official Geneformer Ensembl mapping과 token vocabulary를 적용해 입력 coverage를 진단한다. B lineage에서 IGKC, IGHG3, IGHG1 등 풍부한 immunoglobulin gene이 vocabulary 밖에 있음이 확인된다. 이는 원 ID를 임의의 다른 gene token에 대응시킬 근거가 아니다. 실제로 B 내부의 vocabulary count-fraction 최하위 사분위 Geneformer recall은 .99482, 최상위는 .81865로 단순한 coverage 감소→오류 증가 관계가 아니다. 각 사분위는579cells다. 이 유전자들의 누락이 모델 간 성능 차이를 일으켰다는 인과 결론은 내리지 않는다. 상위 gene별 raw-count 비율과 B 내부 coverage 사분위의 모델 오류를 별도 표로 제공한다.
 
 Stage는 donor 내부에서 일정하며 단계별 donor 수가1–2명뿐이다. Virus도 donor와 얽히고 일부 환자는 미보고다. 이 개발 데이터만으로 etiology·stage generalization을 입증하지 않는다. 명시적 platform·doublet score·site/tissue 필드가 없으면 unknown으로 남기고 sample 이름에서 임의로 만들지 않았다.
 

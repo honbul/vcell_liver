@@ -20,8 +20,11 @@
 | foundation response 확장 | 같은3303관측gene/191testtarget, native scGPT gradient smoke 통과; pretrained/random/GEARS job12876 | 실제 비교 진행 중 |
 | chemical response | Mouse TCDD portal-treated1074cells holdout; scVIDR RMSE .07629 vs no-change .20569, native arithmetic .13854 | 실제 수정 native 경로 실행됨 |
 | 외부 최종 | GSE151530 unscored; histology·환자·ontology 고정과 선택 freeze 필요 | 미완료, 점수 미관찰 |
-| 사용자 tutorial | 06–10 분류·genetic·개선·새query·chemical; 기본은 실제 결과 읽기 | 09는 PCA 정합 수정 뒤 재검증 중 |
+| 사용자 tutorial | 06–10 실제 실행; PCA query2000/2000정합·probability roundtrip차이0, 모든 notebook hash 일치 | 실행됨 |
 
 학습량4096의 개선 실험은 A-series의12000과 별도 조건이다. 같은4096 baseline을 직접 실행했고 기존 A-series 점수를 재사용하지 않는다. 첫 데이터 변경은 모두 validation과 개발 outer score에서 감소했다. 선택된 donor-balanced는 후속 대조를 위한 후보이며 확인된 개선이라 부르지 않는다.
 
 HCC 세포 분류, Geneformer embedding shift, 실측 genetic response, chemical response는 다른 task다. 외부 final은 모델/데이터 선택을 동결하기 전까지 어떠한 모델 score도 생성하지 않는다. 모델별 pretraining overlap은 확인 불가 시 unknown으로 기록한다. 위 미완료 항목이 남아 있으므로 전체 연구 완료를 주장하지 않는다.
+
+
+현재 Slurm handle은 `slurm_jobs.tsv`에 기록한다. 12844 confirmation 뒤12883 final refit, 그 뒤12892 external release/evaluation 순서다. 12876 native response 비교 뒤12896이 공통 metric과 tutorial07을 갱신한다. Completed artifact와 terminal log를 확인하기 전 같은 run을 재시작하지 않는다. External cohort는 아직 unscored이며 전체 목표는 진행 중이다.
