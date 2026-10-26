@@ -18,7 +18,9 @@ for path in source.glob('*series_matrix.txt.gz'):
     cancer=next(row[1:] for row in lines if row[0]=='!Sample_characteristics_ch1' and all(value.startswith('cancer type:') for value in row[1:]))
     for sid,accession,diagnosis in zip(titles,gsm,cancer):
         assert sid not in samples
-        histology='HCC' if diagnosis.split(':',1)[1].strip()=='Hepatocellular carcinoma' else 'iCCA'
+        diagnosis=' '.join(diagnosis.split(':',1)[1].split());histology_map={'Hepatocellular carcinoma':'HCC','Intrahepatic cholangiocarcinoma':'iCCA'}
+        assert diagnosis in histology_map,diagnosis
+        histology=histology_map[diagnosis]
         samples[sid]=dict(S_ID=sid,GSM=accession,histology=histology,series_matrix=path.name)
 assert set(samples)==set(info.S_ID)
 ns={'w':'http://schemas.openxmlformats.org/wordprocessingml/2006/main'};xml=ET.fromstring(ZipFile(source/'NIHMS1720233-supplement-1.docx').read('word/document.xml'));clinical={}
