@@ -1,0 +1,75 @@
+{
+  "run_id": "B00_B02_hepg2_unseen_target_seed42_v1",
+  "status": "executed",
+  "task": "measured_genetic_response",
+  "model_id": "B00_B01_B02_matched_controls",
+  "project_commit": "9593d3150f5d2845ca6ec17616bca893e1a6ea7e",
+  "seed": 42,
+  "source_contract": {
+    "status": "prepared",
+    "dataset_id": "GSE264667_HepG2_unseen_target_v1",
+    "task": "measured_genetic_response",
+    "regime": "strict_unseen_target_with_matched_controls",
+    "project_commit": "ae87c0b1faa949648ada73313de0b09286636617",
+    "seed": 42,
+    "source_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/GEO/GSE264667/GSE264667_hepg2_raw_singlecell_01.h5ad",
+    "source_sha256": "e1ad7c3c5a201c861a207a858aa7e59f5e6ac1955674c415f7de0d1dadadb52e",
+    "source_shape": [
+      145473,
+      9624
+    ],
+    "n_cells": 140772,
+    "n_genes": 2000,
+    "n_eligible_targets": 2142,
+    "target_split_counts": {
+      "train": 1714,
+      "test": 214,
+      "val": 214
+    },
+    "cell_line": "HepG2",
+    "cell_origin": "hepatoblastoma-derived cell line; separate from adult HCC patient cohort",
+    "intervention_type": "CRISPRi dCas9-KRAB; dual sgRNA design targeting the same gene or single assigned guide, not dual-gene knockout",
+    "time_days": 7,
+    "biological_replicate": "unknown; gem_group is technical batch",
+    "control_policy": "Non-targeting controls from the same gem_group are available for training and evaluation; held-out treated responses never enter training",
+    "assignment_policy": "Use author-filtered gene/sgID_AB assignments; group all guide and transcript variants of each target gene; require valid Ensembl ID, authentic GO prior, >=20 cells; no efficiency threshold invented",
+    "author_QC": "Original author-filtered cells retained; Methods HepG2 UMI>3000 and mitochondrial fraction<0.18; no additional response-based QC",
+    "output_gene_selection": "2000 largest log-expression variances on training-target cells and supplied controls only, after collapsing duplicate symbols; upstream author 9624-gene panel remains a limitation",
+    "normalization": "log1p(counts*10000/row sum in original fixed 9624-gene panel), before output-gene selection; original author UMI_count retained separately",
+    "target_split_sha256": "0de6c1fcd3a3df37a90b8d0a244d1d9f6d2dba2a31093fc756c81137b766d163",
+    "training_data_sha256": "c424d5fffe17ea7ce1cfe7dac6162c71845ce4d04ebc8069ac4a8c7d1fb5a5e1",
+    "heldout_data_sha256": "8b4fdb62c534dfcd5f4a1d5141915506f00dfc92773074374c0d2e9fe65932c6",
+    "literature_sources": [
+      "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE264667",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC13063516/",
+      "https://www.cellosaurus.org/CVCL_0027"
+    ],
+    "failure_or_limitations": [
+      "Single-target prediction only; no combination, drug, dose or cross-cell-line generalization",
+      "Guide efficacy and biological replicate remain unknown",
+      "Fixed upstream gene universe was selected by original authors"
+    ],
+    "wall_seconds": 216.98014759272337,
+    "peak_cpu_rss_gib": 28.8262939453125,
+    "peak_process_gpu_gib": null
+  },
+  "n_train_interventions": 1714,
+  "n_validation_interventions": 214,
+  "n_test_interventions": 214,
+  "n_genes": 2000,
+  "checkpoint_sha256": null,
+  "GO_prior_sha256": "f145c5e84a53048d87942a417d870a4f2d8db50200b96e492b358c13aba8c771",
+  "wall_preprocessing_seconds": 1.1023099981248379,
+  "wall_training_seconds": 1.318487647920847,
+  "wall_inference_seconds": 0.6936390325427055,
+  "wall_total_seconds": 3.2098845280706882,
+  "selection_metric": "validation all-gene intervention-mean MSE; fixed alpha grid; training-only response PCA32; no refit on validation responses",
+  "failure_or_limitations": [
+    "Scores average interventions equally, not cells",
+    "Observed top20 absolute mean-delta genes are evaluation-only and were not supplied to the predictor",
+    "Zero-change delta Pearson is undefined and recorded blank, never presented as zero predictive correlation",
+    "No prospective clinical or efficacy prediction"
+  ],
+  "peak_cpu_rss_gib": 0.6692276000976562,
+  "peak_process_gpu_gib": null
+}
