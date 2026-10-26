@@ -1,0 +1,44 @@
+{
+  "lineage": "Hepatocyte",
+  "targets": [
+    "ALB",
+    "HNF4A"
+  ],
+  "basis": "ALB: hepatocyte identity marker; HNF4A: hepatic transcription factor. Tutorial hypotheses, not validated treatment targets. Selection and expression matching use train only.",
+  "controls": [
+    {
+      "gene": "ALB",
+      "ensembl_id": "ENSG00000163631",
+      "token": 10898,
+      "condition": "independent_delete",
+      "train_lineage_mean_count": 247.875
+    },
+    {
+      "gene": "FTL",
+      "ensembl_id": "ENSG00000087086",
+      "token": 1711,
+      "condition": "expression_matched_random_delete",
+      "matched_target": "ALB",
+      "train_lineage_mean_count": 288.5,
+      "target_train_mean_count": 247.875
+    },
+    {
+      "gene": "HNF4A",
+      "ensembl_id": "ENSG00000101076",
+      "token": 2416,
+      "condition": "independent_delete",
+      "train_lineage_mean_count": 0.25
+    },
+    {
+      "gene": "ABCD1",
+      "ensembl_id": "ENSG00000101986",
+      "token": 2587,
+      "condition": "expression_matched_random_delete",
+      "matched_target": "HNF4A",
+      "train_lineage_mean_count": 0.25,
+      "target_train_mean_count": 0.25
+    }
+  ],
+  "n_cells": 8,
+  "seed": 42
+}

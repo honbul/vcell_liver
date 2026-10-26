@@ -1,0 +1,78 @@
+{
+  "run_id": "kg_comparison_foundation_pathway",
+  "status": "executed",
+  "task": "annotation",
+  "dataset_accession": "GSE149614",
+  "model_name": "foundation_pathway",
+  "seed": 42,
+  "n_cells": 10000,
+  "data_hash": "4566505f44711ca5b281b12ed59e1ecf614df5e799422d08aea0d220a1707e46",
+  "split_manifest_hash": "94d8d18926ca3781c2d323f9dcda4ed7fe939a730a9907d0639ea715c2227ae7",
+  "pretraining_overlap": "unknown",
+  "metrics": {
+    "macro_f1": 0.9435819727791355,
+    "balanced_accuracy": 0.9427802116968963,
+    "n_test_unknown": 0,
+    "n_evaluated": 1240,
+    "selected_C": 0.01,
+    "selected_class_weight": null,
+    "split_counts": {
+      "train": 6436,
+      "val": 2324,
+      "test": 1240
+    },
+    "label_classes": [
+      "B",
+      "Endothelial",
+      "Fibroblast",
+      "Hepatocyte",
+      "Myeloid",
+      "T/NK"
+    ],
+    "validation_candidates": [
+      {
+        "C": 0.01,
+        "class_weight": null,
+        "validation_macro_f1": 0.9561367877628776
+      },
+      {
+        "C": 0.01,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9447930916690818
+      },
+      {
+        "C": 0.1,
+        "class_weight": null,
+        "validation_macro_f1": 0.9505652552984715
+      },
+      {
+        "C": 0.1,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9488334600838425
+      },
+      {
+        "C": 1.0,
+        "class_weight": null,
+        "validation_macro_f1": 0.9435853975038988
+      },
+      {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9428899416955211
+      }
+    ],
+    "shuffled_train_labels_test_macro_f1": 0.10467380922139546,
+    "n_changed_test_predictions_vs_foundation": 27,
+    "delta_macro_f1_vs_foundation": -0.009070311881710147
+  },
+  "foundation_run": "scgpt_comparison",
+  "n_pathways": 128,
+  "source_version": "Reactome 92",
+  "seed_random_sets": 42,
+  "pathway_source_sha256": "a86928f1a4e13ef2e47e73635666e9d81f19e46984e443b1397d134b154b4044",
+  "data_preprocessing": "log1p(10000 * counts/original library sum); train-only gene zscore; mean over members",
+  "wall_seconds": 52.76302860677242,
+  "peak_cpu_rss_gib": 1.5041351318359375,
+  "peak_process_gpu_gib": null,
+  "resource_measurement_scope": "combined KG feature preparation and all three ablation heads"
+}
