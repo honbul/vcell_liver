@@ -52,10 +52,10 @@ for field in ['library_counts','detected_genes','mitochondrial_fraction']:
     frame.groupby(field+'_descriptive_quartile',observed=True)[error_cols].agg(['mean','size']).to_csv(out/f'errors_by_{field}.tsv',sep='\t')
 bcell=frame[frame.cell_type_coarse.astype(str)=='B'].copy();bcell['vocabulary_fraction_quartile']=pd.qcut(bcell.ensembl_geneformer_count_fraction,4,duplicates='drop');bcell.groupby('vocabulary_fraction_quartile',observed=True)[error_cols].agg(['mean','size']).to_csv(out/'B_errors_by_geneformer_vocabulary_count_fraction.tsv',sep='\t')
 context={}
-for field in ['stage','virus','site','tissue','platform','doublet_score']:
+for field in ['stage','virus','tissue_site','platform','doublet_score']:
     if field in frame:
         pd.crosstab(frame.patient_id,frame[field],dropna=False).to_csv(out/f'donor_by_{field}.tsv',sep='\t')
-        context[field]='Observed metadata, descriptive only; donor confounding retained'
+        context[field]='Observed metadata, descriptive only; donor confounding retained'+('; original metadata site→canonical tissue_site' if field=='tissue_site' else '')
     else:context[field]='Not present as this explicit column in the canonical development obs; no inferred replacement'
 edges=pd.read_csv(ROOT/'manifests/kg_edges_comparison.tsv',sep='\t');sets={p:set(g.head_id) for p,g in edges.groupby('tail_id')};names=sorted(sets);overlaps=[]
 for i,left in enumerate(names):
