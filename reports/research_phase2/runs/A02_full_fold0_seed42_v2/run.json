@@ -1,0 +1,159 @@
+{
+  "run_id": "A02_full_fold0_seed42_v2",
+  "status": "executed",
+  "task": "annotation",
+  "regime": "inductive",
+  "dataset_version": "GSE149614_development_full",
+  "split_id": "development_donor4_v2",
+  "project_commit": "676e4af6a67d70c2e8430d79277e20baf0f70bbc",
+  "seed": 42,
+  "data_variant": "D0_natural",
+  "model_variant": "M0_frozen_linear",
+  "label_mapping": "original six broad lineages, unchanged",
+  "pretraining_overlap": "unknown",
+  "split_manifest": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver/manifests/research_phase2/development_donor4_v2.tsv",
+  "split_manifest_sha256": "3ea07b16f46b357bd4063ef467653ef9382c3f9ede2ccfffa0fd40a80d67ab7e",
+  "allowed_target_information": "own observed counts only; no fitting to outer evaluation donors",
+  "prediction_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/A02_full_fold0_seed42_v2/predictions.tsv",
+  "prediction_sha256": "28539aa3a31b20a95c3095b8e67704ba5437713c0007753b33cf4c2eeb785a34",
+  "metrics": {
+    "macro_f1": 0.9318413068913163,
+    "balanced_accuracy": 0.9349265707610522,
+    "n_cells": 12082,
+    "n_known": 12082,
+    "evaluation_coverage": 1.0,
+    "prediction_coverage": 1.0,
+    "n_unknown_truth": 0,
+    "n_abstained": 0,
+    "confidence_calibration": "uncalibrated; no confidence threshold; ECE/Brier reported",
+    "labels": [
+      "B",
+      "Endothelial",
+      "Fibroblast",
+      "Hepatocyte",
+      "Myeloid",
+      "T/NK"
+    ],
+    "brier_multiclass": 0.06683908716246463,
+    "ece_10_bins": 0.005005466553750755
+  },
+  "model_id": "geneformer",
+  "fold": 0,
+  "feature_dimension": 768,
+  "feature_source": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/features/geneformer_GSE149614_development_full.npz",
+  "upstream_commit": "1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5",
+  "base_checkpoint_revision": "1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5",
+  "checkpoint_sha256": "fff5cba29ddd8792991fa77b4872246fbe548a178cebda3775cdc72b67780e7f",
+  "trainable_parameters": 4614,
+  "dataset_sha256": "9d3dab605f1cb5dd644768644ea90fc7937ea59cb9e9391d101a2a8a61593519",
+  "n_inner_training": 8648,
+  "n_inner_validation": 3352,
+  "n_outer_training": 12000,
+  "n_evaluation": 12082,
+  "training_donors": [
+    "HCC03",
+    "HCC04",
+    "HCC05",
+    "HCC06",
+    "HCC07",
+    "HCC08"
+  ],
+  "validation_donors": [
+    "HCC03",
+    "HCC04"
+  ],
+  "evaluation_donors_or_perturbations": [
+    "HCC01",
+    "HCC10"
+  ],
+  "wall_preprocessing_seconds": 11.962706588208675,
+  "wall_training_seconds": 16.45557914301753,
+  "wall_inference_seconds": 0.13448257371783257,
+  "wall_total_seconds": 29.03505164384842,
+  "feature_inference_note": "Frozen feature cache reused; head-only time excludes extraction; extraction metadata linked",
+  "feature_extraction_metadata": {
+    "status": "executed",
+    "model_id": "geneformer",
+    "dataset_id": "GSE149614_development_full",
+    "shape": [
+      63036,
+      768
+    ],
+    "input_data_sha256": "9d3dab605f1cb5dd644768644ea90fc7937ea59cb9e9391d101a2a8a61593519",
+    "project_commit": "bb6b0349f8fa541255b27a7d501b1209ead24506",
+    "upstream_commit": "1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5",
+    "checkpoint_revision": "1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5",
+    "checkpoint_sha256": "fff5cba29ddd8792991fa77b4872246fbe548a178cebda3775cdc72b67780e7f",
+    "actual_parameter_count": 104386867,
+    "trainable_parameters": 0,
+    "input_contract": "official V2 rank tokenizer; unchanged special tokens/4096 limit; hidden_states[11] CLS; MLM logits omitted",
+    "precision": "weights float32; CUDA matmul autocast bf16; stored features float32",
+    "precision_check": {
+      "n_cells": 64,
+      "comparison": "bf16_vs_float32",
+      "cosine_min": 0.9999972581863403,
+      "cosine_mean": 0.9999976754188538,
+      "maximum_absolute_difference": 0.003153562545776367,
+      "note": "Numerical characterization without labels; no score-based precision selection"
+    },
+    "batch_size": 8,
+    "wall_preprocessing_seconds": 15.880780331790447,
+    "wall_model_loading_seconds": 3.9297214187681675,
+    "wall_inference_seconds": 1665.4703041352332,
+    "wall_training_seconds": 0,
+    "wall_total_seconds": 1706.8425331749022,
+    "resource_scope": "Includes optional 64-cell float32 precision characterization; no clinical/efficacy prediction",
+    "feature_sha256": "75c110a6db5aff6693cad840a3bfd09ee52ba42e8035ecffa6ab0abf5bc137c9",
+    "pretraining_overlap": "unknown",
+    "peak_cpu_rss_gib": 7.967601776123047,
+    "peak_process_gpu_gib": 3.494140625,
+    "gpu_name": "NVIDIA A30",
+    "peak_cuda_allocated_gib": 2.877274990081787,
+    "peak_cuda_reserved_gib": 3.228515625
+  },
+  "metric_protocol": "pooled_macro_f1_fixed_six_lineages",
+  "head_selection": {
+    "validation_grid": [
+      {
+        "C": 0.01,
+        "class_weight": null,
+        "validation_macro_f1": 0.9407887894639698
+      },
+      {
+        "C": 0.01,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9393338832211664
+      },
+      {
+        "C": 0.1,
+        "class_weight": null,
+        "validation_macro_f1": 0.9286111715920063
+      },
+      {
+        "C": 0.1,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9318418506900451
+      },
+      {
+        "C": 1.0,
+        "class_weight": null,
+        "validation_macro_f1": 0.9086373678043734
+      },
+      {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9110792493143088
+      }
+    ],
+    "selected_C": 0.01,
+    "selected_class_weight": null,
+    "validation_macro_f1": 0.9407887894639698
+  },
+  "failure_or_limitations": [
+    "development OOF, not a fresh blind test",
+    "legacy HCC02/HCC09 excluded",
+    "pretraining overlap unknown"
+  ],
+  "peak_cpu_rss_gib": 3.010223388671875,
+  "peak_process_gpu_gib": null
+}

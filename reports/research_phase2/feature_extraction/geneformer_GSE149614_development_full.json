@@ -1,0 +1,40 @@
+{
+  "status": "executed",
+  "model_id": "geneformer",
+  "dataset_id": "GSE149614_development_full",
+  "shape": [
+    63036,
+    768
+  ],
+  "input_data_sha256": "9d3dab605f1cb5dd644768644ea90fc7937ea59cb9e9391d101a2a8a61593519",
+  "project_commit": "bb6b0349f8fa541255b27a7d501b1209ead24506",
+  "upstream_commit": "1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5",
+  "checkpoint_revision": "1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5",
+  "checkpoint_sha256": "fff5cba29ddd8792991fa77b4872246fbe548a178cebda3775cdc72b67780e7f",
+  "actual_parameter_count": 104386867,
+  "trainable_parameters": 0,
+  "input_contract": "official V2 rank tokenizer; unchanged special tokens/4096 limit; hidden_states[11] CLS; MLM logits omitted",
+  "precision": "weights float32; CUDA matmul autocast bf16; stored features float32",
+  "precision_check": {
+    "n_cells": 64,
+    "comparison": "bf16_vs_float32",
+    "cosine_min": 0.9999972581863403,
+    "cosine_mean": 0.9999976754188538,
+    "maximum_absolute_difference": 0.003153562545776367,
+    "note": "Numerical characterization without labels; no score-based precision selection"
+  },
+  "batch_size": 8,
+  "wall_preprocessing_seconds": 15.880780331790447,
+  "wall_model_loading_seconds": 3.9297214187681675,
+  "wall_inference_seconds": 1665.4703041352332,
+  "wall_training_seconds": 0,
+  "wall_total_seconds": 1706.8425331749022,
+  "resource_scope": "Includes optional 64-cell float32 precision characterization; no clinical/efficacy prediction",
+  "feature_sha256": "75c110a6db5aff6693cad840a3bfd09ee52ba42e8035ecffa6ab0abf5bc137c9",
+  "pretraining_overlap": "unknown",
+  "peak_cpu_rss_gib": 7.967601776123047,
+  "peak_process_gpu_gib": 3.494140625,
+  "gpu_name": "NVIDIA A30",
+  "peak_cuda_allocated_gib": 2.877274990081787,
+  "peak_cuda_reserved_gib": 3.228515625
+}
