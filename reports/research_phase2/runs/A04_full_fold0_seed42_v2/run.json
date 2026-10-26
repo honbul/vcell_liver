@@ -1,0 +1,119 @@
+{
+  "run_id": "A04_full_fold0_seed42_v2",
+  "status": "executed",
+  "task": "annotation",
+  "regime": "inductive",
+  "dataset_version": "GSE149614_development_full",
+  "split_id": "development_donor4_v2",
+  "project_commit": "edd79b8fd8b986ba8df64ff43e12894a0cf7a78b",
+  "seed": 42,
+  "data_variant": "D0_natural",
+  "model_variant": "M0_frozen_linear",
+  "label_mapping": "original six broad lineages, unchanged",
+  "pretraining_overlap": "unknown",
+  "split_manifest": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver/manifests/research_phase2/development_donor4_v2.tsv",
+  "split_manifest_sha256": "3ea07b16f46b357bd4063ef467653ef9382c3f9ede2ccfffa0fd40a80d67ab7e",
+  "allowed_target_information": "own observed counts only; no fitting to outer evaluation donors",
+  "prediction_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/A04_full_fold0_seed42_v2/predictions.tsv",
+  "prediction_sha256": "149c91366c75c99edd154ecc48432935c1b30f90565995c1b51e55dd384bc4ac",
+  "metrics": {
+    "macro_f1": 0.9270748270881489,
+    "balanced_accuracy": 0.9365066206614051,
+    "n_cells": 12082,
+    "n_known": 12082,
+    "evaluation_coverage": 1.0,
+    "prediction_coverage": 1.0,
+    "n_unknown_truth": 0,
+    "n_abstained": 0,
+    "confidence_calibration": "uncalibrated; no confidence threshold; ECE/Brier reported",
+    "labels": [
+      "B",
+      "Endothelial",
+      "Fibroblast",
+      "Hepatocyte",
+      "Myeloid",
+      "T/NK"
+    ],
+    "brier_multiclass": 0.077434319203038,
+    "ece_10_bins": 0.035844113013176714
+  },
+  "model_id": "scvi",
+  "fold": 0,
+  "feature_dimension": 50,
+  "feature_source": "fold-specific scVI latent mean; no query adaptation",
+  "upstream_version": "1.2.2",
+  "checkpoint_sha256": null,
+  "trainable_parameters": "scVI encoder/decoder trained from scratch; see saved architecture",
+  "head_selection": {
+    "validation_grid": [
+      {
+        "C": 0.01,
+        "class_weight": null,
+        "validation_macro_f1": 0.911636835804963
+      },
+      {
+        "C": 0.01,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.936635478361357
+      },
+      {
+        "C": 0.1,
+        "class_weight": null,
+        "validation_macro_f1": 0.9177331988140112
+      },
+      {
+        "C": 0.1,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9355217605291993
+      },
+      {
+        "C": 1.0,
+        "class_weight": null,
+        "validation_macro_f1": 0.9159531282909237
+      },
+      {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9274915388889832
+      }
+    ],
+    "selected_C": 0.01,
+    "selected_class_weight": "balanced",
+    "validation_macro_f1": 0.936635478361357
+  },
+  "n_inner_training": 8648,
+  "n_inner_validation": 3352,
+  "n_outer_training": 12000,
+  "n_evaluation": 12082,
+  "training_donors": [
+    "HCC03",
+    "HCC04",
+    "HCC05",
+    "HCC06",
+    "HCC07",
+    "HCC08"
+  ],
+  "validation_donors": [
+    "HCC03",
+    "HCC04"
+  ],
+  "evaluation_donors_or_perturbations": [
+    "HCC01",
+    "HCC10"
+  ],
+  "dataset_sha256": "9d3dab605f1cb5dd644768644ea90fc7937ea59cb9e9391d101a2a8a61593519",
+  "wall_preprocessing_seconds": 9.58749046549201,
+  "wall_training_seconds": 242.2247086390853,
+  "wall_inference_seconds": 4.841906748712063,
+  "wall_total_seconds": 268.9927276559174,
+  "input_contract": "raw counts, inner/outer train-only 2000 Seurat-v3 HVGs, NB likelihood, 50 latent dimensions, 100 fixed epochs; no donor covariate",
+  "failure_or_limitations": [
+    "development OOF, not a fresh blind test",
+    "pretrained-model overlap unknown; scVI is trained only on development training cells"
+  ],
+  "peak_cpu_rss_gib": 4.235198974609375,
+  "peak_process_gpu_gib": 0.330078125,
+  "gpu_name": "NVIDIA A30",
+  "peak_cuda_allocated_gib": 0.04778242111206055,
+  "peak_cuda_reserved_gib": 0.0546875
+}

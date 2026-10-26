@@ -36,6 +36,7 @@ def metric_summary(y,pred,prob,labels):
         balanced_accuracy=float(balanced_accuracy_score(y[known],pred[known])),n_cells=len(y),n_known=int(known.sum()),
         evaluation_coverage=float(known.mean()),prediction_coverage=float(answered.mean()),n_unknown_truth=int((~known).sum()),n_abstained=int((~answered).sum()),
         confidence_calibration='uncalibrated; no confidence threshold; ECE/Brier reported',labels=labels)
+    result['answered_only_macro_f1']=float(f1_score(y[k],pred[k],labels=labels,average='macro',zero_division=0)) if k.any() else None
     if prob is not None:
         assert prob.shape==(len(y),len(labels)) and np.isfinite(prob).all()
         truth=np.zeros_like(prob);lookup={v:i for i,v in enumerate(labels)}
@@ -94,7 +95,8 @@ def save_evaluation(a,test,pred,prob,c,run_id,metadata,head=None):
         label_mapping='original six broad lineages, unchanged',pretraining_overlap='unknown',
         split_manifest=str(ROOT/c['split_manifest']),split_manifest_sha256=sha(ROOT/c['split_manifest']),
         allowed_target_information='own observed counts only; no fitting to outer evaluation donors',
-        prediction_path=str(raw/'predictions.tsv'),prediction_sha256=sha(raw/'predictions.tsv'),metrics=metrics,**metadata)
+        prediction_path=str(raw/'predictions.tsv'),prediction_sha256=sha(raw/'predictions.tsv'),metrics=metrics)
+    run.update(metadata)
     write_json(out/'run.json',run)
     print(json.dumps(dict(run_id=run_id,model_id=run['model_id'],**metrics)),flush=True)
     return run
