@@ -10,6 +10,10 @@
 set -euo pipefail
 export CUDA_VISIBLE_DEVICES=-1
 source envs/activate.sh scgpt
+if [ "$#" -gt 0 ]; then
+  python scripts/research/execute_tutorials.py "$@"
+  exit 0
+fi
 python scripts/research/summarize_annotation_uncertainty.py --regime inductive
 python scripts/research/summarize_annotation_uncertainty.py --regime query_adaptive
 python scripts/research/resolve_run_metadata.py
