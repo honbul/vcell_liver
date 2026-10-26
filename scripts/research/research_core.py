@@ -74,17 +74,20 @@ def save_evaluation(a,test,pred,prob,c,run_id,metadata,head=None):
     raw=ASSETS/'runs'/run_id;raw.mkdir(parents=True,exist_ok=True)
     labels=c['labels'];obs=a.obs.iloc[test];y=obs.cell_type_coarse.astype(str).to_numpy()
     metrics=metric_summary(y,pred,prob,labels)
+    known=np.isin(y,labels)
+    pred=np.asarray(pred,dtype=str)
     p=obs[['cell_id','patient_id','cell_type_coarse']].copy();p=p.rename(columns={'cell_type_coarse':'truth'});p['prediction']=pred;p['confidence']=prob.max(1) if prob is not None else np.nan
     p.to_csv(raw/'predictions.tsv',sep='\t',index=False)
     if prob is not None:np.savez_compressed(raw/'probabilities.npz',cell_ids=obs.index.to_numpy(dtype=str),probabilities=prob,labels=np.array(labels))
-    pd.DataFrame(classification_report(y,pred,labels=labels,output_dict=True,zero_division=0)).T.to_csv(out/'per_class.tsv',sep='\t')
-    pd.DataFrame(confusion_matrix(y,pred,labels=labels+(['Unknown'] if 'Unknown' in pred else [])),index=labels+(['Unknown'] if 'Unknown' in pred else []),columns=labels+(['Unknown'] if 'Unknown' in pred else [])).to_csv(out/'confusion_matrix.tsv',sep='\t')
+    pd.DataFrame(classification_report(y[known],pred[known],labels=labels,output_dict=True,zero_division=0)).T.to_csv(out/'per_class.tsv',sep='\t')
+    confusion_labels=labels+(['Unknown'] if 'Unknown' in pred or 'Unknown' in y else [])
+    pd.DataFrame(confusion_matrix(y,pred,labels=confusion_labels),index=confusion_labels,columns=confusion_labels).to_csv(out/'confusion_matrix.tsv',sep='\t')
     patients=[]
     for donor in sorted(obs.patient_id.unique()):
         ix=obs.patient_id.to_numpy()==donor
-        supported=sorted(set(y[ix])|set(pred[ix]))
-        patients.append(dict(patient_id=donor,n_cells=int(ix.sum()),macro_f1_common_ontology=float(f1_score(y[ix],pred[ix],labels=labels,average='macro',zero_division=0)),
-             macro_f1_observed_or_predicted_classes=float(f1_score(y[ix],pred[ix],labels=supported,average='macro',zero_division=0)),class_support=json.dumps(pd.Series(y[ix]).value_counts().to_dict())))
+        eligible=ix&known;supported=sorted(set(y[eligible])|set(pred[eligible]))
+        patients.append(dict(patient_id=donor,n_cells=int(ix.sum()),n_known=int(eligible.sum()),n_unknown_truth=int((ix&~known).sum()),macro_f1_common_ontology=float(f1_score(y[eligible],pred[eligible],labels=labels,average='macro',zero_division=0)) if eligible.any() else None,
+             macro_f1_observed_or_predicted_classes=float(f1_score(y[eligible],pred[eligible],labels=supported,average='macro',zero_division=0)) if eligible.any() else None,class_support=json.dumps(pd.Series(y[ix]).value_counts().to_dict())))
     pd.DataFrame(patients).to_csv(out/'by_donor.tsv',sep='\t',index=False)
     if head is not None:
         import joblib

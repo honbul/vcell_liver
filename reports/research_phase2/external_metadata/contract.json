@@ -1,0 +1,78 @@
+{
+  "status": "prepared_unscored",
+  "dataset_id": "GSE151530_HCC_external_final",
+  "project_commit": "093580d59b9ffe89c61eab056487ba2930fd2fc4",
+  "n_cells": 50023,
+  "n_genes": 18667,
+  "n_donors": 25,
+  "n_samples": 32,
+  "histology_policy": "GEO cancer-type characteristics joined by S_ID, cross-checked with original clinical TableS1; HCC only",
+  "donor_policy": "Author patient ID from TableS1; sample suffix biopsies grouped using TableS1 repeated-biopsy footnote, never treated as independent donors",
+  "label_mapping": {
+    "T cells": "T/NK",
+    "B cells": "B",
+    "TAMs": "Myeloid",
+    "TECs": "Endothelial",
+    "CAFs": "Fibroblast",
+    "Malignant cells": "Unknown",
+    "unclassified": "Unknown"
+  },
+  "label_support": {
+    "Unknown": 22811,
+    "T/NK": 17348,
+    "Myeloid": 4616,
+    "Endothelial": 2338,
+    "B": 1854,
+    "Fibroblast": 1056
+  },
+  "primary_metric": "Fixed-six macroF1 on cells with known lineage ground truth, absent Hepatocyte class contributes0; report all supports and label coverage",
+  "secondary_metric": "Fixed-five macroF1 for B/Endothelial/Fibroblast/Myeloid/T-NK; specified before any external predictions; does not validate Hepatocyte transfer",
+  "ontology_limitation": "No author hepatocyte lineage label. Malignant and unclassified cells remain Unknown rather than inferred hepatocytes. Fixed-six maximum is5/6 for an otherwise perfect classifier in this cohort",
+  "fallback_review": "GSE189903 Info metadata inspected only; same five named nonmalignant lineages with malignant/unclassified labels, no hepatocyte annotation. Retain originally reserved GSE151530; no performance-based selection",
+  "permitted_access": "metadata, ontology, histology, raw-count schema and deterministic count conversion only; no model inference, training or scoring",
+  "model_predictions_created": false,
+  "model_scores_observed": false,
+  "counts_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/external/GSE151530_HCC/counts_unscored.h5ad",
+  "counts_sha256": "f30aa290d0b5843d5e634a44a661aeab40bce2c3afa2cd19a163bd3d70f6c7e5",
+  "sample_manifest_sha256": "8f7e938b0ac729a109c82022bd97a19c20bda73817807ed5e5c48cc7767beff7",
+  "source_files": {
+    "GSE151530_Info.txt.gz": {
+      "size_bytes": 330527,
+      "sha256": "96a2cdff36b65490859543b246a3447724a35e223f8999dd04812f2983fe9c5f"
+    },
+    "GSE151530_barcodes.tsv.gz": {
+      "size_bytes": 256634,
+      "sha256": "8042eab7d859578738e04ba6ba7812584d094166e3d5562dcb02084c78a97660"
+    },
+    "GSE151530_genes.tsv.gz": {
+      "size_bytes": 146052,
+      "sha256": "26de4971c3aa236a72d46e96e2118acc626be90598c796791c139d36329af44e"
+    },
+    "GSE151530_matrix.mtx.gz": {
+      "size_bytes": 304902525,
+      "sha256": "50dad60e779b3332350e2552ed4260369ccba8db4f73918bbe2a9f6549db6403"
+    },
+    "GSE151530-GPL18573_series_matrix.txt.gz": {
+      "size_bytes": 2381,
+      "sha256": "524cb384017a8fa4c84a005d60bd17df569008fc25b00536d6a14b433a6ac8a1"
+    },
+    "GSE151530-GPL20301_series_matrix.txt.gz": {
+      "size_bytes": 2840,
+      "sha256": "8706c49e72fb1c4a8b98f08e65d11b429edb3c71f6d88b8d3f3795817eb38c1e"
+    },
+    "GSE151530-GPL24676_series_matrix.txt.gz": {
+      "size_bytes": 2403,
+      "sha256": "ef92e0ac7246856a880930d4037d10984be5297812094807cc67dc7f60e29994"
+    },
+    "NIHMS1720233-supplement-1.docx": {
+      "size_bytes": 9565292,
+      "sha256": "96b6d7321b4fd0cf2952b6657b1918abf73fd34098e222b84dbd8b6a2c6c31ea"
+    }
+  },
+  "source_links": [
+    "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE151530",
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC8604764/",
+    "https://scatlaslc.ccr.cancer.gov/"
+  ],
+  "overlap_status": "No shared GEO samples with GSE149614; biological identity cannot be proven from public study IDs; foundation pretraining overlap unknown"
+}

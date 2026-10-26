@@ -1,0 +1,35 @@
+{
+  "status": "frozen_confirmation_design",
+  "selection_rule": "largest fold0 seed42 inner-validation fixed-six macroF1 among partial/LoRA; fixed-head frozen NN is the matched control",
+  "selected_model": "partial",
+  "selected_data": "D1_donor_balanced",
+  "data_selection_source": "reports/research_phase2/sampling_screen/audit.json",
+  "scores": {
+    "frozen_nn": 0.9339921693490161,
+    "partial": 0.9473861827061918,
+    "lora": 0.935933568730367
+  },
+  "selection_source_hashes": {
+    "frozen_nn": "4a11258526f1864d94ef501aa6fd40f19cc5f33c4341802ebd807f814f47b6eb",
+    "partial": "4c8102b7fbf246a396509f8c82d5efb3dcfac831ffefea1e20f3978db075bdbf",
+    "lora": "c8adcccb43a51eb72e2ff296e783910ad1cd4aa1a5f49e8b67215a8b84d782ef"
+  },
+  "confirmation_seeds": [
+    42,
+    43,
+    44
+  ],
+  "confirmation_folds": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "train_cell_cap": 4096,
+  "backbone": "Geneformer-V2-104M",
+  "model_epochs_policy": "max3, inner-validation patience2; final refit uses selected epoch count per condition",
+  "factorial_control": "M0=frozen same NN head (M01), M1=selected adapted encoder with identical NN head; M00 linear screen is reported separately",
+  "is_confirmed_improvement": false,
+  "external_final_score_access": false,
+  "project_commit": "ca60dc5abc520ce3c596b9dc9e4158b53853bb3c"
+}
