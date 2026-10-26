@@ -72,6 +72,13 @@ pivot=frame.pivot(index='target',columns='model_id',values='delta_rmse');rng=np.
 for name in models:
     delta=(pivot['B00_no_change']-pivot[name]).to_numpy();boot=delta[draw].mean(1);paired.append(dict(model_id=name,delta_RMSE_gain_vs_no_change=float(delta.mean()),lower95=float(np.quantile(boot,.025)),upper95=float(np.quantile(boot,.975)),n_interventions=len(delta)))
 pd.DataFrame(paired).to_csv(out/'paired_intervention_bootstrap.tsv',sep='\t',index=False)
+comparisons=[]
+for name in models:
+    if name=='B02_GO_PCA_ridge':continue
+    delta=(pivot['B02_GO_PCA_ridge']-pivot[name]).to_numpy();samples=delta[draw].mean(1);comparisons.append(dict(reference='B02_GO_PCA_ridge',candidate=name,delta_RMSE_gain=float(delta.mean()),lower95=float(np.quantile(samples,.025)),upper95=float(np.quantile(samples,.975)),n_interventions=len(delta)))
+if native:
+    delta=(pivot['B04_scGPT_random']-pivot['B04_scGPT_pretrained']).to_numpy();samples=delta[draw].mean(1);comparisons.append(dict(reference='B04_scGPT_random',candidate='B04_scGPT_pretrained',delta_RMSE_gain=float(delta.mean()),lower95=float(np.quantile(samples,.025)),upper95=float(np.quantile(samples,.975)),n_interventions=len(delta)))
+pd.DataFrame(comparisons).to_csv(out/'paired_model_comparisons.tsv',sep='\t',index=False)
 write_json(out/'provenance.json',dict(status='executed',project_commit=git_commit(),task='measured_genetic_response',dataset=args.task,n_interventions=len(targets),n_cells=int(n.sum()),n_genes=len(genes),model_ids=list(models),sources=sources,
     primary_metric='condition-macro Delta expression RMSE, lower better; subtracting the same matched-control vector makes prediction error identical in expression and Delta space',
     evaluator_only_top20='Top20 absolute observed mean Delta; not statistical FDR DE; never supplied to predictors or model selection',constant_prediction_policy='Delta Pearson undefined; constant ranking precision@20 undefined; AP of constant scores equals reference prevalence',
