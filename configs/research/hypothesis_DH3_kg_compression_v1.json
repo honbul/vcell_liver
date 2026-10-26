@@ -1,0 +1,18 @@
+{
+  "hypothesis_id": "D-H3",
+  "registration_stage": "After D1/D2 screening and frozen-control confirmation; before any D04 execution or external final predictions",
+  "observed_pattern": "Legacy Reactome128 selected pathways include identical observed member sets (max pairwise Jaccard1); real128 concatenation did not outperform its size/degree-matched random prior. Full development errors remain in B and shifted donors.",
+  "evidence": ["reports/research_phase2/development_diagnostics/provenance.json", "reports/kg_ablation_comparison.tsv"],
+  "candidate_explanation": "Redundant correlated pathway summaries add feature dimensions without useful independent information.",
+  "planned_change": "Train-only PCA compression of fixed128 train-variance-selected Reactome membership proxies to32 components. Preserve Geneformer frozen768 representation and the baseline-selected logistic C/class_weight.",
+  "conditions": ["embedding_only", "embedding_real128", "embedding_real_PCA32", "embedding_random_PCA32", "pathway_only_PCA32"],
+  "negative_control": "Degree- and pathway-size-preserving edge swaps on each fitted selected128 membership set, seed42, compressed identically to32 using training cells only.",
+  "fixed_components": "Same4096 D0 natural training IDs, same validation/evaluation IDs, Geneformer base checkpoint/full4096 tokenizer/CLS feature cache, logistic head family and baseline C/class_weight, seed42.",
+  "pathway_policy": "Reactome92 human Ensembl mapping;10–200 observed genes; select128 using only current inner/outer training feature variance. Never reuse legacy label-selected pathway identities.",
+  "compression_policy": "Training StandardScaler of128 pathway proxies then PCA32, no whitening and no dimensionality search.",
+  "evaluation": "All4 grouped donor folds, all63036 development cells, one fixed seed42. Same ordered evaluation cells and source hashes checked. Report donor-paired differences and fixed-label F1; exploratory rather than3-seed confirmation.",
+  "success_or_rejection_rule": "Support compression hypothesis only if real_PCA32 exceeds real128 and the dimension-matched random_PCA32, with nonnegative real-vs-random differences in at least5/8 donors. Otherwise report no support; do not retune dimensions.",
+  "excluded_from_current_confirmation_and_external_model_selection": true,
+  "reason_not_promoted": "D1/partial confirmation and the fixed8-candidate external batch were already specified. This third data-centric diagnostic must not rewrite their selection history.",
+  "status": "preregistered_before_D04_runs"
+}
