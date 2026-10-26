@@ -55,7 +55,7 @@ raw count·대형 표현·가중치·비밀값은 Git에 올리지 않는다. �
 
 ## V2 연구 확장 (진행 중)
 
-[연구 계획 V2](docs/RESEARCH_EXPERIMENT_PLAN_V2.md)에 따라 기존 환경과 V1 결과를 보존하며 확장한다. [실행된 연구 튜토리얼 06](notebooks/06_research_development_cv.ipynb)은 저장된 결과 읽기와 선택적인 개발 fold 재실행을 제공한다.
+[연구 계획 V2](docs/RESEARCH_EXPERIMENT_PLAN_V2.md)에 따라 기존 환경과 V1 결과를 보존하며 확장한다. [실행된 연구 튜토리얼 06](notebooks/06_research_development_cv.ipynb)은 분류와 공식 예제, [튜토리얼 07](notebooks/07_measured_perturbation_response.ipynb)은 실측 반응 기준선을 읽고 선택적으로 재실행하는 인터페이스다.
 
 HCC02/HCC09를 제외한 8명, 63,036개 전체 개발 세포의 4-fold donor OOF 결과다. 모든 평가 세포를 유지하고, 학습은 fold당 12,000개 자연 표본으로 제한했다. 이 결과는 반복 확인한 개발 결과이며 새 blind test가 아니다.
 
