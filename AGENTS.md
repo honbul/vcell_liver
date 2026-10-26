@@ -25,3 +25,7 @@
 - 단계별 commit/push 후 실제 원격 반영을 확인한다. force push 금지.
 
 현재 문서의 스크립트·노트북 이름은 구현할 목표 인터페이스다. 존재 여부를 확인하지 않고 실행 가능한 것으로 가정하지 않는다.
+
+## 연구 확장 V2
+
+후속 연구는 `docs/RESEARCH_EXPERIMENT_PLAN_V2.md`를 우선한다. 위 초기 튜토리얼 지침과 기존 결과는 이력으로 보존한다. HCC02/HCC09는 legacy 회귀용이며 새 blind test로 취급하지 않는다. 새 실험은 research branch와 별도 immutable run ID를 사용한다.

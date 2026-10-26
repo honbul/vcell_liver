@@ -1,0 +1,22 @@
+protocol_version: research_annotation_v2_20261026
+dataset_id: GSE149614_development_full
+dataset_path: research_phase2/data/development_full.h5ad
+split_id: development_donor4_v2
+split_manifest: manifests/research_phase2/development_donor4_v2.tsv
+seed: 42
+evaluation_regime: inductive
+legacy_donors: [HCC02, HCC09]
+development_donors: [HCC01, HCC03, HCC04, HCC05, HCC06, HCC07, HCC08, HCC10]
+labels: [B, Endothelial, Fibroblast, Hepatocyte, Myeloid, T/NK]
+data_variant: D0_natural
+model_variant: M0_frozen_linear
+train_cell_cap: 12000
+head_C: [0.01, 0.1, 1.0]
+head_class_weight: [null, balanced]
+n_hvg: 2000
+n_pca: 50
+normalization_target: 10000
+pilot_feature_sources: {}
+primary_metric: pooled_macro_f1_fixed_six_lineages
+external_final_accession: GSE151530
+external_final_gate: model_and_data_choices_must_be_frozen_before_evaluation

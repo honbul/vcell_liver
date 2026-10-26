@@ -1,0 +1,57 @@
+"""Nested donor evaluation; PCA refitted per fold; pretrained legacy features only for pilot."""
+import argparse,json,sys,time
+from pathlib import Path
+from research_core import *
+import anndata as ad
+import yaml
+from sklearn.decomposition import PCA
+
+def log_counts(a,target):
+    x=a.layers['counts'].astype(np.float32)
+    x=x.multiply((target/np.maximum(np.asarray(x.sum(1)).ravel(),1))[:,None]).tocsr();x.data=np.log1p(x.data)
+    return x
+
+def fit_pca(x,train,c):
+    mu=np.asarray(x[train].mean(0)).ravel();var=np.asarray(x[train].power(2).mean(0)).ravel()-mu**2
+    hvg=np.argsort(-var,kind='stable')[:c['n_hvg']]
+    small=x[:,hvg].toarray();scale=StandardScaler().fit(small[train]);small=scale.transform(small)
+    pca=PCA(n_components=min(c['n_pca'],len(train)-1,len(hvg)),random_state=c['seed']).fit(small[train])
+    return pca.transform(small),dict(hvg=hvg,scaler=scale,pca=pca)
+
+p=argparse.ArgumentParser();p.add_argument('--config',required=True);p.add_argument('--model',choices=['pca','scgpt','geneformer','scfoundation','geneformer_clcancer','scvi'],required=True);p.add_argument('--fold',type=int,default=0);p.add_argument('--run-id',required=True);args=p.parse_args()
+c=yaml.safe_load(Path(args.config).read_text());r=Resources();start=time.monotonic()
+assert not (REPORT/'runs'/args.run_id/'run.json').exists(),'Immutable run ID already exists'
+a=ad.read_h5ad(DATA/c['dataset_path']);roles=donor_roles(a.obs,c,args.fold)
+y=a.obs.cell_type_coarse.astype(str).to_numpy();upstream=None;checkpoint=None
+if args.model=='pca':
+    x=log_counts(a,c['normalization_target']);inner,inner_model=fit_pca(x,roles['inner_training'],c)
+    outer=np.concatenate([roles['inner_training'],roles['inner_validation']]);final,preprocessor=fit_pca(x,outer,c)
+    feature_source='fold-specific PCA; separate inner and outer preprocessing fits'
+else:
+    source=c.get('pilot_feature_sources',{}).get(args.model)
+    if source:
+        d=np.load(DATA/source);lookup={cell:i for i,cell in enumerate(d['cell_ids'])}
+        assert all(cell in lookup for cell in a.obs_names)
+        inner=final=d['X'][[lookup[cell] for cell in a.obs_names]]
+        feature_source=str(DATA/source)
+    else:
+        source=ASSETS/'features'/f"{args.model}_{c['dataset_id']}.npz"
+        d=np.load(source);assert np.array_equal(d['cell_ids'],a.obs_names.to_numpy(dtype=str))
+        inner=final=d['X'];feature_source=str(source)
+    preprocessor=None
+    if args.model=='scgpt':
+        upstream='cebd6fae655b9c585a4807daa3ac31bb764f06b4';checkpoint=sha(DATA/'checkpoints/scgpt-whole-human/best_model.pt')
+    elif args.model=='geneformer':
+        upstream='1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5';checkpoint=sha(DATA/'checkpoints/Geneformer-V2-104M/model.safetensors')
+preprocess_seconds=time.monotonic()-start
+pred,prob,head,selection,training_seconds,inference_seconds=fit_head(inner,final,y,roles,c,c['seed'])
+head['preprocessor']=preprocessor
+resources=r.finish()
+save_evaluation(a,roles['evaluation'],pred,prob,c,args.run_id,dict(model_id=args.model,fold=args.fold,feature_dimension=final.shape[1],feature_source=feature_source,
+    upstream_commit=upstream,base_checkpoint_revision=upstream,checkpoint_sha256=checkpoint,trainable_parameters=int(head['classifier'].coef_.size+head['classifier'].intercept_.size),
+    dataset_sha256=sha(DATA/c['dataset_path']),n_inner_training=len(roles['inner_training']),n_inner_validation=len(roles['inner_validation']),n_outer_training=len(roles['inner_training'])+len(roles['inner_validation']),n_evaluation=len(roles['evaluation']),
+    training_donors=sorted(a.obs.iloc[np.concatenate([roles['inner_training'],roles['inner_validation']])].patient_id.unique()),
+    validation_donors=sorted(a.obs.iloc[roles['inner_validation']].patient_id.unique()),evaluation_donors_or_perturbations=sorted(a.obs.iloc[roles['evaluation']].patient_id.unique()),
+    wall_preprocessing_seconds=preprocess_seconds,wall_training_seconds=training_seconds,wall_inference_seconds=inference_seconds,wall_total_seconds=resources.pop('wall_seconds'),
+    feature_inference_note='pilot frozen features reused; extraction cost not re-measured' if args.model!='pca' else 'PCA included in preprocessing time',
+    metric_protocol=c['primary_metric'],head_selection=selection,failure_or_limitations=['development OOF, not a fresh blind test','legacy HCC02/HCC09 excluded','pretraining overlap unknown'],**resources),head=head)
