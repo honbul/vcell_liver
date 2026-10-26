@@ -22,7 +22,7 @@ p=argparse.ArgumentParser();p.add_argument('--config',required=True);p.add_argum
 c=yaml.safe_load(Path(args.config).read_text());r=Resources();start=time.monotonic()
 assert not (REPORT/'runs'/args.run_id/'run.json').exists(),'Immutable run ID already exists'
 a=ad.read_h5ad(DATA/c['dataset_path']);roles=donor_roles(a.obs,c,args.fold)
-y=a.obs.cell_type_coarse.astype(str).to_numpy();upstream=None;checkpoint=None
+y=a.obs.cell_type_coarse.astype(str).to_numpy();upstream=None;checkpoint=None;feature_metadata=None
 if args.model=='pca':
     x=log_counts(a,c['normalization_target']);inner,inner_model=fit_pca(x,roles['inner_training'],c)
     outer=np.concatenate([roles['inner_training'],roles['inner_validation']]);final,preprocessor=fit_pca(x,outer,c)
@@ -38,6 +38,8 @@ else:
         source=ASSETS/'features'/f"{args.model}_{c['dataset_id']}.npz"
         d=np.load(source);assert np.array_equal(d['cell_ids'],a.obs_names.to_numpy(dtype=str))
         inner=final=d['X'];feature_source=str(source)
+        feature_metadata=json.loads(source.with_suffix('.json').read_text())
+        upstream=feature_metadata.get('upstream_commit');checkpoint=feature_metadata.get('checkpoint_sha256')
     preprocessor=None
     if args.model=='scgpt':
         upstream='cebd6fae655b9c585a4807daa3ac31bb764f06b4';checkpoint=sha(DATA/'checkpoints/scgpt-whole-human/best_model.pt')
@@ -53,5 +55,5 @@ save_evaluation(a,roles['evaluation'],pred,prob,c,args.run_id,dict(model_id=args
     training_donors=sorted(a.obs.iloc[np.concatenate([roles['inner_training'],roles['inner_validation']])].patient_id.unique()),
     validation_donors=sorted(a.obs.iloc[roles['inner_validation']].patient_id.unique()),evaluation_donors_or_perturbations=sorted(a.obs.iloc[roles['evaluation']].patient_id.unique()),
     wall_preprocessing_seconds=preprocess_seconds,wall_training_seconds=training_seconds,wall_inference_seconds=inference_seconds,wall_total_seconds=resources.pop('wall_seconds'),
-    feature_inference_note='pilot frozen features reused; extraction cost not re-measured' if args.model!='pca' else 'PCA included in preprocessing time',
+    feature_inference_note='Frozen feature cache reused; head-only time excludes extraction; extraction metadata linked' if args.model!='pca' else 'PCA included in preprocessing time',feature_extraction_metadata=feature_metadata,
     metric_protocol=c['primary_metric'],head_selection=selection,failure_or_limitations=['development OOF, not a fresh blind test','legacy HCC02/HCC09 excluded','pretraining overlap unknown'],**resources),head=head)
