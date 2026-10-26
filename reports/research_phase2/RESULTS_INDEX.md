@@ -2,13 +2,15 @@
 
 V1 기록은 보존했다. 여기서는 V2 실험과 V3 보완 분석을 연결한다. **외부 GSE151530 최종 추론은 진행 중이며 전체 연구 완료가 아니다.** 최신 서버 관측은 [current_status.json](external_final/current_status.json), 해석은 [연구 요약](final_summary.md)을 읽는다.
 
+연구 브랜치는 `research/phase2-v2`이며 기존 결과 집계는 ed7e5f6, V3 추가 분석/사용 경로의 코드 기준은 a1e2f8f다. 수정사항별 완료·진행·차단은 [V3 처리 내역](progress_review_resolution.md)에 있다.
+
 | 질문 | 실제 결과·근거 |
 |---|---|
 | 전체 진행 상태 | [상태](status.md), [Slurm 작업](slurm_jobs.tsv), [V3 적용 범위](../../docs/RESEARCH_AMENDMENT_V3.md), [실제 근거 및 보존 점검](v3_followup_audit.json) |
 | 공식 재현과 수치 차이 | [한국어 설명](official_reproduction.md), [scGPT 제한 점검](official_scgpt_gap_audit/audit.json), [Norman 실제 사용 population](official_norman_population/audit.json) |
 | 같은 정보 조건의 기본 분류 | [Inductive 비교](leaderboard_annotation_inductive.tsv), [donor 쌍대 CI](annotation_uncertainty_inductive/paired_donor_bootstrap.tsv), [실제 pooled calibration](annotation_uncertainty_inductive/pooled_metrics_and_calibration.tsv) |
 | 간/암 특화 비교 | [CLcancer 포함 기본 비교](leaderboard_annotation_inductive.tsv), [query-adaptive LiverCT 별도 비교](leaderboard_annotation_query_adaptive.tsv), [실제 native voting head와 coverage](liverct_native_head.md) |
-| 조직 부위별 오류 | [해석](development_insights.md), [donor×tissue_site×lineage 오류](tissue_error_analysis/donor_tissue_lineage.tsv), [support](tissue_error_analysis/population_support.tsv), [pooled site 표](tissue_error_analysis/pooled_by_tissue.tsv), [원본 site 정합 증거](tissue_error_analysis/provenance.json) |
+| 조직 부위별 오류 | [해석](development_insights.md), [donor×tissue_site×lineage 오류](tissue_error_analysis/errors_by_donor_tissue_lineage.tsv), [조직별 donor/sample support](tissue_error_analysis/support_by_tissue_site.tsv), [같은 환자 조직 비교](tissue_error_analysis/within_donor_tissue_comparisons.tsv), [UMI 층화](tissue_error_analysis/context_provenance.json), [원본 site 정합 증거](tissue_error_analysis/provenance.json) |
 | 데이터·모델 변경의 기여 | [48조건 평균±SD](factorial_confirmation/pooled_mean_std.tsv), [Data/Model/Combined/Interaction](factorial_confirmation/paired_effects.tsv), [class별](factorial_confirmation/per_class_mean_std.tsv), [실제 비용](factorial_confirmation/resources_by_factor.tsv), [선택 가설](hypothesis_registry.tsv) |
 | KG 적용 방식과 음성 결과 | [계산식](kg_feature_method.md), [fixed32 압축 대조](kg_compression_diagnostic/pooled_metrics.tsv), [donor 차이](kg_compression_diagnostic/paired_donor_effects.tsv) |
 | 실측 genetic response | [task별 비교](leaderboard_genetic_response.tsv), [full HepG2](response_evaluation_hepg2/condition_macro_metrics.tsv), [matched native-common](response_evaluation_native_common/condition_macro_metrics.tsv), [pretrained/random 쌍대 CI](response_evaluation_native_common/paired_model_comparisons.tsv) |

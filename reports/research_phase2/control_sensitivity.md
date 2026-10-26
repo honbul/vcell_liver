@@ -14,6 +14,6 @@ Simple predictor의 fitted Delta를 유지한 실제 입력 control 평균 교�
 
 Native 입력 감도는 점수와 무관하게 사전 고정한 첫 test target AAR2의38cells에서 확인했다. 같은 저장 checkpoint를 읽고 sampled-control expression 대신 같은 배치의 full-control mean expression을 넣었다. 출력 평균을 원 full-control evaluator에서 비교한 RMSE는 pretrained .108824→.108399, random .104953→.105519였다. 원 aggregate prediction과 작은 replay의 max absolute discrepancy는 각각 .000103/.000206이며 A30·batch 구성 차이를 함께 기록했다. 이 한 target 결과로 전체191target 순위를 바꾸거나 일반화하지 않는다. 새 optimizer update는 없다.
 
-선택 지표는 원 validation primary1977-gene intervention-mean MSE다. 보고 지표는 test intervention별 RMSE/Delta Pearson과 원 top20 보조 지표다. Top20은 evaluator-only absolute observed mean Delta 순위이며 FDR 기반 DEG 검증이 아니다. Control resampling20seed의 표준편차도 biological replicate 불확실성이 아니다. 원 biological replicate assignment는 unknown이다.
+선택 지표는 원 validation primary1977-gene intervention-mean MSE다. 보고 지표는 test intervention별 RMSE/Delta Pearson과 원 top20 보조 지표다. `mean(MSE)`와 `mean(sqrt(MSE))`의 최적 후보가 같다는 보장은 없으므로 동일 지표라고 쓰지 않는다. 기존 checkpoint를 test RMSE로 다시 선택하지 않았으며, 다음 실험은 선택 surrogate의 이유 또는 보고 목적과의 일치를 미리 정해야 한다. Top20은 evaluator-only absolute observed mean Delta 순위이며 FDR 기반 DEG 검증이 아니다. Control resampling20seed의 표준편차도 biological replicate 불확실성이 아니다. 원 biological replicate assignment는 unknown이다.
 
 실제 결과·입력/모델 hash는 `control_sensitivity/aggregation_provenance.json`, `native_first_target.json` 및 같은 폴더의 TSV에 있다.

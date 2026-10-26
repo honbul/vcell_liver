@@ -10,6 +10,8 @@ Stage는 donor 내부에서 일정하며 단계별 donor 수가1–2명뿐이다
 
 조직별 세포 수는 Tumor27497, Normal26725, PVTT5971, Lymph2843이다. Geneformer pooled F1은 각각 .93323/.95300/.90401/.94201이며, PVTT는2명, Lymph는1명뿐이다. Site 효과와 donor·lineage 구성 차이를 분리한 결과가 아니다. Donor×site×lineage support와 TP/FN/FP를 제공하므로 낮은 recall을 전체 pooled 수치 뒤에 숨기지 않는다. 예를 들어 HCC03 Tumor T/NK203cells의 Geneformer recall은 .24631, HCC08 Tumor B77cells는 .40260이다. 개발 결과의 기술적 사례이며 새 selection 근거로 사용하지 않는다.
 
+V3 보완에서는 조직별 sample 수도 확인했다: Tumor8명/8samples, Normal7명/7samples, PVTT2명/2samples, Lymph1명/1sample이다. Alias 충돌은 없었으며 원 canonical uns.schema_mapping도 site→tissue_site였다. 같은 donor·lineage의 조직 쌍별 recall 차이와 donor×site×lineage×UMI 사분위 오류표를 추가했다. 양 극단 사분위에 각각5cells 이상인59개 context를 공통 구성으로 가중한 high−low UMI 공통 오류 차이는 +.23164, 전체 population의 단순 차이는 +.03858이었다. 층화로 연관이 사라졌다는 근거는 없지만,59context의 공통 support subset·가중 방식이 전체 표본과 다르고 일부 극단 사분위가 작아 인과적 UMI 효과로 해석할 수 없다. B-cell에서도 HCC08 Tumor의 Geneformer high−low recall 차이는 −.22356(32low/26highcells)이지만 HCC06 Tumor는 +.02231(25/104cells)로 방향이 다르다. 구성 차이만으로 모든 오류가 설명된다거나 일괄 QC 제거가 해결책이라고 결론 내리지 않는다.
+
 scGPT1200과 Geneformer4096의 token 제한에 걸릴 가능성은 lineage별로 다르다. 표는 관측 vocabulary gene 수에 근거한 capacity overflow이며 실제 각 random sample의 marker 포함 로그가 아니다. Truncation 때문에 특정 오분류가 발생했다고 단정하지 않는다.
 
 Legacy KG의 선택된128개 pathway는4166개 membership edge이며 일부 pathway의 관측 member 집합이 완전히 같다(max pairwise Jaccard1). 중복되는 요약 특징은 concat 이득이 제한될 수 있다는 후보 설명이다. 이를 원인으로 증명한 실험은 아니다. Size·gene degree를 보존한 random control과 비교한 기존 음성 결과를 보존한다.
