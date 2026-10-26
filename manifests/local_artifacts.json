@@ -1,0 +1,506 @@
+[
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/processed/GSE149614.h5ad",
+    "size_bytes": 690334071,
+    "sha256": "b234f5ca91c5655ede829e7520c07d361b578f8d1b59bb09d60a49976f48be6d",
+    "recreation_command": "python scripts/01_prepare_hcc.py --config configs/hcc_gse149614.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/subsets/comparison.h5ad",
+    "size_bytes": 99201093,
+    "sha256": "4566505f44711ca5b281b12ed59e1ecf614df5e799422d08aea0d220a1707e46",
+    "recreation_command": "python scripts/01_prepare_hcc.py --config configs/hcc_gse149614.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/subsets/pilot.h5ad",
+    "size_bytes": 21999018,
+    "sha256": "18d4b1322b1058f503b5487f62cca22d470c13c346c4bc4927e864e0bcd378e2",
+    "recreation_command": "python scripts/01_prepare_hcc.py --config configs/hcc_gse149614.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/subsets/smoke.h5ad",
+    "size_bytes": 3568938,
+    "sha256": "cbbe84169b7362ac0dc19ab51e6af472d7f7f945203ae45d81de5dd0e33693df",
+    "recreation_command": "python scripts/01_prepare_hcc.py --config configs/hcc_gse149614.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/checkpoints/Geneformer-V2-104M/config.json",
+    "size_bytes": 590,
+    "sha256": "467d4492f0dd53b4d60afffe20812db484ca1cf9fdbeb6a6e060e93564f70859",
+    "recreation_command": "python scripts/download_assets.py"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/checkpoints/Geneformer-V2-104M/generation_config.json",
+    "size_bytes": 90,
+    "sha256": "bf1ba320993168b0d6ee5ff170df2108454d239b28eaac5948d30ee6993cccc1",
+    "recreation_command": "python scripts/download_assets.py"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/checkpoints/Geneformer-V2-104M/model.safetensors",
+    "size_bytes": 417571156,
+    "sha256": "fff5cba29ddd8792991fa77b4872246fbe548a178cebda3775cdc72b67780e7f",
+    "recreation_command": "python scripts/download_assets.py"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/checkpoints/scgpt-whole-human/args.json",
+    "size_bytes": 1300,
+    "sha256": "c18e075e018140cb8b2d9029387b9de26607a5ce6a8ccabd6ead70cd76b95d60",
+    "recreation_command": "python scripts/download_scgpt.py"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/checkpoints/scgpt-whole-human/best_model.pt",
+    "size_bytes": 205385258,
+    "sha256": "6cb5d451ab5c4b33eb673adbe4fddc61d2389df1b89b7651a9fe2e557572b922",
+    "recreation_command": "python scripts/download_scgpt.py"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/checkpoints/scgpt-whole-human/vocab.json",
+    "size_bytes": 1317639,
+    "sha256": "acca93d114ca62c3f0f50debbd23e8c87f0714f4737764454f6b2b13f2e8580f",
+    "recreation_command": "python scripts/download_scgpt.py"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/geneformer_comparison.npz",
+    "size_bytes": 28684315,
+    "sha256": "6bb0db28a06f6e45d15b581a5d84070f0441b1e302ab715a35e0f69127fbe1c0",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/geneformer_pilot.npz",
+    "size_bytes": 5738577,
+    "sha256": "eb4f50cd4917eb0a72834ba3666b6d8a4c1af3c57a4cd86644f96e69bf6ef138",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/geneformer_smoke.npz",
+    "size_bytes": 184191,
+    "sha256": "de34960d09c7646ecab9c92c4cef525b9c679460659ef6d671b82bade0fc0510",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/pca_comparison.npz",
+    "size_bytes": 1941694,
+    "sha256": "e72a0cfcf0ce33c923aa1edeabdf253bb64c6c818d2430463136c184fba1e5fa",
+    "recreation_command": "python scripts/02_baseline_annotation.py --config configs/pca_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/pca_pilot.npz",
+    "size_bytes": 390384,
+    "sha256": "d382e66daac4ac231091cdf912ddd38cb09abeb51ed8c481eec188eb93e74b27",
+    "recreation_command": "python scripts/02_baseline_annotation.py --config configs/pca_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/pca_smoke.npz",
+    "size_bytes": 10532,
+    "sha256": "0722b37f9dd6891422630e81dd5719bc52700708921dc2e8434885c3b444fc56",
+    "recreation_command": "python scripts/02_baseline_annotation.py --config configs/pca_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/scgpt_comparison.npz",
+    "size_bytes": 19124714,
+    "sha256": "c93054b9c9c68472a3ea6337be4f97dd1b031b64b063d98c89a725d85a564016",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/scgpt_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/scgpt_pilot.npz",
+    "size_bytes": 3826711,
+    "sha256": "cebe30c7495e3d57f755baaf26073e467ba8f2cda879b983df08078305717c7d",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/scgpt_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/scgpt_smoke.npz",
+    "size_bytes": 123105,
+    "sha256": "2f387e957b86b1d1f65f751f32afb146afac7de10f812a5b9e78903f0b6d5b2e",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/scgpt_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/tutorial_geneformer_smoke.npz",
+    "size_bytes": 184191,
+    "sha256": "de34960d09c7646ecab9c92c4cef525b9c679460659ef6d671b82bade0fc0510",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/tutorial_geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/tutorial_pca_smoke.npz",
+    "size_bytes": 10532,
+    "sha256": "0722b37f9dd6891422630e81dd5719bc52700708921dc2e8434885c3b444fc56",
+    "recreation_command": "python scripts/02_baseline_annotation.py --config configs/tutorial_pca_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/tutorial_scgpt_smoke.npz",
+    "size_bytes": 123105,
+    "sha256": "2f387e957b86b1d1f65f751f32afb146afac7de10f812a5b9e78903f0b6d5b2e",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/tutorial_scgpt_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/geneformer_comparison/head.joblib",
+    "size_bytes": 56817,
+    "sha256": "20ecad7293fac69e446e715e3a5f8965cfb79442f4977ab8c3462eb0443d7e58",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/geneformer_comparison/predictions.tsv",
+    "size_bytes": 698805,
+    "sha256": "bcb9f573b926fc74ab6c95d469eabaf0e1a4f0ed98106bfd15fdb647b0bc9f6f",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/geneformer_comparison/tokenization_audit.json",
+    "size_bytes": 498,
+    "sha256": "c78516ed91cc11cd45154c39cbda80712c805c39fe2f6179c3c32dd9a2e6caa5",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/geneformer_pilot/head.joblib",
+    "size_bytes": 56817,
+    "sha256": "33c5d7b4c602820c13bd587d9e60dd5a013aa225710abd8f8c485f4a4581ceb8",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/geneformer_pilot/predictions.tsv",
+    "size_bytes": 140004,
+    "sha256": "4ee727e3fa0a5debc23a6990464346c423fc32d7cc8af8ab0e3638c1adcec671",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/geneformer_pilot/tokenization_audit.json",
+    "size_bytes": 498,
+    "sha256": "3723b7207a1c387cbbb45b173e201c48886df13d1e337e63b209fb45db480e7d",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/geneformer_smoke/head.joblib",
+    "size_bytes": 56817,
+    "sha256": "684f8aaa455f565d4c958a8a8e5abee46893f5735b03a08ec00af738f30d8f33",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/geneformer_smoke/predictions.tsv",
+    "size_bytes": 4585,
+    "sha256": "b13cb7981a323064a9ddc1c4f6894735758357973fd82c205f8c8beb5260cf28",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/geneformer_smoke/tokenization_audit.json",
+    "size_bytes": 494,
+    "sha256": "53167f2fe950ef1f6810cd0840b11fa03b3580ca21bd151dacfc73c3499a099e",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/kg_comparison_foundation_pathway/head.joblib",
+    "size_bytes": 47601,
+    "sha256": "6eefd2b4f9b4c9d3383c55bdad083cd90d9b703a2d6b7c8c4a96a5d20eccfed4",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/kg_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/kg_comparison_foundation_pathway/predictions.tsv",
+    "size_bytes": 699027,
+    "sha256": "7b59ae8707074548512e0fb18bc9a3838d5a07d08a470e19c522d78d97e6e7d0",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/kg_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/kg_comparison_foundation_random/head.joblib",
+    "size_bytes": 47601,
+    "sha256": "211f4d573f476f636a053a56f4f6685de13768eced3a047f02d1df2708bdf24b",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/kg_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/kg_comparison_foundation_random/predictions.tsv",
+    "size_bytes": 699130,
+    "sha256": "8d97e688b961f6ba8e6c106e5746ebdf252c3ee12b2c004a6bd9ef1c35ad1d67",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/kg_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/kg_comparison_pathway/head.joblib",
+    "size_bytes": 10737,
+    "sha256": "9e93a408319e85a7994a7af88752baa5b9957e26a436f74207d745051a082430",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/kg_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/kg_comparison_pathway/predictions.tsv",
+    "size_bytes": 697642,
+    "sha256": "4c1ba867671bfd737c4a076d4d4799c59adf769229f33c488f196f2928a664c0",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/kg_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/kg_pilot_foundation_pathway/head.joblib",
+    "size_bytes": 47601,
+    "sha256": "e3c9a327e24613b31b8b9dd04f75a64b56079a073748a3bf91a25a84864f0cfc",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/kg_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/kg_pilot_foundation_pathway/predictions.tsv",
+    "size_bytes": 139986,
+    "sha256": "45461bb77609cbf6452e2f0c5fbffe2038d98237c4494525fd10deff946a9f93",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/kg_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/kg_pilot_foundation_random/head.joblib",
+    "size_bytes": 47601,
+    "sha256": "b57bd0d3fe862517a656aa779efc063ffd4a10a209d1283e421138d2a94a4a39",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/kg_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/kg_pilot_foundation_random/predictions.tsv",
+    "size_bytes": 139823,
+    "sha256": "5b16136fa34d7a7e8f5a1cab3e9051c4244c0e7376d0b30a7d033dad958e5e44",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/kg_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/kg_pilot_pathway/head.joblib",
+    "size_bytes": 10737,
+    "sha256": "06863fab434da520f00c3c0d2f4d8ac3cee24303747fda84ee96f9be79f8de3b",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/kg_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/kg_pilot_pathway/predictions.tsv",
+    "size_bytes": 139699,
+    "sha256": "69e8156b33c3051924122bb31b89c6430840ef6d6f97cd613718bd53aef82a63",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/kg_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/pca_comparison/head.joblib",
+    "size_bytes": 5121,
+    "sha256": "89bf72ab8cbbe750d22afe0ab3f2286e8ba2fa3a2c5d73517d8df54704350e9a",
+    "recreation_command": "python scripts/02_baseline_annotation.py --config configs/pca_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/pca_comparison/predictions.tsv",
+    "size_bytes": 699604,
+    "sha256": "9ff7ff1679edf9aba63dfdfbe9a7e0bbafc28c937533c61d4047683c9c090c0b",
+    "recreation_command": "python scripts/02_baseline_annotation.py --config configs/pca_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/pca_pilot/head.joblib",
+    "size_bytes": 5121,
+    "sha256": "85caaaa13508e24cdd300c2d38eff065ddc605454147574213211048b6e68483",
+    "recreation_command": "python scripts/02_baseline_annotation.py --config configs/pca_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/pca_pilot/predictions.tsv",
+    "size_bytes": 140023,
+    "sha256": "066fd26754d9dab8e6b18e0d9dabf7c8f051326c8e4ad29c394b1eecc05b805a",
+    "recreation_command": "python scripts/02_baseline_annotation.py --config configs/pca_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/pca_smoke/head.joblib",
+    "size_bytes": 4321,
+    "sha256": "176259802bd3c8d255898c2878aa8288c9742f3bb69c6e24a2151d2ebbe6dcfc",
+    "recreation_command": "python scripts/02_baseline_annotation.py --config configs/pca_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/pca_smoke/predictions.tsv",
+    "size_bytes": 4641,
+    "sha256": "8edc60f2178c4a2f89d179f45e433d80162f73805be36685d1096dace6c0a038",
+    "recreation_command": "python scripts/02_baseline_annotation.py --config configs/pca_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/scgpt_comparison/head.joblib",
+    "size_bytes": 38385,
+    "sha256": "3a048ff9273f37a7697a37ede72bfd4fb9fe27cd789880722aee748dbdcdb48f",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/scgpt_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/scgpt_comparison/predictions.tsv",
+    "size_bytes": 699047,
+    "sha256": "be339464c9fa337715fbb6b61722c74445b119c79dc078d5edd8269b5d58b819",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/scgpt_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/scgpt_comparison/token_counts.tsv",
+    "size_bytes": 334605,
+    "sha256": "7bec2faf216e99d294589a9b02995112a55d11f550ad1b97ff3063cf935cb5ac",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/scgpt_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/scgpt_pilot/head.joblib",
+    "size_bytes": 38385,
+    "sha256": "62bb21875ef515828a7929accf87023ee73b5079e38792fbc61306f16c4ba3c7",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/scgpt_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/scgpt_pilot/predictions.tsv",
+    "size_bytes": 139925,
+    "sha256": "ead9aff368720d6884b4d385b4948e6880fae021479a79e44d21004b9f0ccb5f",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/scgpt_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/scgpt_pilot/token_counts.tsv",
+    "size_bytes": 66974,
+    "sha256": "836db68ea33a500afdf56fd382fe14464f8268fb127a47feb29f19f5e58e45ad",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/scgpt_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/scgpt_smoke/head.joblib",
+    "size_bytes": 38385,
+    "sha256": "c2e068ea548395c50e5251777499bc37bd672858042b71c75b45817c6387c323",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/scgpt_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/scgpt_smoke/predictions.tsv",
+    "size_bytes": 4581,
+    "sha256": "58f95a35c7551b3873faac1d8221695992572d3b36d5decf4d6ca77d81b7f51a",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/scgpt_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/scgpt_smoke/token_counts.tsv",
+    "size_bytes": 2173,
+    "sha256": "2cbc2db3a5c37677fe9e492058d3d0adaaf9f90404fc805928435a5d68d95c61",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/scgpt_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_geneformer_smoke/head.joblib",
+    "size_bytes": 56817,
+    "sha256": "684f8aaa455f565d4c958a8a8e5abee46893f5735b03a08ec00af738f30d8f33",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/tutorial_geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_geneformer_smoke/predictions.tsv",
+    "size_bytes": 4585,
+    "sha256": "b13cb7981a323064a9ddc1c4f6894735758357973fd82c205f8c8beb5260cf28",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/tutorial_geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_geneformer_smoke/tokenization_audit.json",
+    "size_bytes": 494,
+    "sha256": "53167f2fe950ef1f6810cd0840b11fa03b3580ca21bd151dacfc73c3499a099e",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/tutorial_geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_kg_smoke_foundation_pathway/head.joblib",
+    "size_bytes": 47601,
+    "sha256": "ee51c8629e88093bdc039699c3957caa65ee0dde501de92dc030094d991bfaf7",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/tutorial_kg_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_kg_smoke_foundation_pathway/predictions.tsv",
+    "size_bytes": 4587,
+    "sha256": "cc182e5efccfab94adf5aa6642768f4cb165ce63998e35e6c7bd3eb7b27401f4",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/tutorial_kg_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_kg_smoke_foundation_random/head.joblib",
+    "size_bytes": 47601,
+    "sha256": "8b82cb8a6a03a5ae34529437094ae56e1304c0feee1481f199406f922b679904",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/tutorial_kg_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_kg_smoke_foundation_random/predictions.tsv",
+    "size_bytes": 4587,
+    "sha256": "73814838864e36b0a3e8a0d6a87fb6b1905b277fed0d9c9521471c7071a390f9",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/tutorial_kg_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_kg_smoke_pathway/head.joblib",
+    "size_bytes": 10737,
+    "sha256": "913e62e184dc6dcf92e50144711205005588258cc28f587eb3ca791cc10cc612",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/tutorial_kg_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_kg_smoke_pathway/predictions.tsv",
+    "size_bytes": 4562,
+    "sha256": "fe0ba991cd19e8f6cc8fbf4d23598111a9d4606e1405f9fb9102ca9cf0d8955b",
+    "recreation_command": "python scripts/05_kg_features_ablation.py --config configs/tutorial_kg_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_pca_smoke/head.joblib",
+    "size_bytes": 4321,
+    "sha256": "176259802bd3c8d255898c2878aa8288c9742f3bb69c6e24a2151d2ebbe6dcfc",
+    "recreation_command": "python scripts/02_baseline_annotation.py --config configs/tutorial_pca_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_pca_smoke/predictions.tsv",
+    "size_bytes": 4641,
+    "sha256": "8edc60f2178c4a2f89d179f45e433d80162f73805be36685d1096dace6c0a038",
+    "recreation_command": "python scripts/02_baseline_annotation.py --config configs/tutorial_pca_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_scgpt_smoke/head.joblib",
+    "size_bytes": 38385,
+    "sha256": "c2e068ea548395c50e5251777499bc37bd672858042b71c75b45817c6387c323",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/tutorial_scgpt_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_scgpt_smoke/predictions.tsv",
+    "size_bytes": 4581,
+    "sha256": "58f95a35c7551b3873faac1d8221695992572d3b36d5decf4d6ca77d81b7f51a",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/tutorial_scgpt_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/outputs/tutorial_scgpt_smoke/token_counts.tsv",
+    "size_bytes": 2173,
+    "sha256": "2cbc2db3a5c37677fe9e492058d3d0adaaf9f90404fc805928435a5d68d95c61",
+    "recreation_command": "python scripts/03_scgpt_annotation.py --config configs/tutorial_scgpt_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/tokenized/geneformer_comparison/cells.dataset/data-00000-of-00001.arrow",
+    "size_bytes": 71745152,
+    "sha256": "8198bc5639d5363a11c709df62dcbdd4b88974fae88d3d43cf49d6b5985b6154",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/tokenized/geneformer_comparison/cells.dataset/dataset_info.json",
+    "size_bytes": 369,
+    "sha256": "a47a80d6c75e72f933f39319e05f8bb6c8ded66d208f3466c178e4ef902d9826",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/tokenized/geneformer_comparison/cells.dataset/state.json",
+    "size_bytes": 247,
+    "sha256": "2026c967f883410f145395c950fe2c11f1d96d3539a961ba3d6f3cd034f0fd68",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_comparison.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/tokenized/geneformer_pilot/cells.dataset/data-00000-of-00001.arrow",
+    "size_bytes": 14200856,
+    "sha256": "79d8d4c1845acba5872dea63b482a98426f3edc1dd4cc6a832bd35393bea8f22",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/tokenized/geneformer_pilot/cells.dataset/dataset_info.json",
+    "size_bytes": 369,
+    "sha256": "a47a80d6c75e72f933f39319e05f8bb6c8ded66d208f3466c178e4ef902d9826",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/tokenized/geneformer_pilot/cells.dataset/state.json",
+    "size_bytes": 247,
+    "sha256": "ccd16f491d3f464d8f865ec3a63b62b4336fb2a976291907da7656ced3a9d7f8",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_pilot.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/tokenized/geneformer_smoke/cells.dataset/data-00000-of-00001.arrow",
+    "size_bytes": 421736,
+    "sha256": "2f70dbd011d02de4c3231e3f6d148b2219c194923736a8a23a66031605c4ccf6",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/tokenized/geneformer_smoke/cells.dataset/dataset_info.json",
+    "size_bytes": 369,
+    "sha256": "a47a80d6c75e72f933f39319e05f8bb6c8ded66d208f3466c178e4ef902d9826",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/tokenized/geneformer_smoke/cells.dataset/state.json",
+    "size_bytes": 247,
+    "sha256": "b45610bbbbc8246832d7dd6d125793d0addb540278a677a3f23aa7bde84afe83",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/tokenized/tutorial_geneformer_smoke/cells.dataset/data-00000-of-00001.arrow",
+    "size_bytes": 421736,
+    "sha256": "2f70dbd011d02de4c3231e3f6d148b2219c194923736a8a23a66031605c4ccf6",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/tutorial_geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/tokenized/tutorial_geneformer_smoke/cells.dataset/dataset_info.json",
+    "size_bytes": 369,
+    "sha256": "a47a80d6c75e72f933f39319e05f8bb6c8ded66d208f3466c178e4ef902d9826",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/tutorial_geneformer_smoke.yaml"
+  },
+  {
+    "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/tokenized/tutorial_geneformer_smoke/cells.dataset/state.json",
+    "size_bytes": 247,
+    "sha256": "b45610bbbbc8246832d7dd6d125793d0addb540278a677a3f23aa7bde84afe83",
+    "recreation_command": "python scripts/04_geneformer_annotation.py --config configs/tutorial_geneformer_smoke.yaml"
+  }
+]

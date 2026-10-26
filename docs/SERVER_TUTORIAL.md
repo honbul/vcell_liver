@@ -77,3 +77,6 @@ GPU OOM이면 config의 batch_size를 1로 줄인다. sequence/gene 수를 줄�
 분류는 관측 세포 유형을 예측하는 supervised head다. Geneformer의 가상 삭제는 rank token을 지운 뒤 embedding이 얼마나 달라지는지 보는 탐색이다. 실제 KO/약물 처리 뒤 발현량·logFC·생존율·약효를 예측하지 않는다. 정상/질환 목표 상태를 검증하지 않아 정상화 방향도 주장하지 않는다.
 
 GEARS의 실측 반응 예측은 대조군/처리군, 정확한 intervention annotation과 별도 perturbation split이 필요하다. tumor/adjacent label을 유전자 개입 정답으로 바꿀 수 없다. HepG2 실험도 성인 환자 HCC 모델과 구분한다. 사전학습 corpus overlap은 unknown이며 이 donor split을 pretraining-unseen으로 해석하지 않는다.
+
+
+최종 검증: 두 모델의 10,000세포 비교와 train hepatocyte100세포 가상 삭제를 완료했고 `reports/completion_audit.json`의 110개 점검이 통과했다. 10,000세포 macro-F1은 PCA 0.9566 / scGPT 0.9527 / Geneformer 0.9456이다. 정확한 수치와 차단/선택적 후속 범위는 최종 요약에 있다.

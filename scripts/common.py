@@ -122,6 +122,8 @@ def evaluate(features, adata, run_id, outdir=None):
     metrics = dict(macro_f1=f1_score(y[known], pred[known], labels=labels, average='macro', zero_division=0),
                    balanced_accuracy=balanced_accuracy_score(y[known], pred[known]),
                    n_test_unknown=int((te & ~np.isin(y,labels)).sum()), n_evaluated=int(known.sum()),
+                   n_test_total=int(te.sum()),prediction_coverage=1.0,evaluation_coverage=float(known.sum()/te.sum()),
+                   confidence_threshold=None,confidence_definition='maximum uncalibrated logistic probability; no threshold filtering',
                    selected_C=C, selected_class_weight=w,
                    split_counts=obs.split.value_counts().to_dict(),
                    label_classes=labels, validation_candidates=candidates)

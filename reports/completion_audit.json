@@ -1,0 +1,557 @@
+{
+  "status": "passed",
+  "n_checks": 110,
+  "checks": [
+    {
+      "requirement": "G1 environment inventoried and CUDA available",
+      "status": "passed",
+      "evidence": "reports/environment.json"
+    },
+    {
+      "requirement": "Work/data roots respect supplied dir_path",
+      "status": "passed",
+      "evidence": "configs/paths.yaml"
+    },
+    {
+      "requirement": "Large checkpoint physically stored in data area",
+      "status": "passed",
+      "evidence": "filesystem symlink targets"
+    },
+    {
+      "requirement": "All source cell IDs aligned without duplicates",
+      "status": "passed",
+      "evidence": "reports/data_audit.json"
+    },
+    {
+      "requirement": "Canonical data preserves all source cells/genes",
+      "status": "passed",
+      "evidence": "processed/GSE149614.h5ad"
+    },
+    {
+      "requirement": "Full cohort raw integer counts and library sums preserved",
+      "status": "passed",
+      "evidence": "all 71915 raw libraries and source parser count sum"
+    },
+    {
+      "requirement": "smoke has expected cell IDs and all ten donors",
+      "status": "passed",
+      "evidence": "subset H5AD and split manifest"
+    },
+    {
+      "requirement": "smoke raw library sums preserved",
+      "status": "passed",
+      "evidence": "layers/counts and obs/n_counts"
+    },
+    {
+      "requirement": "smoke donor split disjoint",
+      "status": "passed",
+      "evidence": "AnnData.obs patient_id/split"
+    },
+    {
+      "requirement": "smoke 6/2/2 donor holdout",
+      "status": "passed",
+      "evidence": "AnnData.obs donor sets"
+    },
+    {
+      "requirement": "pca_smoke actual finite embeddings in canonical order",
+      "status": "passed",
+      "evidence": "saved feature cell IDs and values"
+    },
+    {
+      "requirement": "pca_smoke exact input/split hashes",
+      "status": "passed",
+      "evidence": "actual H5AD and manifest SHA256"
+    },
+    {
+      "requirement": "pca_smoke predictions cover same cells",
+      "status": "passed",
+      "evidence": "local cell predictions"
+    },
+    {
+      "requirement": "pca_smoke metrics independently recomputed",
+      "status": "passed",
+      "evidence": "scikit-learn recomputation from held-out predictions"
+    },
+    {
+      "requirement": "pca_smoke per-class/patient/confusion/resource outputs",
+      "status": "passed",
+      "evidence": "result files and measured run fields"
+    },
+    {
+      "requirement": "scgpt_smoke actual finite embeddings in canonical order",
+      "status": "passed",
+      "evidence": "saved feature cell IDs and values"
+    },
+    {
+      "requirement": "scgpt_smoke exact input/split hashes",
+      "status": "passed",
+      "evidence": "actual H5AD and manifest SHA256"
+    },
+    {
+      "requirement": "scgpt_smoke predictions cover same cells",
+      "status": "passed",
+      "evidence": "local cell predictions"
+    },
+    {
+      "requirement": "scgpt_smoke metrics independently recomputed",
+      "status": "passed",
+      "evidence": "scikit-learn recomputation from held-out predictions"
+    },
+    {
+      "requirement": "scgpt_smoke per-class/patient/confusion/resource outputs",
+      "status": "passed",
+      "evidence": "result files and measured run fields"
+    },
+    {
+      "requirement": "scgpt_smoke actual GPU peak measured",
+      "status": "passed",
+      "evidence": "CUDA allocator and nvidia-smi process samples"
+    },
+    {
+      "requirement": "geneformer_smoke actual finite embeddings in canonical order",
+      "status": "passed",
+      "evidence": "saved feature cell IDs and values"
+    },
+    {
+      "requirement": "geneformer_smoke exact input/split hashes",
+      "status": "passed",
+      "evidence": "actual H5AD and manifest SHA256"
+    },
+    {
+      "requirement": "geneformer_smoke predictions cover same cells",
+      "status": "passed",
+      "evidence": "local cell predictions"
+    },
+    {
+      "requirement": "geneformer_smoke metrics independently recomputed",
+      "status": "passed",
+      "evidence": "scikit-learn recomputation from held-out predictions"
+    },
+    {
+      "requirement": "geneformer_smoke per-class/patient/confusion/resource outputs",
+      "status": "passed",
+      "evidence": "result files and measured run fields"
+    },
+    {
+      "requirement": "geneformer_smoke actual GPU peak measured",
+      "status": "passed",
+      "evidence": "CUDA allocator and nvidia-smi process samples"
+    },
+    {
+      "requirement": "geneformer_smoke V2-104M contract",
+      "status": "passed",
+      "evidence": "checkpoint config/count and official tokenization audit"
+    },
+    {
+      "requirement": "pilot has expected cell IDs and all ten donors",
+      "status": "passed",
+      "evidence": "subset H5AD and split manifest"
+    },
+    {
+      "requirement": "pilot raw library sums preserved",
+      "status": "passed",
+      "evidence": "layers/counts and obs/n_counts"
+    },
+    {
+      "requirement": "pilot donor split disjoint",
+      "status": "passed",
+      "evidence": "AnnData.obs patient_id/split"
+    },
+    {
+      "requirement": "pilot 6/2/2 donor holdout",
+      "status": "passed",
+      "evidence": "AnnData.obs donor sets"
+    },
+    {
+      "requirement": "pilot nested subset",
+      "status": "passed",
+      "evidence": "actual H5AD observation indexes"
+    },
+    {
+      "requirement": "pca_pilot actual finite embeddings in canonical order",
+      "status": "passed",
+      "evidence": "saved feature cell IDs and values"
+    },
+    {
+      "requirement": "pca_pilot exact input/split hashes",
+      "status": "passed",
+      "evidence": "actual H5AD and manifest SHA256"
+    },
+    {
+      "requirement": "pca_pilot predictions cover same cells",
+      "status": "passed",
+      "evidence": "local cell predictions"
+    },
+    {
+      "requirement": "pca_pilot metrics independently recomputed",
+      "status": "passed",
+      "evidence": "scikit-learn recomputation from held-out predictions"
+    },
+    {
+      "requirement": "pca_pilot per-class/patient/confusion/resource outputs",
+      "status": "passed",
+      "evidence": "result files and measured run fields"
+    },
+    {
+      "requirement": "scgpt_pilot actual finite embeddings in canonical order",
+      "status": "passed",
+      "evidence": "saved feature cell IDs and values"
+    },
+    {
+      "requirement": "scgpt_pilot exact input/split hashes",
+      "status": "passed",
+      "evidence": "actual H5AD and manifest SHA256"
+    },
+    {
+      "requirement": "scgpt_pilot predictions cover same cells",
+      "status": "passed",
+      "evidence": "local cell predictions"
+    },
+    {
+      "requirement": "scgpt_pilot metrics independently recomputed",
+      "status": "passed",
+      "evidence": "scikit-learn recomputation from held-out predictions"
+    },
+    {
+      "requirement": "scgpt_pilot per-class/patient/confusion/resource outputs",
+      "status": "passed",
+      "evidence": "result files and measured run fields"
+    },
+    {
+      "requirement": "scgpt_pilot actual GPU peak measured",
+      "status": "passed",
+      "evidence": "CUDA allocator and nvidia-smi process samples"
+    },
+    {
+      "requirement": "geneformer_pilot actual finite embeddings in canonical order",
+      "status": "passed",
+      "evidence": "saved feature cell IDs and values"
+    },
+    {
+      "requirement": "geneformer_pilot exact input/split hashes",
+      "status": "passed",
+      "evidence": "actual H5AD and manifest SHA256"
+    },
+    {
+      "requirement": "geneformer_pilot predictions cover same cells",
+      "status": "passed",
+      "evidence": "local cell predictions"
+    },
+    {
+      "requirement": "geneformer_pilot metrics independently recomputed",
+      "status": "passed",
+      "evidence": "scikit-learn recomputation from held-out predictions"
+    },
+    {
+      "requirement": "geneformer_pilot per-class/patient/confusion/resource outputs",
+      "status": "passed",
+      "evidence": "result files and measured run fields"
+    },
+    {
+      "requirement": "geneformer_pilot actual GPU peak measured",
+      "status": "passed",
+      "evidence": "CUDA allocator and nvidia-smi process samples"
+    },
+    {
+      "requirement": "geneformer_pilot V2-104M contract",
+      "status": "passed",
+      "evidence": "checkpoint config/count and official tokenization audit"
+    },
+    {
+      "requirement": "comparison has expected cell IDs and all ten donors",
+      "status": "passed",
+      "evidence": "subset H5AD and split manifest"
+    },
+    {
+      "requirement": "comparison raw library sums preserved",
+      "status": "passed",
+      "evidence": "layers/counts and obs/n_counts"
+    },
+    {
+      "requirement": "comparison donor split disjoint",
+      "status": "passed",
+      "evidence": "AnnData.obs patient_id/split"
+    },
+    {
+      "requirement": "comparison 6/2/2 donor holdout",
+      "status": "passed",
+      "evidence": "AnnData.obs donor sets"
+    },
+    {
+      "requirement": "comparison nested subset",
+      "status": "passed",
+      "evidence": "actual H5AD observation indexes"
+    },
+    {
+      "requirement": "pca_comparison actual finite embeddings in canonical order",
+      "status": "passed",
+      "evidence": "saved feature cell IDs and values"
+    },
+    {
+      "requirement": "pca_comparison exact input/split hashes",
+      "status": "passed",
+      "evidence": "actual H5AD and manifest SHA256"
+    },
+    {
+      "requirement": "pca_comparison predictions cover same cells",
+      "status": "passed",
+      "evidence": "local cell predictions"
+    },
+    {
+      "requirement": "pca_comparison metrics independently recomputed",
+      "status": "passed",
+      "evidence": "scikit-learn recomputation from held-out predictions"
+    },
+    {
+      "requirement": "pca_comparison per-class/patient/confusion/resource outputs",
+      "status": "passed",
+      "evidence": "result files and measured run fields"
+    },
+    {
+      "requirement": "scgpt_comparison actual finite embeddings in canonical order",
+      "status": "passed",
+      "evidence": "saved feature cell IDs and values"
+    },
+    {
+      "requirement": "scgpt_comparison exact input/split hashes",
+      "status": "passed",
+      "evidence": "actual H5AD and manifest SHA256"
+    },
+    {
+      "requirement": "scgpt_comparison predictions cover same cells",
+      "status": "passed",
+      "evidence": "local cell predictions"
+    },
+    {
+      "requirement": "scgpt_comparison metrics independently recomputed",
+      "status": "passed",
+      "evidence": "scikit-learn recomputation from held-out predictions"
+    },
+    {
+      "requirement": "scgpt_comparison per-class/patient/confusion/resource outputs",
+      "status": "passed",
+      "evidence": "result files and measured run fields"
+    },
+    {
+      "requirement": "scgpt_comparison actual GPU peak measured",
+      "status": "passed",
+      "evidence": "CUDA allocator and nvidia-smi process samples"
+    },
+    {
+      "requirement": "geneformer_comparison actual finite embeddings in canonical order",
+      "status": "passed",
+      "evidence": "saved feature cell IDs and values"
+    },
+    {
+      "requirement": "geneformer_comparison exact input/split hashes",
+      "status": "passed",
+      "evidence": "actual H5AD and manifest SHA256"
+    },
+    {
+      "requirement": "geneformer_comparison predictions cover same cells",
+      "status": "passed",
+      "evidence": "local cell predictions"
+    },
+    {
+      "requirement": "geneformer_comparison metrics independently recomputed",
+      "status": "passed",
+      "evidence": "scikit-learn recomputation from held-out predictions"
+    },
+    {
+      "requirement": "geneformer_comparison per-class/patient/confusion/resource outputs",
+      "status": "passed",
+      "evidence": "result files and measured run fields"
+    },
+    {
+      "requirement": "geneformer_comparison actual GPU peak measured",
+      "status": "passed",
+      "evidence": "CUDA allocator and nvidia-smi process samples"
+    },
+    {
+      "requirement": "geneformer_comparison V2-104M contract",
+      "status": "passed",
+      "evidence": "checkpoint config/count and official tokenization audit"
+    },
+    {
+      "requirement": "pilot five-way KG ablation present",
+      "status": "passed",
+      "evidence": "KG ablation table and degree-preserving control audit"
+    },
+    {
+      "requirement": "pilot pathway actual prediction changes verified",
+      "status": "passed",
+      "evidence": "paired per-cell predictions"
+    },
+    {
+      "requirement": "pilot foundation_pathway actual prediction changes verified",
+      "status": "passed",
+      "evidence": "paired per-cell predictions"
+    },
+    {
+      "requirement": "pilot foundation_random actual prediction changes verified",
+      "status": "passed",
+      "evidence": "paired per-cell predictions"
+    },
+    {
+      "requirement": "comparison five-way KG ablation present",
+      "status": "passed",
+      "evidence": "KG ablation table and degree-preserving control audit"
+    },
+    {
+      "requirement": "comparison pathway actual prediction changes verified",
+      "status": "passed",
+      "evidence": "paired per-cell predictions"
+    },
+    {
+      "requirement": "comparison foundation_pathway actual prediction changes verified",
+      "status": "passed",
+      "evidence": "paired per-cell predictions"
+    },
+    {
+      "requirement": "comparison foundation_random actual prediction changes verified",
+      "status": "passed",
+      "evidence": "paired per-cell predictions"
+    },
+    {
+      "requirement": "Independent deletion with no-op and expressed matched controls",
+      "status": "passed",
+      "evidence": "actual perturbation TSV"
+    },
+    {
+      "requirement": "Perturbation interpreted as embedding shift",
+      "status": "passed",
+      "evidence": "run task and limitations"
+    },
+    {
+      "requirement": "All six tutorials actually executed in fresh kernels",
+      "status": "passed",
+      "evidence": "nbclient execution audit"
+    },
+    {
+      "requirement": "00_environment_and_model_contracts.ipynb real code outputs without errors",
+      "status": "passed",
+      "evidence": "stored execution counts and output blocks"
+    },
+    {
+      "requirement": "01_hcc_data_and_patient_split.ipynb real code outputs without errors",
+      "status": "passed",
+      "evidence": "stored execution counts and output blocks"
+    },
+    {
+      "requirement": "02_baseline_and_scgpt.ipynb real code outputs without errors",
+      "status": "passed",
+      "evidence": "stored execution counts and output blocks"
+    },
+    {
+      "requirement": "03_geneformer_comparison.ipynb real code outputs without errors",
+      "status": "passed",
+      "evidence": "stored execution counts and output blocks"
+    },
+    {
+      "requirement": "04_knowledge_graph_features.ipynb real code outputs without errors",
+      "status": "passed",
+      "evidence": "stored execution counts and output blocks"
+    },
+    {
+      "requirement": "05_virtual_perturbation_interpretation.ipynb real code outputs without errors",
+      "status": "passed",
+      "evidence": "stored execution counts and output blocks"
+    },
+    {
+      "requirement": "Source hashes and HF/Zenodo official checksums verified",
+      "status": "passed",
+      "evidence": "reports/asset_verification.json"
+    },
+    {
+      "requirement": "Large local artifacts have measured path/size/hash",
+      "status": "passed",
+      "evidence": "manifests/local_artifacts.json"
+    },
+    {
+      "requirement": "Successful isolated environment freezes recorded",
+      "status": "passed",
+      "evidence": "envs/*.freeze.txt"
+    },
+    {
+      "requirement": "Final comparison and limitations report generated",
+      "status": "passed",
+      "evidence": "final_summary.md and pretraining_overlap.md"
+    },
+    {
+      "requirement": "pca_smoke process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "pca_pilot process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "pca_comparison process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "scgpt_smoke process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "scgpt_pilot process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "scgpt_comparison process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "geneformer_smoke process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "geneformer_pilot process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "geneformer_comparison process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "kg_pilot process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "kg_comparison process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "isp_pilot process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "notebook_run_all process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "pilot_umap process completed successfully",
+      "status": "passed",
+      "evidence": "actual run_stage subprocess return code and terminal timestamps"
+    },
+    {
+      "requirement": "Exploratory shift figure explicitly labelled",
+      "status": "passed",
+      "evidence": "figure generated from actual TSV, with Korean exploratory limitation title"
+    }
+  ],
+  "git_push_verification": "Verified separately against actual local/server/remote HEAD after final commit"
+}

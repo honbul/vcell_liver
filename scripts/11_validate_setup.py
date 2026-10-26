@@ -21,6 +21,8 @@ audit=json.loads((ROOT/'reports/data_audit.json').read_text())
 check('All source cell IDs aligned without duplicates',audit['matrix_shape']==[71915,25712] and audit['metadata_missing_from_matrix']==audit['matrix_missing_from_metadata']==audit['duplicate_cell_ids']==0,'reports/data_audit.json')
 full=ad.read_h5ad(DATA/'processed/GSE149614.h5ad',backed='r')
 check('Canonical data preserves all source cells/genes',full.shape==(71915,25712) and 'counts' in full.layers,'processed/GSE149614.h5ad')
+counts=full.layers['counts']
+check('Full cohort raw integer counts and library sums preserved',np.issubdtype(counts.dtype,np.integer) and counts.data.min()>=0 and int(counts.sum())==audit['count_sum_before_gene_filter'] and np.array_equal(np.asarray(counts.sum(1)).ravel(),full.obs.n_counts),'all 71915 raw libraries and source parser count sum')
 full.file.close()
 for subset,n in [('smoke',64),('pilot',2000),('comparison',10000)]:
     a=ad.read_h5ad(DATA/'subsets'/f'{subset}.h5ad')
@@ -69,5 +71,9 @@ check('Source hashes and HF/Zenodo official checksums verified',json.loads((ROOT
 check('Large local artifacts have measured path/size/hash',len(json.loads((ROOT/'manifests/local_artifacts.json').read_text()))>20,'manifests/local_artifacts.json')
 check('Successful isolated environment freezes recorded',all((ROOT/'envs'/f'vcell-{m}.freeze.txt').stat().st_size>1000 for m in ['scgpt','geneformer']),'envs/*.freeze.txt')
 check('Final comparison and limitations report generated',(ROOT/'reports/final_summary.md').exists() and (ROOT/'reports/pretraining_overlap.md').exists(),'final_summary.md and pretraining_overlap.md')
+for name in ['pca_smoke','pca_pilot','pca_comparison','scgpt_smoke','scgpt_pilot','scgpt_comparison','geneformer_smoke','geneformer_pilot','geneformer_comparison','kg_pilot','kg_comparison','isp_pilot','notebook_run_all','pilot_umap']:
+    stage=json.loads((ROOT/'reports/stages'/f'{name}.json').read_text())
+    check(f'{name} process completed successfully',stage['status']=='executed' and stage['exit_code']==0,'actual run_stage subprocess return code and terminal timestamps')
+check('Exploratory shift figure explicitly labelled',(ROOT/'reports/figures/virtual_perturbation_pilot.png').exists(),'figure generated from actual TSV, with Korean exploratory limitation title')
 write_json(ROOT/'reports/completion_audit.json',dict(status='passed',n_checks=len(checks),checks=checks,git_push_verification='Verified separately against actual local/server/remote HEAD after final commit'))
 print('PASS:',len(checks),'completion checks',flush=True)

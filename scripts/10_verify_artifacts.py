@@ -6,7 +6,7 @@ REV='1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5'
 
 manifest=json.loads((ROOT/'manifests/assets.json').read_text())
 info=json.load(urllib.request.urlopen('https://huggingface.co/api/models/ctheodoris/Geneformer/revision/'+REV+'?blobs=true'))
-expected={r['rfilename']:r.get('lfs',{}).get('sha256') for r in info['siblings']}
+expected={r['rfilename']:(r.get('lfs') or {}).get('sha256') for r in info['siblings']}
 checks=[]
 for row in manifest+json.loads((ROOT/'manifests/scgpt_checkpoint.json').read_text())+json.loads((ROOT/'manifests/data_sources.json').read_text()):
     path=Path(row['path']);actual=sha(path);assert actual==row['sha256'],str(path)
