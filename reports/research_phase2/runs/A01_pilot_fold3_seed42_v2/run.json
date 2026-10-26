@@ -1,0 +1,119 @@
+{
+  "run_id": "A01_pilot_fold3_seed42_v2",
+  "status": "executed",
+  "task": "annotation",
+  "regime": "inductive",
+  "dataset_version": "GSE149614_development_pilot",
+  "split_id": "development_donor4_v2",
+  "project_commit": "13b46f966e8f2513b603f9ab68691cf205ecae4c",
+  "seed": 42,
+  "data_variant": "D0_natural",
+  "model_variant": "M0_frozen_linear",
+  "label_mapping": "original six broad lineages, unchanged",
+  "pretraining_overlap": "unknown",
+  "split_manifest": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver/manifests/research_phase2/development_donor4_v2.tsv",
+  "split_manifest_sha256": "3ea07b16f46b357bd4063ef467653ef9382c3f9ede2ccfffa0fd40a80d67ab7e",
+  "allowed_target_information": "own observed counts only; no fitting to outer evaluation donors",
+  "prediction_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/A01_pilot_fold3_seed42_v2/predictions.tsv",
+  "prediction_sha256": "5d97e3a739038304b62dbd1bfa7528f4f8daac54ff6966155ae6be56aee0ff39",
+  "metrics": {
+    "macro_f1": 0.9303024736987625,
+    "balanced_accuracy": 0.9137034743968776,
+    "n_cells": 2941,
+    "n_known": 2941,
+    "evaluation_coverage": 1.0,
+    "prediction_coverage": 1.0,
+    "n_unknown_truth": 0,
+    "n_abstained": 0,
+    "confidence_calibration": "uncalibrated; no confidence threshold; ECE/Brier reported",
+    "labels": [
+      "B",
+      "Endothelial",
+      "Fibroblast",
+      "Hepatocyte",
+      "Myeloid",
+      "T/NK"
+    ],
+    "brier_multiclass": 0.07134523820206673,
+    "ece_10_bins": 0.006926717882041701
+  },
+  "model_id": "scgpt",
+  "fold": 3,
+  "feature_dimension": 512,
+  "feature_source": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/features/scgpt_comparison.npz",
+  "upstream_commit": "cebd6fae655b9c585a4807daa3ac31bb764f06b4",
+  "base_checkpoint_revision": "cebd6fae655b9c585a4807daa3ac31bb764f06b4",
+  "checkpoint_sha256": "6cb5d451ab5c4b33eb673adbe4fddc61d2389df1b89b7651a9fe2e557572b922",
+  "trainable_parameters": 3078,
+  "dataset_sha256": "6bb6dec400a4387070d22403af9a0e0fa89a575f9b99552b1e6caeae60778750",
+  "n_inner_training": 4501,
+  "n_inner_validation": 1318,
+  "n_outer_training": 5819,
+  "n_evaluation": 2941,
+  "training_donors": [
+    "HCC01",
+    "HCC04",
+    "HCC05",
+    "HCC06",
+    "HCC07",
+    "HCC10"
+  ],
+  "validation_donors": [
+    "HCC01",
+    "HCC07"
+  ],
+  "evaluation_donors_or_perturbations": [
+    "HCC03",
+    "HCC08"
+  ],
+  "wall_preprocessing_seconds": 2.074399646371603,
+  "wall_training_seconds": 2.5883653089404106,
+  "wall_inference_seconds": 0.009716346859931946,
+  "wall_total_seconds": 4.71753341704607,
+  "feature_inference_note": "pilot frozen features reused; extraction cost not re-measured",
+  "metric_protocol": "pooled_macro_f1_fixed_six_lineages",
+  "head_selection": {
+    "validation_grid": [
+      {
+        "C": 0.01,
+        "class_weight": null,
+        "validation_macro_f1": 0.9216858720338306
+      },
+      {
+        "C": 0.01,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9297992783841748
+      },
+      {
+        "C": 0.1,
+        "class_weight": null,
+        "validation_macro_f1": 0.9142286936694998
+      },
+      {
+        "C": 0.1,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9150081083528918
+      },
+      {
+        "C": 1.0,
+        "class_weight": null,
+        "validation_macro_f1": 0.9067739641248442
+      },
+      {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9065470161109893
+      }
+    ],
+    "selected_C": 0.01,
+    "selected_class_weight": "balanced",
+    "validation_macro_f1": 0.9297992783841748
+  },
+  "failure_or_limitations": [
+    "development OOF, not a fresh blind test",
+    "legacy HCC02/HCC09 excluded",
+    "pretraining overlap unknown"
+  ],
+  "peak_cpu_rss_gib": 0.875213623046875,
+  "peak_process_gpu_gib": null
+}

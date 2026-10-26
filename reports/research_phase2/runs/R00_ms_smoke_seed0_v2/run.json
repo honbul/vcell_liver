@@ -1,0 +1,41 @@
+{
+  "run_id": "R00_ms_smoke_seed0_v2",
+  "status": "executed",
+  "task": "annotation",
+  "regime": "official_reproduction",
+  "dataset_version": "official_MS_c_data_and_filtered_ms_adata",
+  "reproduction_status": "smoke_passed",
+  "project_commit": "13b46f966e8f2513b603f9ab68691cf205ecae4c",
+  "upstream_commit": "cebd6fae655b9c585a4807daa3ac31bb764f06b4",
+  "base_checkpoint_revision": "official whole-human snapshot",
+  "checkpoint_sha256": "6cb5d451ab5c4b33eb673adbe4fddc61d2389df1b89b7651a9fe2e557572b922",
+  "seed": 0,
+  "n_reference": 64,
+  "n_evaluation": 64,
+  "actual_epochs": 1,
+  "batch_size": 1,
+  "trainable_parameters": 51339793,
+  "pretrained_attention_tensors_verified": 24,
+  "metrics": {
+    "test/accuracy": 0.015625,
+    "test/precision": 0.0014204545454545455,
+    "test/recall": 0.09090909090909091,
+    "test/macro_f1": 0.002797202797202797
+  },
+  "prediction_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/official/scGPT_runs/R00_ms_smoke_seed0_v2/predictions.tsv",
+  "prediction_sha256": "f37c70c2d001a34bd19d8e73952113538bf8cace0341b68e293771b8a6a2988e",
+  "wall_preprocessing_seconds": 51.2612653747201,
+  "wall_training_seconds": 6.152647942304611,
+  "wall_inference_seconds": 0.5554053671658039,
+  "wall_total_seconds": 58.66424351930618,
+  "failure_or_limitations": [
+    "attention backend and runtime versions differ; not identical numerical reproduction",
+    "official random reference validation split retained; this is not HCC donor CV",
+    "original tutorial reported values and available published variation will be compared explicitly"
+  ],
+  "peak_cpu_rss_gib": 1.8482437133789062,
+  "peak_process_gpu_gib": 1.5,
+  "gpu_name": "NVIDIA A30",
+  "peak_cuda_allocated_gib": 1.0212302207946777,
+  "peak_cuda_reserved_gib": 1.216796875
+}

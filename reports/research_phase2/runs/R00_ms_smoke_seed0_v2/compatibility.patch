@@ -1,0 +1,193 @@
+--- official_Tutorial_Annotation.py
++++ executed_compatibility_patch.py
+@@ -16,7 +16,6 @@
+ import torch
+ from anndata import AnnData
+ import scanpy as sc
+-import scvi
+ import seaborn as sns
+ import numpy as np
+ import wandb
+@@ -27,10 +26,8 @@
+ from torch.utils.data import Dataset, DataLoader
+ from sklearn.model_selection import train_test_split
+ from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score
+-from torchtext.vocab import Vocab
+-from torchtext._torchtext import (
+-    Vocab as VocabPybind,
+-)
++from scgpt.tokenizer.vocab_compat import BuiltinVocab as Vocab
++VocabPybind = None # unused when loading official pretrained vocabulary
+ from sklearn.metrics import confusion_matrix
+ 
+ sys.path.insert(0, "../")
+@@ -57,20 +54,20 @@
+     do_train=True,
+     load_model="../save/scGPT_human",
+     mask_ratio=0.0,
+-    epochs=10,
++    epochs=1,
+     n_bins=51,
+     MVC=False, # Masked value prediction for cell embedding
+     ecs_thres=0.0, # Elastic cell similarity objective, 0.0 to 1.0, 0.0 to disable
+     dab_weight=0.0,
+     lr=1e-4,
+-    batch_size=32,
++    batch_size=1,
+     layer_size=128,
+     nlayers=4,  # number of nn.TransformerEncoderLayer in nn.TransformerEncoder
+     nhead=4,  # number of heads in nn.MultiheadAttention
+     dropout=0.2,  # dropout probability
+     schedule_ratio=0.9,  # ratio of epochs for learning rate schedule
+     save_eval_interval=5,
+-    fast_transformer=True,
++    fast_transformer=False,
+     pre_norm=False,
+     amp=True,  # Automatic Mixed Precision
+     include_zero_gene = False,
+@@ -78,13 +75,13 @@
+     DSBN = False,  # Domain-spec batchnorm
+ )
+ 
+-run = wandb.init(
++run = wandb.init(mode="disabled",
+     config=hyperparameter_defaults,
+     project="scGPT",
+     reinit=True,
+     settings=wandb.Settings(start_method="fork"),
+ )
+-config = wandb.config
++config = run.config
+ print(config)
+ 
+ set_seed(config.seed)
+@@ -182,8 +179,8 @@
+ 
+ if dataset_name == "ms":
+     data_dir = Path("../data/ms")
+-    adata = sc.read(data_dir / "c_data.h5ad")
+-    adata_test = sc.read(data_dir / "filtered_ms_adata.h5ad")
++    adata = sc.read(data_dir / "c_data.h5ad")[:64].copy()
++    adata_test = sc.read(data_dir / "filtered_ms_adata.h5ad")[:64].copy()
+     adata.obs["celltype"] = adata.obs["Factor Value[inferred cell type - authors labels]"].astype("category")
+     adata_test.obs["celltype"] = adata_test.obs["Factor Value[inferred cell type - authors labels]"].astype("category")
+     adata.obs["batch_id"]  = adata.obs["str_batch"] = "0"
+@@ -484,22 +481,18 @@
+     pre_norm=config.pre_norm,
+ )
+ if config.load_model is not None:
+-    try:
+-        model.load_state_dict(torch.load(model_file))
+-        logger.info(f"Loading all model params from {model_file}")
+-    except:
+-        # only load params that are in the model and match the size
+-        model_dict = model.state_dict()
+-        pretrained_dict = torch.load(model_file)
+-        pretrained_dict = {
+-            k: v
+-            for k, v in pretrained_dict.items()
+-            if k in model_dict and v.shape == model_dict[k].shape
+-        }
+-        for k, v in pretrained_dict.items():
+-            logger.info(f"Loading params {k} with shape {v.shape}")
+-        model_dict.update(pretrained_dict)
+-        model.load_state_dict(model_dict)
++    from scgpt.utils import load_pretrained
++    official_state = torch.load(model_file, map_location="cpu", weights_only=True)
++    load_pretrained(model, official_state, verbose=False)
++    # The official helper maps flash Wqkv keys to PyTorch in_proj keys.
++    checked_attention = 0
++    for original_key, value in official_state.items():
++        key = original_key.replace("Wqkv.", "in_proj_")
++        if "transformer_encoder" in key and "in_proj_" in key and key in model.state_dict():
++            assert torch.equal(model.state_dict()[key].cpu(), value.cpu()), key
++            checked_attention += 1
++    assert checked_attention == 24, checked_attention
++    print("PRETRAINED_ATTENTION_VERIFIED", checked_attention, flush=True)
+ 
+ pre_freeze_param_count = sum(dict((p.data_ptr(), p.numel()) for p in model.parameters() if p.requires_grad).values())
+ 
+@@ -858,6 +851,8 @@
+ best_model = None
+ define_wandb_metrcis()
+ 
++_research_train_start = time.monotonic()
++_research_preprocessing_seconds = _research_train_start - _research_start
+ for epoch in range(1, epochs + 1):
+     epoch_start_time = time.time()
+     train_data_pt, valid_data_pt = prepare_data(sort_seq_batch=per_seq_batch_sample)
+@@ -906,6 +901,8 @@
+         scheduler_D.step()
+         scheduler_E.step()
+ 
++_research_training_seconds = time.monotonic() - _research_train_start
++
+ # %% inference
+ def test(model: nn.Module, adata: DataLoader) -> float:
+     all_counts = (
+@@ -951,7 +948,7 @@
+         batch_size=eval_batch_size,
+         shuffle=False,
+         drop_last=False,
+-        num_workers=min(len(os.sched_getaffinity(0)), eval_batch_size // 2),
++        num_workers=min(4, eval_batch_size // 2),
+         pin_memory=True,
+     )
+ 
+@@ -984,54 +981,7 @@
+ 
+     return predictions, celltypes_labels, results
+ 
++_research_inference_start = time.monotonic()
+ predictions, labels, results = test(best_model, adata_test)
++_research_inference_seconds = time.monotonic() - _research_inference_start
+ adata_test_raw.obs["predictions"] = [id2type[p] for p in predictions]
+-
+-# plot
+-palette_ = plt.rcParams["axes.prop_cycle"].by_key()["color"] 
+-palette_ = plt.rcParams["axes.prop_cycle"].by_key()["color"] + plt.rcParams["axes.prop_cycle"].by_key()["color"] + plt.rcParams["axes.prop_cycle"].by_key()["color"]
+-palette_ = {c: palette_[i] for i, c in enumerate(celltypes)}
+-
+-with plt.rc_context({"figure.figsize": (6, 4), "figure.dpi": (300)}):
+-    sc.pl.umap(
+-        adata_test_raw,
+-        color=["celltype", "predictions"],
+-        palette=palette_,
+-        show=False,
+-    )
+-    plt.savefig(save_dir / "results.png", dpi=300)
+-
+-save_dict = {
+-    "predictions": predictions,
+-    "labels": labels,
+-    "results": results,
+-    "id_maps": id2type
+-}
+-with open(save_dir / "results.pkl", "wb") as f:
+-    pickle.dump(save_dict, f)
+-
+-results["test/cell_umap"] = wandb.Image(
+-    str(save_dir / "results.png"),
+-    caption=f"predictions macro f1 {results['test/macro_f1']:.3f}",
+-)
+-wandb.log(results)
+-
+-from sklearn.metrics import confusion_matrix
+-celltypes = list(celltypes)
+-for i in set([id2type[p] for p in predictions]):
+-    if i not in celltypes:
+-        celltypes.remove(i)
+-cm = confusion_matrix(labels, predictions)
+-cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
+-cm = pd.DataFrame(cm, index=celltypes[:cm.shape[0]], columns=celltypes[:cm.shape[1]])
+-plt.figure(figsize=(10, 10))
+-sns.heatmap(cm, annot=True, fmt=".1f", cmap="Blues")
+-plt.savefig(save_dir / "confusion_matrix.png", dpi=300)
+-
+-results["test/confusion_matrix"] = wandb.Image(
+-    str(save_dir / "confusion_matrix.png"),
+-    caption=f"confusion matrix",
+-)
+-
+-# save the model into the save_dir
+-torch.save(best_model.state_dict(), save_dir / "model.pt")
