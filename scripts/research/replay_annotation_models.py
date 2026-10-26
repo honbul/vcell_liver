@@ -1,0 +1,28 @@
+"""64 real development-query cells through saved scVI or LiverCT models; no new fitting."""
+import argparse,time
+import anndata as ad
+import joblib,torch
+from research_core import *
+
+p=argparse.ArgumentParser();p.add_argument('--model',choices=['scvi','liverct'],required=True);p.add_argument('--probe-id',required=True);args=p.parse_args();assert Path(args.probe_id).name==args.probe_id
+root=ASSETS/'probes'/args.probe_id/args.model;assert not root.exists();root.mkdir(parents=True);r=Resources();started=time.monotonic();torch.set_num_threads(8)
+rid='A04_full_fold0_seed42_v2' if args.model=='scvi' else 'S00_liverct_full_fold0_seed42_v4';run=json.loads((REPORT/'runs'/rid/'run.json').read_text());original=pd.read_csv(run['prediction_path'],sep='\t');assert sha(run['prediction_path'])==run['prediction_sha256'];ids=original.cell_id.astype(str).to_numpy()[:64];a=ad.read_h5ad(ASSETS/'data/development_full.h5ad')[ids].copy();assert a.n_obs==64
+if args.model=='scvi':
+    import scvi
+    info=json.loads((ASSETS/'runs'/rid/'outer_model_training.json').read_text());query=a[:,info['genes']].copy();query.obs=pd.DataFrame(index=query.obs_names);query.X=query.layers['counts'].copy()
+    model=scvi.model.SCVI.load(str(ASSETS/'runs'/rid/'outer_model'),adata=query,accelerator='cpu');latent=model.get_latent_representation(adata=query,batch_size=64);head=joblib.load(ASSETS/'runs'/rid/'head.joblib');x=head['scaler'].transform(latent);prediction=head['classifier'].predict(x);native_prob=head['classifier'].predict_proba(x);labels=run['metrics']['labels'];prob=np.zeros((64,len(labels)))
+    for j,label in enumerate(head['classifier'].classes_):prob[:,labels.index(label)]=native_prob[:,j]
+    d=np.load(ASSETS/'runs'/rid/'probabilities.npz');lookup={cell:i for i,cell in enumerate(d['cell_ids'])};expected=d['probabilities'][[lookup[cell] for cell in ids]];difference=float(np.abs(prob-expected).max());assert np.isfinite(prob).all() and np.allclose(prob.sum(1),1)
+    counts=dict(scVI_changed_predictions_vs_original=int((prediction!=original.prediction.to_numpy()[:64]).sum()),scVI_probability_max_abs_difference_vs_original=difference);regime='strict_inductive_saved_fold_model'
+else:
+    import scipy.sparse as sp
+    sys.path.insert(0,str(ROOT/'third_party/LiverCT'));from test_function import feature_alignment,LabelPredict
+    import scarches as sca
+    symbols=a.var.gene_symbol.astype(str).to_numpy();unique=pd.Index(pd.unique(symbols));indices=unique.get_indexer(symbols);mapping=sp.csr_matrix((np.ones(len(indices)),(np.arange(len(indices)),indices)),shape=(len(indices),len(unique)))
+    q=ad.AnnData((sp.csr_matrix(a.layers['counts'])@mapping).astype(np.float32),obs=pd.DataFrame(index=a.obs_names),var=pd.DataFrame(index=unique));source=ASSETS/'runs'/rid;reference=source/'reference_copy';genes=pd.read_csv(reference/'scarches_model_new/var_names.csv',header=None).iloc[:,0];query=feature_alignment(q,genes).copy();query.obs['batch']='new_batch';query.obs['level1']='Unknown';query.layers['counts']=query.X.copy()
+    adapted=ASSETS/'runs'/(run.get('adaptation_source_run') or rid)/'my_surgery_model';model=sca.models.SCANVI.load(str(adapted),adata=query,use_gpu=False);latent=ad.AnnData(model.get_latent_representation());latent.obs_names=query.obs_names
+    native=LabelPredict(latent,is_cnt=False,select_feature=False,model_path=str(reference/'LiverCT'),model_name='latent_input_classifier_all_adjparam_unbalancedsvm_new',transition_predict=True,disease_predict=True).loc[ids];label_map=json.loads((REPORT/'runs'/rid/'mapping.json').read_text());prediction=native.pred_lv1.astype(str).map(label_map).fillna('Unknown').to_numpy();control=pd.Series(model.predict(adata=query)).map(label_map).fillna('Unknown').to_numpy();expected_control=pd.read_csv(ASSETS/'runs'/(rid+'_scanvi_control')/'predictions.tsv',sep='\t').set_index('cell_id').loc[ids].prediction.to_numpy()
+    counts=dict(LiverCT_changed_predictions_vs_original=int((prediction!=original.prediction.to_numpy()[:64]).sum()),matched_SCANVI_changed_predictions_vs_original=int((control!=expected_control).sum()));regime='replay_of_saved_query_adapted_context_not_zero_adaptation'
+pd.DataFrame(dict(cell_id=ids,prediction=prediction)).to_csv(root/'predictions.tsv',sep='\t',index=False);res=r.finish()
+write_json(REPORT/'annotation_native_inference_probe'/f'{args.probe_id}_{args.model}.json',dict(status='executed',task='annotation_inference_replay',model_id=args.model,project_commit=git_commit(),source_sha256=sha(Path(__file__)),source_run_id=rid,source_run_metadata_sha256=sha(REPORT/'runs'/rid/'run.json'),source_prediction_sha256=run['prediction_sha256'],regime=regime,n_real_query_cells=64,target_selection='First64 cells of original saved fold0 ordered query predictions; no performance selection',query_truth_labels_supplied=False,new_training_or_query_adaptation=False,original_query_adaptation_epochs=20 if args.model=='liverct' else 0,feature_dimension=int(latent.n_vars) if args.model=='liverct' else int(latent.shape[1]),comparisons=counts,prediction_path=str(root/'predictions.tsv'),prediction_sha256=sha(root/'predictions.tsv'),failure_or_limitations=['CPU vs original GPU numerical differences are reported, not hidden','LiverCT replay reuses its original whole-query-adapted checkpoint; this is not a new-query strict-inductive evaluation'] if args.model=='liverct' else ['CPU inference replay only; no new biological evaluation'],**res))
+print('ANNOTATION_NATIVE_REPLAY',args.model,counts,flush=True)
