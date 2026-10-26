@@ -11,6 +11,7 @@ from sampling import sampling_roles
 p=argparse.ArgumentParser();p.add_argument('--model',choices=['frozen_nn','partial','lora'],required=True);p.add_argument('--data-variant',choices=['D0_natural','D1_donor_balanced','D2_donor_class_balanced'],default='D0_natural');p.add_argument('--fold',type=int,default=0);p.add_argument('--seed',type=int,default=42);p.add_argument('--run-id',required=True);p.add_argument('--epochs',type=int,default=3);p.add_argument('--fixed-epochs',type=int);p.add_argument('--microbatch',type=int,default=2);args=p.parse_args()
 c=yaml.safe_load((ROOT/'configs/research/protocol_improvement.yaml').read_text());c['seed']=args.seed;c['data_variant']=args.data_variant;c['model_variant']={'frozen_nn':'M01_frozen_same_NN_head','partial':'M02_partial_same_NN_head','lora':'M03_LoRA_same_NN_head'}[args.model]
 out=REPORT/'runs'/args.run_id;assert not (out/'run.json').exists();out.mkdir(parents=True,exist_ok=True);raw=ASSETS/'runs'/args.run_id;raw.mkdir(parents=True,exist_ok=True)
+launch_commit=git_commit();source_hash=sha(Path(__file__))
 torch.set_num_threads(8);r=Resources();start=time.monotonic();a=ad.read_h5ad(DATA/c['dataset_path']);roles=sampling_roles(a.obs,c,args.fold,args.data_variant)
 for role,indices in roles.items():pd.DataFrame({'cell_id':a.obs_names[indices]}).to_csv(raw/f'{role}_cell_ids.tsv',sep='\t',index=False)
 frozen=np.load(ASSETS/'features/geneformer_GSE149614_development_full.npz');assert np.array_equal(frozen['cell_ids'],a.obs_names.to_numpy(dtype=str));frozen=frozen['X']
@@ -21,6 +22,8 @@ with open(TOKEN_DICTIONARY_FILE,'rb') as f:pad=pickle.load(f)['<pad>']
 y=np.array([c['labels'].index(str(t)) for t in a.obs.cell_type_coarse]);base_path=DATA/'checkpoints/Geneformer-V2-104M';phase={'preprocessing':time.monotonic()-start,'training':0.,'inference':0.};gradient_checks=[];epochs_history=[];update_counts={}
 
 def make_model():
+    # Seed adapter initialization as well as the head, independently for both fits.
+    torch.manual_seed(args.seed)
     encoder=None;targets=[]
     if args.model!='frozen_nn':
         full=BertForMaskedLM.from_pretrained(base_path,local_files_only=True,output_hidden_states=True);encoder=full.bert.eval().requires_grad_(False).cuda();del full
@@ -113,7 +116,7 @@ try:
     expected=prob[:8];saved=torch.load(raw/'outer_trainable_state.pt',map_location='cpu',weights_only=True);restore(encoder,head,saved)
     restored=predict(encoder,head,roles['evaluation'][:8],mu,scale);reload_difference=float(np.abs(expected-restored).max());assert np.allclose(expected,restored,atol=1e-5,rtol=1e-5)
     if args.model=='lora':encoder.save_pretrained(raw/'outer_adapter',safe_serialization=True)
-    res=r.finish();save_evaluation(a,roles['evaluation'],pred,prob,c,args.run_id,dict(model_id='Geneformer_'+args.model,fold=args.fold,base_checkpoint_revision='1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5',checkpoint_sha256=sha(base_path/'model.safetensors'),
+    res=r.finish();save_evaluation(a,roles['evaluation'],pred,prob,c,args.run_id,dict(model_id='Geneformer_'+args.model,fold=args.fold,project_commit=launch_commit,source_sha256=source_hash,initialization_seed=args.seed,fold_training_seed_policy='Seed before encoder/adapter construction and again before shared head initialization in both inner/outer fits',base_checkpoint_revision='1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5',checkpoint_sha256=sha(base_path/'model.safetensors'),
       chosen_epochs=chosen,inner_validation_macro_f1=score,training_donors=sorted(a.obs.iloc[roles['outer_training']].patient_id.unique()),validation_donors=sorted(a.obs.iloc[roles['inner_validation']].patient_id.unique()),evaluation_donors_or_perturbations=sorted(a.obs.iloc[roles['evaluation']].patient_id.unique()),
       n_inner_training=len(roles['inner_training']),n_inner_validation=len(roles['inner_validation']),n_outer_training=len(roles['outer_training']),n_evaluation=len(roles['evaluation']),trainable_encoder_parameters=nparams,trainable_head_parameters=sum(p.numel() for p in head.parameters()),trainable_parameters=nparams+sum(p.numel() for p in head.parameters()),
       target_modules=targets,rank=8 if args.model=='lora' else None,alpha=16 if args.model=='lora' else None,adapter_dropout=0.,partial_blocks=[9,10] if args.model=='partial' else None,
