@@ -6,7 +6,7 @@
 |---|---|
 | Frozen annotation A-series | Run의 학습은 head grid/refit, 추론은 head evaluation. Backbone feature extraction은 연결된 feature_extraction_metadata의 별도 실제 실행이며 여러 fold에서 재사용 |
 | scVI | 학습은 inner/outer100epoch와 head 선택/refit. 추론은 inner/outer 모델의 전체 개발 세포 latent 계산과 head evaluation. 순수 heldout-only latency가 아님 |
-| LiverCT | Preprocessing에는 counts alignment와 reference copy, 학습에는20epoch query adaptation, 추론에는 latent와 native SVM/SCANVI head. Fold0v4는 저장 모델 복원이며 원v3 adaptation 시간이 따로 고립되지 않았음 |
+| LiverCT | Preprocessing에는 counts alignment와 reference copy, 학습에는20epoch query adaptation, 추론에는 latent와 native voting ensemble/SCANVI head. Fold0v4는 저장 모델 복원이며 원v3 adaptation 시간이 따로 고립되지 않았음 |
 | Geneformer partial/LoRA/NN | Training은 inner/outer optimizer 구간, inference는 inner validation 및 outer evaluation과 reload 비교. 기존 frozen cache와 online adapted encoder 비용이 다름 |
 | 공식 GEARS Norman | Native train()에 포함된 validation/test/deeper analysis가 training 시간 안에 있음. 별도 inference는 기록용 추가 prediction pass. 순수 optimizer 비용으로 해석하지 않음 |
 | Strict HepG2 GEARS | 학습 loop에 epoch별 validation이 포함됨. Final recorded inference는 selection 후 heldout prediction |
@@ -15,3 +15,5 @@
 | Final annotation | Fit와 query-feature extraction, head inference가 서로 다른 artifact. Partial query inference는 encoder representation 시간을 별도 wall_representation_seconds로 기록. Head-only 파일만 전체 pipeline latency처럼 비교하지 않음 |
 
 Slurm의 대기 시간은 Python process wall time에 포함되지 않는다. A30과 A40은 별도 hardware로 표시한다. BF16/FP16은 matmul precision이며 weights/storage는 FP32다. Process GPU memory는 측정된 해당 PID의 값이며 다른 사용자의 프로세스를 합산하지 않는다. Numeric scVI parameter count와 LiverCT requires_grad/hook 제한은 model_parameter_audit 보완 파일에 있다.
+
+CPU peak RSS도 Python parent process 범위이며 DataLoader worker 전체 job memory의 합계가 아니다. 공유 서버 부하·cache와 측정 구간 차이가 있으므로 숫자를 독립적인 hardware 속도 순위로 해석하지 않는다.

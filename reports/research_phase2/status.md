@@ -14,12 +14,13 @@
 | 데이터만 변경 | donor-balanced와 donor×class-balanced, 같은4096·head·validation/evaluation IDs | 첫 fold 실행, 둘 다 음성 |
 | 모델 변경 | 같은 NN head 동결·partial·seed 수정 LoRA 첫 fold 완료; validation으로 partial 선택 | screening 실행됨 |
 | LoRA 연결 | 22개 query/value 모듈, gradient/update, 초기 출력·저장복원 차이0 | 실행됨, 효능 검증 아님 |
-| 전 fold·3 seed 및 2×2 | 동결24조건 완료, D1 평균 차이−.00392; partial Slurm array12844 | 적응 모델 반복 진행 중 |
+| 전 fold·3 seed 및 2×2 | 동결24+적응24조건 모두 완료; Data−.00392, Model+.00145, Combined−.00869 | 실행됨, 확실한 개선 없음 |
 | GEARS 공식 | Norman simulation seed1, hidden64, 20epochs 완료; native Pearson_DE .8665 | 수정 재현 실행됨 |
 | 간 유래 실측 response | HepG2 CRISPRi heldout214targets/13994세포; B00–B03 완료, GEARS RMSE .13091 vs GO/ridge .10584 | 실행됨, GEARS 추가 이득 없음 |
-| foundation response 확장 | 같은3303관측gene/191testtarget, native scGPT gradient smoke 통과; pretrained/random/GEARS job12876 | 실제 비교 진행 중 |
+| foundation response 확장 | 공통191target/primary1977gene: pretrained .12394, random .12268, GO/ridge .11073, GEARS .13732 RMSE | 실행됨, 사전학습 추가 이득 없음 |
 | chemical response | Mouse TCDD portal-treated1074cells holdout; scVIDR RMSE .07629 vs no-change .20569, native arithmetic .13854 | 실제 수정 native 경로 실행됨 |
-| 외부 최종 | GSE151530 unscored; histology·환자·ontology 고정과 선택 freeze 필요 | 미완료, 점수 미관찰 |
+| KG 압축 가설 | 사전 고정 real32/random32/raw128 대조4fold·seed42, full63036 평가 | 실행됨, 압축 이득 없음; 외부 선택에서 제외 |
+| 외부 최종 | GSE151530 25명50023cells, 후보8개와 모든 bundle hash 동결; categorical reader 동등성 확인 후 동일 batch 복구12919 | 최종 추론 진행 중, 최종 metric 미생성 |
 | 사용자 tutorial | 06–10 실제 실행; PCA query2000/2000정합·probability roundtrip차이0, 모든 notebook hash 일치 | 실행됨 |
 
 학습량4096의 개선 실험은 A-series의12000과 별도 조건이다. 같은4096 baseline을 직접 실행했고 기존 A-series 점수를 재사용하지 않는다. 첫 데이터 변경은 모두 validation과 개발 outer score에서 감소했다. 선택된 donor-balanced는 후속 대조를 위한 후보이며 확인된 개선이라 부르지 않는다.
@@ -27,4 +28,4 @@
 HCC 세포 분류, Geneformer embedding shift, 실측 genetic response, chemical response는 다른 task다. 외부 final은 모델/데이터 선택을 동결하기 전까지 어떠한 모델 score도 생성하지 않는다. 모델별 pretraining overlap은 확인 불가 시 unknown으로 기록한다. 위 미완료 항목이 남아 있으므로 전체 연구 완료를 주장하지 않는다.
 
 
-현재 Slurm handle은 `slurm_jobs.tsv`에 기록한다. 12844 confirmation 뒤12883 final refit, 그 뒤12892 external release/evaluation 순서다. 12876 native response 비교 뒤12896이 공통 metric과 tutorial07을 갱신한다. Completed artifact와 terminal log를 확인하기 전 같은 run을 재시작하지 않는다. External cohort는 아직 unscored이며 전체 목표는 진행 중이다.
+현재 Slurm handle은 `slurm_jobs.tsv`에 기록한다. Confirmation12844, final refit12883, native response12876 및 평가12896은 완료됐다. External12892는 freeze 후 첫 prediction 전 gene_symbol categorical 자료형 처리에서 실패했다. 실제 개발64-cell 확률 동등성 검증12918 후, 모델/데이터 선택과 freeze를 유지한12919가 같은 batch를 복구한다. 최종 evaluation.json과 실제 결과를 확인하기 전 전체 연구 완료를 주장하지 않는다. 중간 추론 완료를 최종 평가 완료로 쓰지 않는다.

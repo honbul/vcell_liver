@@ -1,0 +1,59 @@
+{
+  "status": "executed",
+  "project_commit": "a922ec14e7b3fcc4f9890b0b71ba031d33fe3fe8",
+  "source_sha256": "4b55009c640c3bd735053b1b72a68e174e230be75bafc050d5ea5cf4824643aa",
+  "regime": "query_adaptive",
+  "n_evaluation": 63036,
+  "n_donors": 8,
+  "n_seeds": 1,
+  "sources": [
+    {
+      "run_id": "S00_liverct_full_fold0_seed42_v4",
+      "run_metadata_sha256": "d8d98cfe88c6a6ed936c6bc55cf00320ba0e5ab000a89c13f31b1564086077c3",
+      "prediction_sha256": "f7277c8fc991e3299901b215493cf4237afd13e3337030f5af1049d558e01116"
+    },
+    {
+      "run_id": "S00_liverct_full_fold1_seed42_v4",
+      "run_metadata_sha256": "7861a705ee8f782e5e359933e4f5e3916f26e04504f9a7a9acc4e1544c5dba2a",
+      "prediction_sha256": "ec6bd22b218fa34928e3e3cc853b2808bd6f185e0d15996bd7674defc23dca30"
+    },
+    {
+      "run_id": "S00_liverct_full_fold2_seed42_v4",
+      "run_metadata_sha256": "1fc5593f0008605120415c8fa6b0022e2696145bafd2a78e1fa28c78207445ee",
+      "prediction_sha256": "deae2f1d5f06b9e9815365f1b5c3c81af3cacaff953ffbd7386501a204819296"
+    },
+    {
+      "run_id": "S00_liverct_full_fold3_seed42_v4",
+      "run_metadata_sha256": "92d88ee3bab49efdb468f3c419cf119883c438939d295f94f9f841d48dc22912",
+      "prediction_sha256": "33e9843b80b6ef92f2e233f885c79e18e6405c545dc704928dfe8300e329e848"
+    },
+    {
+      "run_id": "S00_liverct_full_fold0_seed42_v4_scanvi_control",
+      "run_metadata_sha256": "0fc99275dc03a879b43bd50f77bde6bffeae2e1b29bd72798de6ec8c65823921",
+      "prediction_sha256": "2d426606e259ac7be0b0263bd312cbe80768b0550ebc754ad1e6fa3016e3aa4f"
+    },
+    {
+      "run_id": "S00_liverct_full_fold1_seed42_v4_scanvi_control",
+      "run_metadata_sha256": "9011048a97b935a5d1cf0ba92c5f3e64c1dd7fc09f27d179a24d54eb2c3d7f7c",
+      "prediction_sha256": "c3c7f4536e0b9fbc102f38dfdccc5bd38c791dd3aeb84eff625f50e86d338f9e"
+    },
+    {
+      "run_id": "S00_liverct_full_fold2_seed42_v4_scanvi_control",
+      "run_metadata_sha256": "d4fe1e8327ac9f2f6e0539d434c3163ed91be8dfc535a3fac2c0647e52cb4ff6",
+      "prediction_sha256": "e5dbfcaf6a98d633cd32bad98436bedf888abe0dcff5be5fed65fd3e4bcd7829"
+    },
+    {
+      "run_id": "S00_liverct_full_fold3_seed42_v4_scanvi_control",
+      "run_metadata_sha256": "da6e54452450af3cfe0c08f39b618c256fe42b767569648aea2f49b9678bc53d",
+      "prediction_sha256": "13b6e86a5a626e2e0f3c12795fa2aa5642f3d02c9e7ff9486e5099d07febc2de"
+    }
+  ],
+  "uncertainty": "5000 paired donor bootstrap samples; fixed-six F1 recomputed from seven-column confusion matrices so ontology Unknown predictions remain penalized",
+  "calibration": "Actual pooled probability vectors across folds, not an average of fold ECE; native hard-label pipelines have no reconstructed/calibrated coarse probabilities",
+  "selection": "Post-selection descriptive development summary; no external data, no training or retuning",
+  "limitations": [
+    "Only8 donors; training folds overlap",
+    "Bootstrap holds trained models fixed and does not estimate retraining uncertainty",
+    "Reference label amount and query adaptation differ across regimes; compare within each table"
+  ]
+}

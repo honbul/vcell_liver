@@ -1,0 +1,42 @@
+{
+  "status": "executed",
+  "project_commit": "0c6e34e0f2a108ef8ef290f2d435da6264f42386",
+  "source_sha256": "68dfc243989fc15e3fee4187337ca82c50acb75fcf0dc069b90f0088e4ac0a76",
+  "config_sha256": "e70e834a2b7243e5c5d281d5e24b06e37ccbacdd51cce29c53bb45bd123018cc",
+  "target": "AAR2",
+  "n_treated_cells": 38,
+  "n_primary_genes": 1977,
+  "n_models": 2,
+  "n_inference_policies": 2,
+  "new_training": false,
+  "target_selection": "Lexicographically first fixed test target, before inspecting probe scores",
+  "evidence": [
+    {
+      "source_run_id": "B04_pretrained_native_common_seed42_v1",
+      "fitted_checkpoint_sha256": "da9dec4f6df8967cb75004ca51ec3033b60aaaf1925f817f31c2b41a04c26e06",
+      "original_prediction_sha256": "2cc4b654897099df01eb9928fbcec783ea07ab9645f644e5a0b1326e1c3861ad",
+      "sampled_replay_vs_original_mean_prediction_max_abs_difference": 0.00010287761688232422,
+      "mean_prediction_input_policy_discrepancy_RMSE": 0.03470413386821747
+    },
+    {
+      "source_run_id": "B04_random_native_common_seed42_v1",
+      "fitted_checkpoint_sha256": "5c734c3b3f107bbba6b614727d64a40dc81a0e4a351cd3065c27515b101706bf",
+      "original_prediction_sha256": "4936f8686796d3f27511cf271ac7f2a2e0198f09b2515a9c846a9a098b0eac44",
+      "sampled_replay_vs_original_mean_prediction_max_abs_difference": 0.00020551681518554688,
+      "mean_prediction_input_policy_discrepancy_RMSE": 0.013806900009512901
+    }
+  ],
+  "reporting": "Same original full matched-control evaluator for both input policies; fixed primary1977 genes",
+  "limitations": [
+    "One target only; no rank or biological replicate generalization",
+    "Both models remain trained on sampled controls; full-mean inference is an input sensitivity check, not a retrained fair-input benchmark",
+    "Probe groups the selected target into batches8 and may use a different GPU; measured replay numerical discrepancy is reported, not hidden",
+    "Original aggregate predictions and selection records are unchanged"
+  ],
+  "wall_seconds": 15.418129406869411,
+  "peak_cpu_rss_gib": 2.5763778686523438,
+  "peak_process_gpu_gib": 1.072265625,
+  "gpu_name": "NVIDIA A30",
+  "peak_cuda_allocated_gib": 0.6438627243041992,
+  "peak_cuda_reserved_gib": 0.796875
+}

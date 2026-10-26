@@ -1,0 +1,128 @@
+{
+  "status": "frozen_before_predictions",
+  "released_at_utc": "2026-10-26T13:03:48.755206+00:00",
+  "project_commit": "b33acbc2a4c93b054440ff390b338edd9aee9183",
+  "source_sha256": "6462dd60e1dfa90f398e8c84ec80d53f7e26642cbf598cfcb4d1ad0c9babbdb2",
+  "spec_path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver/configs/research/external_evaluation_spec_v1.yaml",
+  "spec_sha256": "efdfa125415f8283c2c18bc57322bff4ea369a08e92a2be7cdf282f9895fc24d",
+  "spec": {
+    "status": "preregistered_before_external_predictions",
+    "dataset_id": "GSE151530_HCC_external_final",
+    "gate": "require_completed_48_condition_factorial_confirmation_and_immutable_final_model_bundles",
+    "primary_pipeline": "geneformer_frozen_linear_12000",
+    "primary_pipeline_selection": "highest_pooled_macro_f1_in_the_full_development_A_series",
+    "fixed_12000_candidates": [
+      "pca",
+      "scgpt",
+      "geneformer",
+      "geneformer_clcancer"
+    ],
+    "fixed_4096_factorial_candidates": [
+      "DM00",
+      "DM10",
+      "DM01",
+      "DM11"
+    ],
+    "factorial_reporting": "all_four_conditions_even_if_development_effects_are_negative",
+    "final_training_donors": [
+      "HCC01",
+      "HCC03",
+      "HCC04",
+      "HCC05",
+      "HCC06",
+      "HCC07",
+      "HCC08",
+      "HCC10"
+    ],
+    "final_seed": 42,
+    "training_sample_policy": "uniform_without_replacement_D0_and_same_size_donor_balanced_D1",
+    "head_hyperparameters_12000": "maximum_mean_inner_validation_macro_f1_across_four_preexisting_folds",
+    "epochs_4096": "median_of_twelve_inner_selected_epochs_for_each_factor_rounded_up",
+    "primary_metric": "fixed_six_macro_f1_on_known_truth_only",
+    "secondary_metric": "fixed_five_macro_f1_on_known_truth_only_excluding_absent_hepatocyte",
+    "unknown_truth": "retain_malignant_and_unclassified_as_Unknown_without_imputed_lineage_truth",
+    "probability_policy": "uncalibrated_argmax_no_rejection_threshold",
+    "uncertainty": "5000_paired_bootstrap_samples_of_25_donors_recompute_pooled_fixed_label_f1",
+    "query_information": "own_observed_counts_and_gene_ids_only_no_query_fitting_or_adaptation",
+    "comparison_scope": "compare_12000_pipelines_separately_from_matched_4096_factors",
+    "freeze_rule": "record_all_bundle_and_input_hashes_before_any_external_model_prediction_or_score",
+    "after_evaluation": "no_retuning_or_cohort_switch_based_on_external_results"
+  },
+  "models": {
+    "pca": {
+      "run_id": "F00_pca_development12000_seed42_v2",
+      "run_sha256": "c8c0f93ffecf312c959446cca1802b684efc886bfdd13d53c0f1738496d3bb40",
+      "bundle_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/F00_pca_development12000_seed42_v2/annotation_bundle.joblib",
+      "bundle_sha256": "c52d02fb34a91160bd6d4980d97ec0c8d185faf7322014e96111e4de8a2454fa",
+      "training_manifest_sha256": "911d6230f813a7f8d4fc1cdbc873ce3fa5c1ef7a2c0d2fa13508a327acb99546",
+      "n_training_cells": 12000
+    },
+    "scgpt": {
+      "run_id": "F00_scgpt_development12000_seed42_v1",
+      "run_sha256": "4b7280dadb7b64d97e1c28f37232214b0dfc9658c4636909e251622b4caa0fe7",
+      "bundle_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/F00_scgpt_development12000_seed42_v1/annotation_bundle.joblib",
+      "bundle_sha256": "446dac0d7b3fc87b4246b46bb87fa7e0a8ba3a1960eaa2f720e410edad11f631",
+      "training_manifest_sha256": "911d6230f813a7f8d4fc1cdbc873ce3fa5c1ef7a2c0d2fa13508a327acb99546",
+      "n_training_cells": 12000
+    },
+    "geneformer": {
+      "run_id": "F00_geneformer_development12000_seed42_v1",
+      "run_sha256": "d84349e476fa7665d9770f2d029d3458d0f7468299ba08ba349d2ee9437d0c27",
+      "bundle_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/F00_geneformer_development12000_seed42_v1/annotation_bundle.joblib",
+      "bundle_sha256": "5203f7b7b2cf9ce3ac85c8e6e52cdb9047a6563fcc35dfa17195d68d41c7e809",
+      "training_manifest_sha256": "911d6230f813a7f8d4fc1cdbc873ce3fa5c1ef7a2c0d2fa13508a327acb99546",
+      "n_training_cells": 12000
+    },
+    "geneformer_clcancer": {
+      "run_id": "F00_geneformer_clcancer_development12000_seed42_v1",
+      "run_sha256": "4f7245d8849c48456af90802d2d2257d90aa099d24d7ccd3c790b47ec42f4f27",
+      "bundle_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/F00_geneformer_clcancer_development12000_seed42_v1/annotation_bundle.joblib",
+      "bundle_sha256": "f79bdc07982c1a831550b37ba09dc1f9abdf1512da68e88fd81395405b809fcb",
+      "training_manifest_sha256": "911d6230f813a7f8d4fc1cdbc873ce3fa5c1ef7a2c0d2fa13508a327acb99546",
+      "n_training_cells": 12000
+    },
+    "DM00": {
+      "run_id": "F01_DM00_development4096_seed42_v1",
+      "run_sha256": "2a40b9a2fc2905ac437ded27e2fc5ce7bf8be8e6d7d942b7504f7f8e120960a2",
+      "bundle_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/F01_DM00_development4096_seed42_v1/annotation_bundle.joblib",
+      "bundle_sha256": "f18ec4aa3b648af6a81d9c4e62e0aff55627bc445557f4b3acf5ead05a65a190",
+      "training_manifest_sha256": "9de0b2777f527781c698126bbfb451cf3914b0f26be22ed4646e72f15833a13b",
+      "n_training_cells": 4096
+    },
+    "DM10": {
+      "run_id": "F01_DM10_development4096_seed42_v1",
+      "run_sha256": "fc5c0bcf4d422aa9ba48dc4dbc117e2e97ee439280f4a2e9c5ed0b5f1a0bb565",
+      "bundle_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/F01_DM10_development4096_seed42_v1/annotation_bundle.joblib",
+      "bundle_sha256": "46c1b10e3c6bcee07279f41010d1e9ef88b55a657bca4588b881f6e502460267",
+      "training_manifest_sha256": "cd1ae61fa581982b8940c221addba19ee2d0cd4d9cde25632eabe19929a9957e",
+      "n_training_cells": 4096
+    },
+    "DM01": {
+      "run_id": "F01_DM01_development4096_seed42_v1",
+      "run_sha256": "19c0a446bc8b32e394df61056ecae508f1950dc5d021dd066e48d8fb5ca5475f",
+      "bundle_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/F01_DM01_development4096_seed42_v1/annotation_bundle.joblib",
+      "bundle_sha256": "9e5f86ec3af40d1395e7d8702250ffdb5469780a886c4efa79e1ef0e6f2c0990",
+      "training_manifest_sha256": "9de0b2777f527781c698126bbfb451cf3914b0f26be22ed4646e72f15833a13b",
+      "n_training_cells": 4096
+    },
+    "DM11": {
+      "run_id": "F01_DM11_development4096_seed42_v1",
+      "run_sha256": "6f97a96047f6bf785022380402727b67c20ed5557465686ba22e8f827ac968d5",
+      "bundle_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/F01_DM11_development4096_seed42_v1/annotation_bundle.joblib",
+      "bundle_sha256": "7006ebedec4854f9385a660d9c50ba7ceeccfdf4db621e32e79a6f6604466339",
+      "training_manifest_sha256": "cd1ae61fa581982b8940c221addba19ee2d0cd4d9cde25632eabe19929a9957e",
+      "n_training_cells": 4096
+    }
+  },
+  "development_confirmation_sha256": "4ffaf240536ac4d7a928d78791e818ea3e8dc2b8fc1b365cf08c89399fc2f310",
+  "excluded_KG_diagnostic_sha256": "e30bddfa774d134ffd564cb9d9cac7f849b1f2d860de7e61beb8f794d4d9a9c1",
+  "KG_diagnostic_selection_policy": "Exploratory third data hypothesis; explicitly ineligible to replace D1/partial confirmation or any of these8 external candidates",
+  "interface_probe_sha256": "52b654a03caeca167f55ea67d6bbb266f0388622d1235d00ce69ac78c3813a3b",
+  "external_metadata_contract_sha256": "3ba0550c7430543b1f87c285a5c1a318500cdf74e4d44d152f17435828581829",
+  "query_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/external/GSE151530_HCC/counts_query_v1.h5ad",
+  "query_sha256": "c319488d1280a97fd552097da60267d3e9bbc2e01a8f3b76681d19f0b4e47195",
+  "truth_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/external/GSE151530_HCC/counts_unscored.h5ad",
+  "truth_sha256": "f30aa290d0b5843d5e634a44a661aeab40bce2c3afa2cd19a163bd3d70f6c7e5",
+  "prediction_root": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/external_final_predictions_v1",
+  "external_scores_observed_before_release": false
+}

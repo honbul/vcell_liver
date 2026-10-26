@@ -1,0 +1,149 @@
+{
+  "status": "executed",
+  "project_commit": "b33acbc2a4c93b054440ff390b338edd9aee9183",
+  "source_sha256": "b7e003cb7ea11c65115527161875078f0684409dcf685f5051e02b5bc627bc69",
+  "records": [
+    {
+      "dataset_id": "GSE264667_HepG2_unseen_target_v1",
+      "physical_trainval_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/response/hepg2_v1/trainval_controls.h5ad",
+      "prepared_contract_sha256": "61a982f8e6aaaaacb860abbcbedd690b194893c38fcf08d1c4f9982733f00fe3",
+      "n_cells_in_physical_trainval_file": 126778,
+      "n_genes": 2000,
+      "fields": {
+        "cell_id": {
+          "source": "obs_names and original cell_id",
+          "status": "observed"
+        },
+        "dataset_id": {
+          "source": "immutable prepared contract dataset_id",
+          "value": "GSE264667_HepG2_unseen_target_v1",
+          "status": "known_dataset_constant"
+        },
+        "cell_line": {
+          "source": "Author HepG2-specific source file, GEO and study Methods; obs.cell_line",
+          "value": "HepG2",
+          "status": "known_dataset_constant"
+        },
+        "sample_id": {
+          "source": "No explicit biological sample identity in supplied metadata; gem_group is not substituted",
+          "value": "unknown",
+          "status": "unknown"
+        },
+        "replicate_id": {
+          "source": "obs.replicate_id; original per-biological-replicate assignment unavailable",
+          "value": "unknown",
+          "status": "unknown"
+        },
+        "intervention_type": {
+          "source": "Study Methods and obs.intervention_type",
+          "value": "CRISPRi",
+          "status": "known_dataset_constant"
+        },
+        "target_gene_ids": {
+          "source": "obs.gene_id validated Ensembl for treated targets; obs.target supplies author symbol",
+          "status": "observed",
+          "control": "not_applicable_non_targeting"
+        },
+        "guide_ids": {
+          "source": "obs.sgID_AB, author-filtered assigned guide string/pair; transcript variants grouped by target",
+          "status": "observed"
+        },
+        "control_type": {
+          "source": "obs.role==control and obs.control_type",
+          "value": "non-targeting within same gem_group",
+          "status": "observed"
+        },
+        "time": {
+          "source": "Study day7 readout and obs.time_days",
+          "value": 7,
+          "units": "days",
+          "status": "known_dataset_constant"
+        },
+        "batch": {
+          "source": "obs.gem_group and obs.batch; technical library batch",
+          "status": "observed"
+        },
+        "library_size": {
+          "source": "obs.library_size_panel9624, row sum before output-panel selection; author UMI_count retained separately",
+          "status": "observed"
+        }
+      },
+      "raw_counts": "layers[counts] of selected observed output genes; denominator from original9624-gene panel; source complete matrix retained separately",
+      "expression": "X is prepared log1p10k expression; not mislabeled raw counts",
+      "guide_efficiency": "unknown; no invented efficiency threshold",
+      "multiple_infection": "Use author-filtered assignment; do not infer a second gene from same-gene dual sgRNA design",
+      "heldout_policy": "Test-treated cells stored physically separately; not present in this inspected training/validation file"
+    },
+    {
+      "dataset_id": "GSE264667_HepG2_native_foundation_common_v1",
+      "physical_trainval_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/response/hepg2_foundation_common_v1/trainval_controls.h5ad",
+      "prepared_contract_sha256": "74362997c56264d00b4db801d3acf657c826d393a834c64f4796e6b18435745f",
+      "n_cells_in_physical_trainval_file": 22856,
+      "n_genes": 3303,
+      "fields": {
+        "cell_id": {
+          "source": "obs_names and original cell_id",
+          "status": "observed"
+        },
+        "dataset_id": {
+          "source": "immutable prepared contract dataset_id",
+          "value": "GSE264667_HepG2_native_foundation_common_v1",
+          "status": "known_dataset_constant"
+        },
+        "cell_line": {
+          "source": "Author HepG2-specific source file, GEO and study Methods; obs.cell_line",
+          "value": "HepG2",
+          "status": "known_dataset_constant"
+        },
+        "sample_id": {
+          "source": "No explicit biological sample identity in supplied metadata; gem_group is not substituted",
+          "value": "unknown",
+          "status": "unknown"
+        },
+        "replicate_id": {
+          "source": "obs.replicate_id; original per-biological-replicate assignment unavailable",
+          "value": "unknown",
+          "status": "unknown"
+        },
+        "intervention_type": {
+          "source": "Study Methods and obs.intervention_type",
+          "value": "CRISPRi",
+          "status": "known_dataset_constant"
+        },
+        "target_gene_ids": {
+          "source": "obs.gene_id validated Ensembl for treated targets; obs.target supplies author symbol",
+          "status": "observed",
+          "control": "not_applicable_non_targeting"
+        },
+        "guide_ids": {
+          "source": "obs.sgID_AB, author-filtered assigned guide string/pair; transcript variants grouped by target",
+          "status": "observed"
+        },
+        "control_type": {
+          "source": "obs.role==control and obs.control_type",
+          "value": "non-targeting within same gem_group",
+          "status": "observed"
+        },
+        "time": {
+          "source": "Study day7 readout and obs.time_days",
+          "value": 7,
+          "units": "days",
+          "status": "known_dataset_constant"
+        },
+        "batch": {
+          "source": "obs.gem_group and obs.batch; technical library batch",
+          "status": "observed"
+        },
+        "library_size": {
+          "source": "obs.library_size_panel9624, row sum before output-panel selection; author UMI_count retained separately",
+          "status": "observed"
+        }
+      },
+      "raw_counts": "layers[counts] of selected observed output genes; denominator from original9624-gene panel; source complete matrix retained separately",
+      "expression": "X is prepared log1p10k expression; not mislabeled raw counts",
+      "guide_efficiency": "unknown; no invented efficiency threshold",
+      "multiple_infection": "Use author-filtered assignment; do not infer a second gene from same-gene dual sgRNA design",
+      "heldout_policy": "Test-treated cells stored physically separately; not present in this inspected training/validation file"
+    }
+  ]
+}

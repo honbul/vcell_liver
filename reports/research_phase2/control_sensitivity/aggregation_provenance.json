@@ -1,0 +1,50 @@
+{
+  "status": "executed",
+  "project_commit": "d5fd2492eea1648ebe57dc0151f9406558340dab",
+  "source_sha256": "0fadc76d38dbf6a743157c269f72fb45bf5f87272992614556f90949d4619176",
+  "config_sha256": "e70e834a2b7243e5c5d281d5e24b06e37ccbacdd51cce29c53bb45bd123018cc",
+  "n_test_targets": 191,
+  "n_test_cells": 12839,
+  "n_primary_genes": 1977,
+  "full_control_reconstruction_max_abs_difference": 1.1920928955078125e-06,
+  "mean_intervention_control_mean_discrepancy_rmse": 0.06558361649513245,
+  "sources": [
+    {
+      "model_id": "B00_no_change",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_native_common_seed42_v1/B00_no_change_predictions.npz",
+      "sha256": "16f554deab811876cb1b232707f30c9b50be2a00a1d1c24919e1a2379b7bab69"
+    },
+    {
+      "model_id": "B01_train_mean",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_native_common_seed42_v1/B01_train_mean_predictions.npz",
+      "sha256": "890710134f61ec3ae62021ab934da3f2d935e18abaefb99161d3311d446f7992"
+    },
+    {
+      "model_id": "B02_GO_PCA_ridge",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_native_common_seed42_v1/B02_GO_PCA_ridge_predictions.npz",
+      "sha256": "068078a00a6f6461a174f758b6d66383ad2bcd09e189210f986231be4f19ab83"
+    },
+    {
+      "model_id": "B03_GEARS",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B03_GEARS_native_common_seed42_v1/predictions_mean.npz",
+      "sha256": "4272b42c644257d470295efa43f5b77dd14a63407f17c4e2af45e5df5a6bedd7"
+    },
+    {
+      "model_id": "B04_scGPT_pretrained",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B04_pretrained_native_common_seed42_v1/predictions_mean.npz",
+      "sha256": "2cc4b654897099df01eb9928fbcec783ea07ab9645f644e5a0b1326e1c3861ad"
+    },
+    {
+      "model_id": "B04_scGPT_random",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B04_random_native_common_seed42_v1/predictions_mean.npz",
+      "sha256": "4936f8686796d3f27511cf271ac7f2a2e0198f09b2515a9c846a9a098b0eac44"
+    }
+  ],
+  "selection": "All pre-existing test targets; no new model selection or training. Native input intervention is a separate lexicographic-first-target probe.",
+  "metric_notes": [
+    "Fixed prediction expression RMSE is algebraically invariant to subtracting the same evaluation control from truth and prediction; changing Delta reference can change Pearson and rankings",
+    "For simple additive predictors, replacing full control with sampled control is an actual alternative input mean with fitted Delta held fixed",
+    "20 seeds measure control-sampling Monte Carlo variability, not biological replicate uncertainty",
+    "Original191-target model predictions and scores remain unchanged; top20 is not FDR DEG validation"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "status": "executed",
+  "task": "annotation_inference_replay",
+  "model_id": "liverct",
+  "project_commit": "b33acbc2a4c93b054440ff390b338edd9aee9183",
+  "source_sha256": "6ce9b045d0a8c37bbe086f0786a8d1b49c712f982ee94d9d103f74601b62c583",
+  "source_run_id": "S00_liverct_full_fold0_seed42_v4",
+  "source_run_metadata_sha256": "d8d98cfe88c6a6ed936c6bc55cf00320ba0e5ab000a89c13f31b1564086077c3",
+  "source_prediction_sha256": "f7277c8fc991e3299901b215493cf4237afd13e3337030f5af1049d558e01116",
+  "regime": "replay_of_saved_query_adapted_context_not_zero_adaptation",
+  "n_real_query_cells": 64,
+  "target_selection": "First64 cells of original saved fold0 ordered query predictions; no performance selection",
+  "query_truth_labels_supplied": false,
+  "new_training_or_query_adaptation": false,
+  "original_query_adaptation_epochs": 20,
+  "feature_dimension": 30,
+  "comparisons": {
+    "LiverCT_changed_predictions_vs_original": 0,
+    "matched_SCANVI_changed_predictions_vs_original": 0,
+    "native_broad_classifier_type": "VotingClassifier",
+    "native_broad_classifier_members": [
+      "RandomForestClassifier",
+      "MLPClassifier",
+      "OneVsRestClassifier",
+      "XGBClassifier"
+    ],
+    "native_broad_classifier_sha256": "52fcb8ed5ddb41a14cde787e293e406b3d6af5f1b8b279fbe44e5f7781f5ff27",
+    "auxiliary_state_outputs": "Broad lv1 path exactly matches LabelPredict first stage. Unscored disease/transition refiners are omitted; original helper fails on absent epithelial groups in a64-cell immune-only slice."
+  },
+  "prediction_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/probes/classification_native64_v2/liverct/predictions.tsv",
+  "prediction_sha256": "c2b412012aa4c1f6341b8fd84521162ad14de8649e3bf81a8bda43d2240c2b2e",
+  "failure_or_limitations": [
+    "CPU vs original GPU numerical differences are reported, not hidden",
+    "LiverCT replay reuses its original whole-query-adapted checkpoint; this is not a new-query strict-inductive evaluation"
+  ],
+  "wall_seconds": 16.176906913518906,
+  "peak_cpu_rss_gib": 2.2891998291015625,
+  "peak_process_gpu_gib": null
+}

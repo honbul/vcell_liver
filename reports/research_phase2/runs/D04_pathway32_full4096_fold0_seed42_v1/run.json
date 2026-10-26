@@ -1,0 +1,103 @@
+{
+  "run_id": "D04_pathway32_full4096_fold0_seed42_v1",
+  "status": "executed",
+  "task": "annotation",
+  "regime": "inductive",
+  "dataset_version": "GSE149614_development_full",
+  "split_id": "development_donor4_v2",
+  "project_commit": "c8083c8102ccac4f68f8a5c33dbbe38ad71cccbf",
+  "seed": 42,
+  "data_variant": "D04_KG_compression_diagnostic",
+  "model_variant": "frozen_Geneformer_fixed_logistic_head",
+  "label_mapping": "original six broad lineages, unchanged",
+  "pretraining_overlap": "unknown",
+  "split_manifest": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver/manifests/research_phase2/development_donor4_v2.tsv",
+  "split_manifest_sha256": "3ea07b16f46b357bd4063ef467653ef9382c3f9ede2ccfffa0fd40a80d67ab7e",
+  "allowed_target_information": "own observed counts only; no fitting to outer evaluation donors",
+  "prediction_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/D04_pathway32_full4096_fold0_seed42_v1/predictions.tsv",
+  "prediction_sha256": "6899ce5d87c4eda42ee83a7c28c37a50165234a4ead20eef3ed24ecd7ac035bf",
+  "metrics": {
+    "macro_f1": 0.6818587118361034,
+    "balanced_accuracy": 0.758694040002409,
+    "n_cells": 12082,
+    "n_known": 12082,
+    "evaluation_coverage": 1.0,
+    "prediction_coverage": 1.0,
+    "n_unknown_truth": 0,
+    "n_abstained": 0,
+    "confidence_calibration": "uncalibrated; no confidence threshold; ECE/Brier reported",
+    "labels": [
+      "B",
+      "Endothelial",
+      "Fibroblast",
+      "Hepatocyte",
+      "Myeloid",
+      "T/NK"
+    ],
+    "answered_only_macro_f1": 0.6818587118361034,
+    "brier_multiclass": 0.42920794944082735,
+    "ece_10_bins": 0.06503763013587266
+  },
+  "model_id": "Reactome_only_PCA32",
+  "fold": 0,
+  "feature_dimension": 32,
+  "source_sha256": "6f74d963b14a8e2415416c16faa47d9c7386b5fcaf762f74ad706d4bc3784b28",
+  "hypothesis_id": "D-H3",
+  "baseline_run": "D00_full4096_fold0_seed42_v1",
+  "feature_source": "Reactome92 membership proxies only",
+  "feature_extraction_metadata": null,
+  "checkpoint_sha256": null,
+  "upstream_commit": "Reactome92",
+  "dataset_sha256": "9d3dab605f1cb5dd644768644ea90fc7937ea59cb9e9391d101a2a8a61593519",
+  "trainable_backbone_parameters": 0,
+  "n_inner_training": 2961,
+  "n_inner_validation": 1135,
+  "n_outer_training": 4096,
+  "n_evaluation": 12082,
+  "training_donors": [
+    "HCC03",
+    "HCC04",
+    "HCC05",
+    "HCC06",
+    "HCC07",
+    "HCC08"
+  ],
+  "validation_donors": [
+    "HCC03",
+    "HCC04"
+  ],
+  "evaluation_donors_or_perturbations": [
+    "HCC01",
+    "HCC10"
+  ],
+  "trainable_parameters": 198,
+  "head_selection": {
+    "validation_grid": [
+      {
+        "C": 0.01,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.7353041256498284
+      }
+    ],
+    "selected_C": 0.01,
+    "selected_class_weight": "balanced",
+    "validation_macro_f1": 0.7353041256498284
+  },
+  "training_manifest_sha256": "63eb553052167c589b38b9a98372eba40e26b7e8b3baff573f493bdcd3b6285c",
+  "validation_manifest_sha256": "bb1272fc3163fda1ec06401525b7ddc8e2f261b77cd8509fb4b77f33ccf1f93a",
+  "input_contract": "Frozen GF768 plus Reactome92 mean train-gene-zscores;128 pathways selected by train variance; compressed32 via train scaler/PCA without whitening; same source genes and training IDs as baseline",
+  "feature_audit_sha256": "315b7e3aca40594b9a89c5271111ac62edf5f6f2cf753bc266a67ffe695d6dec",
+  "wall_preprocessing_seconds": 38.64289040490985,
+  "wall_training_seconds": 0.06461876258254051,
+  "wall_inference_seconds": 0.009701766073703766,
+  "wall_total_seconds": 46.10096449032426,
+  "resource_measurement_scope": "Combined feature preparation and all4 heads in this fold process; per-condition head train/inference times separate; do not sum shared preparation four times",
+  "failure_or_limitations": [
+    "Exploratory fixed-seed4fold diagnostic, not3seed confirmation",
+    "Same-head family/C/class_weight; feature dimensions and linear parameter counts differ. Random32 is dimension-matched to real32",
+    "Not eligible to change current D1/partial confirmation or external candidate batch",
+    "Pathway scores are observed-expression proxies, not causal activity measurements"
+  ],
+  "peak_cpu_rss_gib": 6.644367218017578,
+  "peak_process_gpu_gib": null
+}

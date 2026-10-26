@@ -1,7 +1,7 @@
 {
   "status": "executed",
-  "project_commit": "c996bd83436c39cf7862471f5cab721a6bdbe007",
-  "source_sha256": "c9e05bb4ae00b2ff6cd7106b5360b7edfb7146306f7f51c3d60e14c2777bbdcc",
+  "project_commit": "b33acbc2a4c93b054440ff390b338edd9aee9183",
+  "source_sha256": "4d32608f1768cb100da72877549ec670e4509555e1399d44fa230ff08fe9bb0b",
   "immutable_original_runs_changed": false,
   "records": [
     {
@@ -9,6 +9,33 @@
       "paired_control_run_id": "S00_liverct_full_fold0_seed42_v4_scanvi_control",
       "source_run_sha256": "d8d98cfe88c6a6ed936c6bc55cf00320ba0e5ab000a89c13f31b1564086077c3",
       "model_checkpoint_sha256": "072b1e4e7fe87c73d0bef14b4397a914036d4b4a561d014107e77317e259d0d5",
+      "feature_dimension": 30,
+      "reference_attribute_sha256": "13f9a7c55f5e81dbcd5b4164f6874560b8e81cbda6cfac9190834313146448ab",
+      "reference_registry_n_cells": 331127,
+      "reference_registry_n_batches": 21,
+      "reference_registry_n_vars": 2000,
+      "reference_label_categories": [
+        "B cell",
+        "Cholangiocyte",
+        "Endothelial cell",
+        "Hepatocyte",
+        "Mesenchymal cell",
+        "Myeloid cell",
+        "NK/T cell",
+        "Plasma B cell"
+      ],
+      "reference_saved_training_indices_count": 298015,
+      "reference_saved_validation_indices_count": 33112,
+      "reference_native_head_training_label_count": "Exact ensemble fitting example count not retained in the inspected checkpoint; VAE reference registry size is separate",
+      "native_broad_classifier_type": "VotingClassifier",
+      "native_broad_classifier_members": [
+        "RandomForestClassifier",
+        "MLPClassifier",
+        "OneVsRestClassifier",
+        "XGBClassifier"
+      ],
+      "native_broad_classifier_voting": "soft",
+      "native_broad_classifier_sha256": "52fcb8ed5ddb41a14cde787e293e406b3d6af5f1b8b279fbe44e5f7781f5ff27",
       "total_model_parameters": 1423750,
       "requires_grad_parameters_under_reconstructed_query_contract": 578434,
       "requires_grad_tensors": {
@@ -31,16 +58,43 @@
         "classifier.classifier.0.fc_layers.Layer 1.0.weight": 16384,
         "classifier.classifier.0.fc_layers.Layer 1.0.bias": 128
       },
-      "native_svm_trainable_parameters_during_query_mapping": 0,
+      "native_broad_classifier_trainable_parameters_during_query_mapping": 0,
       "shared_adaptation_cost": true,
       "method": "CPU reconstruction of original load_query_data freeze contract on64 actual unlabeled evaluation cells; saved adapted checkpoint keys/shapes verified; no model fit or new scientific scoring",
-      "limitation": "Gradient hooks can mask columns of trainable tensors. requires_grad count is an upper bound on updated scalar entries, not an exact hook-adjusted count; native reference SVM remains fixed"
+      "limitation": "Gradient hooks can mask columns of trainable tensors. requires_grad count is an upper bound on updated scalar entries, not an exact hook-adjusted count; native reference voting ensemble remains fixed"
     },
     {
       "run_id": "S00_liverct_full_fold1_seed42_v4",
       "paired_control_run_id": "S00_liverct_full_fold1_seed42_v4_scanvi_control",
       "source_run_sha256": "7861a705ee8f782e5e359933e4f5e3916f26e04504f9a7a9acc4e1544c5dba2a",
       "model_checkpoint_sha256": "6c668924016d3d1bb80990fc5c4b6176ec61956ec0411b81a258367cc9f9250c",
+      "feature_dimension": 30,
+      "reference_attribute_sha256": "13f9a7c55f5e81dbcd5b4164f6874560b8e81cbda6cfac9190834313146448ab",
+      "reference_registry_n_cells": 331127,
+      "reference_registry_n_batches": 21,
+      "reference_registry_n_vars": 2000,
+      "reference_label_categories": [
+        "B cell",
+        "Cholangiocyte",
+        "Endothelial cell",
+        "Hepatocyte",
+        "Mesenchymal cell",
+        "Myeloid cell",
+        "NK/T cell",
+        "Plasma B cell"
+      ],
+      "reference_saved_training_indices_count": 298015,
+      "reference_saved_validation_indices_count": 33112,
+      "reference_native_head_training_label_count": "Exact ensemble fitting example count not retained in the inspected checkpoint; VAE reference registry size is separate",
+      "native_broad_classifier_type": "VotingClassifier",
+      "native_broad_classifier_members": [
+        "RandomForestClassifier",
+        "MLPClassifier",
+        "OneVsRestClassifier",
+        "XGBClassifier"
+      ],
+      "native_broad_classifier_voting": "soft",
+      "native_broad_classifier_sha256": "52fcb8ed5ddb41a14cde787e293e406b3d6af5f1b8b279fbe44e5f7781f5ff27",
       "total_model_parameters": 1423750,
       "requires_grad_parameters_under_reconstructed_query_contract": 578434,
       "requires_grad_tensors": {
@@ -63,16 +117,43 @@
         "classifier.classifier.0.fc_layers.Layer 1.0.weight": 16384,
         "classifier.classifier.0.fc_layers.Layer 1.0.bias": 128
       },
-      "native_svm_trainable_parameters_during_query_mapping": 0,
+      "native_broad_classifier_trainable_parameters_during_query_mapping": 0,
       "shared_adaptation_cost": true,
       "method": "CPU reconstruction of original load_query_data freeze contract on64 actual unlabeled evaluation cells; saved adapted checkpoint keys/shapes verified; no model fit or new scientific scoring",
-      "limitation": "Gradient hooks can mask columns of trainable tensors. requires_grad count is an upper bound on updated scalar entries, not an exact hook-adjusted count; native reference SVM remains fixed"
+      "limitation": "Gradient hooks can mask columns of trainable tensors. requires_grad count is an upper bound on updated scalar entries, not an exact hook-adjusted count; native reference voting ensemble remains fixed"
     },
     {
       "run_id": "S00_liverct_full_fold2_seed42_v4",
       "paired_control_run_id": "S00_liverct_full_fold2_seed42_v4_scanvi_control",
       "source_run_sha256": "1fc5593f0008605120415c8fa6b0022e2696145bafd2a78e1fa28c78207445ee",
       "model_checkpoint_sha256": "5c4f19910e8917e23540a739cf3468ab58a401bdd966360e9e22a204f9c35618",
+      "feature_dimension": 30,
+      "reference_attribute_sha256": "13f9a7c55f5e81dbcd5b4164f6874560b8e81cbda6cfac9190834313146448ab",
+      "reference_registry_n_cells": 331127,
+      "reference_registry_n_batches": 21,
+      "reference_registry_n_vars": 2000,
+      "reference_label_categories": [
+        "B cell",
+        "Cholangiocyte",
+        "Endothelial cell",
+        "Hepatocyte",
+        "Mesenchymal cell",
+        "Myeloid cell",
+        "NK/T cell",
+        "Plasma B cell"
+      ],
+      "reference_saved_training_indices_count": 298015,
+      "reference_saved_validation_indices_count": 33112,
+      "reference_native_head_training_label_count": "Exact ensemble fitting example count not retained in the inspected checkpoint; VAE reference registry size is separate",
+      "native_broad_classifier_type": "VotingClassifier",
+      "native_broad_classifier_members": [
+        "RandomForestClassifier",
+        "MLPClassifier",
+        "OneVsRestClassifier",
+        "XGBClassifier"
+      ],
+      "native_broad_classifier_voting": "soft",
+      "native_broad_classifier_sha256": "52fcb8ed5ddb41a14cde787e293e406b3d6af5f1b8b279fbe44e5f7781f5ff27",
       "total_model_parameters": 1423750,
       "requires_grad_parameters_under_reconstructed_query_contract": 578434,
       "requires_grad_tensors": {
@@ -95,16 +176,43 @@
         "classifier.classifier.0.fc_layers.Layer 1.0.weight": 16384,
         "classifier.classifier.0.fc_layers.Layer 1.0.bias": 128
       },
-      "native_svm_trainable_parameters_during_query_mapping": 0,
+      "native_broad_classifier_trainable_parameters_during_query_mapping": 0,
       "shared_adaptation_cost": true,
       "method": "CPU reconstruction of original load_query_data freeze contract on64 actual unlabeled evaluation cells; saved adapted checkpoint keys/shapes verified; no model fit or new scientific scoring",
-      "limitation": "Gradient hooks can mask columns of trainable tensors. requires_grad count is an upper bound on updated scalar entries, not an exact hook-adjusted count; native reference SVM remains fixed"
+      "limitation": "Gradient hooks can mask columns of trainable tensors. requires_grad count is an upper bound on updated scalar entries, not an exact hook-adjusted count; native reference voting ensemble remains fixed"
     },
     {
       "run_id": "S00_liverct_full_fold3_seed42_v4",
       "paired_control_run_id": "S00_liverct_full_fold3_seed42_v4_scanvi_control",
       "source_run_sha256": "92d88ee3bab49efdb468f3c419cf119883c438939d295f94f9f841d48dc22912",
       "model_checkpoint_sha256": "9e861d40460cde2b435d2ac4998c4bd3b522396db3b11bb68fdc5232934fc19d",
+      "feature_dimension": 30,
+      "reference_attribute_sha256": "13f9a7c55f5e81dbcd5b4164f6874560b8e81cbda6cfac9190834313146448ab",
+      "reference_registry_n_cells": 331127,
+      "reference_registry_n_batches": 21,
+      "reference_registry_n_vars": 2000,
+      "reference_label_categories": [
+        "B cell",
+        "Cholangiocyte",
+        "Endothelial cell",
+        "Hepatocyte",
+        "Mesenchymal cell",
+        "Myeloid cell",
+        "NK/T cell",
+        "Plasma B cell"
+      ],
+      "reference_saved_training_indices_count": 298015,
+      "reference_saved_validation_indices_count": 33112,
+      "reference_native_head_training_label_count": "Exact ensemble fitting example count not retained in the inspected checkpoint; VAE reference registry size is separate",
+      "native_broad_classifier_type": "VotingClassifier",
+      "native_broad_classifier_members": [
+        "RandomForestClassifier",
+        "MLPClassifier",
+        "OneVsRestClassifier",
+        "XGBClassifier"
+      ],
+      "native_broad_classifier_voting": "soft",
+      "native_broad_classifier_sha256": "52fcb8ed5ddb41a14cde787e293e406b3d6af5f1b8b279fbe44e5f7781f5ff27",
       "total_model_parameters": 1423750,
       "requires_grad_parameters_under_reconstructed_query_contract": 578434,
       "requires_grad_tensors": {
@@ -127,10 +235,10 @@
         "classifier.classifier.0.fc_layers.Layer 1.0.weight": 16384,
         "classifier.classifier.0.fc_layers.Layer 1.0.bias": 128
       },
-      "native_svm_trainable_parameters_during_query_mapping": 0,
+      "native_broad_classifier_trainable_parameters_during_query_mapping": 0,
       "shared_adaptation_cost": true,
       "method": "CPU reconstruction of original load_query_data freeze contract on64 actual unlabeled evaluation cells; saved adapted checkpoint keys/shapes verified; no model fit or new scientific scoring",
-      "limitation": "Gradient hooks can mask columns of trainable tensors. requires_grad count is an upper bound on updated scalar entries, not an exact hook-adjusted count; native reference SVM remains fixed"
+      "limitation": "Gradient hooks can mask columns of trainable tensors. requires_grad count is an upper bound on updated scalar entries, not an exact hook-adjusted count; native reference voting ensemble remains fixed"
     }
   ]
 }

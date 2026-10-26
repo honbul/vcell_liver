@@ -1,5 +1,7 @@
 # HCC Virtual Cell 튜토리얼
 
+00–05와 아래10k 표는 V1 보존 기록이다. 현재 연구의 진입점은 [단일 결과 인덱스](reports/research_phase2/RESULTS_INDEX.md)와 [연구 요약](reports/research_phase2/final_summary.md)다. [V2 진행 상태](reports/research_phase2/status.md), [V3 보완](docs/RESEARCH_AMENDMENT_V3.md), [데이터 카드](reports/research_phase2/data_card.md)를 함께 읽는다. V1의 두 test 환자는 새 blind test로 사용하지 않는다. 외부 최종 추론은 진행 중이며 전체 연구 완료를 선언하지 않는다.
+
 공개 GSE149614 raw count에서 PCA, scGPT whole-human, Geneformer-V2-104M의 환자 분리 세포 유형 분류와 Reactome 경로 특징을 비교한다. Geneformer 가상 삭제는 **실측 섭동 검증 전 embedding 변화 탐색**이다.
 
 G1에 두 격리 환경과 공개 HCC 입력을 준비하고, 2,000세포 PCA/scGPT/Geneformer 비교 및 KG 실험을 실제 실행했다. 한국어 노트북 6개는 새 kernel에서 Run All을 통과했다. 10,000세포 비교, 100세포 가상 삭제 및 110개 정합성 점검을 완료했다. 실제 결과는 [요약](reports/final_summary.md), 사용법은 [서버 튜토리얼](docs/SERVER_TUTORIAL.md)을 참고한다.
@@ -57,6 +59,8 @@ raw count·대형 표현·가중치·비밀값은 Git에 올리지 않는다. �
 
 [연구 계획 V2](docs/RESEARCH_EXPERIMENT_PLAN_V2.md)에 따라 기존 환경과 V1 결과를 보존하며 확장한다. [실행된 연구 튜토리얼 06](notebooks/06_research_development_cv.ipynb)은 분류와 공식 예제, [튜토리얼 07](notebooks/07_measured_perturbation_response.ipynb)은 실측 반응 기준선을 읽고 선택적으로 재실행하는 인터페이스다.
 
+[08 개선 실험](notebooks/08_data_model_improvements.ipynb), [09 라벨 없는 새 HCC 추론](notebooks/09_new_hcc_query_annotation.ipynb), [10 mouse liver TCDD](notebooks/10_conditional_mouse_liver_chemical_response.ipynb)도 실제 실행했다. 기본 동작은 저장된 실제 결과 읽기이며, 새 학습·추론은 명시적으로 옵션을 켰을 때만 실행한다. [실행 hash](reports/research_phase2/tutorial_execution.json)와 [자원 측정 범위](reports/research_phase2/resource_scope.md)를 함께 제공한다.
+
 HCC02/HCC09를 제외한 8명, 63,036개 전체 개발 세포의 4-fold donor OOF 결과다. 모든 평가 세포를 유지하고, 학습은 fold당 12,000개 자연 표본으로 제한했다. 이 결과는 반복 확인한 개발 결과이며 새 blind test가 아니다.
 
 | 동결 표현 | pooled macro-F1 |
@@ -67,4 +71,8 @@ HCC02/HCC09를 제외한 8명, 63,036개 전체 개발 세포의 4-fold donor OO
 | Geneformer CLcancer | 0.9458 |
 | scVI | 0.9379 |
 
-[분류 결과와 provenance](reports/research_phase2/annotation_full_summary/pooled_metrics.tsv), [scGPT 공식 예제의 실제 재현 차이](reports/research_phase2/official_reproduction.md), [모델별 실행 상태](reports/research_phase2/model_registry.tsv)를 참조한다. LiverCT도 4개 fold를 완료했다. 비라벨 query adaptation의 native macro-F1은 0.9017, prediction coverage는 0.8871이며 별도 평가다. 같은 적응 모델의 SCANVI head 대조는 0.7061이다. 외부 reference와 label 양이 다르므로 구조만의 비교로 해석하지 않는다. GEARS의 실측 반응 예측은 분류 및 Geneformer embedding shift와 다른 task다. scFoundation 공식 가중치 다운로드는 HTTP403으로 차단되어 근거를 남겼다. 외부 GSE151530은 최종 선택을 고정하기 전까지 미평가 상태를 유지한다.
+[분류 결과와 provenance](reports/research_phase2/annotation_full_summary/pooled_metrics.tsv), [scGPT 공식 예제의 실제 재현 차이](reports/research_phase2/official_reproduction.md), [모델별 실행 상태](reports/research_phase2/model_registry.tsv)를 참조한다. LiverCT도 4개 fold를 완료했다. 비라벨 query adaptation의 native macro-F1은 0.9017, prediction coverage는 0.8871이며 별도 평가다. 같은 적응 모델의 SCANVI head 대조는 0.7061이다. 외부 reference와 label 양이 다르므로 구조만의 비교로 해석하지 않는다. GEARS의 실측 반응 예측은 분류 및 Geneformer embedding shift와 다른 task다. scFoundation 공식 가중치 다운로드는 HTTP403으로 차단되어 근거를 남겼다. 외부 GSE151530은 모든 선택을 고정한 원 batch의 추론을 진행 중이다. 알려진 다섯 비악성 lineage 전이만 평가하며, 최종 점수는 아직 생성되지 않았다.
+
+실측 HepG2 CRISPRi의214개 target/2000gene 평가에서는 GO/PCA/ridge RMSE .10584, GEARS .13091이었다. 별도 공통191target/1977-primary-gene 조건에서 scGPT 사전학습 .12394, 무작위 초기화 .12268, GO/PCA/ridge .11073이었다. 사전학습 가중치의 추가 이득은 확인되지 않았다. Simple/native 비교에는 control 평균화 차이도 포함되며, V3 [control 감도](reports/research_phase2/control_sensitivity.md)에서 GO/ridge의 sampled-control 입력 RMSE .13050과 한 target의 saved-model 입력 감도를 별도 확인했다. 서로 다른 gene/target panel 점수를 합치지 않는다. [실측 genetic 결과](reports/research_phase2/leaderboard_genetic_response.tsv), [KG 압축 대조](reports/research_phase2/kg_compression_diagnostic/pooled_metrics.tsv), [가설 registry](reports/research_phase2/hypothesis_registry.tsv)에서 음성 결과까지 확인할 수 있다.
+
+조건부 mouse liver TCDD portal-treated holdout1074cells에서는 같은 VAE의 native arithmetic RMSE .13854, scVIDR regression .07629였다. 동물별 assignment가 없어 biological replicate CI를 주장하지 않으며, 사람 성인 HCC 약효 예측으로 해석하지 않는다. [Chemical 결과](reports/research_phase2/leaderboard_chemical_response.tsv)는 별도 표다.

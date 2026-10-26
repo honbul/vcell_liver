@@ -1,6 +1,6 @@
 {
   "status": "executed_partial_factorial",
-  "project_commit": "093580d59b9ffe89c61eab056487ba2930fd2fc4",
+  "project_commit": "b33acbc2a4c93b054440ff390b338edd9aee9183",
   "n_executed_runs": 24,
   "sources": [
     {
@@ -125,7 +125,8 @@
     }
   ],
   "validation": "Actual prediction hashes and identical ordered evaluation cells checked; shared head and validation manifests checked; actual training IDs matched within model-only pairs",
-  "confidence_interval": "5000 paired bootstrap samples of8 donors, average across3 seeds; fixed-six F1 recomputed from resampled donor confusion matrices",
+  "confidence_interval": "5000 paired bootstrap samples of8 donors, average across3 seeds; fixed-six F1 and per-class precision/recall recomputed from resampled donor confusion matrices",
+  "resource_scope": "Current process times per immutable run; shared frozen embedding extraction excluded and linked separately. Training includes inner/outer optimizer fits; inference includes validation and outer prediction/reload checks, not pure test latency.",
   "limitations": [
     "Only8 independent development donors",
     "Overlapping training folds and fixed trained models; bootstrap does not include retraining uncertainty",

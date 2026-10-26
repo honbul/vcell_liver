@@ -1,0 +1,70 @@
+{
+  "status": "executed",
+  "project_commit": "8d658f9171dfd13d6bbe4c46db81d1786da4c15f",
+  "task": "measured_genetic_response",
+  "dataset": "native_common",
+  "n_interventions": 191,
+  "n_cells": 12839,
+  "n_genes": 1977,
+  "model_ids": [
+    "B00_no_change",
+    "B01_train_mean",
+    "B02_GO_PCA_ridge",
+    "B03_GEARS",
+    "B04_scGPT_pretrained",
+    "B04_scGPT_random"
+  ],
+  "sources": [
+    {
+      "model_id": "B00_no_change",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_native_common_seed42_v1/B00_no_change_predictions.npz",
+      "sha256": "16f554deab811876cb1b232707f30c9b50be2a00a1d1c24919e1a2379b7bab69"
+    },
+    {
+      "model_id": "B01_train_mean",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_native_common_seed42_v1/B01_train_mean_predictions.npz",
+      "sha256": "890710134f61ec3ae62021ab934da3f2d935e18abaefb99161d3311d446f7992"
+    },
+    {
+      "model_id": "B02_GO_PCA_ridge",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_native_common_seed42_v1/B02_GO_PCA_ridge_predictions.npz",
+      "sha256": "068078a00a6f6461a174f758b6d66383ad2bcd09e189210f986231be4f19ab83"
+    },
+    {
+      "model_id": "B03_GEARS",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B03_GEARS_native_common_seed42_v1/predictions_mean.npz",
+      "sha256": "4272b42c644257d470295efa43f5b77dd14a63407f17c4e2af45e5df5a6bedd7"
+    },
+    {
+      "model_id": "B04_scGPT_pretrained",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B04_pretrained_native_common_seed42_v1/predictions_mean.npz",
+      "sha256": "2cc4b654897099df01eb9928fbcec783ea07ab9645f644e5a0b1326e1c3861ad"
+    },
+    {
+      "model_id": "B04_scGPT_random",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B04_random_native_common_seed42_v1/predictions_mean.npz",
+      "sha256": "4936f8686796d3f27511cf271ac7f2a2e0198f09b2515a9c846a9a098b0eac44"
+    }
+  ],
+  "primary_metric": "condition-macro Delta expression RMSE, lower better; subtracting the same matched-control vector makes prediction error identical in expression and Delta space",
+  "evaluator_only_top20": "Top20 absolute observed mean Delta; not statistical FDR DE; never supplied to predictors or model selection",
+  "constant_prediction_policy": "Delta Pearson undefined; constant ranking precision@20 undefined; AP of constant scores equals reference prevalence",
+  "effect_size_cutoffs_training_only": [
+    10.293476740519205,
+    12.026612599690754
+  ],
+  "guide_coverage": "Observed distinct sgID_AB assignment strings per target, not independently randomized guides or biological replicates; small multi-assignment subgroups have explicit support counts",
+  "guide_manifest_sha256": "6bbbed25ab2823711ca1d0cdf4ba0deb2d2cf5a606cf418332350694f138d3a0",
+  "gene_universes": {
+    "primary": 1977,
+    "all_observed_shared_genes": 3303,
+    "native_secondary": "all3303 observed shared genes, all intervention targets present; same fixed predictions"
+  },
+  "baseline_selection_metric_resolved": "Native common B02 selects alpha using the1977 primary genes; its immutable original metadata has a generic all-gene string. Executed source, selection grid and primary-mask contract take precedence.",
+  "uncertainty": "5000 paired bootstrap samples of target/intervention groups; shared controls and unknown biological replicates limit interpretation; no cell bootstrap",
+  "failure_or_limitations": [
+    "Conditional on this experimental population; does not establish biological replicate reproducibility",
+    "Native official Norman reproduction remains separate from strict HepG2",
+    "Pre-existing V2 RMSE/retrieval/sensitivity requirements added by an evaluator; fitted models and immutable original runs are unchanged"
+  ]
+}

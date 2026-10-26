@@ -1,0 +1,14 @@
+{
+  "status": "source_dependency_audit_and_forward_correction",
+  "review_basis_commit": "589159e460b4d0e78f3e9fe01fc699bcbc829602",
+  "required_dependencies": ["Executed48-condition4fold3seed confirmation", "Eight immutable final model bundles and development-only selection", "Real64 input interface check and frozen model/input/ontology/metric contracts"],
+  "unnecessary_dependency_found": "freeze_external_evaluation.py previously required completed KG compression provenance although the diagnostic cannot select any external candidate",
+  "correction_commit": "d5fd2492eea1648ebe57dc0151f9406558340dab",
+  "correction": "Remove KG completion assertions; record its hash only if the optional provenance file exists",
+  "existing_freeze_sha256": "9976bba55cfb4fe9f6fc9416c1efbf393770ccf595af5e674bd570f438ca8eb0",
+  "existing_batch": "Original eight frozen candidates retained; recovery12919 validates original models, inputs, confirmation and categorical64 equivalence, without requiring KG",
+  "existing_freeze_modified": false,
+  "existing_predictions_deleted": false,
+  "new_release_executed": false,
+  "limitation": "Original historical freeze still contains its then-current KG provenance hash. This is retained history, not a reason to regenerate or reinterpret the holdout."
+}

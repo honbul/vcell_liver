@@ -1,0 +1,84 @@
+{
+  "status": "executed",
+  "project_commit": "b33acbc2a4c93b054440ff390b338edd9aee9183",
+  "source_sha256": "eebabe4336e21b56feb8836e37a0930532163c5fd6fea213b580c92540adb27e",
+  "sources": [
+    {
+      "run_id": "S00_liverct_full_fold0_seed42_v4",
+      "prediction_sha256": "f7277c8fc991e3299901b215493cf4237afd13e3337030f5af1049d558e01116",
+      "n_cells": 12082,
+      "n_outside_six_lineages": 1724,
+      "raw_unknown_causes": [
+        "Cholangiocyte"
+      ]
+    },
+    {
+      "run_id": "S00_liverct_full_fold0_seed42_v4_scanvi_control",
+      "prediction_sha256": "2d426606e259ac7be0b0263bd312cbe80768b0550ebc754ad1e6fa3016e3aa4f",
+      "n_cells": 12082,
+      "n_outside_six_lineages": 2292,
+      "raw_unknown_causes": [
+        "Cholangiocyte"
+      ]
+    },
+    {
+      "run_id": "S00_liverct_full_fold1_seed42_v4",
+      "prediction_sha256": "ec6bd22b218fa34928e3e3cc853b2808bd6f185e0d15996bd7674defc23dca30",
+      "n_cells": 14852,
+      "n_outside_six_lineages": 256,
+      "raw_unknown_causes": [
+        "Cholangiocyte"
+      ]
+    },
+    {
+      "run_id": "S00_liverct_full_fold1_seed42_v4_scanvi_control",
+      "prediction_sha256": "c3c7f4536e0b9fbc102f38dfdccc5bd38c791dd3aeb84eff625f50e86d338f9e",
+      "n_cells": 14852,
+      "n_outside_six_lineages": 434,
+      "raw_unknown_causes": [
+        "Cholangiocyte"
+      ]
+    },
+    {
+      "run_id": "S00_liverct_full_fold2_seed42_v4",
+      "prediction_sha256": "deae2f1d5f06b9e9815365f1b5c3c81af3cacaff953ffbd7386501a204819296",
+      "n_cells": 14906,
+      "n_outside_six_lineages": 66,
+      "raw_unknown_causes": [
+        "Cholangiocyte"
+      ]
+    },
+    {
+      "run_id": "S00_liverct_full_fold2_seed42_v4_scanvi_control",
+      "prediction_sha256": "e5dbfcaf6a98d633cd32bad98436bedf888abe0dcff5be5fed65fd3e4bcd7829",
+      "n_cells": 14906,
+      "n_outside_six_lineages": 838,
+      "raw_unknown_causes": [
+        "Cholangiocyte"
+      ]
+    },
+    {
+      "run_id": "S00_liverct_full_fold3_seed42_v4",
+      "prediction_sha256": "33e9843b80b6ef92f2e233f885c79e18e6405c545dc704928dfe8300e329e848",
+      "n_cells": 21196,
+      "n_outside_six_lineages": 5071,
+      "raw_unknown_causes": [
+        "Cholangiocyte"
+      ]
+    },
+    {
+      "run_id": "S00_liverct_full_fold3_seed42_v4_scanvi_control",
+      "prediction_sha256": "13b6e86a5a626e2e0f3c12795fa2aa5642f3d02c9e7ff9486e5099d07febc2de",
+      "n_cells": 21196,
+      "n_outside_six_lineages": 8843,
+      "raw_unknown_causes": [
+        "Cholangiocyte"
+      ]
+    }
+  ],
+  "scored_native_column": "pred_lv1, from exact saved soft VotingClassifier broad-lineage stage",
+  "native_head": "RandomForestClassifier + MLPClassifier + OneVsRestClassifier + XGBClassifier, unweighted soft voting; exact types/hash in model_parameter_audit/liverct.json",
+  "confidence_threshold_applied_to_scored_column": false,
+  "coverage_interpretation": "Unknown predictions in both scored pipelines arise from Cholangiocyte outside the fixed six-lineage ontology; not a confidence rejection or demonstrated OOD detector",
+  "auxiliary_outputs": "Native suggest_label_lv1 uses a threshold and disease/transition scores use auxiliary models; those outputs were not used in six-lineage scoring"
+}
