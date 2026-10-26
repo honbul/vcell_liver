@@ -30,7 +30,7 @@ b.obs['control_match_id']=match_ids.astype(str);assert set(b.obs.control_match_i
 records=[];aggregates={}
 for target,part in b.obs[b.obs.role!='control'].groupby('target',observed=True):
     ix=b.obs_names.isin(part.index);weights=part.batch.astype(str).value_counts();control=sum(np.asarray(b.X[batch_controls[batch]].mean(0)).ravel()*n for batch,n in weights.items())/len(part)
-    aggregates[str(target)]=dict(truth=np.asarray(b.X[ix].mean(0)).ravel(),control=control,n_cells=len(part));row=split.set_index('target').loc[str(target)].to_dict();row.update(target=str(target),n_cells=len(part));records.append(row)
+    aggregates[str(target)]=dict(truth=np.asarray(b.X[ix].mean(0)).ravel(),control=control,n_cells=len(part));row=split.set_index('target').loc[str(target)].to_dict();row.update(target=str(target),n_cells=len(part),n_guide_assignments=part.sgID_AB.nunique(),n_batches=part.batch.nunique());records.append(row)
 manifest=pd.DataFrame(records).sort_values('target');manifest.to_csv(root/'target_split.tsv',sep='\t',index=False);var.to_csv(root/'gene_panel.tsv',sep='\t')
 for name,roles in [('trainval',{'train','val'}),('test',{'test'})]:
     targets=manifest[manifest.role.isin(roles)].target.to_numpy(dtype=str)

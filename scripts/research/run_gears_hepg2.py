@@ -10,10 +10,10 @@ from gears.utils import loss_fct
 from research_core import *
 from response_metrics import score_response
 
-p=argparse.ArgumentParser();p.add_argument('--run-id',required=True);p.add_argument('--epochs',type=int,default=20);p.add_argument('--seed',type=int,default=42);args=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--run-id',required=True);p.add_argument('--epochs',type=int,default=20);p.add_argument('--seed',type=int,default=42);p.add_argument('--task-root',default='hepg2_v1');p.add_argument('--patience',type=int,default=5);args=p.parse_args()
 out=REPORT/'runs'/args.run_id;assert not (out/'run.json').exists();out.mkdir(parents=True,exist_ok=True);raw=ASSETS/'runs'/args.run_id;raw.mkdir(parents=True,exist_ok=True)
 launch_commit=git_commit();source_hash=sha(Path(__file__));r=Resources();start=time.monotonic();torch.set_num_threads(8);torch.manual_seed(args.seed);np.random.seed(args.seed);random.seed(args.seed)
-root=ASSETS/'response/hepg2_v1';contract=json.loads((root/'contract.json').read_text());split=pd.read_csv(root/'target_split.tsv',sep='\t');assets=ASSETS/'official/GEARS';cache=ASSETS/'gears_cache/hepg2_strict_v1';(cache/'hepg2').mkdir(parents=True,exist_ok=True)
+root=ASSETS/'response'/args.task_root;contract=json.loads((root/'contract.json').read_text());split=pd.read_csv(root/'target_split.tsv',sep='\t');assets=ASSETS/'official/GEARS';cache=ASSETS/'gears_cache'/('hepg2_strict_v1' if args.task_root=='hepg2_v1' else args.task_root+'_strict');(cache/'hepg2').mkdir(parents=True,exist_ok=True)
 for name in ['gene2go_all.pkl','essential_all_data_pert_genes.pkl','go_essential_all']:
     link=cache/name
     if not link.exists():link.symlink_to(assets/name,target_is_directory=name=='go_essential_all')
@@ -29,7 +29,7 @@ try:
     data.dataset_name='hepg2';data.dataset_path=str(cache/'hepg2');data.split='strict_unseen_target';data.seed=args.seed;data.train_gene_set_size=.8;data.subgroup=None
     data.set2conditions={role:[target+'+ctrl' for target in split.loc[split.role==role,'target']] for role in ['train','val','test']};data.set2conditions['train'].append('ctrl')
     assert set(split.target).issubset(set(data.pert_names))
-    controls=np.flatnonzero(a.obs.role.to_numpy()=='control');control_by_batch={batch:controls[a.obs.iloc[controls].batch.astype(str).to_numpy()==batch] for batch in a.obs.batch.astype(str).unique()};assert all(len(v)>0 for v in control_by_batch.values())
+    controls=np.flatnonzero(a.obs.role.to_numpy()=='control');control_lookup={str(a.obs_names[i]):int(i) for i in controls};control_by_batch={batch:controls[a.obs.iloc[controls].batch.astype(str).to_numpy()==batch] for batch in a.obs.batch.astype(str).unique()};assert all(len(v)>0 for v in control_by_batch.values())
     training_mask=a.obs.role.to_numpy()=='train';training_mean=np.asarray(a.X[training_mask].mean(0)).ravel();control_mean=np.asarray(a.X[controls].mean(0)).ravel();fixed_top20=np.argsort(-np.abs(training_mean-control_mean),kind='stable')[:20]
     def graphs(adata,indices,seed):
         rng=np.random.default_rng(seed);result=[]
@@ -38,7 +38,7 @@ try:
             truth=np.asarray(adata.X[index].toarray()).ravel().astype(np.float32)
             if target=='non-targeting':control=truth;pert_idx=[-1];condition='ctrl'
             else:
-                matched=int(rng.choice(control_by_batch[batch]));control=np.asarray(a.X[matched].toarray()).ravel().astype(np.float32);pert_idx=[data.node_map_pert[target]];condition=target+'+ctrl'
+                matched=control_lookup[str(obs.control_match_id)] if 'control_match_id' in adata.obs else int(rng.choice(control_by_batch[batch]));control=np.asarray(a.X[matched].toarray()).ravel().astype(np.float32);pert_idx=[data.node_map_pert[target]];condition=target+'+ctrl'
             result.append(Data(x=torch.from_numpy(control[:,None].copy()),y=torch.from_numpy(truth[None,:].copy()),pert_idx=pert_idx,de_idx=fixed_top20,pert=condition))
         return result
     train_graphs=graphs(a,np.flatnonzero(a.obs.role.isin(['train','control']).to_numpy()),args.seed)
@@ -56,7 +56,7 @@ try:
                     key=condition.replace('+ctrl','');sums[key]=sums.get(key,0)+row;ns[key]=ns.get(key,0)+1
         phase['inference']+=time.monotonic()-started
         return {key:np.asarray(value/ns[key]) for key,value in sums.items()},ns
-    val=np.load(root/'trainval_aggregate.npz');is_val=val['split']=='val';val_targets=val['targets'][is_val];val_truth=val['truth'][is_val]
+    val=np.load(root/'trainval_aggregate.npz');is_val=val['split']=='val';val_targets=val['targets'][is_val];val_truth=val['truth'][is_val];primary=a.var.is_primary.to_numpy() if 'is_primary' in a.var else np.ones(a.n_vars,dtype=bool)
     best=None;patience=0;first_gradient=None
     for epoch in range(args.epochs):
         started=time.monotonic();model.model.train()
@@ -68,26 +68,27 @@ try:
             torch.nn.utils.clip_grad_value_(model.model.parameters(),1.);optimizer.step()
             if step%500==0:print('TRAIN',epoch+1,step,float(loss),flush=True)
         scheduler.step();phase['training']+=time.monotonic()-started
-        predicted,ns=aggregate(data.dataloader['val_loader'],model.model);values=np.stack([predicted[str(t)] for t in val_targets]);error=float(np.mean((values-val_truth)**2));history.append(dict(epoch=epoch+1,validation_all_gene_intervention_mean_mse=error));print('VALIDATION',history[-1],flush=True)
+        predicted,ns=aggregate(data.dataloader['val_loader'],model.model);values=np.stack([predicted[str(t)] for t in val_targets]);error=float(np.mean((values[:,primary]-val_truth[:,primary])**2));history.append(dict(epoch=epoch+1,validation_primary_gene_intervention_mean_mse=error));print('VALIDATION',history[-1],flush=True)
         if best is None or error<best[0]:best=(error,epoch+1,copy.deepcopy(model.model.state_dict()));patience=0
         else:patience+=1
         torch.save(dict(current=model.model.state_dict(),best=best[2],optimizer=optimizer.state_dict(),epoch=epoch+1,history=history),raw/'last_training_state.pt')
-        if patience>=5:break
+        if patience>=args.patience:break
     model.model.load_state_dict(best[2]);model.best_model=copy.deepcopy(model.model);model.save_model(str(raw/'model'))
     write_json(out/'selection.json',dict(status='frozen_before_heldout_response_open',chosen_epoch=best[1],validation_mse=best[0],history=history,test_treated_read_before_selection=False,
-        graph_scope='Training-target cells and supplied control cells only; validation excluded from coexpression; no test treated file opened',loss_support='all2000 output genes for training targets, not heldout DE ranks'))
+        graph_scope='Training-target cells and supplied control cells only; validation excluded from coexpression; no test treated file opened',loss_support=f'all{a.n_vars} shared output genes for training targets, not heldout DE ranks'))
     # The held-out response files are opened only after model selection and checkpoint save.
     test=ad.read_h5ad(root/'heldout_treated.h5ad');assert not set(test.obs.target)&set(a.obs.target)
     assert np.array_equal(test.var_names,a.var_names)
     test_graphs=graphs(test,np.arange(test.n_obs),args.seed+2);test_loader=DataLoader(test_graphs,batch_size=128,shuffle=False);predicted,ns=aggregate(test_loader,model.best_model)
     observed=np.load(root/'test_aggregate.npz');targets=observed['targets'];pred=np.stack([predicted[str(t)] for t in targets]);assert sum(ns.values())==test.n_obs
-    np.savez_compressed(raw/'predictions_mean.npz',targets=targets,prediction=pred,n_cells=np.array([ns[str(t)] for t in targets]),gene_names=a.var_names.to_numpy(dtype=str))
+    np.savez_compressed(raw/'predictions_mean.npz',targets=targets,prediction=pred,n_cells=np.array([ns[str(t)] for t in targets]),gene_names=a.var_names.to_numpy(dtype=str),primary_mask=primary)
     rows=score_response(targets,observed['truth'],observed['control'],pred,observed['n_cells'],gene_names=a.var_names);pd.DataFrame(rows).to_csv(out/'per_intervention.tsv',sep='\t',index=False)
-    metrics={key:float(value) for key,value in pd.DataFrame(rows).mean(numeric_only=True).items()};res=r.finish()
+    primary_rows=score_response(targets,observed['truth'][:,primary],observed['control'][:,primary],pred[:,primary],observed['n_cells'],gene_names=a.var_names[primary]);pd.DataFrame(primary_rows).to_csv(out/'per_intervention_primary.tsv',sep='\t',index=False)
+    metrics={key:float(value) for key,value in pd.DataFrame(primary_rows).mean(numeric_only=True).items()};res=r.finish()
     write_json(out/'run.json',dict(run_id=args.run_id,status='executed',task='measured_genetic_response',regime='strict_unseen_target_with_matched_controls',model_id='GEARS_HepG2',project_commit=launch_commit,source_sha256=source_hash,upstream_commit='f374e43e197b295016d80395d7a54ddb81cc6769',seed=args.seed,
-        dataset_id=contract['dataset_id'],data_contract_sha256=sha(root/'contract.json'),target_split_sha256=sha(root/'target_split.tsv'),n_train_interventions=int((split.role=='train').sum()),n_validation_interventions=int((split.role=='val').sum()),n_test_interventions=len(targets),n_test_cells=test.n_obs,n_genes=a.n_vars,
+        dataset_id=contract['dataset_id'],data_contract_sha256=sha(root/'contract.json'),target_split_sha256=sha(root/'target_split.tsv'),n_train_interventions=int((split.role=='train').sum()),n_validation_interventions=int((split.role=='val').sum()),n_test_interventions=len(targets),n_test_cells=test.n_obs,n_genes=a.n_vars,n_primary_genes=int(primary.sum()),
         trainable_parameters=sum(p.numel() for p in model.model.parameters() if p.requires_grad),hidden_size=64,batch_size=32,max_epochs=args.epochs,chosen_epoch=best[1],executed_epochs=len(history),first_gradient_norm=first_gradient,
-        validation_selection='all-gene equal-intervention mean MSE; patience5; no test DE ranks',metrics=metrics,prediction_path=str(raw/'predictions_mean.npz'),prediction_sha256=sha(raw/'predictions_mean.npz'),
+        validation_selection=f'predeclared primary gene panel equal-intervention mean MSE; patience{args.patience}; no test DE ranks',metrics=metrics,prediction_path=str(raw/'predictions_mean.npz'),prediction_sha256=sha(raw/'predictions_mean.npz'),
         wall_preprocessing_seconds=phase['preprocessing'],wall_training_seconds=phase['training'],wall_inference_seconds=phase['inference'],wall_total_seconds=res.pop('wall_seconds'),
         failure_or_limitations=['Native GEARS architecture, modified strict data/training/evaluation policy; not original-paper numerical reproduction','One random same-batch control per treated cell; simple B00 uses the exact full matched control mean','HepG2 single-target CRISPRi only; biological replicate and guide efficiency unknown','Unpaired intervention-mean prediction, not prospective single-cell trajectory or adult HCC treatment response'],**res))
     print('GEARS_HEPG2_COMPLETE',metrics,flush=True)
