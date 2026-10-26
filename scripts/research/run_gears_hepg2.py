@@ -82,7 +82,7 @@ try:
     test_graphs=graphs(test,np.arange(test.n_obs),args.seed+2);test_loader=DataLoader(test_graphs,batch_size=128,shuffle=False);predicted,ns=aggregate(test_loader,model.best_model)
     observed=np.load(root/'test_aggregate.npz');targets=observed['targets'];pred=np.stack([predicted[str(t)] for t in targets]);assert sum(ns.values())==test.n_obs
     np.savez_compressed(raw/'predictions_mean.npz',targets=targets,prediction=pred,n_cells=np.array([ns[str(t)] for t in targets]),gene_names=a.var_names.to_numpy(dtype=str))
-    rows=score_response(targets,observed['truth'],observed['control'],pred,observed['n_cells']);pd.DataFrame(rows).to_csv(out/'per_intervention.tsv',sep='\t',index=False)
+    rows=score_response(targets,observed['truth'],observed['control'],pred,observed['n_cells'],gene_names=a.var_names);pd.DataFrame(rows).to_csv(out/'per_intervention.tsv',sep='\t',index=False)
     metrics={key:float(value) for key,value in pd.DataFrame(rows).mean(numeric_only=True).items()};res=r.finish()
     write_json(out/'run.json',dict(run_id=args.run_id,status='executed',task='measured_genetic_response',regime='strict_unseen_target_with_matched_controls',model_id='GEARS_HepG2',project_commit=launch_commit,source_sha256=source_hash,upstream_commit='f374e43e197b295016d80395d7a54ddb81cc6769',seed=args.seed,
         dataset_id=contract['dataset_id'],data_contract_sha256=sha(root/'contract.json'),target_split_sha256=sha(root/'target_split.tsv'),n_train_interventions=int((split.role=='train').sum()),n_validation_interventions=int((split.role=='val').sum()),n_test_interventions=len(targets),n_test_cells=test.n_obs,n_genes=a.n_vars,
