@@ -7,7 +7,7 @@ from sklearn.linear_model import Ridge
 from research_core import *
 from response_metrics import score_response
 
-p=argparse.ArgumentParser();p.add_argument('--task',choices=['norman','hepg2'],required=True);p.add_argument('--run-id',required=True);p.add_argument('--source-run',default='R01_norman_simulation_seed1_v2');args=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--task',choices=['norman','hepg2'],required=True);p.add_argument('--run-id',required=True);p.add_argument('--source-run',default='R01_norman_simulation_seed1_v2');p.add_argument('--task-root',default='hepg2_v1');args=p.parse_args()
 out=REPORT/'runs'/args.run_id;assert not (out/'run.json').exists();out.mkdir(parents=True,exist_ok=True)
 raw=ASSETS/'runs'/args.run_id;raw.mkdir(parents=True,exist_ok=True);r=Resources();start=time.monotonic()
 gene2go=pickle.load(open(ASSETS/'official/GEARS/gene2go_all.pkl','rb'))
@@ -20,9 +20,11 @@ if args.task=='norman':
         targets=sorted(set(split[role])-{'ctrl'});truth=np.stack([np.asarray(a.X[conditions==target].mean(0)).ravel() for target in targets]);counts=np.array([int((conditions==target).sum()) for target in targets]);ctrl=np.broadcast_to(control,truth.shape).copy()
         return dict(targets=np.array(targets),truth=truth,control=ctrl,n_cells=counts)
     train=group('train');val=group('val');test_loader=lambda:group('test')
+    gene_names=a.var.gene_name.astype(str).to_numpy();primary=np.ones(a.n_vars,dtype=bool)
     data_provenance=dict(dataset_id='official_norman',regime='official_reproduction_matched_baselines',split_source=args.source_run,split_sha256=sha(ASSETS/'runs'/args.source_run/'split.json'),data_sha256=sha(ASSETS/'official/GEARS/norman/perturb_processed.h5ad'),readout='official preprocessed log-normalized expression',cell_line='K562',intervention_type='CRISPRa')
 else:
-    root=ASSETS/'response/hepg2_v1';tv=np.load(root/'trainval_aggregate.npz');tr=tv['split']=='train';va=tv['split']=='val'
+    root=ASSETS/'response'/args.task_root;tv=np.load(root/'trainval_aggregate.npz');tr=tv['split']=='train';va=tv['split']=='val'
+    gene_names=tv['gene_names'];primary=tv['primary_mask'] if 'primary_mask' in tv.files else np.ones(len(gene_names),dtype=bool)
     keys=['targets','truth','control','n_cells'];train={k:tv[k][tr] for k in keys};val={k:tv[k][va] for k in keys}
     def test_loader():
         d=np.load(root/'test_aggregate.npz');return {k:d[k] for k in keys}
@@ -41,7 +43,7 @@ xtr=features(train['targets']);xva=features(val['targets']);delta=train['truth']
 pca=PCA(n_components=min(32,len(delta)-1,delta.shape[1]),random_state=42).fit(delta);z=pca.transform(delta)
 preprocessing=time.monotonic()-start;start=time.monotonic();grid=[];best=None
 for alpha in [1.,10.,100.]:
-    ridge=Ridge(alpha=alpha,solver='lsqr').fit(xtr,z);prediction=val['control']+pca.inverse_transform(ridge.predict(xva));error=float(np.mean((prediction-val['truth'])**2));grid.append(dict(alpha=alpha,validation_mse=error))
+    ridge=Ridge(alpha=alpha,solver='lsqr').fit(xtr,z);prediction=val['control']+pca.inverse_transform(ridge.predict(xva));error=float(np.mean((prediction[:,primary]-val['truth'][:,primary])**2));grid.append(dict(alpha=alpha,validation_mse=error))
     if best is None or error<best[0]:best=(error,alpha,ridge)
 training=time.monotonic()-start
 # The selection record is written before opening held-out measured responses.
@@ -51,8 +53,12 @@ joblib.dump(dict(pca=pca,ridge=best[2],GO_terms=terms),raw/'go_ridge.joblib')
 start=time.monotonic();test=test_loader();predictions={'B00_no_change':test['control'],'B01_train_mean':test['control']+mean_delta,'B02_GO_PCA_ridge':test['control']+pca.inverse_transform(best[2].predict(features(test['targets'])))}
 rows=[]
 for model,pred in predictions.items():
-    rows.extend(dict(model_id=model,**row) for row in score_response(test['targets'],test['truth'],test['control'],pred,test['n_cells']))
-    np.savez_compressed(raw/f'{model}_predictions.npz',targets=test['targets'],prediction=pred)
+    rows.extend(dict(model_id=model,**row) for row in score_response(test['targets'],test['truth'],test['control'],pred,test['n_cells'],gene_names=gene_names))
+    np.savez_compressed(raw/f'{model}_predictions.npz',targets=test['targets'],prediction=pred,gene_names=gene_names,primary_mask=primary)
+primary_rows=[]
+for model,pred in predictions.items():primary_rows.extend(dict(model_id=model,**row) for row in score_response(test['targets'],test['truth'][:,primary],test['control'][:,primary],pred[:,primary],test['n_cells'],gene_names=gene_names[primary]))
+pd.DataFrame(primary_rows).to_csv(out/'per_intervention_primary.tsv',sep='\t',index=False)
+pd.DataFrame(primary_rows).groupby('model_id').mean(numeric_only=True).to_csv(out/'primary_metrics.tsv',sep='\t')
 inference=time.monotonic()-start;frame=pd.DataFrame(rows);frame.to_csv(out/'per_intervention.tsv',sep='\t',index=False)
 summary=frame.groupby('model_id').mean(numeric_only=True);summary.to_csv(out/'metrics.tsv',sep='\t')
 res=r.finish();write_json(out/'run.json',dict(run_id=args.run_id,status='executed',task='measured_genetic_response',model_id='B00_B01_B02_matched_controls',project_commit=git_commit(),seed=42,
