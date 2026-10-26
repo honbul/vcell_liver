@@ -18,7 +18,7 @@ keep=obs.target.isin(eligible)|(obs.role=='control');keep&=(obs.role!='train')|o
 ids=raw.obs_names[raw.obs_names.isin(obs.index)];assert len(ids)==len(obs);obs=obs.loc[ids].copy()
 positions=raw.obs_names.get_indexer(ids);all_counts=sp.csr_matrix(raw.X[positions],dtype=np.float32);libraries=np.asarray(all_counts.sum(1)).ravel();assert np.all(libraries>0)
 valid=np.array([s in gene_lookup for s in symbols]);rows=np.flatnonzero(valid);cols=np.array([gene_lookup[s] for s in symbols[valid]])
-mapping=sp.csr_matrix((np.ones(len(rows)),(rows,cols)),shape=(len(symbols),len(genes)));counts=(all_counts@mapping).tocsr();log=counts.multiply((1e4/libraries)[:,None]).tocsr();log.data=np.log1p(log.data)
+mapping=sp.csr_matrix((np.ones(len(rows),dtype=np.float32),(rows,cols)),shape=(len(symbols),len(genes)));counts=(all_counts@mapping).tocsr();log=counts.multiply((1e4/libraries)[:,None]).tocsr();log.data=np.log1p(log.data)
 var=pd.DataFrame(dict(gene_name=genes,is_primary=np.isin(genes,list(primary))),index=genes);b=ad.AnnData(log,obs=obs,var=var);b.layers['counts']=counts;b.obs['library_size_panel9624']=libraries
 control_ix=np.flatnonzero(b.obs.role.to_numpy()=='control');batch_controls={batch:control_ix[b.obs.iloc[control_ix].batch.astype(str).to_numpy()==batch] for batch in b.obs.batch.astype(str).unique()};assert all(len(v)>0 for v in batch_controls.values())
 match_ids=pd.Series(index=b.obs_names,dtype=object)
