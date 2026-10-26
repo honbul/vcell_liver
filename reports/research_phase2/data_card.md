@@ -10,7 +10,7 @@
 | GSE264667 HepG2 | target1714/214/214 train/val/test, test13994cells, same-batch non-targeting4976controls | day7 CRISPRi; dual sgRNA는 같은 gene 설계. Hepatoblastoma 유래이며 adult HCC 환자와 구분 |
 | HepG2 native common | 동일3303관측gene, primary1977, test191targets/12839cells | scGPT flags에 target이 실제 panel에 있어야 함. 1544training targets×4treated와4976controls. Parent train-derived panel을 유지한 update-budget 비교 |
 | Nault/scVIDR mouse liver | source30927cells/22213genes 중 author nonimmune6types18865cells, train17791/test1074portal-treated | TCDD30μg/kg,4일마다28일 노출. Same compound의 context transfer. Per-mouse assignment 불명, biological replicate CI 없음 |
-| GSE151530 HCC | HCC만50023cells,25donors/32biopsies,18667providedgenes | 알려진5lineages27212cells, malignant/unclassified22811cells는 Unknown. Gold Hepatocyte 없음. External final release 전 model score 금지 |
+| GSE151530 HCC | HCC만50023cells,25donors/32biopsies,18667providedgenes | 알려진5lineages27212cells, malignant/unclassified22811cells는 Unknown. Gold Hepatocyte 없음. 원 freeze 후8후보 최종 평가 완료; 이후 같은 cohort를 새 blind test로 재사용하지 않음 |
 
 HepG2는 target gene의 guide·transcript 변형을 모두 같은 split에 묶었다. 기술 배치 gem_group를 biological replicate로 취급하지 않는다. 전체2000gene task와 native common1977-primary-gene task는 population이 달라 점수를 직접 비교하지 않는다. Native common에서 제외된 target/cell coverage도 contract에 기록했다.
 

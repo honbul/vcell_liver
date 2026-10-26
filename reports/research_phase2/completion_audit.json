@@ -1,0 +1,342 @@
+{
+  "status": "verified_requested_execution_and_reporting_scope",
+  "verified_at_utc": "2026-10-26T16:07:14.940826+00:00",
+  "project_commit": "49d9e0a79732d172ec9745b155179562e2b4ffac",
+  "source_sha256": "c61da1d7601a29a3ef85e0b00081667468948d95c09f8d2edecaf170d37b9d56",
+  "branch": "research/phase2-v2",
+  "objective": "V2 research plan with all8 V3 corrections and completed original external final; not narrowed to reading the attachment",
+  "original_V1_tracked_notebooks_environment_definitions_and_core_helpers_unchanged": true,
+  "requirements": [
+    {
+      "requirement": "V2_official_execution_and_V3_7_bounded_gap_check",
+      "status": "verified",
+      "evidence": [
+        {
+          "path": "official_reproduction.md",
+          "sha256": "2907aaa2b635955723a0bf5268daf4d98654e10f288a090c272bbed7ce5b2ef7"
+        },
+        {
+          "path": "runs/R00_ms_full_seed0_v2/run.json",
+          "sha256": "f7e8eb2efae3fc10d7092fe6f82353982fc3cb704ea3db82d408e04790d0e09b"
+        },
+        {
+          "path": "runs/R01_norman_simulation_seed1_v2/run.json",
+          "sha256": "2175d4bb3fec546ab4f21f2556fc0dfb2e0da5f7c8d722494b06b0c6e4a5283d"
+        },
+        {
+          "path": "official_norman_population/audit.json",
+          "sha256": "6646de855bdb0f8a458aff66a192be8e164a5cffe671a70a96fcd599e31b1148"
+        },
+        {
+          "path": "official_scgpt_gap_audit/audit.json",
+          "sha256": "2e27f32139d521800d1a22c0d7a7df7be4984708355520d4227cc726f35f7b3d"
+        },
+        {
+          "path": "official_scgpt_gap_audit/source_comparison.json",
+          "sha256": "be409d4fa0ec21792adcb768118e43fa6ce72ecfa7811d2b6e23e8384cb89275"
+        }
+      ],
+      "conclusion": "Official flows executed. MS numerical mismatch and unseparated cause retained; no quantitative-reproduction success claim."
+    },
+    {
+      "requirement": "V2_basic_annotation_or_concrete_scFoundation_blocker",
+      "status": "verified",
+      "evidence": [
+        {
+          "path": "annotation_full_summary/provenance.json",
+          "sha256": "d1fbbe4b1999fa6fd193c68a43f178a7f2182573940deb27a3f08f918cc4faee"
+        },
+        {
+          "path": "annotation_uncertainty_inductive/provenance.json",
+          "sha256": "0d2bae052c13113f942ac52380e53e440722ef6e6325a43be33e18d80dd2789e"
+        },
+        {
+          "path": "leaderboard_annotation_inductive.tsv",
+          "sha256": "cd7d83125792400e7b1ae828644dcc8632da06a64e90359bc5c9c995ee93e24b"
+        },
+        {
+          "path": "scfoundation_access.json",
+          "sha256": "84a795b6ee55dca7ba9905384a56c126923a6110901cb59867f53bbbfd931412"
+        }
+      ],
+      "conclusion": "Five real fourfold pipelines; scFoundation is a documented official-weight-access blocker, not an executed score."
+    },
+    {
+      "requirement": "V2_specialized_models_and_information_regimes",
+      "status": "verified",
+      "evidence": [
+        {
+          "path": "model_parameter_audit/liverct.json",
+          "sha256": "32ac7fb5caf9ca3bcf64f935f03c64ffed6c9119b193351c61e40c0dc988ed45"
+        },
+        {
+          "path": "liverct_output_audit/provenance.json",
+          "sha256": "c9267dba5b738101631c1a21281c24b77ca4622f0c8cb28f9fd1f5999a00b627"
+        },
+        {
+          "path": "liverct_native_head.md",
+          "sha256": "be393897c99ed1a4d671cf652a8801bd4758dd1c8fc46f8dc5b5cead67d2163f"
+        },
+        {
+          "path": "leaderboard_annotation_query_adaptive.tsv",
+          "sha256": "10c55cd120b58d8a9a324d2613b0fd8c417f1886af4552436a51680a24d78917"
+        }
+      ],
+      "conclusion": "CLcancer executed in the inductive comparison; LiverCT reference/query adaptation and ontology coverage remain separate."
+    },
+    {
+      "requirement": "V3_2_site_mapping_and_existing_OOF_errors",
+      "status": "verified",
+      "evidence": [
+        {
+          "path": "tissue_error_analysis/provenance.json",
+          "sha256": "48dcb51f7ee2260d342dc12d9337a94199ec37132cbd5b68bc832b8f1f798b32"
+        },
+        {
+          "path": "tissue_error_analysis/metadata_schema_resolution.json",
+          "sha256": "c5854c8fe7d01d9116a72573b1676bedc82b9b44111dfbeb0945a433de172957"
+        },
+        {
+          "path": "tissue_error_analysis/canonical_schema_mapping_observation.json",
+          "sha256": "cd16f3c6d25c5d8c255941f49c48425b340b6f0fb3ed28af12b3f42bb53fed64"
+        },
+        {
+          "path": "tissue_error_analysis/support_by_tissue_site.tsv",
+          "sha256": "cc5ab956858631034e57d7d9dafdfe21288908e5c9c9f3050bb17720c6e2346a"
+        },
+        {
+          "path": "tissue_error_analysis/errors_by_donor_tissue_lineage.tsv",
+          "sha256": "5a28cfd5dfb4430911cb062abec9879ee9602fec468745652feb65d47c503fec"
+        },
+        {
+          "path": "tissue_error_analysis/within_donor_tissue_comparisons.tsv",
+          "sha256": "db0fa90dbaee4f6406b5a4836ad333bb0936762a03ec4cfc334f350472e69936"
+        },
+        {
+          "path": "tissue_error_analysis/context_provenance.json",
+          "sha256": "2e9c4ff7384e397a0cb4628a668c965ad4f290009fd11c05f705abfd63a27d65"
+        },
+        {
+          "path": "development_insights.md",
+          "sha256": "7c5e73f4a9c381c9a7e088e35d80bb48bb1c77ebd8bd1f68e62c87af9e7dc481"
+        }
+      ],
+      "conclusion": "Original site values retained across all63036cells; donor/site/lineage and UMI/B error strata use existing predictions, without causal claims."
+    },
+    {
+      "requirement": "V2_data_model_controls_LoRA_and_V3_4_all48_factors",
+      "status": "verified",
+      "evidence": [
+        {
+          "path": "sampling_screen/audit.json",
+          "sha256": "bebba4b73802c74ad6d2bf4025b1f5a3e5ea01c5caff7f60b05edcf837588ea7"
+        },
+        {
+          "path": "runs/M01_full4096_fold0_seed42_v1/run.json",
+          "sha256": "ec2f1422d00de287a439a7d8d8c40fc6cf71be77815714448fec12bea3a19fc0"
+        },
+        {
+          "path": "runs/M02_full4096_fold0_seed42_v1/run.json",
+          "sha256": "1add83dfa2be24cc2f96f7f4c9a4bbf583ee756c6812cea9227cf483307533fb"
+        },
+        {
+          "path": "runs/M03_full4096_fold0_seed42_v2/run.json",
+          "sha256": "68d28c731eafc1cdf7d115dcfcb30e3229cec9c175d643153bd752d4c879ac3d"
+        },
+        {
+          "path": "runs/M03_lora_module_gradient_reload_probe_v1/run.json",
+          "sha256": "8f03eb4714cf24d51d4872f6f23706f2a89215ba833c2a8216b7cb09ea17b26d"
+        },
+        {
+          "path": "factorial_confirmation/provenance.json",
+          "sha256": "4ffaf240536ac4d7a928d78791e818ea3e8dc2b8fc1b365cf08c89399fc2f310"
+        },
+        {
+          "path": "factorial_confirmation/pooled_by_seed.tsv",
+          "sha256": "87e1a2de9c79b1395c1af162d630109eb62bd38d665b0e88d3b01f3973d7647a"
+        },
+        {
+          "path": "factorial_confirmation/paired_effects.tsv",
+          "sha256": "740670e0a0e9f86ded4e52cf6be917e2a6410c96fd711c2705cf8d7ab8efb202"
+        },
+        {
+          "path": "factorial_confirmation/per_class_mean_std.tsv",
+          "sha256": "d32528c66e2eb9aa231530324ff4fa4f1bc4e73ee9f848846ed218d518b06234"
+        },
+        {
+          "path": "factorial_confirmation/resources_by_factor.tsv",
+          "sha256": "84425fd9b83e8527de79cd3ef7b9d4195756c6dba8b53588b35802f2133ab34c"
+        }
+      ],
+      "conclusion": "48 original executions complete; candidate selection is unchanged. LoRA integration and model efficacy, development and external effects are distinguished."
+    },
+    {
+      "requirement": "V2_measured_response_and_V3_4_native_comparison",
+      "status": "verified",
+      "evidence": [
+        {
+          "path": "hepg2_data_contract/contract.json",
+          "sha256": "61a982f8e6aaaaacb860abbcbedd690b194893c38fcf08d1c4f9982733f00fe3"
+        },
+        {
+          "path": "response_evaluation_hepg2/provenance.json",
+          "sha256": "529b709d5fa522bb852eed843a6417adaead82ff2d95d6860ffef86ad9adbc3e"
+        },
+        {
+          "path": "response_evaluation_native_common/provenance.json",
+          "sha256": "2d33082d205137cedae56af3c2f2e61fa9d57de5ae13e59237312971a07812b5"
+        },
+        {
+          "path": "response_evaluation_native_common/condition_macro_metrics.tsv",
+          "sha256": "79970544efa450308de7c63739fcfd1ef70269d5e095d5cf0ce885e3f21e28f0"
+        },
+        {
+          "path": "response_evaluation_native_common/paired_model_comparisons.tsv",
+          "sha256": "be0e78d3a617b0ceaffa18412c52b92c5e37e6d6a5dade72cac0d3dbe82ee007"
+        }
+      ],
+      "conclusion": "Full214-target and matched191-target comparisons completed. Norman K562, HepG2 parent and common panels remain separate."
+    },
+    {
+      "requirement": "V2_conditional_chemical_route",
+      "status": "verified",
+      "evidence": [
+        {
+          "path": "runs/C00_scvidr_mouse_TCDD_portal_seed42_v3/run.json",
+          "sha256": "774f6e4ab9736f6335acdeb5457491c78aaa5f376d54f83d50beaf3df9001273"
+        },
+        {
+          "path": "leaderboard_chemical_response.tsv",
+          "sha256": "09d15737e230760532c39d32d7439c0a792873cea3a2bfe7333992a5097db23f"
+        },
+        {
+          "path": "data_card.md",
+          "sha256": "743a4efacaa52b3822c2604857acaaed6b9df4ff114f438c2fd6c77c0bf67571"
+        }
+      ],
+      "conclusion": "Executed same-TCDD mouse context transfer only; no human efficacy or animal-replicate confidence interval claim."
+    },
+    {
+      "requirement": "V3_6_full_mean_and_sampled_control_sensitivity",
+      "status": "verified",
+      "evidence": [
+        {
+          "path": "control_sensitivity.md",
+          "sha256": "6ede1614b011f6ce6e0aca7456c36dd1888b5860cc6b00a680a6c4d32da71656"
+        },
+        {
+          "path": "control_sensitivity/aggregation_provenance.json",
+          "sha256": "d563787c780809e1b83842120f60d53c9193e10f2467f16bdd28dbcfb8b3bb53"
+        },
+        {
+          "path": "control_sensitivity/aggregation_metrics.tsv",
+          "sha256": "0a5c267185712bdc6696b103a9cdf1fc1e1e8967ac427d7f55ad4f4e15be13df"
+        },
+        {
+          "path": "control_sensitivity/simple_predictor_resampling.tsv",
+          "sha256": "5563632d8063a8d02f813bef910bb46b37d0d421f8c46a7c344e92c207cf0366"
+        },
+        {
+          "path": "control_sensitivity/native_first_target.json",
+          "sha256": "9cc22de20ca299cb3458070660ee303777d5b3fcc85c8cf95b5138e993673dcd"
+        }
+      ],
+      "conclusion": "Original predictions preserved;191-target additive baseline sensitivity and bounded saved-model probe completed. Mean-MSE selection, mean-RMSE reporting and top20 versus FDR DEG distinguished."
+    },
+    {
+      "requirement": "V3_1_completed_jobs_and_V3_3_immutable_release",
+      "status": "verified",
+      "evidence": [
+        {
+          "path": "external_final/current_status.json",
+          "sha256": "12f2785a355769bd7338f864136622d31b73737a66034a221b4111344f4e4b09"
+        },
+        {
+          "path": "external_final/attempts/external_categorical_recovery_v1/completed.json",
+          "sha256": "3c7d28e2b491d0beda9e4f44819d9d33828d61629d79a974e14c4700dcfe6933"
+        },
+        {
+          "path": "external_final/completion_verification.json",
+          "sha256": "253aba65fd1272db3872b9f8a1ddabbc1d6c0aeb10164e045a385579b3be79d7"
+        },
+        {
+          "path": "external_release_dependencies.json",
+          "sha256": "652b0eab27058ecc7a6fb44840633bf8eaf707b6d5c69c65da5814ba3a936c5b"
+        },
+        {
+          "path": "slurm_jobs.tsv",
+          "sha256": "2ed8e803c9f13fd3c59662a574a7f2e7c28b45d63728cfcd0a85f24de72f58cd"
+        }
+      ],
+      "conclusion": "Original8-model batch completed without duplicate inference or release regeneration. Optional KG gate removed; original frozen inputs/fits/predictions retained. Old scheduler handle expiry is explicit."
+    },
+    {
+      "requirement": "V2_external_HCC_and_V3_5_five_nonmalignant_lineages",
+      "status": "verified",
+      "evidence": [
+        {
+          "path": "external_final/evaluation.json",
+          "sha256": "9be22781f038e7a8b96b2de06f6630fa0f5545f7364c82488682f0ea830578bf"
+        },
+        {
+          "path": "external_final/metrics.tsv",
+          "sha256": "2b9d2420b0c51218fd15eda4f7fdba17777f8de679c259afc823f44d9498c711"
+        },
+        {
+          "path": "external_final/paired_donor_bootstrap.tsv",
+          "sha256": "80fb6c9b45825ca962f333fb66d19264c8ba5d2c608fff91d0c1cf097c328f9d"
+        },
+        {
+          "path": "external_final/resource_summary.tsv",
+          "sha256": "c7d4895899705297d0c2feb9c2ffea97bb10786b01f63d93a6222e19ad4d8fe4"
+        },
+        {
+          "path": "external_final.md",
+          "sha256": "e1b00b0b5fcd8f09108ab74d0049f908a6d439f428cc87b810d3f17ee55230d6"
+        }
+      ],
+      "conclusion": "Eight fixed candidates verified; original fixed-six/five,54.40%known truth coverage and22811Unknown retained. No gold hepatocyte/malignant-lineage validation."
+    },
+    {
+      "requirement": "V3_8_final_reports_single_index_and_existing_tutorials",
+      "status": "verified",
+      "evidence": [
+        {
+          "path": "RESULTS_INDEX.md",
+          "sha256": "f935d38a70b530f0b9eb80dd5dbf981b224caee6bd16b8471ebe5ae24a1167d9"
+        },
+        {
+          "path": "final_summary.md",
+          "sha256": "5ec350e9dcd75ea9196e00af62118438b3a625159e1e8afb7c362090ae503e70"
+        },
+        {
+          "path": "progress_review_resolution.md",
+          "sha256": "bbf590470c3e3b2b177278fde9b0cf6c9d83a828f29a5d5cf492a16527b402db"
+        },
+        {
+          "path": "tutorial_execution.json",
+          "sha256": "adeb267ef1ff621aadeea559176028e46333cbe697fd5c5ac3497115cd9a4d03"
+        }
+      ],
+      "conclusion": "Final reports include actual external results, unchanged primary, separated budgets/tasks, uncertainty/cost and one next experiment. Existing06–10 only; changed06/08/09 ran in fresh kernels,07/10 retain verified outputs."
+    }
+  ],
+  "unexecuted_or_unresolved_limits": [
+    {
+      "item": "scFoundation official checkpoint",
+      "status": "blocked_documented",
+      "reason": "Both official weight links403; example archive lacks weights"
+    },
+    {
+      "item": "Official scGPT MS numerical agreement and cause attribution",
+      "status": "not_claimed",
+      "reason": "Modified reproduction .67558 vs stored notebook .732; bounded checks did not identify a cause"
+    },
+    {
+      "item": "Human HCC efficacy, gold hepatocyte/malignant external truth and biological replicate response validation",
+      "status": "outside_measured_evidence",
+      "reason": "Explicit data/endpoint limitations"
+    }
+  ],
+  "publication": "Final commit/push and exact remote SHA equality checked after committing this artifact; see repository history and final completion response"
+}

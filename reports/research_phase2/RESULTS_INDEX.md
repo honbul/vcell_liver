@@ -1,12 +1,12 @@
 # 연구 결과 인덱스
 
-V1 기록은 보존했다. 여기서는 V2 실험과 V3 보완 분석을 연결한다. **외부 GSE151530 최종 추론은 진행 중이며 전체 연구 완료가 아니다.** 최신 서버 관측은 [current_status.json](external_final/current_status.json), 해석은 [연구 요약](final_summary.md)을 읽는다.
+V1 기록은 보존했다. 여기서는 V2 실험과 V3 보완 분석을 연결한다. **외부 고정8후보 추론·채점과 V3 보완 집계를 마쳤다.** 최신 서버 관측은 [current_status.json](external_final/current_status.json), 해석은 [연구 요약](final_summary.md)을 읽는다.
 
-연구 브랜치는 `research/phase2-v2`이며 기존 결과 집계는 ed7e5f6, V3 추가 분석/사용 경로의 코드 기준은 a1e2f8f다. 수정사항별 완료·진행·차단은 [V3 처리 내역](progress_review_resolution.md)에 있다.
+연구 브랜치는 `research/phase2-v2`이며 기존 결과 집계는 ed7e5f6, V3 추가 분석/사용 경로의 코드 기준은 a1e2f8f, 최종 외부 검증 코드는4e0890d다. 수정사항별 완료·진행·차단은 [V3 처리 내역](progress_review_resolution.md)에 있다.
 
 | 질문 | 실제 결과·근거 |
 |---|---|
-| 전체 진행 상태 | [상태](status.md), [Slurm 작업](slurm_jobs.tsv), [V3 적용 범위](../../docs/RESEARCH_AMENDMENT_V3.md), [실제 근거 및 보존 점검](v3_followup_audit.json) |
+| 전체 진행 상태 | [상태](status.md), [Slurm 작업](slurm_jobs.tsv), [V3 적용 범위](../../docs/RESEARCH_AMENDMENT_V3.md), [V3 근거 및 보존 점검](v3_followup_audit.json), [최종 요구사항 점검](completion_audit.json) |
 | 공식 재현과 수치 차이 | [한국어 설명](official_reproduction.md), [scGPT 제한 점검](official_scgpt_gap_audit/audit.json), [Norman 실제 사용 population](official_norman_population/audit.json) |
 | 같은 정보 조건의 기본 분류 | [Inductive 비교](leaderboard_annotation_inductive.tsv), [donor 쌍대 CI](annotation_uncertainty_inductive/paired_donor_bootstrap.tsv), [실제 pooled calibration](annotation_uncertainty_inductive/pooled_metrics_and_calibration.tsv) |
 | 간/암 특화 비교 | [CLcancer 포함 기본 비교](leaderboard_annotation_inductive.tsv), [query-adaptive LiverCT 별도 비교](leaderboard_annotation_query_adaptive.tsv), [실제 native voting head와 coverage](liverct_native_head.md) |
@@ -16,8 +16,8 @@ V1 기록은 보존했다. 여기서는 V2 실험과 V3 보완 분석을 연결�
 | 실측 genetic response | [task별 비교](leaderboard_genetic_response.tsv), [full HepG2](response_evaluation_hepg2/condition_macro_metrics.tsv), [matched native-common](response_evaluation_native_common/condition_macro_metrics.tsv), [pretrained/random 쌍대 CI](response_evaluation_native_common/paired_model_comparisons.tsv) |
 | Control 평균화 감도 | [한국어 해석](control_sensitivity.md), [191target 원/변경 지표](control_sensitivity/aggregation_metrics.tsv), [20seed 변동](control_sensitivity/simple_predictor_resampling.tsv), [saved native 첫 target](control_sensitivity/native_first_target_metrics.tsv), [실제 checkpoint/replay 증거](control_sensitivity/native_first_target.json) |
 | Mouse chemical response | [별도 비교](leaderboard_chemical_response.tsv), [실행 범위](data_card.md), [원 run](runs/C00_scvidr_mouse_TCDD_portal_seed42_v3/run.json) |
-| 외부 HCC 다섯 비악성 lineage 전이 | [평가 범위·상태](external_final.md), [원 freeze](external_final/freeze.json), [release 의존성 수정](external_release_dependencies.json), [같은 batch 복구](external_final/attempts/external_categorical_recovery_v1/start.json) |
+| 외부 HCC 다섯 비악성 lineage 전이 | [평가 범위·상태](external_final.md), [8후보 지표](external_final/metrics.tsv), [donor paired CI](external_final/paired_donor_bootstrap.tsv), [원 batch 검증](external_final/completion_verification.json), [원 freeze](external_final/freeze.json), [release 의존성 수정](external_release_dependencies.json), [같은 batch 복구](external_final/attempts/external_categorical_recovery_v1/start.json) |
 | 모델·데이터·환경·실패 | [모델](model_registry.tsv), [데이터](dataset_registry.tsv), [원 run registry](run_registry.tsv), [명시적 metadata 보완](resolved_run_contracts.json), [실패](runtime_failures/), [scFoundation 차단](scfoundation_access.json), [자원 범위](resource_scope.md) |
 | 사용 예제 | [06 분류](../../notebooks/06_research_development_cv.ipynb), [07 실측 반응](../../notebooks/07_measured_perturbation_response.ipynb), [08 개선](../../notebooks/08_data_model_improvements.ipynb), [09 새 query](../../notebooks/09_new_hcc_query_annotation.ipynb), [10 mouse TCDD](../../notebooks/10_conditional_mouse_liver_chemical_response.ipynb), [fresh-kernel 실행 hash](tutorial_execution.json) |
 
-외부 metric 파일은 모든 고정 후보의 추론과 검증이 끝난 뒤 생성된다. 현재 없는 점수를 추정해 채우지 않는다. 개별 run의 원시 예측·weights·count는 서버 자산 영역에 보존하며 Git에는 작은 집계와 경로/hash만 기록한다. Fixed-six/fixed-five는 외부에 서로 다른 정답을 만든 것이 아니라 사전 정의한 두 집계이며, Unknown malignant 세포의 lineage 정답을 보충하지 않는다.
+외부 metric 파일은 모든 고정 후보의 추론 뒤 생성됐고, 원 prediction·probability·bundle hash 및25donor CI 정합성을 검증했다. 사전 primary와 fixed-six/five 정의를 유지한다. 개별 run의 원시 예측·weights·count는 서버 자산 영역에 보존하며 Git에는 작은 집계와 경로/hash만 기록한다. Fixed-six/fixed-five는 외부에 서로 다른 정답을 만든 것이 아니라 사전 정의한 두 집계이며, Unknown malignant 세포의 lineage 정답을 보충하지 않는다.

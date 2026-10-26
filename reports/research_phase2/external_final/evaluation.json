@@ -1,0 +1,93 @@
+{
+  "status": "executed",
+  "project_commit": "4a6d861a3058e1ed208ad85e46b84e60e6a746a5",
+  "source_sha256": "212fa63f70d0ef59129f84ab1d6fab0bb439d36deef10e006a109bf71efb2b03",
+  "freeze_sha256": "9976bba55cfb4fe9f6fc9416c1efbf393770ccf595af5e674bd570f438ca8eb0",
+  "n_cells": 50023,
+  "n_donors": 25,
+  "n_known": 27212,
+  "n_unknown_truth": 22811,
+  "label_support": {
+    "Unknown": 22811,
+    "T/NK": 17348,
+    "Myeloid": 4616,
+    "Endothelial": 2338,
+    "B": 1854,
+    "Fibroblast": 1056
+  },
+  "candidates": [
+    "pca",
+    "scgpt",
+    "geneformer",
+    "geneformer_clcancer",
+    "DM00",
+    "DM10",
+    "DM01",
+    "DM11"
+  ],
+  "sources": [
+    {
+      "candidate": "pca",
+      "inference_metadata_sha256": "2a5480dfcd53093283fc38317a877b2672e98373f961fde50f7c7880b267ea2a",
+      "prediction_sha256": "60aa816c8115819e53edb9a8f380494f6714ce92aa3ce9073eaf6c7974983f3d",
+      "probability_sha256": "96d027eb164f6ac3530e608ad3b4e1fcdf23cafcbc97179f42d8cf939c556e0b"
+    },
+    {
+      "candidate": "scgpt",
+      "inference_metadata_sha256": "83ede15269b39600c9fb52a393b8aa20d0ea3f076f70bd06d631fc7fe0fe4364",
+      "prediction_sha256": "8f9e8c0268574624f9b675e38b54764aede7b0ca4cc3fee3691090dcf2962edd",
+      "probability_sha256": "a47633a2f8118fe54cfc5ee456515625382272645f79b2eb182e0374e8029a87"
+    },
+    {
+      "candidate": "geneformer",
+      "inference_metadata_sha256": "b9f18cd8c4236d4e30eabf01c3d3b8b3f7dabb5f6de8a90470e1fc9235eee108",
+      "prediction_sha256": "45ff609256fade897ff28811bcff766489d437ab10aa7124610aa6437db6fd7b",
+      "probability_sha256": "5aa004e19b979c02e93e8c88c02d492599f923e934ff4bcfd49538f3c76f8221"
+    },
+    {
+      "candidate": "geneformer_clcancer",
+      "inference_metadata_sha256": "6757abcf6506118265be5fec2fa003392a3e015c6c192393144cb38a5b0b1dc5",
+      "prediction_sha256": "992d684ba1bec178a058a5146d33e4782a75a6cd4c27045a6efd19e755b7df4d",
+      "probability_sha256": "adb53f7f4de831f12947514c7b2390836a151d5307f9e7fcc16431185e385986"
+    },
+    {
+      "candidate": "DM00",
+      "inference_metadata_sha256": "2b4cb307e733a40f2daf363dbc9f09ef59181904e0d0e6218fc9dfb81d9fb826",
+      "prediction_sha256": "28dff4de59d26957364dac048b453bd54285d4f1d0f79a749ba92f3c07268615",
+      "probability_sha256": "c9dbd6b0fb7eb15e17ea8ab99115091903eb37e37d0588628b1f1eff8277b530"
+    },
+    {
+      "candidate": "DM10",
+      "inference_metadata_sha256": "6c3c1bb8f2e0bdb62f9b40eadb3b76cf2af71210dc3e1b00ec3a23a6a76efa6a",
+      "prediction_sha256": "699d8a33b9b239685fad99919b2bd684636402a87d8b904baa6df1c046eb7811",
+      "probability_sha256": "b190eff3e900475645a6d29b895fd3bfaee9032f401ef39d9aa6fe8b5f841a33"
+    },
+    {
+      "candidate": "DM01",
+      "inference_metadata_sha256": "f2b6e825d0853bdcd1c0ad24845c779ab29d04ed7206d2b5ecb030f051c6ccac",
+      "prediction_sha256": "ea4be61d2130776c5eb03104a992bf6490f16faf0f49e71caf89ff9b56afabe9",
+      "probability_sha256": "a8d5108e3a3dcc91647c7acc49c843918e656863338ea3f8da7181c57b70120b"
+    },
+    {
+      "candidate": "DM11",
+      "inference_metadata_sha256": "f4150c9f0f0a0289cb1416de1b9de1f203dc2f00a5e9395987dc58521e50235c",
+      "prediction_sha256": "5267741fecaee2e677ed1f3ef1bc4227bebafa8ef5cfd779792a1c52b164a6a3",
+      "probability_sha256": "96efd19995e82f5966b27e4aea9d97a5442f0447d86b6d653867160f801d67d9"
+    }
+  ],
+  "uncertainty": "5000 paired donor bootstrap samples; repeated biopsies remain grouped; models held fixed, no retraining uncertainty",
+  "primary_pipeline": "geneformer_frozen_linear_12000",
+  "metric_definitions": {
+    "primary_f1": "Fixed six labels on known truth; absent Hepatocyte contributes0",
+    "secondary_f1": "Fixed five observed lineages on known truth",
+    "balanced_accuracy": "Mean recall over observed known-truth classes (five here, six in development)",
+    "calibration": "Uncalibrated six-class probabilities; Brier and10-bin ECE on known truth only; no threshold chosen on this cohort"
+  },
+  "limitations": [
+    "No gold hepatocyte annotation: fixed-six F1 maximum5/6; fixed-five secondary does not validate hepatocyte transfer",
+    "Unknown malignant/unclassified truth excluded from lineage accuracy and counted explicitly; predictions on these cells are not validated malignant lineage truth",
+    "Different provided gene panels and treatment histories create external shift",
+    "Pretraining overlap and public patient identity overlap unknown",
+    "After this batch no retuning or cohort switching; future use for model changes consumes holdout independence"
+  ]
+}

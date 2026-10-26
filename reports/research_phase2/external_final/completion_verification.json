@@ -1,0 +1,156 @@
+{
+  "status": "verified_original_completed_batch",
+  "verified_at_utc": "2026-10-26T15:58:28.730824+00:00",
+  "project_commit": "4e0890de664591d118fc646e468a43efae65fe4b",
+  "source_sha256": "e231c4d7846098d7862c795cd9df2c42d0d22cf582c972caa182a6e1c6414880",
+  "evaluation_sha256": "9be22781f038e7a8b96b2de06f6630fa0f5545f7364c82488682f0ea830578bf",
+  "freeze_sha256": "9976bba55cfb4fe9f6fc9416c1efbf393770ccf595af5e674bd570f438ca8eb0",
+  "n_candidates": 8,
+  "n_cells": 50023,
+  "n_donors": 25,
+  "n_known": 27212,
+  "n_unknown_truth": 22811,
+  "checks": [
+    "Original freeze, query, truth, spec,48-confirmation metadata and8fit/bundle hashes unchanged",
+    "All8 ordered cell IDs, six-class probability vectors, argmax, prediction/probability hashes and E00 execution metadata agree",
+    "Fixed-six/five F1, coverage, balanced accuracy, ECE/Brier match original saved evaluation",
+    "Full confusion retains22811Unknown truth cells",
+    "All8 paired25-donor bootstrap effects and95% intervals match original values",
+    "No inference, model fitting, candidate reselection, metric overwrite or new external release"
+  ],
+  "records": [
+    {
+      "candidate": "pca",
+      "n_cells": 50023,
+      "fit_run_id": "F00_pca_development12000_seed42_v2",
+      "fit_metadata_sha256": "c8c0f93ffecf312c959446cca1802b684efc886bfdd13d53c0f1738496d3bb40",
+      "bundle_sha256": "c52d02fb34a91160bd6d4980d97ec0c8d185faf7322014e96111e4de8a2454fa",
+      "prediction_sha256": "60aa816c8115819e53edb9a8f380494f6714ce92aa3ce9073eaf6c7974983f3d",
+      "probability_sha256": "96d027eb164f6ac3530e608ad3b4e1fcdf23cafcbc97179f42d8cf939c556e0b",
+      "external_run_metadata_sha256": "c71c8419cb0d987e00be10cc3521783e190305212b58e6bb162d87ba30397d48",
+      "verified_metrics": {
+        "macro_f1": 0.8098650743013142,
+        "macro_f1_fixed_five": 0.971838089161577,
+        "brier_multiclass": 0.05901528959517203,
+        "ece_10_bins": 0.11606324121452387
+      }
+    },
+    {
+      "candidate": "scgpt",
+      "n_cells": 50023,
+      "fit_run_id": "F00_scgpt_development12000_seed42_v1",
+      "fit_metadata_sha256": "4b7280dadb7b64d97e1c28f37232214b0dfc9658c4636909e251622b4caa0fe7",
+      "bundle_sha256": "446dac0d7b3fc87b4246b46bb87fa7e0a8ba3a1960eaa2f720e410edad11f631",
+      "prediction_sha256": "8f9e8c0268574624f9b675e38b54764aede7b0ca4cc3fee3691090dcf2962edd",
+      "probability_sha256": "a47633a2f8118fe54cfc5ee456515625382272645f79b2eb182e0374e8029a87",
+      "external_run_metadata_sha256": "3a51075fbe2f28b1fcffbdc7cf692d9592bd829661fab7baef068e7279dc1409",
+      "verified_metrics": {
+        "macro_f1": 0.8250349155789051,
+        "macro_f1_fixed_five": 0.9900418986946861,
+        "brier_multiclass": 0.012741490026892335,
+        "ece_10_bins": 0.025299580196725305
+      }
+    },
+    {
+      "candidate": "geneformer",
+      "n_cells": 50023,
+      "fit_run_id": "F00_geneformer_development12000_seed42_v1",
+      "fit_metadata_sha256": "d84349e476fa7665d9770f2d029d3458d0f7468299ba08ba349d2ee9437d0c27",
+      "bundle_sha256": "5203f7b7b2cf9ce3ac85c8e6e52cdb9047a6563fcc35dfa17195d68d41c7e809",
+      "prediction_sha256": "45ff609256fade897ff28811bcff766489d437ab10aa7124610aa6437db6fd7b",
+      "probability_sha256": "5aa004e19b979c02e93e8c88c02d492599f923e934ff4bcfd49538f3c76f8221",
+      "external_run_metadata_sha256": "d6e121aa053354b70d86545de1f57bff6315f0b61c056e7b9fcd0d9f2c7fd577",
+      "verified_metrics": {
+        "macro_f1": 0.8170660880766315,
+        "macro_f1_fixed_five": 0.9804793056919578,
+        "brier_multiclass": 0.027351202004674436,
+        "ece_10_bins": 0.02474661360166384
+      }
+    },
+    {
+      "candidate": "geneformer_clcancer",
+      "n_cells": 50023,
+      "fit_run_id": "F00_geneformer_clcancer_development12000_seed42_v1",
+      "fit_metadata_sha256": "4f7245d8849c48456af90802d2d2257d90aa099d24d7ccd3c790b47ec42f4f27",
+      "bundle_sha256": "f79bdc07982c1a831550b37ba09dc1f9abdf1512da68e88fd81395405b809fcb",
+      "prediction_sha256": "992d684ba1bec178a058a5146d33e4782a75a6cd4c27045a6efd19e755b7df4d",
+      "probability_sha256": "adb53f7f4de831f12947514c7b2390836a151d5307f9e7fcc16431185e385986",
+      "external_run_metadata_sha256": "d9ccdada694a2c98c37879ecfd21cdc6ee21104862238a2d3c569af80315fe05",
+      "verified_metrics": {
+        "macro_f1": 0.8214328112533048,
+        "macro_f1_fixed_five": 0.9857193735039658,
+        "brier_multiclass": 0.022541312678995742,
+        "ece_10_bins": 0.02265894038583729
+      }
+    },
+    {
+      "candidate": "DM00",
+      "n_cells": 50023,
+      "fit_run_id": "F01_DM00_development4096_seed42_v1",
+      "fit_metadata_sha256": "2a40b9a2fc2905ac437ded27e2fc5ce7bf8be8e6d7d942b7504f7f8e120960a2",
+      "bundle_sha256": "f18ec4aa3b648af6a81d9c4e62e0aff55627bc445557f4b3acf5ead05a65a190",
+      "prediction_sha256": "28dff4de59d26957364dac048b453bd54285d4f1d0f79a749ba92f3c07268615",
+      "probability_sha256": "c9dbd6b0fb7eb15e17ea8ab99115091903eb37e37d0588628b1f1eff8277b530",
+      "external_run_metadata_sha256": "0da09011d664a951c9b4206a45982fa73d824f7cc4fcb538b2b0c0646496412c",
+      "verified_metrics": {
+        "macro_f1": 0.81781250628919,
+        "macro_f1_fixed_five": 0.981375007547028,
+        "brier_multiclass": 0.022018898278474808,
+        "ece_10_bins": 0.005802451219345669
+      }
+    },
+    {
+      "candidate": "DM10",
+      "n_cells": 50023,
+      "fit_run_id": "F01_DM10_development4096_seed42_v1",
+      "fit_metadata_sha256": "fc5c0bcf4d422aa9ba48dc4dbc117e2e97ee439280f4a2e9c5ed0b5f1a0bb565",
+      "bundle_sha256": "46c1b10e3c6bcee07279f41010d1e9ef88b55a657bca4588b881f6e502460267",
+      "prediction_sha256": "699d8a33b9b239685fad99919b2bd684636402a87d8b904baa6df1c046eb7811",
+      "probability_sha256": "b190eff3e900475645a6d29b895fd3bfaee9032f401ef39d9aa6fe8b5f841a33",
+      "external_run_metadata_sha256": "6baaa41327ab626c0c41cbd86e8f51ed8cab5cc9fc8dc48850394c9e8871836c",
+      "verified_metrics": {
+        "macro_f1": 0.8003394507661801,
+        "macro_f1_fixed_five": 0.960407340919416,
+        "brier_multiclass": 0.03582332655787468,
+        "ece_10_bins": 0.0027095837041891703
+      }
+    },
+    {
+      "candidate": "DM01",
+      "n_cells": 50023,
+      "fit_run_id": "F01_DM01_development4096_seed42_v1",
+      "fit_metadata_sha256": "19c0a446bc8b32e394df61056ecae508f1950dc5d021dd066e48d8fb5ca5475f",
+      "bundle_sha256": "9e5f86ec3af40d1395e7d8702250ffdb5469780a886c4efa79e1ef0e6f2c0990",
+      "prediction_sha256": "ea4be61d2130776c5eb03104a992bf6490f16faf0f49e71caf89ff9b56afabe9",
+      "probability_sha256": "a8d5108e3a3dcc91647c7acc49c843918e656863338ea3f8da7181c57b70120b",
+      "external_run_metadata_sha256": "13b7e5c1d9bb2abed1b35867d8230af8222a1c129de6985984514e29c02699d2",
+      "verified_metrics": {
+        "macro_f1": 0.8242119715537726,
+        "macro_f1_fixed_five": 0.9890543658645271,
+        "brier_multiclass": 0.011107810772955418,
+        "ece_10_bins": 0.002361965811587318
+      }
+    },
+    {
+      "candidate": "DM11",
+      "n_cells": 50023,
+      "fit_run_id": "F01_DM11_development4096_seed42_v1",
+      "fit_metadata_sha256": "6f97a96047f6bf785022380402727b67c20ed5557465686ba22e8f827ac968d5",
+      "bundle_sha256": "7006ebedec4854f9385a660d9c50ba7ceeccfdf4db621e32e79a6f6604466339",
+      "prediction_sha256": "5267741fecaee2e677ed1f3ef1bc4227bebafa8ef5cfd779792a1c52b164a6a3",
+      "probability_sha256": "96efd19995e82f5966b27e4aea9d97a5442f0447d86b6d653867160f801d67d9",
+      "external_run_metadata_sha256": "84a6086fef62f2db3cf454286363830f50ab7f2458209a04a5051c0a4d8d3fcf",
+      "verified_metrics": {
+        "macro_f1": 0.8190494917554826,
+        "macro_f1_fixed_five": 0.9828593901065791,
+        "brier_multiclass": 0.035887740552425385,
+        "ece_10_bins": 0.023679216010253662
+      }
+    }
+  ],
+  "limitations": [
+    "Read-only consistency verification, not a new independent cohort",
+    "No gold hepatocyte/malignant lineage evaluation",
+    "25donor bootstrap holds models fixed; no retraining uncertainty or multiplicity correction"
+  ]
+}
