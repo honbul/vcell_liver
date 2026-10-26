@@ -49,7 +49,7 @@ for path in sorted((REPORT/'runs').glob('*/run.json')):
         evidence.append(dict(path=str(path.parent/'data_contract.json'),sha256=sha(path.parent/'data_contract.json')))
     elif annotation:
         if run.get('model_id')=='pca':resolved['input_contract']='Raw counts normalized10k/log1p; separate inner/outer train-only variance2000HVGs/scaler/PCA50; fixed head family'
-        if 'LiverCT' in str(run.get('model_id')):resolved['input_contract']='Original external reference feature alignment; duplicate symbols summed, missing genes raw0; unlabeled query20epoch adaptation then native SVM or same-adapted SCANVI head'
+        if 'LiverCT' in str(run.get('model_id')):resolved['input_contract']='Original external reference feature alignment; duplicate symbols summed, missing genes raw0; unlabeled query20epoch adaptation then native lv1 VotingClassifier ensemble or same-adapted SCANVI head'
         if not resolved.get('input_contract') and 'geneformer' in str(run.get('model_id')).lower():resolved['input_contract']='Official V2 raw-count/Ensembl rank tokenizer, CLS/EOS4096 and hidden_states[11] CLS; exact frozen/partial/LoRA scope, precision and source feature path in original record'
         if not resolved.get('input_contract') and run.get('model_id')=='scgpt':resolved['input_contract']='Official whole-human frozen CLS/L2 representation, DataCollator gene sampling length1200; raw-count/vocabulary alignment from linked source feature run'
     if task=='annotation_final_fit':
@@ -58,7 +58,7 @@ for path in sorted((REPORT/'runs').glob('*/run.json')):
     if rid in audits:
         audit=audits[rid];resolved['trainable_parameters']=audit['trainable_parameters'];resolved['trainable_parameter_scope']='Actual saved scVI module plus fitted logistic head';evidence.append(dict(path='reports/research_phase2/model_parameter_audit/scvi.json',sha256=sha(REPORT/'model_parameter_audit/scvi.json')))
     if rid in liver:
-        audit=liver[rid];resolved['trainable_parameters']=audit['requires_grad_parameters_under_reconstructed_query_contract'];resolved['trainable_parameter_scope']='Requires_grad tensor scalars under reconstructed query contract; gradient hooks mask columns, so upper bound on updated entries. Native reference SVM fixed. Adaptation shared with paired control.';evidence.append(dict(path='reports/research_phase2/model_parameter_audit/liverct.json',sha256=sha(REPORT/'model_parameter_audit/liverct.json')))
+        audit=liver[rid];resolved['trainable_parameters']=audit['requires_grad_parameters_under_reconstructed_query_contract'];resolved['trainable_parameter_scope']='Requires_grad tensor scalars under reconstructed query contract; gradient hooks mask columns, so upper bound on updated entries. Native reference voting ensemble fixed. Adaptation shared with paired control.';evidence.append(dict(path='reports/research_phase2/model_parameter_audit/liverct.json',sha256=sha(REPORT/'model_parameter_audit/liverct.json')))
     if 'gpu_name' not in resolved:
         resolved['gpu_name']=None;resolved['gpu_measurement_scope']='No GPU measurement in this original process record; frozen feature-extraction GPU, when used, is separately linked'
         if feature:resolved['feature_extraction_gpu_name']=feature.get('gpu_name')

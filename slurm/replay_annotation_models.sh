@@ -10,6 +10,11 @@
 set -euo pipefail
 export CUDA_VISIBLE_DEVICES=-1
 source envs/activate.sh scgpt
-probe_id=${1:-classification_native64_v1}
-.venvs/vcell-runtime310/bin/python envs/portable310.py --env research scripts/research/replay_annotation_models.py --model scvi --probe-id "$probe_id"
-.venvs/vcell-liverct/bin/python scripts/research/replay_annotation_models.py --model liverct --probe-id "$probe_id"
+probe_id=${1:-classification_native64_v2}
+model=${2:-both}
+if [[ "$model" = both || "$model" = scvi ]]; then
+  .venvs/vcell-runtime310/bin/python envs/portable310.py --env research scripts/research/replay_annotation_models.py --model scvi --probe-id "$probe_id"
+fi
+if [[ "$model" = both || "$model" = liverct ]]; then
+  .venvs/vcell-liverct/bin/python scripts/research/replay_annotation_models.py --model liverct --probe-id "$probe_id"
+fi

@@ -27,7 +27,7 @@ for regime,directory in [('inductive','annotation_full_summary'),('query_adaptiv
         if not code:
             path=REPORT/'model_parameter_audit/liverct.json'
             if path.exists():
-                audit=next(r for r in json.loads(path.read_text())['records'] if r['run_id']==ids[0].replace('_scanvi_control',''));dimension=audit.get('feature_dimension');frame.loc[i,'external_reference_registry_cells']=audit.get('reference_registry_n_cells');frame.loc[i,'external_reference_label_categories']=len(audit.get('reference_label_categories',[]));frame.loc[i,'exact_SVM_training_label_count']='unknown; saved reference registry size is not a proof of SVM fitting sample count'
+                audit=next(r for r in json.loads(path.read_text())['records'] if r['run_id']==ids[0].replace('_scanvi_control',''));dimension=audit.get('feature_dimension');frame.loc[i,'external_reference_registry_cells']=audit.get('reference_registry_n_cells');frame.loc[i,'external_reference_label_categories']=len(audit.get('reference_label_categories',[]));frame.loc[i,'exact_native_head_training_label_count']='unknown; VAE reference registry size is not ensemble fitting sample count';frame.loc[i,'native_head_type']=audit.get('native_broad_classifier_type')
             frame.loc[i,'label_information']='External healthy-liver labeled reference; no HCC query truth used. Reference label/cell amount not matched to inductive development training.'
             frame.loc[i,'unlabeled_query_fit']=True;frame.loc[i,'query_adaptation_epochs']=20;frame.loc[i,'training_cell_budget']='External reference checkpoint plus all unlabeled heldout query cells'
         else:

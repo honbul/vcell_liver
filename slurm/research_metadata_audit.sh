@@ -13,5 +13,6 @@ source envs/activate.sh scgpt
 .venvs/vcell-runtime310/bin/python envs/portable310.py --env research scripts/research/audit_norman_population.py
 .venvs/vcell-runtime310/bin/python envs/portable310.py --env research scripts/research/audit_response_schema.py
 .venvs/vcell-liverct/bin/python scripts/research/audit_saved_models.py --model liverct
+python scripts/research/audit_liverct_outputs.py
 python scripts/research/resolve_run_metadata.py
 python scripts/research/export_research_results.py
