@@ -1,0 +1,194 @@
+{
+  "run_id": "geneformer_smoke",
+  "status": "executed",
+  "task": "annotation",
+  "dataset_accession": "GSE149614",
+  "model_name": "Geneformer-V2-104M frozen CLS + supervised logistic head",
+  "seed": 42,
+  "n_cells": 64,
+  "data_hash": "cbbe84169b7362ac0dc19ab51e6af472d7f7f945203ae45d81de5dd0e33693df",
+  "split_manifest_hash": "b184b34a9603373aa683eb75c5c8402d70ac0499f88d097a21e860345993e45c",
+  "pretraining_overlap": "unknown",
+  "wall_seconds": 49.77543342858553,
+  "peak_cpu_rss_gib": 1.3141326904296875,
+  "peak_process_gpu_gib": 0.9453125,
+  "gpu_name": "NVIDIA A30",
+  "peak_cuda_allocated_gib": 0.641481876373291,
+  "peak_cuda_reserved_gib": 0.736328125,
+  "metrics": {
+    "macro_f1": 0.6944444444444443,
+    "balanced_accuracy": 0.75,
+    "n_test_unknown": 0,
+    "n_evaluated": 12,
+    "selected_C": 0.01,
+    "selected_class_weight": null,
+    "split_counts": {
+      "train": 40,
+      "test": 12,
+      "val": 12
+    },
+    "label_classes": [
+      "B",
+      "Endothelial",
+      "Fibroblast",
+      "Hepatocyte",
+      "Myeloid",
+      "T/NK"
+    ],
+    "validation_candidates": [
+      {
+        "C": 0.01,
+        "class_weight": null,
+        "validation_macro_f1": 0.9111111111111111
+      },
+      {
+        "C": 0.01,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9111111111111111
+      },
+      {
+        "C": 0.1,
+        "class_weight": null,
+        "validation_macro_f1": 0.9111111111111111
+      },
+      {
+        "C": 0.1,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9111111111111111
+      },
+      {
+        "C": 1.0,
+        "class_weight": null,
+        "validation_macro_f1": 0.9111111111111111
+      },
+      {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9111111111111111
+      }
+    ],
+    "shuffled_train_labels_test_macro_f1": 0.0
+  },
+  "upstream_commit": "1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5",
+  "checkpoint_revision": "1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5",
+  "checkpoint_sha256": "fff5cba29ddd8792991fa77b4872246fbe548a178cebda3775cdc72b67780e7f",
+  "actual_parameter_count": 104386867,
+  "checkpoint_config": {
+    "return_dict": true,
+    "output_hidden_states": true,
+    "output_attentions": false,
+    "torchscript": false,
+    "torch_dtype": "torch.float32",
+    "use_bfloat16": false,
+    "tf_legacy_loss": false,
+    "pruned_heads": {},
+    "tie_word_embeddings": true,
+    "chunk_size_feed_forward": 0,
+    "is_encoder_decoder": false,
+    "is_decoder": false,
+    "cross_attention_hidden_size": null,
+    "add_cross_attention": false,
+    "tie_encoder_decoder": false,
+    "max_length": 20,
+    "min_length": 0,
+    "do_sample": false,
+    "early_stopping": false,
+    "num_beams": 1,
+    "num_beam_groups": 1,
+    "diversity_penalty": 0.0,
+    "temperature": 1.0,
+    "top_k": 50,
+    "top_p": 1.0,
+    "typical_p": 1.0,
+    "repetition_penalty": 1.0,
+    "length_penalty": 1.0,
+    "no_repeat_ngram_size": 0,
+    "encoder_no_repeat_ngram_size": 0,
+    "bad_words_ids": null,
+    "num_return_sequences": 1,
+    "output_scores": false,
+    "return_dict_in_generate": false,
+    "forced_bos_token_id": null,
+    "forced_eos_token_id": null,
+    "remove_invalid_values": false,
+    "exponential_decay_length_penalty": null,
+    "suppress_tokens": null,
+    "begin_suppress_tokens": null,
+    "architectures": [
+      "BertForMaskedLM"
+    ],
+    "finetuning_task": null,
+    "id2label": {
+      "0": "LABEL_0",
+      "1": "LABEL_1"
+    },
+    "label2id": {
+      "LABEL_0": 0,
+      "LABEL_1": 1
+    },
+    "tokenizer_class": null,
+    "prefix": null,
+    "bos_token_id": null,
+    "pad_token_id": 0,
+    "eos_token_id": null,
+    "sep_token_id": null,
+    "decoder_start_token_id": null,
+    "task_specific_params": null,
+    "problem_type": null,
+    "_name_or_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/checkpoints/Geneformer-V2-104M",
+    "_commit_hash": null,
+    "_attn_implementation_internal": "sdpa",
+    "_attn_implementation_autoset": true,
+    "transformers_version": "4.44.2",
+    "model_type": "bert",
+    "vocab_size": 20275,
+    "hidden_size": 768,
+    "num_hidden_layers": 12,
+    "num_attention_heads": 12,
+    "hidden_act": "relu",
+    "intermediate_size": 3072,
+    "hidden_dropout_prob": 0.1,
+    "attention_probs_dropout_prob": 0.1,
+    "max_position_embeddings": 4096,
+    "type_vocab_size": 2,
+    "initializer_range": 0.02,
+    "layer_norm_eps": 1e-12,
+    "position_embedding_type": "absolute",
+    "use_cache": true,
+    "classifier_dropout": null
+  },
+  "embedding_shape": [
+    64,
+    768
+  ],
+  "gene_mapping_coverage": 0.6503189172370878,
+  "tokenization": {
+    "n_original_genes": 25712,
+    "n_mapped_genes": 18291,
+    "n_original_vocab_genes": 16721,
+    "n_counts_basis": "original all-gene raw library sum, before mapping/filtering",
+    "total_original_counts": 501158,
+    "total_mapped_counts": 483262,
+    "mapped_count_fraction": 0.9642907027324716,
+    "token_length_quantiles": [
+      520.0,
+      844.0,
+      1247.5,
+      2203.0,
+      4096.0
+    ],
+    "model_input_size": 4096,
+    "special_token": true,
+    "collapse_gene_ids": true,
+    "duplicate_mapped_ids": 0
+  },
+  "batch_size": 1,
+  "max_sequence_length": 4096,
+  "dtype": "float32",
+  "hidden_states_index": 11,
+  "limitations": [
+    "official default emb_layer=-1 means second-to-last transformer layer",
+    "Different official input pipelines; not architecture-only comparison",
+    "pretraining overlap unknown"
+  ]
+}
