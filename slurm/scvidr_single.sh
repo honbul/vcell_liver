@@ -10,4 +10,4 @@
 #SBATCH --output=logs/slurm_scvidr_%j.log
 set -euo pipefail
 source envs/activate.sh scgpt
-.venvs/vcell-scvidr/bin/python scripts/research/run_scvidr_single.py --run-id C00_scvidr_mouse_TCDD_portal_seed42_v1
+.venvs/vcell-scvidr/bin/python scripts/research/run_scvidr_single.py --run-id C00_scvidr_mouse_TCDD_portal_seed42_v2

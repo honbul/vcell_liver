@@ -1,0 +1,50 @@
+{
+  "status": "executed",
+  "project_commit": "1a5b6e2dc630d1962efb47dcebd1907244fa345c",
+  "task": "measured_genetic_response",
+  "dataset": "norman",
+  "n_interventions": 107,
+  "n_cells": 28754,
+  "n_genes": 5045,
+  "model_ids": [
+    "B00_no_change",
+    "B01_train_mean",
+    "B02_GO_PCA_ridge",
+    "B03_GEARS"
+  ],
+  "sources": [
+    {
+      "model_id": "B00_no_change",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_norman_simulation_seed1_v2/B00_no_change_predictions.npz",
+      "sha256": "c440e1cd4d15008be29d3c0d6a13f562d91a45515245808126c5545659bc3c37"
+    },
+    {
+      "model_id": "B01_train_mean",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_norman_simulation_seed1_v2/B01_train_mean_predictions.npz",
+      "sha256": "ae7ffe009e77ad285584daa941fdf28d56d7773b9b7731369543e8981854e2dc"
+    },
+    {
+      "model_id": "B02_GO_PCA_ridge",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_norman_simulation_seed1_v2/B02_GO_PCA_ridge_predictions.npz",
+      "sha256": "19e3e58e0e69acaeeddd9596c297f8e897c50efe653fd8f1707214d33a665a3d"
+    },
+    {
+      "model_id": "B03_GEARS",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/R01_norman_simulation_seed1_v2/predictions.npz",
+      "sha256": "c1e804f16d7a9850e018a092adb32e984648b8a4e53bb91fa3892b55b6c8c693"
+    }
+  ],
+  "primary_metric": "condition-macro Delta expression RMSE, lower better; subtracting the same matched-control vector makes prediction error identical in expression and Delta space",
+  "evaluator_only_top20": "Top20 absolute observed mean Delta; not statistical FDR DE; never supplied to predictors or model selection",
+  "constant_prediction_policy": "Delta Pearson undefined; constant ranking precision@20 undefined; AP of constant scores equals reference prevalence",
+  "effect_size_cutoffs_training_only": [
+    2.6582999229431152,
+    4.643911997477214
+  ],
+  "uncertainty": "5000 paired bootstrap samples of target/intervention groups; shared controls and unknown biological replicates limit interpretation; no cell bootstrap",
+  "failure_or_limitations": [
+    "Conditional on this experimental population; does not establish biological replicate reproducibility",
+    "Native official Norman reproduction remains separate from strict HepG2",
+    "Pre-existing V2 RMSE/retrieval/sensitivity requirements added by an evaluator; fitted models and immutable original runs are unchanged"
+  ]
+}

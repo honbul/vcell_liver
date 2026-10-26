@@ -1,0 +1,44 @@
+{
+  "status": "executed",
+  "project_commit": "ae2722455a4648022365d8a3388c165105194f9a",
+  "task": "measured_genetic_response",
+  "dataset": "hepg2",
+  "n_interventions": 214,
+  "n_cells": 13994,
+  "n_genes": 2000,
+  "model_ids": [
+    "B00_no_change",
+    "B01_train_mean",
+    "B02_GO_PCA_ridge"
+  ],
+  "sources": [
+    {
+      "model_id": "B00_no_change",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_hepg2_unseen_target_seed42_v1/B00_no_change_predictions.npz",
+      "sha256": "117f3a83e5a5db180014cab34ce0b2eab0d95179f02a345e1c3028be9e640ea6"
+    },
+    {
+      "model_id": "B01_train_mean",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_hepg2_unseen_target_seed42_v1/B01_train_mean_predictions.npz",
+      "sha256": "9c0bdba05b2a36b35c321ea3fb5ef7e604c1c055da35b448dd60c3fe853c8348"
+    },
+    {
+      "model_id": "B02_GO_PCA_ridge",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_hepg2_unseen_target_seed42_v1/B02_GO_PCA_ridge_predictions.npz",
+      "sha256": "92fef2f3a10945b215700bcc318a6b7ae34ba85b08f245831c73316ff1db3e47"
+    }
+  ],
+  "primary_metric": "condition-macro Delta expression RMSE, lower better; subtracting the same matched-control vector makes prediction error identical in expression and Delta space",
+  "evaluator_only_top20": "Top20 absolute observed mean Delta; not statistical FDR DE; never supplied to predictors or model selection",
+  "constant_prediction_policy": "Delta Pearson undefined; constant ranking precision@20 undefined; AP of constant scores equals reference prevalence",
+  "effect_size_cutoffs_training_only": [
+    3.8717422485351562,
+    5.781088352203369
+  ],
+  "uncertainty": "5000 paired bootstrap samples of target/intervention groups; shared controls and unknown biological replicates limit interpretation; no cell bootstrap",
+  "failure_or_limitations": [
+    "Conditional on this experimental population; does not establish biological replicate reproducibility",
+    "Native official Norman reproduction remains separate from strict HepG2",
+    "Pre-existing V2 RMSE/retrieval/sensitivity requirements added by an evaluator; fitted models and immutable original runs are unchanged"
+  ]
+}

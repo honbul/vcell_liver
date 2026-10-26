@@ -1,0 +1,13 @@
+{
+  "task": "HepG2 measured genetic response",
+  "status": "input_feasibility_only",
+  "model_predictions_created": false,
+  "n_output_genes": 2000,
+  "n_output_genes_in_vocab": 1977,
+  "n_targets": 2142,
+  "n_targets_in_vocab": 2103,
+  "n_targets_in_raw_count_panel": 1951,
+  "n_targets_directly_in_selected2000": 609,
+  "native_contract": "TransformerGenerator takes a gene token, actual control value and perturbation flag at the targeted gene position. Missing target positions cannot be represented by silently using all-zero flags.",
+  "required_extension": "Supply the actual measured target-gene control value as an extra context token when outside output2000, preserve output-gene loss scope; restrict missing target/vocab eligibility before training and report coverage; compare pretrained and random initialization with identical inputs and budget."
+}
