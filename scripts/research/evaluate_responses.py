@@ -4,10 +4,11 @@ import anndata as ad
 from research_core import *
 from response_metrics import score_response
 
-p=argparse.ArgumentParser();p.add_argument('--task',choices=['norman','hepg2'],required=True);args=p.parse_args()
-root=ASSETS/'response/hepg2_v1';base_id='B00_B02_hepg2_unseen_target_seed42_v1' if args.task=='hepg2' else 'B00_B02_norman_simulation_seed1_v2';raw=ASSETS/'runs'/base_id
+p=argparse.ArgumentParser();p.add_argument('--task',choices=['norman','hepg2','native_common'],required=True);args=p.parse_args()
+hepg2=args.task!='norman';native=args.task=='native_common'
+root=ASSETS/'response'/('hepg2_foundation_common_v1' if native else 'hepg2_v1');base_id='B00_B02_native_common_seed42_v1' if native else 'B00_B02_hepg2_unseen_target_seed42_v1' if hepg2 else 'B00_B02_norman_simulation_seed1_v2';raw=ASSETS/'runs'/base_id
 sources=[]
-if args.task=='hepg2':
+if hepg2:
     obs=np.load(root/'test_aggregate.npz');targets=obs['targets'];truth=obs['truth'];ctrl=obs['control'];n=obs['n_cells'];genes=obs['gene_names'];tv=np.load(root/'trainval_aggregate.npz');ix=tv['split']=='train';training_magnitude=np.linalg.norm(tv['truth'][ix]-tv['control'][ix],axis=1)
 else:
     a=ad.read_h5ad(ASSETS/'official/GEARS/norman/perturb_processed.h5ad');split=json.loads((ASSETS/'runs/R01_norman_simulation_seed1_v2/split.json').read_text());conditions=a.obs.condition.astype(str).to_numpy();control=np.asarray(a.X[conditions=='ctrl'].mean(0)).ravel();targets=np.array(sorted(set(split['test'])-{'ctrl'}));truth=np.stack([np.asarray(a.X[conditions==t].mean(0)).ravel() for t in targets]);ctrl=np.broadcast_to(control,truth.shape).copy();n=np.array([(conditions==t).sum() for t in targets]);genes=a.var.gene_name.astype(str).to_numpy();train=np.stack([np.asarray(a.X[conditions==t].mean(0)).ravel()-control for t in sorted(set(split['train'])-{'ctrl'})]);training_magnitude=np.linalg.norm(train,axis=1)
@@ -17,15 +18,25 @@ def align(names,pred):
     lookup={t:i for i,t in enumerate(names)};return pred[[lookup[t] for t in targets]]
 for name in ['B00_no_change','B01_train_mean','B02_GO_PCA_ridge']:
     path=raw/f'{name}_predictions.npz';d=np.load(path);models[name]=align(d['targets'],d['prediction']);sources.append(dict(model_id=name,path=str(path),sha256=sha(path)))
-gears_id='B03_hepg2_strict_unseen_target_seed42_v1' if args.task=='hepg2' else 'R01_norman_simulation_seed1_v2';runpath=REPORT/'runs'/gears_id/'run.json'
+gears_id='B03_GEARS_native_common_seed42_v1' if native else 'B03_hepg2_strict_unseen_target_seed42_v1' if hepg2 else 'R01_norman_simulation_seed1_v2';runpath=REPORT/'runs'/gears_id/'run.json'
 if runpath.exists():
     run=json.loads(runpath.read_text());assert run['status']=='executed';path=Path(run['prediction_path']);assert sha(path)==run['prediction_sha256'];d=np.load(path)
-    if args.task=='hepg2':
+    if hepg2:
         assert np.array_equal(d['gene_names'],genes);models['B03_GEARS']=align(d['targets'],d['prediction'])
     else:
         cats=d['pert_cat'];pred=d['pred'];measured=d['truth'];assert set(cats)==set(targets)
         aggregate=np.stack([pred[cats==t].mean(0) for t in targets]);check=np.stack([measured[cats==t].mean(0) for t in targets]);assert np.allclose(check,truth,atol=1e-4,rtol=1e-4),'GEARS and baselines must have the same observed response population';models['B03_GEARS']=aggregate
     sources.append(dict(model_id='B03_GEARS',path=str(path),sha256=sha(path)))
+if native:
+    # Do not publish a partial pretrained/random comparison as the completed matched experiment.
+    assert 'B03_GEARS' in models,'Await the matched GEARS execution'
+    for initialization in ['pretrained','random']:
+        rid=f'B04_{initialization}_native_common_seed42_v1';runpath=REPORT/'runs'/rid/'run.json';run=json.loads(runpath.read_text());assert run['status']=='executed'
+        path=Path(run['prediction_path']);assert sha(path)==run['prediction_sha256'];d=np.load(path);assert np.array_equal(d['gene_names'],genes)
+        name=f'B04_scGPT_{initialization}';models[name]=align(d['targets'],d['prediction']);sources.append(dict(model_id=name,path=str(path),sha256=sha(path)))
+    primary=obs['primary_mask'].astype(bool);assert primary.sum()==1977
+    truth=truth[:,primary];ctrl=ctrl[:,primary];genes=genes[primary];models={name:pred[:,primary] for name,pred in models.items()}
+    training_magnitude=np.linalg.norm((tv['truth'][ix]-tv['control'][ix])[:,primary],axis=1);cutoffs=np.quantile(training_magnitude,[1/3,2/3])
 rows=[]
 for name,pred in models.items():
     assert pred.shape==truth.shape and np.isfinite(pred).all()
