@@ -28,7 +28,7 @@ for regime,directory in [('inductive','annotation_full_summary'),('query_adaptiv
             path=REPORT/'model_parameter_audit/liverct.json'
             if path.exists():
                 audit=next(r for r in json.loads(path.read_text())['records'] if r['run_id']==ids[0].replace('_scanvi_control',''));dimension=audit.get('feature_dimension');frame.loc[i,'external_reference_registry_cells']=audit.get('reference_registry_n_cells');frame.loc[i,'external_reference_label_categories']=len(audit.get('reference_label_categories',[]));frame.loc[i,'exact_native_head_training_label_count']='unknown; VAE reference registry size is not ensemble fitting sample count';frame.loc[i,'native_head_type']=audit.get('native_broad_classifier_type')
-            frame.loc[i,'label_information']='External healthy-liver labeled reference; no HCC query truth used. Reference label/cell amount not matched to inductive development training.'
+            frame.loc[i,'label_information']='External labeled liver reference; no HCC query truth used. Reference label/cell amount not matched to inductive development training.'
             frame.loc[i,'unlabeled_query_fit']=True;frame.loc[i,'query_adaptation_epochs']=20;frame.loc[i,'training_cell_budget']='External reference checkpoint plus all unlabeled heldout query cells'
         else:
             frame.loc[i,'label_information']='Same six labeled development training donors per fold; pretrained corpus overlap unknown where applicable';frame.loc[i,'unlabeled_query_fit']=False;frame.loc[i,'training_cell_budget']='12000 sampled development training cells per fold'
@@ -52,7 +52,11 @@ if h3_path.exists():
 for h in hypotheses:
     if h['hypothesis_id']=='D-H1':h.update(current_status='frozen_control_confirmation_executed',conclusion='Mean gain−.003921945; only2/8 donors nonnegative; preregistered success rule not met. Adapted-model factors tracked separately.')
     elif h['hypothesis_id']=='D-H2':h.update(current_status='screened_not_selected',conclusion='Donor×class balancing lowered heldout inner validation relative to D0 and D1; not promoted or declared improved.')
-    elif h['hypothesis_id']=='M-H1':h.update(current_status='confirmation_complete' if (REPORT/'factorial_confirmation/provenance.json').exists() else 'selected_partial_confirmation_running',conclusion='Partial chosen by inner validation; corrected-seed LoRA v2 included, v1 excluded. Efficacy conclusion requires full factorial results.')
+    elif h['hypothesis_id']=='M-H1':
+        complete=(REPORT/'factorial_confirmation/provenance.json').exists();h.update(current_status='confirmation_complete' if complete else 'selected_partial_confirmation_running')
+        if complete:
+            effects=pd.read_csv(REPORT/'factorial_confirmation/paired_effects.tsv',sep='\t').set_index('effect');m=effects.loc['Model gain'];h['conclusion']=f"Partial chosen only by inner validation.3seed4fold model-only gain {m.pooled_mean_difference:.6f}, paired donor95CI[{m.donor_bootstrap_lower95:.6f},{m.donor_bootstrap_upper95:.6f}],{int(m.n_nonnegative_donors)}/8 donors nonnegative. Combined gain and interaction remain separate; no clear confirmed adapter benefit. Corrected LoRA v2 retained; v1 excluded."
+        else:h['conclusion']='Partial chosen by inner validation; await complete confirmation; corrected-seed LoRA v2 included, v1 excluded.'
 pd.DataFrame(hypotheses).to_csv(REPORT/'hypothesis_registry.tsv',sep='\t',index=False)
 write_json(REPORT/'registry_provenance.json',dict(status='exported_actual_available_results',project_commit=git_commit(),n_immutable_executed_runs=len(records),source_sha256=sha(Path(__file__)),missing_values='Blank means unavailable/not applicable in original record, never an invented measurement',separation='Different tasks, information regimes, training budgets and response gene/target panels remain explicitly separated'))
 print('RESEARCH_TABLES_EXPORTED',len(records),flush=True)
