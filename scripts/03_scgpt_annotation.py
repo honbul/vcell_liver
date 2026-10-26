@@ -30,7 +30,7 @@ run=provenance(c,a,'scGPT-whole-human frozen CLS + supervised logistic head',res
        upstream_commit=subprocess.check_output(['git','-C',str(ROOT/'third_party/scGPT'),'rev-parse','HEAD'],text=True).strip(),
        checkpoint_revision='official whole-human Google Drive folder 1oWh_-ZRdhtoGQ2Fw24HP41FgLoomVo-y; hash pinned',
        checkpoint_sha256=sha(checkpoint/'best_model.pt'),batch_size=c['batch_size'],max_sequence_length=c['max_length'],dtype='autocast float16 on CUDA; features float32',
-       gene_mapping_coverage=float(match.mean()),n_vocab_genes=int(match.sum()),embedding_shape=features.shape,
+       gene_mapping_coverage=float(match.mean()),n_vocab_genes=int(match.sum()),embedding_shape=features.shape,resource_measurement_scope='checkpoint loading, input processing and frozen embedding; classifier CPU time excluded; full CLI in reports/stages',
        token_count_quantiles=np.quantile(valid,[0,.25,.5,.75,1]).tolist(),preprocessing='raw nonzero count rank-quantile bins in official DataCollator, once; official random sequence sampling, seed 42',
        limitations=['HCC application, not reproduction of original paper benchmark','pretraining overlap unknown','zero-shot embedding + supervised head'])
 run.update(resource_results)

@@ -10,3 +10,4 @@ $P -m pip install numpy==1.26.4 pandas==2.2.3 scipy==1.14.1 anndata==0.10.9 scan
 $P -m pip install --no-deps -e third_party/Geneformer
 $P -c 'from geneformer import TranscriptomeTokenizer; import torch; print(torch.__version__, torch.cuda.is_available())'
 $P -m pip freeze > envs/vcell-geneformer.freeze.txt
+sed '/^-e /d' envs/vcell-geneformer.freeze.txt > envs/vcell-geneformer.requirements.txt

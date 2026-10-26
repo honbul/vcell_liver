@@ -178,3 +178,9 @@ Geneformer embedding shift와 GEARS expression MSE를 한 순위표에 합치지
 ## 확인 범위
 
 일부 출판사 논문은 공개 초록·서지·그림 설명 범위만 확인했고, 실행 지침은 공식 코드·docs로 보완했다. 체크포인트 실제 다운로드, GPU 요구량, metadata header, pretraining corpus overlap은 실행 단계에서 확인해야 한다. 공식 사실과 본 문서의 실행 예산·설계 제안을 구분한다.
+
+## G1 실제 실행 결과로 연결
+
+위 문헌 표와 초기 예산은 실제 측정 결과와 구분한다. 2026-10-26 G1 A30에서 두 모델을 실행했고, 한국어 작은 subset 노트북 6개를 새 kernel에서 검증했다. 2,000세포의 환자 분리 test macro-F1은 PCA 0.9359 / scGPT 0.9327 / Geneformer-V2-104M 0.9210이었다. 두 모델 모두 이 PCA 기준선을 넘지 못했다. 해당 frozen inference의 peak CUDA allocated는 scGPT(batch8,length1200) 약0.37GiB, Geneformer(batch4,length4096,float32) 약1.65GiB였다. fine-tuning 사양이나 논문 재현 결과가 아니다.
+
+정확한 10,000세포 비교, 자원 측정 범위, KG ablation 및 한계는 [실제 최종 요약](../reports/final_summary.md), 재실행은 [서버 튜토리얼](SERVER_TUTORIAL.md)을 따른다.

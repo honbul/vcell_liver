@@ -18,6 +18,6 @@ pca=PCA(n_components=min(50,train.sum()-1,small.shape[1]),random_state=42).fit(s
 features=pca.transform(small)
 save_features(a,features,c['run_id'])
 metrics=evaluate(features,a,c['run_id'])
-write_json(ROOT/'results'/c['run_id']/'run.json',provenance(c,a,'PCA50+multinomial_logistic',r,metrics=metrics,hvg_method='top train log-normalized variance',n_hvg=len(hvg),normalization_target=10000,dtype='float32',batch_size=None,max_sequence_length=None))
+write_json(ROOT/'results'/c['run_id']/'run.json',provenance(c,a,'PCA50+multinomial_logistic',r,metrics=metrics,hvg_method='top train log-normalized variance',n_hvg=len(hvg),normalization_target=10000,dtype='float32',batch_size=None,max_sequence_length=None,resource_measurement_scope='input preprocessing, PCA and validation/head evaluation; excludes interpreter imports and final provenance hashing'))
 import pandas as pd
 pd.DataFrame({'gene_symbol':a.var.gene_symbol.iloc[hvg].to_numpy()}).to_csv(ROOT/'results'/c['run_id']/'hvg.tsv',sep='\t',index=False)
