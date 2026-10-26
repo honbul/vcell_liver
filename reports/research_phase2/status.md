@@ -18,9 +18,9 @@
 | GEARS 공식 | Norman simulation seed1, hidden64, 20epochs 완료; native Pearson_DE .8665 | 수정 재현 실행됨 |
 | 간 유래 실측 response | HepG2 CRISPRi heldout214targets/13994세포; B00–B03 완료, GEARS RMSE .13091 vs GO/ridge .10584 | 실행됨, GEARS 추가 이득 없음 |
 | foundation response 확장 | 같은3303관측gene/191testtarget, native scGPT gradient smoke 통과; pretrained/random/GEARS job12876 | 실제 비교 진행 중 |
-| chemical response | 실제 mouse TCDD 데이터 확보; scvi0.14 abstract API 실패 보존 후 child scvi0.13 사용 | 수정 실행 준비됨 |
+| chemical response | Mouse TCDD portal-treated1074cells holdout; scVIDR RMSE .07629 vs no-change .20569, native arithmetic .13854 | 실제 수정 native 경로 실행됨 |
 | 외부 최종 | GSE151530 unscored; histology·환자·ontology 고정과 선택 freeze 필요 | 미완료, 점수 미관찰 |
-| 사용자 tutorial | 06 분류/공식예제, 07 실측 response, 08 개선 실험/Slurm 재실행 | 실제 실행됨 |
+| 사용자 tutorial | 06–10 분류·genetic·개선·새query·chemical; 기본은 실제 결과 읽기 | 09는 PCA 정합 수정 뒤 재검증 중 |
 
 학습량4096의 개선 실험은 A-series의12000과 별도 조건이다. 같은4096 baseline을 직접 실행했고 기존 A-series 점수를 재사용하지 않는다. 첫 데이터 변경은 모두 validation과 개발 outer score에서 감소했다. 선택된 donor-balanced는 후속 대조를 위한 후보이며 확인된 개선이라 부르지 않는다.
 

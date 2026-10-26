@@ -1,0 +1,26 @@
+{
+  "status": "prepared",
+  "source_sha256": "f80a297d9d2ec1ad2d88886f98ffde99f6b0cc66c03e117933ed0d2662a923ea",
+  "species": "mouse",
+  "cell_context": "liver single nuclei; six author-selected nonimmune cell types",
+  "compound": "2,3,7,8-tetrachlorodibenzo-p-dioxin (TCDD)",
+  "dose_units": "microgram_per_kg",
+  "control_dose": 0,
+  "treated_dose": 30,
+  "exposure": "Oral gavage every4days for28days, from Nault study Methods; not an acute single administration",
+  "source_study": "GSE148339 (Nault single-dose source); author supplied nault2021_singleDose file pinned separately",
+  "replicate": "Publication reports biological replicates, but per-mouse identity is not retained as an explicit field in the supplied h5ad; batch0/1 equals treatment, not replicate",
+  "source_links": [
+    "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE148339",
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC7674514/",
+    "https://github.com/BhattacharyaLab/scVIDR"
+  ],
+  "holdout": "All treated Hepatocytes - portal excluded from VAE training and HVG fit; control cells of this target context are supplied",
+  "n_training_cells": 17791,
+  "n_heldout_treated_cells": 1074,
+  "n_target_control_cells": 7512,
+  "n_genes": 5000,
+  "training_manifest_sha256": "e11ca5785a32313391551113733951e1cc2cc4f296368f01bed02b41d48bb031",
+  "heldout_manifest_sha256": "f87d2901db36bd544aef854bc53515b6d1b4ccee961d5d760127741f31e1b7ef",
+  "information": "Same TCDD exposure observed in other cell types; this is context transfer, not an unseen drug or animal-replicate holdout"
+}

@@ -10,4 +10,8 @@
 #SBATCH --output=logs/slurm_scvidr_%j.log
 set -euo pipefail
 source envs/activate.sh scgpt
-.venvs/vcell-scvidr/bin/python scripts/research/run_scvidr_single.py --run-id C00_scvidr_mouse_TCDD_portal_seed42_v3 --recover-trained-run C00_scvidr_mouse_TCDD_portal_seed42_v2
+run_id=${1:-C00_scvidr_mouse_TCDD_portal_seed42_v3}
+recovery=${2:-C00_scvidr_mouse_TCDD_portal_seed42_v2}
+extra=()
+if [ "$recovery" != fresh ]; then extra=(--recover-trained-run "$recovery"); fi
+.venvs/vcell-scvidr/bin/python scripts/research/run_scvidr_single.py --run-id "$run_id" "${extra[@]}"

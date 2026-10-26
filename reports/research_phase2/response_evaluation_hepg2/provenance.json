@@ -1,6 +1,6 @@
 {
   "status": "executed",
-  "project_commit": "ae2722455a4648022365d8a3388c165105194f9a",
+  "project_commit": "35491f5990123df4ed107c19de055e0d7f499f40",
   "task": "measured_genetic_response",
   "dataset": "hepg2",
   "n_interventions": 214,
@@ -9,7 +9,8 @@
   "model_ids": [
     "B00_no_change",
     "B01_train_mean",
-    "B02_GO_PCA_ridge"
+    "B02_GO_PCA_ridge",
+    "B03_GEARS"
   ],
   "sources": [
     {
@@ -26,6 +27,11 @@
       "model_id": "B02_GO_PCA_ridge",
       "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B00_B02_hepg2_unseen_target_seed42_v1/B02_GO_PCA_ridge_predictions.npz",
       "sha256": "92fef2f3a10945b215700bcc318a6b7ae34ba85b08f245831c73316ff1db3e47"
+    },
+    {
+      "model_id": "B03_GEARS",
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/B03_hepg2_strict_unseen_target_seed42_v1/predictions_mean.npz",
+      "sha256": "f5f82077007227ec0496fcebb32d61a6f92c43bfa510372df825b1bc4dbafdd4"
     }
   ],
   "primary_metric": "condition-macro Delta expression RMSE, lower better; subtracting the same matched-control vector makes prediction error identical in expression and Delta space",

@@ -26,7 +26,7 @@ if args.model=='pca':
     x=a.layers['counts'][training].astype(np.float32);x=x.multiply((10000/np.maximum(np.asarray(x.sum(1)).ravel(),1))[:,None]).tocsr();x.data=np.log1p(x.data)
     mu=np.asarray(x.mean(0)).ravel();var=np.asarray(x.power(2).mean(0)).ravel()-mu**2;hvg=np.argsort(-var,kind='stable')[:2000];small=x[:,hvg].toarray()
     scale=StandardScaler().fit(small);small=scale.transform(small);pca=PCA(n_components=50,random_state=42).fit(small);features=pca.transform(small)
-    preprocessor=dict(hvg_ensembl=a.var.ensembl_id.iloc[hvg].astype(str).tolist(),scaler=scale,pca=pca,normalization_target=10000)
+    preprocessor=dict(hvg_ensembl=a.var.ensembl_id.iloc[hvg].fillna('').astype(str).tolist(),hvg_gene_symbols=a.var.gene_symbol.iloc[hvg].fillna('').astype(str).tolist(),hvg_var_names=a.var_names[hvg].astype(str).tolist(),scaler=scale,pca=pca,normalization_target=10000)
 else:
     path=ASSETS/'features'/f'{args.model}_GSE149614_development_full.npz';d=np.load(path);assert np.array_equal(d['cell_ids'],a.obs_names.astype(str));features=d['X'][training];feature_metadata=json.loads(path.with_suffix('.json').read_text());assert sha(path)==feature_metadata['feature_sha256']
 preprocessing=time.monotonic()-start;start=time.monotonic();scale=StandardScaler().fit(features);features=scale.transform(features)

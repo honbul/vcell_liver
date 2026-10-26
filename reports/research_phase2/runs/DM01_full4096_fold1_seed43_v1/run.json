@@ -1,0 +1,142 @@
+{
+  "run_id": "DM01_full4096_fold1_seed43_v1",
+  "status": "executed",
+  "task": "annotation",
+  "regime": "inductive",
+  "dataset_version": "GSE149614_development_full",
+  "split_id": "development_donor4_v2",
+  "project_commit": "7a590c611469d591ad3ddde0ecc50ec7f93ad58a",
+  "seed": 43,
+  "data_variant": "D0_natural",
+  "model_variant": "M02_partial_same_NN_head",
+  "label_mapping": "original six broad lineages, unchanged",
+  "pretraining_overlap": "unknown",
+  "split_manifest": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver/manifests/research_phase2/development_donor4_v2.tsv",
+  "split_manifest_sha256": "3ea07b16f46b357bd4063ef467653ef9382c3f9ede2ccfffa0fd40a80d67ab7e",
+  "allowed_target_information": "own observed counts only; no fitting to outer evaluation donors",
+  "prediction_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/DM01_full4096_fold1_seed43_v1/predictions.tsv",
+  "prediction_sha256": "ce4dffd8d3158fffa8dc0923ba340c4ab312f30b9e49c1277598d1277b607ec8",
+  "metrics": {
+    "macro_f1": 0.9454454310737286,
+    "balanced_accuracy": 0.9414783674175632,
+    "n_cells": 14852,
+    "n_known": 14852,
+    "evaluation_coverage": 1.0,
+    "prediction_coverage": 1.0,
+    "n_unknown_truth": 0,
+    "n_abstained": 0,
+    "confidence_calibration": "uncalibrated; no confidence threshold; ECE/Brier reported",
+    "labels": [
+      "B",
+      "Endothelial",
+      "Fibroblast",
+      "Hepatocyte",
+      "Myeloid",
+      "T/NK"
+    ],
+    "answered_only_macro_f1": 0.9454454310737286,
+    "brier_multiclass": 0.053496960550546646,
+    "ece_10_bins": 0.025370385450652927
+  },
+  "model_id": "Geneformer_partial",
+  "fold": 1,
+  "source_sha256": "325c02a43ecdfcea779fb06838b3fbead9b084a0d8ad7cb922766883b9265d3a",
+  "initialization_seed": 43,
+  "fold_training_seed_policy": "Seed before encoder/adapter construction and again before shared head initialization in both inner/outer fits",
+  "base_checkpoint_revision": "1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5",
+  "checkpoint_sha256": "fff5cba29ddd8792991fa77b4872246fbe548a178cebda3775cdc72b67780e7f",
+  "chosen_epochs": 2,
+  "inner_validation_macro_f1": 0.9465101134427044,
+  "training_donors": [
+    "HCC01",
+    "HCC03",
+    "HCC04",
+    "HCC05",
+    "HCC08",
+    "HCC10"
+  ],
+  "validation_donors": [
+    "HCC04",
+    "HCC08"
+  ],
+  "evaluation_donors_or_perturbations": [
+    "HCC06",
+    "HCC07"
+  ],
+  "n_inner_training": 2330,
+  "n_inner_validation": 1766,
+  "n_outer_training": 4096,
+  "n_evaluation": 14852,
+  "trainable_encoder_parameters": 14175744,
+  "trainable_head_parameters": 99206,
+  "trainable_parameters": 14274950,
+  "target_modules": [],
+  "rank": null,
+  "alpha": null,
+  "adapter_dropout": 0.0,
+  "partial_blocks": [
+    9,
+    10
+  ],
+  "head_architecture": "Linear768→128, GELU, Dropout0.1, Linear128→6; same initialization/optimizer across conditions",
+  "head_learning_rate": 0.001,
+  "encoder_learning_rate": 1e-05,
+  "microbatch": 2,
+  "effective_batch": 16,
+  "update_counts": {
+    "inner": {
+      "optimizer_updates": 438,
+      "seen_examples": 6990
+    },
+    "outer": {
+      "optimizer_updates": 512,
+      "seen_examples": 8192
+    }
+  },
+  "gradient_checks": [
+    {
+      "stage": "inner",
+      "update": 0,
+      "head_gradient_norm": 4.600781723856926,
+      "encoder_nonzero_gradient_tensors": 32
+    },
+    {
+      "stage": "inner",
+      "update": 1,
+      "head_gradient_norm": 4.720690160989761,
+      "encoder_nonzero_gradient_tensors": 32
+    },
+    {
+      "stage": "outer",
+      "update": 0,
+      "head_gradient_norm": 4.881421834230423,
+      "encoder_nonzero_gradient_tensors": 32
+    },
+    {
+      "stage": "outer",
+      "update": 1,
+      "head_gradient_norm": 3.9929919838905334,
+      "encoder_nonzero_gradient_tensors": 32
+    }
+  ],
+  "precision": "FP32 weights; BF16 matmul, no quantization",
+  "encoder_dropout": "disabled uniformly; autograd enabled for selected parameters",
+  "pooling": "hidden_states[11] CLS, full4096 V2 input; unused block11 excluded from adaptation",
+  "training_manifest_sha256": "efac115371bf37a8eecd93cc0b6a987ebf359f5caec5f825ec5c2fa6cda56a1a",
+  "validation_manifest_sha256": "eccb81defa9a23616e6ef7bdbd3b0e4f31e1389c2fcf2648abec7cffe1e112c0",
+  "save_reload_probability_max_abs_difference": 0.0,
+  "wall_preprocessing_seconds": 17.493450477719307,
+  "wall_training_seconds": 456.13155350089073,
+  "wall_inference_seconds": 448.25403735786676,
+  "wall_total_seconds": 922.6076300665736,
+  "failure_or_limitations": [
+    "Separate matched4096 training budget; compare against its own frozen controls, not12000-cell A-series",
+    "Frozen NN uses batch8 BF16 cached embeddings; adapted encoders use online microbatch2 BF16 during training",
+    "Pretraining overlap unknown; development OOF only"
+  ],
+  "peak_cpu_rss_gib": 4.193492889404297,
+  "peak_process_gpu_gib": 4.83984375,
+  "gpu_name": "NVIDIA A30",
+  "peak_cuda_allocated_gib": 2.880235195159912,
+  "peak_cuda_reserved_gib": 4.556640625
+}

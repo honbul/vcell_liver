@@ -1,0 +1,200 @@
+{
+  "status": "executed",
+  "project_commit": "01a42058a3049a9bd793ff78cc28bb1b4355f408",
+  "source": "First64 actual development cells, stripped of lineage labels before query serialization",
+  "input_data_sha256": "876ffbc6d789c13a6674aeed6d5a66c299990a455f9043df5be0bbbdfca81d7f",
+  "external_data_accessed": false,
+  "records": [
+    {
+      "model_id": "pca",
+      "n_cells": 64,
+      "input_columns": [
+        "cell_id",
+        "patient_id",
+        "n_counts"
+      ],
+      "inference_metadata": {
+        "status": "executed",
+        "task": "annotation_inference",
+        "regime": "inductive",
+        "model_id": "pca",
+        "project_commit": "01a42058a3049a9bd793ff78cc28bb1b4355f408",
+        "source_sha256": "8266c823148b1ad52b1135e1f5ed730f36f4a3e6b7a29cebe885ae3ba95efae6",
+        "input_data_sha256": "876ffbc6d789c13a6674aeed6d5a66c299990a455f9043df5be0bbbdfca81d7f",
+        "bundle_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/F00_pca_development12000_seed42_v1/annotation_bundle.joblib",
+        "bundle_sha256": "6de7c052e303db669bdefc762aa76848e97479d0f3e1b7702bea4a4b3ad36cb2",
+        "feature_path": null,
+        "n_cells": 64,
+        "feature_dimension": 50,
+        "prediction_sha256": "83b451604a8bb0c4bfa404c30de24d1e681fdec0cfc548e3b152bc29575ee21a",
+        "probability_sha256": "62c43f3c628b7e0b2b70550c972f4764736898e49d32abb859480f0303a65667",
+        "coverage": {
+          "n_reference_hvg": 2000,
+          "n_present_hvg": 1893,
+          "missing_gene_policy": "Raw zero fill before frozen training scaling; original provided query-library sum retained"
+        },
+        "allowed_query_information": "Own raw counts and gene identifiers; cell ID/patient ID copied for output only. No query labels read, no query fit or adaptation",
+        "wall_preprocessing_seconds": 0.22691036202013493,
+        "wall_representation_seconds": 0.0,
+        "wall_inference_seconds": 0.07989900978282094,
+        "wall_training_seconds": 0,
+        "wall_total_seconds": 0.27561128488741815,
+        "peak_cpu_rss_gib": 2.377330780029297,
+        "peak_process_gpu_gib": null
+      }
+    },
+    {
+      "model_id": "scgpt",
+      "n_cells": 64,
+      "input_columns": [
+        "cell_id",
+        "patient_id",
+        "n_counts"
+      ],
+      "inference_metadata": {
+        "status": "executed",
+        "task": "annotation_inference",
+        "regime": "inductive",
+        "model_id": "scgpt",
+        "project_commit": "01a42058a3049a9bd793ff78cc28bb1b4355f408",
+        "source_sha256": "8266c823148b1ad52b1135e1f5ed730f36f4a3e6b7a29cebe885ae3ba95efae6",
+        "input_data_sha256": "876ffbc6d789c13a6674aeed6d5a66c299990a455f9043df5be0bbbdfca81d7f",
+        "bundle_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/F00_scgpt_development12000_seed42_v1/annotation_bundle.joblib",
+        "bundle_sha256": "446dac0d7b3fc87b4246b46bb87fa7e0a8ba3a1960eaa2f720e410edad11f631",
+        "feature_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/query_features/scgpt_annotation_query_interface_v1.npz",
+        "n_cells": 64,
+        "feature_dimension": 512,
+        "prediction_sha256": "990ac8b3879c225b3a872f951c0368f1af19659a96932e7e393249e67a327785",
+        "probability_sha256": "c514539dcaf2f26534764c47705b82c2c4122d8ff50656e9b1ebb6d172601bfd",
+        "coverage": {
+          "n_original_genes": 25712,
+          "n_vocabulary_matched_genes": 23150,
+          "count_fraction": 0.9669661521911621
+        },
+        "allowed_query_information": "Own raw counts and gene identifiers; cell ID/patient ID copied for output only. No query labels read, no query fit or adaptation",
+        "wall_preprocessing_seconds": 0.16043698391877115,
+        "wall_representation_seconds": 0.0,
+        "wall_inference_seconds": 0.04121558996848762,
+        "wall_training_seconds": 0,
+        "wall_total_seconds": 0.17297466099262238,
+        "peak_cpu_rss_gib": 2.3776016235351562,
+        "peak_process_gpu_gib": null
+      },
+      "representation_roundtrip_cosine_min": 1.0,
+      "representation_roundtrip_cosine_mean": 1.0,
+      "note": "New query batching/hardware; descriptive numerical comparison, never selected using annotation scores"
+    },
+    {
+      "model_id": "geneformer",
+      "n_cells": 64,
+      "input_columns": [
+        "cell_id",
+        "patient_id",
+        "n_counts"
+      ],
+      "inference_metadata": {
+        "status": "executed",
+        "task": "annotation_inference",
+        "regime": "inductive",
+        "model_id": "geneformer",
+        "project_commit": "01a42058a3049a9bd793ff78cc28bb1b4355f408",
+        "source_sha256": "8266c823148b1ad52b1135e1f5ed730f36f4a3e6b7a29cebe885ae3ba95efae6",
+        "input_data_sha256": "876ffbc6d789c13a6674aeed6d5a66c299990a455f9043df5be0bbbdfca81d7f",
+        "bundle_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/F00_geneformer_development12000_seed42_v1/annotation_bundle.joblib",
+        "bundle_sha256": "5203f7b7b2cf9ce3ac85c8e6e52cdb9047a6563fcc35dfa17195d68d41c7e809",
+        "feature_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/query_features/geneformer_annotation_query_interface_v1.npz",
+        "n_cells": 64,
+        "feature_dimension": 768,
+        "prediction_sha256": "79bd1c56bf4a2ef79852c37482924f29990a0cfaa2cf5c91e5669755b6e4ce8d",
+        "probability_sha256": "b7222f0ca5f5aed2294d5018a884e3fac50108995e3058cc867d3eb1e51f19b6",
+        "coverage": {
+          "n_original_genes": 25712,
+          "n_mapped_genes": 18291,
+          "n_original_vocab_genes": 16721,
+          "n_counts_basis": "original all-gene raw library sum, before mapping/filtering",
+          "total_original_counts": 543836,
+          "total_mapped_counts": 523595,
+          "mapped_count_fraction": 0.9627810716629028,
+          "token_length_quantiles": [
+            759.0,
+            1219.25,
+            1541.0,
+            2240.0,
+            4096.0
+          ],
+          "model_input_size": 4096,
+          "special_token": true,
+          "collapse_gene_ids": true,
+          "duplicate_mapped_ids": 0
+        },
+        "allowed_query_information": "Own raw counts and gene identifiers; cell ID/patient ID copied for output only. No query labels read, no query fit or adaptation",
+        "wall_preprocessing_seconds": 0.18028965895064175,
+        "wall_representation_seconds": 0.0,
+        "wall_inference_seconds": 0.04533884394913912,
+        "wall_training_seconds": 0,
+        "wall_total_seconds": 0.20062886411324143,
+        "peak_cpu_rss_gib": 2.4987564086914062,
+        "peak_process_gpu_gib": null
+      },
+      "representation_roundtrip_cosine_min": 0.9999998807907104,
+      "representation_roundtrip_cosine_mean": 1.0,
+      "note": "New query batching/hardware; descriptive numerical comparison, never selected using annotation scores"
+    },
+    {
+      "model_id": "geneformer_clcancer",
+      "n_cells": 64,
+      "input_columns": [
+        "cell_id",
+        "patient_id",
+        "n_counts"
+      ],
+      "inference_metadata": {
+        "status": "executed",
+        "task": "annotation_inference",
+        "regime": "inductive",
+        "model_id": "geneformer_clcancer",
+        "project_commit": "01a42058a3049a9bd793ff78cc28bb1b4355f408",
+        "source_sha256": "8266c823148b1ad52b1135e1f5ed730f36f4a3e6b7a29cebe885ae3ba95efae6",
+        "input_data_sha256": "876ffbc6d789c13a6674aeed6d5a66c299990a455f9043df5be0bbbdfca81d7f",
+        "bundle_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/runs/F00_geneformer_clcancer_development12000_seed42_v1/annotation_bundle.joblib",
+        "bundle_sha256": "f79bdc07982c1a831550b37ba09dc1f9abdf1512da68e88fd81395405b809fcb",
+        "feature_path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/research_phase2/query_features/geneformer_clcancer_annotation_query_interface_v1.npz",
+        "n_cells": 64,
+        "feature_dimension": 768,
+        "prediction_sha256": "7e24c4aeaed44f3d6ac2f91c7a3908956eed4e89caedcaf2dfa4fedc38227569",
+        "probability_sha256": "ff9677cd1aa8da7c265ad8cf3f562b937036528dffed286c5a0a41d9b262342c",
+        "coverage": {
+          "n_original_genes": 25712,
+          "n_mapped_genes": 18291,
+          "n_original_vocab_genes": 16721,
+          "n_counts_basis": "original all-gene raw library sum, before mapping/filtering",
+          "total_original_counts": 543836,
+          "total_mapped_counts": 523595,
+          "mapped_count_fraction": 0.9627810716629028,
+          "token_length_quantiles": [
+            759.0,
+            1219.25,
+            1541.0,
+            2240.0,
+            4096.0
+          ],
+          "model_input_size": 4096,
+          "special_token": true,
+          "collapse_gene_ids": true,
+          "duplicate_mapped_ids": 0
+        },
+        "allowed_query_information": "Own raw counts and gene identifiers; cell ID/patient ID copied for output only. No query labels read, no query fit or adaptation",
+        "wall_preprocessing_seconds": 0.18559655104763806,
+        "wall_representation_seconds": 0.0,
+        "wall_inference_seconds": 0.07163130794651806,
+        "wall_training_seconds": 0,
+        "wall_total_seconds": 0.23595379921607673,
+        "peak_cpu_rss_gib": 2.67926025390625,
+        "peak_process_gpu_gib": null
+      },
+      "representation_roundtrip_cosine_min": 0.9999999403953552,
+      "representation_roundtrip_cosine_mean": 1.0,
+      "note": "New query batching/hardware; descriptive numerical comparison, never selected using annotation scores"
+    }
+  ]
+}

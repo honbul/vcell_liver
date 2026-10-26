@@ -13,9 +13,9 @@ source envs/activate.sh scgpt
 .venvs/vcell-runtime310/bin/python envs/portable310.py --env research scripts/research/summarize_factorial.py --mode all
 for factor in DM00 DM10 DM01 DM11; do
   .venvs/vcell-runtime310/bin/python envs/portable310.py --env geneformer scripts/research/fit_final_factorial.py --factor "$factor" --run-id F01_${factor}_development4096_seed42_v1
-  extra=(--features "$VCELL_DATA_ROOT/research_phase2/query_features/geneformer_annotation_query_interface_v1.npz")
+  extra=(--features "$VCELL_DATA_ROOT/research_phase2/query_features/geneformer_annotation_query_interface_v2.npz")
   if [[ "$factor" = DM01 || "$factor" = DM11 ]]; then
-    extra=(--token-cache "$VCELL_DATA_ROOT/tokenized/query_annotation_query_interface_v1/cells.dataset")
+    extra=(--token-cache "$VCELL_DATA_ROOT/tokenized/query_annotation_query_interface_v2/cells.dataset")
   fi
-  .venvs/vcell-runtime310/bin/python envs/portable310.py --env geneformer scripts/research/predict_annotation.py --input "$VCELL_DATA_ROOT/research_phase2/probes/annotation_query_interface_v1/counts_only.h5ad" --bundle "$VCELL_DATA_ROOT/research_phase2/runs/F01_${factor}_development4096_seed42_v1/annotation_bundle.joblib" --output "$VCELL_DATA_ROOT/research_phase2/probes/annotation_query_interface_v1/$factor" "${extra[@]}"
+  .venvs/vcell-runtime310/bin/python envs/portable310.py --env geneformer scripts/research/predict_annotation.py --input "$VCELL_DATA_ROOT/research_phase2/probes/annotation_query_interface_v2/counts_only.h5ad" --bundle "$VCELL_DATA_ROOT/research_phase2/runs/F01_${factor}_development4096_seed42_v1/annotation_bundle.joblib" --output "$VCELL_DATA_ROOT/research_phase2/probes/annotation_query_interface_v2/$factor" "${extra[@]}"
 done

@@ -1,0 +1,13 @@
+{
+  "status": "failed",
+  "run_id": "C00_scvidr_mouse_TCDD_portal_seed42_v2",
+  "source_sha256": "18f7e69cb645ef7977ad31cb35f3f66ffe98ced41fc3b1a017ffedf2930e85f6",
+  "error": "NameError: name 'LinearRegression' is not defined",
+  "traceback": "Traceback (most recent call last):\n  File \"/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver/scripts/research/run_scvidr_single.py\", line 40, in <module>\n    np.random.seed(42);torch.manual_seed(42);result=model.predict(ctrl_key='0',treat_key='30',cell_type_to_predict=target,regression=regression);pred=result[0];assert np.isfinite(pred.X).all()\n  File \"/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver/third_party/scVIDR/vidr/vidr.py\", line 200, in predict\n    lr = LinearRegression()\nNameError: name 'LinearRegression' is not defined\n",
+  "wall_seconds": 88.29811341292225,
+  "peak_cpu_rss_gib": 5.727413177490234,
+  "peak_process_gpu_gib": 0.953125,
+  "gpu_name": "NVIDIA A40",
+  "peak_cuda_allocated_gib": 0.23778247833251953,
+  "peak_cuda_reserved_gib": 0.255859375
+}

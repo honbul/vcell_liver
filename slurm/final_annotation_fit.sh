@@ -11,5 +11,7 @@ set -euo pipefail
 export CUDA_VISIBLE_DEVICES=-1
 source envs/activate.sh scgpt
 for model in pca scgpt geneformer geneformer_clcancer; do
-  .venvs/vcell-runtime310/bin/python envs/portable310.py --env research scripts/research/fit_final_annotation.py --model "$model" --run-id F00_${model}_development12000_seed42_v1
+  version=1
+  if [ "$model" = pca ]; then version=2; fi
+  .venvs/vcell-runtime310/bin/python envs/portable310.py --env research scripts/research/fit_final_annotation.py --model "$model" --run-id F00_${model}_development12000_seed42_v${version}
 done

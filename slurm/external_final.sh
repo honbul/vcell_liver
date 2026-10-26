@@ -12,12 +12,12 @@ set -euo pipefail
 source envs/activate.sh scgpt
 python310=.venvs/vcell-runtime310/bin/python
 bootstrap=envs/portable310.py
-probe=$VCELL_DATA_ROOT/research_phase2/probes/annotation_query_interface_v1
+probe=$VCELL_DATA_ROOT/research_phase2/probes/annotation_query_interface_v2
 for factor in DM00 DM10 DM01 DM11; do
   if [ ! -f "$probe/$factor/inference.json" ]; then
-    extra=(--features "$VCELL_DATA_ROOT/research_phase2/query_features/geneformer_annotation_query_interface_v1.npz")
+    extra=(--features "$VCELL_DATA_ROOT/research_phase2/query_features/geneformer_annotation_query_interface_v2.npz")
     if [[ "$factor" = DM01 || "$factor" = DM11 ]]; then
-      extra=(--token-cache "$VCELL_DATA_ROOT/tokenized/query_annotation_query_interface_v1/cells.dataset")
+      extra=(--token-cache "$VCELL_DATA_ROOT/tokenized/query_annotation_query_interface_v2/cells.dataset")
     fi
     "$python310" "$bootstrap" --env geneformer scripts/research/predict_annotation.py --input "$probe/counts_only.h5ad" --bundle "$VCELL_DATA_ROOT/research_phase2/runs/F01_${factor}_development4096_seed42_v1/annotation_bundle.joblib" --output "$probe/$factor" "${extra[@]}"
   fi
@@ -25,7 +25,7 @@ done
 "$python310" "$bootstrap" --env research scripts/research/freeze_external_evaluation.py
 query=$VCELL_DATA_ROOT/research_phase2/external/GSE151530_HCC/counts_query_v1.h5ad
 output=$VCELL_DATA_ROOT/research_phase2/external_final_predictions_v1
-"$python310" "$bootstrap" --env research scripts/research/predict_annotation.py --input "$query" --bundle "$VCELL_DATA_ROOT/research_phase2/runs/F00_pca_development12000_seed42_v1/annotation_bundle.joblib" --output "$output/pca"
+"$python310" "$bootstrap" --env research scripts/research/predict_annotation.py --input "$query" --bundle "$VCELL_DATA_ROOT/research_phase2/runs/F00_pca_development12000_seed42_v2/annotation_bundle.joblib" --output "$output/pca"
 for model in scgpt geneformer geneformer_clcancer; do
   environment=geneformer
   if [ "$model" = scgpt ]; then environment=scgpt; fi

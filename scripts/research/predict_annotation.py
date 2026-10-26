@@ -32,8 +32,12 @@ if neural and bundle['adaptation']=='partial':
     del encoder;torch.cuda.empty_cache()
 elif bundle['model_id']=='pca':
     prep=bundle['preprocessor'];gene_ids=a.var.ensembl_id.fillna('').astype(str).to_numpy() if 'ensembl_id' in a.var else a.var_names.astype(str).to_numpy();assert not pd.Series(gene_ids[gene_ids!='']).duplicated().any()
-    lookup={gene:i for i,gene in enumerate(gene_ids) if gene};hvg=prep['hvg_ensembl'];present=[(j,lookup[gene]) for j,gene in enumerate(hvg) if gene in lookup]
-    coverage=dict(n_reference_hvg=len(hvg),n_present_hvg=len(present),missing_gene_policy='Raw zero fill before frozen training scaling; original provided query-library sum retained')
+    lookup={gene:i for i,gene in enumerate(gene_ids) if gene};hvg=prep['hvg_ensembl'];assert 'hvg_gene_symbols' in prep,'Use the corrected PCA v2 bundle with explicit Ensembl/symbol alignment'
+    symbols=a.var.gene_symbol.fillna('').astype(str).to_numpy() if 'gene_symbol' in a.var else np.array(['']*a.n_vars);symbol_counts=pd.Series(symbols).value_counts();symbol_lookup={gene:i for i,gene in enumerate(symbols) if gene and symbol_counts[gene]==1};present=[];n_id=0;n_symbol=0
+    for j,(gene,symbol) in enumerate(zip(hvg,prep['hvg_gene_symbols'])):
+        if gene and gene in lookup:present.append((j,lookup[gene]));n_id+=1
+        elif symbol and symbol in symbol_lookup:present.append((j,symbol_lookup[symbol]));n_symbol+=1
+    coverage=dict(n_reference_hvg=len(hvg),n_present_hvg=len(present),n_matched_ensembl=n_id,n_matched_unique_symbol_fallback=n_symbol,missing_gene_policy='Prefer nonempty Ensembl ID, then unique original gene symbol; raw zero fill only if neither can match; original provided query-library sum retained')
     assert present,'No reference HVGs overlap the query Ensembl IDs'
     library=np.asarray(counts.sum(1)).ravel();assert (library>0).all();normalized=counts.multiply((prep['normalization_target']/library)[:,None]).tocsr();normalized.data=np.log1p(normalized.data)
     small=np.zeros((a.n_obs,len(hvg)),dtype=np.float32);columns,source=zip(*present);small[:,columns]=normalized[:,source].toarray();features=prep['pca'].transform(prep['scaler'].transform(small))
