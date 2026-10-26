@@ -56,6 +56,7 @@ scGPT 대비 경로 결합 macro-F1 차이 -0.0091; 크기/유전자 참여 분�
 
 Train hepatocyte100세포, ALB/HNF4A 독립 삭제와 발현량 유사 무작위 대조 및 no-op. token_present=False는 삭제 대상 token이 없었던 세포다. **실측 섭동 검증 전 탐색**이며 발현량/약효 예측이 아니다.
 
+```tsv
 gene	condition	token_present	count	mean	median	max
 ALB	independent_delete	False	35	8.514949253627232e-09	0.0	5.960464477539064e-08
 ALB	independent_delete	True	65	0.0001392850509056	0.0001253485679626	0.0004571676254272
@@ -65,7 +66,7 @@ HNRNPAB	expression_matched_random_delete	False	57	1.6731128358004385e-08	0.0	5.9
 HNRNPAB	expression_matched_random_delete	True	43	8.540652519048647e-05	5.602836608886719e-06	0.0003940463066101
 MT-CO1	expression_matched_random_delete	True	100	7.373273372650146e-05	2.98917293548584e-05	0.0004190802574157
 none	no_op	True	100	1.4901161193847656e-08	0.0	5.960464477539064e-08
-
+```
 
 완료 확인: 실제 실행·데이터/분할/예측 정합성 110개 점검과 한국어 노트북 6개의 새 kernel Run All이 통과했다. 필수 단계의 미해결 차단은 없다. 사전학습 overlap은 unknown으로 남겼고 선택적 fine-tuning/scFoundation/GEARS는 실행하지 않았다.
 

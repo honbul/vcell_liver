@@ -42,7 +42,7 @@ for subset in ('pilot','comparison'):
 isp_path=ROOT/'reports/virtual_perturbation_summary.tsv'
 if isp_path.exists():
     isp=pd.read_csv(isp_path,sep='\t')
-    text+='## 가상 삭제의 실제 결과\n\nTrain hepatocyte100세포, ALB/HNF4A 독립 삭제와 발현량 유사 무작위 대조 및 no-op. token_present=False는 삭제 대상 token이 없었던 세포다. **실측 섭동 검증 전 탐색**이며 발현량/약효 예측이 아니다.\n\n'+isp.to_csv(sep='\t',index=False)+'\n\n'
+    text+='## 가상 삭제의 실제 결과\n\nTrain hepatocyte100세포, ALB/HNF4A 독립 삭제와 발현량 유사 무작위 대조 및 no-op. token_present=False는 삭제 대상 token이 없었던 세포다. **실측 섭동 검증 전 탐색**이며 발현량/약효 예측이 아니다.\n\n```tsv\n'+isp.to_csv(sep='\t',index=False)+'```\n\n'
 audit_path=ROOT/'reports/completion_audit.json'
 if audit_path.exists():
     audit=json.loads(audit_path.read_text())
