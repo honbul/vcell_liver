@@ -10,4 +10,4 @@
 #SBATCH --output=logs/slurm_query_probe_%j.log
 set -euo pipefail
 source envs/activate.sh scgpt
-.venvs/vcell-runtime310/bin/python envs/portable310.py --env research scripts/research/check_annotation_interface.py
+.venvs/vcell-runtime310/bin/python envs/portable310.py --env research scripts/research/check_annotation_interface.py "$@"

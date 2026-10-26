@@ -31,9 +31,9 @@ if neural and bundle['adaptation']=='partial':
     features=np.concatenate(results);representation_seconds=time.monotonic()-rep_start;coverage=dict(token_cache=str(cache),n_query_genes=a.n_vars,representation='Base Geneformer with fitted blocks9/10 overlay; own query rank tokens only')
     del encoder;torch.cuda.empty_cache()
 elif bundle['model_id']=='pca':
-    prep=bundle['preprocessor'];gene_ids=a.var.ensembl_id.fillna('').astype(str).to_numpy() if 'ensembl_id' in a.var else a.var_names.astype(str).to_numpy();assert not pd.Series(gene_ids[gene_ids!='']).duplicated().any()
+    prep=bundle['preprocessor'];gene_ids=a.var.ensembl_id.astype(object).fillna('').astype(str).to_numpy() if 'ensembl_id' in a.var else a.var_names.astype(str).to_numpy();assert not pd.Series(gene_ids[gene_ids!='']).duplicated().any()
     lookup={gene:i for i,gene in enumerate(gene_ids) if gene};hvg=prep['hvg_ensembl'];assert 'hvg_gene_symbols' in prep,'Use the corrected PCA v2 bundle with explicit Ensembl/symbol alignment'
-    symbols=a.var.gene_symbol.fillna('').astype(str).to_numpy() if 'gene_symbol' in a.var else np.array(['']*a.n_vars);symbol_counts=pd.Series(symbols).value_counts();symbol_lookup={gene:i for i,gene in enumerate(symbols) if gene and symbol_counts[gene]==1};present=[];n_id=0;n_symbol=0
+    symbols=a.var.gene_symbol.astype(object).fillna('').astype(str).to_numpy() if 'gene_symbol' in a.var else np.array(['']*a.n_vars);symbol_counts=pd.Series(symbols).value_counts();symbol_lookup={gene:i for i,gene in enumerate(symbols) if gene and symbol_counts[gene]==1};present=[];n_id=0;n_symbol=0
     for j,(gene,symbol) in enumerate(zip(hvg,prep['hvg_gene_symbols'])):
         if gene and gene in lookup:present.append((j,lookup[gene]));n_id+=1
         elif symbol and symbol in symbol_lookup:present.append((j,symbol_lookup[symbol]));n_symbol+=1

@@ -14,6 +14,9 @@ counts=sparse.csr_matrix(original.layers['counts'] if 'counts' in original.layer
 obs=pd.DataFrame(index=original.obs_names.copy());obs['cell_id']=obs.index.astype(str);obs['n_counts']=np.asarray(counts.sum(1)).ravel();assert (obs.n_counts>0).all()
 a=ad.AnnData(counts.copy(),obs=obs,var=original.var.copy());a.layers['counts']=counts;del original
 assert {'ensembl_id','gene_symbol'}<=set(a.var.columns),'Supply both mapped Ensembl IDs and original gene symbols'
+# H5AD may store duplicate symbol columns as categorical even without missing values.
+# Convert storage dtype only; identifiers, counts and frozen preprocessing remain unchanged.
+for column in ['ensembl_id','gene_symbol']:a.var[column]=a.var[column].astype(object)
 if args.model=='scgpt':
     from scgpt.model import TransformerModel
     from scgpt.tokenizer import GeneVocab

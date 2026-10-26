@@ -3,9 +3,12 @@ import argparse,subprocess
 import anndata as ad
 from research_core import *
 
-p=argparse.ArgumentParser();p.add_argument('--probe-id',default='annotation_query_interface_v2');args=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--probe-id',default='annotation_query_interface_v2');p.add_argument('--categorical-metadata',action='store_true');args=p.parse_args()
 assert Path(args.probe_id).name==args.probe_id
-root=ASSETS/'probes'/args.probe_id;root.mkdir(parents=True,exist_ok=True);a=ad.read_h5ad(ASSETS/'data/development_full.h5ad')[:64].copy();a.obs=a.obs[['cell_id','patient_id','n_counts']].copy();path=root/'counts_only.h5ad';assert not path.exists();a.write_h5ad(path)
+root=ASSETS/'probes'/args.probe_id;root.mkdir(parents=True,exist_ok=True);a=ad.read_h5ad(ASSETS/'data/development_full.h5ad')[:64].copy();a.obs=a.obs[['cell_id','patient_id','n_counts']].copy();path=root/'counts_only.h5ad';assert not path.exists()
+if args.categorical_metadata:
+    for column in ['ensembl_id','gene_symbol']:a.var[column]=a.var[column].astype('category')
+a.write_h5ad(path)
 python=str(ROOT/'.venvs/vcell-runtime310/bin/python');bootstrap=str(ROOT/'envs/portable310.py');scripts=ROOT/'scripts/research';records=[]
 for model in ['pca','scgpt','geneformer','geneformer_clcancer']:
     feature=[]
@@ -25,6 +28,8 @@ for model in ['pca','scgpt','geneformer','geneformer_clcancer']:
         record['direct_training_preprocessor_probability_max_abs_difference']=difference
     if feature:
         query=np.load(feature[-1]);dev=np.load(ASSETS/'features'/f'{model}_GSE149614_development_full.npz');x=query['X'];y=dev['X'][:64];cosine=np.sum(x*y,axis=1)/(np.linalg.norm(x,axis=1)*np.linalg.norm(y,axis=1));record['representation_roundtrip_cosine_min']=float(cosine.min());record['representation_roundtrip_cosine_mean']=float(cosine.mean());record['note']='New query batching/hardware; descriptive numerical comparison, never selected using annotation scores'
+    if args.categorical_metadata:
+        previous=np.load(ASSETS/'probes/annotation_query_interface_v2'/model/'probabilities.npz');difference=float(np.abs(prob['probabilities']-previous['probabilities']).max());assert difference<=1e-7;record['categorical_vs_original_metadata_probability_max_abs_difference']=difference
     records.append(record)
-write_json(REPORT/'annotation_interface_probe'/f'{args.probe_id}.json',dict(status='executed',project_commit=git_commit(),source='First64 actual development cells, stripped of lineage labels before query serialization',input_data_sha256=sha(path),external_data_accessed=False,records=records))
+write_json(REPORT/'annotation_interface_probe'/f'{args.probe_id}.json',dict(status='executed',project_commit=git_commit(),source='First64 actual development cells, stripped of lineage labels before query serialization',categorical_metadata_storage=args.categorical_metadata,input_data_sha256=sha(path),external_data_accessed=False,records=records))
 print('ANNOTATION_QUERY_INTERFACE_PASSED',flush=True)

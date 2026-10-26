@@ -1,0 +1,11 @@
+{
+  "job_id": 12892,
+  "status": "failed_after_freeze_before_any_external_prediction",
+  "error": "pandas Categorical gene_symbol.fillna(empty string) rejects a new category, even when no missing values occur",
+  "stage": "PCA query gene identifier alignment",
+  "prediction_directory_state": "pca output directory exists and is empty; no other candidate outputs or external scores created",
+  "freeze_preserved": true,
+  "correction": "Convert metadata storage dtype to object before fillna; identifiers/counts/weights/preprocessing unchanged",
+  "validation": "Real64 development cells with categorical gene metadata; compare every baseline probability against previously verified input",
+  "recovery_policy": "Resume the same8-model frozen batch, archive only the confirmed empty failed output directory, never refreeze or retune"
+}

@@ -1,0 +1,8 @@
+{
+  "job_id": 12913,
+  "status": "failed_liverct_auxiliary_stage_after_scvi_replay_passed",
+  "scope": "64-cell saved-model replay only; all4 full LiverCT benchmark predictions remain valid",
+  "error": "Unscored epi_intermediate_svm received zero epithelial rows, shape(0,30)",
+  "correction": "Replay the exact native broad lv1 VotingClassifier stage, preserving the original first64 cells and stored adapted checkpoint",
+  "replacement_probe": "classification_native64_v2_liverct"
+}
