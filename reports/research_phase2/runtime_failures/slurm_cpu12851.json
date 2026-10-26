@@ -1,0 +1,10 @@
+{
+  "status": "failed_before_data_preparation",
+  "slurm_job_id": "12851",
+  "script": "prepare_foundation_response.py",
+  "error": "ModuleNotFoundError: No module named anndata",
+  "evidence": "logs/slurm_response_prepare_12851.log",
+  "interpretation": "The existing venv is not portable to this allocated CPU worker. No model inference or source data mutation occurred.",
+  "correction": "Pin data preparation to validated g1 environment; probe other GPU nodes before reuse.",
+  "accounting_limit": "sacct database connection unavailable; terminal failure established by traceback and absence of the prepared contract"
+}
