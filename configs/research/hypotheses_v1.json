@@ -1,0 +1,69 @@
+{
+  "protocol": {
+    "backbone": "Geneformer-V2-104M base, not CLcancer",
+    "checkpoint_revision": "1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5",
+    "split_manifest": "manifests/research_phase2/development_donor4_v2.tsv",
+    "evaluation_population": "All 63036 development cells across 4 donor folds; legacy donors and external final excluded",
+    "training_budget": "4096 outer-training cells for all improvement controls; a separate matched training-budget condition from the 12000-cell A-series, never reuse A-series scores as the improvement baseline",
+    "validation_policy": "same D0 capped inner-validation IDs within each seed/fold; data sampling modifies only training; final refit uses six outer-training donors",
+    "initial_screen": "fold0 seed42 only; choose via inner-validation fixed-six macroF1, no external scores",
+    "confirmation": "seeds42,43,44 on all4 donor folds for selected data/model candidates and paired controls",
+    "no_new_blind_claim": true
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "D-H1",
+      "observed_pattern": "Geneformer donor common-ontology F1 varies 0.8435–0.9507; donor sizes vary 3368–13770 cells in full development OOF",
+      "evidence_run_ids": [
+        "A02_full_fold0_seed42_v2",
+        "A02_full_fold1_seed42_v2",
+        "A02_full_fold2_seed42_v2",
+        "A02_full_fold3_seed42_v2"
+      ],
+      "candidate_explanation": "Natural sampling overrepresents larger donors; unequal donor information may hurt transfer",
+      "planned_change": "D1_donor_balanced: approximately equal training cells per donor, without replacement, exact same total cells as D0",
+      "fixed_components": "Same base features, logistic head family, D0-selected C/class_weight, train cell count, validation/evaluation cell IDs",
+      "expected_affected_subgroup": "Underrepresented donors and their lineages",
+      "primary_metric_and_direction": "Pooled fixed-six macroF1 increase; donor paired direction reported",
+      "negative_control": "D0 natural uniform random sample with equal total cell count",
+      "success_or_rejection_rule": "Exploratory selection by inner-validation macroF1; confirm benefit only if pooled mean improves and >=5/8 donor mean deltas nonnegative across seeds; otherwise report no benefit",
+      "status": "preregistered_before_improvement_runs"
+    },
+    {
+      "hypothesis_id": "D-H2",
+      "observed_pattern": "Full development B-cell F1=0.8954 and recall=0.8774, below other lineages; B support2316 versus T/NK23577, with donor imbalance",
+      "evidence_run_ids": [
+        "A02_full_fold0_seed42_v2",
+        "A02_full_fold1_seed42_v2",
+        "A02_full_fold2_seed42_v2",
+        "A02_full_fold3_seed42_v2"
+      ],
+      "candidate_explanation": "Rare-lineage representation within donors may limit recall",
+      "planned_change": "D2_donor_class_balanced: balanced donor×lineage groups among training cells, without replacement, same total cell count",
+      "fixed_components": "Same as D-H1; no extra loss reweighting or labels changed",
+      "expected_affected_subgroup": "B and stromal lineages in sparse donor×class groups",
+      "primary_metric_and_direction": "Pooled fixed-six macroF1 and B recall increase",
+      "negative_control": "D0 natural same-N and D1 donor-balanced sampling",
+      "success_or_rejection_rule": "Same macroF1/donor rule as D-H1, with B recall not lower than D0; precision and all class support always reported",
+      "status": "preregistered_before_improvement_runs"
+    },
+    {
+      "hypothesis_id": "M-H1",
+      "observed_pattern": "Frozen Geneformer base OOF0.9471 exceeds PCA0.9348 and CLcancer0.9458; residual donor and B-cell errors persist; LoRA integration probe passed",
+      "evidence_run_ids": [
+        "A02_full_fold0_seed42_v2",
+        "A05_full_fold0_seed42_v2",
+        "M03_lora_module_gradient_reload_probe_v1"
+      ],
+      "candidate_explanation": "Task adaptation of the generic representation may improve lineage boundaries; a larger head alone may explain apparent benefit",
+      "planned_change": "M01 frozen encoder with shared 768→128→6 NN head; M02 last used encoder blocks9,10 partial fine-tuning; M03 rank8 alpha16 query/value LoRA on blocks0..10; same NN head for all three",
+      "fixed_components": "D0 training IDs and counts, V2 tokenizer/full4096 special tokens/hidden_states11 CLS, BF16, same head architecture and batching; encoder dropout disabled uniformly",
+      "expected_affected_subgroup": "Donor-shifted and B-cell lineage errors",
+      "primary_metric_and_direction": "Inner-validation fixed-six macroF1 for selection; pooled OOF and donor deltas for confirmation",
+      "negative_control": "M00 frozen linear and M01 same-head frozen encoder; saved adapter/head reload check",
+      "success_or_rejection_rule": "Initial max3 epochs, patience2; head lr1e-3, LoRA lr1e-4, partial lr1e-5; no unbounded HPO. Confirm adapter/partial benefit relative to identical frozen NN head, not only relative to linear head",
+      "status": "preregistered_before_model_efficacy_runs"
+    }
+  ],
+  "factorial_policy": "Use selected training-data candidate and best partial/LoRA candidate against frozen identical NN head for 2x2. If candidates do not improve, retain negative comparisons and report interaction without calling them improvements. External final remains unopened."
+}

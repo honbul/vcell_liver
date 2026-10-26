@@ -60,7 +60,7 @@ def fit_head(features_inner,features_final,y,roles,c,seed):
             score=f1_score(y[va],head.predict(x[va]),labels=c['labels'],average='macro',zero_division=0)
             grid.append(dict(C=C,class_weight=weight,validation_macro_f1=float(score)))
             if best is None or score>best[0]:best=(score,C,weight)
-    outer=np.concatenate([tr,va]);scaler=StandardScaler().fit(features_final[outer]);x=scaler.transform(features_final)
+    outer=roles.get('outer_training',np.concatenate([tr,va]));scaler=StandardScaler().fit(features_final[outer]);x=scaler.transform(features_final)
     head=LogisticRegression(C=best[1],class_weight=best[2],max_iter=2000,random_state=seed).fit(x[outer],y[outer])
     training_time=time.monotonic()-start;start=time.monotonic()
     pred=head.predict(x[te]);native_prob=head.predict_proba(x[te]);prob=np.zeros((len(te),len(c['labels'])))

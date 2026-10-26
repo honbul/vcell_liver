@@ -1,0 +1,10 @@
+model_id	task	evaluation_regime	upstream_revision	asset	status	limitation
+PCA	annotation	inductive	sklearn1.5.2	train-only HVG/scaler/PCA50	4 full development folds executed	development OOF
+scGPT	annotation	inductive	cebd6fae655b9c585a4807daa3ac31bb764f06b4	whole-human	4 full development folds executed	pretraining overlap unknown; AMP FP16
+Geneformer	annotation	inductive	1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5	V2-104M	4 full development folds executed	pretraining overlap unknown; BF16
+Geneformer_CLcancer	annotation	inductive	1f7fbae4e469a5f4f1af8c111a529cfe1b3829f5	V2-104M_CLcancer	4 full development folds executed	pretraining overlap unknown; BF16; no accuracy advantage established
+scVI	annotation	inductive	scvi-tools1.2.2	NB latent50 trained from scratch	4 full development folds executed	train-only HVG/model; no donor batch covariate
+LiverCT	annotation	query_adaptive_reference_mapping	22a982f289feec9938f9967f7f57db5eac582b85	Zenodo8239570	4 full development folds executed	unlabeled query adaptation; external reference; separate leaderboard
+LiverCT_SCANVI_control	annotation	query_adaptive_reference_mapping	same reference and adapted latent as LiverCT	same adapted SCANVI	4 full development folds executed	native reference neural classifier; not architecture-only attribution
+scFoundation	annotation	inductive if weights accessible	397631c495eddf9ad6644fc00c6ea8139e651245	official models.ckpt	blocked_official_weight_download	two official SharePoint links HTTP403; Figshare examples archive has no weights
+GEARS	measured_genetic_response	official_reproduction	f374e43e197b295016d80395d7a54ddb81cc6769	official Norman CRISPRa	20-epoch simulation training running	K562; official DE preprocessing retained

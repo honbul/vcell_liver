@@ -50,4 +50,21 @@ raw count·대형 표현·가중치·비밀값은 Git에 올리지 않는다. �
 
 이 설정에서는 foundation embedding이 PCA를 넘지 못했다. scGPT+Reactome의 macro-F1은 0.9436이며 추가 이득이 없었다. 두 모델은 frozen embedding + supervised head로 비교했다. 가상 삭제는 train hepatocyte100세포에서 ALB/HNF4A를 독립 실행했고 no-op/발현량 유사 무작위 대조를 포함한다. **실측 섭동 검증 전 embedding 변화 탐색**이며 발현량·약효 예측이 아니다.
 
-[최종 정합성 점검](reports/completion_audit.json), [자산 체크섬 검증](reports/asset_verification.json), [큰 로컬 산출물 위치/해시](manifests/local_artifacts.json). 필수 단계의 미해결 차단은 없으며, 미세조정/scFoundation/GEARS는 선택적 후속으로 실행하지 않았다. 사전학습 중복은 unknown이다. 다음 실험은 고정 protocol의 leave-one-patient-out 평가다.
+[최종 정합성 점검](reports/completion_audit.json), [자산 체크섬 검증](reports/asset_verification.json), [큰 로컬 산출물 위치/해시](manifests/local_artifacts.json). 이는 V1 종료 시점 기록이다. 당시 필수 단계의 미해결 차단은 없었고, 미세조정/scFoundation/GEARS는 실행하지 않았다. 사전학습 중복은 unknown이다. 다음 실험은 고정 protocol의 leave-one-patient-out 평가다.
+
+
+## V2 연구 확장 (진행 중)
+
+[연구 계획 V2](docs/RESEARCH_EXPERIMENT_PLAN_V2.md)에 따라 기존 환경과 V1 결과를 보존하며 확장한다. [실행된 연구 튜토리얼 06](notebooks/06_research_development_cv.ipynb)은 저장된 결과 읽기와 선택적인 개발 fold 재실행을 제공한다.
+
+HCC02/HCC09를 제외한 8명, 63,036개 전체 개발 세포의 4-fold donor OOF 결과다. 모든 평가 세포를 유지하고, 학습은 fold당 12,000개 자연 표본으로 제한했다. 이 결과는 반복 확인한 개발 결과이며 새 blind test가 아니다.
+
+| 동결 표현 | pooled macro-F1 |
+|---|---:|
+| PCA | 0.9348 |
+| scGPT | 0.9377 |
+| Geneformer V2 | 0.9471 |
+| Geneformer CLcancer | 0.9458 |
+| scVI | 0.9379 |
+
+[분류 결과와 provenance](reports/research_phase2/annotation_full_summary/pooled_metrics.tsv), [scGPT 공식 예제의 실제 재현 차이](reports/research_phase2/official_reproduction.md), [모델별 실행 상태](reports/research_phase2/model_registry.tsv)를 참조한다. LiverCT도 4개 fold를 완료했다. 비라벨 query adaptation의 native macro-F1은 0.9017, prediction coverage는 0.8871이며 별도 평가다. 같은 적응 모델의 SCANVI head 대조는 0.7061이다. 외부 reference와 label 양이 다르므로 구조만의 비교로 해석하지 않는다. GEARS의 실측 반응 예측은 분류 및 Geneformer embedding shift와 다른 task다. scFoundation 공식 가중치 다운로드는 HTTP403으로 차단되어 근거를 남겼다. 외부 GSE151530은 최종 선택을 고정하기 전까지 미평가 상태를 유지한다.

@@ -1,0 +1,37 @@
+{
+  "run_id": "B00_B02_norman_simulation_seed1_v2",
+  "status": "executed",
+  "task": "measured_genetic_response",
+  "model_id": "B00_B01_B02_matched_controls",
+  "project_commit": "ae87c0b1faa949648ada73313de0b09286636617",
+  "seed": 42,
+  "source_contract": {
+    "dataset_id": "official_norman",
+    "regime": "official_reproduction_matched_baselines",
+    "split_source": "R01_norman_simulation_seed1_v2",
+    "split_sha256": "3de20114482dae09e914167db6a2592818efb7ad98851be0b6592c4968e25e7c",
+    "data_sha256": "23ffb0fac6a847ff927cf7509d80d85052bfefbfb97610786a2dafaaefa0b6a0",
+    "readout": "official preprocessed log-normalized expression",
+    "cell_line": "K562",
+    "intervention_type": "CRISPRa"
+  },
+  "n_train_interventions": 138,
+  "n_validation_interventions": 31,
+  "n_test_interventions": 107,
+  "n_genes": 5045,
+  "checkpoint_sha256": null,
+  "GO_prior_sha256": "f145c5e84a53048d87942a417d870a4f2d8db50200b96e492b358c13aba8c771",
+  "wall_preprocessing_seconds": 11.010566867887974,
+  "wall_training_seconds": 0.7765002809464931,
+  "wall_inference_seconds": 0.8943337239325047,
+  "wall_total_seconds": 13.041343167424202,
+  "selection_metric": "validation all-gene intervention-mean MSE; fixed alpha grid; training-only response PCA32; no refit on validation responses",
+  "failure_or_limitations": [
+    "Scores average interventions equally, not cells",
+    "Observed top20 absolute mean-delta genes are evaluation-only and were not supplied to the predictor",
+    "Zero-change delta Pearson is undefined and recorded blank, never presented as zero predictive correlation",
+    "No prospective clinical or efficacy prediction"
+  ],
+  "peak_cpu_rss_gib": 2.77557373046875,
+  "peak_process_gpu_gib": null
+}
