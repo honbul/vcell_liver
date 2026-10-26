@@ -1,0 +1,75 @@
+{
+  "run_id": "pca_pilot",
+  "status": "executed",
+  "task": "annotation",
+  "dataset_accession": "GSE149614",
+  "model_name": "PCA50+multinomial_logistic",
+  "seed": 42,
+  "n_cells": 2000,
+  "data_hash": "18d4b1322b1058f503b5487f62cca22d470c13c346c4bc4927e864e0bcd378e2",
+  "split_manifest_hash": "70c8e51e505fff69d8e241227e87a94388c4f310af1a2e6aaaaf602bcf85a6e3",
+  "pretraining_overlap": "unknown",
+  "wall_seconds": 1.4758993610739708,
+  "peak_cpu_rss_gib": 0.6781425476074219,
+  "peak_process_gpu_gib": null,
+  "metrics": {
+    "macro_f1": 0.935893136597362,
+    "balanced_accuracy": 0.9257416757416758,
+    "n_test_unknown": 0,
+    "n_evaluated": 253,
+    "selected_C": 0.1,
+    "selected_class_weight": null,
+    "split_counts": {
+      "train": 1285,
+      "val": 462,
+      "test": 253
+    },
+    "label_classes": [
+      "B",
+      "Endothelial",
+      "Fibroblast",
+      "Hepatocyte",
+      "Myeloid",
+      "T/NK"
+    ],
+    "validation_candidates": [
+      {
+        "C": 0.01,
+        "class_weight": null,
+        "validation_macro_f1": 0.9348200037716167
+      },
+      {
+        "C": 0.01,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9432570835572421
+      },
+      {
+        "C": 0.1,
+        "class_weight": null,
+        "validation_macro_f1": 0.9667629929610921
+      },
+      {
+        "C": 0.1,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9432570835572421
+      },
+      {
+        "C": 1.0,
+        "class_weight": null,
+        "validation_macro_f1": 0.9602396129694193
+      },
+      {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9514858498274434
+      }
+    ],
+    "shuffled_train_labels_test_macro_f1": 0.18502592586217118
+  },
+  "hvg_method": "top train log-normalized variance",
+  "n_hvg": 2000,
+  "normalization_target": 10000,
+  "dtype": "float32",
+  "batch_size": null,
+  "max_sequence_length": null
+}

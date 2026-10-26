@@ -1,0 +1,13 @@
+diff --git a/scgpt/tokenizer/vocab_compat.py b/scgpt/tokenizer/vocab_compat.py
+--- a/scgpt/tokenizer/vocab_compat.py
++++ b/scgpt/tokenizer/vocab_compat.py
+@@ -211,6 +211,9 @@ class BuiltinVocab:
+                     f"{self._stoi[token]}, cannot re-insert at {index}."
+                 )
+             return
++        if index == len(self._itos):
++            self.append_token(token)
++            return
+         self._itos.insert(index, token)
+         # Rebuild stoi from scratch (insertion shifts all subsequent indices).
+         self._stoi = {tok: idx for idx, tok in enumerate(self._itos)}

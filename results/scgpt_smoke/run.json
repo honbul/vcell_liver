@@ -1,0 +1,97 @@
+{
+  "run_id": "scgpt_smoke",
+  "status": "executed",
+  "task": "annotation",
+  "dataset_accession": "GSE149614",
+  "model_name": "scGPT-whole-human frozen CLS + supervised logistic head",
+  "seed": 42,
+  "n_cells": 64,
+  "data_hash": "cbbe84169b7362ac0dc19ab51e6af472d7f7f945203ae45d81de5dd0e33693df",
+  "split_manifest_hash": "b184b34a9603373aa683eb75c5c8402d70ac0499f88d097a21e860345993e45c",
+  "pretraining_overlap": "unknown",
+  "wall_seconds": 5.872188150882721,
+  "peak_cpu_rss_gib": 1.2395591735839844,
+  "peak_process_gpu_gib": 0.552734375,
+  "gpu_name": "NVIDIA A30",
+  "peak_cuda_allocated_gib": 0.26019763946533203,
+  "peak_cuda_reserved_gib": 0.279296875,
+  "metrics": {
+    "macro_f1": 0.7666666666666666,
+    "balanced_accuracy": 0.8333333333333334,
+    "n_test_unknown": 0,
+    "n_evaluated": 12,
+    "selected_C": 0.01,
+    "selected_class_weight": null,
+    "split_counts": {
+      "train": 40,
+      "test": 12,
+      "val": 12
+    },
+    "label_classes": [
+      "B",
+      "Endothelial",
+      "Fibroblast",
+      "Hepatocyte",
+      "Myeloid",
+      "T/NK"
+    ],
+    "validation_candidates": [
+      {
+        "C": 0.01,
+        "class_weight": null,
+        "validation_macro_f1": 0.9111111111111111
+      },
+      {
+        "C": 0.01,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9111111111111111
+      },
+      {
+        "C": 0.1,
+        "class_weight": null,
+        "validation_macro_f1": 0.9111111111111111
+      },
+      {
+        "C": 0.1,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9111111111111111
+      },
+      {
+        "C": 1.0,
+        "class_weight": null,
+        "validation_macro_f1": 0.9111111111111111
+      },
+      {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "validation_macro_f1": 0.9111111111111111
+      }
+    ],
+    "shuffled_train_labels_test_macro_f1": 0.06666666666666667
+  },
+  "upstream_commit": "cebd6fae655b9c585a4807daa3ac31bb764f06b4",
+  "checkpoint_revision": "official whole-human Google Drive folder 1oWh_-ZRdhtoGQ2Fw24HP41FgLoomVo-y; hash pinned",
+  "checkpoint_sha256": "6cb5d451ab5c4b33eb673adbe4fddc61d2389df1b89b7651a9fe2e557572b922",
+  "batch_size": 1,
+  "max_sequence_length": 1200,
+  "dtype": "autocast float16 on CUDA; features float32",
+  "gene_mapping_coverage": 0.9003578095830741,
+  "n_vocab_genes": 23150,
+  "embedding_shape": [
+    64,
+    512
+  ],
+  "token_count_quantiles": [
+    529.0,
+    872.0,
+    1292.0,
+    2274.25,
+    5322.0
+  ],
+  "preprocessing": "raw nonzero count rank-quantile bins in official DataCollator, once; official random sequence sampling, seed 42",
+  "limitations": [
+    "HCC application, not reproduction of original paper benchmark",
+    "pretraining overlap unknown",
+    "zero-shot embedding + supervised head"
+  ]
+}
