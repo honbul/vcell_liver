@@ -10,4 +10,8 @@
 set -euo pipefail
 export CUDA_VISIBLE_DEVICES=-1
 source envs/activate.sh scgpt
-python scripts/research/audit_official_scgpt_gap.py
+case "${1:-gap}" in
+  gap) python scripts/research/audit_official_scgpt_gap.py ;;
+  selection) python scripts/research/compare_official_scgpt_source.py ;;
+  *) exit 2 ;;
+esac
