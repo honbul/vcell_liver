@@ -5,3 +5,5 @@
 저자 자료와 실행 조건은 [GEARS 계약](protocols/reproduction/gears_norman.yaml), [scGPT 계약](protocols/reproduction/scgpt_norman.yaml), [공개 자산 영수증](manifests/public_receipt.json)에 기록했다. 원래 비공개로 보관된 split과 control 배정은 회수하지 못했다. 새 실행은 저자가 배포한 Norman 데이터를 사용하는 수정 재현이다.
 
 [공통 데이터](docs/COMMON_NORMAN_DATA.md)는 별도로 준비했고 [분할 영수증](manifests/common_norman_v1_s26.json)을 남겼다. [연구 보고서](reports/FINAL_REPORT.md)에 논문 재현, 공통 기준선, 모델 튜닝, 샘플링 검증과 홀드아웃 결과를 정리했다. [사람 간암 자료 조사](reports/HCC_DATA_FEASIBILITY.md)에서 이번 개입 예측 조건을 충족하는 후보는 확보하지 못했다.
+
+[실행 튜토리얼](tutorials/README.md)에서 논문 재현·튜닝·간암 자료 검토를 따라 할 수 있다. [결과 탐색 노트북](tutorials/inspect_results.ipynb)은 학습 작업을 제출하지 않는다.

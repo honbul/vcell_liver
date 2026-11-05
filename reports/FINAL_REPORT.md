@@ -86,4 +86,9 @@ D1의 시드별 개선량은 −0.00185, −0.00012, +0.00015였다. 평균 오�
 
 새 작업은 `research/reproduction-first-20261105` 브랜치와 별도 G1 작업 경로에서 실행했다. 코드, 설정, 결과 요약, 실험 로그 발췌와 해시는 Git으로 동기화한다. 원 데이터, 전체 예측, 학습 체크포인트와 전체 Slurm 로그는 G1에 둔다. [이전 데이터 노출 기록](../manifests/exposure_ledger.tsv)은 공개 Norman 평가와 과거 HepG2 관찰의 범위를 명시한다.
 
-[Slurm 실행 기록](../manifests/slurm/study_submission.tsv)의 논문 재현, 공통 검증, 반복 학습, 홀드아웃 및 결과 집계는 종료했다. 논문 재실행은 정상 종료했으나 정량 일치에는 실패했다. HCC 적용은 자료 조건에서 차단됐으며, 추가 Norman 분할은 사전 실행 조건을 충족하지 않아 제출하지 않았다. 홀드아웃 점수와 [결과 파일 해시](common/F/study/common_evidence.json)는 커밋 `52a7755`에 있다.
+- 완료: [Slurm 실행 기록](../manifests/slurm/study_submission.tsv)의 논문 재실행, 공통 검증, 반복 학습, 홀드아웃 평가와 집계. 홀드아웃 점수와 [결과 파일 해시](common/F/study/common_evidence.json)는 커밋 `52a7755`에 있다.
+- 진행 중: 없음. 추가 Norman 분할은 사전 실행 조건을 충족하지 않았다.
+- 불일치: GEARS와 scGPT 논문 재실행은 정상 종료했으나 원 수치와 차이가 남았다.
+- 차단: `HCC_DATA_BLOCKED`. 조사한 자료는 실제 사람 HCC 개입 뒤의 단일세포 RNA 평가 조건을 충족하지 않았다.
+
+[재실행 튜토리얼](../tutorials/README.md)은 실제 학습 경로와 결과 탐색 노트북을 구분한다. [검증 기록](TUTORIAL_VERIFICATION.md)에 새 커널의 입력 점검, 저장된 전체 학습의 로그·모델·예측 검증, 대비표와 홀드아웃 집계 재생성을 남겼다.
