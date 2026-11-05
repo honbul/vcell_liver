@@ -1,0 +1,16 @@
+claim: "Norman arm of Fig. 3a: native treated expression prediction and Delta Pearson."
+target_panel: "https://doi.org/10.1038/s41592-024-02201-0"
+reference_source: "Zenodo 10466117 Fig3_AB_PerturbPred.py and its linked author W&B run 3a6dz39i; publisher figure as separate approximate reference"
+reference_value: "manifests/reference/scgpt_fig3a_author.json; author Delta Pearson 0.5847456365 and DE Delta Pearson 0.7313142489; plotted DE bar about 0.77"
+data:
+  accession: GSE133344
+  source: "Figshare 24954519 v1 Fig3_AB_PerturbPred/readme.md explicitly names Dataverse6154020 for Norman; no alternate Norman matrix in that folder"
+  public_archive_sha256: c1938353f6f41829c9137f073ecb843ce4d4114528b001b48312b019f739d877
+split: "simulation seed1; author logs read saved data_pyg and split (not distributed); regenerate from author cell-gears 0.0.2. Remove ctrl from train/val target roles as in script."
+model: "Zenodo archive SHA-256 a308a53967a0d279bc9db42533451b03413357e422c855773701028136312bac; author whole-human best_model.pt SHA-256 6cb5d451ab5c4b33eb673adbe4fddc61d2389df1b89b7651a9fe2e557572b922. No cryptographic identity claim for the private checkpoint path."
+training: "seed0; Adam 0.0001, batch64, max15 epochs, patience10, max1536 sampled training genes, full-panel inference, AMP; native affine expression decoder."
+selection: "highest validation raw-expression Pearson (paper script), not test, not common Delta RMSE"
+evaluation: "author compute_perturbation_metrics on condition means, all controls for Delta reference, top20 author DE; report raw and Delta correlations separately. Preserve original sampling behavior in the paper track and count target flags omitted by sampling."
+repetitions: "one linked Norman author training run (15 completed epochs); no independently documented extra seeds"
+compatibility_changes: "current isolated CUDA runtime; disable flash and translate QKV names with strict tensor checks; public checkpoint and regenerated author split; record targeted compatibility changes"
+comparison_rule: "show author-log and approximate figure values separately. Replay classified as modified reproduction with irrecoverable private checkpoint/split identity and backend differences, not an assertion of numeric equivalence."
