@@ -11,6 +11,7 @@ import torch
 
 from artifact_io import digest
 from common_eval import evaluate
+from common_prediction_io import export
 from common_runtime import expression_model, predict_conditions
 from common_selection import NEURAL, PROTOCOL, completed, immutable, read
 
@@ -70,17 +71,12 @@ def run(freeze_path, dataset, runs, run_id, output):
                                              device, config['validation_control_chunk'])
         scored = evaluate(dataset,'test',predictions)
         artifact = output.with_suffix('.predictions.npz')
-        names = sorted(predictions)
-        with TemporaryDirectory(prefix='predictions-',dir=output.parent) as tmp:
-            candidate = Path(tmp)/'prediction.npz'
-            np.savez(candidate,condition=np.array(names),gene_names=np.array(genes),
-                     expression_mean=np.stack([predictions[c] for c in names]))
-            candidate.replace(artifact)
+        prediction_hash = export(artifact,genes,{'native':predictions})
         immutable(output, dict(arm=row['arm'], seed=job['seed'], run_id=run_id,
                                freeze_sha256=digest(freeze_path),
                                dataset_sha256=frozen['dataset_sha256'],
                                checkpoint_sha256=row['checkpoint_sha256'],
-                               prediction_sha256=digest(artifact),
+                               prediction_sha256=prediction_hash,
                                gpu=torch.cuda.get_device_name(),seconds=time.monotonic()-started,
                                peak_allocated_gib=torch.cuda.max_memory_allocated()/2**30,
                                metrics=scored))

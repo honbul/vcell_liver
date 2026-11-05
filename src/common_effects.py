@@ -87,6 +87,8 @@ def summarize(freeze_path, scores, simple_path=None):
             simple['dataset_sha256'] != freeze['dataset_sha256'] or
             simple['selected_alpha'] != freeze['simple_baselines']['selected_alpha']):
             raise ValueError('Simple baseline report does not match frozen test')
+        if digest(simple_path.with_suffix('.predictions.npz')) != simple['prediction_sha256']:
+            raise ValueError('Simple baseline expression export differs from the scored predictions')
         full = {}
         for name in ('no_change','train_mean','linear_go_ridge'):
             method = simple['methods'][name]
@@ -102,8 +104,10 @@ def summarize(freeze_path, scores, simple_path=None):
         full['GEARS'] = arm_metrics['GEARS'][0]['metrics']
         full['scGPT'] = next(r['metrics'] for r in arm_metrics[base] if r['seed']==0)
         benchmark = dict(complete_coverage=full, additive_n=len(subset),
+                         additive_metrics=additive['metrics'] if additive else None,
                          additive_subset_delta_rmse=comparable,
-                         simple_baselines_test_sha256=digest(simple_path))
+                         simple_baselines_test_sha256=digest(simple_path),
+                         simple_baselines_prediction_sha256=simple['prediction_sha256'])
     if not freeze.get('reserve') and benchmark is None:
         raise ValueError('Primary split requires the full common benchmark')
     main = results[primary]

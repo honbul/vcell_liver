@@ -11,6 +11,7 @@ from scipy import sparse
 from artifact_io import digest, write
 from common_data import ROOT, PUBLIC, PROTOCOL
 from common_eval import evaluate
+from common_prediction_io import export
 from common_selection import PROTOCOL as SELECTION, read
 
 
@@ -72,16 +73,16 @@ def score(dataset, go, role='val', fixed_alpha=None):
     assert set(names) == set(train_meta) and not set(names) & set(targets)
     reference = np.load(dataset / 'eval_controls.npy', allow_pickle=False).mean(axis=0, dtype=np.float64)
     mean = y.mean(axis=0)
-    results = {
-        'no_change': evaluate(dataset, role, {c: reference for c in targets}),
-        'train_mean': evaluate(dataset, role, {c: reference + mean for c in targets})
-    }
+    predictions = {'no_change':{c:reference for c in targets},
+                   'train_mean':{c:reference + mean for c in targets}}
+    results = {method:evaluate(dataset,role,pred) for method,pred in predictions.items()}
     singles = {train_meta[c]['targets'][0]: row for c, row in zip(names, y)
                if len(train_meta[c]['targets']) == 1}
     additive = {c: reference + sum(singles[g] for g in info['targets'])
                 for c, info in targets.items()
                 if len(info['targets']) == 2 and all(g in singles for g in info['targets'])}
     results['additive'] = evaluate(dataset, role, additive, allow_partial=True) if additive else None
+    predictions['additive'] = additive
     train_features = prior_vectors(go, genes, [train_meta[c]['targets'] for c in names])
     val_features = prior_vectors(go, genes, [d['targets'] for d in targets.values()])
     gram = (train_features @ train_features.T).toarray()
@@ -99,19 +100,21 @@ def score(dataset, go, role='val', fixed_alpha=None):
         score = scored['metrics']['delta_rmse']
         alpha_rows.append(dict(alpha=alpha, delta_rmse=score))
         if best is None or (score, alpha) < best[:2]:
-            best = (score, alpha, scored)
+            best = (score, alpha, scored, pred)
     results['linear_go_ridge'] = best[2]
+    predictions['linear_go_ridge'] = best[3]
     eligible = set(additive)
     shared = {}
     for method, data in results.items():
         if data is not None and eligible:
             shared[method] = float(np.mean([r['delta_rmse'] for r in data['per_condition']
                                             if r['condition'] in eligible]))
-    return dict(
+    result = dict(
         role=role, contract_sha256=digest(PROTOCOL), dataset_sha256=digest(dataset/'receipt.json'),
         go_sha256=digest(go), run_code_sha256=digest(Path(__file__)), alpha_candidates=alpha_rows,
         selected_alpha=best[1], total_seconds=time.monotonic()-started,
         additive_common_subset_n=len(eligible), delta_rmse_on_additive_subset=shared, methods=results)
+    return result,genes,predictions
 
 
 def main():
@@ -142,8 +145,10 @@ def main():
     try:
         if a.output.exists():
             raise FileExistsError(a.output)
-        write(a.output, dict(**score(a.dataset, PUBLIC/'norman/go.csv', role, alpha),
-                             freeze_sha256=freeze_hash))
+        result,genes,predictions = score(a.dataset,PUBLIC/'norman/go.csv',role,alpha)
+        pred_path = a.output.with_suffix('.predictions.npz')
+        prediction_hash = export(pred_path,genes,predictions)
+        write(a.output,dict(**result,freeze_sha256=freeze_hash,prediction_sha256=prediction_hash))
     finally:
         lock.rmdir()
 

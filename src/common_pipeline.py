@@ -8,6 +8,7 @@ from types import SimpleNamespace
 from artifact_io import digest
 from common_effects import summarize
 from common_reserve import make_plan, lock
+from common_reports import report as write_tables
 from common_selection import (
     PROTOCOL, ROOT, choose_confirmation, immutable, lock_test, read, select_model,
 )
@@ -119,12 +120,14 @@ def transition(a):
         evidence = ['paper_status.json','model_selection.json','confirmation_plan.json',
                     'frozen_test.json','simple_validation.json','simple_test.json',
                     'confirmation_summary.json']
-        evidence += [f'reserve-s{s}/confirmation_summary.json'
-                     for s in report['followup_reserve_splits']]
+        for seed in report['followup_reserve_splits']:
+            evidence.extend(f'reserve-s{seed}/{name}' for name in
+                            ('confirmation_plan.json','frozen_test.json','confirmation_summary.json'))
         immutable(work/'common_evidence.json',dict(
             status='common_experiments_executed',dataset_sha256=dsha,
             primary_arm=report['primary_arm'],reserve_splits=report['followup_reserve_splits'],
             files={name:digest(work/name) for name in evidence}))
+        write_tables(work,work/'tables')
     print('COMMON_TRANSITION_COMPLETE',stage,split,flush=True)
 
 
