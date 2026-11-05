@@ -58,7 +58,7 @@ def ontology(genes):
     return np.asarray([src, tgt], dtype=np.int64), np.asarray(weight, dtype=np.float32)
 
 
-def build(data, out, device):
+def build(data, out, device, graph_path=None):
     src = ROOT/'.upstream/gears-paper'
     command = ['git', '-C', str(src)]
     assert subprocess.check_output(command + ['rev-parse','HEAD'], text=True).strip() == SOURCE
@@ -66,7 +66,10 @@ def build(data, out, device):
     sys.path.insert(0, str(src))
     from gears.model import GEARS_Model
 
-    graph_path = out/'train_graphs.npz'
+    if graph_path is None:
+        graph_path = out/'train_graphs.npz'
+    elif not graph_path.is_file():
+        raise FileNotFoundError(graph_path)
     if not graph_path.exists():
         mask = np.array([len(data.train[c]['targets']) == 1 for c in data.train_names])
         edges, weights = coexpression(data.treated, mask)

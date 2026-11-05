@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:a100:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=60G
-#SBATCH --time=16:00:00
+#SBATCH --time=07:00:00
 #SBATCH --output=logs/common_train_%j.log
 set -euo pipefail
 export OMP_NUM_THREADS=8 OPENBLAS_NUM_THREADS=8 MKL_NUM_THREADS=8 PYTHONHASHSEED=0

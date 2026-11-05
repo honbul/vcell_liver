@@ -1,0 +1,26 @@
+{
+  "version": "C0-M-D-F-selection-v1",
+  "initial_split": 26,
+  "initial_seed": 0,
+  "model_screen": {
+    "scgpt_baseline": "C0-Norman-v1-scgpt-M0-D0-s26-r0",
+    "gears_baseline": "C0-Norman-v1-gears-M0-D0-s26-r0",
+    "modes": ["M1", "M2", "M3", "M-random"],
+    "lr": 0.0001,
+    "note": "One prespecified learning rate per mode; the random initialization arm is descriptive, not eligible for selection."
+  },
+  "data_screen": {
+    "modes": ["D1", "D2"],
+    "fixed_model": "Lowest validation macro delta RMSE among M0/M1/M2/M3, ties favor M0 and then model ID."
+  },
+  "confirmation": {
+    "seeds": [0, 1, 2],
+    "primary_metric": "delta_rmse",
+    "primary_comparison": "Fix the combined candidate when M and D each improve validation. If only one improves, fix that alternative. If neither improves, repeat the better of the two individual alternatives against the baseline and record both negative screens.",
+    "tie_break": "Lower validation macro delta RMSE, then lexical mode ID.",
+    "promising_trigger": "Primary candidate improves macro delta RMSE for all three learning seeds and its paired condition bootstrap 95% interval excludes zero in favor of the candidate. This is a trigger for additional splits, not proof of generalization.",
+    "reserve_splits": [27, 28],
+    "reserve_training_seed": 0,
+    "bootstrap": {"draws": 10000, "seed": 29461, "unit": "canonical intervention, common resample shared across the arms and averaged learning seeds"}
+  }
+}

@@ -1,4 +1,4 @@
-"""Fit common validation-only baselines, using only train response and a public GO prior."""
+"""Fit train-only baselines and select ridge alpha on validation."""
 import argparse
 import csv
 import json
@@ -11,6 +11,7 @@ from scipy import sparse
 from artifact_io import digest, write
 from common_data import ROOT, PUBLIC, PROTOCOL
 from common_eval import evaluate
+from common_selection import PROTOCOL as SELECTION, read
 
 
 def train_responses(dataset):
@@ -49,43 +50,52 @@ def prior_vectors(go, genes, interventions):
     return sparse.vstack(vec, format='csr')
 
 
-def validation(dataset, go):
+def score(dataset, go, role='val', fixed_alpha=None):
     started = time.monotonic()
     contract = json.loads(PROTOCOL.read_text())
     manifest = json.loads((dataset / 'receipt.json').read_text())
     if manifest['contract_sha256'] != digest(PROTOCOL):
         raise ValueError('Dataset does not match the current protocol')
+    inputs = ('genes.json','train_conditions.json',f'{role}_conditions.json','controls_train.npz',
+              'treated_train.npz','train_index.npz','eval_controls.npy',f'outcomes_{role}.npz')
+    for name in inputs:
+        if digest(dataset/name) != manifest['files'][name]:
+            raise ValueError(f'Dataset file hash mismatch: {name}')
     registry = {r['file']: r['sha256'] for r in json.loads(
         (ROOT / 'manifests/public_receipt.json').read_text())}
     if digest(go) != registry['norman/go.csv']:
         raise ValueError('Unexpected GO prior')
     genes = json.loads((dataset / 'genes.json').read_text())['output']
     train_meta = json.loads((dataset / 'train_conditions.json').read_text())
-    val = json.loads((dataset / 'val_conditions.json').read_text())
+    targets = read(dataset/f'{role}_conditions.json')
     names, y = train_responses(dataset)
-    assert set(names) == set(train_meta) and not set(names) & set(val)
+    assert set(names) == set(train_meta) and not set(names) & set(targets)
     reference = np.load(dataset / 'eval_controls.npy', allow_pickle=False).mean(axis=0, dtype=np.float64)
     mean = y.mean(axis=0)
     results = {
-        'no_change': evaluate(dataset, 'val', {c: reference for c in val}),
-        'train_mean': evaluate(dataset, 'val', {c: reference + mean for c in val})
+        'no_change': evaluate(dataset, role, {c: reference for c in targets}),
+        'train_mean': evaluate(dataset, role, {c: reference + mean for c in targets})
     }
     singles = {train_meta[c]['targets'][0]: row for c, row in zip(names, y)
                if len(train_meta[c]['targets']) == 1}
     additive = {c: reference + sum(singles[g] for g in info['targets'])
-                for c, info in val.items()
+                for c, info in targets.items()
                 if len(info['targets']) == 2 and all(g in singles for g in info['targets'])}
-    results['additive'] = evaluate(dataset, 'val', additive, allow_partial=True) if additive else None
+    results['additive'] = evaluate(dataset, role, additive, allow_partial=True) if additive else None
     train_features = prior_vectors(go, genes, [train_meta[c]['targets'] for c in names])
-    val_features = prior_vectors(go, genes, [d['targets'] for d in val.values()])
+    val_features = prior_vectors(go, genes, [d['targets'] for d in targets.values()])
     gram = (train_features @ train_features.T).toarray()
     cross = (val_features @ train_features.T).toarray()
     alpha_rows = []
     best = None
-    for alpha in contract['linear']['alphas']:
+    if (role == 'test') != (fixed_alpha is not None):
+        raise ValueError('Test scoring requires one previously selected alpha')
+    if fixed_alpha is not None and fixed_alpha not in contract['linear']['alphas']:
+        raise ValueError('Frozen alpha is outside the declared grid')
+    for alpha in contract['linear']['alphas'] if fixed_alpha is None else [fixed_alpha]:
         weights = np.linalg.solve(gram + alpha * np.eye(len(names)), y - mean)
-        pred = dict(zip(val, reference + mean + cross @ weights))
-        scored = evaluate(dataset, 'val', pred)
+        pred = dict(zip(targets, reference + mean + cross @ weights))
+        scored = evaluate(dataset, role, pred)
         score = scored['metrics']['delta_rmse']
         alpha_rows.append(dict(alpha=alpha, delta_rmse=score))
         if best is None or (score, alpha) < best[:2]:
@@ -98,7 +108,7 @@ def validation(dataset, go):
             shared[method] = float(np.mean([r['delta_rmse'] for r in data['per_condition']
                                             if r['condition'] in eligible]))
     return dict(
-        role='val', contract_sha256=digest(PROTOCOL), dataset_sha256=digest(dataset/'receipt.json'),
+        role=role, contract_sha256=digest(PROTOCOL), dataset_sha256=digest(dataset/'receipt.json'),
         go_sha256=digest(go), run_code_sha256=digest(Path(__file__)), alpha_candidates=alpha_rows,
         selected_alpha=best[1], total_seconds=time.monotonic()-started,
         additive_common_subset_n=len(eligible), delta_rmse_on_additive_subset=shared, methods=results)
@@ -108,7 +118,23 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--dataset', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--paper-status', type=Path)
+    p.add_argument('--freeze', type=Path)
     a = p.parse_args()
+    role, alpha, freeze_hash = 'val', None, None
+    if a.freeze is not None:
+        plan = read(a.freeze)
+        if (plan['stage'] != 'frozen_test' or plan['protocol_sha256'] != digest(SELECTION)
+                or plan['dataset_sha256'] != digest(a.dataset/'receipt.json')):
+            raise ValueError('Invalid test freeze')
+        role = 'test'
+        alpha = plan['simple_baselines']['selected_alpha']
+        freeze_hash = digest(a.freeze)
+    else:
+        from common_submit import paper_status
+        if a.paper_status is None:
+            raise ValueError('Record both paper track statuses before fitting')
+        paper_status(a.paper_status)
     # Exclusive reservation; an existing result is never overwritten.
     a.output.parent.mkdir(parents=True, exist_ok=True)
     lock = a.output.with_suffix('.lock')
@@ -116,7 +142,8 @@ def main():
     try:
         if a.output.exists():
             raise FileExistsError(a.output)
-        write(a.output, validation(a.dataset, PUBLIC/'norman/go.csv'))
+        write(a.output, dict(**score(a.dataset, PUBLIC/'norman/go.csv', role, alpha),
+                             freeze_sha256=freeze_hash))
     finally:
         lock.rmdir()
 
