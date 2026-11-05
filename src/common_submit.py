@@ -43,7 +43,7 @@ def tasks(a):
             raise ValueError('Paper status evidence required')
         if a.paper_status.is_file():
             paper_status(a.paper_status)
-        elif not (stage == 'C0' and a.afterok):
+        elif not (stage in ('C0','M') and a.afterok):
             raise FileNotFoundError(a.paper_status)
     if stage in ('C0','M'):
         if split != cfg['initial_split'] or a.plan is not None:
@@ -129,11 +129,19 @@ def main():
     p.add_argument('--workspace', type=Path, required=True)
     p.add_argument('--paper-status', type=lambda s:Path(s).resolve())
     p.add_argument('--plan', type=lambda s:Path(s).resolve())
-    p.add_argument('--afterok', nargs='+', type=int, help='Gate C0 on a strict paper handoff job')
+    p.add_argument('--afterok', nargs='+', type=int, help='Gate C0 on paper handoff or M on the C0 jobs')
     p.add_argument('--submit', action='store_true', help='Without this flag, only print commands')
     a = p.parse_args()
-    if a.afterok and (a.stage != 'C0' or min(a.afterok) <= 0):
-        raise ValueError('Only C0 accepts registered positive Slurm handoff dependencies')
+    if a.afterok and (a.stage not in ('C0','M') or min(a.afterok) <= 0):
+        raise ValueError('Only C0 and M accept registered positive Slurm dependencies')
+    if a.stage == 'M' and a.afterok:
+        contract = read(PROTOCOL)
+        m = contract['model_screen']
+        keys = [f"C0-simple-s{contract['initial_split']}", m['scgpt_baseline'], m['gears_baseline']]
+        journal = ROOT/'logs/common_submissions'
+        expected = {int(read(journal/f'{k}.json')['slurm_job_id'].split(';',1)[0]) for k in keys}
+        if set(a.afterok) != expected:
+            raise ValueError('Model screening dependencies must be the three registered C0 jobs')
     jobs = tasks(a)
     if a.afterok:
         after = '--dependency=afterok:'+':'.join(map(str,a.afterok))
