@@ -41,7 +41,10 @@ def tasks(a):
     if stage != 'test':
         if a.paper_status is None:
             raise ValueError('Paper status evidence required')
-        paper_status(a.paper_status)
+        if a.paper_status.is_file():
+            paper_status(a.paper_status)
+        elif not (stage == 'C0' and a.afterok):
+            raise FileNotFoundError(a.paper_status)
     if stage in ('C0','M'):
         if split != cfg['initial_split'] or a.plan is not None:
             raise ValueError('Screening only uses the declared primary split')
@@ -126,9 +129,15 @@ def main():
     p.add_argument('--workspace', type=Path, required=True)
     p.add_argument('--paper-status', type=lambda s:Path(s).resolve())
     p.add_argument('--plan', type=lambda s:Path(s).resolve())
+    p.add_argument('--afterok', nargs='+', type=int, help='Gate C0 on a strict paper handoff job')
     p.add_argument('--submit', action='store_true', help='Without this flag, only print commands')
     a = p.parse_args()
+    if a.afterok and (a.stage != 'C0' or min(a.afterok) <= 0):
+        raise ValueError('Only C0 accepts registered positive Slurm handoff dependencies')
     jobs = tasks(a)
+    if a.afterok:
+        after = '--dependency=afterok:'+':'.join(map(str,a.afterok))
+        jobs = [(key,[after,*args]) for key,args in jobs]
     if a.submit:
         journal = ROOT/'logs/common_submissions'
         journal.mkdir(parents=True,exist_ok=True)
