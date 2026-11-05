@@ -9,7 +9,10 @@ The first common-benchmark run used the frozen split 26 with 155 training interv
 | Additive response | 8 | 0.05040 | 0.05040 |
 | Linear GO ridge | 34 | 0.05071 | 0.04834 |
 | GEARS | 34 | 0.06363 | 0.06756 |
+| scGPT (M0) | 34 | 0.03429 | 0.03264 |
 
 Lower is better. The additive method is defined only where both component singles have training responses. The matched subset column is the fair comparison with additive. The ridge penalty was selected from four fixed values using validation ΔRMSE; the selected value was 1.0.
 
-The [GEARS run](gears/result.json) completed all 15 epochs on an A40 (Slurm `17675`, exit 0). Its epoch 14 checkpoint was selected by validation ΔRMSE and reproduced the saved score after reload. Across all 34 validation interventions, GEARS improved on no-change and training mean but had more error than linear GO ridge. It had more error than additive on the matched eight interventions. The common scGPT baseline and held-out test results are pending.
+The [GEARS run](gears/result.json) completed all 15 epochs on an A40 (Slurm `17675`, exit 0). Its epoch 14 checkpoint was selected by validation ΔRMSE and reproduced the saved score after reload. Across all 34 validation interventions, GEARS improved on no-change and training mean but had more error than linear GO ridge. It had more error than additive on the matched eight interventions.
+
+The [scGPT run](scgpt/result.json) completed all 15 epochs on an A100 (Slurm `17674`, exit 0). Its epoch 15 checkpoint reproduced the validation score after reload. The run updated 51.33 million parameters, preserved all 79,348 target flags per epoch, and recorded 74.1 minutes across training and validation epochs. It had the lowest error across all 34 validation interventions and on the matched eight. This is the M0 validation reference for model tuning; held-out test results are pending.
