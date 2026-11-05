@@ -9,3 +9,11 @@ Decision: `HCC_DATA_BLOCKED` for this study's native single-cell gene perturbati
 | [GSE192771](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE192771) | Human Huh7 bulk RNA: MT1G overexpression vs. vector, and sorafenib vs. DMSO; each has three GEO-labeled samples per arm | GEO lists separate expression matrices and normalized read-count files. The arms encode one genetic target and one drug; ATAC samples are a separate assay. No evidence here that the sample labels establish independent donors. | Neither one genetic intervention nor a separate one-drug contrast can support the prescribed held-out single-cell experiment. |
 
 Norman is a K562 benchmark. Human HCC validation has not been run. The separately proposed [GSE264667](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE264667) would be optional HepG2 work with past data exposure and a fresh split; it would be reported as liver-derived exploration, not adult HCC validation or zero-shot transfer.
+
+## Table D — Scope of liver application
+
+| Biological system | Actual intervention and response available for this task | Train, validation and test unit | Original method | Tuned method | HCC or proxy | Generalization supported |
+|---|---|---|---|---|---|---|
+| Norman K562 | Single and paired CRISPR activation targets, post-intervention single-cell RNA, and controls | Intervention in the common benchmark; cells contribute to the corresponding intervention averages | GEARS and scGPT paper tracks completed; common baselines in progress | Common tuning and held-out evaluation pending | Non-liver benchmark | The paper evaluations are within K562; they support no transfer claim. |
+| Human HCC candidates: Huh7, HCCLM3 and SNU449 | One genetic target per bulk RNA study, a separate drug contrast, or a dropout screen without matching RNA response | No eligible held-out single-cell intervention split | Not run | Not run | HCC cell lines | `HCC_DATA_BLOCKED`; no validation in HCC cells or patients. |
+| HepG2 (GSE264667) | Candidate for separately scoped liver-derived work; no response assay run in this study | No split or evaluation in this study | Not run | Not run | Optional hepatoblastoma-derived proxy, with prior dataset exposure | No liver or adult HCC performance claim. |
