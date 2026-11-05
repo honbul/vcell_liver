@@ -7,7 +7,7 @@ from pathlib import Path
 from statistics import mean
 
 from artifact_io import digest, write
-from paper_audit import audit, submissions
+from paper_audit import audit, resume_logs, submissions
 
 ROOT = Path(__file__).resolve().parents[1]
 R1_SEEDS = range(1, 6)
@@ -33,10 +33,12 @@ def check_result(path, checks):
 
 
 def collect(runs, output, r2_id='R2-manuscript-public-v1', r1_stem='R1-paper-public-v1',
-            submission_log=None, strict=False, table_output=None):
+            submission_log=None, strict=False, table_output=None, resume_ledger=None):
     submitted = submissions(submission_log) if submission_log else None
     if strict and not submitted:
         raise ValueError('Strict paper status needs the project submission ledger')
+    if submitted and resume_ledger is None:
+        resume_ledger = submission_log.parent/'paper_resume_ledger.json'
     ref = tsv(ROOT/'manifests/reference/gears_fig2f_author.tsv')
     author = {(r['method'], int(r['split_seed']), r['metric']):float(r['value']) for r in ref}
     sub = defaultdict(list)
@@ -60,8 +62,11 @@ def collect(runs, output, r2_id='R2-manuscript-public-v1', r1_stem='R1-paper-pub
                     cells=split['n_cells'], n_train_batches=r['n_train_batches'])
         if submitted:
             job = submitted['R1-seed1' if seed==1 else 'R1-seeds2-5']
-            item['execution'] = audit(submission_log.parent/f'gears_fig2f_{job}_{seed}.log',
-                                      'R1_FINISHED', 20)
+            logs = submission_log.parent
+            restarts = resume_logs(resume_ledger,logs,path.parent.name,'R1',
+                                   digest(path.with_name('settings.json')),seed)
+            item['execution'] = audit(logs/f'gears_fig2f_{job}_{seed}.log',
+                                      'R1_FINISHED',20,restarts)
         evidence.append(item)
         raw = defaultdict(list)
         groups = tsv(table)
@@ -118,8 +123,11 @@ def collect(runs, output, r2_id='R2-manuscript-public-v1', r1_stem='R1-paper-pub
                            checkpoint_load_sha256=digest(sc_path.with_name('checkpoint_load.json')))
         if submitted:
             job = submitted['R2']
-            sc_evidence['execution'] = audit(submission_log.parent/f'scgpt_fig3a_{job}.log',
-                                             'R2_FINISHED',sc_rerun['epochs'])
+            logs = submission_log.parent
+            restarts = resume_logs(resume_ledger,logs,sc_path.parent.name,'R2',
+                                   digest(sc_path.with_name('settings.json')))
+            sc_evidence['execution'] = audit(logs/f'scgpt_fig3a_{job}.log',
+                                             'R2_FINISHED',sc_rerun['epochs'],restarts)
     sc_table = []
     for key, approximate in [('pearson_delta',0.58), ('pearson_de_delta',0.77)]:
         row = dict(metric=key, author_log=scgpt[key], approx_publisher_figure=approximate)
@@ -168,8 +176,9 @@ def main():
     p.add_argument('--submission-log',type=Path)
     p.add_argument('--strict',action='store_true')
     p.add_argument('--table',type=Path)
+    p.add_argument('--resume-ledger',type=Path)
     a = p.parse_args()
-    collect(a.runs,a.output,a.r2_id,a.r1_stem,a.submission_log,a.strict,a.table)
+    collect(a.runs,a.output,a.r2_id,a.r1_stem,a.submission_log,a.strict,a.table,a.resume_ledger)
 
 
 if __name__ == '__main__':
