@@ -39,6 +39,8 @@ def summarize(freeze_path, scores, simple_path=None):
                 or item['run_id'] != job['run_id'] or item['arm'] != arm or item['seed'] != job['seed']
                 or item['checkpoint_sha256'] != row['checkpoint_sha256']):
             raise ValueError('Test prediction did not use the frozen run')
+        if digest(scores/f"{job['run_id']}.predictions.npz") != item['prediction_sha256']:
+            raise ValueError('Prediction artifact differs from the scored expression')
         scored = item['metrics']
         per = {c['condition']:c for c in scored['per_condition']}
         if scored['role'] != 'test' or len(per) != scored['n_available']:
@@ -52,7 +54,10 @@ def summarize(freeze_path, scores, simple_path=None):
             raise ValueError('Duplicate seed in arm')
         target[job['seed']] = per
         arm_metrics.setdefault(arm,[]).append(dict(
-            seed=job['seed'], metrics=scored['metrics'], score_sha256=digest(scores/f"{job['run_id']}.json")))
+            seed=job['seed'], metrics=scored['metrics'], score_sha256=digest(scores/f"{job['run_id']}.json"),
+            prediction_sha256=item['prediction_sha256'],
+            inference_seconds=item.get('seconds'), inference_gpu=item.get('gpu'),
+            inference_peak_gib=item.get('peak_allocated_gib')))
     base = 'D0M0'
     primary = freeze['primary_arm']
     cfg = read(PROTOCOL)['confirmation']

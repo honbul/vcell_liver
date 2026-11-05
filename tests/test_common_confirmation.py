@@ -2,9 +2,12 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
+from unittest.mock import patch
+from types import SimpleNamespace
 
 from artifact_io import digest, write
 from common_effects import summarize
+import common_pipeline
 from common_selection import (NEURAL, PROTOCOL, ROOT, choose_confirmation, declared_screen,
                               lock_test, read, select_model)
 
@@ -72,6 +75,35 @@ class CommonConfirmationTest(unittest.TestCase):
         self.assertEqual(len(plan['repeats']),6)
         self.assertEqual(plan['primary_arm'],'D*M0')
 
+    def test_data_transition_submits_only_two_ablation_jobs_and_gates_confirmation(self):
+        work, dataset = self.path/'study', self.path/'data'
+        work.mkdir()
+        dataset.mkdir()
+        write(dataset/'receipt.json',{'split_seed':self.cfg['initial_split']})
+        self.dataset_sha = digest(dataset/'receipt.json')
+        self.runs = self.path/'assets/runs'
+        for j,s in zip(declared_screen(self.cfg),(1.0,1.2,.91,.92,.93,.65)):
+            self.validation_run(j,s)
+        pick = select_model(self.cfg,self.runs,self.dataset_sha)
+        write(work/'model_selection.json',pick)
+        write(work/'paper_status.json',dict(
+            R1={'status':'modified_reproduction_executed','evidence':{'fixture':True}},
+            R2={'status':'modified_reproduction_executed','evidence':{'fixture':True}}))
+        requests = []
+
+        def fake_submit(key,args,journal):
+            requests.append((key,args))
+            return str(900+len(requests))
+
+        with patch.object(common_pipeline,'ROOT',self.path), patch.object(common_pipeline,'submit',fake_submit):
+            common_pipeline.transition(SimpleNamespace(stage='data',primary_workspace=work,
+                                                       primary_dataset=dataset,split=26))
+        self.assertEqual([r[0] for r in requests[:2]],[j['run_id'] for j in pick['jobs']])
+        self.assertEqual(requests[2][0],'pipeline-confirmation-s26')
+        self.assertEqual(requests[2][1][0],'--dependency=afterok:901:902')
+        self.assertTrue(all('M1' in j[1] for j in requests[:2]))
+        self.assertEqual(len(requests),3)
+
     def test_reserve_summary_pairs_conditions_despite_different_row_order(self):
         freeze = self.path/'frozen.json'
         scores = self.path/'scores'
@@ -83,8 +115,10 @@ class CommonConfirmationTest(unittest.TestCase):
         for row in rows:
             run = row['job']['run_id']
             values = [('B',.8),('A',1.0)] if run=='base' else [('A',.6),('B',.7)]
+            artifact = scores/f'{run}.predictions.npz'
+            artifact.write_bytes(run.encode())
             write(scores/f'{run}.json',dict(
-                freeze_sha256=digest(freeze), dataset_sha256=self.dataset_sha, run_id=run,
+                prediction_sha256=digest(artifact), freeze_sha256=digest(freeze), dataset_sha256=self.dataset_sha, run_id=run,
                 checkpoint_sha256=run, seed=0, arm=row['arm'],
                 metrics={'role':'test','n_available':2,
                          'metrics':{'delta_rmse':sum(v for _,v in values)/2},

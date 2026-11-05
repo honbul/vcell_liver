@@ -3,6 +3,7 @@ import argparse
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
+import time
 from types import SimpleNamespace
 
 import numpy as np
@@ -56,6 +57,7 @@ def run(freeze_path, dataset, runs, run_id, output):
     reservation = output.with_suffix(output.suffix+'.running')
     reservation.mkdir()
     try:
+        started = time.monotonic()
         with TemporaryDirectory(prefix='common-test-',dir=output.parent) as tmp:
             device = torch.device('cuda:0')
             model, predict = expression_model(SimpleNamespace(genes=genes), job['model'], job['mode'],
@@ -67,10 +69,20 @@ def run(freeze_path, dataset, runs, run_id, output):
                                              lambda item:[index[g] for g in item['targets']],
                                              device, config['validation_control_chunk'])
         scored = evaluate(dataset,'test',predictions)
+        artifact = output.with_suffix('.predictions.npz')
+        names = sorted(predictions)
+        with TemporaryDirectory(prefix='predictions-',dir=output.parent) as tmp:
+            candidate = Path(tmp)/'prediction.npz'
+            np.savez(candidate,condition=np.array(names),gene_names=np.array(genes),
+                     expression_mean=np.stack([predictions[c] for c in names]))
+            candidate.replace(artifact)
         immutable(output, dict(arm=row['arm'], seed=job['seed'], run_id=run_id,
                                freeze_sha256=digest(freeze_path),
                                dataset_sha256=frozen['dataset_sha256'],
                                checkpoint_sha256=row['checkpoint_sha256'],
+                               prediction_sha256=digest(artifact),
+                               gpu=torch.cuda.get_device_name(),seconds=time.monotonic()-started,
+                               peak_allocated_gib=torch.cuda.max_memory_allocated()/2**30,
                                metrics=scored))
     finally:
         reservation.rmdir()

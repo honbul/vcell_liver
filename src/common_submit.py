@@ -99,15 +99,17 @@ def submit(key, args, journal):
             raise RuntimeError(f'Unresolved submission reservation: {lock}; lookup {job_name}')
         if read(claim)['args'] != args:
             raise RuntimeError(f'Registered command differs: {claim}')
-        print(key, read(claim)['slurm_job_id'], 'existing')
-        return
+        handle = read(claim)['slurm_job_id']
+        print(key, handle, 'existing')
+        return handle
     acknowledged = False
     try:
         if claim.is_file():
             if read(claim)['args'] != args:
                 raise RuntimeError(f'Registered command differs: {claim}')
-            print(key, read(claim)['slurm_job_id'], 'existing')
-            return
+            handle = read(claim)['slurm_job_id']
+            print(key, handle, 'existing')
+            return handle
         # A failed or interrupted sbatch leaves the reservation for reconciliation.
         # A time-limited job is resumed separately with the original run ID.
         handle = subprocess.check_output(['sbatch','--parsable','--job-name='+job_name,*args],
@@ -117,6 +119,7 @@ def submit(key, args, journal):
         write(claim,dict(job=key,job_name=job_name,slurm_job_id=handle,args=args))
         acknowledged = True
         print(key, handle, flush=True)
+        return handle
     finally:
         if acknowledged or claim.is_file():
             lock.rmdir()
