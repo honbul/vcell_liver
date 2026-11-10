@@ -27,10 +27,17 @@ class FusedQKVLoRA(nn.Module):
         return original + self.scale * (self.up @ self.down)
 
 
-def configure(model, mode):
+def configure(model, mode, partial_blocks=2, lora_rank=8, lora_alpha=16, lora_ffn=False):
+    """Defaults reproduce the registered M0-M3 modes; keyword hooks serve feedback ablations."""
     if mode not in MODES:
         raise ValueError(mode)
+    if mode != 'M2' and partial_blocks != 2:
+        raise ValueError('partial_blocks applies only to M2')
+    if mode != 'M3' and (lora_rank, lora_alpha, lora_ffn) != (8, 16, False):
+        raise ValueError('LoRA options apply only to M3')
     layers = model.transformer_encoder.layers
+    if not 1 <= partial_blocks <= len(layers) or lora_rank < 1:
+        raise ValueError('Invalid adaptation capacity')
     if mode in ('M0', 'M-random'):
         model.requires_grad_(True)
         # The native expression path never executes this classification head.
@@ -41,20 +48,29 @@ def configure(model, mode):
         model.pert_encoder.requires_grad_(True)
     mounts = {}
     if mode == 'M2':
-        for block in layers[-2:]:
+        for block in layers[-partial_blocks:]:
             block.requires_grad_(True)
     if mode == 'M3':
         for i, block in enumerate(layers):
             attn = block.self_attn
             if not isinstance(attn, nn.MultiheadAttention) or attn.in_proj_weight is None:
                 raise ValueError('Expected actual fused attention projection')
-            adapter = FusedQKVLoRA(attn.in_proj_weight)
+            adapter = FusedQKVLoRA(attn.in_proj_weight, lora_rank, lora_alpha)
             parametrize.register_parametrization(attn, 'in_proj_weight', adapter)
             mounts[f'transformer_encoder.layers.{i}.self_attn.in_proj_weight'] = adapter
+            if lora_ffn:
+                # Same low-rank update on both feed-forward projections of the block.
+                for name in ('linear1', 'linear2'):
+                    linear = getattr(block, name)
+                    if not isinstance(linear, nn.Linear):
+                        raise ValueError('Expected feed-forward linear projections')
+                    adapter = FusedQKVLoRA(linear.weight, lora_rank, lora_alpha)
+                    parametrize.register_parametrization(linear, 'weight', adapter)
+                    mounts[f'transformer_encoder.layers.{i}.{name}.weight'] = adapter
     return mounts
 
 
-def build(genes, mode, out, device):
+def build(genes, mode, out, device, adapt=None):
     author_sources(out)
     from scgpt.model import TransformerGenerator
 
@@ -94,8 +110,8 @@ def build(genes, mode, out, device):
         model.load_state_dict(current, strict=True)
         assert all(torch.equal(model.state_dict()[k], v) for k, v in loaded.items())
     # Author Fig. 3a run used dropout 0 and loads only these backbone prefixes.
-    mounts = configure(model, mode)
-    write(out / 'model_init.json', {
+    mounts = configure(model, mode, **(adapt or {}))
+    write(out / 'model_init.json', {**({'adaptation': adapt} if adapt else {}),
         'mode': mode, 'checkpoint_sha256': receipt['scgpt/best_model.pt'] if loaded else None,
         'backbone_keys_loaded': sorted(loaded), 'attention_projections': list(mounts),
         'n_parameters': sum(p.numel() for p in model.parameters()),
