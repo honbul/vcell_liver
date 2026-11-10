@@ -1,0 +1,17 @@
+plan_ref	plan_claim	verified_record	verdict
+1	Ahlmann-Eltze et al., Nature Methods 2025, linear baselines	Ahlmann-Eltze C, Huber W, Anders S. Nat Methods 22:1657 (2025), online 2025-08-04, doi 10.1038/s41592-025-02772-6	correct
+2	Wei et al., Nature Methods 2026, 27 methods 29 datasets	Wei Z ... Liu Q. Nat Methods 23:451 (2026-02 issue), online 2025-12-11, doi 10.1038/s41592-025-02980-0; 27 methods, 29 datasets, 6 metrics	correct (note online 2025-12)
+3	Tian et al., Science Advances 2026, 25 datasets 3 tasks	Li L ... Tian L. Sci Adv 12(37):eaed3414 (2026), doi 10.1126/sciadv.aed3414; 13 methods + 4 baselines, 25 datasets, 3 tasks, 24 metrics	WRONG author - should be "Li et al."; method count is 13 not stated
+4	Systema, Nature Biotechnology 2026	Vinas Torne R, Wiatrak M, ... Brbic M. Nat Biotechnol 44:1050, online 2025-08-25, 2026-06 issue, doi 10.1038/s41587-025-02777-8	correct (note online 2025-08)
+5	Wenkel et al., TxPert, Nature Biotechnology 2026	Wenkel F ... Denton AK. Nat Biotechnol, online 2026-05-01, doi 10.1038/s41587-026-03113-4	correct
+6	Adduri et al., State, Cell 2026, URL arcinstitute.org/tools/state	Adduri AK ... Roohani YH. Cell 189(19):5914-5931.e20 (2026-09-17), doi 10.1016/j.cell.2026.07.052; cited URL is a tool page not the paper	correct but URL should be DOI/PubMed 42673963
+7	Verma et al., PIE 2026 preprint	Verma R, Adduri A, Bevilacqua B, Eraslan B, Burke DP, Goodarzi H, Roohani YH. bioRxiv 2026-10-05, doi 10.64898/2026.10.02.756297	correct (add DOI)
+8	Replogle/Nadig 4-line preprocessed (HF + scPertEval)	Both exist. HF PIE_replogle_nadig_essential: K562 179753 / RPE1 167372 / HepG2 90826 / Jurkat 173260 cells, 6642 genes, 5459 pairs. scPertEval lists replogle22k562/rpe1, nadig25hepg2/jurkat with different cell counts	correct, but HF holds DE tables/arrays not raw counts; cell counts differ between sources
+9	GSE264667 HepG2/Jurkat	GEO series "Transcriptome-wide characterization of genetic perturbations", submitted 2024-04-23, PubMed 40259084 = Nadig et al. Nat Genet 57:1228 (2025)	correct
+10	Tahoe-100M HF + arc-virtual-cell-atlas README	Both resolve; HF dataset license CC0-1.0	correct
+11	Cellosaurus SNU-423 CVCL_0366	Adult hepatocellular carcinoma, male 40Y, DepMap ACH-000493. HepG2 = CVCL_0027 flagged misclassified hepatoblastoma	correct
+12	Virtual Cell Challenge 2026 OOD description	Arc page dated 2026-08-20: zero-shot, no challenge training set, 6 unseen cell lines, CRISPRi, participants get non-targeting control expression only, cell-eval 6 metrics, final submission 2026-11-05	correct; results not public as of 2026-11-10
+13	honbul/vcell_liver FINAL_REPORT at commit 540ec93	URL resolves (HTTP 200)	correct
+body-2.1	"GEARS, TxPert: transfer to other cell lines"	GEARS has no cell-line conditioning and was not used by TxPert in the cross-cell-line task	needs qualifier
+body-2.2	"Pretrained Transformer: scGPT, Geneformer, scFoundation, PertAdapt"	Geneformer is embedding-only, not a response predictor; PertAdapt is a real 2025-11 bioRxiv preprint (frozen FM + adapter)	needs qualifier
+body-4	"Tahoe-100M SNU-423 candidate"	SNU-423 confirmed present: 1,501,700 cells, 1,137 drug-dose conditions in PIE Tahoe preprocessing	can be upgraded to confirmed
