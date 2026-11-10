@@ -10,4 +10,6 @@
 | 4. 간암 적용 | [F4_LIVER_DATA_CARD](F4_LIVER_DATA_CARD.md), [R3_TAHOE_SNU423](R3_TAHOE_SNU423.md) | SNU-423 데이터 카드와 약물 LOCO 기준선 완료 |
 | 5. 연구 방향 | [F5_DIRECTION](F5_DIRECTION.md) | R1 선정, 첫 실행 계획과 계획서 체크리스트 점검 포함 |
 
+실험 21개를 가설·고정 조건·변경 변수·분할·결과·대안 설명·다음 검증의 7개 항목으로 정리한 표: [EXPERIMENT_TABLE](EXPERIMENT_TABLE.md)
+
 큰 산출물(pseudobulk, 예측, 체크포인트)은 G1 `/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver_feedback_20261110`에 있다.
