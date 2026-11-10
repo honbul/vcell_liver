@@ -1,0 +1,11 @@
+job_id	script	purpose	partition	node	cpus	mem_req	start	end	state_from_log	notes
+20277 (array 0-3)	experiments/feedback/f3_pseudobulk.sbatch	per-line pseudobulk sufficient statistics (K562,RPE1,HepG2,Jurkat)	cpu	g4	4/task	32G/task	2026-11-10T13:25:50+09:00	13:26:41-13:27:14	completed (end= line, npz+qc written)	submitted before --exclude=g[1-4] was added; ran on g4 (cpu partition member). 51-83 s/line
+20303	srun (synthetic test)	pipeline smoke test on synthetic npz	cpu	c4	4	8G	-	-	failed (script on node-local /tmp)	no outputs kept
+20304	srun (synthetic test)	pipeline smoke test on synthetic npz	cpu	c3-5	4	8G	-	-	completed	synthetic outputs deleted
+20306	experiments/feedback/f3_loco.sbatch	contract + LOCO v1 (ridge grid K<=50, lam<=10)	cpu	c4	16	96G	2026-11-10T13:31:05+09:00	2026-11-10T13:40:11+09:00	completed	SUPERSEDED by 20331; v1 tables archived at assets/f3/runs/v1_job20306
+20308	experiments/feedback/f3_crosscheck.sbatch	HKU cross-check	cpu	c4	4	48G	13:32:11	-	failed (obs index name)	no outputs
+20309	experiments/feedback/f3_crosscheck.sbatch	HKU cross-check	cpu	c4	4	48G	13:32:33	-	failed (label order assert)	no outputs
+20310	experiments/feedback/f3_crosscheck.sbatch	HKU cross-check	cpu	c4	4	48G	13:33:02	-	failed (npz overwritten concurrently by 20331)	K562 row only
+20331	experiments/feedback/f3_loco.sbatch	contract + LOCO v2 (final; ridge grid K<=200, lam<=1e4; pert-centred metrics)	cpu	c4	16	96G	2026-11-10T13:41:20+09:00	2026-11-10T13:52:16+09:00	completed	all reports/feedback/F3 LOCO tables + env_freeze.txt
+20333	experiments/feedback/f3_crosscheck.sbatch	HKU cross-check (md5-verified) after 20331	cpu	c4	4	48G	2026-11-10T13:52:16+09:00	2026-11-10T13:53:16+09:00	completed	crosscheck_hku.tsv
+20340	srun src/feedback/f3_report_tables.py	headline tables	cpu	c3-5	2	8G	-	-	completed	headline_*.tsv
