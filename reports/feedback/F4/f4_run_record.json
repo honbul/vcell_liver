@@ -1,0 +1,22 @@
+{
+ "workstream": "F4 (plan section 4, chemical/HCC + liver data inventory)",
+ "g1_worktree": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_feedback_20261110",
+ "env": {"path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver_feedback_20261110/envs/f4", "python": "3.10.12 (/usr/bin/python3 venv)", "packages": "numpy 1.26.4, pandas 2.2.3, pyarrow 17.0.0, anndata 0.10.9, h5py 3.11.0, scipy 1.12.0 (freeze.txt in env dir)", "reason": "existing .venvs/scgpt has no pyarrow; nothing installed into it"},
+ "code": ["src/feedback/f4_tahoe_metadata.py", "src/feedback/f4_tahoe_pseudobulk.py", "src/feedback/f4_tahoe_pbde.py", "src/feedback/f4_tahoe_effects.py", "src/feedback/f4_emeraldbay_meta.py", "experiments/feedback/f4_tahoe.sbatch"],
+ "slurm_jobs": [
+  {"id": 20325, "step": "meta", "node": "c4", "cpus": 4, "mem_GB": 48, "start": "2026-11-10T13:37:53+09:00", "end": "2026-11-10T13:41:22+09:00", "status": "completed", "reads": "Tahoe-100M obs_metadata (100,648,790 rows) + sample/drug/cell_line metadata"},
+  {"id": 20326, "step": "pbde", "node": "c3", "cpus": 16, "mem_GB": 96, "start": "2026-11-10T13:37:53+09:00", "end": "2026-11-10T13:47:14+09:00", "status": "completed", "reads": "1,026 pseudobulk DE shards (88.9 GB)"},
+  {"id": 20327, "step": "pb_snu423", "node": "c4", "cpus": 4, "mem_GB": 48, "start": "2026-11-10T13:41:23+09:00", "end": "2026-11-10T13:45:25+09:00", "status": "completed", "reads": "SNU-423_counts.h5ad (1,501,700 cells)"},
+  {"id": 20328, "step": "pb_hepg2", "node": "c4", "cpus": 4, "mem_GB": 48, "start": "2026-11-10T13:41:23+09:00", "end": "2026-11-10T13:43:50+09:00", "status": "completed", "reads": "HepG2-C3A_counts.h5ad (1,244,192 cells)"},
+  {"id": 20329, "step": "emerald", "node": "c3", "cpus": 2, "mem_GB": 24, "start": "2026-11-10T13:38:56+09:00", "end": "2026-11-10T13:39:04+09:00", "status": "completed", "reads": "EmeraldBay 116 shards, metadata columns only"},
+  {"id": 20334, "step": "effects", "node": "c4", "cpus": 4, "mem_GB": 32, "status": "failed (KeyError in final merge; code fixed)"},
+  {"id": 20335, "step": "effects", "node": "c4", "cpus": 4, "mem_GB": 32, "status": "completed, superseded (first null definition: bucket-size matched)"},
+  {"id": 20336, "step": "effects", "node": "c4", "cpus": 4, "mem_GB": 32, "status": "completed, superseded (linear noise model, mis-specified: negative intercept)"},
+  {"id": 20337, "step": "srun prototype of power-law noise model", "node": "cpu partition (g1-g4 excluded)", "cpus": 2, "mem_GB": 16, "status": "completed; prototype script deleted afterwards"},
+  {"id": 20339, "step": "effects (final)", "node": "c4", "cpus": 4, "mem_GB": 32, "start": "2026-11-10T13:51:19+09:00", "end": "2026-11-10T13:51:38+09:00", "status": "completed - outputs in this directory"}
+ ],
+ "note_resources": "sacct accounting DB unreachable (c1:6819 timeout), so MaxRSS was not recorded; requested resources and wall times from job logs are listed. Jobs 20325/20326 were submitted before ExcNodeList was set but ran on c4/c3.",
+ "assets": {"dir": "assets/f4 (1.2 GB)", "files": ["snu423_pseudobulk.npz", "hepg2c3a_pseudobulk.npz", "snu423_cell_qc.parquet", "hepg2c3a_cell_qc.parquet", "pbde_snu423.parquet", "pbde_hepg2c3a.parquet"]},
+ "downloads": "none (no data downloaded; all sources already on NFS)",
+ "web_research": "bounded web search by a sub-agent (GEO text/FTP, HF API, ENCODE API, papers); GEO HTML pages served a captcha"
+}
