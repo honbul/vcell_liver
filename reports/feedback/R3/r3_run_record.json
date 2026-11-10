@@ -1,0 +1,27 @@
+{
+ "workstream": "R3 small-scale step (FEEDBACK_PLAN_20261110 section 4 item 2 / section 5 R3): Tahoe-100M SNU-423 chemical LOCO baselines",
+ "g1_worktree": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_feedback_20261110",
+ "source_readonly": "/mnt/S1/sdata/pubdata/Tahoe/Tahoe-100M (owner hg; nothing written there)",
+ "env": {"path": "assets/envs/r3", "python": "3.10 (/usr/bin/python3 venv)", "packages": "numpy 1.26.4, pandas 2.2.3, pyarrow 17.0.0, scipy 1.12.0, scikit-learn 1.5.2, rdkit 2026.9.1 (freeze.txt in env dir)", "reason": "rdkit + sklearn needed; existing envs untouched"},
+ "code": ["src/feedback/r3_pseudobulk_all.py", "src/feedback/r3_prep.py", "src/feedback/r3_loco.py", "src/feedback/r3_report_tables.py", "experiments/feedback/r3_tahoe.sbatch"],
+ "resource_note": "sacct DB unreachable (c1:6819 timeout); wall time and MaxRSS come from /usr/bin/time -v inside each job (MaxRSS = largest single process incl. copy-on-write pages shared with the parent, not the job total). Partition limit MaxCPUsPerNode=48.",
+ "slurm_jobs": [
+  {"id": 20341, "step": "pb_test", "node": "c4", "cpus": 16, "mem_GB": 160, "wall": "0:37", "status": "failed: assertion 'one shard = one plate' is false (13 shards straddle two plates); code fixed to filter rows by plate"},
+  {"id": 20345, "step": "pb_test (3 shards x 2 plates)", "node": "c4", "cpus": 16, "mem_GB": 160, "wall": "0:56", "max_rss_GB": 17.3, "status": "completed, superseded (dense accumulation too slow)"},
+  {"id": 20348, "step": "pb_test (6 shards x 2 plates, sparse add)", "node": "c4", "cpus": 16, "mem_GB": 160, "wall": "1:50", "max_rss_GB": 15.6, "status": "completed, superseded"},
+  {"id": 20349, "step": "pb_test (8 shards x 2 plates, direct CSR + float32)", "node": "c4", "cpus": 16, "mem_GB": 160, "wall": "1:11", "max_rss_GB": 13.1, "status": "completed, test outputs deleted"},
+  {"id": 20354, "step": "pb_all (A1, all 3,388 shards)", "node": "c3", "cpus": 48, "mem_GB": 400, "workers": "42 (14 plates x 3 shard subsets)", "start": "2026-11-10T14:15:50+09:00", "end": "2026-11-10T14:33:55+09:00", "wall": "18:05", "cpu_pct": 3128, "cpu_user_h_workers": 6.16, "max_rss_GB_single_process": 18.0, "main_process_rss_GB": 9.0, "status": "completed"},
+  {"id": 20419, "step": "prep (Delta for 50 lines x 1,316 wells x 11,132 genes)", "node": "c4", "cpus": 8, "mem_GB": 96, "wall": "1:05", "max_rss_GB": 4.8, "status": "completed"},
+  {"id": 20420, "step": "loco test (tr49, nboot 50)", "node": "c4", "cpus": 16, "mem_GB": 96, "wall": "8:24", "max_rss_GB": 7.3, "status": "completed, superseded (outputs deleted)"},
+  {"id": 20446, "step": "loco full", "node": "c5", "cpus": 16, "mem_GB": 96, "wall": "17:55", "max_rss_GB": 8.2, "status": "failed in bootstrap (index mismatch between metric pivots); fixed"},
+  {"id": 20463, "step": "loco final (tr49 + tr48, nboot 2000)", "node": "c3", "cpus": 16, "mem_GB": 96, "start": "2026-11-10T15:03:59+09:00", "end": "2026-11-10T15:19:50+09:00", "wall": "15:51", "max_rss_GB": 8.3, "status": "completed - outputs in this directory"},
+  {"id": 20464, "step": "srun: --summary-only test on the failed run's unit table", "cpus": 2, "mem_GB": 16, "status": "completed, outputs deleted"},
+  {"id": 20476, "step": "srun: r3_report_tables.py (tables + r3_b_vs_c.tsv)", "cpus": 2, "mem_GB": 16, "status": "completed"}
+ ],
+ "assets": {
+  "assets/r3/pb (32 GB)": "plate_<p>_raw.npy / plate_<p>_norm.npy float32 [96 samples x 50 lines, 62,713 token ids] per plate, groups.tsv (67,200 groups), genes.tsv, build_record.json",
+  "assets/r3/prep (2.9 GB)": "delta.npy [50, 1316, 11132], ncells.npy, dmso_* arrays, wells.tsv, lines.tsv, genes.tsv",
+  "assets/r3/loco (278 MB)": "pred_<cond>_<trainset>.npz (truth + every predictor), panel_<trainset>.npy (token ids)"
+ },
+ "downloads": "none"
+}
