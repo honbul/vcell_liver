@@ -10,7 +10,7 @@
 | G1 | 모델·벤치마크·자료 후보 비교 | 모델 비교, 코드·체크포인트 상태, 인용 검증 완료 | 통과 | [F2_LITERATURE_REVIEW](F2_LITERATURE_REVIEW.md) |
 | G2 | 4세포주 계약, HepG2·SNU-423 소량 추출 | 4세포주 CRISPRi 계약, SNU-423 데이터 카드, Tahoe 50개 세포주 well 단위 pseudobulk 구축 | 둘 다 조건부 적격 | [F3](F3_CROSS_CELL_LINE.md), [F4](F4_LIVER_DATA_CARD.md), [R3](R3_TAHOE_SNU423.md) |
 | G3 | R1 한 세포주 LOCO, 기준선 + 최신 후보 1개 | PIE 공식 체크포인트 4-fold 재현, HepG2 fold에서 기준선과 비교, 나머지 3 fold 보충 | 조건부 통과 | [G3_PIE_HEPG2](G3_PIE_HEPG2.md) |
-| G4 | 후보 2개 이하, 4 LOCO와 seed 반복 | 미실행 | – | – |
+| G4 | 후보 2개 이하, 4 LOCO와 seed 반복 | State ST-HVG zeroshot 4 fold 평가, PIE HepG2 fold seed 3회 재학습, 예산 실측 | 통과 | [G4_LOCO](G4_LOCO.md) |
 | G5 | 주 연구 방향 1개 선정 | 이 문서 | R1 선정 | §2 |
 
 R2 성격의 Norman ablation(A6–A9)은 별도로 실행했다. 결과는 [F1_ABLATION](F1_ABLATION.md)에 있다.
@@ -23,7 +23,7 @@ R2 성격의 Norman ablation(A6–A9)은 별도로 실행했다. 결과는 [F1_A
 |---|---|---|---|
 | 자료 | 4세포주 CRISPRi, 공통 표적 1,688개 | Norman 기존 자산 | Tahoe 50개 세포주, 로컬 보유 |
 | 정답 신호 품질 | 외부 가공본과 반응 r≈0.9999 | 시드 간 검증 범위 0.0018로 비교 차이와 비슷한 크기 | 약물 없는 DMSO well도 같은 well 다른 세포주와 r 0.76. 반복 well을 예측으로 쓰면 no-change보다 나쁨 |
-| 최신 모델 검증 | PIE 공개값 재현. 관측 표적에서 기준선 대비 AUPRC +0.052 | 해당 없음 | 미실행. 공개 체크포인트에 SNU-423 포함, 재학습 필요 |
+| 최신 모델 검증 | PIE 공개값 재현. 관측 표적에서 기준선 대비 AUPRC +0.052. seed 3회·4 fold에서 결론 유지 | 해당 없음 | 미실행. 공개 체크포인트에 SNU-423 포함, 재학습 필요 |
 | 다음 실험의 명확성 | 높음. PIE의 약점(미관측 표적 자체 순위, Δ 크기 보정)이 구체적 | 질문이 좁고 ablation으로 정리됨 | 기술 효과 보정 방법부터 정해야 함 |
 | 간 관련성 | HepG2(간모세포종 유래, 이전 노출 있음) | 없음 (K562) | 성인 HCC 유래 세포주 |
 
@@ -46,3 +46,6 @@ R2 성격의 Norman ablation(A6–A9)은 별도로 실행했다. 결과는 [F1_A
 | 약물 트랙에서 새 모델이 넘어야 할 기준 | [R3 §7](R3_TAHOE_SNU423.md#7-최신-화학-모델이-넘어야-할-기준) |
 | 약물 트랙의 다음 단계와 미해결 | [R3 §9](R3_TAHOE_SNU423.md#9-다음-단계와-미해결) |
 | Norman ablation 결과 | [F1_ABLATION](F1_ABLATION.md) |
+| seed·fold에서 견고한 지표와 쓰면 안 되는 지표 | [G4 §5](G4_LOCO.md#5-seed-변동-pie-hepg2-fold) |
+| G4가 G5로 넘긴 항목(새 표적이 핵심, State 탈락 조건) | [G4 §6](G4_LOCO.md#6-g4-판정) |
+| 남은 재학습 비용과 실행 명령 | [G4 §9](G4_LOCO.md#9-남은-것과-재현-명령) |
