@@ -62,12 +62,23 @@ def main() -> None:
     cov = torch.zeros((n, datasets["training"].num_covariates[0]), device=dev)
     cov[:, 0] = 1.0
 
+    # chemCPA re-seeds inside ComPert's own constructor. `ComPert.__init__` takes the `hparams`
+    # branch only when they are a plain dict; an OmegaConf node is not one, so `set_hparams_(seed,
+    # hparams)` runs, and that method calls `torch.manual_seed(seed)` / `np.random.seed(seed)` with
+    # `model.additional_params.seed`. The ambient RNG state is therefore irrelevant to how the base
+    # model is initialised, and setting the global seed alone would make every "seed" identical.
+    # (`set_hparams_` also draws random hyper-parameters for a non-zero seed, but every key it draws
+    # is then overwritten by `configs/chemcpa_moe_v2/hparams_official.json`, which supplies all of
+    # them -- verified below by comparing the realised hparams across seeds.)
+    hp_by_seed = {}
     for seed in a.seeds:
         fps, outs = {}, {}
+        cfg["model"]["additional_params"]["seed"] = int(seed)
         for arm in ARMS:
-            torch.manual_seed(seed)
-            np.random.seed(seed)
+            torch.manual_seed(0)
+            np.random.seed(0)
             lm, dh, parity = make_module(ChemCPA, cfg, dcfg, arm, a)
+            hp_by_seed[str(seed)] = {k: lm.model.hparams[k] for k in sorted(lm.model.hparams)}
             lm = lm.to(dev).eval()
             fps[arm] = residual_fingerprint(lm.model)
             if seed == a.seeds[0]:
@@ -83,9 +94,15 @@ def main() -> None:
             max_abs_difference_from_P0=float(np.max(np.abs(outs[arm] - outs["P0"]))),
             identical=bool(np.array_equal(outs[arm], outs["P0"]))) for arm in ARMS[1:]}
 
+    seeds_differ = len({v["fingerprints"]["P0"] for v in shared.values()}) == len(a.seeds)
+    hp_same = len({json.dumps(v, sort_keys=True) for v in hp_by_seed.values()}) == 1
     rep["shared_initialisation"] = dict(
         by_seed=shared,
-        pass_=bool(all(v["identical"] for v in shared.values())))
+        seeds_give_different_weights=bool(seeds_differ),
+        hyperparameters_identical_across_seeds=bool(hp_same),
+        realised_hyperparameters=hp_by_seed[str(a.seeds[0])],
+        effective_seed="model.additional_params.seed, consumed by ComPert.set_hparams_",
+        pass_=bool(all(v["identical"] for v in shared.values()) and seeds_differ and hp_same))
     rep["same_function_at_init"] = dict(
         by_seed=equal_fn,
         pass_=bool(all(v2["identical"] for v in equal_fn.values() for v2 in v.values())))
