@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -142,8 +143,33 @@ def main() -> None:
                               and (kind == "A" or (entry["router_params_moved"] and entry["every_expert_moved"])))
         fit[kind] = entry
     rep["optimisation"] = fit
+
+    # ---- 5. the kinds start from identical shared weights, and the experts are scaled right ------
+    # The first build failed the first half of this silently: only A called the parameter-parity
+    # solver, the solver drew from the global RNG, so A's encoders/trunk/decoder came out of a
+    # different RNG state than C's. The second half catches the swapped expert fan-in.
+    hidden = solve_dense_hidden(ds.n_genes, ds.n_bits)[0]
+    init = {}
+    for seed in [42, 43, 44]:
+        fps = {k: build(k, ds.n_genes, ds.n_bits,
+                        dense_hidden=hidden if k == "A" else None,
+                        seed=seed).shared_fingerprint() for k in ["A", "B", "C"]}
+        init[str(seed)] = dict(fingerprints=fps, identical=bool(len(set(fps.values())) == 1))
+    mc = build("C", ds.n_genes, ds.n_bits, seed=42).response.experts
+    d, r = mc.d, mc.r
+    # uniform(-1/sqrt(fan_in), +1/sqrt(fan_in)) has standard deviation 1/sqrt(3 * fan_in)
+    scale = dict(w1_sd=float(mc.w1.detach().std()), w1_sd_expected=1.0 / math.sqrt(3 * d),
+                 w2_sd=float(mc.w2.detach().std()), w2_sd_expected=1.0 / math.sqrt(3 * r))
+    scale["pass_"] = bool(abs(scale["w1_sd"] / scale["w1_sd_expected"] - 1) < 0.05
+                          and abs(scale["w2_sd"] / scale["w2_sd_expected"] - 1) < 0.05)
+    init["expert_init_scale"] = scale
+    init["pass_"] = bool(all(v["identical"] for k, v in init.items() if k.isdigit())
+                         and scale["pass_"])
+    rep["shared_initialisation"] = init
+
     rep["all_pass"] = bool(rep["split_disjoint"]["pass_"] and rep["alignment"]["pass_"]
-                           and all(v["pass_"] for v in fit.values()))
+                           and all(v["pass_"] for v in fit.values())
+                           and rep["shared_initialisation"]["pass_"])
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(rep, indent=1))
     print(json.dumps(rep, indent=1), flush=True)

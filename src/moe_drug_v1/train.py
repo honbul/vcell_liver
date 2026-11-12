@@ -83,10 +83,15 @@ def main() -> None:
     ds = Dataset(args.data_dir, args.manifest_dir, device=dev)
     tr, va = ds.conditions("train"), ds.conditions("val")
 
+    # Counting parameters must not change what anything is initialised to; `solve_dense_hidden`
+    # runs in a forked RNG, and the shared modules are copied in from the one state for this seed
+    # rather than drawn in place. `shared_fingerprint` is recorded so that two runs of different
+    # kinds at the same seed can be checked for having started from identical shared weights.
     hidden, parity = (None, None)
     if args.kind == "A":
         hidden, parity = solve_dense_hidden(ds.n_genes, ds.n_bits)
-    model = build(args.kind, ds.n_genes, ds.n_bits, dense_hidden=hidden).to(dev)
+    model = build(args.kind, ds.n_genes, ds.n_bits, dense_hidden=hidden, seed=args.seed).to(dev)
+    shared_fp = model.shared_fingerprint()
     counts = model.param_counts()
     opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.wd)
     sched = torch.optim.lr_scheduler.LambdaLR(
@@ -100,7 +105,15 @@ def main() -> None:
     n = len(tr)
     best = dict(val=float("inf"), epoch=-1)
     best_state = None
-    history = []
+    # Score the untrained network once, as a diagnostic only. The first build reported the model as
+    # peaking "at epoch 0" and read that as the network having barely moved from initialisation,
+    # but epoch 0 in this loop is *after* a full pass over the training conditions. Without this
+    # number there was nothing in the record to check that reading against. It is deliberately not
+    # eligible for selection: early stopping still chooses among trained epochs only.
+    val_at_init = ev.macro_delta_rmse(predict(model, ds, va), va.y.cpu().numpy(),
+                                      va.line.cpu().numpy())
+    history = [dict(epoch=-1, train_loss=float("nan"), val_macro_delta_rmse=val_at_init,
+                    lr=opt.param_groups[0]["lr"])]
     t0 = time.time()
 
     for epoch in range(args.max_epochs):
@@ -159,13 +172,15 @@ def main() -> None:
 
     rec = dict(kind=args.kind, lr=args.lr, wd=args.wd, seed=args.seed, tag=args.tag,
                params=counts, dense_hidden=hidden, parity=parity,
-               epochs_run=len(history), best_epoch=best["epoch"], val_macro_delta_rmse=best["val"],
+               shared_init_sha256=shared_fp,
+               epochs_run=len(history) - 1, best_epoch=best["epoch"], val_macro_delta_rmse=best["val"],
+               val_at_init=val_at_init,
                val_metrics=metrics, train_seconds=round(train_s, 1),
                infer_ms_per_256=round(infer_ms, 3), device=dev, **peak,
                n_train_conditions=n, n_val_conditions=len(va),
                n_lines=ds.n_lines, n_genes=ds.n_genes,
                router_usage_val=router_usage(model, ds, va),
-               budget_limited=bool(len(history) >= args.max_epochs))
+               budget_limited=bool(len(history) - 1 >= args.max_epochs))
     torch.save(dict(state_dict=best_state, record=rec), run / "best.pt")
     (run / "record.json").write_text(json.dumps(rec, indent=1))
     np.save(run / "val_pred.npy", vp.astype(np.float32))
