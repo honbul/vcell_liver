@@ -1,0 +1,122 @@
+# Conditional-expert drug-response experiment — frozen protocol.
+# Written before any model score was computed. Changing any value here after a validation or test
+# score has been read invalidates the pre-registration; record such a change explicitly in the report.
+# Source plan: VCELL_CONDITIONAL_MOE_EXPERIMENT_PLAN_2026-11-12.md (sections cited per block).
+
+protocol_version: 1
+base_commit: ea11e921218f1cd9da962347377b293a8f5cb845
+branch: research/conditional-moe-drug-ood-v1
+
+scope:                                   # plan s2
+  dataset: Tahoe-100M
+  intervention: drug_only
+  dose_uM: 0.5
+  generalization: unseen_drug_within_seen_cell_lines
+  excluded: [new_cell_line_zeroshot, patient_response, cell_distribution_generation, dose_extrapolation]
+
+data:                                    # plan s4
+  source_prep: prior_assets/r3/prep      # r3_prep.py output, reused as-is (aggregation + ID linkage only)
+  truth: "log1p(mean CP10k treated well) - log1p(mean CP10k same plate+line DMSO pool)"
+  replicate_wells: equal_weight_mean     # mean of Delta over wells, never mean(log)->log(mean)
+  min_cells_treated_well: 50
+  min_cells_plate_dmso_pool: 100
+  basal_input: pooled_DMSO_profile_per_line   # same profile for every drug of that line
+  forbidden_inputs: [treated_rna, cell_line_id_token, plate_id, well_id, treated_cell_count]
+  drug_representation:
+    kind: morgan_fingerprint
+    radius: 2
+    n_bits: 2048
+    rdkit_version_pinned: true
+    on_parse_failure: drop_drug          # never substitute a zero vector
+  drug_grouping: [pubchem_cid, rdkit_canonical_parent_smiles]
+  genes:
+    candidate_source: r3_prep genes.tsv (mean CP10k >= 0.1 in the 48 non-liver DMSO pools)
+    technical_exclusion_prefixes: ["MT-", "RNA5S", "RNA18S", "RNA28S", "RNA45S", "RNA5-8S", "RN7SK", "RN7SL"]
+    technical_exclusion_symbols: ["RMRP", "RPPH1"]
+    n_panel: 2000
+    selection: top_variance_of_TRAIN_responses_only
+  standardization:
+    basal: per_gene_zscore_over_allowed_controls   # mean/sd stored
+    target: none                                    # Delta kept on its own scale, plain MSE
+
+split:                                   # plan s5
+  unit: canonical_drug_group
+  fractions: [0.6, 0.2, 0.2]
+  seed: 20261112
+  balancing: plate_stratified_metadata_only
+  rule: every cell line, replicate well and other dose of a test drug is excluded from train
+  naming: pre-registered held-out drug evaluation within Tahoe   # not a new blind cohort
+
+coverage_targets:                        # plan s4.2 — operational minimums, reported not enforced silently
+  min_valid_drugs_per_line: {train: 100, val: 30, test: 30}
+  snu423_min_valid_drugs: {val: 40, test: 40}
+
+model:                                   # plan s6
+  common:
+    basal_dim: 2000
+    fp_dim: 2048
+    cell_encoder: [Linear, LayerNorm, GELU, Linear]
+    cell_dim: 128
+    drug_encoder: [Linear, LayerNorm, GELU, Linear]
+    drug_dim: 128
+    trunk: [Linear(256,256), LayerNorm, GELU, Linear(256,256)]
+    decoder: Linear(256, 2000)
+    dropout: 0.1                         # common encoder/trunk only, identical across A/B/C
+    residual: "decoder(h + R(h))"
+  A_dense:
+    kind: single_bottleneck_mlp
+    hidden: fitted_by_parameter_count    # integer width solved so totals match C; never tuned on scores
+  C_conditional_experts:
+    n_experts: 4
+    expert_bottleneck: 32
+    router: "Linear(256,32) -> GELU -> Linear(32,4) -> softmax(T=1)"
+    routing: soft_all_experts            # not sparse / not top-k
+    aux_losses: none                     # no load balancing, no diversity loss in v1
+  B_fixed_experts:
+    kind: same_experts_global_softmax_weights
+    trained_from_scratch: true           # not C with the router switched off at inference
+  parity:
+    total_params_tolerance: 0.01
+    response_transform_params_tolerance: 0.05
+    dummy_parameters: forbidden
+
+training:                                # plan s7
+  loss: mean_squared_error_over_genes
+  weighting: uniform_over_cell_lines_then_uniform_over_drugs_within_line
+  batch_conditions: 256
+  optimizer: adamw
+  lr_grid: [3.0e-4, 1.0e-3, 3.0e-3]
+  weight_decay_grid: [1.0e-4, 1.0e-2]
+  configs_per_model: 6
+  max_epochs: 300
+  early_stopping_patience: 30            # on validation macro delta-RMSE
+  scheduler: warmup5_then_cosine_to_0.1x
+  grad_clip_norm: 1.0
+  precision: fp32
+  selection_seed: 42
+  confirm_seeds: [42, 43, 44]
+  selection_metric: overall_validation_macro_delta_rmse   # never SNU-423 alone
+
+budget:                                  # plan s7.2
+  max_runs_total: 24
+  max_runs_before_B: 16
+  gpu_hours_total: 24
+  gpu_hours_per_run: 1
+
+evaluation:                              # plan s8
+  primary: macro_delta_rmse              # mean over drugs within line -> mean over lines -> mean over seeds
+  main_effect: "A_rmse - C_rmse (positive favours C)"
+  secondary: [drug_centred_response_correlation, top20_abs_change_direction_and_recall, cost]
+  baselines: [no_change, line_mean_delta, ridge]
+  bootstrap: {unit: drug_group, n: 2000, kind: paired}
+  prespecified_secondary_line: SNU-423
+
+promotion_gate_to_B:                     # plan s9 step 1 — validation only
+  relative_rmse_improvement_min_pct: 2.0
+  seeds_same_direction: 3
+  must_beat: [line_mean_delta, ridge]
+  snu423_max_relative_degradation_pct: 2.0
+
+freeze:                                  # plan s9 step 3
+  test_opened: once_after_freeze
+  post_test_changes: forbidden
