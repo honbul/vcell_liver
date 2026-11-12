@@ -258,7 +258,9 @@ def make_module(ChemCPA, cfg, dcfg, arm: str, args):
     dense_hidden = None
     parity = None
     if arm == "P1":
-        dense_hidden, parity = solve_dense_hidden(d_hidden, args.n_experts, args.expert_rank)
+        dense_hidden, parity = solve_dense_hidden(
+            d_hidden, args.n_experts, args.expert_rank,
+            d_cond=2 * lm.model.hparams["dim"])
     attach_residual(lm.model, arm, n_experts=args.n_experts, expert_rank=args.expert_rank,
                     dense_hidden=dense_hidden)
     lm.model.predict = types.MethodType(patched_predict, lm.model)

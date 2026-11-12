@@ -169,21 +169,23 @@ def param_counts(model) -> dict:
     return dict(total=tot, residual=res, router=router, base=tot - res)
 
 
-def solve_dense_hidden(d: int, n_experts: int = 4, expert_rank: int = 32) -> tuple[int, dict]:
-    """P1's bottleneck width, by counting P2's residual parameters. Closed form, no RNG touched.
+def solve_dense_hidden(d: int, n_experts: int = 4, expert_rank: int = 32,
+                       d_cond: int = 64, d_gate_hidden: int = 32) -> tuple[int, dict]:
+    """P1's bottleneck width, by counting P2's residual block. Closed form; no RNG is touched.
 
-    P2 residual = experts (k*(d*r + r + r*d + d)) + router (d_cond*32 + 32 + 32*k + k).
-    P1 residual = d*m + m + m*d + d.
-    The router is part of what P2 spends, so P1 is matched against the whole residual block.
+    P2's block is the experts plus the router, and the router is part of what P2 spends, so P1 is
+    matched against the sum. Nothing here looks at a score.
     """
     experts = n_experts * (d * expert_rank + expert_rank + expert_rank * d + d)
-    # d_cond is 2*dim and is supplied by the caller through `parity_report`; the router term is
-    # added there. Here we match the expert part and let the caller assert the total.
-    m = max(1, round((experts - d) / (2 * d + 1)))
-    best = min(range(max(1, m - 4), m + 5),
-               key=lambda x: abs((d * x + x + x * d + d) - experts))
-    return best, dict(target_residual_params=experts,
-                      dense_residual_params=d * best + best + best * d + d)
+    router = d_cond * d_gate_hidden + d_gate_hidden + d_gate_hidden * n_experts + n_experts
+    target = experts + router
+    best = min(range(1, 4 * d), key=lambda m: abs((2 * d * m + m + d) - target))
+    got = 2 * d * best + best + d
+    rel = abs(got - target) / target
+    assert rel <= 0.01, f"residual parameter mismatch {rel:.3%} at hidden={best}"
+    return best, dict(dense_hidden=best, P1_residual_params=got, P2_residual_params=target,
+                      P2_expert_params=experts, P2_router_params=router,
+                      relative_difference=round(rel, 6))
 
 
 def residual_fingerprint(model) -> str:
