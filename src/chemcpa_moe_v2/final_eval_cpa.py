@@ -51,6 +51,35 @@ def top20(P: np.ndarray, T: np.ndarray) -> tuple[float, float]:
     return float(np.mean(direction)), float(np.mean(recall))
 
 
+def plate_diagnostic(P, T, line, plate, min_drugs: int = 5) -> dict:
+    """Remove each (cell line, plate) block's own mean from both sides, then re-correlate.
+
+    A fixed read-out, not a corrector: nothing is fitted and no test truth is used to build it. It
+    bounds how much of the agreement survives taking out a per-block offset, which is the part a
+    shared measurement environment could produce on its own.
+    """
+    p2, t2, keep = P.copy(), T.copy(), np.zeros(len(P), bool)
+    for l in np.unique(line):
+        for q in np.unique(plate[line == l]):
+            m = (line == l) & (plate == q)
+            if m.sum() < min_drugs:
+                continue
+            p2[m] -= p2[m].mean(0)
+            t2[m] -= t2[m].mean(0)
+            keep |= m
+    if not keep.any():
+        return dict(n_blocks=0)
+    a, b = p2[keep].ravel(), t2[keep].ravel()
+    r = 0.0 if a.std() < 1e-12 or b.std() < 1e-12 else float(np.corrcoef(a, b)[0, 1])
+    return dict(n_blocks=int(sum(1 for l in np.unique(line)
+                                 for q in np.unique(plate[line == l])
+                                 if ((line == l) & (plate == q)).sum() >= min_drugs)),
+                n_conditions=int(keep.sum()),
+                plate_centred_r=round(r, 6),
+                macro_delta_rmse_plate_centred=round(
+                    macro_delta_rmse(p2[keep], t2[keep], line[keep]), 6))
+
+
 def paired_bootstrap(a: np.ndarray, b: np.ndarray, drug: np.ndarray, line: np.ndarray,
                      n: int = 2000, seed: int = 0) -> dict:
     """Resample drug groups, each carrying all of its cell lines, and compare two macro scores."""
@@ -138,8 +167,11 @@ def main() -> None:
     for i, cid in enumerate(lines_tsv.cell_line_id):
         if str(cid) == "CVCL_0564":          # SNU-423
             snu = i
+    plate_of = np.load(Path(args.v2_dir) / "plate.npy")
+    plate = np.array([plate_of[r[0], r[1]] for r in ev.rows])
     for arm, preds in preds_by_arm.items():
         P = np.mean(preds, 0)
+        results[arm]["plate_diagnostic"] = plate_diagnostic(P, truth, line, plate)
         results[arm]["drug_centred_r"] = round(drug_centred_r(P, truth, line), 6)
         d, r_ = top20(P, truth)
         results[arm]["top20_direction"] = round(d, 6)
