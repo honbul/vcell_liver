@@ -148,6 +148,7 @@ class ConditionEvaluator:
         self.X = adata.X
         self.cell_line_ids = list(lines.cell_line_id)
         self.n_lines = len(lines)
+        self.dmso_idx = drug_to_idx.get("DMSO", 0)
 
         # the conditions that can actually be scored: valid truth, a known drug, control cells
         rows = []
@@ -164,7 +165,21 @@ class ConditionEvaluator:
                 rows.append((l, d, j, p))
         self.rows = rows
 
-    def evaluate(self, model, device="cuda", batch: int = 4096) -> tuple[float, np.ndarray, np.ndarray, np.ndarray]:
+    def evaluate(self, model, device="cuda", control_mode: str = "observed"
+                 ) -> tuple[float, np.ndarray, np.ndarray, np.ndarray]:
+        """Score the arms' conditions.
+
+        `control_mode="observed"` is the pre-registered primary: the predicted response is the
+        predicted treated mean minus the **observed** plate DMSO pool, the same term the truth
+        subtracts, so predicted-minus-true is exactly predicted-treated-minus-observed-treated.
+
+        `control_mode="model"` is a diagnostic: the same control cells are passed through the model
+        with the DMSO drug index at dose 0, and that prediction is subtracted instead. It cancels
+        whatever constant error the decoder makes in reproducing a cell line's absolute profile,
+        and so separates "cannot reconstruct the profile" from "cannot predict the response".
+        It is never used to select anything.
+        """
+        assert control_mode in ("observed", "model")
         model.eval()
         preds, truths, lines = [], [], []
         n_cov = model.num_covariates[0]
@@ -180,7 +195,14 @@ class ConditionEvaluator:
                 out, _ = model.predict(genes=g, drugs_idx=di, dosages=do, covariates=[cov])
                 dim = out.shape[1] // 2
                 pred_treated = out[:, :dim].mean(0).float().cpu().numpy()
-                preds.append(pred_treated - self.dmso_plate_mean[p, l])
+                if control_mode == "observed":
+                    base = self.dmso_plate_mean[p, l]
+                else:
+                    dz = torch.full((n,), int(self.dmso_idx), dtype=torch.long, device=device)
+                    z = torch.zeros((n,), dtype=torch.float32, device=device)
+                    oc, _ = model.predict(genes=g, drugs_idx=dz, dosages=z, covariates=[cov])
+                    base = oc[:, :dim].mean(0).float().cpu().numpy()
+                preds.append(pred_treated - base)
                 truths.append(self.Y[l, d])
                 lines.append(l)
         P, T, L = np.array(preds), np.array(truths), np.array(lines)
