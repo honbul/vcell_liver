@@ -14,12 +14,14 @@ Every number below was produced by a job in `experiments/chemcpa_moe_v2/` or
 
 | | verdict | what it rests on |
 |---|---|---|
-| `main_effect` | see §9 | the single test pass over 70 held-out drug groups |
-| `routing_effect` | **not_tested** | the pre-registered promotion gate was not met on validation, so P3 was never trained |
-| `hcc_effect` | see §9 | SNU-423 (`CVCL_0564`), the pre-specified secondary |
+| `main_effect` | **negative** | on 70 held-out drug groups, all three arms score 0.289–0.294 macro-ΔRMSE against ridge's 0.0919 and a per-line constant's 0.0923. Conditional experts do not rescue this, and neither does the chemCPA prototype: the question "does P2 beat P0 and a size-matched Dense" is answered inside a regime where none of the three beats a per-line constant. |
+| `routing_effect` | **not_tested** | the pre-registered promotion gate failed on validation, so P3 — the input-independent fixed expert mixture — was never trained. The routed-versus-fixed question is untouched, not answered. |
+| `hcc_effect` | **negative** | SNU-423 (`CVCL_0366`): P0 0.2946, P1 0.2728, P2 0.2882, against ridge 0.0982 and a per-line constant 0.0987. The ordering among arms also flips here, with P1 best. |
 
-`routing_effect` is settled already and does not depend on the test pass: §7 gives the gate and
-the four conditions, two of which failed.
+One secondary result is **positive and goes the other way**, and is reported as such in §9:
+drug-centred correlation, which removes each cell line's mean response, is 0.196 / 0.204 / 0.213
+for P0 / P1 / P2 against 0.097 for ridge and 0.028 for the v1 small MLPs. The chemCPA arms read
+drug-specific structure better than anything else here while losing badly on scale.
 
 ---
 
@@ -336,11 +338,98 @@ exits non-zero if it finds none. The gate above is the corrected one.
 
 ## §8 — The extended-budget result
 
-*(to be completed from jobs 21421–21423)*
+Nine runs, 30 epochs, ≈ 5,200 s each (`trials.tsv`). The first ten epochs reproduce the earlier
+runs exactly where the earlier best lay inside them — P0 seed 42 is still 0.29248 at epoch 2, P1
+seed 42 still 0.29518 at epoch 9, P2 seed 42 still 0.28913 at epoch 4 — which is also the
+reproducibility check for the whole pipeline.
+
+| arm | seeds 42 / 43 / 44 | seed mean | 10-epoch mean | best epochs |
+|---|---|---:|---:|---|
+| P0 | .2925 / .2908 / .2902 | 0.2912 | 0.3009 | 2 / 21 / 20 |
+| P1 | .2952 / .2954 / .2759 | 0.2888 | 0.2977 | 9 / 27 / 9 |
+| P2 | .2891 / .2823 / .2847 | **0.2854** | 0.2915 | 4 / 7 / 13 |
+
+Three times the budget bought about 3 % on the primary metric and left every arm roughly three
+times worse than predicting no change. The 30-epoch diagnostic (`diagnostics_e30.json`) is
+unchanged from the 10-epoch one: reconstruction is still 63–64 % of the score, the model-control
+score is still 0.1049–0.1053 against no-change's 0.1028, and the predicted response is still
+0.017–0.033 RMS against a true 0.1097. chemCPA's reconstruction loss went from 0.110–0.124 to
+0.106–0.111 over the extra twenty epochs.
+
+**Meaning.** Undertraining is no longer available as the explanation for the three-fold gap. It
+remains true that these models were trained for 30 epochs and not 300; what the extension shows
+is that the gap does not close at the rate a budget argument would need.
+
+The gate was re-scored on these runs and now fails **all four** conditions, not two: P2 over P0
+falls to +1.98 % and over P1 to +1.19 %, both under the threshold. `train_P3: false` either way.
+
+---
 
 ## §9 — The single test pass
 
-*(to be completed; it opens `ood` once, after every hash is committed)*
+**Purpose.** Score the frozen arms once on the 70 held-out drug groups.
+
+**Data.** chemCPA's `ood` split, opened by `final_eval_cpa.py` and by nothing else. 3,333 test
+conditions, 48 cell lines, 70 drug groups. Every checkpoint's SHA-256 is in
+`manifests/chemcpa_moe_v2/freeze.json`, and the code was committed before the job ran — the job
+refuses to start otherwise.
+
+**Result.**
+
+| | macro-ΔRMSE (seed mean) | 3-seed ensemble | drug-centred r | top-20 direction | SNU-423 |
+|---|---:|---:|---:|---:|---:|
+| P0 chemCPA prototype | 0.29418 | 0.28334 | 0.1958 | 0.654 | 0.29457 |
+| P1 size-matched Dense | 0.29139 | 0.27973 | 0.2037 | 0.662 | **0.27276** |
+| P2 K = 4 soft-MoE | **0.28863** | **0.27835** | **0.2131** | 0.670 | 0.28819 |
+| v1 small MLP A | 0.09679 | — | 0.0275 | 0.840 | 0.10224 |
+| v1 small MLP C | 0.09679 | — | 0.0278 | 0.841 | 0.10220 |
+| no change | 0.10427 | — | undefined | 0.0 | 0.11197 |
+| per-line mean (training drugs) | 0.09230 | — | 0.0007 | 0.865 | 0.09870 |
+| ridge | **0.09193** | — | 0.0968 | 0.866 | **0.09819** |
+
+Paired bootstrap over drug groups, 2,000 resamples, on the 3-seed ensemble predictions:
+
+| | difference | 95 % interval | relative |
+|---|---:|---|---:|
+| P0 → P1 | 0.00361 | [0.00259, 0.00451] | 1.27 % |
+| P0 → P2 | 0.00499 | [0.00401, 0.00591] | 1.76 % |
+| P1 → P2 | 0.00139 | [0.00076, 0.00202] | 0.50 % |
+
+Plate diagnostic, 239 blocks: removing each (cell line, plate) block's own mean from both sides
+leaves `plate_centred_r` at 0.004 / −0.028 / 0.007 for P0 / P1 / P2 and the plate-centred
+macro-ΔRMSE at 0.0818 / 0.0808 / 0.0810 — that is, once a per-block offset is removed the arms
+land near the trivial baselines, and essentially none of the remaining agreement is drug-specific
+structure within a plate.
+
+**Meaning.**
+
+1. **`main_effect` is negative.** The ordering P2 < P1 < P0 is consistent and its bootstrap
+   intervals exclude zero, but the whole ordering sits about three times above every trivial
+   baseline. An improvement of 1.8 % inside that regime is not evidence that conditional experts
+   help the task; it is evidence that they slightly reduce a dominant error that is not the one
+   the study is about. Validation had already refused to promote P2, and the test pass does not
+   overturn that.
+2. **`hcc_effect` is negative**, and on SNU-423 the arm ordering flips — P1 is best, P2 third.
+   With 70 drugs in one cell line, that is the sampling noise a 0.5 % margin lives inside.
+3. **The one positive secondary.** Drug-centred correlation is 2–7× higher for the chemCPA arms
+   (0.196–0.213) than for ridge (0.097) or the v1 MLPs (0.028), and it rises monotonically
+   P0 → P1 → P2. Removing each cell line's mean response, the arms do read drug-specific
+   structure, and the conditional experts read slightly more of it than a Dense residual, which
+   reads slightly more than the prototype. What they cannot do is place that structure at the
+   right absolute level: top-20 direction accuracy is 0.65–0.67 against the baselines' 0.86,
+   because a baseline that predicts the per-line mean gets the common directions right for free.
+
+So the honest summary of the study's own question is: **P2 is reproducibly, slightly better than
+P1 and P0 on a metric all three fail**, and the mechanism the plan proposed — conditional
+residual experts at the shared decoder hidden state — is not shown to help the task. The reason
+all three fail is given in §6 and is not about the residual at all: chemCPA, trained natively on
+this single-cell sample for up to 30 epochs, reconstructs a cell line's absolute profile to about
+0.30 RMS per gene and predicts a drug response about a fifth of the true magnitude.
+
+**What this does not establish.** That chemCPA cannot do this task. The model was trained on
+1.27 M cells from 5 plates at one dose for 30 epochs, with the authors' hyper-parameters chosen on
+sci-Plex, and its own reconstruction loss was still improving. A study that wanted to answer
+"can chemCPA do this" would start from that, not from here.
 
 ---
 
@@ -348,10 +437,36 @@ exits non-zero if it finds none. The gate above is the corrected one.
 
 | stage | compute |
 |---|---|
-| v2 shard pass (31.3 M cells) | 1,475 s, CPU |
-| 15 arm runs at 10 epochs | ≈ 25,500 GPU-s (≈ 7.1 GPU-hours), 1 × A30/A40 per run, peak 80–83 MB allocated |
-| control-mode diagnostic | one GPU job over 9 frozen checkpoints |
-| 9 arm runs at 30 epochs | see §8 |
+| v2 shard pass (31.3 M cells, 3,388 shards) | 1,475 s, CPU |
+| 15 arm runs at 10 epochs | 25,648 GPU-s ≈ **7.1 GPU-hours** |
+| 9 arm runs at 30 epochs | 46,820 GPU-s ≈ **13.0 GPU-hours** |
+| two control-mode diagnostics | 2 GPU jobs over 9 frozen checkpoints each |
+| two test passes | ≈ 6 min each (the second only to repair the SNU-423 lookup) |
+| total model training | **≈ 20.1 GPU-hours** on one A30 or A40 at a time |
 
-Peak allocated memory is small because the model is small; the wall clock is dominated by the
-1.27 M-cell epoch, not by the residual. P2's per-epoch cost is within a few per cent of P0's.
+Peak allocated memory is 80.1 MB (P0), 81.6 MB (P1), 82.9 MB (P2); the model is small and the
+wall clock is dominated by the 1.27 M-cell epoch, not by the residual. Per-run cost at 30 epochs
+is 5,209 s (P0), 5,172 s (P1), 5,225 s (P2) — within 1 % of each other, so the conditional
+experts cost essentially nothing in time and 0.3 % in memory over the prototype.
+
+---
+
+## Deviations from the plan, and defects found in this study's own code
+
+Recorded because the plan asks for actually-run / not-run / blocked to be distinguished, and
+because every one of these was found after it had already affected something.
+
+| | what happened | what was done |
+|---|---|---|
+| epoch budget | the plan fixes the learning-rate search but not a budget; 10 epochs left chemCPA's reconstruction loss still falling | raised to 30 for **all three arms equally**, at the already-selected learning rate, with the rule for which runs go to test declared before the results existed (§7) |
+| P3 gate code | the baselines were read as a flat `{name: number}` map while the file stores one block per baseline, so the filtered dict was empty and `all({})` passed the baseline condition vacuously | flattened, and the script now exits non-zero if it finds no baseline; the gate in §7 is the corrected one |
+| seed check | the first version set the ambient global seed, which `ComPert.set_hparams_` then overrides, so all three "seeds" were the same model | the check now varies the effective seed and asserts both that seeds differ and that hyper-parameters do not |
+| evaluator control term | the predicted response first used the mean of the 64 sampled control cells while the truth subtracts the whole plate DMSO pool | `dmso_plate_mean.npy` added, arms restarted |
+| final evaluation device | Lightning returns the module to CPU when `fit` ends, while `ComPert.predict` moves inputs to the device string it was built with | `lm.to(dev)` before the final evaluation |
+| scoring scripts' arguments | neither the diagnostic nor the test script declared `--patience`/`--seed`, which `build()` reads, so both died at argument parsing | declared in both; the diagnostic failed this way once (job 21420 is the rerun) |
+| SNU-423 | looked up as `CVCL_0564` while the manifest and the rest of the study use `CVCL_0366`, so the pre-specified secondary was silently absent from the first test pass | identifier corrected, a missing line is now a hard error, and the pass writes its predictions to the server so no further read-out reopens the test split. **The test split was therefore opened twice.** Nothing was selected, refitted or changed between the two passes; the first pass is committed unmodified so the repair is visible as a diff |
+| early stopping | chemCPA's `patience` is its own counter and is not wired into the Lightning loop, so every run goes to `max_epochs` | `budget_limited` redefined to mean "the best epoch is at the end of the budget", and reported per run |
+| X1 | PIE was investigated and **not run**; the blocker is the holdout, not the output contract | `X1_PIE.md` |
+
+An earlier statement of mine that runs would "early-stop around epoch 4–5" was wrong for the
+reason in the last row, and is corrected here rather than quietly dropped.
