@@ -201,8 +201,15 @@ def main() -> None:
     size = {(r["sample"], r.cell_line_id): int(r.n_cells) for _, r in pb.iterrows()}
 
     sm = pd.read_parquet(T / "metadata/sample_metadata.parquet")
-    plate_samples = {p: sorted(set(g["sample"]) & set(use_samples)) for p, g in sm.groupby("plate")}
+    # The 0.5 uM wells sit on five plates only. A DMSO well is a control for its own plate and for
+    # no other, so the other nine plates' DMSO wells are unusable here and their shards are not read.
+    treated_plates = sorted(set(sm[sm["sample"].isin(set(dose["sample"]))].plate))
+    plate_samples = {p: sorted(set(g["sample"]) & set(use_samples))
+                     for p, g in sm.groupby("plate") if p in treated_plates}
     plate_samples = {p: s for p, s in plate_samples.items() if s}
+    use_samples = sorted({s for v in plate_samples.values() for s in v})
+    print(f"plates carrying 0.5 uM wells: {treated_plates}; "
+          f"{len(use_samples)} samples read", flush=True)
 
     obs = pq.read_table(T / "metadata/obs_metadata.parquet",
                         columns=["plate", "BARCODE_SUB_LIB_ID", "pass_filter"])
