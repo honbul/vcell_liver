@@ -53,7 +53,14 @@ def sha256(path: Path, limit: int | None = None) -> str:
 
 
 def canonical_parent(smiles: str):
-    """Largest organic fragment, uncharged, canonical SMILES. Returns None if RDKit cannot parse it."""
+    """Largest organic fragment, uncharged, canonical SMILES, with and without stereochemistry.
+
+    The grouping unit has to be at least as coarse as what the model's input can distinguish. A
+    radius-2 Morgan fingerprint is not chirality-aware, so two records of one compound that differ
+    only in whether the stereocentres were annotated produce the *same* input vector; splitting them
+    would put an identical input in train and in the evaluation set. Grouping therefore uses the
+    stereochemistry-free key, and the stereo-aware form is kept only for the record.
+    """
     from rdkit import Chem
     from rdkit.Chem.MolStandardize import rdMolStandardize
 
@@ -67,7 +74,10 @@ def canonical_parent(smiles: str):
         return None
     if m is None or m.GetNumAtoms() == 0:
         return None
-    return Chem.MolToSmiles(m, canonical=True)
+    stereo = Chem.MolToSmiles(m, canonical=True)
+    flat = Chem.Mol(m)
+    Chem.RemoveStereochemistry(flat)
+    return stereo, Chem.MolToSmiles(flat, canonical=True)
 
 
 def morgan(smiles: str, n_bits: int, radius: int):
@@ -152,12 +162,16 @@ def main() -> None:
         else:
             parents[s] = p
     w = w[w.canonical_smiles.isin(parents)].copy()
-    w["parent_smiles"] = w.canonical_smiles.map(parents)
+    w["parent_smiles"] = w.canonical_smiles.map(lambda s: parents[s][0])
+    w["flat_smiles"] = w.canonical_smiles.map(lambda s: parents[s][1])
     sel = w.index.to_numpy()          # rows of the original wells table that survive every filter
 
-    # A group = one canonical parent structure. PubChem CID is cross-checked, never used to split a
-    # structure that is already identical, and a CID clash across two parents is reported not merged.
-    w["group"] = w.parent_smiles
+    # A group = one canonical parent structure as the fingerprint sees it, i.e. stereochemistry-free.
+    # PubChem CID is cross-checked, never used to split a structure that is already identical, and a
+    # CID clash across two groups is reported rather than merged.
+    w["group"] = w.flat_smiles
+    stereo_merges = {k: sorted(set(v)) for k, v in w.groupby("flat_smiles").parent_smiles.agg(set).items()
+                     if len(v) > 1}
     cid_map = (w.dropna(subset=["pubchem_cid"]).groupby("group").pubchem_cid
                .agg(lambda s: sorted(set(int(x) for x in s))))
     cid_conflict = {g: c for g, c in cid_map.items() if len(c) > 1}
@@ -175,6 +189,7 @@ def main() -> None:
                   n_wells=("sample", "size"),
                   plates=("plate", lambda s: sorted(set(s))),
                   cids=("pubchem_cid", lambda s: sorted({int(x) for x in s if pd.notna(x)})),
+                  stereo_parents=("parent_smiles", lambda s: sorted(set(s))),
                   smiles_variants=("canonical_smiles", lambda s: sorted(set(s))))
              .reset_index())
     alias["n_drug_names"] = alias.drugs.str.len()
@@ -257,7 +272,7 @@ def main() -> None:
     np.save(O / "basal_mean.npy", bmu)
     np.save(O / "basal_sd.npy", bsd)
 
-    pd.DataFrame(dict(group_index=range(nD), parent_smiles=groups, split=split, plate_stratum=strata,
+    pd.DataFrame(dict(group_index=range(nD), group_smiles=groups, split=split, plate_stratum=strata,
                       n_valid_lines=valid.sum(0))).to_csv(M / "splits.tsv", sep="\t", index=False)
     alias.assign(split=[split_map[g] for g in alias.group]).to_csv(M / "drug_aliases.tsv", sep="\t", index=False)
     genes.iloc[panel].assign(panel_index=range(len(panel)), train_variance=var[panel]) \
@@ -295,6 +310,7 @@ def main() -> None:
         drugs=dict(n_wells_at_dose=len(sel_dose), n_wells_kept=int(len(w)), n_groups=nD,
                    dropped_missing_smiles=drop_no_smiles, dropped_unparsable_smiles=bad_parse,
                    groups_with_multiple_drug_names=int((alias.n_drug_names > 1).sum()),
+                   stereo_variants_merged=stereo_merges,
                    cid_conflicts_within_group={k: v for k, v in cid_conflict.items()},
                    cid_shared_across_groups=cid_shared),
         conditions=dict(n_lines=nL, n_valid_conditions=int(valid.sum()),

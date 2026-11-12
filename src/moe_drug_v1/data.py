@@ -44,7 +44,7 @@ class Dataset:
 
         self.Y_np, self.valid_np, self.plate_np = Y, valid, plate
         self.split_of = splits.split.to_numpy()
-        self.groups = splits.parent_smiles.to_numpy()
+        self.groups = splits.group_smiles.to_numpy()
         self.n_lines, self.n_drugs, self.n_genes = Y.shape
         self.n_bits = fp.shape[1]
         self.device = device

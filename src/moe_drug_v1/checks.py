@@ -36,13 +36,13 @@ def main() -> None:
     splits = pd.read_csv(M / "splits.tsv", sep="\t")
     alias = pd.read_csv(M / "drug_aliases.tsv", sep="\t")
     wells = pd.read_csv(P / "wells.tsv", sep="\t")
-    assert splits.parent_smiles.is_unique
+    assert splits.group_smiles.is_unique
     name_split: dict[str, set] = {}
     for _, r in alias.iterrows():
         for d in eval(r.drugs):
             name_split.setdefault(d, set()).add(r.split)
     crossing_names = {k: sorted(v) for k, v in name_split.items() if len(v) > 1}
-    g2s = dict(zip(splits.parent_smiles, splits.split))
+    g2s = dict(zip(splits.group_smiles, splits.split))
     a2g = {}
     for _, r in alias.iterrows():
         for d in eval(r.drugs):
@@ -52,12 +52,28 @@ def main() -> None:
     crossing_wells = int(w05.assign(s=well_split).groupby("sample").s.nunique().gt(1).sum())
     # a test drug must not appear at any other dose in train either
     other_dose = wells[(wells.dose_uM != 0.5) & wells.drug.isin(a2g)]
+    # The input the model actually receives must also be disjoint: a radius-2 Morgan fingerprint is
+    # not chirality-aware, so two differently annotated records of one compound give the same vector.
+    # Any evaluation drug whose fingerprint is identical to a training drug's is leakage, not a
+    # near-neighbour, and fails this check outright.
+    fp = np.load(Path(args.data_dir) / "fp.npy").astype(np.float32)
+    tr_idx = np.where((splits.split == "train").to_numpy())[0]
+    identical = []
+    for s in ["val", "test"]:
+        ei = np.where((splits.split == s).to_numpy())[0]
+        inter = fp[ei] @ fp[tr_idx].T
+        tan = inter / np.maximum(fp[ei].sum(1)[:, None] + fp[tr_idx].sum(1)[None, :] - inter, 1e-9)
+        for a, b in zip(*np.where(tan >= 0.999)):
+            identical.append(dict(split=s, eval_group=str(splits.group_smiles[ei[a]]),
+                                  train_group=str(splits.group_smiles[tr_idx[b]]),
+                                  tanimoto=float(tan[a, b])))
     rep["split_disjoint"] = dict(
         n_groups=len(splits), per_split=splits.split.value_counts().to_dict(),
         drug_names_in_two_splits=crossing_names,
         treated_wells_in_two_splits=crossing_wells,
         other_dose_wells_excluded_from_training=int(len(other_dose)),
-        pass_=len(crossing_names) == 0 and crossing_wells == 0)
+        identical_fingerprint_across_splits=identical,
+        pass_=len(crossing_names) == 0 and crossing_wells == 0 and len(identical) == 0)
 
     # ---- 2. ordering and train-only panel --------------------------------------------------------
     ds = Dataset(D, M, device="cpu")
