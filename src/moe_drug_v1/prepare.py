@@ -139,8 +139,8 @@ def main() -> None:
     assert len(lines) == nL and len(wells) == nW and len(genes) == nG
 
     # ---- 1. dose filter + drug structure grouping (metadata only) -------------------------------
-    sel = wells.index[wells.dose_uM == args.dose].to_numpy()
-    w = wells.loc[sel].copy()
+    sel_dose = wells.index[wells.dose_uM == args.dose].to_numpy()
+    w = wells.loc[sel_dose].copy()
     drop_no_smiles = sorted(w.loc[w.canonical_smiles.isna(), "drug"].unique())
     w = w[w.canonical_smiles.notna()].copy()
 
@@ -153,6 +153,7 @@ def main() -> None:
             parents[s] = p
     w = w[w.canonical_smiles.isin(parents)].copy()
     w["parent_smiles"] = w.canonical_smiles.map(parents)
+    sel = w.index.to_numpy()          # rows of the original wells table that survive every filter
 
     # A group = one canonical parent structure. PubChem CID is cross-checked, never used to split a
     # structure that is already identical, and a CID clash across two parents is reported not merged.
@@ -291,7 +292,7 @@ def main() -> None:
                    n_train_conditions_used=int(n_ok)),
         split=dict(seed=args.split_seed, fractions=[0.6, 0.2, 0.2], unit="canonical parent SMILES",
                    stratified_by="modal plate of the group's wells", per_stratum=split_log),
-        drugs=dict(n_wells_at_dose=len(sel), n_wells_kept=int(len(w)), n_groups=nD,
+        drugs=dict(n_wells_at_dose=len(sel_dose), n_wells_kept=int(len(w)), n_groups=nD,
                    dropped_missing_smiles=drop_no_smiles, dropped_unparsable_smiles=bad_parse,
                    groups_with_multiple_drug_names=int((alias.n_drug_names > 1).sum()),
                    cid_conflicts_within_group={k: v for k, v in cid_conflict.items()},
