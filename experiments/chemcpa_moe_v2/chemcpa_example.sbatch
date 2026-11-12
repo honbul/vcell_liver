@@ -2,9 +2,13 @@
 # Goal section 2: actually run one official chemCPA example, to see the model's inputs and outputs
 # and its native training loop before anything is changed.
 #
-# Configuration is the repo's own `config/dataset/default.yaml` (sci-Plex, split_cellcycle_ood,
-# all_DEGs) against `sciplex_complete_middle_subset.h5ad`, the file the repo's own test_config.yaml
-# names, downloaded from the authors' bucket. The drug embedding is produced by the repo's own
+# Configuration is the repo's own `config/dataset/default.yaml` (sci-Plex, all_DEGs) against
+# `sciplex_complete_middle_subset.h5ad`, the file the repo's own test_config.yaml names, downloaded
+# from the authors' bucket. Two things about that file had to be worked around, neither of them a
+# change to the model or the procedure: it is stored in the pre-2021 h5ad layout, which the current
+# loader cannot decode, so it is re-saved once through anndata; and its `split_cellcycle_ood` column
+# spells the held-out level "odd", which would leave chemCPA's ood split empty, so the run uses
+# `split_random`, another of the file's own split columns. The drug embedding is produced by the repo's own
 # `embeddings/rdkit/embedding_rdkit.py`. Only the epoch count is shortened, and `load_pretrained`
 # is off because the authors' checkpoint hashes point at their private filesystem.
 #
@@ -26,7 +30,8 @@ echo "chemcpa_commit=$(git rev-parse HEAD)"
 export PYTHONPATH="$CPA_SRC:${PYTHONPATH:-}"
 "$CPA_PY" -u chemCPA/train_hydra.py \
   dataset=default \
-  dataset.dataset_path=project_folder/datasets/sciplex_complete_middle_subset.h5ad \
+  dataset.dataset_path=project_folder/datasets/sciplex_complete_middle_subset_v2.h5ad \
+  dataset.split_key=split_random \
   model=lincs \
   model.embedding.datapath=project_folder/embeddings/rdkit/sciplex_complete_middle_subset_rdkit2D_embedding.parquet \
   model.load_pretrained=False \
