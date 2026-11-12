@@ -39,6 +39,9 @@ def main() -> None:
 
     ck = torch.load(a.checkpoint, map_location="cpu", weights_only=False)
     hp = ck["hyper_parameters"]
+    # the checkpoint stores the datapath relative to the chemCPA checkout; this script runs from
+    # the study root, so point it at the same file by absolute path
+    hp["config"]["model"]["embedding"]["datapath"] = a.embedding
     lm = ChemCPA(hp["config"], hp["dataset_config"])
     lm.load_state_dict(ck["state_dict"])
     lm = lm.to("cuda" if torch.cuda.is_available() else "cpu").eval()
