@@ -1,0 +1,96 @@
+{
+ "split_disjoint": {
+  "n_groups": 349,
+  "per_split": {
+   "train": 209,
+   "val": 70,
+   "test": 70
+  },
+  "drug_names_in_two_splits": {},
+  "treated_wells_in_two_splits": 0,
+  "other_dose_wells_excluded_from_training": 905,
+  "identical_fingerprint_across_splits": [],
+  "pass_": true
+ },
+ "alignment": {
+  "n_panel_genes": 2000,
+  "panel_is_train_only": "top variance of train-split responses only",
+  "technical_excluded": 15,
+  "y_lookup_matches_table": true,
+  "basal_identical_across_drugs": true,
+  "basal_shape": [
+   50,
+   2000
+  ],
+  "fp_shape": [
+   349,
+   2048
+  ],
+  "no_nan_in_valid_conditions": true,
+  "pass_": true
+ },
+ "optimisation": {
+  "A": {
+   "loss_first": 0.08170516043901443,
+   "loss_last": 0.002920908387750387,
+   "overfits_small_batch": true,
+   "all_finite": true,
+   "n_params_unmoved": 0,
+   "pass_": true
+  },
+  "C": {
+   "loss_first": 0.07907535135746002,
+   "loss_last": 0.003088564146310091,
+   "overfits_small_batch": true,
+   "all_finite": true,
+   "n_params_unmoved": 0,
+   "router_params_moved": true,
+   "every_expert_moved": true,
+   "router_mean_weight": [
+    0.2948821485042572,
+    0.17716939747333527,
+    0.13689862191677094,
+    0.391049861907959
+   ],
+   "router_entropy": 1.1970748901367188,
+   "router_entropy_max": 1.3862943611198906,
+   "router_collapsed": false,
+   "pass_": true
+  }
+ },
+ "shared_initialisation": {
+  "42": {
+   "fingerprints": {
+    "A": "cb86133d57cbb8147e81202c370a8363c10a9b424aeb483517d2c605b30657ec",
+    "B": "cb86133d57cbb8147e81202c370a8363c10a9b424aeb483517d2c605b30657ec",
+    "C": "cb86133d57cbb8147e81202c370a8363c10a9b424aeb483517d2c605b30657ec"
+   },
+   "identical": true
+  },
+  "43": {
+   "fingerprints": {
+    "A": "b7dff3ea2de4308c1ea2c00402279db499952e6d8e3c6fefaf8afcaeeed56895",
+    "B": "b7dff3ea2de4308c1ea2c00402279db499952e6d8e3c6fefaf8afcaeeed56895",
+    "C": "b7dff3ea2de4308c1ea2c00402279db499952e6d8e3c6fefaf8afcaeeed56895"
+   },
+   "identical": true
+  },
+  "44": {
+   "fingerprints": {
+    "A": "daaf6ffd4803834297060fdfa063e07c3c6907b3ee1c08820a09a815e0feb295",
+    "B": "daaf6ffd4803834297060fdfa063e07c3c6907b3ee1c08820a09a815e0feb295",
+    "C": "daaf6ffd4803834297060fdfa063e07c3c6907b3ee1c08820a09a815e0feb295"
+   },
+   "identical": true
+  },
+  "expert_init_scale": {
+   "w1_sd": 0.03614557906985283,
+   "w1_sd_expected": 0.036084391824351615,
+   "w2_sd": 0.10180128365755081,
+   "w2_sd_expected": 0.10206207261596577,
+   "pass_": true
+  },
+  "pass_": true
+ },
+ "all_pass": true
+}
