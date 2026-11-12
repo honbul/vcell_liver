@@ -23,6 +23,7 @@ echo "host=$(hostname) job=${SLURM_JOB_ID:-} gpu=$(nvidia-smi --query-gpu=name -
 echo "study_commit=$(git rev-parse HEAD) start=$(date -Is)"
 cd "$CPA_SRC"
 echo "chemcpa_commit=$(git rev-parse HEAD)"
+export PYTHONPATH="$CPA_SRC:${PYTHONPATH:-}"
 "$CPA_PY" -u chemCPA/train_hydra.py \
   dataset=default \
   dataset.dataset_path=project_folder/datasets/sciplex_complete_middle_subset.h5ad \
