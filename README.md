@@ -7,3 +7,5 @@
 [공통 데이터](docs/COMMON_NORMAN_DATA.md)는 별도로 준비했고 [분할 영수증](manifests/common_norman_v1_s26.json)을 남겼다. [연구 보고서](reports/FINAL_REPORT.md)에 논문 재현, 공통 기준선, 모델 튜닝, 샘플링 검증과 홀드아웃 결과를 정리했다. [사람 간암 자료 조사](reports/HCC_DATA_FEASIBILITY.md)에서 이번 개입 예측 조건을 충족하는 후보는 확보하지 못했다.
 
 [실행 튜토리얼](tutorials/README.md)에서 논문 재현·튜닝·간암 자료 검토를 따라 할 수 있다. [결과 탐색 노트북](tutorials/inspect_results.ipynb)은 학습 작업을 제출하지 않는다.
+
+[조건부 전문가 구조 약물 반응 실험](reports/moe_drug_v1/README.md)은 Tahoe-100M 0.5 µM에서 미관측 약물의 평균 RNA 반응을 예측할 때 조건부 soft-MoE가 규모를 맞춘 Dense보다 나은지 확인했다. 개선은 없었고(+0.07 %, 구간 [−0.05 %, +0.19 %]) 두 모델 모두 같은 입력의 ridge에 약 5 % 뒤져, 후보를 종료했다.

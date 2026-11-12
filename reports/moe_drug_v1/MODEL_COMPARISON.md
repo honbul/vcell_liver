@@ -88,7 +88,7 @@ fact of this study and it is identical for the two architectures:
 | 30 | 0.0060 | 0.12336 | 0.0058 | 0.12290 |
 
 Training RMSE falls from 0.155 to about 0.077 while validation rises past 0.123, which is worse than
-predicting no change at all. With 9,901 training conditions and a 2,000-dimensional output, both
+predicting no change at all. With 9,883 training conditions and a 2,000-dimensional output, both
 networks memorise the training conditions within a few epochs, and early stopping then hands back a
 model that has barely left its initialisation.
 
@@ -125,14 +125,20 @@ architectures are indistinguishable here, not that A is better.
 
 Measured on one A30, same batch, after training (`resources.tsv`):
 
-| | parameters | active parameters | train time, selected run | inference, batch 256 |
-|---|---:|---:|---:|---:|
-| A | 1,273,186 | 1,273,186 | 6.4 s | see `resources.tsv` |
-| C | 1,273,076 | 1,273,076 (all four experts computed) | 17.4 s | see `resources.tsv` |
+| | parameters | active parameters | mean train time over 8 runs | inference, batch 256 | peak allocated |
+|---|---:|---:|---:|---:|---:|
+| A | 1,273,186 | 1,273,186 | 10.5 s | 0.47 ms | 199.4 MB |
+| C | 1,273,076 | 1,273,076 (all four experts computed) | 16.4 s | 0.79 ms | 199.1 MB |
 
-C's extra cost buys nothing measurable here. Note that these times cover 31 epochs ending at a model
-selected from epoch 0, so they say more about how quickly the recipe stops than about the cost of
-converging either architecture.
+C costs about 1.6x A's training time and 1.7x its inference latency at matched parameter count,
+which is what computing four expert branches plus a router instead of one branch should cost. That
+extra cost buys nothing measurable here. These times cover 31 epochs ending at a model selected
+from epoch 0, so they say more about how quickly the recipe stops than about the cost of converging
+either architecture.
+
+Across all 16 runs the training loops total 214.8 s — 0.06 GPU-hours against a 24 GPU-hour budget,
+with the longest single run at 18.9 s against a 1 GPU-hour per-run cap. Nothing here is
+`budget_limited`.
 
 Peak GPU memory is recorded per run in `resources.tsv` via `torch.cuda.max_memory_allocated`;
 `sacct` remains unreachable for this account, so no scheduler-side memory figure is available —
@@ -140,12 +146,27 @@ the same limitation the earlier studies recorded.
 
 ## 7. What the router actually did
 
-`routing_usage.tsv` holds, for every C run, the mean mixture weight per expert, the entropy, and the
-standard deviation of each weight **across inputs**. The last column is the one that matters: a
-router can hold a high entropy and still emit nearly the same mixture for every condition, which
-would make C behave like B without B ever being trained. These numbers are reported as observed.
+The router did not collapse onto one expert. It did something else: it converged to a mixture that
+is both near-uniform **and nearly constant across inputs**.
+
+| C run | entropy (max 1.3863) | mean weights | sd of each weight across inputs |
+|---|---:|---|---:|
+| lr 3e-3, wd 1e-2, seed 42 | 1.3807 | 0.238 / 0.294 / 0.226 / 0.241 | 0.0075 |
+| lr 3e-3, wd 1e-2, seed 43 | 1.3807 | 0.234 / 0.293 / 0.237 / 0.236 | 0.0083 |
+| lr 3e-3, wd 1e-2, seed 44 | 1.3826 | 0.282 / 0.224 / 0.252 / 0.243 | 0.0069 |
+
+The last column is the one that matters. Entropy alone cannot distinguish "every condition gets its
+own balanced mixture" from "every condition gets the *same* balanced mixture"; a per-weight standard
+deviation of 0.007 across thousands of conditions says it is the second. C's conditional mechanism
+is close to inert, which is consistent with C scoring like A — and it means C ended up near what B
+is by construction, without B having been trained.
+
+That is a description of what these three trained models did, **not** a test of H2. A router that
+stays flat on a model that has barely left its initialisation says nothing about whether
+input-dependent combination would help a model that worked.
+
 No load-balancing or diversity loss was added, and no regularisation search was started in response
-to the gate's behaviour.
+to any of this; the plan forbids reacting to gating behaviour with a new search.
 
 ## 8. What this comparison cannot settle
 

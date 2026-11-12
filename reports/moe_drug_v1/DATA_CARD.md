@@ -13,8 +13,9 @@ truth  y = mean RNA change of line l under drug d at 0.5 µM   (2,000 genes)
 one training row = one (cell line, drug) condition
 ```
 
-Individual cells are never expanded into rows. 48 lines × 349 drug groups gives at most 16,752
-possible conditions, of which **16,521 (94.7 %)** pass QC and exist.
+Individual cells are never expanded into rows. 50 lines × 349 drug groups is 17,450 possible
+conditions; **16,521 (94.7 %)** pass QC. All of them fall inside the 48 retained lines, which is
+98.6 % of that 48 × 349 block — the two dropped lines contribute nothing at all.
 
 ## 2. Truth, exactly as computed
 
@@ -68,9 +69,10 @@ fails outright if any evaluation drug's fingerprint matches a training drug's at
 and after the fix there are **none** in either validation or test. The defect, its scope and the v0
 numbers are kept in `superseded_v0/`.
 
-PubChem CID is used only as a cross-check. 10 groups carry more than one CID (salt and registration
-variants of one structure), and **no CID appears in two different groups**, so the structural key
-and the registry never contradict each other.
+PubChem CID is used only as a cross-check, never to split a structure that is already identical.
+24 groups carry more than one CID — salt, hydrate and registration variants of one structure — and
+**no CID appears in two different groups**, so the structural key and the registry never
+contradict each other in the direction that would cause leakage.
 
 ## 5. Genes
 
@@ -79,7 +81,7 @@ non-liver DMSO pools). A fixed technical list then removes 15 of them — `MT-` 
 rRNA families (`RNA5S`, `RNA18S`, `RNA28S`, `RNA45S`, `RNA5-8S`), `RN7SK`, `RN7SL`, `RMRP`, `RPPH1`.
 Uncertain biotypes were left in rather than guessed at.
 
-The **2,000-gene panel is the top variance of train-split responses only** (9,901 train conditions).
+The **2,000-gene panel is the top variance of train-split responses only** (9,883 train conditions).
 No validation or test response touched the selection. The same 2,000 genes are both the basal input
 and the prediction target for every model, baselines included. This is a 2,000-gene panel, not the
 transcriptome.
