@@ -102,7 +102,8 @@ def main() -> None:
             freeze[run.name] = dict(sha256_checkpoint=sha256_file(run / "best.pt"),
                                     lr=rec["lr"], wd=rec["wd"], seed=rec["seed"],
                                     best_epoch=rec["best_epoch"], params=rec["params"],
-                                    router_usage_test=router_usage(m, ds, te))
+                                    router_usage_test=router_usage(m, ds, te),
+                                    router_usage_val=router_usage(m, ds, ds.conditions("val")))
         if not per_seed:
             continue
         preds[kind] = per_seed
@@ -194,6 +195,24 @@ def main() -> None:
                n_lines=int(ds.n_lines), seeds=seeds,
                plate_diagnostic_blocks=int(len(plate_rows) / max(len(diag), 1)))
     (out / "test_results.json").write_text(json.dumps(res, indent=1))
+
+    # the freeze manifest: exactly what was evaluated, hashed, so the test pass can be identified
+    M = Path(args.manifest_dir)
+    frozen_inputs = {}
+    for f in ["Y.npy", "valid.npy", "basal.npy", "fp.npy", "plate.npy"]:
+        p = Path(args.data_dir) / f
+        if p.exists():
+            frozen_inputs[f] = dict(sha256=sha256_file(p), bytes=p.stat().st_size)
+    for f in ["splits.tsv", "genes.tsv", "coverage.tsv", "transform.json", "sources.json"]:
+        p = M / f
+        if p.exists():
+            frozen_inputs[f] = dict(sha256=sha256_file(p), bytes=p.stat().st_size)
+    (M / "freeze.json").write_text(json.dumps(dict(
+        models=freeze, data=frozen_inputs,
+        selection=json.loads(Path(args.selection).read_text()).get("selected"),
+        code_commit=__import__("subprocess").run(["git", "rev-parse", "HEAD"], capture_output=True,
+                                                 text=True).stdout.strip(),
+        test_split_opened_once=True, seeds=seeds), indent=1))
     print(json.dumps({k: {kk: vv for kk, vv in v.items() if not isinstance(vv, (list, dict))}
                       for k, v in summary.items()}, indent=1), flush=True)
     print("\nbootstrap:", json.dumps(boots, indent=1), flush=True)

@@ -52,7 +52,11 @@ def router_usage(model, ds, cond, batch: int = 2048):
     ent = -(pi * np.log(np.clip(pi, 1e-12, None))).sum(1)
     return dict(mean_weight=pi.mean(0).tolist(), max_weight_share=float(pi.max(1).mean()),
                 entropy_mean=float(ent.mean()), entropy_max=float(np.log(pi.shape[1])),
-                argmax_fraction=np.bincount(pi.argmax(1), minlength=pi.shape[1]).astype(float).tolist())
+                argmax_fraction=np.bincount(pi.argmax(1), minlength=pi.shape[1]).astype(float).tolist(),
+                # how much the mixture actually moves with the input: a router whose weights barely
+                # vary is behaving like B's single global vector, whatever its entropy says
+                weight_sd_across_inputs=pi.std(0).tolist(),
+                weight_sd_mean=float(pi.std(0).mean()))
 
 
 def main() -> None:

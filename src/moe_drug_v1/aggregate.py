@@ -68,6 +68,7 @@ def main() -> None:
         rows.append(dict(run=p.parent.name, kind=r["kind"], lr=r["lr"], wd=r["wd"], seed=r["seed"],
                          entropy_mean=u["entropy_mean"], entropy_max=u["entropy_max"],
                          max_weight_share=u["max_weight_share"],
+                         weight_sd_mean=u.get("weight_sd_mean"),
                          **{f"mean_weight_e{i}": w for i, w in enumerate(u["mean_weight"])},
                          **{f"argmax_count_e{i}": c for i, c in enumerate(u["argmax_fraction"])}))
     if rows:
