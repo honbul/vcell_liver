@@ -105,6 +105,9 @@ def main() -> None:
     ap.add_argument("--selection", required=True)
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--freeze-manifest", required=True)
+    ap.add_argument("--baselines-test", default=None,
+                    help="baselines_test.json, so the arms and the minimum baselines appear in "
+                         "one table scored on exactly the same conditions")
     ap.add_argument("--seeds", type=int, nargs="+", default=[42, 43, 44])
     ap.add_argument("--n-experts", type=int, default=4)
     ap.add_argument("--expert-rank", type=int, default=32)
@@ -205,7 +208,34 @@ def main() -> None:
                     (macro_delta_rmse(A, truth, line) - macro_delta_rmse(B, truth, line))
                     / macro_delta_rmse(A, truth, line) * 100), 4))
 
-    rep = dict(n_test_conditions=len(ev.rows), results=results, bootstrap=boots,
+    # Two reference points computed on *these* rows, so the arms are not compared with numbers
+    # scored on a different condition set. Neither reads a test response: the zero prediction uses
+    # none, and the per-line mean is the mean over that line's **training** drugs.
+    if truth is None:
+        raise SystemExit("no arm checkpoint was loaded; nothing to score")
+    Yall = np.load(Path(args.v2_dir) / "Y.npy")
+    valid = np.load(Path(args.v2_dir) / "valid.npy")
+    splits_all = pd.read_csv(Path(args.manifest_dir) / "splits.tsv",
+                             sep="\t").sort_values("group_index")
+    train_cols = np.where(splits_all.split.to_numpy() == "train")[0]
+    line_mean = np.zeros((Yall.shape[0], Yall.shape[2]), dtype=np.float64)
+    for l_ in range(Yall.shape[0]):
+        m_ = valid[l_, train_cols]
+        if m_.any():
+            line_mean[l_] = Yall[l_, train_cols[m_]].mean(0)
+    ref = dict(
+        no_change=round(macro_delta_rmse(np.zeros_like(truth), truth, line), 6),
+        line_mean_train_only=round(
+            macro_delta_rmse(np.array([line_mean[l_] for l_ in line]), truth, line), 6))
+    if args.baselines_test and Path(args.baselines_test).exists():
+        bt = json.loads(Path(args.baselines_test).read_text())
+        ref["full_test_set_baselines"] = {
+            k: v.get("macro_delta_rmse") for k, v in bt.items() if isinstance(v, dict)}
+        ref["full_test_set_note"] = ("scored on every valid test condition, not only the rows the "
+                                     "single-cell evaluator can form; use the two numbers above "
+                                     "for a like-for-like comparison with the arms")
+
+    rep = dict(n_test_conditions=len(ev.rows), results=results, reference=ref, bootstrap=boots,
                checkpoint_sha256=hashes,
                note="one pass, no selection, no calibration; percentages are relative to the "
                     "first-named arm")

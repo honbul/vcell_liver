@@ -9,6 +9,6 @@ set -euo pipefail
 source experiments/chemcpa_moe_v2/env.sh
 echo "host=$(hostname) commit=$(git rev-parse HEAD) start=$(date -Is)"
 "$CPA_PY" -u -m src.chemcpa_moe_v2.aggregate_cpa \
-  --runs-dir "$V2_OUT/runs" --baselines "$V2_OUT/baselines/val.json" \
+  --runs-dir "$V2_OUT/runs" --baselines "$V2_OUT/baselines/val.json/baselines_val.json" \
   --out-dir reports/chemcpa_moe_v2
 echo "end=$(date -Is)"

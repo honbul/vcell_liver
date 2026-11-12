@@ -98,7 +98,17 @@ def main() -> None:
                 macro_delta_rmse(np.mean(preds, 0), T, L), 6)
         agg[arm] = entry
 
-    base = json.loads(Path(a.baselines).read_text())
+    # `baselines_val.json` is one block per baseline; the gate compares the primary metric, so
+    # flatten to {name: macro_delta_rmse} and fail loudly rather than silently comparing nothing.
+    raw = json.loads(Path(a.baselines).read_text())
+    base = {}
+    for k, v in raw.items():
+        if isinstance(v, dict) and "macro_delta_rmse" in v:
+            base[k] = float(v["macro_delta_rmse"])
+        elif isinstance(v, (int, float)):
+            base[k] = float(v)
+    if not base:
+        raise SystemExit(f"no baseline macro_delta_rmse found in {a.baselines}")
 
     def rel(a_, b_):
         return round((a_ - b_) / a_ * 100, 4) if a_ else None
