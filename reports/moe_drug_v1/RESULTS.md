@@ -67,7 +67,11 @@ Test macro ΔRMSE (drug mean inside a line → unweighted line mean → seed mea
 | **C** Conditional experts | 1,273,076 / 1,273,076 | 0.11907 | +0.07 % | 0.0380 | 0.858 | 0.224 | 0.11606 |
 | **B** Fixed experts | — | `not_run` | — | — | — | — | — |
 
-The "vs A" column is `(A − model) / A`; positive means the model beats A. Ridge is by far the
+The "vs A" column is `(A − model) / A`; positive means the model beats A. The A and C rows are
+the **seed mean of the score**, which is the pre-registered primary. `test_results.json` also
+carries the score of the seed-*averaged prediction* — 0.11846 for A and 0.11835 for C — which is
+slightly better, as a three-model ensemble usually is. That ensemble was not pre-registered, it
+does not change any ordering, and it is not used anywhere in this report. Ridge is by far the
 largest model in the table at 8.1 M parameters, which is the point: capacity is not what is
 missing. † the per-line mean predicts one vector for every drug, so its drug-centred prediction is
 numerically zero — that 0.0001 is float noise, not a correlation. ‡ a constant-zero prediction has
