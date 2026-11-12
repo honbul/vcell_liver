@@ -87,10 +87,15 @@ fact of this study and it is identical for the two architectures:
 | 10 | 0.0074 | 0.12354 | 0.0073 | 0.12248 |
 | 30 | 0.0060 | 0.12336 | 0.0058 | 0.12290 |
 
-Training RMSE falls from 0.155 to about 0.077 while validation rises past 0.123, which is worse than
-predicting no change at all. With 9,883 training conditions and a 2,000-dimensional output, both
-networks memorise the training conditions within a few epochs, and early stopping then hands back a
-model that has barely left its initialisation.
+Training RMSE falls from 0.155 to about 0.077 while validation rises past 0.123. With 9,883
+training conditions and a 2,000-dimensional output, both networks memorise the training conditions
+within a few epochs.
+
+> **Corrected on branch `research/chemcpa-conditional-moe-v2`** (`reports/initfix_v2/INIT_FIX.md`
+> §4). The first version called a validation score of 0.123 "worse than predicting no change at
+> all"; no-change on validation is 0.12618, so it is better. It also said early stopping "hands back
+> a model that has barely left its initialisation"; `epoch 0` in this table is the network after a
+> full pass, and the untrained network — scored on the v2 branch — sits at 0.2598–0.2663.
 
 Nothing was done about this. The learning rate, schedule, capacity, dropout and patience are the
 pre-registered ones, and the plan forbids widening the search in response to a result.

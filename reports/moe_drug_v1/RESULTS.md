@@ -99,6 +99,13 @@ Validation told the same story before test was opened: C over A was −0.064 % o
 three seeds, with the seeds disagreeing on the sign (42 and 44 favoured A, 43 was a tie to five
 decimals). Against a pre-registered 2 % threshold, four of the five promotion conditions failed.
 
+> These validation runs had A and C starting from *different* shared weights, because the parameter-
+> parity solver drew from the global RNG and only A called it. Re-run from a common start on branch
+> `research/chemcpa-conditional-moe-v2`, C over A is **+0.057 %** with all three seeds agreeing
+> instead of −0.064 % with the seeds disagreeing. The gate still fails: +0.057 % is a thirty-fifth
+> of the 2 % threshold, B is still not trained, and the test numbers below are unaffected because
+> they were produced by these same frozen checkpoints. See `reports/initfix_v2/INIT_FIX.md`.
+
 ### Why both networks lose
 
 Every one of the twelve grid settings peaks at **epoch 0–2** and gets worse from there, identically
@@ -110,12 +117,22 @@ for A and C:
 | 3 | 0.0108 | 0.12030 | 0.0107 | 0.12102 |
 | 30 | 0.0060 | 0.12336 | 0.0058 | 0.12290 |
 
-Training RMSE falls from 0.155 to 0.077 while validation climbs past 0.123 — worse than predicting
-no change at all. With 9,883 training conditions and a 2,000-dimensional output, both networks
-memorise the training drugs within a few epochs, and early stopping hands back a model that has
-barely left its initialisation. That is why a linear map beats 1.27 M parameters: ridge has more
-parameters than either network and still generalises better, because it cannot memorise in the way
-a deep net can.
+Training RMSE falls from 0.155 to 0.077 while validation climbs past 0.123. With 9,883 training
+conditions and a 2,000-dimensional output, both networks memorise the training drugs within a few
+epochs. That is why a linear map beats 1.27 M parameters: ridge has more parameters than either
+network and still generalises better, because it cannot memorise in the way a deep net can.
+
+> **Two sentences here were wrong and are corrected on branch
+> `research/chemcpa-conditional-moe-v2`; see `reports/initfix_v2/INIT_FIX.md` §4.** The first
+> version added "— worse than predicting no change at all" to the sentence above: it is not. The
+> no-change baseline on validation is **0.12618**, so a validation score of 0.123 is better than
+> it, and the test table in this same section shows the trained models at ~0.119 against a
+> no-change 0.12996. The overfitting is real; it does not take either network below the trivial
+> baseline. The first version also said early stopping "hands back a model that has barely left its
+> initialisation". It does not. This loop evaluates *after* a full pass, so `epoch 0` is the network
+> after roughly 39 optimizer steps, and the untrained network was never scored. It is scored on the
+> v2 branch: **0.2598–0.2663**, against 0.1164 after one epoch. Most of the distance the model ever
+> covers is covered during epoch 0; what it fails to do is improve afterwards.
 
 Nothing was done about this. The grid, schedule, capacity, dropout and patience are the
 pre-registered ones; widening the search after seeing the result is what the plan forbids. This is
