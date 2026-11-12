@@ -438,7 +438,7 @@ sci-Plex, and its own reconstruction loss was still improving. A study that want
 | stage | compute |
 |---|---|
 | v2 shard pass (31.3 M cells, 3,388 shards) | 1,475 s, CPU |
-| 15 arm runs at 10 epochs | 25,648 GPU-s ≈ **7.1 GPU-hours** |
+| 15 arm runs at 10 epochs | 25,550 GPU-s ≈ **7.1 GPU-hours** |
 | 9 arm runs at 30 epochs | 46,820 GPU-s ≈ **13.0 GPU-hours** |
 | two control-mode diagnostics | 2 GPU jobs over 9 frozen checkpoints each |
 | two test passes | ≈ 6 min each (the second only to repair the SNU-423 lookup) |
