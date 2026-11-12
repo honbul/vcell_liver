@@ -112,6 +112,12 @@ def main() -> None:
     ap.add_argument("--n-experts", type=int, default=4)
     ap.add_argument("--expert-rank", type=int, default=32)
     ap.add_argument("--max-control-cells", type=int, default=64)
+    ap.add_argument("--patience", type=int, default=3,
+                    help="chemCPA's own patience field; it only fills a config slot here, "
+                         "because nothing in this script trains")
+    ap.add_argument("--seed", type=int, default=42,
+                    help="the seed the base model is built with before a checkpoint is "
+                         "loaded over it; the loaded weights decide everything that is scored")
     args = ap.parse_args()
 
     import anndata as ad
