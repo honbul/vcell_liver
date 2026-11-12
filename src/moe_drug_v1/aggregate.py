@@ -54,6 +54,25 @@ def main() -> None:
     df = df.sort_values(["kind", "seed", "val_macro_delta_rmse"])
     df.to_csv(out / "trials.tsv", sep="\t", index=False, float_format="%.6g")
 
+    cost_cols = ["run", "kind", "lr", "wd", "seed", "params_total", "params_response", "params_router",
+                 "dense_hidden", "epochs_run", "train_seconds", "infer_ms_per_256",
+                 "peak_alloc_MB", "peak_reserved_MB", "gpu"]
+    df[cost_cols].to_csv(out / "resources.tsv", sep="\t", index=False, float_format="%.6g")
+
+    rows = []
+    for p in sorted(Path(args.runs_dir).glob("*/record.json")):
+        r = json.loads(p.read_text())
+        u = r.get("router_usage_val")
+        if not u:
+            continue
+        rows.append(dict(run=p.parent.name, kind=r["kind"], lr=r["lr"], wd=r["wd"], seed=r["seed"],
+                         entropy_mean=u["entropy_mean"], entropy_max=u["entropy_max"],
+                         max_weight_share=u["max_weight_share"],
+                         **{f"mean_weight_e{i}": w for i, w in enumerate(u["mean_weight"])},
+                         **{f"argmax_count_e{i}": c for i, c in enumerate(u["argmax_fraction"])}))
+    if rows:
+        pd.DataFrame(rows).to_csv(out / "routing_usage.tsv", sep="\t", index=False, float_format="%.6g")
+
     base = json.loads(Path(args.baselines).read_text()) if Path(args.baselines).exists() else {}
 
     sel = {}
