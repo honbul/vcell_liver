@@ -31,7 +31,7 @@ test -z "$(git status --porcelain -- src experiments configs manifests)" \
   --embedding "$V2_OUT/tahoe_rdkit2D_embedding.parquet" \
   --hparams configs/chemcpa_moe_v2/hparams_official.json \
   --v2-dir "$V2_OUT/data" --manifest-dir manifests/chemcpa_moe_v2 \
-  --runs-dir "$V2_OUT/runs" --selection reports/chemcpa_moe_v2/selection.json \
+  --runs-dir "$V2_OUT/runs_e30" --selection reports/chemcpa_moe_v2/selection.json \
   --out-dir reports/chemcpa_moe_v2 \
   --freeze-manifest manifests/chemcpa_moe_v2/freeze.json
 echo "end=$(date -Is)"
