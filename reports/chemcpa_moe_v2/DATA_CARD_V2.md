@@ -5,7 +5,7 @@ Two artifacts are built from one new pass over the Tahoe-100M shards:
 | | what it is | used by |
 |---|---|---|
 | `assets/v2/data` | the (cell line, drug) condition table under the **v2** truth | the baselines, the v1 small MLPs, and the scoring of every chemCPA arm |
-| `assets/v2/tahoe_cells.h5ad` | 1,266,204 real single cells on the frozen 2,000-gene panel | chemCPA itself, which trains on cells and not on pseudobulk rows |
+| `assets/v2/tahoe_cells.h5ad` | 1,256,568 real single cells on the frozen 2,000-gene panel | chemCPA itself, which trains on cells and not on pseudobulk rows |
 
 ## 1. Why the shards had to be read again
 
@@ -67,7 +67,7 @@ meaningless, so the same pass wrote a sample of real cells.
 A cell is in the sample if `blake2b(barcode)` falls below a threshold set from its own group's
 known cell count, aiming at **64 cells per (well, cell line)**. That rule depends on nothing but
 the barcode: it is identical whatever order the shards are read in, however the work is split
-across workers, and however often it is re-run. 1,266,204 cells were selected from 20,600 groups.
+across workers, and however often it is re-run. 1,266,204 cells were selected from 20,600 groups; 9,636 of them belong to groups absent from the condition table and are dropped when the AnnData is built, leaving 1,256,568.
 
 Each cell is stored as `log1p(1e4 * count / library)` on the frozen 2,000-gene panel — the same
 quantity the v2 truth averages, so the model's target and the study's truth are the same scale.

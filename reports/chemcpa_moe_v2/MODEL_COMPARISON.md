@@ -16,7 +16,7 @@ the same object:
 | warm-up / schedule | the official `StepLR(step_size_lr=6, gamma=0.9)` and the official doser | unchanged |
 | initial weights | every shared module starts from the same values at a given seed | SHA-256 over the state dict with `residual.*` excluded; identical across arms, different across seeds (`trials.tsv`, `base_init_sha256`) |
 | initial function | P1 and P2 compute **bitwise** what P0 computes before training | every residual's output projection is zero-initialised; check 2 runs real control cells through all arms and compares exactly |
-| data | the same 1,266,204 cells, the same 2,000 genes, the same batches, the same split | one AnnData, one `PerturbationDataModule` |
+| data | the same 1,256,568 cells, the same 2,000 genes, the same batches, the same split | one AnnData, one `PerturbationDataModule` |
 | opportunity | the same learning-rate ladder (official × 0.3 / 1 / 3), the same seeds (42/43/44), the same epoch budget (10, then 30 for all three) | `trials.tsv` |
 
 ## 2. What differs

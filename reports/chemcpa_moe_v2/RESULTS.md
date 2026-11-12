@@ -127,7 +127,9 @@ and neither can be derived from the other's stored sums.
 sample if `blake2b(barcode)` falls below a threshold set from its own group's cell count, aiming
 at 64 cells per (well, cell line). That rule depends on nothing but the barcode, so the sample is
 identical whatever order the shards are read in. **1,266,204 cells** from 20,600 groups, stored as
-`log1p(1e4 * count / library)` on the frozen 2,000-gene panel. chemCPA trains on these cells. No
+`log1p(1e4 * count / library)` on the frozen 2,000-gene panel. Of those, 9,636 belong to groups
+that are not in the condition table and are dropped when the AnnData is built, so chemCPA trains
+on **1,256,568** cells (765,503 train / 262,289 validation / 228,776 test). No
 pseudobulk row is ever passed to a model as a cell.
 
 **Result.** The condition table reproduces v1's coverage exactly — 16,521 valid conditions,
@@ -427,7 +429,7 @@ this single-cell sample for up to 30 epochs, reconstructs a cell line's absolute
 0.30 RMS per gene and predicts a drug response about a fifth of the true magnitude.
 
 **What this does not establish.** That chemCPA cannot do this task. The model was trained on
-1.27 M cells from 5 plates at one dose for 30 epochs, with the authors' hyper-parameters chosen on
+1.26 M cells from 5 plates at one dose for 30 epochs, with the authors' hyper-parameters chosen on
 sci-Plex, and its own reconstruction loss was still improving. A study that wanted to answer
 "can chemCPA do this" would start from that, not from here.
 
@@ -445,7 +447,7 @@ sci-Plex, and its own reconstruction loss was still improving. A study that want
 | total model training | **≈ 20.1 GPU-hours** on one A30 or A40 at a time |
 
 Peak allocated memory is 80.1 MB (P0), 81.6 MB (P1), 82.9 MB (P2); the model is small and the
-wall clock is dominated by the 1.27 M-cell epoch, not by the residual. Per-run cost at 30 epochs
+wall clock is dominated by the 1.26 M-cell epoch, not by the residual. Per-run cost at 30 epochs
 is 5,209 s (P0), 5,172 s (P1), 5,225 s (P2) — within 1 % of each other, so the conditional
 experts cost essentially nothing in time and 0.3 % in memory over the prototype.
 
