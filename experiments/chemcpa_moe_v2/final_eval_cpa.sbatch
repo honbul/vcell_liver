@@ -4,7 +4,7 @@
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=96G
+#SBATCH --mem=320G
 #SBATCH --time=06:00:00
 #SBATCH --output=logs/cpa_final_%j.log
 set -euo pipefail
