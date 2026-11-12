@@ -178,11 +178,19 @@ def main() -> None:
     for f in ["splits.tsv", "lines.tsv", "genes.tsv", "drug_aliases.tsv"]:
         (M / f).write_text((Path(a.v1_manifest_dir) / f).read_text())
 
+    # Same schema and same thresholds as the v1 coverage manifest, so the v1 Dataset loader reads
+    # this directory unchanged. Thresholds are the pre-registered ones and depend on cell counts,
+    # which the new aggregation does not touch.
+    sp = splits.split.to_numpy()
+    prep_lines = pd.read_csv(Path(a.prep_dir) / "lines.tsv", sep="\t").set_index("cell_line_id")
     cov = pd.DataFrame(dict(
         cell_line_id=line_ids,
-        n_valid_train=[int(valid[l, splits.split.to_numpy() == "train"].sum()) for l in range(nL)],
-        n_valid_val=[int(valid[l, splits.split.to_numpy() == "val"].sum()) for l in range(nL)],
-        n_valid_test=[int(valid[l, splits.split.to_numpy() == "test"].sum()) for l in range(nL)]))
+        cell_name=[str(prep_lines.cell_name.get(c, c)) for c in line_ids],
+        organ=[str(prep_lines.organ.get(c, "")) for c in line_ids],
+        train=[int(valid[l, sp == "train"].sum()) for l in range(nL)],
+        val=[int(valid[l, sp == "val"].sum()) for l in range(nL)],
+        test=[int(valid[l, sp == "test"].sum()) for l in range(nL)]))
+    cov["keep"] = (cov.train >= 100) & (cov.val >= 30) & (cov.test >= 30)
     cov.to_csv(M / "coverage.tsv", sep="\t", index=False)
 
     tr = splits.split.to_numpy() == "train"
