@@ -11,7 +11,7 @@ set -euo pipefail
 source experiments/chemcpa_moe_v2/env.sh
 K=${1:-64}
 echo "host=$(hostname) job=${SLURM_JOB_ID:-} commit=$(git rev-parse HEAD) start=$(date -Is)"
-"$MOE_PY" -u -m src.chemcpa_moe_v2.build_v2 \
+"$CPA_PY" -u -m src.chemcpa_moe_v2.build_v2 \
   --prep-dir prior_assets/r3/prep \
   --v1-manifest-dir manifests/moe_drug_v1 \
   --v1-data-dir "$V1_DATA" \
