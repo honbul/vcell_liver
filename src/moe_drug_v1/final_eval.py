@@ -166,8 +166,16 @@ def main() -> None:
                 boots["B_vs_C_snu423"] = ev.paired_bootstrap(seed_rmse["B"][m], seed_rmse["C"][m],
                                                              td[m], args.n_boot, 0, None)
 
+    # the fixed diagnostics run on the baselines too, through the same code, so "does the agreement
+    # survive removing a per-block offset" is answered for every row of the results table
+    diag_pred = dict(mean_pred)
+    for name in base:
+        f = bdir / f"pred_{name}_test.npy"
+        if f.exists():
+            diag_pred[name] = np.load(f)
+
     plate_of = ds.plate_np
-    diag = {k: plate_diagnostic(p, ty, tl, td, plate_of, ds.line_names) for k, p in mean_pred.items()}
+    diag = {k: plate_diagnostic(p, ty, tl, td, plate_of, ds.line_names) for k, p in diag_pred.items()}
     plate_rows = []
     for k, rs in diag.items():
         for r in rs:
@@ -175,7 +183,7 @@ def main() -> None:
     pd.DataFrame(plate_rows).to_csv(out / "plate_diagnostic.tsv", sep="\t", index=False,
                                     float_format="%.6g")
 
-    per_line = {k: ev.line_macro_table(p, ty, tl, ds.line_names) for k, p in mean_pred.items()}
+    per_line = {k: ev.line_macro_table(p, ty, tl, ds.line_names) for k, p in diag_pred.items()}
     rows = []
     for k, rs in per_line.items():
         for r in rs:
