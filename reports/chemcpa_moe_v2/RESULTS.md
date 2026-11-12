@@ -273,6 +273,13 @@ why E7 exists.
 validation already selected, the same three seeds, the same data, the same objective. No new arm,
 metric or search dimension is introduced, and no selection is made on anything but validation.
 
+**Which runs go to the test, declared before the results were seen.** The 30-epoch runs. The
+seed and the data order are unchanged, so a 30-epoch run's first ten epochs are the same ten
+epochs as before, and its best-on-validation epoch is chosen from a superset that contains the
+earlier choice. Using it is therefore the same validation-only selection over a larger range, not
+a second selection between two protocols. If the longer budget scores worse on validation, that is
+reported as the result; it is not grounds for going back to the shorter one.
+
 **Result.** Filled in by `experiments/chemcpa_moe_v2/budget_cpa.sbatch` (jobs 21421–21423) — see
 §8.
 
