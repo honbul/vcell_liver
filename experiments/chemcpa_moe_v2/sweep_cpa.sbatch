@@ -6,7 +6,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=96G
-#SBATCH --time=08:00:00
+#SBATCH --time=23:00:00
 #SBATCH --output=logs/cpa_sweep_%j.log
 set -euo pipefail
 source experiments/chemcpa_moe_v2/env.sh
