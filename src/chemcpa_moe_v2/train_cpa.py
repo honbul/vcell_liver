@@ -351,7 +351,12 @@ def main() -> None:
 
     if lm.best_state is not None:
         lm.load_state_dict(lm.best_state)
-    score, P, T, L_ = lm.condition_evaluator.evaluate(lm.model, device=lm.device)
+    # Lightning returns the module to CPU when `fit` ends, but `ComPert.predict` moves its inputs
+    # to the device string the model was constructed with ("cuda"), so the final evaluation has to
+    # put the parameters back on that device explicitly.
+    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    lm = lm.to(dev)
+    score, P, T, L_ = lm.condition_evaluator.evaluate(lm.model, device=dev)
 
     peak = {}
     if torch.cuda.is_available():
@@ -373,7 +378,15 @@ def main() -> None:
                epochs_run=len(lm.history), best_epoch=lm.best["epoch"],
                val_macro_delta_rmse=score, n_val_conditions=len(lm.condition_evaluator.rows),
                train_seconds=round(train_s, 1), router_usage_val=router, **peak,
-               budget_limited=bool(len(lm.history) >= args.max_epochs))
+               max_epochs=args.max_epochs,
+               # "budget limited" means the cap stopped a run that was still improving, not simply
+               # that the cap was reached. A run whose best epoch is far behind the last one was
+               # not short of compute; it was getting worse.
+               budget_limited=bool(len(lm.history) >= args.max_epochs
+                                   and lm.best["epoch"] >= len(lm.history) - 2),
+               early_stopping="none; chemCPA's own patience counter is not wired into the "
+                              "Lightning loop, so every run goes to max_epochs and the whole "
+                              "validation curve is recorded")
     torch.save(dict(state_dict=lm.best_state, record=rec), out / "best.pt")
     (out / "record.json").write_text(json.dumps(rec, indent=1))
     np.save(out / "val_pred.npy", P.astype(np.float32))
