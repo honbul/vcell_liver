@@ -33,5 +33,6 @@ test -z "$(git status --porcelain -- src experiments configs manifests)" \
   --v2-dir "$V2_OUT/data" --manifest-dir manifests/chemcpa_moe_v2 \
   --runs-dir "$V2_OUT/runs_e30" --selection reports/chemcpa_moe_v2/selection.json \
   --out-dir reports/chemcpa_moe_v2 \
-  --freeze-manifest manifests/chemcpa_moe_v2/freeze.json
+  --freeze-manifest manifests/chemcpa_moe_v2/freeze.json \
+  --pred-dir "$V2_OUT/test_preds"
 echo "end=$(date -Is)"

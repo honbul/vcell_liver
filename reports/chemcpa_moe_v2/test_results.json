@@ -1,0 +1,110 @@
+{
+ "n_test_conditions": 3333,
+ "results": {
+  "P0": {
+   "lr_scale": 3.0,
+   "per_seed_score": {
+    "42": 0.294871,
+    "43": 0.293897,
+    "44": 0.293783
+   },
+   "seed_mean_of_scores": 0.294184,
+   "score_of_mean_prediction": 0.283342,
+   "plate_diagnostic": {
+    "n_blocks": 239,
+    "n_conditions": 3333,
+    "plate_centred_r": 0.004154,
+    "macro_delta_rmse_plate_centred": 0.081827
+   },
+   "drug_centred_r": 0.195798,
+   "top20_direction": 0.654335,
+   "top20_recall": 0.132808
+  },
+  "P1": {
+   "lr_scale": 3.0,
+   "per_seed_score": {
+    "42": 0.298483,
+    "43": 0.297114,
+    "44": 0.278559
+   },
+   "seed_mean_of_scores": 0.291385,
+   "score_of_mean_prediction": 0.279734,
+   "plate_diagnostic": {
+    "n_blocks": 239,
+    "n_conditions": 3333,
+    "plate_centred_r": -0.028487,
+    "macro_delta_rmse_plate_centred": 0.080783
+   },
+   "drug_centred_r": 0.203709,
+   "top20_direction": 0.661956,
+   "top20_recall": 0.131653
+  },
+  "P2": {
+   "lr_scale": 3.0,
+   "per_seed_score": {
+    "42": 0.292626,
+    "43": 0.285579,
+    "44": 0.287693
+   },
+   "seed_mean_of_scores": 0.288633,
+   "score_of_mean_prediction": 0.278348,
+   "plate_diagnostic": {
+    "n_blocks": 239,
+    "n_conditions": 3333,
+    "plate_centred_r": 0.007327,
+    "macro_delta_rmse_plate_centred": 0.08103
+   },
+   "drug_centred_r": 0.213104,
+   "top20_direction": 0.670282,
+   "top20_recall": 0.134263
+  }
+ },
+ "reference": {
+  "no_change": 0.10427,
+  "line_mean_train_only": 0.092298,
+  "full_test_set_baselines": {
+   "no_change": 0.10427013039588928,
+   "line_mean": 0.09229815006256104,
+   "ridge": 0.09192865341901779
+  },
+  "full_test_set_note": "scored on every valid test condition, not only the rows the single-cell evaluator can form; use the two numbers above for a like-for-like comparison with the arms"
+ },
+ "bootstrap": {
+  "P0_vs_P1": {
+   "diff": 0.003608,
+   "diff_ci": [
+    0.002587,
+    0.004511
+   ],
+   "rel_improvement_pct": 1.2733
+  },
+  "P0_vs_P2": {
+   "diff": 0.004993,
+   "diff_ci": [
+    0.004014,
+    0.005908
+   ],
+   "rel_improvement_pct": 1.7624
+  },
+  "P1_vs_P2": {
+   "diff": 0.001386,
+   "diff_ci": [
+    0.000763,
+    0.002017
+   ],
+   "rel_improvement_pct": 0.4954
+  }
+ },
+ "checkpoint_sha256": {
+  "P0_lr3.0_s42": "f01a6ad97da9de4b4650441c5c8afb7545815c2d6369c7147329d1ffbc79b508",
+  "P0_lr3.0_s43": "75411f979cb1a6102b6a5e9c5b307c64797f946a99719ac8b95a344fdd7ee7fa",
+  "P0_lr3.0_s44": "828577cb836024d4d45ee35e9fa75b27569c9233d208dca7cf542b3ca9f63569",
+  "P1_lr3.0_s42": "ac9d891a44203d78a48391f0d56cc3c021db00f5a2c84ac58b213edcd394f6ce",
+  "P1_lr3.0_s43": "9eb95bf104997657aa5a7083efacb48b7d5cf479e70fafdfc1353cde1360fd1c",
+  "P1_lr3.0_s44": "ff4a0c2a5b81d8bcd2ad498c062a43886bddd2bb6d80f61f40c215f09a7d998b",
+  "P2_lr3.0_s42": "68a3ec3155a9bd690390ea0b76165034a2b79f555ea9f126c70c72ab76146da0",
+  "P2_lr3.0_s43": "d11dcfea5033199884d525972c960fa370aab3b930de8f09cf1387889398f1da",
+  "P2_lr3.0_s44": "ebba0e1fe9cee428617e2bc5b8e4c378443460bf3cdea78ae87245514a580fbe"
+ },
+ "note": "one pass, no selection, no calibration; percentages are relative to the first-named arm"
+}

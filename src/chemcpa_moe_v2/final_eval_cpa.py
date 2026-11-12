@@ -105,6 +105,9 @@ def main() -> None:
     ap.add_argument("--selection", required=True)
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--freeze-manifest", required=True)
+    ap.add_argument("--pred-dir", required=True,
+                    help="where the test predictions go; they are arrays and stay on the server, "
+                         "never in Git")
     ap.add_argument("--baselines-test", default=None,
                     help="baselines_test.json, so the arms and the minimum baselines appear in "
                          "one table scored on exactly the same conditions")
@@ -125,6 +128,8 @@ def main() -> None:
     sel = json.loads(Path(args.selection).read_text())
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=True)
+    pred_dir = Path(args.pred_dir)
+    pred_dir.mkdir(parents=True, exist_ok=True)
 
     cfg, datasets, dataset, dm, dcfg = build(args, ChemCPA, load_dataset_splits,
                                              PerturbationDataModule)
@@ -170,12 +175,18 @@ def main() -> None:
     drug = np.array([r[1] for r in ev.rows])
     line = np.array([r[0] for r in ev.rows])
 
-    # SNU-423, the pre-specified secondary
+    # SNU-423, the pre-specified HCC secondary. The identifier is the one the rest of the study
+    # uses (src/moe_drug_v1/data.py, src/moe_drug_v1/prepare.py); a wrong one silently produced no
+    # SNU-423 row in the first test pass, so a missing line is an error here rather than a skip.
+    SNU423 = "CVCL_0366"
     lines_tsv = pd.read_csv(Path(args.manifest_dir) / "lines.tsv", sep="\t").sort_values("line_index")
     snu = None
     for i, cid in enumerate(lines_tsv.cell_line_id):
-        if str(cid) == "CVCL_0564":          # SNU-423
+        if str(cid) == SNU423:
             snu = i
+    if snu is None:
+        raise SystemExit(f"{SNU423} (SNU-423) is not in lines.tsv; the pre-specified secondary "
+                         "cannot be computed")
     plate_of = np.load(Path(args.v2_dir) / "plate.npy")
     plate = np.array([plate_of[r[0], r[1]] for r in ev.rows])
     for arm, preds in preds_by_arm.items():
@@ -185,10 +196,19 @@ def main() -> None:
         d, r_ = top20(P, truth)
         results[arm]["top20_direction"] = round(d, 6)
         results[arm]["top20_recall"] = round(r_, 6)
-        if snu is not None and (line == snu).any():
+        if (line == snu).any():
             m = line == snu
             results[arm]["snu423_delta_rmse"] = round(
                 float(np.sqrt(np.mean((P[m] - truth[m]) ** 2, 1)).mean()), 6)
+            results[arm]["snu423_n_drugs"] = int(m.sum())
+            results[arm]["snu423_drug_centred_r"] = round(
+                drug_centred_r(P[m], truth[m], line[m]), 6)
+        # keep the predictions, so any further read-out of this frozen pass is arithmetic on
+        # what was already computed and never a second opening of the test split
+        np.save(pred_dir / f"test_pred_{arm}.npy", P.astype(np.float32))
+    np.save(pred_dir / "test_truth.npy", truth.astype(np.float32))
+    np.save(pred_dir / "test_line.npy", line)
+    np.save(pred_dir / "test_drug.npy", drug)
 
     boots = {}
     arms = [a_ for a_ in ["P0", "P1", "P2", "P3"] if a_ in preds_by_arm]

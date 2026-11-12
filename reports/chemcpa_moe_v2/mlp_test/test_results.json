@@ -1,0 +1,476 @@
+{
+ "summary": {
+  "A": {
+   "macro_delta_rmse": 0.09679051488637924,
+   "n_conditions": 3333,
+   "n_lines": 48,
+   "drug_centred_r": 0.02754734845528046,
+   "drug_centred_r_undefined": 0,
+   "top20_direction": 0.8396639663966396,
+   "top20_recall": 0.22155715571557152,
+   "snu423_delta_rmse": 0.1022392064332962,
+   "snu423_drug_centred_r": 0.03725592271657661,
+   "snu423_top20_direction": 0.8478571428571428,
+   "snu423_top20_recall": 0.24642857142857139,
+   "snu423_n_drugs": 70,
+   "macro_delta_rmse_seed_mean_of_per_condition_rmse": 0.0974743664264679
+  },
+  "C": {
+   "macro_delta_rmse": 0.09678838402032852,
+   "n_conditions": 3333,
+   "n_lines": 48,
+   "drug_centred_r": 0.027830774981200724,
+   "drug_centred_r_undefined": 0,
+   "top20_direction": 0.8411341134113411,
+   "top20_recall": 0.22284728472847284,
+   "snu423_delta_rmse": 0.1021958589553833,
+   "snu423_drug_centred_r": 0.03786540377934996,
+   "snu423_top20_direction": 0.8478571428571429,
+   "snu423_top20_recall": 0.2471428571428571,
+   "snu423_n_drugs": 70,
+   "macro_delta_rmse_seed_mean_of_per_condition_rmse": 0.09749380499124527
+  },
+  "no_change": {
+   "macro_delta_rmse": 0.10427013039588928,
+   "n_conditions": 3333,
+   "n_lines": 48,
+   "drug_centred_r": NaN,
+   "drug_centred_r_undefined": 3333,
+   "top20_direction": 0.0,
+   "top20_recall": 0.007065706570657065,
+   "snu423_delta_rmse": 0.11197340488433838,
+   "snu423_drug_centred_r": NaN,
+   "snu423_top20_direction": 0.0,
+   "snu423_top20_recall": 0.012142857142857144,
+   "snu423_n_drugs": 70
+  },
+  "line_mean": {
+   "macro_delta_rmse": 0.09229815006256104,
+   "n_conditions": 3333,
+   "n_lines": 48,
+   "drug_centred_r": 0.0007199798966185515,
+   "drug_centred_r_undefined": 0,
+   "top20_direction": 0.8649414941494148,
+   "top20_recall": 0.2912841284128413,
+   "snu423_delta_rmse": 0.09869866818189621,
+   "snu423_drug_centred_r": 0.0023754990726177184,
+   "snu423_top20_direction": 0.8621428571428572,
+   "snu423_top20_recall": 0.2857142857142857,
+   "snu423_n_drugs": 70
+  },
+  "ridge": {
+   "macro_delta_rmse": 0.09192865341901779,
+   "n_conditions": 3333,
+   "n_lines": 48,
+   "drug_centred_r": 0.09677202685142972,
+   "drug_centred_r_undefined": 0,
+   "top20_direction": 0.8655115511551155,
+   "top20_recall": 0.2872787278727873,
+   "snu423_delta_rmse": 0.09819353371858597,
+   "snu423_drug_centred_r": 0.10301672165681208,
+   "snu423_top20_direction": 0.8607142857142858,
+   "snu423_top20_recall": 0.275,
+   "snu423_n_drugs": 70,
+   "lambda": 1.0,
+   "lambda_scan": [
+    {
+     "lam": 0.0001,
+     "val_macro_delta_rmse": 0.1033218502998352
+    },
+    {
+     "lam": 0.001,
+     "val_macro_delta_rmse": 0.10279848426580429
+    },
+    {
+     "lam": 0.01,
+     "val_macro_delta_rmse": 0.10010064393281937
+    },
+    {
+     "lam": 0.1,
+     "val_macro_delta_rmse": 0.09440729767084122
+    },
+    {
+     "lam": 1.0,
+     "val_macro_delta_rmse": 0.09127973765134811
+    },
+    {
+     "lam": 10.0,
+     "val_macro_delta_rmse": 0.09141963720321655
+    },
+    {
+     "lam": 100.0,
+     "val_macro_delta_rmse": 0.09336347132921219
+    }
+   ]
+  }
+ },
+ "bootstrap": {
+  "A_vs_C": {
+   "macro_a": 0.0974743664264679,
+   "macro_b": 0.09749380499124527,
+   "diff": -1.9438564777374268e-05,
+   "diff_ci": [
+    -4.43166121840477e-05,
+    5.7309865951538005e-06
+   ],
+   "rel_improvement_pct": -0.019942232756875455,
+   "rel_improvement_ci_pct": [
+    -0.04546488867663376,
+    0.005879480734534557
+   ],
+   "n_boot": 2000,
+   "n_drugs": 70
+  },
+  "no_change_vs_A": {
+   "macro_a": 0.10427013039588928,
+   "macro_b": 0.0974743664264679,
+   "diff": 0.006795763969421387,
+   "diff_ci": [
+    0.004819012433290482,
+    0.008688754774630068
+   ],
+   "rel_improvement_pct": 6.517460197210312,
+   "rel_improvement_ci_pct": [
+    4.621661462389871,
+    8.332927888016348
+   ],
+   "n_boot": 2000,
+   "n_drugs": 70
+  },
+  "no_change_vs_C": {
+   "macro_a": 0.10427013039588928,
+   "macro_b": 0.09749380499124527,
+   "diff": 0.0067763254046440125,
+   "diff_ci": [
+    0.004793670773506164,
+    0.008667609840631484
+   ],
+   "rel_improvement_pct": 6.498817354440689,
+   "rel_improvement_ci_pct": [
+    4.597357608843222,
+    8.312648893525498
+   ],
+   "n_boot": 2000,
+   "n_drugs": 70
+  },
+  "line_mean_vs_A": {
+   "macro_a": 0.09229815006256104,
+   "macro_b": 0.0974743664264679,
+   "diff": -0.00517621636390686,
+   "diff_ci": [
+    -0.006696214154362679,
+    -0.0037011496722698213
+   ],
+   "rel_improvement_pct": -5.608147382736206,
+   "rel_improvement_ci_pct": [
+    -7.254981979404664,
+    -4.009993341969614
+   ],
+   "n_boot": 2000,
+   "n_drugs": 70
+  },
+  "line_mean_vs_C": {
+   "macro_a": 0.09229815006256104,
+   "macro_b": 0.09749380499124527,
+   "diff": -0.005195654928684235,
+   "diff_ci": [
+    -0.0067023452371358875,
+    -0.0037188474088907246
+   ],
+   "rel_improvement_pct": -5.629207938909531,
+   "rel_improvement_ci_pct": [
+    -7.261624672426198,
+    -4.029167872129653
+   ],
+   "n_boot": 2000,
+   "n_drugs": 70
+  },
+  "ridge_vs_A": {
+   "macro_a": 0.09192865341901779,
+   "macro_b": 0.0974743664264679,
+   "diff": -0.005545713007450104,
+   "diff_ci": [
+    -0.007153218612074852,
+    -0.003939401917159561
+   ],
+   "rel_improvement_pct": -6.032627075910568,
+   "rel_improvement_ci_pct": [
+    -7.781272047432195,
+    -4.285281868759099
+   ],
+   "n_boot": 2000,
+   "n_drugs": 70
+  },
+  "ridge_vs_C": {
+   "macro_a": 0.09192865341901779,
+   "macro_b": 0.09749380499124527,
+   "diff": -0.005565151572227478,
+   "diff_ci": [
+    -0.0071734262630343435,
+    -0.003965844027698042
+   ],
+   "rel_improvement_pct": -6.053772568702698,
+   "rel_improvement_ci_pct": [
+    -7.803253932522345,
+    -4.314045599712446
+   ],
+   "n_boot": 2000,
+   "n_drugs": 70
+  },
+  "A_vs_C_snu423": {
+   "macro_a": 0.10284826904535294,
+   "macro_b": 0.10282377153635025,
+   "diff": 2.4497509002685547e-05,
+   "diff_ci": [
+    -4.727765917778015e-06,
+    5.1518902182579013e-05
+   ],
+   "rel_improvement_pct": 0.02381907688686624,
+   "rel_improvement_ci_pct": [
+    -0.004596835670314699,
+    0.050092143174389016
+   ],
+   "n_boot": 2000,
+   "n_drugs": 70
+  }
+ },
+ "freeze": {
+  "A_lr3e-3_wd1e-2_s42": {
+   "sha256_checkpoint": "2ba72c33ea9fa291dcdfa4e96936f74f1b36e96cfd19bc4391d9656de3671c53",
+   "lr": 0.003,
+   "wd": 0.01,
+   "seed": 42,
+   "best_epoch": 0,
+   "params": {
+    "total": 1273186,
+    "response": 75154,
+    "router": 0,
+    "shared": 1198032
+   },
+   "router_usage_test": null,
+   "router_usage_val": null
+  },
+  "A_lr3e-3_wd1e-2_s43": {
+   "sha256_checkpoint": "a4a2cb105668de85f79e646b98402a1991c6c60ca4363e41e4e2d4fae0607509",
+   "lr": 0.003,
+   "wd": 0.01,
+   "seed": 43,
+   "best_epoch": 0,
+   "params": {
+    "total": 1273186,
+    "response": 75154,
+    "router": 0,
+    "shared": 1198032
+   },
+   "router_usage_test": null,
+   "router_usage_val": null
+  },
+  "A_lr3e-3_wd1e-2_s44": {
+   "sha256_checkpoint": "dc150b88b966ed7a9506b467b02f435a0cc5d88c38627e541f2dd6d27042fab0",
+   "lr": 0.003,
+   "wd": 0.01,
+   "seed": 44,
+   "best_epoch": 0,
+   "params": {
+    "total": 1273186,
+    "response": 75154,
+    "router": 0,
+    "shared": 1198032
+   },
+   "router_usage_test": null,
+   "router_usage_val": null
+  },
+  "C_lr3e-3_wd1e-2_s42": {
+   "sha256_checkpoint": "41013cd2c4ae41db54996fc47e91940d4fbaf840990bc604c45f232ac05a872f",
+   "lr": 0.003,
+   "wd": 0.01,
+   "seed": 42,
+   "best_epoch": 0,
+   "params": {
+    "total": 1273076,
+    "response": 75044,
+    "router": 8356,
+    "shared": 1198032
+   },
+   "router_usage_test": {
+    "mean_weight": [
+     0.23466862738132477,
+     0.28158900141716003,
+     0.23754633963108063,
+     0.2461959570646286
+    ],
+    "max_weight_share": 0.2815952003002167,
+    "entropy_mean": 1.3830400705337524,
+    "entropy_max": 1.3862943611198906,
+    "argmax_fraction": [
+     0.0,
+     3324.0,
+     0.0,
+     9.0
+    ],
+    "weight_sd_across_inputs": [
+     0.005868087522685528,
+     0.006592539604753256,
+     0.007456496357917786,
+     0.010992208495736122
+    ],
+    "weight_sd_mean": 0.007727332878857851
+   },
+   "router_usage_val": {
+    "mean_weight": [
+     0.2352578341960907,
+     0.28210678696632385,
+     0.23762254416942596,
+     0.24501308798789978
+    ],
+    "max_weight_share": 0.2821069657802582,
+    "entropy_mean": 1.3830175399780273,
+    "entropy_max": 1.3862943611198906,
+    "argmax_fraction": [
+     0.0,
+     3304.0,
+     0.0,
+     1.0
+    ],
+    "weight_sd_across_inputs": [
+     0.006073442287743092,
+     0.0068503781221807,
+     0.007250087335705757,
+     0.010391840711236
+    ],
+    "weight_sd_mean": 0.0076414369978010654
+   }
+  },
+  "C_lr3e-3_wd1e-2_s43": {
+   "sha256_checkpoint": "38f3753058b8ea171788e325f0d9272563d5399a988d82099e45d37ab1c5c579",
+   "lr": 0.003,
+   "wd": 0.01,
+   "seed": 43,
+   "best_epoch": 0,
+   "params": {
+    "total": 1273076,
+    "response": 75044,
+    "router": 8356,
+    "shared": 1198032
+   },
+   "router_usage_test": {
+    "mean_weight": [
+     0.25268563628196716,
+     0.2520224153995514,
+     0.1763213723897934,
+     0.31897035241127014
+    ],
+    "max_weight_share": 0.3189705014228821,
+    "entropy_mean": 1.3640806674957275,
+    "entropy_max": 1.3862943611198906,
+    "argmax_fraction": [
+     0.0,
+     0.0,
+     0.0,
+     3333.0
+    ],
+    "weight_sd_across_inputs": [
+     0.012059953063726425,
+     0.014866611920297146,
+     0.010210047475993633,
+     0.01414161454886198
+    ],
+    "weight_sd_mean": 0.012819557450711727
+   },
+   "router_usage_val": {
+    "mean_weight": [
+     0.2534089684486389,
+     0.25243401527404785,
+     0.1754012256860733,
+     0.3187560439109802
+    ],
+    "max_weight_share": 0.3187573254108429,
+    "entropy_mean": 1.363778829574585,
+    "entropy_max": 1.3862943611198906,
+    "argmax_fraction": [
+     0.0,
+     2.0,
+     0.0,
+     3303.0
+    ],
+    "weight_sd_across_inputs": [
+     0.01215794775635004,
+     0.014915280975401402,
+     0.010229689069092274,
+     0.014341355301439762
+    ],
+    "weight_sd_mean": 0.01291106827557087
+   }
+  },
+  "C_lr3e-3_wd1e-2_s44": {
+   "sha256_checkpoint": "6cdc55662008939f68928e9908a12459180e3efc9a58e96a47f9f26131d8af79",
+   "lr": 0.003,
+   "wd": 0.01,
+   "seed": 44,
+   "best_epoch": 0,
+   "params": {
+    "total": 1273076,
+    "response": 75044,
+    "router": 8356,
+    "shared": 1198032
+   },
+   "router_usage_test": {
+    "mean_weight": [
+     0.28308963775634766,
+     0.20220164954662323,
+     0.2634277045726776,
+     0.25128069519996643
+    ],
+    "max_weight_share": 0.28616347908973694,
+    "entropy_mean": 1.3780397176742554,
+    "entropy_max": 1.3862943611198906,
+    "argmax_fraction": [
+     2605.0,
+     0.0,
+     709.0,
+     19.0
+    ],
+    "weight_sd_across_inputs": [
+     0.013961740769445896,
+     0.00872470811009407,
+     0.012182679958641529,
+     0.006692939903587103
+    ],
+    "weight_sd_mean": 0.010390516370534897
+   },
+   "router_usage_val": {
+    "mean_weight": [
+     0.2835761308670044,
+     0.2017875611782074,
+     0.263291597366333,
+     0.2513444125652313
+    ],
+    "max_weight_share": 0.28653207421302795,
+    "entropy_mean": 1.3778742551803589,
+    "entropy_max": 1.3862943611198906,
+    "argmax_fraction": [
+     2606.0,
+     0.0,
+     669.0,
+     30.0
+    ],
+    "weight_sd_across_inputs": [
+     0.013964107260107994,
+     0.008820988237857819,
+     0.012164747342467308,
+     0.007399701979011297
+    ],
+    "weight_sd_mean": 0.010587385855615139
+   }
+  }
+ },
+ "n_test_conditions": 3333,
+ "n_test_drugs": 70,
+ "n_lines": 48,
+ "seeds": [
+  42,
+  43,
+  44
+ ],
+ "plate_diagnostic_blocks": 239
+}
