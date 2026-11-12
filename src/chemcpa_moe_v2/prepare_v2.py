@@ -173,6 +173,11 @@ def main() -> None:
     np.save(O / "plate.npy", plate_of)
     np.save(O / "basal_mean.npy", bmu)
     np.save(O / "basal_sd.npy", bsd)
+    # The exact control term the truth subtracts, on the panel, so a model's predicted response can
+    # be formed with the same subtraction instead of with a sample mean that only approximates it.
+    np.save(O / "dmso_plate_mean.npy", dmso_mean[:, :, pcol].astype(np.float32))
+    pd.DataFrame(dict(plate=plates, plate_index=range(nP))).to_csv(
+        M / "plates.tsv", sep="\t", index=False)
 
     # manifests: the split, lines and genes are copied through unchanged so the v1 loader works
     for f in ["splits.tsv", "lines.tsv", "genes.tsv", "drug_aliases.tsv"]:

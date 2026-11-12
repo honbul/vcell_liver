@@ -114,6 +114,9 @@ class ConditionEvaluator:
         self.Y = np.load(v2_dir / "Y.npy")
         self.valid = np.load(v2_dir / "valid.npy")
         self.plate_of = np.load(v2_dir / "plate.npy")
+        # the control term the truth subtracts: the whole plate DMSO pool for that cell line, not
+        # the mean of whichever control cells happen to be fed to the model
+        self.dmso_plate_mean = np.load(v2_dir / "dmso_plate_mean.npy")
         splits = pd.read_csv(manifest_dir / "splits.tsv", sep="\t").sort_values("group_index")
         lines = pd.read_csv(manifest_dir / "lines.tsv", sep="\t").sort_values("line_index")
         aliases = pd.read_csv(manifest_dir / "drug_aliases.tsv", sep="\t")
@@ -177,8 +180,7 @@ class ConditionEvaluator:
                 out, _ = model.predict(genes=g, drugs_idx=di, dosages=do, covariates=[cov])
                 dim = out.shape[1] // 2
                 pred_treated = out[:, :dim].mean(0).float().cpu().numpy()
-                obs_ctrl = np.asarray(self.X[idx]).mean(0)
-                preds.append(pred_treated - obs_ctrl)
+                preds.append(pred_treated - self.dmso_plate_mean[p, l])
                 truths.append(self.Y[l, d])
                 lines.append(l)
         P, T, L = np.array(preds), np.array(truths), np.array(lines)
