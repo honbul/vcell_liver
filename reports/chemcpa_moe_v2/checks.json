@@ -6,6 +6,7 @@
      "P0": "72874933afc02cc6",
      "P1": "72874933afc02cc6",
      "P2": "72874933afc02cc6",
+     "P2b": "72874933afc02cc6",
      "P3": "72874933afc02cc6"
     },
     "identical": true
@@ -15,6 +16,7 @@
      "P0": "e7b761b0f8c50729",
      "P1": "e7b761b0f8c50729",
      "P2": "e7b761b0f8c50729",
+     "P2b": "e7b761b0f8c50729",
      "P3": "e7b761b0f8c50729"
     },
     "identical": true
@@ -24,6 +26,7 @@
      "P0": "8f7959355a5fca3e",
      "P1": "8f7959355a5fca3e",
      "P2": "8f7959355a5fca3e",
+     "P2b": "8f7959355a5fca3e",
      "P3": "8f7959355a5fca3e"
     },
     "identical": true
@@ -71,6 +74,10 @@
      "max_abs_difference_from_P0": 0.0,
      "identical": true
     },
+    "P2b": {
+     "max_abs_difference_from_P0": 0.0,
+     "identical": true
+    },
     "P3": {
      "max_abs_difference_from_P0": 0.0,
      "identical": true
@@ -85,6 +92,10 @@
      "max_abs_difference_from_P0": 0.0,
      "identical": true
     },
+    "P2b": {
+     "max_abs_difference_from_P0": 0.0,
+     "identical": true
+    },
     "P3": {
      "max_abs_difference_from_P0": 0.0,
      "identical": true
@@ -96,6 +107,10 @@
      "identical": true
     },
     "P2": {
+     "max_abs_difference_from_P0": 0.0,
+     "identical": true
+    },
+    "P2b": {
      "max_abs_difference_from_P0": 0.0,
      "identical": true
     },
@@ -146,6 +161,14 @@
     "dense_hidden": null,
     "parity": null
    },
+   "P2b": {
+    "total": 2318433,
+    "residual": 68900,
+    "router": 2212,
+    "base": 2249533,
+    "dense_hidden": null,
+    "parity": null
+   },
    "P3": {
     "total": 2316225,
     "residual": 66692,
@@ -160,14 +183,14 @@
  "residual_receives_gradient": {
   "P1": {
    "loss_first": 1.3570246696472168,
-   "loss_last": 1.0380289554595947,
+   "loss_last": 1.0380288362503052,
    "all_finite": true,
    "n_params_unmoved": 0,
    "moved": {
-    "fc1.weight": 0.23463180661201477,
-    "fc1.bias": 0.04709633067250252,
-    "fc2.weight": 0.39225515723228455,
-    "fc2.bias": 0.14703580737113953
+    "fc1.weight": 0.23463112115859985,
+    "fc1.bias": 0.047096289694309235,
+    "fc2.weight": 0.3922562003135681,
+    "fc2.bias": 0.14703598618507385
    },
    "pass_": true
   },
@@ -177,20 +200,45 @@
    "all_finite": true,
    "n_params_unmoved": 0,
    "moved": {
-    "experts.w1": 0.4297224283218384,
+    "experts.w1": 0.42971980571746826,
     "experts.b1": 0.07491572946310043,
-    "experts.w2": 0.678551435470581,
-    "experts.b2": 0.27582356333732605,
-    "router.0.weight": 0.46541664004325867,
-    "router.0.bias": 0.13411745429039001,
-    "router.2.weight": 0.27763158082962036,
-    "router.2.bias": 0.011070411652326584
+    "experts.w2": 0.6785520911216736,
+    "experts.b2": 0.2758227288722992,
+    "router.0.weight": 0.46542006731033325,
+    "router.0.bias": 0.1341174989938736,
+    "router.2.weight": 0.27763259410858154,
+    "router.2.bias": 0.011069893836975098
    },
    "router_mean_weight": [
-    0.22385427355766296,
-    0.24388886988162994,
-    0.28952497243881226,
-    0.242731973528862
+    0.22385559976100922,
+    0.243886336684227,
+    0.28952473402023315,
+    0.24273328483104706
+   ],
+   "router_collapsed": false,
+   "every_expert_moved": true,
+   "pass_": true
+  },
+  "P2b": {
+   "loss_first": 1.3570246696472168,
+   "loss_last": 1.037831425666809,
+   "all_finite": true,
+   "n_params_unmoved": 0,
+   "moved": {
+    "experts.w1": 0.3901712894439697,
+    "experts.b1": 0.09200158715248108,
+    "experts.w2": 0.5364929437637329,
+    "experts.b2": 0.2455291748046875,
+    "router.0.weight": 0.6482973694801331,
+    "router.0.bias": 0.1451248675584793,
+    "router.2.weight": 0.4194760024547577,
+    "router.2.bias": 0.015824712812900543
+   },
+   "router_mean_weight": [
+    0.2017955332994461,
+    0.2568364143371582,
+    0.23879119753837585,
+    0.3025769293308258
    ],
    "router_collapsed": false,
    "every_expert_moved": true,
@@ -202,11 +250,11 @@
    "all_finite": true,
    "n_params_unmoved": 0,
    "moved": {
-    "logits": 0.10935945063829422,
-    "experts.w1": 0.47975826263427734,
-    "experts.b1": 0.08813735842704773,
-    "experts.w2": 0.5622716546058655,
-    "experts.b2": 0.19312945008277893
+    "logits": 0.10935936123132706,
+    "experts.w1": 0.4797583818435669,
+    "experts.b1": 0.08813726902008057,
+    "experts.w2": 0.5622678399085999,
+    "experts.b2": 0.19312940537929535
    },
    "pass_": true
   },
