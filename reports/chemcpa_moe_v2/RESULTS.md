@@ -509,6 +509,18 @@ cost; and on SNU-423 P2 is second of the three arms, not third. `reconstruction_
 misnomer: subtracting two RMSEs does not decompose an error whose cross term does not vanish, so
 it is reported as "the drop in RMSE when the model's own control is used instead".
 
+**Lost during the re-run (2026-11-13, 09:49).** The job-script change that sends the re-run to
+`runs_fix/` was pushed but had not reached the server checkout when the P0/P1/P2 learning-rate
+scans were submitted — 11 s early. sbatch copies the script at submission, so those jobs wrote to
+the default `runs/` and **replaced the nine earlier 10-epoch seed-42 runs**
+(`P{0,1,2}_lr{0.3,1.0,3.0}_s42`, scored with the broken evaluator). Their numbers survive in
+`trials_e10.tsv`; their checkpoints and predictions do not, so those nine rows can no longer be
+re-checked. Nothing reported as a test result depended on them (the test passes used `runs_e30/`,
+which is intact), and the new runs themselves are correct — the code they ran is the fixed
+evaluator's (`e8d647d`) — they were moved to `runs_fix/` unchanged. `train_cpa.py` now refuses to
+start in a directory that already holds a finished run, and `sync.sh` prints the commit the
+checkout is on so it can be checked against the submit.
+
 **Not changed, but recorded.** The plan specifies the router's input as
 `concat(z_basal, drug_embedding)`; the implementation uses `concat(covariate_embedding,
 drug_embedding)`. P2 as built therefore routes on cell-line identity and drug, not on the control

@@ -1,0 +1,92 @@
+{
+ "selected": {
+  "P0": {
+   "lr_scale": 0.3,
+   "val_seed42": 0.105881
+  },
+  "P1": {
+   "lr_scale": 0.3,
+   "val_seed42": 0.105657
+  },
+  "P2": {
+   "lr_scale": 0.3,
+   "val_seed42": 0.106919
+  },
+  "P2b": {
+   "lr_scale": 1.0,
+   "val_seed42": 0.108936
+  }
+ },
+ "aggregates": {
+  "P0": {
+   "lr_scale": 0.3,
+   "per_seed_score": {
+    "42": 0.105881
+   },
+   "n_seeds": 1,
+   "seed_mean_of_scores": 0.105881
+  },
+  "P1": {
+   "lr_scale": 0.3,
+   "per_seed_score": {
+    "42": 0.105657
+   },
+   "n_seeds": 1,
+   "seed_mean_of_scores": 0.105657
+  },
+  "P2": {
+   "lr_scale": 0.3,
+   "per_seed_score": {
+    "42": 0.106919
+   },
+   "n_seeds": 1,
+   "seed_mean_of_scores": 0.106919
+  },
+  "P2b": {
+   "lr_scale": 1.0,
+   "per_seed_score": {
+    "42": 0.108936
+   },
+   "n_seeds": 1,
+   "seed_mean_of_scores": 0.108936
+  }
+ },
+ "baselines": {
+  "no_change": 0.10280454158782959,
+  "line_mean": 0.09131733328104019,
+  "ridge": 0.09127973765134811
+ },
+ "gate": {
+  "by_variant": {
+   "P2": {
+    "P2_over_P0_pct": -0.9803,
+    "P2_over_P1_pct": -1.1944,
+    "seeds_agreeing_P2_beats_P1": 0,
+    "n_seeds": 1,
+    "beats_baselines": {
+     "no_change": false,
+     "line_mean": false,
+     "ridge": false
+    },
+    "threshold_pct": 2.0,
+    "promote": false
+   },
+   "P2b": {
+    "P2b_over_P0_pct": -2.8853,
+    "P2b_over_P1_pct": -3.1034,
+    "seeds_agreeing_P2b_beats_P1": 0,
+    "n_seeds": 1,
+    "beats_baselines": {
+     "no_change": false,
+     "line_mean": false,
+     "ridge": false
+    },
+    "threshold_pct": 2.0,
+    "promote": false
+   }
+  },
+  "promoted": [],
+  "train_P3": false
+ },
+ "note": "positive percentages mean the routed variant is better; the two seed aggregates are different statistics, not two estimates of one"
+}

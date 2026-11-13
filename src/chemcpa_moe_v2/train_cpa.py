@@ -400,6 +400,13 @@ def main() -> None:
     ap.add_argument("--max-control-cells", type=int, default=64)
     args = ap.parse_args()
 
+    # Run directories are immutable. On 2026-11-13 a job script submitted before the server
+    # checkout had the new output path wrote nine fresh runs over nine earlier ones; refusing
+    # here, before anything is loaded, is what would have stopped it.
+    if (Path(args.out_dir) / "best.pt").exists() or (Path(args.out_dir) / "record.json").exists():
+        raise SystemExit(f"{args.out_dir} already holds a finished run; run directories are "
+                         "never overwritten -- choose a new one")
+
     import lightning as L
     from lightning.pytorch.loggers import CSVLogger
     import anndata as ad

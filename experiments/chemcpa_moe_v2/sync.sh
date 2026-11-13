@@ -23,3 +23,6 @@ done < <(git ls-files --others --exclude-standard)
 [ "$conflict" -eq 0 ] || { echo "untracked files differ from $REF; resolve by hand"; exit 1; }
 git merge -q --ff-only "$REF"
 git log --oneline -1
+# A job script is copied by sbatch at submission, so the checkout must be on the intended
+# commit *before* anything is submitted. Print it so the submit line can be checked against it.
+echo "server checkout now at $(git rev-parse --short HEAD) == $(git rev-parse --short "$REF")"
