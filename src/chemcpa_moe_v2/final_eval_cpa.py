@@ -28,8 +28,23 @@ def sha256(p: Path) -> str:
     return h.hexdigest()
 
 
+# The baselines' drug-centred correlation is the mean of per-condition correlations
+# (src/moe_drug_v1/evaluate.py). This file used to pool every condition and gene into one vector
+# and correlate once, which is a different statistic -- a pooled correlation is dominated by the
+# conditions with the largest response, so the two cannot be compared and the arms were being read
+# against the baselines on unequal terms. The baselines' own function is imported here so there is
+# one definition in the study; the pooled number is kept under a name that says what it is.
+from src.moe_drug_v1.evaluate import drug_centred_correlation  # noqa: E402
+
+
 def drug_centred_r(P: np.ndarray, T: np.ndarray, line: np.ndarray) -> float:
-    """Correlation after removing each cell line's mean response, so a per-line constant scores 0."""
+    """Mean per-condition correlation after removing each line's mean response over the drugs."""
+    return float(drug_centred_correlation(P, T, line)[0])
+
+
+def drug_centred_r_pooled(P: np.ndarray, T: np.ndarray, line: np.ndarray) -> float:
+    """The same centring, but all conditions and genes correlated as one vector. Not comparable
+    with `drug_centred_r`; reported only so the earlier figure stays traceable."""
     p, t = P.copy(), T.copy()
     for l in np.unique(line):
         m = line == l
@@ -136,7 +151,8 @@ def main() -> None:
     adata = ad.read_h5ad(args.adata)
     drug_to_idx = {d: i for i, d in enumerate(dataset.drugs_names_unique_sorted)}
     ev = ConditionEvaluator(adata, Path(args.v2_dir), Path(args.manifest_dir), "test",
-                            drug_to_idx, max_control_cells=args.max_control_cells, seed=0)
+                            drug_to_idx, dataset.atomic_covars_dict["cell_type"],
+                            max_control_cells=args.max_control_cells, seed=0)
     print(f"test conditions: {len(ev.rows)}", flush=True)
 
     dev = "cuda" if torch.cuda.is_available() else "cpu"
@@ -152,7 +168,9 @@ def main() -> None:
             run = Path(args.runs_dir) / f"{arm}_lr{lrs}_s{sd}"
             ck = run / "best.pt"
             if not ck.exists():
-                continue
+                # a silently skipped seed changes the primary metric's definition, so it stops
+                raise SystemExit(f"{ck} is missing; the seed set this pass was declared with "
+                                 f"({args.seeds}) is not complete for {arm}")
             hashes[str(run.name)] = sha256(ck)
             lm, _, _ = make_module(ChemCPA, cfg, dcfg, arm, args)
             lm.load_state_dict(torch.load(ck, map_location="cpu")["state_dict"])
@@ -164,7 +182,7 @@ def main() -> None:
             del lm
             torch.cuda.empty_cache()
         if not preds:
-            continue
+            raise SystemExit(f"{arm} produced no scored seed")
         preds_by_arm[arm] = preds
         import statistics as st
         results[arm] = dict(
@@ -189,20 +207,32 @@ def main() -> None:
                          "cannot be computed")
     plate_of = np.load(Path(args.v2_dir) / "plate.npy")
     plate = np.array([plate_of[r[0], r[1]] for r in ev.rows])
-    for arm, preds in preds_by_arm.items():
-        P = np.mean(preds, 0)
-        results[arm]["plate_diagnostic"] = plate_diagnostic(P, truth, line, plate)
-        results[arm]["drug_centred_r"] = round(drug_centred_r(P, truth, line), 6)
-        d, r_ = top20(P, truth)
-        results[arm]["top20_direction"] = round(d, 6)
-        results[arm]["top20_recall"] = round(r_, 6)
-        if (line == snu).any():
-            m = line == snu
-            results[arm]["snu423_delta_rmse"] = round(
+    # Every secondary is computed the way the primary is -- once per seed, then averaged -- and the
+    # ensembled figure is kept beside it under its own name. Mixing the two is what let a 0.50 %
+    # ensemble margin be quoted next to a seed-mean table whose margin is 0.95 %.
+    def secondaries(P: np.ndarray) -> dict:
+        d_, r_ = top20(P, truth)
+        out_ = dict(drug_centred_r=round(drug_centred_r(P, truth, line), 6),
+                    drug_centred_r_pooled=round(drug_centred_r_pooled(P, truth, line), 6),
+                    top20_direction=round(d_, 6), top20_recall=round(r_, 6),
+                    plate_diagnostic=plate_diagnostic(P, truth, line, plate))
+        m = line == snu
+        if m.any():
+            out_["snu423_delta_rmse"] = round(
                 float(np.sqrt(np.mean((P[m] - truth[m]) ** 2, 1)).mean()), 6)
-            results[arm]["snu423_n_drugs"] = int(m.sum())
-            results[arm]["snu423_drug_centred_r"] = round(
-                drug_centred_r(P[m], truth[m], line[m]), 6)
+            out_["snu423_n_drugs"] = int(m.sum())
+            out_["snu423_drug_centred_r"] = round(drug_centred_r(P[m], truth[m], line[m]), 6)
+        return out_
+
+    for arm, preds in preds_by_arm.items():
+        per_seed_sec = {str(sd): secondaries(P_) for sd, P_ in zip(args.seeds, preds)}
+        keys = [k for k in per_seed_sec[str(args.seeds[0])] if k != "plate_diagnostic"]
+        results[arm]["secondaries_per_seed"] = per_seed_sec
+        results[arm]["secondaries_seed_mean"] = {
+            k: round(float(np.mean([per_seed_sec[s][k] for s in per_seed_sec])), 6)
+            for k in keys}
+        P = np.mean(preds, 0)
+        results[arm]["secondaries_of_mean_prediction"] = secondaries(P)
         # keep the predictions, so any further read-out of this frozen pass is arithmetic on
         # what was already computed and never a second opening of the test split
         np.save(pred_dir / f"test_pred_{arm}.npy", P.astype(np.float32))
@@ -210,29 +240,54 @@ def main() -> None:
     np.save(pred_dir / "test_line.npy", line)
     np.save(pred_dir / "test_drug.npy", drug)
 
-    boots = {}
+    # Paired bootstrap over drug groups. The pre-registered primary is the seed mean of the
+    # per-seed scores, so that is what the interval is built on; the ensemble interval is kept
+    # beside it, labelled, instead of standing in for it. The resample only re-indexes
+    # per-condition RMSEs that are computed once, so running both is cheap.
+    def rmse_rows(P_):
+        return np.sqrt(np.mean((P_ - truth) ** 2, axis=1))
+
+    rmse_by_arm = {a_: [rmse_rows(P_) for P_ in preds_by_arm[a_]] for a_ in preds_by_arm}
+    rmse_ens = {a_: rmse_rows(np.mean(preds_by_arm[a_], 0)) for a_ in preds_by_arm}
+    uniq_lines = np.unique(line)
+
+    def macro_from_rows(r_, idx):
+        li = line[idx]
+        vals = [r_[idx][li == l_].mean() for l_ in uniq_lines if (li == l_).any()]
+        return float(np.mean(vals))
+
+    def seed_mean_from_rows(rs, idx):
+        return float(np.mean([macro_from_rows(r_, idx) for r_ in rs]))
+
+    groups = np.unique(drug)
+    where_g = {g: np.where(drug == g)[0] for g in groups}
+    rng = np.random.default_rng(0)
+    resamples = [np.concatenate([where_g[g] for g in rng.choice(groups, len(groups), replace=True)])
+                 for _ in range(2000)]
+    all_idx = np.arange(len(truth))
+
+    boots: dict = {"primary_seed_mean_of_scores": {}, "ensemble_of_mean_prediction": {}}
     arms = [a_ for a_ in ["P0", "P1", "P2", "P3"] if a_ in preds_by_arm]
     for i, a_ in enumerate(arms):
         for b_ in arms[i + 1:]:
-            A = np.mean(preds_by_arm[a_], 0)
-            B = np.mean(preds_by_arm[b_], 0)
-            rng = np.random.default_rng(0)
-            groups = np.unique(drug)
-            d = []
-            for _ in range(2000):
-                pick = rng.choice(groups, len(groups), replace=True)
-                m = np.concatenate([np.where(drug == g)[0] for g in pick])
-                d.append(macro_delta_rmse(A[m], truth[m], line[m])
-                         - macro_delta_rmse(B[m], truth[m], line[m]))
-            d = np.array(d)
-            boots[f"{a_}_vs_{b_}"] = dict(
-                diff=round(float(macro_delta_rmse(A, truth, line)
-                                 - macro_delta_rmse(B, truth, line)), 6),
-                diff_ci=[round(float(np.percentile(d, 2.5)), 6),
-                         round(float(np.percentile(d, 97.5)), 6)],
-                rel_improvement_pct=round(float(
-                    (macro_delta_rmse(A, truth, line) - macro_delta_rmse(B, truth, line))
-                    / macro_delta_rmse(A, truth, line) * 100), 4))
+            pair = {
+                "primary_seed_mean_of_scores":
+                    lambda idx, a_=a_, b_=b_: (seed_mean_from_rows(rmse_by_arm[a_], idx),
+                                               seed_mean_from_rows(rmse_by_arm[b_], idx)),
+                "ensemble_of_mean_prediction":
+                    lambda idx, a_=a_, b_=b_: (macro_from_rows(rmse_ens[a_], idx),
+                                               macro_from_rows(rmse_ens[b_], idx))}
+            for tag, point in pair.items():
+                sa, sb = point(all_idx)
+                d = np.empty(len(resamples))
+                for bi, m in enumerate(resamples):
+                    xa, xb = point(m)
+                    d[bi] = xa - xb
+                boots[tag][f"{a_}_vs_{b_}"] = dict(
+                    a=round(sa, 6), b=round(sb, 6), diff=round(sa - sb, 6),
+                    diff_ci=[round(float(np.percentile(d, 2.5)), 6),
+                             round(float(np.percentile(d, 97.5)), 6)],
+                    rel_improvement_pct=round(float((sa - sb) / sa * 100), 4))
 
     # Two reference points computed on *these* rows, so the arms are not compared with numbers
     # scored on a different condition set. Neither reads a test response: the zero prediction uses

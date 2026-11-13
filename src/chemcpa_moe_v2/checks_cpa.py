@@ -9,6 +9,12 @@
 4. The residual actually receives gradient steps, and for P2 the router and all four experts move.
 5. The three splits' treated drug groups are disjoint, and the validation evaluator's conditions
    are drawn only from validation drug groups.
+6. The covariate vector the evaluator feeds a cell line is **bitwise the vector the training
+   loader feeds that line's own cells**. Added 2026-11-13: checks 1-5 all passed while the
+   evaluator was addressing the one-hot by the manifest's CVCL order and the loader by sorted cell
+   name, so 45 of 50 lines were told they were a different cell line. Nothing above could see it,
+   because every arm was given the same wrong vector and the error is in the input, not the code
+   path. This check compares the two directly, per line, against real rows of the dataset.
 
 A failure here is a failure of the comparison, not of a model, so the script exits non-zero.
 """
@@ -167,6 +173,7 @@ def main() -> None:
                 for x, y in [("train", "test"), ("train", "ood"), ("test", "ood")]}
     drug_to_idx = {d_: i for i, d_ in enumerate(dataset.drugs_names_unique_sorted)}
     ev = ConditionEvaluator(adata, Path(a.v2_dir), Path(a.manifest_dir), "val", drug_to_idx,
+                            dataset.atomic_covars_dict["cell_type"],
                             max_control_cells=a.max_control_cells, seed=0)
     splits = pd.read_csv(Path(a.manifest_dir) / "splits.tsv", sep="\t").sort_values("group_index")
     val_cols = set(np.where(splits.split.to_numpy() == "val")[0].tolist())
@@ -178,10 +185,50 @@ def main() -> None:
         val_conditions_outside_validation_drugs=len(off),
         pass_=bool(all(not v for v in overlaps.values()) and not off))
 
+    # ---- 6 -----------------------------------------------------------------------------------
+    # For each scored cell line, take real cells of that line out of the loader's own covariate
+    # tensor and compare them with what the evaluator would send. They must be identical.
+    cov_native = dataset.covariates[0].numpy()
+    cell_ids = adata.obs.cell_line_id.astype(str).to_numpy()
+    cov_rows, mismatched = [], []
+    for l_ in ev.scored_lines:
+        cid = ev.cell_line_ids[l_]
+        pos = np.where(cell_ids == str(cid))[0]
+        if len(pos) == 0:
+            mismatched.append(dict(cell_line_id=str(cid), reason="no cells in the AnnData"))
+            continue
+        native = cov_native[pos[0]]
+        ours = ev.cov_onehot_of_line[l_]
+        same = bool(np.array_equal(native, ours))
+        # every cell of the line must carry the same vector, or `cell_type` is not a function of id
+        consistent = bool(np.array_equal(cov_native[pos].max(0), cov_native[pos].min(0)))
+        rec = dict(cell_line_id=str(cid), manifest_line_index=int(l_),
+                   loader_column=int(np.argmax(native)), evaluator_column=int(np.argmax(ours)),
+                   identical=same, one_vector_per_line=consistent)
+        cov_rows.append(rec)
+        if not (same and consistent):
+            mismatched.append(rec)
+    rep["covariate_encoding_matches_loader"] = dict(
+        n_scored_lines=len(ev.scored_lines),
+        n_mismatched=len(mismatched),
+        mismatched=mismatched[:10],
+        example=[r for r in cov_rows if r["cell_line_id"] == "CVCL_0366"],
+        manifest_order_would_mismatch=int(sum(
+            1 for r in cov_rows if r["loader_column"] != r["manifest_line_index"])),
+        pass_=bool(not mismatched))
+
+    # Not a gate: a record of how the prediction is combined across the plates a condition's wells
+    # sit on, so the number of multi-plate conditions is visible beside the scores.
+    rep["evaluator_plate_weighting"] = dict(
+        n_conditions=len(ev.rows),
+        n_multi_plate_conditions=int(ev.n_multi_plate_conditions),
+        n_conditions_with_a_plate_dropped=len(ev.conditions_with_dropped_plate_weight),
+        pass_=True)
+
     rep["all_pass"] = bool(all(rep[k]["pass_"] for k in
                                ["shared_initialisation", "same_function_at_init",
                                 "parameter_parity", "residual_receives_gradient",
-                                "split_disjoint"]))
+                                "split_disjoint", "covariate_encoding_matches_loader"]))
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(rep, indent=1))
     print(json.dumps(rep, indent=1), flush=True)

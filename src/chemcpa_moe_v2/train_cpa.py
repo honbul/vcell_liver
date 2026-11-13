@@ -109,11 +109,20 @@ class ConditionEvaluator:
     """
 
     def __init__(self, adata, v2_dir: Path, manifest_dir: Path, split: str,
-                 drug_to_idx: dict, max_control_cells: int = 64, seed: int = 0):
+                 drug_to_idx: dict, cov_onehot: dict, max_control_cells: int = 64, seed: int = 0):
         import anndata  # noqa: F401
         self.Y = np.load(v2_dir / "Y.npy")
         self.valid = np.load(v2_dir / "valid.npy")
         self.plate_of = np.load(v2_dir / "plate.npy")
+        # The truth is the unweighted mean over a condition's wells, each referenced to its own
+        # plate's DMSO pool, and 9.2 % of conditions have wells on more than one plate. Scoring a
+        # prediction built on the majority plate alone against that truth compares two different
+        # control terms, so the same well weighting is applied to the prediction.
+        pw = v2_dir / "plate_weights.npy"
+        if not pw.exists():
+            raise SystemExit(f"{pw} is missing; rebuild the v2 data with prepare_v2 so the "
+                             "prediction can use the same plate weighting as the truth")
+        self.plate_weights = np.load(pw)
         # the control term the truth subtracts: the whole plate DMSO pool for that cell line, not
         # the mean of whichever control cells happen to be fed to the model
         self.dmso_plate_mean = np.load(v2_dir / "dmso_plate_mean.npy")
@@ -131,7 +140,30 @@ class ConditionEvaluator:
 
         obs = adata.obs
         self.line_name = dict(zip(lines.cell_line_id, range(len(lines))))
-        name_by_index = {i: n for n, i in zip(lines.cell_line_id, range(len(lines)))}
+
+        # The covariate one-hot a cell line must receive is the column the *training loader's own*
+        # encoder gave that line's `cell_type` name. chemCPA fits `OneHotEncoder` on
+        # `np.unique(obs.cell_type)`, so its column order is the sorted cell NAME; `lines.tsv` is
+        # ordered by CVCL identifier. Writing `cov[:, line_index] = 1` -- which this evaluator did
+        # until 2026-11-13 -- therefore handed the model a different cell line's identity for 45 of
+        # the 50 lines (SNU-423's expression arrived labelled HEC-1-A). The vector is now looked up
+        # by name in the loader's own `atomic_covars_dict`, and a line that has no entry is a hard
+        # error rather than a silently wrong row.
+        pair = (obs[["cell_line_id", "cell_type"]].astype(str).drop_duplicates())
+        if pair.cell_line_id.duplicated().any():
+            bad = sorted(pair.cell_line_id[pair.cell_line_id.duplicated()].unique())[:5]
+            raise SystemExit(f"a cell_line_id maps to more than one cell_type name: {bad}")
+        name_of_id = dict(zip(pair.cell_line_id, pair.cell_type))
+        self.cov_onehot_of_line, self.cov_audit = {}, []
+        for l_, cid in enumerate(lines.cell_line_id.astype(str)):
+            nm = name_of_id.get(cid)
+            vec = cov_onehot.get(nm) if nm is not None else None
+            if vec is not None:
+                v = np.asarray(vec, dtype=np.float32)
+                self.cov_onehot_of_line[l_] = v
+                self.cov_audit.append(dict(line_index=l_, cell_line_id=cid, cell_name=nm,
+                                           onehot_column=int(np.argmax(v))))
+
         ctrl = obs.index[(obs.control == 1).to_numpy()]
         ctrl_pos = np.where((obs.control == 1).to_numpy())[0]
         cl = obs.cell_line_id.astype(str).to_numpy()[ctrl_pos]
@@ -151,7 +183,7 @@ class ConditionEvaluator:
         self.dmso_idx = drug_to_idx.get("DMSO", 0)
 
         # the conditions that can actually be scored: valid truth, a known drug, control cells
-        rows = []
+        rows, self.plate_mix, dropped_plate_weight = [], {}, []
         for j, d in enumerate(self.drug_cols):
             if self.drug_idx[j] < 0:
                 continue
@@ -162,8 +194,28 @@ class ConditionEvaluator:
                 key = (self.cell_line_ids[l], p)
                 if p < 0 or key not in self.control_rows:
                     continue
+                if l not in self.cov_onehot_of_line:
+                    raise SystemExit(
+                        f"{self.cell_line_ids[l]} has scorable conditions but no covariate "
+                        "one-hot in the training loader's encoder; the model cannot be told "
+                        "which cell line this is")
+                # the plates the truth's wells came from, kept only where control cells exist,
+                # renormalised so the prediction is still a weighted mean
+                w = self.plate_weights[l, d]
+                mix = [(q, float(w[q])) for q in np.where(w > 0)[0]
+                       if (self.cell_line_ids[l], int(q)) in self.control_rows]
+                if not mix:
+                    continue
+                tot = sum(x for _, x in mix)
+                if tot < 1.0 - 1e-6:
+                    dropped_plate_weight.append((l, d, round(1.0 - tot, 4)))
+                mix = [(int(q), x / tot) for q, x in mix]
+                self.plate_mix[(l, d)] = mix
                 rows.append((l, d, j, p))
         self.rows = rows
+        self.scored_lines = sorted({r[0] for r in rows})
+        self.n_multi_plate_conditions = sum(1 for v in self.plate_mix.values() if len(v) > 1)
+        self.conditions_with_dropped_plate_weight = dropped_plate_weight
 
     def evaluate(self, model, device="cuda", control_mode: str = "observed"
                  ) -> tuple[float, np.ndarray, np.ndarray, np.ndarray]:
@@ -185,24 +237,32 @@ class ConditionEvaluator:
         n_cov = model.num_covariates[0]
         with torch.no_grad():
             for (l, d, j, p) in self.rows:
-                idx = self.control_rows[(self.cell_line_ids[l], p)]
-                g = torch.as_tensor(np.asarray(self.X[idx]), dtype=torch.float32, device=device)
-                n = g.shape[0]
-                di = torch.full((n,), int(self.drug_idx[j]), dtype=torch.long, device=device)
-                do = torch.full((n,), 0.5, dtype=torch.float32, device=device)
-                cov = torch.zeros((n, n_cov), dtype=torch.float32, device=device)
-                cov[:, l] = 1.0
-                out, _ = model.predict(genes=g, drugs_idx=di, dosages=do, covariates=[cov])
-                dim = out.shape[1] // 2
-                pred_treated = out[:, :dim].mean(0).float().cpu().numpy()
-                if control_mode == "observed":
-                    base = self.dmso_plate_mean[p, l]
-                else:
-                    dz = torch.full((n,), int(self.dmso_idx), dtype=torch.long, device=device)
-                    z = torch.zeros((n,), dtype=torch.float32, device=device)
-                    oc, _ = model.predict(genes=g, drugs_idx=dz, dosages=z, covariates=[cov])
-                    base = oc[:, :dim].mean(0).float().cpu().numpy()
-                preds.append(pred_treated - base)
+                v = self.cov_onehot_of_line[l]
+                assert len(v) == n_cov, (len(v), n_cov)
+                delta = None
+                # one term per plate the condition's wells sit on, combined with the same weights
+                # the truth used; for the 90.8 % of conditions on a single plate this is one term
+                for q, wq in self.plate_mix[(l, d)]:
+                    idx = self.control_rows[(self.cell_line_ids[l], q)]
+                    g = torch.as_tensor(np.asarray(self.X[idx]), dtype=torch.float32, device=device)
+                    n = g.shape[0]
+                    di = torch.full((n,), int(self.drug_idx[j]), dtype=torch.long, device=device)
+                    do = torch.full((n,), 0.5, dtype=torch.float32, device=device)
+                    cov = torch.as_tensor(v, dtype=torch.float32, device=device
+                                          ).unsqueeze(0).expand(n, -1).contiguous()
+                    out, _ = model.predict(genes=g, drugs_idx=di, dosages=do, covariates=[cov])
+                    dim = out.shape[1] // 2
+                    pred_treated = out[:, :dim].mean(0).float().cpu().numpy()
+                    if control_mode == "observed":
+                        base = self.dmso_plate_mean[q, l]
+                    else:
+                        dz = torch.full((n,), int(self.dmso_idx), dtype=torch.long, device=device)
+                        z = torch.zeros((n,), dtype=torch.float32, device=device)
+                        oc, _ = model.predict(genes=g, drugs_idx=dz, dosages=z, covariates=[cov])
+                        base = oc[:, :dim].mean(0).float().cpu().numpy()
+                    term = wq * (pred_treated - base)
+                    delta = term if delta is None else delta + term
+                preds.append(delta)
                 truths.append(self.Y[l, d])
                 lines.append(l)
         P, T, L = np.array(preds), np.array(truths), np.array(lines)
@@ -333,6 +393,7 @@ def main() -> None:
     drug_to_idx = {d: i for i, d in enumerate(dataset.drugs_names_unique_sorted)}
     lm.condition_evaluator = ConditionEvaluator(
         adata, Path(args.v2_dir), Path(args.manifest_dir), "val", drug_to_idx,
+        dataset.atomic_covars_dict["cell_type"],
         max_control_cells=args.max_control_cells, seed=args.seed)
 
     out = Path(args.out_dir)

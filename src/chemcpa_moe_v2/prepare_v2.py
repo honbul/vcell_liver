@@ -5,7 +5,7 @@ again here: the 349 structure groups, the 209/70/70 drug split, the 2,000-gene p
 order, the 0.5 uM dose, the 50-cell and 100-cell inclusion thresholds. The one thing that changes is
 how a well becomes a number:
 
-    v1   E = log1p( 1e4 * sum_cells(count) / sum_cells(library) )     log of the pooled mean
+    v1   E = log1p( mean_cells( 1e4 * count / library ) )             log of the mean
     v2   E = mean_cells( log1p( 1e4 * count / library ) )             mean of the per-cell logs
 
 and therefore every downstream score changes, which is why the baselines and the models are all
@@ -152,8 +152,16 @@ def main() -> None:
     valid = n_wells_used > 0
     Y = np.full((nL, nD, nG), np.nan, np.float32)
     Y[valid] = (acc[valid] / n_wells_used[valid][:, None]).astype(np.float32)
+    # `plate_of` is the majority plate, kept for the diagnostics that group conditions by plate.
+    # It is NOT enough to form a prediction: a condition's truth is the unweighted mean over its
+    # wells, 9.2 % of conditions have wells on more than one plate, and each well is referenced to
+    # its own plate's DMSO pool. `plate_weights` is that same well weighting, so the evaluator can
+    # build the prediction against exactly the control term the truth used.
+    plate_weights = np.zeros((nL, nD, nP), np.float32)
     for (l, d), v in plate_votes.items():
         plate_of[l, d] = Counter(v).most_common(1)[0][0]
+        for p_, c_ in Counter(v).items():
+            plate_weights[l, d, p_] = c_ / len(v)
 
     # ---- inputs, identical in form to v1 -------------------------------------------------------
     basal_raw = line_prof[:, pcol].astype(np.float32)
@@ -171,6 +179,7 @@ def main() -> None:
     np.save(O / "basal.npy", basal)
     np.save(O / "fp.npy", fp)
     np.save(O / "plate.npy", plate_of)
+    np.save(O / "plate_weights.npy", plate_weights)
     np.save(O / "basal_mean.npy", bmu)
     np.save(O / "basal_sd.npy", bsd)
     # The exact control term the truth subtracts, on the panel, so a model's predicted response can

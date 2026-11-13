@@ -82,7 +82,8 @@ def main() -> None:
     adata = ad.read_h5ad(args.adata)
     drug_to_idx = {d: i for i, d in enumerate(dataset.drugs_names_unique_sorted)}
     ev = ConditionEvaluator(adata, Path(args.v2_dir), Path(args.manifest_dir), "val",
-                            drug_to_idx, max_control_cells=args.max_control_cells, seed=0)
+                            drug_to_idx, dataset.atomic_covars_dict["cell_type"],
+                            max_control_cells=args.max_control_cells, seed=0)
     dev = "cuda" if torch.cuda.is_available() else "cpu"
 
     rep: dict = {"n_val_conditions": len(ev.rows), "control_modes": {}}
@@ -102,7 +103,11 @@ def main() -> None:
             per_seed[str(sd)] = dict(
                 observed=round(obs, 6),
                 model=round(mod, 6),
-                reconstruction_share_pct=round((obs - mod) / obs * 100, 2) if obs else None,
+                # How far the score falls when the model's own DMSO prediction replaces the
+                # observed one. It is NOT the fraction of the error caused by reconstruction:
+                # with control error b and response error r the total is MSE(b)+MSE(r)+2E[br],
+                # and a cross term that does not vanish cannot be split by subtracting RMSEs.
+                rmse_drop_with_predicted_control_pct=round((obs - mod) / obs * 100, 2) if obs else None,
                 rms_predicted_response_observed=round(float(np.sqrt((P_obs ** 2).mean())), 6),
                 rms_predicted_response_model=round(float(np.sqrt((P_mod ** 2).mean())), 6),
                 rms_truth=round(float(np.sqrt((T ** 2).mean())), 6),
