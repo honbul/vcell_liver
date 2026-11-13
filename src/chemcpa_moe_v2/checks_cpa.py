@@ -31,7 +31,7 @@ import torch
 from .models_cpa import param_counts, residual_fingerprint, solve_dense_hidden
 from .train_cpa import ConditionEvaluator, _import_chemcpa, build, make_module
 
-ARMS = ["P0", "P1", "P2", "P3"]
+ARMS = ["P0", "P1", "P2", "P2b", "P3"]
 
 
 def main() -> None:
@@ -128,7 +128,7 @@ def main() -> None:
     didx = tr.drugs_idx[idx].to(dev).squeeze(-1) if tr.drugs_idx.ndim > 1 else tr.drugs_idx[idx].to(dev)
     dos = tr.dosages[idx].to(dev).squeeze(-1) if tr.dosages.ndim > 1 else tr.dosages[idx].to(dev)
     cv = tr.covariates[0][idx].to(dev)
-    for arm in ["P1", "P2", "P3"]:
+    for arm in ["P1", "P2", "P2b", "P3"]:
         torch.manual_seed(0)
         lm, _, _ = make_module(ChemCPA, cfg, dcfg, arm, a)
         lm = lm.to(dev)
@@ -149,7 +149,7 @@ def main() -> None:
                      all_finite=bool(np.isfinite(losses).all()),
                      n_params_unmoved=int(sum(v == 0.0 for v in moved.values())),
                      moved=moved)
-        if arm == "P2":
+        if arm in ("P2", "P2b"):
             with torch.no_grad():
                 out, _ = lm.model.predict(genes=g, drugs_idx=didx, dosages=dos, covariates=[cv])
             pi = lm.model.last_router_weights.detach().float().cpu().numpy()

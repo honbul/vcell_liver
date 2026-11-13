@@ -1,5 +1,5 @@
 # Environment for the chemCPA-based conditional-expert study (goal sections 1-6).
-export MOE_ROOT=/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_chemcpa_moe_v2
+export MOE_ROOT=${MOE_ROOT:-/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_chemcpa_moe_v2}
 export MOE_PY="$MOE_ROOT/assets/envs/moe/bin/python"          # the small-MLP / analysis env
 export CPA_PY="$MOE_ROOT/assets/envs/chemcpa/bin/python"      # torch + lightning + hydra + rdkit
 export CPA_SRC="$MOE_ROOT/assets/external/chemCPA"            # pinned 43e830eb

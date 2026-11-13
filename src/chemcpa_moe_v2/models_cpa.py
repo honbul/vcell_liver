@@ -13,6 +13,12 @@ linear map produces a hidden vector `h` of size `width`, shared by every output 
     P1   out = head(h + W2 GELU(W1 h))                           one Dense residual, width solved
                                                                  for parameter parity with P2
     P2   out = head(h + sum_k pi_k(z_cov, z_drug) A_k(h))        K=4 bottleneck experts, soft router
+                                                                 on the cell-line covariate embedding
+                                                                 and the drug embedding (as built)
+    P2b  out = head(h + sum_k pi_k(z_basal, z_drug) A_k(h))      the same experts and router, routed
+                                                                 on the encoder's basal latent of the
+                                                                 control cells and the drug embedding
+                                                                 -- the router the plan pre-registered
     P3   out = head(h + sum_k softmax(a)_k A_k(h))               the same experts, input-independent
 
 `W2` and every expert's second projection are **zero-initialised**, so at step 0 every arm computes
@@ -123,7 +129,10 @@ def attach_residual(model, arm: str, n_experts: int = 4, expert_rank: int = 32,
     if arm == "P1":
         assert dense_hidden is not None
         model.residual = DenseResidual(d, dense_hidden)
-    elif arm == "P2":
+    elif arm in ("P2", "P2b"):
+        # P2b's condition is concat(z_basal, z_drug). z_basal is the encoder output, of size
+        # hparams["dim"] like the covariate embedding it replaces, so d_cond, the router's
+        # parameter count and therefore P1's parity are unchanged.
         model.residual = ConditionalExperts(d, n_experts, expert_rank, d_cond)
     elif arm == "P3":
         model.residual = FixedExperts(d, n_experts, expert_rank)

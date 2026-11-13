@@ -270,7 +270,7 @@ def main() -> None:
     all_idx = np.arange(len(truth))
 
     boots: dict = {"primary_seed_mean_of_scores": {}, "ensemble_of_mean_prediction": {}}
-    arms = [a_ for a_ in ["P0", "P1", "P2", "P3"] if a_ in preds_by_arm]
+    arms = [a_ for a_ in ["P0", "P1", "P2", "P2b", "P3"] if a_ in preds_by_arm]
     for i, a_ in enumerate(arms):
         for b_ in arms[i + 1:]:
             pair = {

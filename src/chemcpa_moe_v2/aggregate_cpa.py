@@ -20,7 +20,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ARMS = ["P0", "P1", "P2", "P3"]
+ARMS = ["P0", "P1", "P2", "P2b", "P3"]
 
 
 def load(runs_dir: Path) -> dict:
@@ -113,35 +113,44 @@ def main() -> None:
     def rel(a_, b_):
         return round((a_ - b_) / a_ * 100, 4) if a_ else None
 
-    gate = {}
-    if "P2" in agg and "seed_mean_of_scores" in agg["P2"]:
-        p2 = agg["P2"]["seed_mean_of_scores"]
+    def gate_for(v: str) -> dict:
+        """The plan's promotion gate, for one routed variant v (P2 or P2b)."""
+        g = {}
+        if v not in agg or "seed_mean_of_scores" not in agg[v]:
+            return dict(promote=False, reason=f"{v} has no seed-confirmed validation score")
+        pv = agg[v]["seed_mean_of_scores"]
         for other in ["P0", "P1"]:
             if other in agg and "seed_mean_of_scores" in agg[other]:
-                gate[f"P2_over_{other}_pct"] = rel(agg[other]["seed_mean_of_scores"], p2)
+                g[f"{v}_over_{other}_pct"] = rel(agg[other]["seed_mean_of_scores"], pv)
         signs = []
         for s in a.seeds:
-            if (str(s) in agg["P2"]["per_seed_score"]
+            if (str(s) in agg[v]["per_seed_score"]
                     and "P1" in agg and str(s) in agg["P1"]["per_seed_score"]):
                 signs.append(agg["P1"]["per_seed_score"][str(s)]
-                             > agg["P2"]["per_seed_score"][str(s)])
-        gate["seeds_agreeing_P2_beats_P1"] = int(sum(signs))
-        gate["n_seeds"] = len(signs)
-        beats = {k: bool(p2 < v) for k, v in base.items()
-                 if isinstance(v, (int, float))}
-        gate["beats_baselines"] = beats
-        gate["threshold_pct"] = a.gate_pct
-        gate["train_P3"] = bool(
-            gate.get("P2_over_P0_pct", -1) >= a.gate_pct
-            and gate.get("P2_over_P1_pct", -1) >= a.gate_pct
-            and gate.get("seeds_agreeing_P2_beats_P1", 0) == len(a.seeds)
+                             > agg[v]["per_seed_score"][str(s)])
+        g[f"seeds_agreeing_{v}_beats_P1"] = int(sum(signs))
+        g["n_seeds"] = len(signs)
+        beats = {k: bool(pv < b) for k, b in base.items()}
+        g["beats_baselines"] = beats
+        g["threshold_pct"] = a.gate_pct
+        g["promote"] = bool(
+            g.get(f"{v}_over_P0_pct", -1) >= a.gate_pct
+            and g.get(f"{v}_over_P1_pct", -1) >= a.gate_pct
+            and g.get(f"seeds_agreeing_{v}_beats_P1", 0) == len(a.seeds)
             and all(beats.values()))
-    else:
-        gate["train_P3"] = False
-        gate["reason"] = "P2 has no seed-confirmed validation score yet"
+        return g
+
+    # Two routed variants exist since 2026-11-13: P2 as built (routed on the cell-line covariate
+    # embedding) and P2b (routed on the basal latent, the router the plan pre-registered). The rule
+    # was declared before either variant's corrected results existed: each is gated on its own,
+    # P3 is trained if either passes, and P3 is then compared with the variant(s) that passed.
+    by_variant = {v: gate_for(v) for v in ["P2", "P2b"] if v in agg}
+    gate = dict(by_variant=by_variant,
+                promoted=[v for v, g in by_variant.items() if g.get("promote")],
+                train_P3=bool(any(g.get("promote") for g in by_variant.values())))
 
     rep = dict(selected=selected, aggregates=agg, baselines=base, gate=gate,
-               note="positive percentages mean P2 is better; the two seed aggregates are "
+               note="positive percentages mean the routed variant is better; the two seed aggregates are "
                     "different statistics, not two estimates of one")
     (out / "selection.json").write_text(json.dumps(rep, indent=1))
     print(json.dumps(rep, indent=1), flush=True)

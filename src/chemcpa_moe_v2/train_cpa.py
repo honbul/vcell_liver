@@ -74,7 +74,12 @@ def patched_predict(self, genes, drugs=None, drugs_idx=None, dosages=None, covar
             latent_treated = latent_treated + e(cov_idx)
             emb_cov = e(cov_idx)
 
-    if self.num_covariates[0] > 0 and self.num_drugs > 0:
+    if getattr(self, "residual_arm", None) == "P2b":
+        # The router reads the control cells' own state, not the cell-line label. Gradient is
+        # allowed to reach the encoder through it, as it would for any part of the model; the
+        # covariate adversary still pushes cell-line identity out of latent_basal.
+        cell_drug_embedding = torch.cat([latent_basal, drug_embedding], dim=1)
+    elif self.num_covariates[0] > 0 and self.num_drugs > 0:
         cell_drug_embedding = torch.cat([emb_cov, drug_embedding], dim=1)
     elif self.num_drugs > 0:
         cell_drug_embedding = drug_embedding
@@ -384,7 +389,7 @@ def main() -> None:
     ap.add_argument("--v2-dir", required=True)
     ap.add_argument("--manifest-dir", required=True)
     ap.add_argument("--out-dir", required=True)
-    ap.add_argument("--arm", required=True, choices=["P0", "P1", "P2", "P3"])
+    ap.add_argument("--arm", required=True, choices=["P0", "P1", "P2", "P2b", "P3"])
     ap.add_argument("--lr-scale", type=float, default=1.0)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--max-epochs", type=int, default=10)
