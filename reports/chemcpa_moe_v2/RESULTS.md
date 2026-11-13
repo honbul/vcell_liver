@@ -10,7 +10,24 @@ Every number below was produced by a job in `experiments/chemcpa_moe_v2/` or
 
 ---
 
-## Verdicts
+> ## ⚠ Status at `ab67755`: every chemCPA-arm number below is withdrawn
+>
+> A review on 2026-11-13 found that the evaluator built each cell line's covariate one-hot from
+> the manifest's `line_index`, which is ordered by CVCL identifier, while chemCPA's loader orders
+> that one-hot by sorted cell **name**. The two agree for 5 of 50 lines. For the other 45 the model
+> was told it was looking at a different cell line than the expression it was given — SNU-423's
+> cells arrived labelled HEC-1-A. This was reproduced against the real AnnData, not inferred.
+>
+> It affects every validation score, therefore the learning-rate choice, the saved best epoch,
+> the P3 gate, the control-mode diagnostic, the test pass and the SNU-423 secondary. The baselines
+> (ridge, per-line constant, no-change) and the v1 small MLPs do **not** go through this path and
+> are unaffected. Four further scoring defects were found with it; §10 lists all of them.
+>
+> The verdicts below are therefore **withdrawn, not reversed**. Nothing here says the arms will
+> look better once the input is right. The sections are kept unedited as the record of what was
+> run, and the corrected study is in `RESULTS_FIXED.md`.
+
+## Verdicts (withdrawn — see the box above)
 
 | | verdict | what it rests on |
 |---|---|---|
@@ -472,3 +489,30 @@ because every one of these was found after it had already affected something.
 
 An earlier statement of mine that runs would "early-stop around epoch 4–5" was wrong for the
 reason in the last row, and is corrected here rather than quietly dropped.
+
+### Found in the 2026-11-13 review, after this report was written
+
+All six are in the scoring path. The first one invalidates every arm number in this file.
+
+| | what happened | how it was confirmed | what was done |
+|---|---|---|---|
+| **cell line identity** | the evaluator set `cov[:, line_index] = 1`, using `lines.tsv`'s CVCL order, while chemCPA's loader orders the one-hot by sorted `cell_type` **name**. 45 of 50 lines, and 43 of the 48 scored ones, received another line's identity; SNU-423's expression was labelled HEC-1-A | the mapping was recomputed from the real `tahoe_cells.h5ad` and the loader's own encoder, not from the review's description | the vector is looked up by name in the loader's `atomic_covars_dict`; a line without one is a hard error; new check 6 compares the evaluator's vector with real rows of the loader's covariate tensor, per line |
+| plate weighting | the truth is the unweighted mean over a condition's wells, each against its own plate's DMSO pool, but the prediction was formed on the majority plate alone | counted from the well table: 1,516 of 16,527 conditions (9.2 %) span more than one plate | `prepare_v2` writes `plate_weights.npy`; the prediction now uses the same well weighting. The frozen truth arrays are byte-identical after the rebuild (job 21529) |
+| drug-centred correlation | the arms' figure pooled every condition and gene into one correlation; the baselines' figure averages per-condition correlations. A pooled correlation is dominated by the largest-response conditions, so 0.213 vs 0.097 was never a like-for-like comparison | the two definitions were read side by side in `final_eval_cpa.py` and `moe_drug_v1/evaluate.py` | the baselines' own function is imported; the pooled number keeps a separate name |
+| primary vs ensemble | the secondaries, the bootstrap and the SNU-423 table were computed on the 3-seed **ensemble** while sitting beside the seed-mean primary. The P1→P2 margin is 0.50 % as an ensemble and 0.95 % as the primary | recomputed from `test_results.json` | every secondary is now reported per seed, as a seed mean, and as an ensemble, each labelled |
+| router usage | `router_usage_val` summarised `last_router_weights`, i.e. one condition's control cells — all of which share a covariate and drug embedding, so the reported spread was zero by construction | read from the code path | the evaluator keeps one router row per condition and reports the spread across conditions |
+| missing seed | a missing checkpoint was skipped, which silently changes what the primary metric averages over | read from the code path | it is now a hard error |
+
+Two wordings in this file are also wrong and are left in place with the rest of the withdrawn
+text: the memory cost of the experts is 3.5 % (80.1 → 82.9 MB), not 0.3 % — 0.3 % is the time
+cost; and on SNU-423 P2 is second of the three arms, not third. `reconstruction_share_pct` was a
+misnomer: subtracting two RMSEs does not decompose an error whose cross term does not vanish, so
+it is reported as "the drop in RMSE when the model's own control is used instead".
+
+**Not changed, but recorded.** The plan specifies the router's input as
+`concat(z_basal, drug_embedding)`; the implementation uses `concat(covariate_embedding,
+drug_embedding)`. P2 as built therefore routes on cell-line identity and drug, not on the control
+cells' expression state. That is a deviation from the pre-registered design, not a bug in the
+scoring path, and changing it at the same time as the evaluator fix would mix a correction with a
+model change. The re-run keeps the implementation as built and names it for what it is; whether to
+also run the pre-registered basal router is a separate, declared decision.

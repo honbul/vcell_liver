@@ -15,7 +15,7 @@ export PYTHONPATH="$CPA_SRC:${PYTHONPATH:-}"
 echo "host=$(hostname) job=${SLURM_JOB_ID:-} gpu=$(nvidia-smi --query-gpu=name --format=csv,noheader|head -1)"
 echo "commit=$(git rev-parse HEAD) chemcpa=$(cd $CPA_SRC && git rev-parse HEAD) start=$(date -Is)"
 for S in 0.3 1.0 3.0; do
-  RUN="$V2_OUT/runs/${ARM}_lr${S}_s42"
+  RUN="${V2_RUNS:-$V2_OUT/runs}/${ARM}_lr${S}_s42"
   echo "=== $ARM lr_scale=$S -> $RUN"
   "$CPA_PY" -u -m src.chemcpa_moe_v2.train_cpa \
     --chemcpa-src "$CPA_SRC" --adata "$V2_OUT/tahoe_cells.h5ad" \

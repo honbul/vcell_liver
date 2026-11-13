@@ -22,7 +22,7 @@ ARM=${1:?arm}; S=${2:?lr_scale}; E=${3:-30}
 export PYTHONPATH="$CPA_SRC:${PYTHONPATH:-}"
 echo "host=$(hostname) job=${SLURM_JOB_ID:-} commit=$(git rev-parse HEAD) start=$(date -Is)"
 for SEED in 42 43 44; do
-  RUN="$V2_OUT/runs_e${E}/${ARM}_lr${S}_s${SEED}"
+  RUN="${V2_RUNS:-$V2_OUT/runs_e${E}}/${ARM}_lr${S}_s${SEED}"
   "$CPA_PY" -u -m src.chemcpa_moe_v2.train_cpa \
     --chemcpa-src "$CPA_SRC" --adata "$V2_OUT/tahoe_cells.h5ad" \
     --embedding "$V2_OUT/tahoe_rdkit2D_embedding.parquet" \

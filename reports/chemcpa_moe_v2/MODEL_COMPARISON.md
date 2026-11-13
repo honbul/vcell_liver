@@ -3,6 +3,15 @@
 `RESULTS.md` is the study. This file is the narrower thing the plan asks for: what exactly was
 held equal between the three arms, what differed, and what the difference bought.
 
+> ## ⚠ The numbers in §3 are withdrawn
+>
+> They were produced by an evaluator that gave 45 of the 50 cell lines another line's covariate
+> one-hot, so the arms were compared on inputs that contradicted themselves. §1's "what is
+> identical" list stands — it is about the models, and the models are unchanged — but §1 did not
+> contain a row for *the inputs mean what they say*, which is exactly how this got through. See
+> the box at the top of `RESULTS.md`, §10 of it for the full defect list, and `RESULTS_FIXED.md`
+> for the corrected comparison.
+
 ## 1. What is identical
 
 One base model is built, and the residual is attached to it. Everything outside the residual is
