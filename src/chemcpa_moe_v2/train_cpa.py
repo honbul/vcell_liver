@@ -234,6 +234,11 @@ class ConditionEvaluator:
         assert control_mode in ("observed", "model")
         model.eval()
         preds, truths, lines = [], [], []
+        # The router's weights, one row per scored condition. `last_router_weights` on its own is
+        # the last forward call's output, and inside a condition every control cell carries the
+        # same covariate and drug embedding, so its spread is zero by construction and says
+        # nothing about whether routing varies. What varies across conditions is the question.
+        router_rows: list = []
         n_cov = model.num_covariates[0]
         with torch.no_grad():
             for (l, d, j, p) in self.rows:
@@ -242,7 +247,7 @@ class ConditionEvaluator:
                 delta = None
                 # one term per plate the condition's wells sit on, combined with the same weights
                 # the truth used; for the 90.8 % of conditions on a single plate this is one term
-                for q, wq in self.plate_mix[(l, d)]:
+                for qi, (q, wq) in enumerate(self.plate_mix[(l, d)]):
                     idx = self.control_rows[(self.cell_line_ids[l], q)]
                     g = torch.as_tensor(np.asarray(self.X[idx]), dtype=torch.float32, device=device)
                     n = g.shape[0]
@@ -262,11 +267,30 @@ class ConditionEvaluator:
                         base = oc[:, :dim].mean(0).float().cpu().numpy()
                     term = wq * (pred_treated - base)
                     delta = term if delta is None else delta + term
+                    pi_ = getattr(model, "last_router_weights", None)
+                    if pi_ is not None and qi == 0:
+                        router_rows.append(pi_.detach().float().mean(0).cpu().numpy())
                 preds.append(delta)
                 truths.append(self.Y[l, d])
                 lines.append(l)
+        self.router_by_condition = np.array(router_rows) if router_rows else None
         P, T, L = np.array(preds), np.array(truths), np.array(lines)
         return macro_delta_rmse(P, T, L), P, T, L
+
+    def router_summary(self) -> dict | None:
+        """How much the expert mixture actually moves, condition to condition."""
+        pi = getattr(self, "router_by_condition", None)
+        if pi is None or len(pi) == 0:
+            return None
+        ent = -(pi * np.log(np.clip(pi, 1e-12, None))).sum(1)
+        return dict(n_conditions=int(len(pi)),
+                    mean_weight=pi.mean(0).round(6).tolist(),
+                    weight_sd_across_conditions=pi.std(0).round(6).tolist(),
+                    weight_sd_mean=round(float(pi.std(0).mean()), 6),
+                    max_weight_range=round(float((pi.max(0) - pi.min(0)).max()), 6),
+                    entropy_mean=round(float(ent.mean()), 6),
+                    entropy_max=round(float(np.log(pi.shape[1])), 6),
+                    collapsed=bool(pi.mean(0).max() > 0.95))
 
 
 def build(args, ChemCPA, load_dataset_splits, PerturbationDataModule):
@@ -423,14 +447,7 @@ def main() -> None:
     if torch.cuda.is_available():
         peak = dict(peak_alloc_MB=torch.cuda.max_memory_allocated() / 2 ** 20,
                     gpu=torch.cuda.get_device_name(0))
-    router = None
-    if getattr(lm.model, "last_router_weights", None) is not None:
-        pi = lm.model.last_router_weights.detach().float().cpu().numpy()
-        ent = -(pi * np.log(np.clip(pi, 1e-12, None))).sum(1)
-        router = dict(mean_weight=pi.mean(0).tolist(),
-                      entropy_mean=float(ent.mean()), entropy_max=float(np.log(pi.shape[1])),
-                      weight_sd_across_inputs=pi.std(0).tolist(),
-                      weight_sd_mean=float(pi.std(0).mean()))
+    router = lm.condition_evaluator.router_summary()
 
     rec = dict(arm=args.arm, lr_scale=args.lr_scale, seed=args.seed,
                hparams=dict(cfg["model"]["hparams"]), params=counts,
