@@ -18,6 +18,6 @@ echo "host=$(hostname) job=${SLURM_JOB_ID:-} commit=$(git rev-parse HEAD) runs=$
   --embedding "$V2_OUT/tahoe_rdkit2D_embedding.parquet" \
   --hparams configs/chemcpa_moe_v2/hparams_official.json \
   --v2-dir "$V2_OUT/data" --manifest-dir manifests/chemcpa_moe_v2 \
-  --runs-dir "$RUNS" --selection reports/chemcpa_moe_v2/selection.json \
+  --runs-dir "$RUNS" --selection "${3:-reports/chemcpa_moe_v2/selection.json}" \
   --out "$OUT"
 echo "end=$(date -Is)"

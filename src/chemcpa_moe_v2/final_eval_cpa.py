@@ -126,6 +126,9 @@ def main() -> None:
     ap.add_argument("--baselines-test", default=None,
                     help="baselines_test.json, so the arms and the minimum baselines appear in "
                          "one table scored on exactly the same conditions")
+    ap.add_argument("--baseline-preds-dir", default=None,
+                    help="directory holding pred_{no_change,line_mean,ridge}_test.npy; the "
+                         "baselines are then scored on the arms' rows with the arms' functions")
     ap.add_argument("--seeds", type=int, nargs="+", default=[42, 43, 44])
     ap.add_argument("--n-experts", type=int, default=4)
     ap.add_argument("--expert-rank", type=int, default=32)
@@ -316,7 +319,34 @@ def main() -> None:
                                      "single-cell evaluator can form; use the two numbers above "
                                      "for a like-for-like comparison with the arms")
 
-    rep = dict(n_test_conditions=len(ev.rows), results=results, reference=ref, bootstrap=boots,
+    # The baselines on exactly the arms' rows, through exactly the arms' functions. Their test
+    # predictions were written by `moe_drug_v1.baselines --split test`; nothing is refitted here.
+    # Rows are matched by (line index, drug column), which both sides index from the same
+    # lines.tsv and splits.tsv, and every arm row must be found or the script stops.
+    baselines_same_rows = {}
+    if args.baseline_preds_dir:
+        bdir = Path(args.baseline_preds_dir)
+        cols = np.where(splits_all.split.to_numpy() == "test")[0]
+        li_, dj_ = np.where(valid[:, cols])
+        pos = {(int(a_), int(cols[b_])): k for k, (a_, b_) in enumerate(zip(li_, dj_))}
+        take = [pos.get((int(r[0]), int(r[1]))) for r in ev.rows]
+        if any(t is None for t in take):
+            raise SystemExit("a scored arm row has no baseline prediction")
+        take = np.array(take)
+        for name in ["no_change", "line_mean", "ridge"]:
+            f = bdir / f"pred_{name}_test.npy"
+            if not f.exists():
+                raise SystemExit(f"{f} is missing")
+            Pb = np.load(f)
+            if len(Pb) != len(li_):
+                raise SystemExit(f"{f} has {len(Pb)} rows, the test condition table has {len(li_)}")
+            Pb = Pb[take].astype(np.float64)
+            b = dict(macro_delta_rmse=round(macro_delta_rmse(Pb, truth, line), 6))
+            b.update(secondaries(Pb))
+            baselines_same_rows[name] = b
+
+    rep = dict(n_test_conditions=len(ev.rows), results=results, reference=ref,
+               baselines_same_rows=baselines_same_rows, bootstrap=boots,
                checkpoint_sha256=hashes,
                note="one pass, no selection, no calibration; percentages are relative to the "
                     "first-named arm")
