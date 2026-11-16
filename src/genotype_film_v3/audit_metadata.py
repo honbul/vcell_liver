@@ -164,6 +164,8 @@ def audit_l1000_inst(release: str, inst: pd.DataFrame, cells: pd.DataFrame, reg:
     out["cells"] += cand
     names = {r["platform_cell_name"] for r in cand}
     sub = inst[inst.cell.isin(names)].copy()
+    if "plate_id_extends_rna_plate" in sub and not sub.plate_id_extends_rna_plate.all():
+        raise SystemExit(f"{release}: liver instances whose inst_id prefix does not extend rna_plate")
 
     # Level 3 column ids: confirm that every audited instance is a column of the local matrix
     import h5py
@@ -212,9 +214,9 @@ def load_gse92742(d: Path):
     # rna_plate drops the bead-batch suffix; the detection plate id used by the matrix and by
     # LINCS2020 is the part of inst_id before ':'. Both must agree on the plate they name.
     inst["plate"] = inst.inst_id.str.split(":").str[0]
-    bad = ~np.array([p.startswith(r) for p, r in zip(inst.plate, inst.rna_plate)])
-    if bad.any():
-        raise SystemExit(f"GSE92742: {int(bad.sum())} inst_id prefixes do not extend rna_plate")
+    # (mixed-cell 'XC' plates of other lineages name rna_plate differently; the audited liver
+    # instances are checked in audit_l1000_inst and must all agree)
+    inst["plate_id_extends_rna_plate"] = [p.startswith(r) for p, r in zip(inst.plate, inst.rna_plate)]
     cells = pd.read_csv(note_file(d / "GSE92742_Broad_LINCS_cell_info.txt", "GSE92742", "cell metadata", "full"), sep="\t")
     genes = pd.read_csv(note_file(d / "GSE92742_Broad_LINCS_gene_info.txt", "GSE92742", "gene metadata", "full"), sep="\t")
     l3 = note_file(d / "GSE92742_Broad_LINCS_Level3_INF_mlr12k_n1319138x12328.gctx", "GSE92742",
