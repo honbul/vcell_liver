@@ -1,0 +1,145 @@
+{
+ "label": "small_diagnostic_gate_not_met",
+ "main_run": "a2_main_d284715",
+ "controls_run": "a3_controls_45aa42a",
+ "a4": {
+  "label": "small_diagnostic_gate_not_met",
+  "n_permutations": 20,
+  "A3": 1.035337236449559,
+  "perm_mean": 1.0371639380981588,
+  "perm_min": 1.016286124761701,
+  "perm_max": 1.0563823223032225,
+  "perm_sd": 0.012528444140234442,
+  "n_perm_better_or_equal_than_A3": 6,
+  "A3_minus_perm_mean": -0.0018267016485997711,
+  "ci_low": -0.019879220013382173,
+  "ci_high": 0.017306789694039017,
+  "drugs_A3_better_than_perm_mean": 45,
+  "n_drugs": 90,
+  "A0": 1.0536910141005313
+ },
+ "learning_curve": [
+  {
+   "model": "A0",
+   "train_fraction": 0.5,
+   "macro_drug_normalized_rmse": 1.0555724007356375,
+   "ci_low": 0.9607580579438126,
+   "ci_high": 1.1445704901820617
+  },
+  {
+   "model": "A0",
+   "train_fraction": 1.0,
+   "macro_drug_normalized_rmse": 1.0536910141005313,
+   "ci_low": 0.957570610768658,
+   "ci_high": 1.143047446024624
+  },
+  {
+   "model": "A1",
+   "train_fraction": 0.5,
+   "macro_drug_normalized_rmse": 1.0440264805019461,
+   "ci_low": 0.9548150993313813,
+   "ci_high": 1.122429007882438
+  },
+  {
+   "model": "A1",
+   "train_fraction": 1.0,
+   "macro_drug_normalized_rmse": 1.0126234411697241,
+   "ci_low": 0.9244899402849757,
+   "ci_high": 1.0884891906308696
+  },
+  {
+   "model": "A1r",
+   "train_fraction": 0.5,
+   "macro_drug_normalized_rmse": 1.0131553985015127,
+   "ci_low": 0.9248209286287226,
+   "ci_high": 1.096171306444
+  },
+  {
+   "model": "A1r",
+   "train_fraction": 1.0,
+   "macro_drug_normalized_rmse": 0.9916052997702343,
+   "ci_low": 0.9033942505928337,
+   "ci_high": 1.0720596511159488
+  },
+  {
+   "model": "A2",
+   "train_fraction": 0.5,
+   "macro_drug_normalized_rmse": 1.0256805340038497,
+   "ci_low": 0.9361542908434176,
+   "ci_high": 1.1094203300447785
+  },
+  {
+   "model": "A2",
+   "train_fraction": 1.0,
+   "macro_drug_normalized_rmse": 1.0027128654976993,
+   "ci_low": 0.9124701960439906,
+   "ci_high": 1.0868202001328797
+  },
+  {
+   "model": "A3",
+   "train_fraction": 0.5,
+   "macro_drug_normalized_rmse": 1.0566964377240367,
+   "ci_low": 0.9616675032652245,
+   "ci_high": 1.1453965805967334
+  },
+  {
+   "model": "A3",
+   "train_fraction": 1.0,
+   "macro_drug_normalized_rmse": 1.035337236449559,
+   "ci_low": 0.9347035758235284,
+   "ci_high": 1.1276799327625835
+  }
+ ],
+ "learning_curve_differences": [
+  {
+   "train_fraction": 0.5,
+   "model": "A3",
+   "reference": "A0",
+   "difference": 0.0011240369883991352,
+   "ci_low": -0.02847605080516689,
+   "ci_high": 0.031214163963325138
+  },
+  {
+   "train_fraction": 0.5,
+   "model": "A3",
+   "reference": "A1",
+   "difference": 0.012669957222090522,
+   "ci_low": -0.023258882558491782,
+   "ci_high": 0.047489357553183176
+  },
+  {
+   "train_fraction": 0.5,
+   "model": "A3",
+   "reference": "A1r",
+   "difference": 0.04354103922252395,
+   "ci_low": 0.02517656922266117,
+   "ci_high": 0.06127387015273372
+  },
+  {
+   "train_fraction": 0.5,
+   "model": "A3",
+   "reference": "A2",
+   "difference": 0.03101590372018692,
+   "ci_low": 0.011961902362423477,
+   "ci_high": 0.050518658045704296
+  },
+  {
+   "train_fraction": 0.5,
+   "model": "A1",
+   "reference": "A0",
+   "difference": -0.011545920233691387,
+   "ci_low": -0.04781550024472469,
+   "ci_high": 0.025530903687018488
+  }
+ ],
+ "learning_curve_interaction": {
+  "quantity": "(A3-A1 at 50%) - (A3-A1 at 100%)",
+  "value": -0.010043838057744336,
+  "ci_low": -0.037820027168201556,
+  "ci_high": 0.016369416718321216
+ },
+ "train_families_at_50pct": [
+  30,
+  31
+ ]
+}

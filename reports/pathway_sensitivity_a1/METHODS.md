@@ -94,4 +94,4 @@ python src/pathway_sensitivity_a1/make_figures.py --tables reports/pathway_sensi
 
 ## 9. 실행한 점검(기획서 12절)
 
-`src/pathway_sensitivity_a1/tests/test_checks.py`에 있으며 자료 연결 작업의 마지막에 실행됩니다. 결과는 `RESULTS.md` 7절에 적었습니다.
+`src/pathway_sensitivity_a1/tests/test_checks.py`에 있으며 자료 연결 작업의 마지막에 실행됩니다. 결과는 `RESULTS.md` 9절에 적었습니다.
