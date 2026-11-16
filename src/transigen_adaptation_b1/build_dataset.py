@@ -72,9 +72,10 @@ class UnionFind:
 def drug_table(pert_ids, inst_names):
     comp = pd.read_csv(os.path.join(LINCS_META, "compoundinfo_beta.txt"), sep="\t", dtype=str).fillna("")
     comp = comp[comp.pert_id.isin(pert_ids)]
+    by_pid = {pid: c for pid, c in comp.groupby("pert_id")}
     rows, fps = [], {}
     for pid in sorted(pert_ids):
-        c = comp[comp.pert_id == pid]
+        c = by_pid.get(pid, comp.iloc[:0])
         smiles = sorted({s for s in c.canonical_smiles if s and s.lower() not in ("restricted", "nan", "-666")})
         mol, used = None, ""
         for s in smiles:
@@ -169,12 +170,14 @@ def main():
     note("drop HUH751 (Huh-7 clone, neither source nor target)", t)
     pd.DataFrame(attr).to_csv(os.path.join(a.manifest_dir, "attrition.tsv"), sep="\t", index=False)
 
-    c = c[[k in set(zip(t.det_plate, t.cell_iname)) for k in zip(c.det_plate, c.cell_iname)]]
+    tkeys = set(zip(t.det_plate, t.cell_iname))
+    c = c[[k in tkeys for k in zip(c.det_plate, c.cell_iname)]]
     t = t.assign(role=np.where(t.cell_iname.isin(targets), "target", "source"))
     assert not (set(t.cell_iname[t.role == "source"]) & excluded)
 
     # ---- expression
     gene_ids = lm.gene_id.tolist()
+    print("reading expression", flush=True)
     xt = read_gctx_columns(os.path.join(a.raw, "level3_beta_trt_cp_n1805898x12328.gctx"), t.sample_id.tolist(), gene_ids)
     xc = read_gctx_columns(os.path.join(a.raw, "level3_beta_ctl_n188708x12328.gctx"), c.sample_id.tolist(), gene_ids)
     assert np.isfinite(xt).all() and np.isfinite(xc).all()
