@@ -34,8 +34,10 @@ def main():
     checks["no_shared_plates_source_target"] = True
     # 3. source validation cells are disjoint from source training cells
     tr, va = D.source_split()
-    assert not (set(src.cell.iloc[tr]) & set(src.cell.iloc[va])) and len(tr) + len(va) == n_src
-    checks["source_train_val_cells_disjoint"] = dict(train_rows=int(len(tr)), val_rows=int(len(va)))
+    ex = pd.read_csv(os.path.join(MAN_DIR, "source_rows_excluded_degenerate.tsv"), sep="\t")
+    assert not (set(src.cell.iloc[tr]) & set(src.cell.iloc[va])) and len(tr) + len(va) + len(ex) == n_src
+    assert not (set(ex.row_id) & (set(tr) | set(va)))
+    checks["source_train_val_cells_disjoint"] = dict(train_rows=int(len(tr)), val_rows=int(len(va)), excluded_degenerate_rows=int(len(ex)))
     # 4. target splits: disjoint, drug groups intact, every scored drug has a source-train condition, nested k subsets
     train_groups = set(src.drug_group.iloc[tr])
     summ = json.load(open(os.path.join(MAN_DIR, "splits_summary.json")))["targets"]

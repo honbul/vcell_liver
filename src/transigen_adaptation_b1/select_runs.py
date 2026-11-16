@@ -10,7 +10,7 @@ from .tsg_adapter import sha256
 
 
 def src_id(lr, seed):
-    return f"source_lr{lr:g}_seed{seed}_v1"
+    return f"source_lr{lr:g}_seed{seed}_v2"      # v1 = runs before protocol amendment 1 (all diverged)
 
 
 def load(kind, rid):

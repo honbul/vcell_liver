@@ -49,7 +49,12 @@ class Data:
         s = pd.read_csv(os.path.join(MAN_DIR, "source_split.tsv"), sep="\t")
         role = self.rows.cell.iloc[: self.n_src].map(s.set_index("cell").role)
         assert role.notna().all()
-        return np.where(role.to_numpy() == "train")[0], np.where(role.to_numpy() == "val")[0]
+        role = role.to_numpy().copy()
+        # protocol amendment 1: degenerate source rows (a plate whose values are ~0.001) are used nowhere
+        ex = pd.read_csv(os.path.join(MAN_DIR, "source_rows_excluded_degenerate.tsv"), sep="\t")
+        assert (ex.row_id < self.n_src).all()
+        role[ex.row_id.to_numpy()] = "excluded"
+        return np.where(role == "train")[0], np.where(role == "val")[0]
 
     def source_x1(self):
         x = np.load(os.path.join(self.dir, "x1_source.npy"), mmap_mode="r")

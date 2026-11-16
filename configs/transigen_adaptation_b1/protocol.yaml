@@ -118,4 +118,19 @@ label_permutation_control:
     stopping, and is scored once on test together with the real run.
 
 test_access: target test X1 is read only by final_test.py, which refuses to run without the committed freeze manifest
-amendments: []
+amendments:
+  - id: 1
+    date: 2026-11-16
+    rule: >
+      Source rows whose plate-level control profile or treated profile has a mean below 1 over the 978
+      landmark genes are removed from source training, source validation and the source-side baselines
+      (list: manifests/transigen_adaptation_b1/source_rows_excluded_degenerate.tsv). Normal rows have
+      means between 7.6 and 9.5; nothing lies between 1 and 7. No target row is filtered.
+    reason: >
+      The first three source runs (source_lr*_seed42_v1) all stopped with a non-finite loss inside epoch 1.
+      A step-by-step trace showed the loss becoming non-finite on one batch; 42 rows of a single plate
+      (REP.A010_JURKAT_24H_X3_B32) hold values of about 0.001 in the official matrices although qc_pass is 1.
+    seen_at_that_time: >
+      Source row means, the three diverged source runs (kept in the ledger), target X0 row means (7.95-9.02).
+      No target X1 value, no adaptation run, no validation or test score.
+    consequence: source runs and source baselines are repeated under new ids (v2); learning-rate grid and budget unchanged.
