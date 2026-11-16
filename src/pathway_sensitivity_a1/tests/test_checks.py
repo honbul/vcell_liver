@@ -209,3 +209,11 @@ def test_cache_alignment_and_study_separation():
     axis = pd.read_csv(os.path.join(core.MANIFESTS, "gene_axis.tsv"), sep="\t")
     assert axis.ensembl_id.is_unique and axis.symbol.is_unique
     assert core.load_study(cfg, "LIMORE").expr.shape[1] == len(axis) == core.load_study(cfg, "LCCL").expr.shape[1]
+
+
+def test_single_drug_matches_multi_drug():
+    X, Y, fam, fold = toy()
+    kw = dict(kind="A1", alphas=ALPHAS, n_inner=3, inner_seed=4, K=10)
+    multi, im = nested.fit_predict(X[fold != 0], Y[fold != 0], fam[fold != 0], X[fold == 0], **kw)
+    one, io = nested.fit_predict(X[fold != 0], Y[fold != 0][:, [2]], fam[fold != 0], X[fold == 0], **kw)
+    assert np.allclose(multi[:, [2]], one) and im["alpha"][2] == io["alpha"][0]

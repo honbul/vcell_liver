@@ -86,7 +86,7 @@ def fit_predict(X_tr, Y_tr, fam_tr, X_te, kind, alphas, n_inner, inner_seed, K, 
         T_tr, T_te = tf.transform(X_tr[tr]), tf.transform(X_tr[te])
         n_fam = len(np.unique(fam_tr[te]))
         for a, alpha in enumerate(alphas):
-            P = Ridge(alpha=alpha).fit(T_tr, Z_tr, sample_weight=w_in).predict(T_te)
+            P = Ridge(alpha=alpha).fit(T_tr, Z_tr, sample_weight=w_in).predict(T_te).reshape(Z_te.shape)
             loss[a] += family_first_mean((P - Z_te) ** 2, fam_tr[te]) * n_fam
         n_fam_total += n_fam
     loss /= n_fam_total
