@@ -1,0 +1,137 @@
+# Track A analysis contract. Every rule below was committed before any response-vs-prediction score
+# was computed. Later changes must be appended to `amendments` with time and reason.
+contract_version: 1
+frozen_date: "2026-11-16"
+
+paths:
+  # server paths; `assets` is the private data area linked from the server worktree
+  assets: assets
+  limore_response: /mnt/S1/sdata/pubdata/LIMORE/drug.txt
+  limore_clinic: /mnt/S1/sdata/pubdata/LIMORE/81clinic_information.txt
+  limore_rna_server_copy: /mnt/S1/sdata/pubdata/LIMORE/HCC81.proteinGenes.fpkm_table.log2.txt
+  limore_rna: assets/raw/GSE97098/GSE97098_HCC81.genes.fpkm_table.log2.txt.gz
+  lccl_rna: assets/raw/LCCL/RNAseqFPKM.txt
+  lccl_auc: assets/raw/LCCL/AUC.txt
+  lccl_gi50: assets/raw/LCCL/GI50.txt
+  lccl_description: assets/raw/LCCL/LCCLdescription.txt
+  lccl_compounds: assets/raw/LCCL/Screenedcompounds.txt
+  hallmark_gmt: /mnt/S1/sdata/pubdata/Virtual_Cell/MSigDB/2026.1.Hs/h.all.v2026.1.Hs.symbols.gmt
+  depmap_model: /mnt/S1/sdata/pubdata/DepMap/25Q3/Model.csv
+  model_aliases: configs/pathway_sensitivity_a1/model_aliases.tsv
+  drug_match: configs/pathway_sensitivity_a1/drug_match_lccl.tsv
+  cellosaurus: manifests/pathway_sensitivity_a1/cellosaurus_lookup.tsv
+  downloads_manifest: manifests/pathway_sensitivity_a1/downloads.tsv
+
+expected_sha256:
+  limore_response: 041f3f827bb30e7b1b75c75f97de6a7b064eae166f7468b680bb8fe84317cbee
+  limore_clinic: 03d202eacaf9fdad0cf1411902863e7250514e2a6ce8cdbe1205826e2890d985
+  hallmark_gmt: eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596
+
+eligibility:
+  # A model enters the main HCC analysis only if all hold:
+  #  (1) the source study labels it hepatocellular carcinoma,
+  #  (2) Cellosaurus lists a hepatocellular carcinoma disease term and no hepatoblastoma term,
+  #  (3) the Cellosaurus "Problematic cell line" note does not start with one of `exclude_prefixes`.
+  # A "Partially contaminated" note keeps the model and is recorded as a flag.
+  exclude_prefixes: ["Misclassified", "Misidentified", "Contaminated"]
+family:
+  # Models are one family when they share a Cellosaurus accession, a Cellosaurus root ancestor (HI),
+  # a Cellosaurus same-individual link (OI), or a DepMap PatientID. Name similarity is never used.
+  sources: [same_accession, cellosaurus_root_ancestor, cellosaurus_same_individual, depmap_patient_id]
+
+endpoint:
+  primary: "Activity Area"          # LIMORE drug.txt column
+  direction: higher_is_more_sensitive   # checked in build_data: Spearman(AA, IC50) < 0 and (AA, Emax) < 0
+  replicate_handling: "source table holds one author-aggregated value per model-drug pair; no averaging done here"
+  missing_labels: "never imputed; a drug uses only models with an observed label"
+  constant_response_sd: 1.0e-8      # training SD below this -> drug reported as constant-response
+
+rna:
+  limore_scale: "log2 FPKM as deposited (already log-transformed; minimum 0). Not transformed again."
+  lccl_scale: "FPKM in file; log2(FPKM + 1) applied exactly once. The vsn table is not used."
+  gene_id: "Ensembl gene ID without version"
+  gene_axis: >
+    Ensembl gene IDs that are annotated protein_coding in the GSE97098 matrix and are also present in
+    the LCCL FPKM table (annotation intersection only; no expression or response values are used).
+    Where several axis IDs carry the same gene symbol, the ID with the highest mean LIMORE expression
+    is kept (ties: lexicographically smallest ID). The same axis is used for internal and external work.
+  rank: "within-sample rank over the gene axis, ties='min' (as singscore::rankGenes), divided by the number of axis genes"
+
+hallmark:
+  collection: "MSigDB Human Hallmark"
+  release: "2026.1.Hs"
+  note: "server-held copy acquired earlier from data.broadinstitute.org; plan mentions 2026.2.Hs as the site's current release, the local permitted copy is used throughout as the plan allows"
+  min_genes: 15
+  min_fraction: 0.5
+  scorer: "Bioconductor singscore simpleScore(upSet=set, centerScore=TRUE), every set scored as an 'up' set; no set is sign-flipped"
+
+representations:
+  A0: "training-family-weighted mean of the drug's response"
+  A1: "log2 FPKM genes -> StandardScaler -> Ridge"
+  A1r: "relative within-sample ranks -> StandardScaler -> Ridge"
+  A2: "relative ranks -> StandardScaler -> PCA(d) -> StandardScaler -> Ridge; d = min(K, smallest inner-train n - 1, rank) per outer fold, K = number of retained Hallmark sets; the same d is used for alpha selection and the refit"
+  A3: "Hallmark singscore -> StandardScaler -> Ridge"
+  A4: "as A3 with gene labels permuted over the whole gene axis (sizes, overlaps and gene multiplicities kept)"
+
+model:
+  alpha_grid: [0.01, 0.1, 1, 10, 100, 1000, 10000]
+  alpha_tie_break: largest_alpha
+  label_scaling: "per drug, family-weighted mean and SD of the training rows of that fit"
+  sample_weight: "1 / (number of models of the family present in that training set)"
+  inner_loss: "family-first mean squared error in training-SD units, pooled over the inner test families"
+
+split:
+  outer_folds: 5
+  repeats: 3
+  outer_seeds: [20261116, 20261117, 20261118]
+  inner_folds: 3
+  inner_seed_base: 7100            # inner seed = base + 100 * repeat_index + outer_fold
+  splitter: "sklearn.model_selection.GroupKFold(shuffle=True) on family_id"
+
+metric:
+  primary: macro_drug_normalized_rmse
+  definition: >
+    per outer fold and drug, error = (y - prediction) / s_train where s_train is the family-weighted SD
+    of that fold's training responses; squared errors are averaged within family, then across families,
+    square-rooted per drug within a repeat, averaged over drugs, then averaged over repeats.
+  repeat_handling: "score per repeat, then mean of repeats; a score of repeat-averaged predictions is reported only under the name ensemble"
+  spearman: "per drug and repeat on family-mean observed and predicted values; averaged over repeats"
+
+bootstrap:
+  n: 2000
+  seed: 9101
+  unit: family_id
+  ci: [0.025, 0.975]
+
+gate_a3_improvement:
+  # Literal criterion for "A3 shows a real improvement" (plan 5.1 / 14-6):
+  # A3 has lower macro_drug_normalized_rmse than A0 and than A1, and the 95% family-bootstrap interval
+  # of (A3 - A0) and of (A3 - A1) both lie entirely below zero.
+  # If not met, A4 and the learning curve are still run once as a small diagnostic and labelled so.
+  compare_to: [A0, A1]
+
+a4:
+  n_permutations: 20
+  seeds: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120]
+
+learning_curve:
+  fractions: [0.5, 1.0]
+  seed_base: 5300                  # subset seed = base + 100 * repeat_index + outer_fold
+  unit: "training families of each outer fold; test families unchanged"
+  representations: [A0, A1, A1r, A2, A3]
+
+external:
+  study: LCCL
+  primary_endpoint: AUC
+  direction: "LCCL AUC lower = more sensitive (checked: Spearman(AUC, GI50) > 0); score = Spearman(prediction, -AUC)"
+  secondary_endpoint: "GI50, reported with its censored fraction (values at the 10 uM ceiling stay tied); never mixed with AA"
+  drugs: "single agents matched in drug_match_lccl.tsv with match_status = matched; combinations excluded"
+  models: [A1, A1r, A2, A3]
+  new_lineage: "LCCL families absent from LIMORE: model trained on all eligible LIMORE families"
+  cross_study_leave_family_out: "LCCL families present in LIMORE: that family is removed from LIMORE training and alpha selection"
+  inner_seed: 8800
+  unit: "family (predictions and labels averaged within family before ranking)"
+  min_families_for_spearman: 4
+  bootstrap_seed: 9202
+
+amendments: []
