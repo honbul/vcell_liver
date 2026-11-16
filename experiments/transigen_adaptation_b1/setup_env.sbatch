@@ -9,11 +9,10 @@
 set -euo pipefail
 source experiments/transigen_adaptation_b1/env.sh
 ENV="$TB_ASSETS/envs/tsg"
-if [ ! -x "$ENV/bin/python" ]; then
-  /usr/local/bin/mamba create -y -q -p "$ENV" -c conda-forge python=3.10 pip numpy=1.26 pandas scipy scikit-learn h5py \
-      rdkit matplotlib pyyaml nbconvert nbformat ipykernel
-fi
-"$ENV/bin/pip" install -q --no-cache-dir torch==2.3.1 --index-url https://download.pytorch.org/whl/cu121
+if [ ! -x "$ENV/bin/python" ]; then python3 -m venv --copies "$ENV"; fi
+"$ENV/bin/python" -m pip install -q --no-cache-dir --disable-pip-version-check torch==2.3.1 --index-url https://download.pytorch.org/whl/cu121
+"$ENV/bin/python" -m pip install -q --no-cache-dir --disable-pip-version-check numpy==1.26.4 pandas==2.2.2 scipy==1.13.1 \
+    scikit-learn==1.5.1 h5py==3.11.0 rdkit==2024.3.5 matplotlib==3.9.2 pyyaml==6.0.2 nbconvert nbformat ipykernel
 "$ENV/bin/python" - <<'PY'
 import torch, rdkit, h5py, numpy, pandas, sklearn, scipy
 print("torch", torch.__version__, "cuda build", torch.version.cuda, "| rdkit", rdkit.__version__, "| h5py", h5py.__version__,
