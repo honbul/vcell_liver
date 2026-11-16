@@ -6,7 +6,7 @@
 #SBATCH -t 1-00:00:00
 #SBATCH -o logs/tb_dl_cmap2020_%j.out
 # One-time download of the official CMap LINCS 2020 Level 3 matrices and instance metadata.
-# Resumable (aria2c control file), written to <name>.part and renamed atomically, guarded by a lock.
+# Resumable (curl -C -), written to <name>.part and renamed atomically, guarded by a lock.
 set -euo pipefail
 source experiments/transigen_adaptation_b1/env.sh
 BASE=https://s3.amazonaws.com/macchiato.clue.io/builds/LINCS2020
@@ -22,9 +22,11 @@ for rel in "${FILES[@]}"; do
   name=$(basename "$rel")
   if [ -s "$TB_RAW/$name" ]; then echo "present, skipping: $name"; continue; fi
   echo "downloading $rel at $(date -Is)"
-  aria2c -c -x 8 -s 8 -k 64M --file-allocation=none --user-agent="curl/8" \
-         --max-tries=0 --retry-wait=30 --summary-interval=300 --console-log-level=warn \
-         -d "$TB_RAW" -o "$name.part" "$BASE/$rel"
+  tries=0
+  until curl -fL -sS -C - -A "curl/8" --retry 5 --retry-delay 30 -o "$TB_RAW/$name.part" "$BASE/$rel"; do
+    tries=$((tries+1)); [ $tries -lt 200 ] || { echo "giving up on $name"; exit 1; }
+    echo "curl stopped ($tries), resuming at $(stat -c %s "$TB_RAW/$name.part" 2>/dev/null || echo 0) bytes"; sleep 30
+  done
   expected=$(curl -sI -A "curl/8" "$BASE/$rel" | awk 'tolower($1)=="content-length:"{print $2}' | tr -d '\r')
   actual=$(stat -c %s "$TB_RAW/$name.part")
   [ "$expected" = "$actual" ] || { echo "size mismatch for $name: $actual vs $expected"; exit 1; }
