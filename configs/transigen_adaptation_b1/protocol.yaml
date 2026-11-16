@@ -1,0 +1,110 @@
+# Track B protocol. Written before any expression value of a target HCC line was read.
+# Rules here are fixed; a change needs a dated entry under `amendments` with the reason and what had
+# been seen at that time.
+protocol_variant: cmap2020_level3_multi_target_v1
+upstream:
+  repo: https://github.com/myzheng-SIMM/TranSiGen
+  commit: 8ec2218e2fe4fbb5f3a2c14271a8640a62c1af3a
+  use: model.py (class TranSiGen) imported unmodified; dataset.py and the training scripts are not used for the study runs
+
+data:
+  release: CMap LINCS 2020 (beta), Level 3, single release (never merged with GSE92742/GSE70138)
+  matrices: [level3_beta_trt_cp_n1805898x12328.gctx, level3_beta_ctl_n188708x12328.gctx]
+  instance_table: instinfo_beta.txt
+  genes: 978 rows with feature_space == landmark in geneinfo_beta.txt, in file order
+  treated_wells: pert_type == trt_cp, pert_time == 24 h, nearest_dose == 10 with pert_dose_unit == uM, qc_pass == 1
+  # nearest_dose is the release's nominal dose bin; pert_dose carries dispensing noise (10.0001, 9.9785, 10.4 ...).
+  control_wells: pert_type == ctl_vehicle and cmap_name == DMSO, same det_plate, same cell_iname, same pert_time, qc_pass == 1
+  qc_note: qc_pass is the release's per-well technical flag. It is applied identically to treated and vehicle wells and is not derived from any treatment response.
+  scale: official Level 3 values, no extra normalisation, no scaler for the neural models
+  unit_rows: one row per (cell, pert_id, det_plate) -> X0 = mean of the plate's DMSO wells, X1 = mean of the treated wells on that plate
+  condition: (cell, pert_id); truth delta = equal mean over plates of (X1_plate - X0_plate)
+  drug_representation: ECFP4 (Morgan radius 2), 2048 bits, from compoundinfo_beta canonical_smiles
+  drug_group: connected component over pert_ids sharing a cmap_name, an inchi_key, an RDKit canonical SMILES or an identical fingerprint
+  drop: compounds without a parsable SMILES; plates without a qc-pass DMSO well of the same cell
+
+targets:
+  # adult HCC families found by the committed metadata audit (reports/genotype_film_v3/DATA_AUDIT.md)
+  HUH7: {family: Huh-7, cells: [HUH7]}
+  JHH5: {family: JHH-5, cells: [JHH5]}
+  JHH7: {family: JHH-7, cells: [JHH7]}
+excluded_from_source_all_conditions: [HUH7, HUH751, JHH5, JHH7]   # HUH751 is a Huh-7 clone; it is neither source nor target
+source_liver_non_hcc_flagged: [HEPG2, PHH]                         # allowed in source, never counted as adult HCC
+eligibility:
+  main_drug_set: target drug groups that also have at least one source-train condition (so the same-drug source mean exists)
+  full: {min_drug_groups: 40, min_val: 8, min_test: 8}
+  pilot: {min_drug_groups: 25}        # 25-39 -> reduced pilot; <25 -> target excluded from the quantitative conclusion
+
+splits:
+  source_validation: {kind: held-out cell lines, fraction_of_source_cell_lines: 0.1, seed: 20261116}
+  target: {fractions: [0.6, 0.2, 0.2], unit: drug_group, split_seeds: [1, 2, 3]}
+  k_main: 16
+  k_curve: [8, 32]          # first split seed only, nested subsets, selected settings reused, no new search
+  k_rule: k_used = min(k, n_adapt_pool); sizes larger than the pool are not run
+
+model:
+  # public ECFP4 configuration of the upstream training script
+  n_genes: 978
+  n_latent: 100
+  n_en_hidden: [1200]
+  n_de_hidden: [800]
+  features_dim: 2048
+  features_embed_dim: [400]
+  beta: 0.1
+  dropout: 0.1
+  weight_decay: 1.0e-5
+  init_w: true
+  initialization: random          # the shRNA-pretrained VAEs are not used
+  loss: upstream TranSiGen.loss, unchanged
+inference:
+  path: X0 and the drug fingerprint only
+  latent: posterior means (z1 = mu_z1, z2 = mu_z2Fz1), eval mode
+  note: upstream forward() samples both latents even in eval mode; the mean path calls the same upstream layers without sampling. The X1-encoder/reconstruction path is never scored.
+
+source_pretraining:
+  lr_grid: [3.0e-4, 1.0e-3, 3.0e-3]
+  max_epochs: 300
+  patience_epochs: 30
+  batch_size: 64
+  selection_metric: mean row-wise delta RMSE of the mean-path prediction on source validation rows
+  search_seed: 42
+  seeds: [42, 43, 44]
+
+adaptation:
+  arms:
+    B1_scratch: {init: random, lr_grid: [3.0e-4, 1.0e-3, 3.0e-3]}
+    B2_finetune: {init: source checkpoint of the same seed, lr_grid: [1.0e-5, 1.0e-4, 1.0e-3]}
+  max_updates: 3000
+  eval_every: 50
+  patience_evals: 10
+  include_step0: true
+  batch_size: min(32, number of adapt rows)
+  selection_metric: mean per-condition delta RMSE of the mean-path prediction on target_val
+  search_seed: 42
+  seeds: [42, 43, 44]
+  extension_rule: >
+    Checked once, after the seed-42 search and before any test value is opened. If, for either arm, the
+    selected setting's best validation step equals max_updates in at least one third of the
+    (target, split) cells, max_updates is doubled once for both arms, every adaptation run is repeated
+    under the new budget, and an amendment is recorded. No other extension.
+
+baselines:
+  no_change: delta = 0
+  target_adapt_mean: mean truth delta of the k adapt conditions
+  source_same_drug_mean: equal mean over source-train cell lines of the condition deltas of the same drug group
+  source_ridge: [standardised X0, ECFP4] -> plate-row delta, fit on source-train rows; alpha from [1, 10, 100, 1000, 10000] on source validation
+  target_ridge: same features (source-train scaler), fit on the k adapt rows; alpha from the same grid on target_val
+  b0_mean_offset: delta_B0 + mean over adapt conditions of (truth - delta_B0); per seed
+  b0_mean_offset_shrunk: lambda from [0, 0.25, 0.5, 1] on target_val (secondary)
+
+evaluation:
+  primary: per-condition delta RMSE over 978 genes -> mean over test conditions -> per seed and split -> mean; equal mean over targets
+  secondary: [magnitude ratio, per-condition Pearson, centred Pearson, top-20 direction and recall, retrieval MRR and top-5 with a shuffled-label reference]
+  centring_vector: mean truth delta of the scored conditions, subtracted from truth and prediction (scoring only)
+  retrieval: cosine between each predicted delta and every truth delta of the scored set; rank of the own truth, ties get the mean rank
+  bootstrap: {unit: drug_group, resamples: 2000, seed: 20261116, ci: 0.95, paired: true}
+  contrasts: [B2_finetune - B0, B2_finetune - B1_scratch]
+  seed_mean_and_ensemble: reported in separate columns, never mixed
+
+test_access: target test X1 is read only by final_test.py, which refuses to run without the committed freeze manifest
+amendments: []
