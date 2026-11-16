@@ -259,3 +259,10 @@ score by about 0.1 % (e.g. P0 seed 42: 0.10326 vs 0.10315). The test pass uses s
 `fixed/e30/diagnostics.json`, `val_secondaries.json` (post-hoc) · `fixed/test_results.json` (test)
 · `manifests/chemcpa_moe_v2/freeze_fixed_pretest.json` (checkpoint hashes committed before test) ·
 `checks.json` · `diagnostics_e30_fixedcov.json` (size of the defect).
+
+**Deleted on 2026-11-16, at the user's request** (`manifests/chemcpa_moe_v2/deleted_2026-11-16.json`
+lists every file with its size and SHA-256): the first pass's withdrawn checkpoints and test
+predictions (`runs/`, `runs_e30/`, `test_preds/`), the scratch copy made for the plate weights, and
+the 22 GB `raw/` intermediate. Nothing reported in this file depends on them. Without `raw/`,
+rebuilding `tahoe_cells.h5ad` or `data/` means re-running `build_v2.sbatch` over the read-only Tahoe
+originals; the recorded hashes make the rebuilt files checkable.

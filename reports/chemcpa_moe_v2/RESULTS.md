@@ -26,6 +26,10 @@ Every number below was produced by a job in `experiments/chemcpa_moe_v2/` or
 > The verdicts below are therefore **withdrawn, not reversed**. Nothing here says the arms will
 > look better once the input is right. The sections are kept unedited as the record of what was
 > run, and the corrected study is in `RESULTS_FIXED.md`.
+>
+> On 2026-11-16 the checkpoints and test predictions behind this file's arm numbers were deleted
+> at the user's request; their SHA-256 are kept in `manifests/chemcpa_moe_v2/freeze.json` and
+> `deleted_2026-11-16.json`. The numbers below can no longer be re-scored.
 
 ## Verdicts (withdrawn — see the box above)
 
