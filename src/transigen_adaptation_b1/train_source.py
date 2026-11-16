@@ -59,9 +59,17 @@ def main():
             b = perm[i:i + bs]
             if len(b) < 2:                     # upstream skips single-sample batches (BatchNorm)
                 continue
-            tot += T.upstream_train_step(model, opt, X0[b], X1[b], FP[DI[b]])
+            l = T.upstream_train_step(model, opt, X0[b], X1[b], FP[DI[b]])
+            tot += l
             cnt += len(b)
+            if not np.isfinite(l):
+                break
+        if not np.isfinite(tot):               # a diverged candidate is recorded, not hidden; the best finite state is kept
+            stopped = "non_finite_loss"
+            log.write(f"{ep}\tnan\tnan\tnan\tnan\t{time.time() - t0:.0f}\n")
+            break
         v = val_rmse()
+        v = v if np.isfinite(v) else float("inf")
         ul = T.upstream_eval_loss(model, X0[va_t], X1[va_t], FP[DI[va_t]], seed=a.seed)
         log.write(f"{ep}\t{tot / cnt:.4f}\t{v:.6f}\t{ul['loss']:.4f}\t{ul['mse_pert']:.4f}\t{time.time() - t0:.0f}\n")
         log.flush()

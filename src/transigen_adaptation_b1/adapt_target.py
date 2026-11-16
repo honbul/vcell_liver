@@ -61,6 +61,8 @@ class TargetSet:
 
     def val_score(self, model):
         d = self.val_pred(model)
+        if not np.isfinite(d).all():
+            return float("inf"), d
         return float(per_condition(d, self.truth_v).delta_rmse.mean()), d
 
 
@@ -98,8 +100,11 @@ def adapt_run(D, ts, arm, lr, seed, cfg, dev, max_updates, tag="", fp_perm=None,
         pos += bs
         if len(b) < 2:
             continue
-        T.upstream_train_step(model, opt, ts.x0_a[b], ts.x1_a[b], fp_a[b])
+        l = T.upstream_train_step(model, opt, ts.x0_a[b], ts.x1_a[b], fp_a[b])
         step += 1
+        if not np.isfinite(l):                 # recorded as a diverged run; the best finite state so far is kept
+            stopped = "non_finite_loss"
+            break
         if step % ad["eval_every"] == 0 or step == total:
             v, pred = ts.val_score(model)
             curve.append((step, v))
@@ -110,7 +115,7 @@ def adapt_run(D, ts, arm, lr, seed, cfg, dev, max_updates, tag="", fp_perm=None,
                 if (step - best_step) >= ad["patience_evals"] * ad["eval_every"]:
                     stopped = "patience"
                     break
-    if fixed_steps is not None:      # control run: the state after exactly fixed_steps updates, no selection
+    if fixed_steps is not None and stopped != "non_finite_loss":      # control run: the state after exactly fixed_steps updates, no selection
         best, best_step, best_pred, stopped = v, step, pred, "fixed_steps"
         best_state = {k_: t_.detach().clone() for k_, t_ in model.state_dict().items()}
     model.load_state_dict(best_state)

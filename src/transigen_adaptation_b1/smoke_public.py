@@ -118,17 +118,18 @@ def main():
     val = lambda: rowwise((T.predict_x1_mean_path(m, x0[va], f_e[va]) - x0[va]).cpu().numpy(), dv)[0]
     hist.append(dict(epoch=0, val_delta_rmse=val()))
     gen = torch.Generator(device="cpu").manual_seed(42)
-    for ep in range(1, 21):
+    for ep in range(1, 201):
         p = tr[torch.randperm(len(tr), generator=gen)]
         tot, cnt = 0.0, 0
-        for i in range(0, len(p), 64):
-            b = p[i:i + 64]
+        for i in range(0, len(p), 16):
+            b = p[i:i + 16]
             if len(b) < 2:
                 continue
             tot += T.upstream_train_step(m, opt, x0[b], x1[b], f_e[b])
             cnt += len(b)
-        hist.append(dict(epoch=ep, train_loss_per_sample=tot / cnt, val_delta_rmse=val()))
-    rep["fresh_ecfp4_model_on_example"] = dict(n_train=int(len(tr)), n_val=int(len(va)), history=hist,
+        if ep % 10 == 0 or ep == 1:
+            hist.append(dict(epoch=ep, updates=ep * 5, train_loss_per_sample=tot / cnt, val_delta_rmse=val()))
+    rep["fresh_ecfp4_model_on_example"] = dict(n_train=int(len(tr)), n_val=int(len(va)), batch_size=16, history=hist,
                                                n_params=int(sum(p.numel() for p in m.parameters())),
                                                val_no_change_delta_rmse=float(np.sqrt((dv ** 2).mean(1)).mean()))
     rep["upstream_dataset_module_imported"] = "dataset" in sys.modules

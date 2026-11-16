@@ -24,10 +24,18 @@ sed -i 's/np\.str)/str)/g' "$COPY/src/utils.py"
 ( cd "$COPY.orig/.." && diff -u "$(basename "$COPY.orig")/src" "$(basename "$COPY")/src" ) > $M/upstream_smoke_compat.diff || true
 cat $M/upstream_smoke_compat.diff
 cd "$COPY/src"
-PATH="$(dirname "$TB_PY"):$PATH" "$TB_PY" train_TranSiGen_full_data.py \
+run() {  # label, then upstream arguments
+  echo "=== upstream entry point: $1"; shift
+  PATH="$(dirname "$TB_PY"):$PATH" "$TB_PY" train_TranSiGen_full_data.py \
     --data_path ../data/LINCS2020/data_example/processed_data_id.h5 --molecule_path ../data/LINCS2020/idx2smi.pickle \
-    --molecule_feature ECFP4 --initialization_model random --split_data_type smiles_split \
-    --n_epochs 3 --n_latent 100 --molecule_feature_embed_dim 400 --batch_size 64 --learning_rate 1e-3 \
-    --beta 0.1 --dropout 0.1 --weight_decay 1e-5 --train_flag True --eval_metric True 2>&1 | grep -v "^TranSiGen(\|^  \|^)" | tail -40
-ls -la ../results/trained_models_*_cell_smiles_split/364039/feature_ECFP4_init_random/ ../results/trained_models_*_cell_smiles_split/364039/feature_ECFP4_init_random/predict
+    --split_data_type smiles_split --n_latent 100 --molecule_feature_embed_dim 400 --learning_rate 1e-3 \
+    --beta 0.1 --dropout 0.1 --weight_decay 1e-5 --train_flag True --eval_metric True "$@" 2>&1 \
+    | grep -E "^\[Epoch|train |valid |test |best valid|warning|Error|error|cell count|all data" | awk 'NR<=8 || /Error|best|warning/ {print} {last=$0} END{print "last: " last}' \
+    || echo "(run exited with an error)"
+  ls ../results/trained_models_43_cell_smiles_split/*/feature_*/predict 2>/dev/null || true
+}
+run "README configuration (KPGT, shRNA-pretrained VAEs), 3 epochs" --molecule_feature KPGT --initialization_model pretrain_shRNA --n_epochs 3 --batch_size 64
+run "ECFP4, random init, batch 64, 3 epochs (1 update per epoch on 65 rows)" --molecule_feature ECFP4 --initialization_model random --n_epochs 3 --batch_size 64 --seed 1
+run "ECFP4, random init, batch 16, 60 epochs" --molecule_feature ECFP4 --initialization_model random --n_epochs 60 --batch_size 16 --seed 2
+cd "$TB_ROOT"
 echo "end=$(date -Is)"
