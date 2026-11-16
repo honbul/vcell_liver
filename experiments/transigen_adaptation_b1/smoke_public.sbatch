@@ -12,6 +12,7 @@ set -euo pipefail
 source experiments/transigen_adaptation_b1/env.sh
 echo "start=$(date -Is) commit=$(git rev-parse --short HEAD) host=$(hostname)"
 M=manifests/transigen_adaptation_b1
+"$TB_PY" -m pip freeze > $M/env_pip_freeze.txt
 "$TB_PY" -m src.transigen_adaptation_b1.smoke_public --out $M/public_smoke.json
 
 COPY="$TB_ASSETS/external/TranSiGen_smoke_copy"
