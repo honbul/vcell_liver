@@ -10,7 +10,7 @@ ALPHAS = [1, 10, 100, 1000, 10000]
 
 
 def base_dir():
-    return os.path.join(os.environ["TB_RUNS"], "baselines_v2"      # v1 was fitted before protocol amendment 1 and is not used)
+    return os.path.join(os.environ["TB_RUNS"], "baselines_v2")      # v1 was fitted before protocol amendment 1 and is not used
 
 
 class SourceBaselines:
