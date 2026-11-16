@@ -92,7 +92,7 @@ baselines:
   no_change: delta = 0
   target_adapt_mean: mean truth delta of the k adapt conditions
   source_same_drug_mean: equal mean over source-train cell lines of the condition deltas of the same drug group
-  source_ridge: [standardised X0, ECFP4] -> plate-row delta, fit on source-train rows; alpha from [1, 10, 100, 1000, 10000] on source validation
+  source_ridge: "[standardised X0, ECFP4] -> plate-row delta, fit on source-train rows; alpha from [1, 10, 100, 1000, 10000] on source validation"
   target_ridge: same features (source-train scaler), fit on the k adapt rows; alpha from the same grid on target_val
   b0_mean_offset: delta_B0 + mean over adapt conditions of (truth - delta_B0); per seed
   b0_mean_offset_shrunk: lambda from [0, 0.25, 0.5, 1] on target_val (secondary)
