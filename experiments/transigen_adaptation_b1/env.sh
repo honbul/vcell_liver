@@ -7,7 +7,7 @@ export TB_RAW="$TB_ASSETS/raw/cmap2020"
 export TB_PROC="$TB_ASSETS/processed"
 export TB_RUNS="$TB_ASSETS/runs"
 cd "$TB_ROOT"
-mkdir -p logs "$TB_RAW" "$TB_PROC" "$TB_RUNS"
+mkdir -p logs "$TB_RAW" "$TB_PROC" "$TB_RUNS" manifests/transigen_adaptation_b1 reports/transigen_adaptation_b1
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-4}
 export MKL_NUM_THREADS=$OMP_NUM_THREADS
 export PYTHONHASHSEED=0
