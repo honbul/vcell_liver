@@ -285,7 +285,7 @@ def main() -> None:
     def write_expr(path, X, ids):
         df = pd.DataFrame(X.T, index=sym, columns=ids)
         df.index.name = "symbol"
-        df.to_csv(path + ".tmp", sep="\t", float_format="%.6g")
+        df.to_csv(path + ".tmp", sep="\t", float_format="%.17g")   # full precision: rounding would change ranks
         os.replace(path + ".tmp", path)
 
     gmt_real = os.path.join(out, "hallmark_on_axis.gmt")
