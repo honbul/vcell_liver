@@ -7,7 +7,7 @@ import argparse, json, os
 import numpy as np
 import pandas as pd
 
-REP = "reports/transigen_adaptation_b1/tables"
+REP = os.path.join(os.environ.get("TB_REP_DIR", "reports/transigen_adaptation_b1"), "tables")
 METRICS = ["delta_rmse", "delta_pearson", "centred_pearson", "top20_direction", "top20_recall", "retrieval_mrr", "retrieval_top5"]
 SEEDED = ["B0", "B1_scratch", "B2_finetune", "b0_mean_offset", "b0_mean_offset_shrunk"]
 BASE = ["no_change", "target_adapt_mean", "source_same_drug_mean", "source_ridge", "target_ridge"]

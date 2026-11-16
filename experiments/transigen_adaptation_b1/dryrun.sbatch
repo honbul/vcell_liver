@@ -8,7 +8,8 @@
 #SBATCH -o logs/%x_%j.out
 # Wiring test of every stage up to the freeze, in a scratch area with 1-epoch source models and a
 # 200-update adaptation budget. Nothing here is a result, nothing is written to the study's run or
-# manifest directories, and target test X1 is not opened (the test stage is not run).
+# manifest directories, and target test X1 is not opened: the final scoring
+# and table code is exercised on validation rows instead.
 set -euo pipefail
 source experiments/transigen_adaptation_b1/env.sh
 S="$TB_ASSETS/scratch/dryrun_$SLURM_JOB_ID"
@@ -29,4 +30,7 @@ $PY.stages val
 $PY.stages control
 $PY.stages freeze
 $PY.select_runs ledger
+export TB_REP_DIR="$S/rep"
+$PY.stages dryrun_tables | tail -14
+$PY.summarize --n-boot 200 | tail -40
 echo "dry run complete"

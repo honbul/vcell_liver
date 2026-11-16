@@ -19,7 +19,7 @@ from .evaluate import per_condition, summarise, magnitude_ratio, shuffled_retrie
 from .predict import predictions, SEEDS, load_run
 
 CFG = "configs/transigen_adaptation_b1/protocol.yaml"
-REP = "reports/transigen_adaptation_b1"
+REP = os.environ.get("TB_REP_DIR", "reports/transigen_adaptation_b1")     # overridden only by the wiring dry run
 
 
 def cells(cfg):
@@ -147,16 +147,24 @@ def freeze_stage(cfg):
     print(f"frozen: {len(files)} files, {len(ck)} checkpoints")
 
 
-def test_stage(cfg):
+def test_stage(cfg, role="test"):
+    """role='test' is the real final test. role='val' exists only for the wiring dry run (scratch manifests):
+    it pushes validation rows through exactly the same scoring and table code without opening test X1."""
     fz = json.load(open(FREEZE))
-    git = lambda *a: subprocess.run(["git", *a], capture_output=True, text=True).stdout.strip()
-    assert git("log", "-1", "--format=%H", "--", FREEZE), "the freeze manifest is not committed"
-    assert git("status", "--porcelain", "--", FREEZE) == "", "the freeze manifest differs from the committed one"
+    if role == "test":
+        assert "TB_MAN_DIR" not in os.environ and "TB_REP_DIR" not in os.environ
+        git = lambda *a: subprocess.run(["git", *a], capture_output=True, text=True).stdout.strip()
+        assert git("log", "-1", "--format=%H", "--", FREEZE), "the freeze manifest is not committed"
+        assert git("status", "--porcelain", "--", FREEZE) == "", "the freeze manifest differs from the committed one"
+        os.environ["TB_FINAL_TEST"] = "1"
+    else:
+        assert role == "val" and "TB_MAN_DIR" in os.environ and "TB_REP_DIR" in os.environ, "validation scoring through this path is for the dry run only"
+    purpose = "final_test" if role == "test" else "val"
     for f, h in fz["files"].items():
+        f = f if role == "test" else os.path.join(MAN_DIR, os.path.relpath(f, "manifests/transigen_adaptation_b1")) if f.startswith("manifests/") else f
         assert T.sha256(f) == h, f"{f} changed after the freeze"
     out = os.path.join(os.environ["TB_RUNS"], "final", "final_v1")
     os.makedirs(out, exist_ok=False)
-    os.environ["TB_FINAL_TEST"] = "1"
     dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     D, S = Data(), SourceBaselines()
     sel = json.load(open(os.path.join(MAN_DIR, "adapt_selection.json")))
@@ -165,12 +173,12 @@ def test_stage(cfg):
     pcs, summs, preds, used, rep = [], [], {}, set(), []
     for t, s, k, main in cells(cfg):
         extra = {f"B2_label_permuted{e['perm_seed']}": e["run_id"] for e in plan if (e["target"], e["split_seed"], e["k"]) == (t, s, k)}
-        cond, truth, P, _, runs, info = predictions(D, S, t, s, k, "test", dev, lrs(sel, t, s), sel["max_updates"],
+        cond, truth, P, _, runs, info = predictions(D, S, t, s, k, role, dev, lrs(sel, t, s), sel["max_updates"],
                                                     selection=bsel[f"{t}|{s}|{k}"], extra_runs=extra)
         for r in runs:
             assert fz["checkpoints"][r["run_id"]] == r["checkpoint_sha256"], f"{r['run_id']} is not the frozen checkpoint"
             used.add(r["run_id"])
-        pc, sm = score_all(cond, truth, P, dict(target=t, split_seed=s, k=k, main=int(main), role="test", **info))
+        pc, sm = score_all(cond, truth, P, dict(target=t, split_seed=s, k=k, main=int(main), role=role, **info))
         pcs.append(pc)
         summs.append(sm)
         f = os.path.join(out, f"pred_{t}_split{s}_k{k}.npz")
@@ -178,9 +186,9 @@ def test_stage(cfg):
                             **{f"{m}__{sd}": p.astype(np.float32) for (m, sd), p in P.items()})
         preds[os.path.basename(f)] = dict(sha256=T.sha256(f), bytes=os.path.getsize(f), target=t, split_seed=s, k=k, n_conditions=len(cond))
         if main:      # replicate agreement of the measured response, where a condition has more than one plate
-            rows_e = np.sort(D.target_rows(t, s, "test"))
+            rows_e = np.sort(D.target_rows(t, s, role))
             meta = D.rows.iloc[rows_e].reset_index(drop=True)
-            d = D.target_x1(rows_e, t, s, "final_test") - np.asarray(D.x0[rows_e])
+            d = D.target_x1(rows_e, t, s, purpose) - np.asarray(D.x0[rows_e])
             rr = []
             for _, g in meta.groupby("pert_id"):
                 if len(g) >= 2:
@@ -200,7 +208,10 @@ def test_stage(cfg):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["val", "control", "freeze", "test"])
+    ap.add_argument("stage", choices=["val", "control", "freeze", "test", "dryrun_tables"])
     a = ap.parse_args()
     cfg = yaml.safe_load(open(CFG))
-    dict(val=val_stage, control=control_stage, freeze=freeze_stage, test=test_stage)[a.stage](cfg)
+    if a.stage == "dryrun_tables":
+        test_stage(cfg, role="val")
+    else:
+        dict(val=val_stage, control=control_stage, freeze=freeze_stage, test=test_stage)[a.stage](cfg)

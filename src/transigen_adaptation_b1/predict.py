@@ -44,6 +44,8 @@ def predictions(D, S, target, split, k, role, dev, lr_by_arm, max_updates, selec
     cd = lambda rows_delta, meta=meta_e: condition_delta(meta, rows_delta)[1]
     rmse = lambda p: float(per_condition(p, truth_e).delta_rmse.mean())
     sel = dict(selection or {})
+    choose = selection is None            # hyper-parameters are chosen only when none are supplied (validation stage)
+    assert not (choose and role == "test")
     P = {}
     n = len(cond_e)
     P[("no_change", "-")] = np.zeros((n, 978))
@@ -51,7 +53,7 @@ def predictions(D, S, target, split, k, role, dev, lr_by_arm, max_updates, selec
     P[("source_same_drug_mean", "-")] = S.same_drug(cond_e.drug_group)
     P[("source_ridge", "-")] = cd(S.ridge_rows(x0_e, fp_e))
     F_a, F_e = S.features(x0_a, fp_a), S.features(x0_e, fp_e)
-    if role == "val":
+    if choose:
         sc = {al: rmse(cd(fit_target_ridge(F_a, d_a, al)(F_e))) for al in ALPHAS}
         sel["target_ridge_alpha"] = min(ALPHAS, key=lambda a_: (sc[a_], a_))
         sel["target_ridge_val"] = {str(a_): v for a_, v in sc.items()}
@@ -69,7 +71,7 @@ def predictions(D, S, target, split, k, role, dev, lr_by_arm, max_updates, selec
         P[("B0", seed)] = b0_e
         off = (truth_a - b0_a).mean(0, keepdims=True)
         P[("b0_mean_offset", seed)] = b0_e + off
-        if role == "val":
+        if choose:
             sc = {lam: rmse(b0_e + lam * off) for lam in LAMBDAS}
             sel[f"offset_lambda_seed{seed}"] = min(LAMBDAS, key=lambda l_: (sc[l_], l_))
             sel[f"offset_lambda_val_seed{seed}"] = {str(l_): v for l_, v in sc.items()}
