@@ -5,7 +5,7 @@ import pandas as pd
 
 from .tsg_adapter import sha256
 
-MAN_DIR = "manifests/transigen_adaptation_b1"
+MAN_DIR = os.environ.get("TB_MAN_DIR", "manifests/transigen_adaptation_b1")   # overridden only by the wiring dry run
 FREEZE = os.path.join(MAN_DIR, "freeze_manifest.json")
 EXCLUDED = ("HUH7", "HUH751", "JHH5", "JHH7")
 

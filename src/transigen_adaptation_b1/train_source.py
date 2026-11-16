@@ -19,6 +19,7 @@ def main():
     cfg = yaml.safe_load(open(a.config))
     sp = cfg["source_pretraining"]
     assert a.lr in sp["lr_grid"] and a.seed in sp["seeds"]
+    assert a.max_epochs is None or "TB_MAN_DIR" in os.environ, "--max-epochs is for the wiring dry run only"
     max_epochs = a.max_epochs or sp["max_epochs"]
     out = os.path.join(os.environ["TB_RUNS"], "source", a.run_id)
     os.makedirs(out, exist_ok=False)          # immutable run id: an existing directory is an error
