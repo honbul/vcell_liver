@@ -13,7 +13,7 @@ ROOT = os.environ.get("TB_ROOT", os.path.abspath(os.path.join(os.getcwd(), "..",
 os.chdir(ROOT); sys.path.insert(0, ROOT)
 pd.set_option("display.width", 160); pd.set_option("display.float_format", lambda v: f"{v:.3f}")
 BLUE, ORANGE, AQUA, YELLOW, GREY = "#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#8a8983"
-plt.rcParams.update({"figure.dpi": 110, "axes.spines.top": False, "axes.spines.right": False, "axes.grid": True,
+plt.rcParams.update({"figure.dpi": 110, "axes.spines.top": False, "axes.spines.right": False, "axes.grid": True, "axes.axisbelow": True,
                      "grid.color": "#e4e3df", "grid.linewidth": 0.6, "axes.edgecolor": "#8a8983", "font.size": 10,
                      "lines.linewidth": 2, "figure.facecolor": "#fcfcfb", "axes.facecolor": "#fcfcfb"})
 MAN = "manifests/transigen_adaptation_b1"
@@ -103,7 +103,7 @@ ck = source_checkpoint(42)
 model, meta_ck = T.load_checkpoint(ck["checkpoint"], dev, seed=42)
 print("B0 checkpoint:", ck["run_id"], "| best epoch:", ck["best_epoch"])
 print("추론 함수의 인자:", list(inspect.signature(T.predict_x1_mean_path).parameters))'''),
-("md", "추론 함수의 인자에 처리군(X1)이 없다는 것을 확인했다. 이제 검증 약물들의 X0와 지문을 넣는다."),
+("md", "추론 함수의 인자에 처리군(X1)이 없다는 것을 확인했다(`batch`는 한 번에 계산할 행 수일 뿐이다). 이제 검증 약물들의 X0와 지문을 넣는다."),
 ("code", '''rows = np.sort(D.target_rows(TARGET, SPLIT, "val"))
 meta = D.rows.iloc[rows]
 x0 = np.asarray(D.x0[rows]); fp = D.fp[meta.drug_idx.to_numpy()]
@@ -218,7 +218,7 @@ os.chdir(os.environ.get("TB_ROOT", os.getcwd()))
 T = "reports/transigen_adaptation_b1/tables"
 pd.set_option("display.width", 160); pd.set_option("display.float_format", lambda v: f"{v:.4f}")
 BLUE, ORANGE, AQUA, YELLOW, GREY = "#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#8a8983"
-plt.rcParams.update({"figure.dpi": 110, "axes.spines.top": False, "axes.spines.right": False, "axes.grid": True, "grid.color": "#e4e3df",
+plt.rcParams.update({"figure.dpi": 110, "axes.spines.top": False, "axes.spines.right": False, "axes.grid": True, "axes.axisbelow": True, "grid.color": "#e4e3df",
                      "grid.linewidth": 0.6, "font.size": 10, "lines.linewidth": 2, "figure.facecolor": "#fcfcfb", "axes.facecolor": "#fcfcfb"})
 pc = pd.read_csv(f"{T}/test_per_condition.tsv.gz", sep="\\t", dtype={"seed": str})
 print(len(pc), "줄 |", pc.target.nunique(), "개 대상 |", pc.model.nunique(), "개 모델·기준선")
@@ -262,6 +262,8 @@ plt.tight_layout(); plt.show()
 cur.pivot_table(index=["target", "model"], columns="k", values="delta_rmse").round(4)'''),
 ("md", """## 읽을 때 주의할 점
 
+- JHH7 그림에서 B2 선은 B0 점선과 완전히 겹친다. 이 세포주에서는 미세조정이 검증 점수를 한 번도 개선하지 못해 update 0의 모델, 즉 B0가 그대로 선택됐기 때문이다.
+- 세로축은 로그 척도이고 세포주마다 범위가 다르다. 세포주 사이의 높낮이를 직접 비교하지 않는다.
 - 표의 약물은 "그 HCC 세포주에서 측정되지 않은 것으로 취급한" 약물이다. 다른 세포주(source)에서는 측정된 약물이다. 세상에 처음 나온 약물이 아니다.
 - k개 적응 약물 외에 검증 약물도 실제 측정이 필요하다. 그 수는 `RESULTS.md`의 분할 표에 함께 적혀 있다.
 - 대상 세포주가 몇 개뿐이므로 평균을 "HCC 전체"의 성능으로 읽지 않는다."""),
