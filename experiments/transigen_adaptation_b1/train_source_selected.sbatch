@@ -11,7 +11,7 @@ set -euo pipefail
 source experiments/transigen_adaptation_b1/env.sh
 export TB_COMMIT=$(git rev-parse --short HEAD)
 LR=$("$TB_PY" -c "import json;print(json.load(open('manifests/transigen_adaptation_b1/source_lr_selection.json'))['selected_lr'])")
-RID=$("$TB_PY" -c "print('source_lr%g_seed%d_v3' % ($LR, $1))")
+RID=$("$TB_PY" -c "print('source_lr%g_seed%d_v4' % ($LR, $1))")
 echo "start=$(date -Is) commit=$TB_COMMIT host=$(hostname) lr=$LR seed=$1 run=$RID"
 "$TB_PY" -m src.transigen_adaptation_b1.train_source --lr "$LR" --seed "$1" --run-id "$RID"
 echo "end=$(date -Is)"

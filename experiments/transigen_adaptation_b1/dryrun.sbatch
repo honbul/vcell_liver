@@ -19,7 +19,7 @@ ln -s "$TB_RUNS/baselines_v2" "$S/runs/baselines_v2"
 export TB_MAN_DIR="$S/man" TB_RUNS="$S/runs" TB_COMMIT=dryrun
 PY="$TB_PY -m src.transigen_adaptation_b1"
 echo '{"selected_lr": 0.001}' > "$TB_MAN_DIR/source_lr_selection.json"
-for seed in 42 43 44; do $PY.train_source --lr 0.001 --seed $seed --run-id source_lr0.001_seed${seed}_v3 --max-epochs 1 | tail -3; done
+for seed in 42 43 44; do $PY.train_source --lr 0.001 --seed $seed --run-id source_lr0.001_seed${seed}_v4 --max-epochs 1 | tail -3; done
 $PY.select_runs source_final | tail -3
 echo '{"max_updates": 200}' > "$TB_MAN_DIR/adapt_budget.json"
 for t in HUH7 JHH5 JHH7; do $PY.adapt_target --target $t --phase search | tail -2; done
