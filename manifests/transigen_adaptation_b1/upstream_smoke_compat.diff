@@ -1,0 +1,20 @@
+diff -u TranSiGen_smoke_copy.orig/src/utils.py TranSiGen_smoke_copy/src/utils.py
+--- TranSiGen_smoke_copy.orig/src/utils.py	2024-04-22 10:42:15.000000000 +0900
++++ TranSiGen_smoke_copy/src/utils.py	2026-11-16 18:09:45.385197602 +0900
+@@ -34,14 +34,14 @@
+         for key in f:
+             data[key] = np.asarray(f[key])
+             if isinstance(data[key][0], np.bytes_):
+-                data[key] = data[key].astype(np.str)
++                data[key] = data[key].astype(str)
+     return data
+ 
+ def save_to_HDF(fname, data):
+     """Save data (a dictionary) to a HDF5 file."""
+     with h5py.File(fname, 'w') as f:
+         for key, item in data.items():
+-            if isinstance(item[0], np.str):
++            if isinstance(item[0], str):
+                 item = item.astype(np.bytes_)
+             f[key] = item
+ 
