@@ -1,7 +1,7 @@
 # Phase 0 audit policy for the HCC genotype-FiLM study (plan v3, 2026-11-16).
 # Written and committed BEFORE any cell-line, condition or replicate count was computed.
 # Nothing here uses a response value, a model score or a QC metric derived from treated profiles.
-policy_version: 1
+policy_version: 2
 written: 2026-11-16
 status_before_audit: DATA_ELIGIBILITY_PENDING
 
@@ -118,3 +118,24 @@ gates:
     drug observed in >= 3 independent source families, control and batch links satisfied
   on_fail: commit DATA_AUDIT.md + FEASIBILITY_DECISION.md and stop. No pan-cancer, multi-platform
     or patient-transfer extension.
+
+amendments:
+  - version: 2
+    date: 2026-11-16
+    made_when: >
+      after the liver-annotated cell names of the three L1000 releases and the DepMap liver model
+      list had been printed, and before any Tahoe cell list, any condition count, any replicate
+      count or any coverage table existed
+    change: >
+      adult_hcc_rule tightened to the plan's "two sources disagree -> hold" rule (plan 3.2).
+      is_adult_hcc now requires BOTH DepMap (OncotreeSubtype = Hepatocellular Carcinoma, AgeCategory =
+      Adult) AND Cellosaurus (NCIt disease = Adult hepatocellular carcinoma). When DepMap says adult
+      HCC and Cellosaurus says something else (for example a 'Problematic cell line: Misclassified'
+      entry), the cell is inclusion_status=held_ambiguous and is NOT counted. Counts are also printed
+      with held cells added, as a labelled sensitivity figure that does not enter the gate.
+    also: >
+      family_id = Cellosaurus root ancestor merged with Cellosaurus same-individual (OI) links and
+      DepMap PatientID (union-find over all three). L1000 replicate plates of one plate design
+      (same pert-plate prefix, cell and time, X1/X2/X3) are counted as blocks, and the number of
+      distinct plate designs is reported next to them as the stricter independent-experiment count.
+    reference_table: manifests/genotype_film_v3/cellosaurus_lookup.tsv (Cellosaurus 57.0, 2026-10-22)
