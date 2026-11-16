@@ -365,7 +365,7 @@ def main() -> None:
         limore_included_models=int(len(elig)), limore_included_families=int(n_fam),
         limore_excluded=reg[(reg.study == "LIMORE") & ~reg.included][["model_id", "exclusion_reason"]].values.tolist(),
         limore_multi_model_families={f: sorted(t.model_id) for f, t in elig.groupby("family_id") if len(t) > 1},
-        flagged_kept=reg[reg.flags != ""][["model_id", "flags"]].values.tolist(),
+        flagged_kept=reg[reg["flags"] != ""][["model_id", "flags"]].values.tolist(),
         drugs_total=int(len(cov)), drugs_main=int((cov.evaluated_as == "main").sum()),
         lccl_models=int(len(lccl_reg)), lccl_included_models=int(lccl_reg.included.sum()),
         lccl_excluded=lccl_reg[~lccl_reg.included][["model_id", "exclusion_reason"]].values.tolist(),
