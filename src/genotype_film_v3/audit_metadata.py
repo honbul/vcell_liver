@@ -206,9 +206,15 @@ def audit_l1000_inst(release: str, inst: pd.DataFrame, cells: pd.DataFrame, reg:
 def load_gse92742(d: Path):
     inst = pd.read_csv(note_file(d / "GSE92742_Broad_LINCS_inst_info.txt", "GSE92742", "instance metadata", "full"),
                        sep="\t", low_memory=False)
-    inst = inst.rename(columns=dict(rna_plate="plate", rna_well="well", pert_dose="dose",
+    inst = inst.rename(columns=dict(rna_well="well", pert_dose="dose",
                                     pert_dose_unit="dose_unit", pert_time="time",
                                     pert_time_unit="time_unit", cell_id="cell"))
+    # rna_plate drops the bead-batch suffix; the detection plate id used by the matrix and by
+    # LINCS2020 is the part of inst_id before ':'. Both must agree on the plate they name.
+    inst["plate"] = inst.inst_id.str.split(":").str[0]
+    bad = ~np.array([p.startswith(r) for p, r in zip(inst.plate, inst.rna_plate)])
+    if bad.any():
+        raise SystemExit(f"GSE92742: {int(bad.sum())} inst_id prefixes do not extend rna_plate")
     cells = pd.read_csv(note_file(d / "GSE92742_Broad_LINCS_cell_info.txt", "GSE92742", "cell metadata", "full"), sep="\t")
     genes = pd.read_csv(note_file(d / "GSE92742_Broad_LINCS_gene_info.txt", "GSE92742", "gene metadata", "full"), sep="\t")
     l3 = note_file(d / "GSE92742_Broad_LINCS_Level3_INF_mlr12k_n1319138x12328.gctx", "GSE92742",
@@ -275,6 +281,20 @@ def audit_lincs2020(d: Path, reg: Registry, out: dict, older_plates: dict[str, s
                          block_ids="|".join(plates),
                          assay_level="L1000 Level 5 signature metadata (Level 3 not on server)"))
     out["conditions"].append(pd.DataFrame(rows))
+    # labelled diagnostic only: the platform's own `nearest_dose` column instead of the exact dose
+    hccn = {r["platform_cell_name"]: r["family_id"] for r in cand
+            if r["is_adult_hcc"] or r["inclusion_status"] == "derived_clone_of_family_no_depmap_model"}
+    dg = trt[trt.cell_iname.isin(hccn) & trt.nearest_dose.notna() & trt.pert_time.notna()].copy()
+    dg["family_id"] = dg.cell_iname.map(hccn)
+    drows = []
+    for (nd, t), g in dg.groupby(["nearest_dose", "pert_time"]):
+        fpd = g.groupby("pert_id").family_id.nunique()
+        drows.append(dict(platform_release=release, nearest_dose_uM=nd, time_h=t,
+                          n_adult_hcc_families=g.family_id.nunique(), n_drugs_ge1_family=int((fpd >= 1).sum()),
+                          n_drugs_ge2_families=int((fpd >= 2).sum()), n_drugs_ge3_families=int((fpd >= 3).sum()),
+                          note="DIAGNOSTIC: platform nearest_dose bin; not used by any gate"))
+    out["lincs2020_nearest_dose"] = pd.DataFrame(drows).sort_values(
+        ["n_adult_hcc_families", "n_drugs_ge3_families", "n_drugs_ge2_families"], ascending=False)
     cl = defaultdict(lambda: [0, 0])
     for cell, ps in zip(trt.cell_iname, trt.plates):
         for p in ps:
@@ -333,6 +353,14 @@ def audit_tahoe(path: Path, reg: Registry, out: dict) -> None:
             cand.append(reg.resolve(release, c.cell_name, c.cell_line, f"Tahoe cell_line={c.cell_line}"))
     out["cells"] += cand
     out["tahoe_n_lines"] = int(lines.cell_line.nunique())
+    lin = []
+    for _, c in lines.iterrows():
+        d = reg.by_rrid.get(c.cell_line, [])
+        lin.append(dict(cell_line=c.cell_line, cell_name=c.cell_name, n_cells=int(c.n_cells),
+                        depmap_model_id=d[0].ModelID if len(d) == 1 else "",
+                        depmap_lineage=str(d[0].OncotreeLineage) if len(d) == 1 else "unmapped",
+                        depmap_subtype=str(d[0].OncotreeSubtype) if len(d) == 1 else ""))
+    out["tahoe_lines"] = pd.DataFrame(lin).sort_values(["depmap_lineage", "cell_name"])
     names = {r["platform_cell_name"] for r in cand}
     hcc = {r["platform_cell_name"]: r["family_id"] for r in cand if r["is_adult_hcc"]}
 
@@ -459,8 +487,36 @@ def coverage(cond: pd.DataFrame, cells: pd.DataFrame) -> pd.DataFrame:
             sensitivity_n_families_if_held_cells_counted=held.family_id.nunique(),
             context_n_liver_candidate_families_any_status=g[g.family_id != ""].family_id.nunique()))
     cov = pd.DataFrame(rows)
-    return cov.sort_values(["platform_release", "n_adult_hcc_families", "n_drugs_ge3_families", "n_hcc_blocks"],
-                           ascending=[True, False, False, False])
+    num = lambda s: s.str.extract(r"^([0-9.eE+-]+)")[0].astype(float)
+    cov["_t"], cov["_d"] = num(cov.time_key).fillna(np.inf), num(cov.dose_key).fillna(np.inf)
+    # policy order: families -> drugs in >=3 families -> blocks; tie-break lower time, lower dose
+    cov = cov.sort_values(["platform_release", "n_adult_hcc_families", "n_drugs_ge3_families", "n_hcc_blocks", "_t", "_d"],
+                          ascending=[True, False, False, False, True, True]).drop(columns=["_t", "_d"])
+    cov["policy_rank_in_release"] = cov.groupby("platform_release").cumcount() + 1
+    return cov
+
+
+def loco_support(cond: pd.DataFrame, cov: pd.DataFrame) -> pd.DataFrame:
+    """At each release's policy-selected (dose, time): for every outer target family, how many of its
+    drugs are observed in >=1 / >=2 / >=3 OTHER adult-HCC families (control-linked conditions only)."""
+    rows = []
+    ok = cond[(cond.is_adult_hcc | (cond.inclusion_status == "derived_clone_of_family_no_depmap_model"))
+              & (cond.n_blocks_with_same_plate_vehicle > 0)]
+    for rel, g in cov.groupby("platform_release"):
+        b = g.iloc[0]
+        c = ok[(ok.platform_release == rel) & (ok.dose_key == b.dose_key) & (ok.time_key == b.time_key)]
+        fams = sorted(set(c.family_id))
+        by = {f: set(c[c.family_id == f].compound_id) for f in fams}
+        rep_ok = {f: set(c[(c.family_id == f) & (c.n_blocks_with_same_plate_vehicle >= 2)].compound_id) for f in fams}
+        for t in fams:
+            n_src = {d: sum(d in by[f] for f in fams if f != t) for d in by[t]}
+            rows.append(dict(platform_release=rel, dose_key=b.dose_key, time_key=b.time_key, target_family=t,
+                             n_source_families=len(fams) - 1, n_target_drugs=len(by[t]),
+                             n_target_drugs_with_ge2_blocks=len(rep_ok[t]),
+                             n_drugs_in_ge1_source_family=sum(v >= 1 for v in n_src.values()),
+                             n_drugs_in_ge2_source_families=sum(v >= 2 for v in n_src.values()),
+                             n_drugs_in_ge3_source_families=sum(v >= 3 for v in n_src.values())))
+    return pd.DataFrame(rows)
 
 
 def main() -> None:
@@ -503,6 +559,7 @@ def main() -> None:
     rep["replicate_type"] = np.where(rep.platform_release == "Tahoe-100M", "treatment well",
                                      "detection plate (replicate plates of one design share a batch)")
     cond_out = cond.drop(columns=["block_ids"])
+    cond_out = cond_out[cond_out.inclusion_status != "excluded_unmapped"] if False else cond_out
     summ = cond.groupby(key + ["inclusion_status", "family_id"], dropna=False).agg(
         n_conditions=("compound_id", "size"), n_compounds=("compound_id", "nunique"),
         n_conditions_control_linked=("n_blocks_with_same_plate_vehicle", lambda s: int((s > 0).sum())),
@@ -517,6 +574,10 @@ def main() -> None:
     geno.to_csv(outd / "genotype_support.tsv", **w)
     cov.to_csv(outd / "coverage_by_dose_time.tsv", **w)
     out["tahoe_loco"].to_csv(outd / "tahoe_strict_loco.tsv", **w)
+    out["tahoe_lines"].to_csv(outd / "tahoe_all_lines_lineage.tsv", **w)
+    out["lincs2020_nearest_dose"].to_csv(outd / "lincs2020_nearest_dose_diagnostic.tsv", **w)
+    loco = loco_support(cond, cov)
+    loco.to_csv(outd / "loco_support_at_selected_dose_time.tsv", **w)
     summ.to_csv(outd / "cell_condition_summary.tsv", **w)
     pd.DataFrame(INVENTORY).to_csv(outd / "source_inventory.tsv", **w)
 
@@ -540,6 +601,9 @@ def main() -> None:
     print(summ.to_string())
     print(cov.groupby("platform_release").head(8).drop(columns=["adult_hcc_families"]).to_string())
     print(out["tahoe_loco"].to_string())
+    print(loco.to_string())
+    print(out["lincs2020_nearest_dose"].head(6).to_string())
+    print(out["tahoe_lines"].depmap_lineage.value_counts().to_string())
 
 
 if __name__ == "__main__":
