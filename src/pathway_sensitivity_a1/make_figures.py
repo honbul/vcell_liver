@@ -38,7 +38,7 @@ def save(fig, out, name):
 
 
 def fig_design(out, res):
-    fig, ax = plt.subplots(figsize=(9.2, 3.4))
+    fig, ax = plt.subplots(figsize=(10.5, 3.6))
     ax.axis("off")
     ax.grid(False)
 
@@ -46,15 +46,15 @@ def fig_design(out, res):
         ax.add_patch(plt.Rectangle((x, y), w, h, fc=fc, ec=INK2, lw=1))
         ax.text(x + w / 2, y + h / 2, text, ha="center", va="center", fontsize=8.5)
 
-    box(0.0, 0.35, 0.17, 0.3, "Baseline RNA\n(LIMORE, %d HCC models\n%d families)" % (res["n_models"], res["n_families"]))
+    box(0.0, 0.33, 0.2, 0.34, "Baseline RNA\nLIMORE\n%d HCC models\n%d families" % (res["n_models"], res["n_families"]))
     reps = ["A1 gene log2 FPKM", "A1r within-sample ranks", "A2 PCA of ranks", "A3 Hallmark singscore"]
     for i, r in enumerate(reps):
-        box(0.25, 0.78 - i * 0.22, 0.22, 0.16, r)
-        ax.annotate("", xy=(0.25, 0.86 - i * 0.22), xytext=(0.17, 0.5), arrowprops=dict(arrowstyle="-", color=INK2, lw=0.8))
-        ax.annotate("", xy=(0.55, 0.5), xytext=(0.47, 0.86 - i * 0.22), arrowprops=dict(arrowstyle="-", color=INK2, lw=0.8))
-    box(0.55, 0.35, 0.18, 0.3, "Same Ridge,\nsame alpha grid,\nnested family-group CV")
-    box(0.81, 0.35, 0.19, 0.3, "Predicted Activity Area\nper drug (%d drugs)\nvs A0 training mean" % res["n_drugs"])
-    ax.annotate("", xy=(0.81, 0.5), xytext=(0.73, 0.5), arrowprops=dict(arrowstyle="->", color=INK2, lw=1))
+        box(0.26, 0.78 - i * 0.22, 0.2, 0.16, r)
+        ax.annotate("", xy=(0.26, 0.86 - i * 0.22), xytext=(0.2, 0.5), arrowprops=dict(arrowstyle="-", color=INK2, lw=0.8))
+        ax.annotate("", xy=(0.52, 0.5), xytext=(0.46, 0.86 - i * 0.22), arrowprops=dict(arrowstyle="-", color=INK2, lw=0.8))
+    box(0.52, 0.33, 0.2, 0.34, "Same Ridge,\nsame alpha grid,\nnested\nfamily-group CV")
+    box(0.78, 0.33, 0.22, 0.34, "Predicted Activity Area\nper drug (%d drugs),\ncompared with\nA0 training mean" % res["n_drugs"])
+    ax.annotate("", xy=(0.78, 0.5), xytext=(0.72, 0.5), arrowprops=dict(arrowstyle="->", color=INK2, lw=1))
     ax.set_xlim(-0.01, 1.01)
     ax.set_ylim(0, 1)
     ax.set_title("Study design: one predictor, four representations of the same RNA", loc="left", fontsize=11)
@@ -93,7 +93,7 @@ def fig_learning(out, tables):
     ax.set_xlim(0.4, 1.1)
     ax.set_ylabel("macro drug-normalised RMSE")
     ax.grid(axis="x", visible=False)
-    ax.legend(frameon=False, fontsize=8.5, loc="upper right")
+    ax.legend(frameon=False, fontsize=8.5, loc="center left", bbox_to_anchor=(1.0, 0.5))
     ax.set_title("Learning curve (same test families)", loc="left", fontsize=11)
     save(fig, out, "fig3_learning_curve")
 
@@ -131,7 +131,7 @@ def fig_external(out, tables):
     ax.set_yticklabels(w.drug_id)
     ax.set_xlabel("Spearman with LCCL sensitivity (-AUC) across shared families\n(LIMORE family left out of training)")
     ax.grid(axis="y", visible=False)
-    ax.legend(frameon=False, fontsize=8.5, loc="lower right")
+    ax.legend(frameon=False, fontsize=8.5, loc="center left", bbox_to_anchor=(1.0, 0.5))
     ax.set_title("External rank agreement per matched drug (same lineage, other study)", loc="left", fontsize=11)
     save(fig, out, "fig5_external")
 
