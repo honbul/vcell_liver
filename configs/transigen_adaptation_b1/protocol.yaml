@@ -106,5 +106,16 @@ evaluation:
   contrasts: [B2_finetune - B0, B2_finetune - B1_scratch]
   seed_mean_and_ensemble: reported in separate columns, never mixed
 
+label_permutation_control:
+  # plan section 9: run only if the B2 improvement is confirmed on validation
+  gate: >
+    For a target, the seed- and split-mean target_val delta RMSE of B2_finetune (k_main) is lower than
+    that of B0, of B1_scratch and of b0_mean_offset. Targets that fail the gate get no control run.
+  design: >
+    First split seed, seed 42, selected B2 learning rate. The drug fingerprints of the adapt rows are
+    permuted across adapt drug groups (3 fixed permutations, seeds 1-3; test pairing untouched). Each
+    permuted run trains for exactly the best step of the matching real B2 run, with no validation-based
+    stopping, and is scored once on test together with the real run.
+
 test_access: target test X1 is read only by final_test.py, which refuses to run without the committed freeze manifest
 amendments: []
