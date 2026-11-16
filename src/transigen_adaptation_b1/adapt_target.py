@@ -81,7 +81,7 @@ def adapt_run(D, ts, arm, lr, seed, cfg, dev, max_updates, tag="", fp_perm=None,
         model = T.build_model(seed, dev)
     T.seed_all(seed)
     init_hash = T.state_hash(model)
-    opt = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=cfg["model"]["weight_decay"])
+    opt = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=cfg["model"]["weight_decay"], fused=True)   # same Adam update, one fused kernel
     n = len(ts.rows_a)
     bs = min(32, n)
     fp_a = ts.fp_a if fp_perm is None else ts.fp_a[torch.tensor(fp_perm, device=dev)]
@@ -150,6 +150,7 @@ def main():
     budget_file = os.path.join(MAN_DIR, "adapt_budget.json")
     max_updates = json.load(open(budget_file))["max_updates"] if os.path.exists(budget_file) else ad["max_updates"]
     dev = torch.device("cuda")
+    torch.set_num_threads(1)
     D = Data()
     torch.cuda.reset_peak_memory_stats()
     sel = None

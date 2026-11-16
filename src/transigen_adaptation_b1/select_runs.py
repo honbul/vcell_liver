@@ -10,7 +10,7 @@ from .tsg_adapter import sha256
 
 
 def src_id(lr, seed):
-    return f"source_lr{lr:g}_seed{seed}_v2"      # v1 = runs before protocol amendment 1 (all diverged)
+    return f"source_lr{lr:g}_seed{seed}_v3"      # v1: before protocol amendment 1 (all diverged); v2: cancelled after 2 epochs to restart with a faster step (fused Adam, 1 CPU thread)
 
 
 def load(kind, rid):

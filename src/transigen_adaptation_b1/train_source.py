@@ -23,6 +23,7 @@ def main():
     out = os.path.join(os.environ["TB_RUNS"], "source", a.run_id)
     os.makedirs(out, exist_ok=False)          # immutable run id: an existing directory is an error
     dev = torch.device("cuda")
+    torch.set_num_threads(1)                  # the step is tiny; extra CPU threads only add contention
     D = Data()
     tr, va = D.source_split()
     x1s = D.source_x1()
@@ -36,7 +37,7 @@ def main():
 
     model = T.build_model(a.seed, dev)
     init_hash = T.state_hash(model)
-    opt = torch.optim.Adam(model.parameters(), lr=a.lr, weight_decay=cfg["model"]["weight_decay"])
+    opt = torch.optim.Adam(model.parameters(), lr=a.lr, weight_decay=cfg["model"]["weight_decay"], fused=True)   # same Adam update, one fused kernel
     gen = torch.Generator(device=dev).manual_seed(a.seed)
     bs = sp["batch_size"]
 
