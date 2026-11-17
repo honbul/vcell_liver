@@ -6,7 +6,7 @@ from .common import tb, public, dump, sha_list, SPLIT_SEED, HCC
 
 def main():
     drugs = pd.read_csv(tb("drugs.tsv"), sep="\t")
-    rows = pd.read_csv(tb("rows.tsv"), sep="\t", usecols=["role", "cell", "drug_group"])
+    rows = pd.read_csv(tb("rows.tsv"), sep="\t", usecols=["cell", "drug_group"])
     groups = np.array(sorted(drugs.drug_group.unique()))
     assert len(groups) == 8288
     perm = np.random.RandomState(SPLIT_SEED).permutation(len(groups))
