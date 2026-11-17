@@ -1,0 +1,111 @@
+# Study R2 protocol (episodic residual adaptation). Written before any R2 job was run.
+# Rules are fixed here; a change needs a dated entry under `amendments` with reason and what had been seen.
+track: episodic_residual_r2
+prior_study:
+  commit: d67bf68495be49a96598473c22fb5e2409d24429
+  reused_read_only: [processed CMap LINCS 2020 Level 3 arrays (cmap2020_v1), 978 landmark axis, ECFP4, source checkpoints (B0, 3 seeds), target split files, degenerate-row list]
+  not_compared_head_to_head: B2 scores of the prior study (different label cost: k adapt drugs plus a target validation set)
+
+data:
+  rows: prior-study plate rows (cell, pert_id, det_plate), X0 = plate DMSO mean, X1 = treated mean, official Level 3 scale
+  degenerate_source_rows: removed everywhere (prior-study amendment 1 list)
+  unit: (cell, drug_group)
+  unit_delta: equal mean over the group's conditions (cell, pert_id) of [equal mean over plates of (X1 - X0)]
+  unit_x0: equal mean over the group's conditions of [equal mean over plates of X0]
+  unit_fingerprint: ECFP4 of the lexicographically first pert_id of the drug group (global, the same for every cell)
+  scoring_unit: (target, drug_group); differs from the prior study, which scored (cell, pert_id) -> every baseline is rescored here
+
+source:
+  cells: 161 prior-study source cell lines (HUH7, HUH751, JHH5, JHH7 absent)
+  family_rule: >
+    Connected components over (a) identical Cellosaurus id, (b) documented derivation pairs listed in
+    families.py with a reason, (c) all XC.* mixed-cell pools as one family (composition not available on
+    the server, independence cannot be asserted), (d) HIMG001/HIMG002 (same series, donor relation unknown).
+  meta_split: >
+    Prior-study 145/16 cell split kept, except that every cell of a family that straddles train and
+    validation is moved to meta-train (minimal change; reason recorded per cell in source_families.tsv).
+  f0: equal mean over allowed source cells of the unit deltas of the same drug group
+  f0_allowed_cells:
+    meta_train_episode: meta-train cells minus the whole family of the virtual target
+    meta_val_episode: meta-train cells only (no meta-validation cell of any family)
+    hcc: all 161 source cells
+  f0_eligibility: a drug group is usable in an episode only if at least one allowed cell measured it
+
+episodes:
+  k_values: [8, 16, 32]
+  k_main: 16
+  eval_rule: >
+    For a virtual target cell with n >= 40 eligible drug groups and a support seed: permute the groups with
+    RandomState(seed_base + seed); the first round(0.2 n) groups are the query set, the remaining order is the
+    support order; support at K = its first K groups (nested). Same query set for every K and method.
+  meta_val_support_seeds: [1, 2, 3]
+  meta_train_dev_support_seeds: [1]        # closed-form diagnostics and baseline lambda selection only
+  dev_query_cap: 200                       # meta-train dev episodes only: first 200 query groups
+  train_sampler: family uniform -> cell uniform within family -> K uniform over {8,16,32} that fit -> K support and min(64, n-K) query groups without replacement
+  aggregation: per-episode mean over query units -> mean over support seeds -> equal mean over cells of a family -> equal mean over families
+
+features:
+  ctrl: support-centred unit X0 projected on the top 32 principal axes of within-cell X0 deviations (fit on meta-train units only)
+  drug: ECFP4 2048 bits
+  f0_repr: f0 projected on the top 32 principal axes of the meta-train same-drug-mean table, plus log1p(number of cells behind f0)
+  no_target_labels_in_features: true
+
+proposed:
+  name: residual_adapter
+  phi: {layers: 2, hidden: 128, out: 64, norm: LayerNorm, batchnorm: none}
+  prediction: f0(q) + b_S + z_q^T Z_S^T (Z_S Z_S^T + lambda I)^-1 R_S, embeddings centred on the support mean
+  lambda: one global learned log-parameter, clamped to [1e-3, 1e3], initial 1.0; solved with Cholesky
+  loss: mean over query units of sqrt(mean over 978 genes of squared error + 1e-8)
+  optimiser: {name: Adam, weight_decay: 1.0e-5, batch_episodes: 8, max_steps: 6000, eval_every: 200, patience_evals: 10}
+  initial_configs:            # <= 6
+    - {id: A1, lr: 1.0e-4}
+    - {id: A2, lr: 3.0e-4}
+    - {id: A3, lr: 1.0e-3}
+  search_seed: 42
+  seeds: [42, 43, 44]
+  selection: lowest meta-validation K=16 query delta RMSE (family-equal mean) at the best evaluated step; ties -> smaller lr
+  modifications_allowed: 2      # only from the plan's list, each justified by a source diagnostic recorded in DECISIONS.md first
+
+baselines:
+  no_change: delta = 0
+  source_same_drug_mean: f0
+  mean_offset: f0 + b_S                                  # the bar
+  ecfp_ridge: f0 + b_S + centred linear-kernel ridge on ECFP4 bits of R_S
+  ecfp_krr: f0 + b_S + centred Tanimoto-kernel ridge of R_S
+  allfeat_krr: f0 + b_S + centred linear-kernel ridge on the untrained standardised [ctrl, f0_repr] features plus Tanimoto kernel (same inputs as phi, no learning)
+  lambda_grid: [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100, 300, 1000]
+  lambda_selection: per K, lowest family-equal mean query delta RMSE over meta-train dev episodes (no meta-validation, no HCC)
+  generic_cnp: >
+    DeepSets encoder over support (features, f0, measured delta) -> mean -> decoder(query features, f0(q), r) -> delta.
+    Same inputs as the proposed model, no built-in f0 skip, no offset/residual split. lr grid as the proposed model,
+    same episodes, loss, optimiser budget and selection rule.
+  transigen:
+    checkpoints: prior-study B0 (seeds 42, 43, 44), trained without any meta-validation cell
+    as_is: B0 mean-path prediction
+    offset: B0 + mean over the K support units of (measured - B0)
+    full_ft:
+      lr_grid: [1.0e-5, 1.0e-4, 1.0e-3]
+      batchnorm: [train_mode, frozen_running_stats]
+      update_grid: [25, 50, 100, 200, 400, 800]
+      batch_size: min(32, support rows)
+      optimiser: Adam, weight_decay 1e-5 (prior-study settings)
+      selection: per K, lowest meta-validation query delta RMSE (family-equal mean), search seed 42, support seed 1; no target label
+      note: 0 updates equals as_is and is reported next to the grid, not selectable
+
+evaluation:
+  primary: per-unit delta RMSE over 978 genes -> mean over query units
+  secondary: [delta Pearson, centred Pearson (own means), centred RMSE (own means), retrieval MRR raw and centred with shuffled reference, top-20 direction, magnitude ratio]
+  hcc:
+    targets: [HUH7, JHH5, JHH7]
+    split_files: prior-study manifests/transigen_adaptation_b1/splits/target_<T>_split<s>.tsv, unchanged
+    support: first K drug groups of the prior-study adapt_pool order (adapt_rank), K in {8, 16, 32}
+    query_primary: prior-study test drug groups (the historical test)
+    query_secondary: prior-study test + val drug groups (val labels are not used for anything else)
+    target_validation_labels: 0
+    split_seeds: [1, 2, 3]
+    model_seeds: [42, 43, 44]
+    bootstrap: {unit: drug_group, resamples: 2000, seed: 20261117, ci: 0.95, paired: true}
+    contrasts_vs: mean_offset
+  sealing: target treated profiles are read only by hcc_eval.py, which requires the committed freeze manifest
+
+amendments: []
