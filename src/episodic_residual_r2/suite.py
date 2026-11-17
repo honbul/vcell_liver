@@ -73,13 +73,21 @@ class Suite:
                     yield "transigen_full_ft", s, status          # diverged: recorded by the caller, no prediction
 
 
-def current_selection(extra_learned=None, modes=None):
-    """Selection assembled from the committed manifests (source-side selections only)."""
-    sel = dict(lam_file=os.path.join(MAN, "baseline_lambda_selection.json"), tsg_file=os.path.join(MAN, "tsg_ft_selection.json"))
-    out = {"lambda": json.load(open(sel["lam_file"]))["selected"], "tsg_ft": json.load(open(sel["tsg_file"]))["selected"], "learned": {}, "modes": modes or {}}
-    ms = os.path.join(MAN, "model_selection.json")
+def man_file(name):
+    """Committed manifest if present, else the not-yet-committed server copy (development stages only)."""
+    c = os.path.join(MAN, name)
+    p = os.path.join(os.environ["R2_PUBLIC"], "manifests", "episodic_residual_r2", name)
+    return p if os.path.exists(p) else c
+
+
+def current_selection(extra_learned=None, modes=None, committed_only=False):
+    """Selection assembled from the source-side selection manifests."""
+    f = (lambda n: os.path.join(MAN, n)) if committed_only else man_file
+    out = {"lambda": json.load(open(f("baseline_lambda_selection.json")))["selected"], "tsg_ft": json.load(open(f("tsg_ft_selection.json")))["selected"],
+           "learned": {}, "modes": modes or {}}
+    ms = f("model_selection.json")
     if os.path.exists(ms):
-        out["learned"] = json.load(open(ms))["final"]
+        out["learned"] = dict(json.load(open(ms))["final"])
     if extra_learned:
         out["learned"].update(extra_learned)
     return out
