@@ -112,3 +112,8 @@ source panel validation ΔRMSE, seed 42/43/44 평균(각 run의 최저 validatio
 
 - W0 원형 3 seed, W1 3 seed, W2(수정 1, λ 0.05) 3 seed, W2(수정 전, λ 0.05) 3 seed(두 번째 후보, 수정 효과 확인용), latent regression 3 seed, Δ-MLP 3 seed, 기준선 4개(무변화, 세포 평균, Ridge 두 종류, α 고정).
 - 사전 지정 대비(a − b, test, 약물 그룹 bootstrap): W1−W0, W2−W1, W2−latent regression, W2−ECFP+X0 Ridge, W2−세포 평균, W1−세포 평균, Ridge−세포 평균, W2(수정 전)−W1, W2−W2(수정 전), Δ-MLP−W1.
+
+## 동결 (freeze)
+
+- 가짜 평가(job 25369): 동결 초안으로 **validation unit**을 test 자리에 넣어 평가 코드 전체를 실행했다. 각 모델의 validation 값이 학습 기록과 일치했다(예: W2 0.56228). 결과는 `manifests/response_geometry_r4/mock/`(validation 값, test 아님).
+- `freeze_manifest.json`을 commit한 뒤 test 평가를 한 번 실행한다. 이 시점까지 어떤 R4 job도 `unit_delta_test.npy`를 열지 않았다.
