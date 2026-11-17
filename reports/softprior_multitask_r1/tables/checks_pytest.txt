@@ -1,4 +1,8 @@
-........s...                                                             [100%]
-=========================== short test summary info ============================
-SKIPPED [1] src/softprior_multitask_r1/tests/test_solvers.py:145: could not import 'torch': No module named 'torch'
-11 passed, 1 skipped in 3.14s
+............                                                             [100%]
+=============================== warnings summary ===============================
+src/softprior_multitask_r1/tests/test_solvers.py::test_torch_autograd_reference
+  /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_softprior_multitask_r1/assets/envs/r1/lib/python3.11/site-packages/torch/autograd/graph.py:1113: UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 12060). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver. (Triggered internally at /__w/pytorch/pytorch/c10/cuda/CUDAFunctions.cpp:119.)
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+12 passed, 1 warning in 13.22s
