@@ -36,6 +36,11 @@ CONTRASTS = {
     "transigen_full_ft-C0_iid": _d("transigen_full_ft", "C0_iid"), "B00-transigen_full_ft": _d("B00", "transigen_full_ft"),
     "transigen_offset-C0_iid": _d("transigen_offset", "C0_iid"), "transigen_full_ft-transigen_offset": _d("transigen_full_ft", "transigen_offset"),
     "transigen_as_is-same_drug_mean": _d("transigen_as_is", "same_drug_mean"),
+    # every 2 x 2 arm and the kernel baseline against the simple and public references (added before the freeze)
+    "B00-no_change": _d("B00", "no_change"), "B00-shrunk_same_drug_mean": _d("B00", "shrunk_same_drug_mean"),
+    "B01-C0_iid": _d("B01", "C0_iid"), "B10-C0_iid": _d("B10", "C0_iid"), "B11-C0_iid": _d("B11", "C0_iid"),
+    "B01-C1_iid": _d("B01", "C1_iid"), "B10-C1_iid": _d("B10", "C1_iid"), "B11-C1_iid": _d("B11", "C1_iid"),
+    "C1_iid-mean_offset": _d("C1_iid", "mean_offset"), "C1_iid-cnp": _d("C1_iid", "cnp"), "C1_iid-transigen_full_ft": _d("C1_iid", "transigen_full_ft"),
 }
 
 
