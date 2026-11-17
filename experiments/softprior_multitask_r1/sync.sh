@@ -20,6 +20,17 @@ while IFS= read -r f; do
     else echo "DIFFERS, not touched: $f"; conflict=1; fi
   fi
 done < <(git ls-files --others --exclude-standard)
+# A tracked file that a job regenerated: restore it only when the regenerated content is byte for byte
+# the version being pulled in (so nothing is lost); otherwise stop.
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  if git cat-file -e "$REF:$f" 2>/dev/null; then
+    a=$(sha256sum "$f" | cut -d' ' -f1)
+    b=$(git show "$REF:$f" | sha256sum | cut -d' ' -f1)
+    if [ "$a" = "$b" ]; then git checkout -- "$f"; echo "restored identical tracked $f"
+    else echo "TRACKED FILE DIFFERS, not touched: $f"; conflict=1; fi
+  fi
+done < <(git ls-files --modified)
 [ "$conflict" -eq 0 ] || { echo "untracked files differ from $REF; resolve by hand"; exit 1; }
 git merge -q --ff-only "$REF"
 git log --oneline -1
