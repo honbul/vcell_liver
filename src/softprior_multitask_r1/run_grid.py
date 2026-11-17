@@ -95,12 +95,13 @@ def main() -> None:
         t0 = time.time()
         sets = data.prior_sets(prior)
         X, Y, fam = data.rank[tr], data.Y[tr], data.fam[tr]
-        loss, records, fam_loss, fams = M.inner_losses(X, Y, fam, sets, configs, n_inner, seed, return_family=True)
+        loss, records, fam_loss, fams, fam_fold = M.inner_losses(X, Y, fam, sets, configs, n_inner, seed, return_family=True)
         meta = dict(set=sid, prior=prior, grid=args.grid, n_train_models=int(tr.sum()),
                     n_train_families=int(len(set(fam))), inner_seed=int(seed),
                     n_not_converged=int(sum(not r["converged"] for r in records)),
                     max_iterations=int(max([r["iterations"] for r in records], default=0)))
-        extra = dict(fam_loss=fam_loss.astype(np.float32), families=np.array([str(f) for f in fams])) if args.store_family else {}
+        extra = dict(fam_loss=fam_loss.astype(np.float32), families=np.array([str(f) for f in fams]),
+                     family_inner_fold=fam_fold) if args.store_family else {}
         if args.outer_predict:
             need_reduced = any(c[0] == "nuc" for c in configs)
             prep = M.Prep(X, Y, fam, X_te, sets, need_reduced=need_reduced)

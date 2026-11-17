@@ -123,6 +123,7 @@ def inner_losses(X, Y, fam, sets, configs, n_inner, seed, return_family=False):
     fams = np.unique(fam)
     f_pos = {f: i for i, f in enumerate(fams)}
     fam_loss = np.full((len(configs), len(fams), Y.shape[1]), np.nan)
+    fam_fold = np.array([int(inner[fam == f][0]) for f in fams])
     records = []
     need_reduced = any(c[0] == "nuc" for c in configs)
     for k in range(n_inner):
@@ -145,7 +146,7 @@ def inner_losses(X, Y, fam, sets, configs, n_inner, seed, return_family=False):
     assert np.isfinite(fam_loss).all()
     loss = fam_loss.mean(axis=1)
     if return_family:
-        return loss, records, fam_loss, fams
+        return loss, records, fam_loss, fams, fam_fold
     return loss, records
 
 

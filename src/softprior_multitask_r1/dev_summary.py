@@ -3,7 +3,9 @@
 
 For every model named in the config (`models`) that can be formed from the configurations present in
 the given run directories: development score, family-bootstrap interval, chosen configurations, and
-paired differences for the listed pairs. Also writes the score of every single fixed configuration.
+paired differences for the listed pairs. Two scores are written: `dev_macro_nrmse` (the minimum inner
+loss, which is what the nested procedure uses to choose; optimistic, more so for per-drug selection) and
+`dev_xsel_macro_nrmse` (configuration chosen on the other inner folds; used for development decisions). Also writes the score of every single fixed configuration.
 
 Usage: dev_summary.py --runs DIR[,DIR2..] --models m1,m2,... [--pairs a:b,c:d] --tag NAME --out-dir DIR
 """
@@ -52,8 +54,10 @@ def main() -> None:
         row = dict(model=name, select=spec["select"], n_candidates=len(SEL.candidates(spec, next(iter(inner.values()))["keys"])),
                    dev_macro_nrmse=score, set_sd=float(np.std(list(per_set.values()), ddof=1)))
         if has_fam:
-            boots[name] = SEL.dev_boot(inner, spec, fams, W)
-            row["ci_low"], row["ci_high"] = A1M.ci(boots[name], *b["ci"])
+            # selection-honest score (configuration chosen on the other inner folds) with its interval
+            row["dev_xsel_macro_nrmse"] = SEL.dev_xsel(inner, spec)
+            boots[name] = SEL.dev_xsel(inner, spec, fams, W)
+            row["xsel_ci_low"], row["xsel_ci_high"] = A1M.ci(boots[name], *b["ci"])
         rows.append(row)
         cnt = collections.Counter(M.key_str(k) for ks in chosen.values() for k in ks)
         for k, n in sorted(cnt.items(), key=lambda kv: -kv[1]):
@@ -67,11 +71,13 @@ def main() -> None:
     if args.pairs and has_fam:
         d_rows = []
         s = summ.set_index("model").dev_macro_nrmse
+        x = summ.set_index("model").dev_xsel_macro_nrmse
         for pair in args.pairs.split(","):
             a, bb = pair.split(":")
             d = boots[a] - boots[bb]
             lo, hi = A1M.ci(d, *b["ci"])
-            d_rows.append(dict(model=a, reference=bb, dev_difference=s[a] - s[bb], ci_low=lo, ci_high=hi,
+            d_rows.append(dict(model=a, reference=bb, dev_xsel_difference=x[a] - x[bb], ci_low=lo, ci_high=hi,
+                               selected_min_difference=s[a] - s[bb],
                                boot_fraction_below_zero=float((d < 0).mean())))
         dd = pd.DataFrame(d_rows)
         dd.to_csv(os.path.join(args.out_dir, f"{args.tag}_dev_differences.tsv"), sep="\t", index=False, float_format="%.6g")

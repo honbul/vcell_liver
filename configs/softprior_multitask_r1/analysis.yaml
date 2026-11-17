@@ -71,6 +71,9 @@ grids:
   d1_subspace:        # R1-1 diagnostic, tau = 0: whole space / pathway subspace only / complement only
     lambda: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0]
     ridge_kernels: [whole, par, perp]
+  null_level:         # lambda so large that the prediction is the training mean (reference level in development tables)
+    lambda: [1.0e+9]
+    ridge_kernels: [whole]
 
 # Named models = candidate configurations + selection mode. `select: per_drug` picks per drug (as
 # Track A did), `select: global` picks one configuration for all 90 drugs of a training set.
@@ -81,6 +84,7 @@ models:
   par_gl:    {select: global,   ridge_kernels: [par]}
   perp_pd:   {select: per_drug, ridge_kernels: [perp]}      # diagnostic: pathway subspace removed
   perp_gl:   {select: global,   ridge_kernels: [perp]}
+  train_mean: {select: global,  ridge_kernels: [whole], lambda: [1.0e+9]}
 
 # Baselines outside the R1 objective. Each is tuned with the same inner family folds and inner loss.
 baselines:
