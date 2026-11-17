@@ -95,14 +95,20 @@ class ResponseModel(nn.Module):
 
     def __init__(self, n_genes: int, n_fp: int = 2048, obs_input: bool = False, use_state: bool = True,
                  d: int = 128, d_drug: int = 256, hidden: int = 512, dropout: float = 0.1,
-                 recon_head: bool = False, latent_proj: bool = False, **enc_kw):
+                 recon_head: bool = False, latent_proj: bool = False, head_mode: str = "joint", **enc_kw):
         super().__init__()
-        self.use_state, self.d = use_state, d
+        assert head_mode in ("joint", "additive")
+        self.use_state, self.d, self.head_mode = use_state, d, head_mode
         self.encoder = StateEncoder(n_genes, obs_input, d=d, dropout=dropout, **enc_kw) if use_state else None
         self.z0 = None if use_state else nn.Parameter(torch.zeros(1, d))
         self.drug = nn.Sequential(nn.Linear(n_fp, 512), nn.GELU(), nn.Dropout(dropout), nn.Linear(512, d_drug), nn.GELU())
         self.head = nn.Sequential(nn.Linear(d + d_drug, hidden), nn.GELU(), nn.Dropout(dropout),
                                   nn.Linear(hidden, hidden), nn.GELU(), nn.Linear(hidden, n_genes))
+        # "additive" (revision 1): delta = g(z) + h(z, drug); g never sees the drug, h's last layer starts at 0
+        self.state_head = None
+        if head_mode == "additive":
+            self.state_head = nn.Sequential(nn.Linear(d, hidden), nn.GELU(), nn.Dropout(dropout), nn.Linear(hidden, n_genes))
+            nn.init.zeros_(self.head[-1].weight); nn.init.zeros_(self.head[-1].bias)
         self.recon = nn.Linear(d, n_genes) if recon_head else None      # denoise-control only
         self.proj = nn.Linear(d, d) if latent_proj else None            # student -> teacher latent
 
@@ -111,10 +117,17 @@ class ResponseModel(nn.Module):
             return self.z0.expand(batch, self.d), None
         return self.encoder(f)
 
+    def delta_parts(self, z: torch.Tensor, fp: torch.Tensor):
+        """z [B, d], fp [B, K, n_fp] -> (state-only part [B, 1, G] or None, drug-specific part [B, K, G])."""
+        e = self.drug(fp)
+        h = self.head(torch.cat([z.unsqueeze(1).expand(-1, e.shape[1], -1), e], -1))
+        g = self.state_head(z).unsqueeze(1) if self.state_head is not None else None
+        return g, h
+
     def delta(self, z: torch.Tensor, fp: torch.Tensor) -> torch.Tensor:
         """z [B, d], fp [B, K, n_fp] -> [B, K, G] (K drugs per control set)."""
-        e = self.drug(fp)
-        return self.head(torch.cat([z.unsqueeze(1).expand(-1, e.shape[1], -1), e], -1))
+        g, h = self.delta_parts(z, fp)
+        return h if g is None else g + h
 
     def forward(self, f, fp):
         z, hc = self.state(f, fp.shape[0])

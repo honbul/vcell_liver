@@ -49,9 +49,10 @@ def build_model(d: D.R6Data, arm: str, hp: dict) -> ResponseModel:
     return ResponseModel(d.Y.shape[2], d.fp.shape[1], obs_input=a["obs"], use_state=a["state"],
                          recon_head="reconstruction" in a["w"], latent_proj="latent" in a["w"],
                          d=hp.get("d", 128), n_tok=hp.get("n_tok", 256), n_blocks=hp.get("n_blocks", 2),
-                         dropout=hp.get("dropout", 0.1), x_mean=d.x_mean, x_sd=d.x_sd, tiebreak=d.tiebreak) \
+                         dropout=hp.get("dropout", 0.1), head_mode=hp.get("head_mode", "joint"),
+                         x_mean=d.x_mean, x_sd=d.x_sd, tiebreak=d.tiebreak) \
         if a["state"] else ResponseModel(d.Y.shape[2], d.fp.shape[1], use_state=False, d=hp.get("d", 128),
-                                         dropout=hp.get("dropout", 0.1))
+                                         dropout=hp.get("dropout", 0.1), head_mode=hp.get("head_mode", "joint"))
 
 
 class Sampler:
@@ -162,6 +163,8 @@ def main() -> None:
             q.requires_grad_(False)
         t_info = dict(run=str(a.teacher), arm=ck["arm"], sha256=D.sha256_file(Path(a.teacher) / "ckpt.pt"))
     B, K = hp.get("sets_per_step", 16), hp.get("drugs_per_set", 12)
+    shrink = float(hp.get("drug_shrink", 0.0))
+    assert shrink == 0 or hp.get("head_mode") == "additive"
     steps_per_epoch = math.ceil(smp.n_cond / (B * K))
     total = steps_per_epoch * a.epochs
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=hp.get("weight_decay", 1e-4))
@@ -183,9 +186,13 @@ def main() -> None:
             p = ps[torch.randint(len(ps), (B,), device=dev, generator=gen)]
             c, r = thin_torch(c_full, r_full, p[:, None].expand(B, cells.shape[1]), gen)
             f = set_features(c, r) if model.use_state else None
-            pred, z, hc = model(f, fp[Db])
+            z, hc = model.state(f, B)
+            g_part, h_part = model.delta_parts(z, fp[Db])
+            pred = h_part if g_part is None else g_part + h_part
             y = Y[Lb, Db] / y_scale
             parts = dict(supervised=LS.supervised(pred, y))
+            if shrink > 0:                                             # revision 1: shrink the drug-specific part
+                parts["drug_shrink"] = (h_part ** 2).mean()
             if teacher is not None:
                 with torch.no_grad():
                     tp, tz, _ = teacher(set_features(c_full, r_full), fp[Db])
@@ -194,7 +201,7 @@ def main() -> None:
             if model.recon is not None:
                 x_full = set_features(c_full, r_full)["x"]
                 parts["reconstruction"] = LS.reconstruction(model.recon(hc), x_full, x_mean, x_sd)
-            loss = LS.total(parts, dict(supervised=1.0, **arm["w"]))
+            loss = LS.total(parts, dict(supervised=1.0, drug_shrink=shrink, **arm["w"]))
             opt.zero_grad(set_to_none=True)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
