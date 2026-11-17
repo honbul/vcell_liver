@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Several small R6 runs sharing ONE GPU. Submit as an array with a concurrency cap so that the
 # study never holds more than two GPUs:
-#   sbatch -J r6_<name> --array=0-<n>%2 experiments/depth_robust_r6/pack.sbatch <task file> [runs per GPU]
+#   sbatch -J r6_<name> --array=0-<n>%2 experiments/depth_robust_r6/pack.sbatch <task file> [runs per GPU; 2 on a 24 GB card]
 # Each line of the task file is "<module> <args...>" (must contain --run-id <id>); array task i runs
 # lines [i*PER, (i+1)*PER) concurrently and writes logs/run_<id>.log for each.
 #SBATCH --partition=gpu
@@ -12,7 +12,7 @@
 #SBATCH --output=logs/%x_%A_%a.log
 set -uo pipefail
 source experiments/depth_robust_r6/env.sh
-TASKS=$1; PER=${2:-3}
+TASKS=$1; PER=${2:-2}
 export OMP_NUM_THREADS=4 MKL_NUM_THREADS=4
 echo "host=$(hostname) job=${SLURM_JOB_ID:-} array=${SLURM_ARRAY_JOB_ID:-}_${SLURM_ARRAY_TASK_ID:-} commit=$(git rev-parse HEAD) start=$(date -Is) tasks=$TASKS per=$PER"
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader -i "${CUDA_VISIBLE_DEVICES:-0}" || true
