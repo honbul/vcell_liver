@@ -1,31 +1,95 @@
-run_id	setting	arm	status	job	commit	lr	seed	epochs	head_mode	drug_shrink	teacher	train_seconds	gpu	dev_rmse_p1	dev_rmse_p025	ckpt_sha256	note
-Z0_dev_v1	dev		finished		1f9fbe6												first Ridge grid; drug penalty at the grid edge, superseded by Z0_dev_v2 (DECISIONS D3)
-Z0_dev_v2	dev		finished		8ee360d												
-pilot_B00_lr1e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
-pilot_B00_lr1e-3_s42_e60_r2	dev	B00	finished	25544	42df188	0.001	42	60	joint	0		1031.8	NVIDIA A30	0.09684	0.09687	5a4798ad8bc6d19899369cc1134465899fd9f1246197250c9e63c2570b43b043	
-pilot_B00_lr3e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
-pilot_B00_lr3e-3_s42_e60_r2	dev	B00	finished	25579	42df188	0.003	42	60	joint	0		990.3	NVIDIA A30	0.09594	0.09599	690012b713b3c3856038d278011b85c44843401e089a5994a7a82065da714105	
-pilot_B00_lr3e-4_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
-pilot_B00_lr3e-4_s42_e60_r2	dev		failed														CUDA out of memory: three runs were packed on one 24 GB A30 (array 25519); rerun as _r3 with two runs per GPU
-pilot_B00_lr3e-4_s42_e60_r3	dev	B00	finished	25578	42df188	0.0003	42	60	joint	0		995.1	NVIDIA A30	0.09360	0.09361	aa48d17bbc086b2c3e6e10b17f62c63ee47ce8b4e77f1e7b0ddbf4926868a7db	
-pilot_B10_lr1e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
-pilot_B10_lr1e-3_s42_e60_r2	dev		not_finished														
-pilot_B10_lr3e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
-pilot_B10_lr3e-3_s42_e60_r2	dev		not_finished														
-pilot_B10_lr3e-4_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
-pilot_B10_lr3e-4_s42_e60_r2	dev	B10	finished	25579	42df188	0.0003	42	60	joint	0		990.3	NVIDIA A30	0.09372	0.09370	8026f6ed56a57204a559b456ce382d98bf6974ebc3dd85ea5665817571ed16e1	
-pilot_DEN_lr1e-3_s42_e60_r2	dev		not_finished														
-pilot_DEN_lr3e-4_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
-pilot_DEN_lr3e-4_s42_e60_r2	dev		not_finished														
-pilot_TEACH0_lr1e-3_s42_e60	dev	TEACH0	finished	25501	45b91ea	0.001	42	60	joint	0		445.6	NVIDIA A30	0.09427	0.09478	77f5534fb59d6fcfbe63f4e25f3b89e4bbc27edf57c7285265f62831b7b83381	
-pilot_TEACH0_lr3e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
-pilot_TEACH0_lr3e-3_s42_e60_r2	dev	TEACH0	finished	25544	42df188	0.003	42	60	joint	0		1031.8	NVIDIA A30	0.09562	0.09757	d9db1c6a254ed27bf44a5a509acbc726dca779d3cb813ee0c9c921b792845f0a	
-pilot_TEACH0_lr3e-4_s42_e60	dev	TEACH0	finished	25500	45b91ea	0.0003	42	60	joint	0		446.7	NVIDIA A30	0.09186	0.09268	90bece5fa824d4d6d48daec327412c19b13e6097ca180a2c6caf0f908653d959	
-pilot_TEACH1_lr1e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
-pilot_TEACH1_lr1e-3_s42_e60_r2	dev		failed														CUDA out of memory: three runs were packed on one 24 GB A30 (array 25519); rerun as _r3 with two runs per GPU
-pilot_TEACH1_lr1e-3_s42_e60_r3	dev	TEACH1	finished	25578	42df188	0.001	42	60	joint	0		995.1	NVIDIA A30	0.09607	0.09921	e1951907a9d2f53584729e469b6974e8d8986809ef2972741c427f2938e34c10	
-pilot_TEACH1_lr3e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
-pilot_TEACH1_lr3e-3_s42_e60_r2	dev	TEACH1	finished	25543	42df188	0.003	42	60	joint	0		1010.5	NVIDIA A30	0.09638	0.09929	0d99d715422a7a4b6ca1b97a1dffabe5d36bab3fd9accd5dfbcc3ed4f5ae40a0	
-pilot_TEACH1_lr3e-4_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
-pilot_TEACH1_lr3e-4_s42_e60_r2	dev	TEACH1	finished	25543	42df188	0.0003	42	60	joint	0		1010.5	NVIDIA A30	0.09193	0.09354	dea87215279c072ee86723fb665aba041c7f398e8659abf897928e72363b6b77	
-smoke_B10_e2	dev	B10	finished	25496	1f9fbe6	0.001	42	2	joint	0		21.6	NVIDIA A30	0.09487	0.09502	33a92e7124d142ffd18ff58849866a35ad13fda0ec1bbc26aeb8abdb0b635ae2	2-epoch smoke test, not a result
+run_id	setting	arm	scored_on	status	job	commit	lr	seed	epochs	head_mode	drug_shrink	teacher	train_seconds	gpu	rmse_p1	rmse_p025	ckpt_sha256	note
+Z0_dev_v1	dev		dev fold	finished		1f9fbe6												first Ridge grid; drug penalty at the grid edge, superseded by Z0_dev_v2 (DECISIONS D3)
+Z0_dev_v2	dev		dev fold	finished		8ee360d												
+chemcpa_dev_check_v1	dev	chemCPA 43e830eb, earlier study's P0_lr0.3 (frozen, not retrained)	dev fold	finished		557bcf7												functional check of the chemCPA adapter only: dev-fold drugs were in its training data, not a comparison
+pilot_B00_lr1e-3_s42_e60	dev		dev fold	cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_B00_lr1e-3_s42_e60_r2	dev	B00	dev fold	finished	25544	42df188	0.001	42	60	joint	0		1031.8	NVIDIA A30	0.09684	0.09687	5a4798ad8bc6d19899369cc1134465899fd9f1246197250c9e63c2570b43b043	
+pilot_B00_lr3e-3_s42_e60	dev		dev fold	cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_B00_lr3e-3_s42_e60_r2	dev	B00	dev fold	finished	25579	42df188	0.003	42	60	joint	0		990.3	NVIDIA A30	0.09594	0.09599	690012b713b3c3856038d278011b85c44843401e089a5994a7a82065da714105	
+pilot_B00_lr3e-4_s42_e60	dev		dev fold	cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_B00_lr3e-4_s42_e60_r2	dev		dev fold	failed														CUDA out of memory: three runs were packed on one 24 GB A30 (array 25519); rerun as _r3 with two runs per GPU
+pilot_B00_lr3e-4_s42_e60_r3	dev	B00	dev fold	finished	25578	42df188	0.0003	42	60	joint	0		995.1	NVIDIA A30	0.09360	0.09361	aa48d17bbc086b2c3e6e10b17f62c63ee47ce8b4e77f1e7b0ddbf4926868a7db	
+pilot_B01_lr1e-3_s42_e60	dev		dev fold	failed														CUDA out of memory: two teacher-arm runs (about 14 GB each) on one 24 GB A30; rerun alone as _r2
+pilot_B01_lr1e-3_s42_e60_r2	dev	B01	dev fold	finished	25625	557bcf7	0.001	42	60	joint	0	pilot_TEACH0_lr3e-4_s42_e60	604.8	NVIDIA A30	0.09097	0.09102	af9d32e8a4381d1304b111d1f00b44b810d55f1b1eb99d762c7630d01c9b4afe	
+pilot_B01_lr3e-3_s42_e60	dev	B01	dev fold	finished	25604	1ee2802	0.003	42	60	joint	0	pilot_TEACH0_lr3e-4_s42_e60	1340.5	NVIDIA A30	0.09083	0.09084	f5b9dd3fcd214c29ce497d9f32a13414e0154213644a4803ac53b5f6b065bc68	
+pilot_B01_lr3e-4_s42_e60	dev	B01	dev fold	finished	25603	ae1a2b4	0.0003	42	60	joint	0	pilot_TEACH0_lr3e-4_s42_e60	663.0	NVIDIA A30	0.09184	0.09184	0e4935b013f9d5b66e0fb880e9aebee231f6febe3ca996952a4b38cbfb73c5b1	
+pilot_B10_lr1e-3_s42_e60	dev		dev fold	cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_B10_lr1e-3_s42_e60_r2	dev	B10	dev fold	finished	25590	ae1a2b4	0.001	42	60	joint	0		988.1	NVIDIA A30	0.09804	0.09807	da56b689546a2085a6cdaff85fc5e874f8a11a7d3f6fa7292d14fb2f47f4e622	
+pilot_B10_lr3e-3_s42_e60	dev		dev fold	cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_B10_lr3e-3_s42_e60_r2	dev	B10	dev fold	finished	25590	ae1a2b4	0.003	42	60	joint	0		990.4	NVIDIA A30	0.09921	0.09912	e4909f28b29c9bda3b5202aa2c7a849c4202176cee5507a118f24d657e2f5027	
+pilot_B10_lr3e-4_s42_e60	dev		dev fold	cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_B10_lr3e-4_s42_e60_r2	dev	B10	dev fold	finished	25579	42df188	0.0003	42	60	joint	0		990.3	NVIDIA A30	0.09372	0.09370	8026f6ed56a57204a559b456ce382d98bf6974ebc3dd85ea5665817571ed16e1	
+pilot_B11_lr1e-3_s42_e60	dev	B11	dev fold	finished	25610	1ee2802	0.001	42	60	joint	0	pilot_TEACH1_lr3e-4_s42_e60_r2	1339.1	NVIDIA A30	0.09140	0.09144	fb981588082feb189ad86c0e2713d936e34d376d04cd7c4c77cec7ab695ba5b5	
+pilot_B11_lr3e-3_s42_e60	dev	B11	dev fold	finished	25610	1ee2802	0.003	42	60	joint	0	pilot_TEACH1_lr3e-4_s42_e60_r2	1342.2	NVIDIA A30	0.09095	0.09095	6515dd5fcbcfc66193f29c0826963d703ecfdb09ef0c575b7ec84edfc3ba5030	
+pilot_B11_lr3e-4_s42_e60	dev	B11	dev fold	finished	25604	1ee2802	0.0003	42	60	joint	0	pilot_TEACH1_lr3e-4_s42_e60_r2	1343.0	NVIDIA A30	0.09200	0.09204	c87f6028dabea659ef81e2788e09f51d37c26aac4cc196c750f0d51523316fe4	
+pilot_DEN_lr1e-3_s42_e60_r2	dev	DEN	dev fold	finished	25591	ae1a2b4	0.001	42	60	joint	0		996.0	NVIDIA A30	0.09751	0.09745	e35f9dab5322b7f801639bad94e63dcd27b70fc434d1ec46b32a0c8659da9b44	
+pilot_DEN_lr3e-3_s42_e60_r2	dev	DEN	dev fold	finished	25600	ae1a2b4	0.003	42	60	joint	0		458.2	NVIDIA A30	0.09765	0.09762	abde246e7bd7642f3a4bf12ac482e1d70b51fd98ba69742d2a925194546ea2b7	
+pilot_DEN_lr3e-4_s42_e60	dev		dev fold	cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_DEN_lr3e-4_s42_e60_r2	dev	DEN	dev fold	finished	25591	ae1a2b4	0.0003	42	60	joint	0		995.8	NVIDIA A30	0.09361	0.09359	c86691839f6f44b41f245024c25ca237ccd620a3acd060f115b6375a5934e376	
+pilot_NOSTATE_lr1e-3_s42_e60_r2	dev	NOSTATE	dev fold	finished	25554	ae1a2b4	0.001	42	60	joint	0		16.2	NVIDIA A30	0.09972	0.09972	c1233a028524411e7922cdfa3d5d1b4e240ffec552ab1059852d6809bc916b0a	
+pilot_NOSTATE_lr3e-3_s42_e60_r2	dev	NOSTATE	dev fold	finished	25554	ae1a2b4	0.003	42	60	joint	0		16.9	NVIDIA A30	0.09872	0.09872	f1ca851f6dac2f1df4e5051de6107c7752f13b460eb80c6f7d9b7406684baa86	
+pilot_NOSTATE_lr3e-4_s42_e60_r2	dev	NOSTATE	dev fold	finished	25600	ae1a2b4	0.0003	42	60	joint	0		21.2	NVIDIA A30	0.10188	0.10188	4b9632aa8588072608803d68d97b3a9732557dc701dc4698fc730d7b506cabc1	
+pilot_TEACH0_lr1e-3_s42_e60	dev	TEACH0	dev fold	finished	25501	45b91ea	0.001	42	60	joint	0		445.6	NVIDIA A30	0.09427	0.09478	77f5534fb59d6fcfbe63f4e25f3b89e4bbc27edf57c7285265f62831b7b83381	
+pilot_TEACH0_lr3e-3_s42_e60	dev		dev fold	cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_TEACH0_lr3e-3_s42_e60_r2	dev	TEACH0	dev fold	finished	25544	42df188	0.003	42	60	joint	0		1031.8	NVIDIA A30	0.09562	0.09757	d9db1c6a254ed27bf44a5a509acbc726dca779d3cb813ee0c9c921b792845f0a	
+pilot_TEACH0_lr3e-4_s42_e60	dev	TEACH0	dev fold	finished	25500	45b91ea	0.0003	42	60	joint	0		446.7	NVIDIA A30	0.09186	0.09268	90bece5fa824d4d6d48daec327412c19b13e6097ca180a2c6caf0f908653d959	
+pilot_TEACH1_lr1e-3_s42_e60	dev		dev fold	cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_TEACH1_lr1e-3_s42_e60_r2	dev		dev fold	failed														CUDA out of memory: three runs were packed on one 24 GB A30 (array 25519); rerun as _r3 with two runs per GPU
+pilot_TEACH1_lr1e-3_s42_e60_r3	dev	TEACH1	dev fold	finished	25578	42df188	0.001	42	60	joint	0		995.1	NVIDIA A30	0.09607	0.09921	e1951907a9d2f53584729e469b6974e8d8986809ef2972741c427f2938e34c10	
+pilot_TEACH1_lr3e-3_s42_e60	dev		dev fold	cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_TEACH1_lr3e-3_s42_e60_r2	dev	TEACH1	dev fold	finished	25543	42df188	0.003	42	60	joint	0		1010.5	NVIDIA A30	0.09638	0.09929	0d99d715422a7a4b6ca1b97a1dffabe5d36bab3fd9accd5dfbcc3ed4f5ae40a0	
+pilot_TEACH1_lr3e-4_s42_e60	dev		dev fold	cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_TEACH1_lr3e-4_s42_e60_r2	dev	TEACH1	dev fold	finished	25543	42df188	0.0003	42	60	joint	0		1010.5	NVIDIA A30	0.09193	0.09354	dea87215279c072ee86723fb665aba041c7f398e8659abf897928e72363b6b77	
+rev1_B00_shrink10_lr1e-3_s42_e60	dev	B00	dev fold	finished	25597	1ee2802	0.001	42	60	additive	10.0		993.5	NVIDIA A30	0.08024	0.08032	daa08da7197faa2055de07b93d3d0fa2df7d1e31ad1a5cfe665613f203f4bfc1	
+rev1_B00_shrink10_lr3e-3_s42_e60	dev	B00	dev fold	finished	25645	9a0b005	0.003	42	60	additive	10.0		1336.1	NVIDIA A40	0.08003	0.08017	1091315b1a4105d2f5be618652fc87d2e2058d6df7921f029fc240b45a559bbf	
+rev1_B00_shrink10_lr3e-4_s42_e60	dev	B00	dev fold	finished	25597	1ee2802	0.0003	42	60	additive	10.0		991.8	NVIDIA A30	0.08207	0.08216	4f65844907579cb2af6bc737287d726b2e44d38b83ce6a201b63f9b16706a1ca	
+rev1_B00_shrink1_lr1e-3_s42_e60	dev	B00	dev fold	finished	25615	1ee2802	0.001	42	60	additive	1.0		991.3	NVIDIA A30	0.08194	0.08208	ce63cfe280954ec35424b5a596424e259bfcf6323d067fc16c449820d5fc2375	
+rev1_B00_shrink1_lr3e-4_s42_e60	dev	B00	dev fold	finished	25615	1ee2802	0.0003	42	60	additive	1.0		991.3	NVIDIA A30	0.08372	0.08385	6cab555bbbde2c46828b2ab658daacb3a36e97ec7bfd874b19227bdd8c550d51	
+rev1_B01_shrink10_lr1e-3_s42_e60	dev	B01	dev fold	finished	25654	9a0b005	0.001	42	60	additive	10.0	rev1_TEACH0_shrink10_lr3e-3_s42_e60	1135.8	NVIDIA A40	0.08005	0.08014	3ef05a0b2360a8b36b253be522a65e93bc883be16b675496169c87e6b6894917	
+rev1_B01_shrink10_lr3e-3_s42_e60	dev	B01	dev fold	finished	25655	9a0b005	0.003	42	60	additive	10.0	rev1_TEACH0_shrink10_lr3e-3_s42_e60	1139.9	NVIDIA A40	0.07946	0.07951	937218ffee9a2efa9fa0aa8900bf4194deaa06e11a04aa52fc006c184cf875b6	
+rev1_B01_shrink10_lr3e-4_s42_e60	dev	B01	dev fold	finished	25654	9a0b005	0.0003	42	60	additive	10.0	rev1_TEACH0_shrink10_lr3e-3_s42_e60	1136.9	NVIDIA A40	0.08180	0.08194	8b93866f04c34776d83066bba8eab3d7a9ced9a3e363b58dee317d80c9ffe1c6	
+rev1_B10_shrink10_lr1e-3_s42_e60	dev	B10	dev fold	finished	25645	9a0b005	0.001	42	60	additive	10.0		1343.6	NVIDIA A40	0.08115	0.08126	e8f33dae5b8009c63e42e41e8e70254d05c6bbfbf03a5637112b1ea97de2e170	
+rev1_B10_shrink10_lr3e-3_s42_e60	dev	B10	dev fold	finished	25646	9a0b005	0.003	42	60	additive	10.0		1340.9	NVIDIA A40	0.08189	0.08201	00dd4d3c40235d56148352bf05287e296ecf3e8afd1807940b0da67e6702e4d3	
+rev1_B10_shrink10_lr3e-4_s42_e60	dev	B10	dev fold	finished	25645	9a0b005	0.0003	42	60	additive	10.0		1340.7	NVIDIA A40	0.08230	0.08243	6ae124f1dc59826913930ab8a087652323f81f0db8b01804fad94eca634a1e58	
+rev1_B11_shrink10_lr1e-3_s42_e60	dev	B11	dev fold	finished	25648	9a0b005	0.001	42	60	additive	10.0	rev1_TEACH1_shrink10_lr1e-3_s42_e60	1141.9	NVIDIA A40	0.08020	0.08029	0a33430aab3fbd96764affc894e363bd1f58a5b5c1e9881d50857cf5f4c5f0c0	
+rev1_B11_shrink10_lr3e-3_s42_e60	dev	B11	dev fold	finished	25648	9a0b005	0.003	42	60	additive	10.0	rev1_TEACH1_shrink10_lr1e-3_s42_e60	1141.9	NVIDIA A40	0.07962	0.07970	f70938b3ce3415257018b9f559520ac5d8f3fb25060afae2789a46c942333966	
+rev1_B11_shrink10_lr3e-4_s42_e60	dev	B11	dev fold	finished	25655	9a0b005	0.0003	42	60	additive	10.0	rev1_TEACH1_shrink10_lr1e-3_s42_e60	1140.0	NVIDIA A40	0.08146	0.08159	d5f4a8ae0bb6f07317735cf8f6e465533ae9fb9ef90cbf937850dcdcfa00d292	
+rev1_DEN_shrink10_lr1e-3_s42_e60	dev	DEN	dev fold	finished	25646	9a0b005	0.001	42	60	additive	10.0		1346.5	NVIDIA A40	0.08084	0.08098	5cc49fd690067f587fd552b7362efdc97702e3b4b021766eb757667e14b8e25b	
+rev1_DEN_shrink10_lr3e-3_s42_e60	dev	DEN	dev fold	finished	25653	9a0b005	0.003	42	60	additive	10.0		418.9	NVIDIA A40	0.08148	0.08156	2ddf5e4aaa0e6dfc85f259730c8317d4d2de5b8639242ab2e8439fc792e67259	
+rev1_DEN_shrink10_lr3e-4_s42_e60	dev	DEN	dev fold	finished	25646	9a0b005	0.0003	42	60	additive	10.0		1346.6	NVIDIA A40	0.08224	0.08237	fe633a7fa32af2230829de45d5420ef3a578e373401cabea63836d246c1e59f5	
+rev1_NOSTATE_shrink10_lr1e-3_s42_e60	dev	NOSTATE	dev fold	finished	25653	9a0b005	0.001	42	60	additive	10.0		30.3	NVIDIA A40	0.09408	0.09408	861314a55a6cf45d87734a1a491fc82a611f2cf3cd75346cda4e8e0c68a7916d	
+rev1_NOSTATE_shrink10_lr3e-3_s42_e60	dev	NOSTATE	dev fold	finished	25634	9a0b005	0.003	42	60	additive	10.0		21.3	NVIDIA A40	0.09407	0.09407	c83775fd0ebbfb38183f9499a416f93c5972c0695a53d0c5b8972a9335972b95	
+rev1_NOSTATE_shrink10_lr3e-4_s42_e60	dev	NOSTATE	dev fold	finished	25653	9a0b005	0.0003	42	60	additive	10.0		30.2	NVIDIA A40	0.09409	0.09409	a071de30b3f3288a86422d2880870f785aa5e20d8bb5b8689053ff4a4ff5991b	
+rev1_TEACH0_shrink10_lr1e-3_s42_e60	dev	TEACH0	dev fold	finished	25635	557bcf7	0.001	42	60	additive	10.0		1333.8	NVIDIA A40	0.07989	0.09054	66a6e333c202cc349591a64db2f0c83afc32a9c2f064a16734b1187ebf1ef992	
+rev1_TEACH0_shrink10_lr3e-3_s42_e60	dev	TEACH0	dev fold	finished	25635	557bcf7	0.003	42	60	additive	10.0		1333.1	NVIDIA A40	0.07959	0.09179	fb7ea4fb9defc2ad48d7439a3d4b5dc4869898abe28641449a4ceccb36568360	
+rev1_TEACH0_shrink10_lr3e-4_s42_e60	dev	TEACH0	dev fold	finished	25635	557bcf7	0.0003	42	60	additive	10.0		1330.4	NVIDIA A40	0.08149	0.09080	f3a684627e44c2cf830e9c71b52cf2060e825ed27f85dfa5677f8937f86844cf	
+rev1_TEACH1_shrink10_lr1e-3_s42_e60	dev	TEACH1	dev fold	finished	25636	557bcf7	0.001	42	60	additive	10.0		1341.6	NVIDIA A40	0.08020	0.09174	04301e01e0429419bc11f1b1a0f35307e8d03e816b5a5a03a2d986081ce30046	
+rev1_TEACH1_shrink10_lr3e-3_s42_e60	dev	TEACH1	dev fold	finished	25636	557bcf7	0.003	42	60	additive	10.0		1339.2	NVIDIA A40	0.08022	0.09355	40b43b06ebdc2c23247c66272a77e3050ab1929fe290fdec3736c0dffb7d85e2	
+rev1_TEACH1_shrink10_lr3e-4_s42_e60	dev	TEACH1	dev fold	finished	25636	557bcf7	0.0003	42	60	additive	10.0		1337.6	NVIDIA A40	0.08161	0.09057	ec62aafca5e6d57ebfffeb73f7aaef82c34eb8aa4059f9f3884aaca3e5fbcdac	
+smoke_B10_e2	dev	B10	dev fold	finished	25496	1f9fbe6	0.001	42	2	joint	0		21.6	NVIDIA A30	0.09487	0.09502	33a92e7124d142ffd18ff58849866a35ad13fda0ec1bbc26aeb8abdb0b635ae2	2-epoch smoke test, not a result
+Z0_final_v1	final		test drugs (after freeze)	finished		8f4495b									0.08701	0.08698		
+chemcpa_final_v1	final	chemCPA 43e830eb, earlier study's P0_lr0.3 (frozen, not retrained)	test drugs (after freeze)	finished		eb50535									0.10590	0.20638		
+final_B00_s42	final	B00	test drugs (after freeze)	finished	25677	eb50535	0.003	42	60	additive	10.0		2029.5	NVIDIA A40	0.08366	0.08372	2362e3ea1124ce19763b3177308fe6d4b2f6a89569b929a64353880c3094aa8e	
+final_B00_s43	final	B00	test drugs (after freeze)	finished	25678	eb50535	0.003	43	60	additive	10.0		2013.6	NVIDIA A40	0.08373	0.08377	bc0536f35129e3329dedc5afe8afab41997eaacbb75ea03666456de22efcb349	
+final_B00_s44	final	B00	test drugs (after freeze)	finished	25701	eb50535	0.003	44	60	additive	10.0		2017.2	NVIDIA A40	0.08379	0.08380	4917779b2544115e41fef5c9c755e90f8703a6fac84416edb21a37b94fb8a83a	
+final_B01_s42	final	B01	test drugs (after freeze)	finished	25707	eb50535	0.003	42	60	additive	10.0	final_TEACH0_s42	1743.2	NVIDIA A40	0.08327	0.08328	c8d0c796006b241919b750aa3591311e405d291a4fd41191f412c4ca4ca8cf24	
+final_B01_s43	final	B01	test drugs (after freeze)	finished	25708	eb50535	0.003	43	60	additive	10.0	final_TEACH0_s43	1742.5	NVIDIA A40	0.08331	0.08333	311f0995c5f02167e73ea7d7b68de3e39c4a7b78a33dab8f2b579fee80f31144	
+final_B01_s44	final	B01	test drugs (after freeze)	finished	25674	eb50535	0.003	44	60	additive	10.0	final_TEACH0_s44	1744.3	NVIDIA A40	0.08332	0.08331	d6f79edd4e46276ca5918b4a398fb52aba0f7bd6d6943980d03c69abddcd2ef8	
+final_B10_s42	final	B10	test drugs (after freeze)	finished	25702	eb50535	0.001	42	60	additive	10.0		1362.7	NVIDIA A40	0.08432	0.08437	8504d3df88a8ddb81de08741e46fdd1ba83d27fb2fe794c753479d7cce2bd0ef	
+final_B10_s43	final	B10	test drugs (after freeze)	finished	25704	eb50535	0.001	43	60	additive	10.0		1359.1	NVIDIA A40	0.08436	0.08439	3c495bf66ea336ec88e48b890e542de3c90f3db8e9d2a776718ed964fd3a4ef0	
+final_B10_s44	final	B10	test drugs (after freeze)	finished	25673	eb50535	0.001	44	60	additive	10.0		1349.4	NVIDIA A40	0.08429	0.08430	c735d4026e49c48ee2ce46e5c22087a4434c6f2c5dac10497a4fedccec67066d	
+final_B11_s42	final	B11	test drugs (after freeze)	finished	25707	eb50535	0.003	42	60	additive	10.0	final_TEACH1_s42	1743.4	NVIDIA A40	0.08349	0.08353	2cbe868543395e906e74c7410dd35489cc7070e03ae3adb91254d6a1c05e7e22	
+final_B11_s43	final	B11	test drugs (after freeze)	finished	25708	eb50535	0.003	43	60	additive	10.0	final_TEACH1_s43	1743.4	NVIDIA A40	0.08348	0.08350	0d1db27863165370cbfdd2ea2402a2e87d896ad43cb881beeb688b35898473a1	
+final_B11_s44	final	B11	test drugs (after freeze)	finished	25674	eb50535	0.003	44	60	additive	10.0	final_TEACH1_s44	1744.3	NVIDIA A40	0.08350	0.08352	d367378346de027f317607c4c185a3e9d56ca08fb7022e56d0977ab4c2b1a43d	
+final_DEN_s42	final	DEN	test drugs (after freeze)	finished	25702	eb50535	0.001	42	60	additive	10.0		1362.7	NVIDIA A40	0.08412	0.08414	e9f6cf2887cb716f04447fbf4909021db50cd7faf9337cef2fee586b24d87d15	
+final_DEN_s43	final	DEN	test drugs (after freeze)	finished	25704	eb50535	0.001	43	60	additive	10.0		1359.5	NVIDIA A40	0.08414	0.08418	191b539e5cf2c4ed46e48f8cdfef5a63a0ad28674eab0cb6273c34e1c0c1321e	
+final_DEN_s44	final	DEN	test drugs (after freeze)	finished	25673	eb50535	0.001	44	60	additive	10.0		1354.9	NVIDIA A40	0.08412	0.08414	171cb37ed314eb036aa8cd0c886a523398248a4fa71e002ec3f4ef204d7a0543	
+final_NOSTATE_s42	final	NOSTATE	test drugs (after freeze)	finished	25702	eb50535	0.003	42	60	additive	10.0		47.0	NVIDIA A40	0.09641	0.09641	fac8384f88d221c9ac71b39cd3c0a54a60e60f33c4f062e173c36f55958b9225	
+final_NOSTATE_s43	final	NOSTATE	test drugs (after freeze)	finished	25704	eb50535	0.003	43	60	additive	10.0		46.0	NVIDIA A40	0.09642	0.09642	a5525d09dcacc9ade088cac9d332ca16fa4eeece3ff7122092787660898f09dc	
+final_NOSTATE_s44	final	NOSTATE	test drugs (after freeze)	finished	25673	eb50535	0.003	44	60	additive	10.0		46.8	NVIDIA A40	0.09639	0.09639	f3a84b94cbcecdfb9f826a64593b4eb5d16bd61a2ec5bd584b5bba086b77ffe6	
+final_TEACH0_s42	final	TEACH0	test drugs (after freeze)	finished	25677	eb50535	0.003	42	60	additive	10.0		2028.4	NVIDIA A40	0.08343	0.09477	21de5beea98525385dce19896d82bdea4eaef5ba8e6d6ad44fdb1f5b7895bbd5	
+final_TEACH0_s43	final	TEACH0	test drugs (after freeze)	finished	25678	eb50535	0.003	43	60	additive	10.0		2016.0	NVIDIA A40	0.08342	0.09453	37afddc2061d8645ad0467a19585e59f184501a20f36d4c5bed7c6ee53ab7e11	
+final_TEACH0_s44	final	TEACH0	test drugs (after freeze)	finished	25701	eb50535	0.003	44	60	additive	10.0		2017.4	NVIDIA A40	0.08346	0.09508	ea061d071ba01abaf3012f3d84bec386b888cd51ebe4b8ee6869610a0a8cd837	
+final_TEACH1_s42	final	TEACH1	test drugs (after freeze)	finished	25677	eb50535	0.001	42	60	additive	10.0		2029.6	NVIDIA A40	0.08391	0.09265	0686f6e69eebc19db8de59a757b11df60f69069d2fa17640f7f94e78112413ed	
+final_TEACH1_s43	final	TEACH1	test drugs (after freeze)	finished	25678	eb50535	0.001	43	60	additive	10.0		2014.7	NVIDIA A40	0.08395	0.09295	416ddc98c02ff77a4179922fd305e027ce3028b99f4159fa18f432c176b1f112	
+final_TEACH1_s44	final	TEACH1	test drugs (after freeze)	finished	25701	eb50535	0.001	44	60	additive	10.0		2017.4	NVIDIA A40	0.08391	0.09274	6e38524278f05be84fba4c206274be64ca8b5e69e09669ee53af5bfb79c631fd	
