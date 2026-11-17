@@ -64,3 +64,4 @@ proposed − fixed_vr −0.0006 [−0.0039, +0.0020]; proposed − diversity −
 **수정 하나:** ν = c·ν_D3^γ, γ∈{1, 1.5, 2, 3}, c를 dev 동일 episode(seed 1–3, K=32 random)의 pooled marginal likelihood로 고른다(계획 §7 수정 1 “source calibration / noise” 범주). 다른 설정(kernel, sb2, s2, T, readout, shortlist)은 그대로다. 수정 전 설정은 `hyper_v0_before_mod1.json`으로 보존.
 **예상 차이:** γ>1이 선택되면 proposed·total_variance·pdbal의 선택이 조용한 plate 쪽으로 더 기운다. fixed_vr·random·diversity·latent_variance는 동분산이라 변하지 않는다.
 **판정 방법:** dev에서 proposed − random AUC를 수정 전후 비교, 이어서 meta-val에서 프로토콜 채택 조건을 다시 적용.
+| 2026-11-17 | learned-loss 재학습 job 25379는 서버 worktree를 직접 고친 상태로 제출되어 즉시 취소(실행 결과 없음). 모델 파일 이름을 인자로 받게 고쳐 commit 후 재제출. |

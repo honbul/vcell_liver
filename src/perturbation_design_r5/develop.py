@@ -253,6 +253,7 @@ def fam_mean(df, by, val):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--steps", default="d3,readout,gp,temp,d2,ll")
+    ap.add_argument("--ll-name", default="learned_loss_v1")
     a = ap.parse_args()
     steps = a.steps.split(",")
     t0 = time.time()
@@ -341,7 +342,7 @@ def main():
         X = np.nan_to_num(np.concatenate([r["X"] for r in res]))
         y = np.concatenate([r["y"] for r in res])
         m = GradientBoostingRegressor(random_state=0).fit(X, y)
-        path = os.path.join(runs(), "learned_loss_v1.pkl")
+        path = os.path.join(runs(), a.ll_name + ".pkl")
         with open(path, "wb") as f:
             pickle.dump(m, f)
         hp["learned_loss_model_path"] = path
