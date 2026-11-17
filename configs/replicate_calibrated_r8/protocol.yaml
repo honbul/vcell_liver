@@ -1,0 +1,108 @@
+# Study R8 protocol (replicate-calibrated, state-preserving adaptation). Written before any R8 model was trained.
+# Rules are fixed here; a change needs a dated entry under `amendments` with the reason and what had been seen.
+track: replicate_calibrated_r8
+predecessors:
+  r2: {commit: 187ed0311692ba63f8d546ca3e2ba1ff63948160, reused: "unit arrays (units_v1), family table, episode rule, closed-form solver, TranSiGen wrapper, HCC split files"}
+  r5: {commit: cb060460057a9e659ff08667c4aa8c05dae71842, reused: "replicate tag rule; plate control counts/dispersion as a read-only cross-check"}
+  historical_scores: not copied; every baseline is recomputed on the new source composition
+
+data:
+  platform: CMap LINCS 2020 Level 3, 10 uM, 24 h, 978 landmark genes
+  unit: (cell, drug_group); unit delta = equal mean over conditions of [equal mean over plates of (treated mean - plate DMSO mean)]
+  excluded_from_main_analysis: 29 XC.* mixed pools (composition not documented), 42 degenerate source rows (study B list)
+  target_truth: measured unit delta on the original scale; never a denoised label or a model output
+  query_treated_rna: never an input, never used for normalisation or confidence
+
+source:
+  f0: equal mean over FAMILIES of [equal mean over the family's cells of the unit delta] of the same drug group
+  f0_allowed_families:
+    source_train_episode: source-train families minus the virtual target's family
+    confirmation_episode: source-train families only
+    hcc: every kept source family (list frozen in reference_families.tsv)
+  meta_split: R2 family split after removing the XC pools (source-train / confirmation)
+  inner_cv: 3 folds over source-train families (seed 20261117); in a fold the fold families are virtual targets, bases are refit without them
+  selection_rule: candidates (learning rate, number of steps) are restricted by the inner family cross-validation only;
+    the R2 validation families are used once per frozen candidate as a fixed confirmation
+
+episodes:
+  k_values: [8, 16, 32]
+  k_main: 16
+  eval_rule: permute the eligible units of a cell with a fixed seed; first 20% = query, the rest = nested support order
+  confirmation_support_seeds: [1, 2, 3]
+  dev_support_seeds: [1]
+  dev_query_cap: 200
+  train_sampler: family uniform -> cell uniform -> K uniform over the values that fit -> K support, min(64, n-K) query
+  aggregation: episode mean over query units -> mean over support seeds -> equal mean over cells of a family -> equal mean over families
+
+anchor:               # identical for C0, C1, C2 inside one observation model
+  f_star: f0 * n / (n + kappa_f), n = number of families behind f0
+  mean_correction: e_bar * K_eff / (K_eff + kappa_b); e_bar = Omega-weighted mean support error; K_eff = 1' Omega^-1 1
+  kappa_f_grid: [0, 0.5, 1, 2, 4, 8, 16, 32]
+  kappa_b_grid: [0, 2, 4, 8, 16, 32, 64, inf]
+  selection: per K on source-train dev episodes (leave-family-out f0), lowest family-equal query delta RMSE;
+    kappa_f chosen once under Omega = I and reused for the covariance model, kappa_b chosen per observation model
+
+observation_model:
+  iid: Omega = I
+  cov: >
+    Omega_ij = [delta_ij (v_r + v_e q_i) + v_s o_ij] / (v_r + v_e + v_s) + 0.05 delta_ij, off-diagonal entries x 0.9;
+    o_ij = sum over shared detection plates of the two units' plate weights, q_i = sum of squared row weights.
+    v_e, v_s from plate pairs of the same conditions on different RNA plates (source-train families),
+    v_r from the unit residual variance of source-train cells. Solved by Cholesky. Built from metadata; no query value.
+  sufficiency_rule: if fewer than 30 eligible plate pairs or fewer than 10 families support v_e / v_s, the covariance-aware claim is withheld
+
+features:
+  drug: ECFP4 2048 bits
+  f0_repr: f* projected on the top 32 principal axes of the source-train f0 table, plus log1p(n)/3
+  within: (unit X0 - support mean X0) on the top 32 axes of within-cell X0 deviations
+  global: (support mean X0 - source-train family-balanced mean) on the top 16 axes of family-mean control profiles
+  all bases: source-train only
+
+models:
+  C0: anchor only
+  C1: anchor + untrained kernel ridge on [Tanimoto(drug) + linear(within)/32 + linear(f0_repr)/33]; lambda and eta per K on dev episodes
+  C2: anchor + learned embedding (= B00)
+  backbone: Linear([drug, f0_repr]) (+ Linear(within)) -> LayerNorm -> GELU -> Linear -> LayerNorm, 128 hidden, 64 out; one global lambda; eta per K
+  B00: {state: none, obs: iid}
+  B01: {state: film, obs: iid}       # drug embedding * (1 + gamma(global)) per dimension, before support centring
+  B10: {state: none, obs: cov}
+  B11: {state: film, obs: cov}
+  ablations: {G_concat: global added as a linear input, G_dummy: FiLM with a per-cell pseudo-random context (same parameter count)}
+  lr_grid: [1.0e-4, 3.0e-4, 1.0e-3]
+  search_seed: 42
+  seeds: [42, 43, 44]
+  optimiser: {name: Adam, weight_decay: 1.0e-5, batch_episodes: 8, cv_max_steps: 6000, eval_every: 200}
+  loss: mean over query units of sqrt(mean over genes of squared error + 1e-8)
+  c1_lambda_grid: [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100, 300, 1000]
+  c1_eta_grid: [0.25, 0.5, 0.75, 1.0]
+  revisions_allowed: 2
+
+baselines:
+  no_change: delta = 0
+  same_drug_mean: family-balanced f0 (zero vector when no source family measured the drug)
+  mean_offset: f0 + plain mean support residual (unshrunk reference)
+  count_shrink_offset: C0 under Omega = I
+  same_input_krr: C1 under Omega = I
+  generic_cnp: R2 architecture and inputs, retrained on the new source composition, same cross-validation rule
+  transigen_full_ft: public architecture retrained without XC pools (3 seeds), fine-tuned on the K supports with frozen BatchNorm statistics;
+    learning rate and update count fixed on confirmation-family virtual targets (as in R2; this favours the baseline)
+
+matched_plate_transfer:
+  eligible: confirmation-family cells with two detection plates from different RNA plates that share >= 16 + 20 conditions
+  design: queries = conditions on plate A (truth = plate-A delta); support = the same K conditions measured on plate A (in-block) or on plate B (other block)
+  note: not run on HCC; JHH7 has one plate
+
+evaluation:
+  primary: K = 16, per-unit delta RMSE over 978 genes, same queries for every method and K
+  secondary: [centred RMSE, centred Pearson, delta Pearson, retrieval MRR (raw, centred), top-20 direction, magnitude ratio]
+  hcc:
+    targets: [HUH7, JHH5, JHH7]
+    split_files: study B splits, unchanged; support = first K drug groups of the adapt order; query = historical test groups (primary), test + val (secondary)
+    target_validation_labels: 0
+    split_seeds: [1, 2, 3]
+    model_seeds: [42, 43, 44]
+    bootstrap: {unit: drug_group, resamples: 2000, seed: 20261117, ci: 0.95, paired: true}
+  decision_table: plan section 12, applied literally; an interval that contains 0 is read as 'no difference established'
+  sealing: HCC treated profiles are read only by hcc_eval.py, which requires the committed freeze manifest
+
+amendments: []
