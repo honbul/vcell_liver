@@ -41,3 +41,18 @@
   - G1 실패(평균 반응은 있음) → mean-only·shifted-control·Gaussian만 끝까지 평가하고 **생성기 주장은 보류**한다.
   - **표본 수:** 집계 ED의 bootstrap 표준오차가 `H/4`보다 작으면 64개로 진행한다. 크면 read-only 원자료에서
     hash 규칙으로 128개 확장을 검토한다(그 전에는 원자료를 다시 읽지 않는다).
+
+---
+
+## R3-1. 공통 평균 예측기와 분포 기준선 — 2026-11-17, 실행 전 작성 (R3-0의 gate 결과와 무관하게 수행)
+
+- **관측:** 이전 연구에서 이 과제의 평균 반응은 세포주 평균·ridge가 무변화보다 조금 낫고(시험 RMSE 0.092 대 0.104), 약물별 신호는 약했다.
+- **가설(미검증):** 평균 예측기는 Ridge 계열이면 충분하고, 작은 MLP가 이를 넘지 못한다.
+- **예측:** train 약물 3-fold CV에서 kernel ridge와 MLP의 조건 RMSE가 세포주 평균과 비슷한 범위에 있을 것이다.
+- **실험:** (a) `mean_model --mode cv`: nochange / linemean / Tanimoto kernel ridge(공유, λ 5개) / 세포주별 다중과제 kernel ridge(λ 5개) /
+  작은 MLP(epoch 2개 설정). 목표는 이전 연구의 조건 평균 Δ(`Y.npy`, train 약물만). 평가·선택은 train 약물 내부 3-fold뿐.
+  (b) 선택된 m_ψ를 dev 설정(8개 세포주, dev fold 0·1로 적합, fold 2 평가)에 적합하고, 같은 μ̂을 쓰는 control / mean-point /
+  shifted control / Gaussian(diag) / Gaussian(저차원 k∈{10, 50})을 같은 N·같은 비음수 복원으로 채점한다. 표본추출 seed 3개.
+- **결정 규칙:** CV 조건 RMSE가 가장 낮은 Ridge 계열 또는 MLP 하나를 m_ψ로 고정한다(이후 변경 없음).
+  Gaussian 저차원 k는 dev ED가 낮은 쪽 하나로 고정한다. 8개 dev 세포주는 `valid train 조건 수 → 표본 세포 수 → ID` 순 메타데이터 규칙으로 정했다
+  (반응 점수 미사용).
