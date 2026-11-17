@@ -51,7 +51,7 @@ objective:
   # features and labels standardised with training-only weighted mean/SD.
   lambda_grid: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0]
   eta_over_lambda_grid: [0, 1, 10, 100]
-  tau_fraction_grid: null            # fractions of tau_max = ||grad of the smooth part at W=0||_op; set in DECISIONS.md before R1-2
+  tau_fraction_grid: [0, 0.03, 0.1, 0.3]   # fractions of tau_max = ||grad of the smooth part at W=0||_op (training data only); fixed in DECISIONS.md R1-2 before the first tau > 0 fit
   tie_break: "largest regularisation (lambda, then eta/lambda, then tau)"
   selection_loss: "family-first squared error in inner-training-SD units pooled over inner test families (Track A inner loss); per-drug models pick per drug, global models minimise the mean over drugs of sqrt(loss)"
 
@@ -71,6 +71,11 @@ grids:
   d1_subspace:        # R1-1 diagnostic, tau = 0: whole space / pathway subspace only / complement only
     lambda: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0]
     ridge_kernels: [whole, par, perp]
+  r2_soft_multitask:  # R1-2 initial integrated design (the eta = 0, tau = 0 column is in d1_subspace)
+    lambda: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0]
+    ridge_kernels: [r1, r10, r100]
+    nuc_ratios: [0, 1, 10, 100]
+    tau_fractions: [0.03, 0.1, 0.3]
   null_level:         # lambda so large that the prediction is the training mean (reference level in development tables)
     lambda: [1.0e+9]
     ridge_kernels: [whole]
@@ -84,6 +89,10 @@ models:
   par_gl:    {select: global,   ridge_kernels: [par]}
   perp_pd:   {select: per_drug, ridge_kernels: [perp]}      # diagnostic: pathway subspace removed
   perp_gl:   {select: global,   ridge_kernels: [perp]}
+  soft_pd:   {select: per_drug, ridge_kernels: [whole, r1, r10, r100]}          # eta >= 0, tau = 0
+  soft_gl:   {select: global,   ridge_kernels: [whole, r1, r10, r100]}
+  mt_noprior: {select: global,  ridge_kernels: [whole], nuc_ratios: [0], tau_fractions: [0.03, 0.1, 0.3]}                         # eta = 0, tau >= 0
+  full:      {select: global,   ridge_kernels: [whole, r1, r10, r100], nuc_ratios: [0, 1, 10, 100], tau_fractions: [0.03, 0.1, 0.3]}  # eta >= 0, tau >= 0
   train_mean: {select: global,  ridge_kernels: [whole], lambda: [1.0e+9]}
 
 # Baselines outside the R1 objective. Each is tuned with the same inner family folds and inner loss.
