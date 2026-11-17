@@ -24,6 +24,30 @@ def control_cells(st, r, n, seed, dev):
     return torch.as_tensor(C[np.sort(idx)], dtype=torch.float32, device=dev)
 
 
+class TreatedPool:
+    """Real TRAINING-drug treated cells of the same (plate, line), each minus its own well mean.
+
+    A non-parametric shape baseline suggested by diagnostic R3-0: no model, no held-out cell.
+    """
+
+    def __init__(self, st):
+        self.st = st
+        self.pool = {k: g[["start", "end"]].to_numpy() for k, g in st.fit_wells.groupby(["plate_index", "line"])}
+
+    def sample(self, r, n, seed, dev):
+        se = self.pool[(r.plate_index, r.line)]
+        rng = np.random.default_rng([seed, int(r.gid), 1])
+        sizes = se[:, 1] - se[:, 0]
+        w = rng.choice(len(se), size=n, p=sizes / sizes.sum())
+        X = self.st.d.X
+        out = np.empty((n, X.shape[1]), np.float32)
+        for j, wi in enumerate(w):
+            block = np.asarray(X[se[wi, 0]:se[wi, 1]])
+            m = len(block)
+            out[j] = (block[rng.integers(m)] - block.mean(0)) * np.sqrt(m / (m - 1))
+        return torch.as_tensor(out, device=dev)
+
+
 class GaussianBank:
     def __init__(self, st, k_max=50, dev="cpu"):
         d = st.d

@@ -128,7 +128,7 @@ def rmse_cond(d, pred, drugs):
     drugs = np.asarray(drugs)
     Yt = torch.as_tensor(d.Y[:, drugs]); v = torch.as_tensor(d.valid[:, drugs])
     r = ((pred - Yt) ** 2).mean(2).sqrt()
-    per_drug = (r * v).sum(0) / v.sum(0).clamp(min=1)
+    per_drug = torch.where(v, r, torch.zeros_like(r)).sum(0) / v.sum(0).clamp(min=1)
     return float(r[v].mean()), float(per_drug[v.any(0)].mean())
 
 

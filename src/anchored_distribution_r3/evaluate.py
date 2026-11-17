@@ -10,7 +10,7 @@ cells, n = min(observed, control, 64). Variants written per method:
 `mu_hat = dmso_mean[plate, line] + m_psi(line, drug)`; no observed treated statistic of the
 evaluation well is used to generate, anchor or restore.
 
-Methods: control, meanpoint, shifted, gauss_diag, gauss_lr<k>, ddpm:<run_id>, cells:<npz path>
+Methods: control, meanpoint, shifted, shifted_pool, gauss_diag, gauss_lr<k>, ddpm:<run_id>, cells:<npz path>
 (the last reads externally generated cells, e.g. CellFlow, keyed by well gid).
 """
 from __future__ import annotations
@@ -26,7 +26,7 @@ import pandas as pd
 import torch
 
 from . import data as D
-from .baselines import GaussianBank, control_cells
+from .baselines import GaussianBank, TreatedPool, control_cells
 from .ddpm import Context, load_model, sample
 from .metrics import restore_nonneg, shift_to_mean
 from .setting import build, run_dir
@@ -95,6 +95,10 @@ def main() -> None:
             if meth in ("control", "shifted"):
                 pops = [control_cells(st, r, int(r.n_eval), ss, dev) for r in W.itertuples()]
                 variants = ["native"] if meth == "control" else ["pre", "anchored"]
+            elif meth == "shifted_pool":
+                tp = TreatedPool(st)
+                pops = [tp.sample(r, int(r.n_eval), ss, dev) for r in W.itertuples()]
+                variants = ["pre", "anchored"]
             elif meth == "meanpoint":
                 if ss != seeds[0]:
                     continue
