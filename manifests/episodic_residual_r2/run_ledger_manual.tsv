@@ -6,3 +6,12 @@ closed_form_v1 (first attempt)	R2-1	closed_form	24471	failed	protocol YAML quoti
 diag_shrink_v1 (first attempt)	S1	diag_shrink	24632	failed	wrong module path on the sbatch command line, nothing computed; rerun follows
 hcc_mock_v1 summary (first attempt)	pre-freeze	hcc_summarize	25254	failed	JSON key type error in the summary script on the mock (source-cell) run; fixed before the freeze; rerun follows
 tutorial notebooks (first attempt)	tutorials	notebooks	25286	failed	nbconvert picked the system python kernel instead of the study environment; kernel spec registered under own assets; rerun follows
+units_v1	R2-0	build_units	24462	completed	source unit store (no run directory; outputs under assets/processed/units_v1, hashes in data_contract.json)
+leak fixtures	R2-0	leak_fixtures	24470	completed	synthetic and real-store fixtures passed (leak_fixtures.json)
+model selection bookkeeping	R2-2..R2-4	select_models	(login node)	completed	JSON bookkeeping of run results only, no computation on data
+hcc_mock_v1 summary	pre-freeze	hcc_summarize	25274	completed	summary code check on the source-cell mock run
+freeze	freeze	freeze	25275	completed	freeze_manifest.json at code commit a4d0bba
+hcc_eval_v1 summary	R2-5	hcc_summarize	25283	completed	result tables
+hcc_eval_v1 summary with extended references	R2-5	hcc_summarize	25284	completed	three more reference methods for paired contrasts, added after the scores were seen; no prediction recomputed
+run ledger	reports	ledger	25285	completed	first ledger; regenerated at the end
+tutorial notebooks	tutorials	notebooks	25288	completed	two notebooks built and executed; nothing trained
