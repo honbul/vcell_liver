@@ -20,7 +20,7 @@ from src.transigen_adaptation_b1.data import Data
 def main():
     out = proc()
     assert not os.path.exists(proc("units.tsv")), "units already built; refusing to overwrite"
-    D = Data()
+    D = Data(proc_dir=os.environ["TB_PROC"])
     split = pd.read_csv(os.path.join(MAN, "drug_split.tsv"), sep="\t").set_index("drug_group").role
     fam = pd.read_csv(os.path.join(MAN, "cell_families.tsv"), sep="\t").set_index("cell").family
     rows = D.rows.copy()

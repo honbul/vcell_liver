@@ -67,7 +67,7 @@ models:
     reliability_r: "split-half Pearson of cell-centred delta (D2 definition), clipped to [0, 1]; units without a second plate get r = median r of replicated training units of the same cell (global median if the cell has < 10), flagged reliability_unknown"
     stop_gradient: [u, q, r]
   pairing: cell-matched batches (sample a cell uniformly, then up to 64 of its training units without replacement); same sampler for W1, W2, latent regression, delta-MLP
-  update_budget: 6000 updates of batch <= 64 for W1 / W2 / latent regression / delta-MLP (equal for every arm), validation every 250 updates, checkpoint = lowest validation primary metric
+  update_budget: 20000 updates of batch <= 64 for W1 / W2 / latent regression / delta-MLP (equal for every arm), validation every 500 updates, checkpoint = lowest validation primary metric
   search: {lr: [3.0e-4, 1.0e-3], lambda_rel: [0.05, 0.5], seed: 42}   # <= 2 LR x <= 2 lambda; W1 has only the LR grid
   final_candidates: <= 2, seeds [42, 43, 44]
   development_subset: "LR / lambda screening on <= 1000 training groups x 12 cells (largest cells by training units, HCC excluded from the subset); final candidates and every comparison on the full panel"
@@ -96,4 +96,9 @@ evaluation:
     hcc: "HCC improvement claimed only if the HCC-mean contrast CI is below 0; otherwise reported as not established"
   modifications_allowed: 2   # from plan §6 table only, one change each, logged in DECISIONS.md before the run
 
-amendments: []
+amendments:
+  - date: 2026-11-17
+    change: "update budget 6000 -> 20000 updates, validation every 250 -> 500 updates"
+    reason: "6000 cell-matched batches visit each training unit about 5 times on average; raised for every arm alike"
+    seen_before: "nothing: no R4 job had read an expression value (the first unit-build job 25295 failed on a path before reading arrays)"
+
