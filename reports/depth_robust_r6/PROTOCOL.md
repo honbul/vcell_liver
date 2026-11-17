@@ -74,3 +74,9 @@
 
 Slurm만 사용(job 이름 `r6_`), run ID는 한 번만 쓴다. 생성물은 서버 `assets/`(git 제외). Git에는 코드·설정·manifest·해시·작은 표·보고서만 올린다. count 행렬, 발현 배열, checkpoint, 기획 문서는 올리지 않는다.
 이것은 **이미 결과를 본 공개 benchmark에서 사전에 고정한 후속 평가**이며 blind test가 아니다(`EXPOSURE.md`).
+
+## 7. 동결 전 변경 기록 (2026-11-17)
+
+- **수정 1:** 개발 fold pilot에서 모든 신경망 arm이 세포주 평균보다 나빠, 반응 head를 `Δ = g(상태) + h(상태, 약물)`로 나누고 h에 크기 벌점(λ=10)을 넣었다. 모든 arm에 똑같이 적용했다. 실행 전 기록과 결과는 [DECISIONS.md](DECISIONS.md) D7–D9.
+- **수정 2:** 쓰지 않았다.
+- 4절의 비교 모델, 5절의 지표와 판정 규칙은 바꾸지 않았다. 동결 내용은 `manifests/depth_robust_r6/freeze_manifest.json`.
