@@ -1,6 +1,6 @@
 # R7 지식 그래프 카드 (KG_CARD)
 
-기계 판독본은 `manifests/evidence_gated_r7/kg_card.json`(파일 sha256 포함)이다. 그래프 배열·DB 덤프는 서버 `assets/kg_v1`, `assets/external`에만 있고 Git에는 없다. 만든 job은 25747(commit `9853645` 이전 보정 반영)이다.
+기계 판독본은 `manifests/evidence_gated_r7/kg_card.json`(파일 sha256 포함)이다. 그래프 배열·DB 덤프는 서버 `assets/kg_v1`, `assets/external`에만 있고 Git에는 없다. 만든 job은 25747이다(D-2 보정 반영본).
 
 ## 출처
 
