@@ -85,7 +85,8 @@ def secondaries(P: np.ndarray, T: np.ndarray, line: np.ndarray, drug: np.ndarray
         a /= np.maximum(np.linalg.norm(a, axis=1, keepdims=True), 1e-12)
         b /= np.maximum(np.linalg.norm(b, axis=1, keepdims=True), 1e-12)
         S = a @ b.T
-        r = (S > np.diag(S)[:, None]).sum(1)                       # 0 = best
+        dg = np.diag(S)[:, None]
+        r = (S > dg).sum(1) + 0.5 * ((S == dg).sum(1) - 1)         # 0 = best; ties (a constant prediction) count half
         rr[m] = 1.0 - r / (len(m) - 1)                             # 1 = right candidate ranked first, 0.5 = chance
         top1[m] = (r == 0)
     out["retrieval_rank_score"] = rr

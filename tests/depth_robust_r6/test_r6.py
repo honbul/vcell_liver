@@ -216,5 +216,17 @@ class AdditiveHead(unittest.TestCase):
         self.assertIsNone(j.state_head)                              # the original head is unchanged by default
 
 
+class Retrieval(unittest.TestCase):
+    def test_constant_prediction_is_chance(self):
+        from src.depth_robust_r6.evaluate import secondaries
+        rng = np.random.default_rng(0)
+        T = rng.normal(size=(12, 30)).astype(np.float32)
+        line = np.repeat([0, 1], 6); drug = np.tile(np.arange(6), 2)
+        P = np.repeat(rng.normal(size=(2, 30)), 6, axis=0).astype(np.float32)      # one profile per line
+        s = secondaries(P, T, line, drug)
+        self.assertTrue(np.allclose(s["retrieval_rank_score"], 0.5))
+        self.assertTrue(np.allclose(secondaries(T, T, line, drug)["retrieval_rank_score"], 1.0))
+
+
 if __name__ == "__main__":
     unittest.main()
