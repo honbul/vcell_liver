@@ -10,7 +10,7 @@ from .common import CFG, MAN, B_MAN, TARGETS, public, sha256, dump, proc
 from .suite import current_selection
 from .contrasts import CONTRASTS
 
-REQUIRED = ("anchor_selection.json", "model_selection.json", "tsg_selection.json", "store_manifest.json", "reference_families.tsv", "covariance_model.json", "cv_selection.json")
+REQUIRED = ("anchor_selection.json", "model_selection.json", "tsg_selection.json", "store_manifest.json", "reference_families.tsv", "covariance_model.json", "cv_selection.json", "cov2_selection.json", "cov_strength_decision.json")
 
 
 def support_and_query(target, split):

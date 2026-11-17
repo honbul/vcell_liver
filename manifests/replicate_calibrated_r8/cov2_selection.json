@@ -1,0 +1,82 @@
+{
+ "anchor": {
+  "8": {
+   "kappa_f": 8.0,
+   "kappa_b": 16.0,
+   "dev": 0.540639
+  },
+  "16": {
+   "kappa_f": 8.0,
+   "kappa_b": 16.0,
+   "dev": 0.537614
+  },
+  "32": {
+   "kappa_f": 8.0,
+   "kappa_b": 16.0,
+   "dev": 0.534634
+  }
+ },
+ "c1": {
+  "8": {
+   "lam": 0.3,
+   "eta": 0.25,
+   "dev": 0.5389653632601539,
+   "at_grid_edge": false
+  },
+  "16": {
+   "lam": 1.0,
+   "eta": 0.5,
+   "dev": 0.5324921454047109,
+   "at_grid_edge": false
+  },
+  "32": {
+   "lam": 3.0,
+   "eta": 0.75,
+   "dev": 0.5254174965423543,
+   "at_grid_edge": false
+  }
+ },
+ "covariance_model": {
+  "kind": "cov",
+  "v_r": 0.016714403041443983,
+  "v_e": 0.38338440031686105,
+  "v_s": 0.055374324108338695,
+  "provenance": {
+   "run_id": "diag_v1",
+   "estimated_on": "source-train families only; plate pairs from different RNA plates",
+   "n_pairs": 853,
+   "n_cells": 52,
+   "n_families": 49,
+   "replicate_data_sufficient": true,
+   "v_tot_unit_residual": 0.33428806082887963,
+   "mean_q": 0.7257458452995007,
+   "mean_o_diag": 0.7274270471144508,
+   "rule": "v_r = max(v_tot - v_e * mean q - v_s * mean o_ii, 0.05 v_tot); all three are gene-averaged variances in Level 3 units",
+   "shares": {
+    "v_r": 0.036696792924777,
+    "v_e": 0.8417278148751771,
+    "v_s": 0.12157539220004586
+   }
+  },
+  "v_r_scale": 64.0,
+  "structure": "diag_only"
+ },
+ "source": {
+  "decision": {
+   "rule": "adopt the best K=16 variant only if its paired family interval against equal weights lies below 0 on source-train dev episodes",
+   "best_k16": {
+    "variant": "diag_only|x64",
+    "delta_rmse": 0.5376142877471316,
+    "diff_vs_iid": -0.00012332626751491,
+    "lo": -0.00024217917368962215,
+    "hi": -1.0241027716753473e-06,
+    "kappa_b": 16.0
+   },
+   "adopt": true,
+   "seconds": 13.6,
+   "commit": "f9c7fe9"
+  },
+  "variant": "diag_only|x64",
+  "commit": "3bcd0ca"
+ }
+}
