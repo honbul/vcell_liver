@@ -1,0 +1,27 @@
+{
+ "task": "predict delta (978 landmarks) for a (cell, drug_group) unit whose drug's RNA response is not in training (any cell)",
+ "inputs_at_prediction": {
+  "x0": "the unit's plate DMSO control profile (978, measured), standardised with training statistics",
+  "ecfp4": "2048-bit Morgan r2 fingerprint of the group's representative pert_id",
+  "cell_mean_anchor": "m_c = mean training-drug delta of the same cell (training units only)",
+  "drug_target_seeds": "ChEMBL 37 evidence for the drug's structure-linked family (mech / binding / functional; action sign or unknown; mapping flags); empty if unannotated",
+  "graph": "OmniPath (omnipath + collectri) directed relations among targets, intermediates and landmarks; fixed for all drugs",
+  "xpert_only": "UniMol atom features, released XPert HG drug embedding (zero if unlinked), XPert PPI gene vectors"
+ },
+ "never_inputs": [
+  "treated RNA of the unit or of the same drug in any cell",
+  "response-derived similarity of the query drug",
+  "test / validation deltas in any statistic, teacher, graph or node selection",
+  "HCC results before the freeze"
+ ],
+ "information_cost": "external annotation of the query drug is allowed (public database lookup); no additional RNA measurement",
+ "missing_handling": {
+  "no_annotation": "m_available = 0 -> mechanism correction exactly 0 (chemistry prediction)",
+  "unmeasured_node": "value 0 with missing-expression mask 1",
+  "unknown_action": "action_unknown = 1 (not negative)"
+ },
+ "checks": {
+  "leak_fixtures": "manifests/evidence_gated_r7/leak_fixtures.json",
+  "xpert_treated_slot": "manifests/evidence_gated_r7/runs/xpert_*_pred_*.json (max abs diff when the treated slot changes)"
+ }
+}
