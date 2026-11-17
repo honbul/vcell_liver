@@ -1,0 +1,172 @@
+{
+ "n_pools_seen": 250,
+ "n_pools_eligible": 234,
+ "ineligible_pools": [
+  {
+   "plate": "plate11",
+   "cell_line_id": "CVCL_1531",
+   "n_total": 51
+  },
+  {
+   "plate": "plate11",
+   "cell_line_id": "CVCL_1571",
+   "n_total": 30
+  },
+  {
+   "plate": "plate11",
+   "cell_line_id": "CVCL_1577",
+   "n_total": 172
+  },
+  {
+   "plate": "plate11",
+   "cell_line_id": "CVCL_1715",
+   "n_total": 188
+  },
+  {
+   "plate": "plate13",
+   "cell_line_id": "CVCL_1531",
+   "n_total": 15
+  },
+  {
+   "plate": "plate13",
+   "cell_line_id": "CVCL_1571",
+   "n_total": 18
+  },
+  {
+   "plate": "plate13",
+   "cell_line_id": "CVCL_1577",
+   "n_total": 217
+  },
+  {
+   "plate": "plate13",
+   "cell_line_id": "CVCL_1715",
+   "n_total": 75
+  },
+  {
+   "plate": "plate13",
+   "cell_line_id": "CVCL_1716",
+   "n_total": 208
+  },
+  {
+   "plate": "plate2",
+   "cell_line_id": "CVCL_1531",
+   "n_total": 61
+  },
+  {
+   "plate": "plate2",
+   "cell_line_id": "CVCL_1571",
+   "n_total": 20
+  },
+  {
+   "plate": "plate5",
+   "cell_line_id": "CVCL_1531",
+   "n_total": 63
+  },
+  {
+   "plate": "plate5",
+   "cell_line_id": "CVCL_1571",
+   "n_total": 22
+  },
+  {
+   "plate": "plate8",
+   "cell_line_id": "CVCL_1531",
+   "n_total": 49
+  },
+  {
+   "plate": "plate8",
+   "cell_line_id": "CVCL_1571",
+   "n_total": 43
+  },
+  {
+   "plate": "plate8",
+   "cell_line_id": "CVCL_1715",
+   "n_total": 122
+  }
+ ],
+ "pool_size": {
+  "count": 234.0,
+  "mean": 3912.965811965812,
+  "std": 2506.4685360944213,
+  "min": 301.0,
+  "25%": 2312.0,
+  "50%": 3553.0,
+  "75%": 4811.25,
+  "max": 15253.0
+ },
+ "n_fit_input": {
+  "count": 234.0,
+  "mean": 252.88888888888889,
+  "std": 19.895770369313666,
+  "min": 109.0,
+  "25%": 256.0,
+  "50%": 256.0,
+  "75%": 256.0,
+  "max": 256.0
+ },
+ "n_reference": {
+  "count": 234.0,
+  "mean": 3596.076923076923,
+  "std": 2502.062533410401,
+  "min": 128.0,
+  "25%": 1992.0,
+  "50%": 3233.0,
+  "75%": 4491.25,
+  "max": 14933.0
+ },
+ "n_input_cells": 74152,
+ "n_eval_cells": 14976,
+ "n_fit_cells": 59176,
+ "roles_rule": "eval_input = ranks [0,64); fit_input = next min(256, n-64-128); reference = rest; pool needs n >= 256",
+ "valid_conditions": {
+  "v2": 16521,
+  "r6": 16264,
+  "lost_primary_pool": 257,
+  "lost_missing_secondary_pool": 0
+ },
+ "n_multi_plate_conditions": 1464,
+ "truth_shift": {
+  "note": "Y_r6 - Y_v2: effect of removing the input cells from the reference control",
+  "rms": 0.011780117671651867,
+  "max_abs": 0.3073063730295438,
+  "truth_rms": 0.11377806275917966
+ },
+ "reference_noise": {
+  "note": "per-gene standard error of the reference mean relative to truth RMS, median over pools",
+  "median_se": 0.014081815512016458
+ },
+ "files": {
+  "pools.tsv": {
+   "bytes": 62442,
+   "sha256": "956450c7abd91b882e601d9331e9908557da98054e8b5a412d93d798a95877c2"
+  },
+  "input_cells.tsv": {
+   "bytes": 5136069,
+   "sha256": "3ddeb08db3de456100689be5ab7bcb35b5965033ea0ad25c159b8aef50093462"
+  },
+  "input_counts.npz": {
+   "bytes": 296905110,
+   "sha256": "53fc9e2bdd951bce88e451741f70b09af4fc620b86d33160b4b4332d95f85eae"
+  },
+  "ref_mean.npy": {
+   "bytes": 2000128,
+   "sha256": "65d7a186ca494aa09f8801958aa85cc6f2c33808e6b0bb3e86674c5a79378351"
+  },
+  "Y_r6.npy": {
+   "bytes": 139600128,
+   "sha256": "9cd764847945ded91e4318f155b182698d3531d31e0954446215cccb5dda1c6e"
+  },
+  "valid_r6.npy": {
+   "bytes": 17578,
+   "sha256": "8f43227099b0c49dbadd61b8a77a377c0eae33562eaca17cc86c7301a1ad5162"
+  },
+  "gene_stats.npz": {
+   "bytes": 24754,
+   "sha256": "faa53e4740047e3558f4028c0d5f8011dccc87ba2db99c76379f9f006ace4092"
+  },
+  "eval_views.npz": {
+   "bytes": 359906516,
+   "sha256": "a66c744b3724b20cc501cc4f922e561a89b5b5061f42694ae93507d82d95db26"
+  }
+ },
+ "contract_dir": "assets/cache/contract_v1"
+}
