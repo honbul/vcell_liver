@@ -1,0 +1,51 @@
+{
+ "run_id": "a1_rewired_s44",
+ "kind": "gated",
+ "seconds": 1280.8,
+ "commit": "3e4dbe4",
+ "slurm_job": "25821",
+ "host": "G1",
+ "config": {
+  "arm": "gated",
+  "aug": 1,
+  "run_id": "a1_rewired_s44",
+  "lr": 0.0001,
+  "seed": 44,
+  "batch": 64,
+  "updates": 20000,
+  "eval_every": 500,
+  "graph": "rewired",
+  "evidence": "on",
+  "backbone_from": "chem/sel_chem_lr1e-4_s44",
+  "max_updates_smoke": 0,
+  "n_train_units": 56431,
+  "n_val_units": 11731,
+  "train_units_sha": "e0451ff35766adb730cd1c6f3b30395ed82d822868bede7773bd141be8b0baa0",
+  "val_units_sha": "d338efddb37725d08ea552c35be0604139131498343b4d2b329458a711bd615b",
+  "aug_rates": {
+   "all": 0.5,
+   "source": 0.25,
+   "block": 0.25
+  },
+  "n_params": 2687553
+ },
+ "best": {
+  "score": 0.5445585798741142,
+  "step": 10500,
+  "val": {
+   "rmse": 0.5445585798741142,
+   "pearson": 0.29756636948674453,
+   "centred_pearson": 0.1652037069216921,
+   "mrr": 0.33669526412212974,
+   "top20_direction": 0.7124241420646984,
+   "rms_pred": 0.2469111065742437,
+   "rms_true": 0.5782177930151029,
+   "n_units": 11602,
+   "n_families": 110,
+   "corr_rms": 0.03518875688314438,
+   "chem_rms": 0.1837298721075058,
+   "mean_gate": 0.218366339802742
+  }
+ },
+ "gpu_max_mem_gb": 3.8
+}
