@@ -1,0 +1,67 @@
+# Study R1 analysis contract (soft pathway prior + multi-drug shrinkage on LIMORE, LCCL external).
+# Follow-up of Track A (commit b442fd8). LIMORE/LCCL scores were already seen in Track A, so every
+# result of this study is a post-freeze evaluation on a reused public benchmark, not a blind cohort.
+# Rules that affect model development are appended to `amendments` with date and reason; the frozen
+# final configuration is written to manifests/softprior_multitask_r1/freeze_manifest.json.
+contract_version: 1
+created: "2026-11-17"
+track: softprior_multitask_r1
+
+paths:
+  # Server paths. Track A inputs are read-only; everything written goes under this worktree's assets/.
+  a1_worktree: /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1
+  a1_cache: /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1/assets/cache/data_c774a7bbf856
+  limore_rna: /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1/assets/raw/GSE97098/GSE97098_HCC81.genes.fpkm_table.log2.txt.gz
+  lccl_rna: /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1/assets/raw/LCCL/RNAseqFPKM.txt
+  hallmark_gmt: /mnt/S1/sdata/pubdata/Virtual_Cell/MSigDB/2026.1.Hs/h.all.v2026.1.Hs.symbols.gmt
+  assets: assets                      # this worktree, git-ignored
+  a1_manifests: manifests/pathway_sensitivity_a1   # registry, splits, drug match: reused unchanged
+
+expected_sha256:
+  limore_rna: 3b6ecf05ff5baebfea4726af2a0d934672af14673166f79e073c3e8d46083728
+  lccl_rna: bfa155ca86432330e4754514e5978c35d5727544791798853647569609ccc9be
+  hallmark_gmt: eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596
+  a1_limore_response_long: null       # recorded at build time in data_contract.json
+
+gene_axis:
+  # The only change relative to Track A. Track A kept, among Ensembl IDs sharing a gene symbol, the ID
+  # with the highest mean LIMORE expression (an expression-dependent rule). R1 keeps the
+  # lexicographically smallest Ensembl ID. No expression or response value enters the rule.
+  universe: "protein_coding Ensembl IDs of the GSE97098 matrix that are also in the LCCL FPKM table"
+  duplicate_symbol_rule: smallest_ensembl_id
+  order: sorted_by_ensembl_id
+  rank: "within-sample rank over the axis, ties='min', divided by the number of axis genes (as Track A)"
+
+hallmark:
+  release: "2026.1.Hs"
+  min_genes: 15
+  min_fraction: 0.5
+  permutation_seeds: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120]
+  permutation: "whole-axis gene-label permutation, RandomState(seed).permutation(G); gene i takes the label of gene perm[i] (Track A scheme: set sizes, overlaps and gene multiplicities kept)"
+
+split:
+  outer: "manifests/pathway_sensitivity_a1/splits_outer.tsv (family 5-fold x 3 repeats; reused, results previously exposed)"
+  inner_folds: 3
+  inner_seed_base: 7100              # inner seed = base + 100 * repeat + outer_fold (Track A rule)
+  external_inner_seed: 8800
+
+objective:
+  # (1/D) sum_p sum_i wt_i (yhat_ip - y_ip)^2 + lambda ||W||_F^2 + eta ||(I - QQ^T) W||_F^2 + tau ||W||_*
+  # wt_i = family weight normalised to sum to one over the training rows (plan: (1/(N D)) sum w_i ...),
+  # features and labels standardised with training-only weighted mean/SD.
+  lambda_grid: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0]
+  eta_over_lambda_grid: [0, 1, 10, 100]
+  tau_fraction_grid: null            # fractions of tau_max = ||grad of the smooth part at W=0||_op; set in DECISIONS.md before R1-2
+  tie_break: "largest regularisation (lambda, then eta/lambda, then tau)"
+  selection_loss: "family-first squared error in inner-training-SD units pooled over inner test families (Track A inner loss); per-drug models pick per drug, global models minimise the mean over drugs of sqrt(loss)"
+
+metric:
+  primary: macro_drug_normalized_rmse   # identical definition to Track A
+  bootstrap: {n: 2000, seed: 9101, unit: family_id, ci: [0.025, 0.975]}
+  external_bootstrap_seed: 9202
+  min_families_for_spearman: 4
+
+budget:
+  designs: "initial integrated design + at most two diagnosis-backed modifications"
+
+amendments: []
