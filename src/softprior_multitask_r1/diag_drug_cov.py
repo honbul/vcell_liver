@@ -119,14 +119,19 @@ def main() -> None:
                     agg = np.zeros((len(f_te), se.shape[1]))
                     np.add.at(agg, inv, se)
                     return (agg / cnt[:, None]).mean(axis=0)
+                # error of predicting the training mean (zero in standardised units) on the same rows
+                n_pc_loss = ff(prep.z_of(T_te) ** 2)
+                n_d_loss = ff(prep_d.z_of(Y[ite]) ** 2)
                 for lam in lams:
                     Pz = prep.predict_ridge_z("whole", lam)
                     l_pc = ff((Pz - prep.z_of(T_te)) ** 2)
                     Pd = prep_d.predict_ridge_z("whole", lam)
                     l_d = ff((Pd - prep_d.z_of(Y[ite])) ** 2)
                     row = dict(set=sid, inner_fold=j, lam=lam, n_test_families=len(f_te),
-                               drugs_mean_loss=float(l_d.mean()), drugs_median_loss=float(np.median(l_d)))
-                    row.update({f"pc{i + 1}_loss": float(l_pc[i]) for i in range(n_pc)})
+                               drugs_loss=float(l_d.mean()), drugs_null=float(n_d_loss.mean()))
+                    for i in range(n_pc):
+                        row[f"pc{i + 1}_loss"] = float(l_pc[i])
+                        row[f"pc{i + 1}_null"] = float(n_pc_loss[i])
                     pred_rows.append(row)
     os.makedirs(args.out_dir, exist_ok=True)
     spec = pd.DataFrame(spec_rows)
@@ -139,8 +144,12 @@ def main() -> None:
     held_s.reset_index().to_csv(os.path.join(args.out_dir, "d2_heldout_subspace.tsv"), sep="\t", index=False, float_format="%.5g")
     stab_s = stab.groupby("k")[["mean_sq_cosine", "q05", "random_expectation"]].mean().reset_index()
     stab_s.to_csv(os.path.join(args.out_dir, "d2_bootstrap_subspace_stability.tsv"), sep="\t", index=False, float_format="%.5g")
-    # pool inner folds by test-family count, then average over training sets; loss 1.0 = training-mean level
-    cols = [c for c in pred.columns if c.endswith("_loss")]
+    # Pool inner folds by test-family count and average over training sets. Each target is reported as
+    # skill = 1 - loss / null, where null is the error of predicting the training mean on the same
+    # held-out rows. (A first version reported the loss in training-SD units only; for components that
+    # are fitted on the training families the held-out variance is far below the training variance, so
+    # that number looked good without any prediction. Kept as *_v1_scale_error.tsv.)
+    cols = [c for c in pred.columns if c.endswith("_loss") or c.endswith("_null")]
     pred_w = pred.copy()
     for c in cols:
         pred_w[c] = pred_w[c] * pred_w.n_test_families
@@ -148,6 +157,10 @@ def main() -> None:
     for c in cols:
         g[c] = g[c] / g.n_test_families
     pr = g.reset_index().groupby("lam")[cols].mean().reset_index()
+    for t in ["drugs"] + [f"pc{i + 1}" for i in range(10)]:
+        pr[f"{t}_skill"] = 1.0 - pr[f"{t}_loss"] / pr[f"{t}_null"]
+    pr = pr[["lam"] + [c for c in pr.columns if c.endswith("_skill")] + ["drugs_loss", "drugs_null", "pc1_loss", "pc1_null",
+                                                                          "pc2_loss", "pc2_null"]]
     pr.to_csv(os.path.join(args.out_dir, "d2_rna_predicts_components.tsv"), sep="\t", index=False, float_format="%.5g")
     print(spec.drop(columns="set").mean().to_string())
     print(held_s.to_string())

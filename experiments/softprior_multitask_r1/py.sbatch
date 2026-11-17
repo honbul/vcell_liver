@@ -6,7 +6,7 @@
 #SBATCH --time=04:00:00
 #SBATCH --output=logs/r1_py_%j.log
 # Run one R1 script (diagnostics, summaries, evaluation).
-# Submit: sbatch --export=ALL,SCRIPT=<file.py>,ARGS="<arguments>" experiments/softprior_multitask_r1/py.sbatch
+# Submit: SCRIPT=<file.py> ARGS="<arguments>" sbatch experiments/softprior_multitask_r1/py.sbatch   (environment is exported; --export would split ARGS at commas)
 set -euo pipefail
 : "${SCRIPT:?}"
 source experiments/softprior_multitask_r1/env.sh
