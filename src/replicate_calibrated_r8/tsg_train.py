@@ -26,7 +26,7 @@ def main():
     out = new_run_dir("tsg_source", a.run_id)
     dev = torch.device("cuda")
     torch.set_num_threads(1)
-    D = Data()
+    D = Data(os.environ["TB_PROC"])
     rows = pd.read_csv(proc("rows.tsv"), sep="\t", usecols=["row_id", "cell"])
     cells = pd.read_csv(proc("cells.tsv"), sep="\t").set_index("cell").meta_role
     role = rows.cell.map(cells).to_numpy()

@@ -149,13 +149,13 @@ def main():
         mn.load_state_dict({k: v for k, v in m0.state_dict().items() if not k.startswith("gamma")})
         assert torch.allclose(ctx.adapter(m0, "B01", inp), ctx.adapter(mn, "B00", inp), atol=1e-5)
         # trap 1: linear additive global input followed by support centring is erased exactly
-        Wd, Wg = torch.randn(40, 64), torch.randn(16, 64)
-        d = torch.randn(16, 40)
-        za, zb = d @ Wd + fa["glob"] @ Wg, d @ Wd + fb["glob"] @ Wg
-        assert torch.allclose(za - za.mean(0), zb - zb.mean(0), atol=1e-4)
+        Wd, Wg = torch.randn(40, 64).double(), torch.randn(16, 64).double()
+        d = torch.randn(16, 40).double()
+        za, zb = d @ Wd + fa["glob"].double() @ Wg, d @ Wd + fb["glob"].double() @ Wg
+        assert torch.allclose(za - za.mean(0), zb - zb.mean(0), atol=1e-6)
         # trap 2: one scalar multiplier for every dimension followed by LayerNorm is erased
         ln = torch.nn.LayerNorm(64)
-        h = d @ Wd
+        h = (d @ Wd).float()
         assert torch.allclose(ln(h * 1.0), ln(h * 1.7), atol=1e-4)
         # dummy context: deterministic per cell, different between cells, independent of the control profiles
         fd_a, fd_b = ctx.features(inp, anc, dummy=True), ctx.features(inp_b, anc, dummy=True)

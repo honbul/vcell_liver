@@ -34,7 +34,7 @@ def main():
                                    val_delta_rmse_best=r["val_delta_rmse_best"], lr=r["lr"])
     assert sorted(cks) == ["42", "43", "44"]
     st = Store(dev)
-    B = Data()
+    B = Data(os.environ["TB_PROC"])
     base, _ = T.load_checkpoint(cks["42"]["checkpoint"], dev, seed=42)
     rm = lambda p, ep: torch.sqrt(((p - ep.y_q) ** 2).mean(1)).mean().item()
     rows, n_div = [], 0
