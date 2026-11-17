@@ -1,0 +1,50 @@
+{
+ "run_id": "sel_fixed_aug1_lr1e-4_s42",
+ "kind": "fixed",
+ "seconds": 1266.5,
+ "commit": "a5422de",
+ "slurm_job": "25785",
+ "host": "G1",
+ "config": {
+  "arm": "fixed",
+  "aug": 1,
+  "run_id": "sel_fixed_aug1_lr1e-4_s42",
+  "lr": 0.0001,
+  "seed": 42,
+  "batch": 64,
+  "updates": 20000,
+  "eval_every": 500,
+  "graph": "real",
+  "evidence": "on",
+  "max_updates_smoke": 0,
+  "n_train_units": 56431,
+  "n_val_units": 11731,
+  "train_units_sha": "e0451ff35766adb730cd1c6f3b30395ed82d822868bede7773bd141be8b0baa0",
+  "val_units_sha": "d338efddb37725d08ea552c35be0604139131498343b4d2b329458a711bd615b",
+  "aug_rates": {
+   "all": 0.5,
+   "source": 0.25,
+   "block": 0.25
+  },
+  "n_params": 2686937
+ },
+ "best": {
+  "score": 0.5461683846949164,
+  "step": 6500,
+  "val": {
+   "rmse": 0.5461683846949164,
+   "pearson": 0.2919060848010074,
+   "centred_pearson": 0.14866658925489357,
+   "mrr": 0.3252157718714312,
+   "top20_direction": 0.7112482005978518,
+   "rms_pred": 0.22876543100450722,
+   "rms_true": 0.5782177930151029,
+   "n_units": 11602,
+   "n_families": 110,
+   "corr_rms": 0.02934401109814644,
+   "chem_rms": 0.1626739650964737,
+   "mean_gate": 0.4973936080932617
+  }
+ },
+ "gpu_max_mem_gb": 3.79
+}
