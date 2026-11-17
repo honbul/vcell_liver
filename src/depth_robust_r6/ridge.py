@@ -29,7 +29,9 @@ from .count_view import lognorm, thin_np
 from .evaluate import cond_rmse, drug_macro
 
 ALPHA_C = [10.0, 100.0, 1000.0, 10000.0]
-ALPHA_D = [30.0, 100.0, 300.0, 1000.0, 3000.0]
+ALPHA_D = [30.0, 100.0, 300.0, 1000.0, 3000.0, 10000.0, 30000.0, 100000.0]
+# The first grid stopped at alpha_d = 3000 and the choice sat on that edge (run Z0_dev_v1). The grid
+# was extended ONCE upward (the plan's single range extension for a simple baseline); see DECISIONS.md.
 VIEWS = [(1.0, 0)] + [(p, s) for p in D.PS[1:] for s in D.THIN_SEEDS]
 
 
