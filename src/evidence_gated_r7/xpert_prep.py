@@ -66,8 +66,10 @@ def main():
             flag.append(dict(group_idx=gi, drug_group=g, xpert_idx=-1, link="none", hg_missing=1, unimol_generated=1))
     if missing:
         sys.path.insert(0, os.path.join(os.environ["R7_ASSETS"], "external", "XPert"))
-        from utils import generate_unimol_feat
-        feats = generate_unimol_feat(missing, max_atoms=F.shape[1])
+        import utils as xu
+        import tqdm as _tq
+        xu.tqdm = _tq.tqdm      # upstream utils.py does `import tqdm` then calls tqdm(...); patched in memory only (recorded)
+        feats = xu.generate_unimol_feat(missing, max_atoms=F.shape[1])
         for gi, v in feats.items():
             F[gi] = v
     fl = pd.DataFrame(flag)
@@ -105,6 +107,7 @@ def main():
     rec = dict(groups=ng, linked_exact=int((fl.link == "exact").sum()), linked_connect=int((fl.link == "connect").sum()), unlinked=int((fl.link == "none").sum()),
                unlinked_by_role={r: int(v) for r, v in fl.merge(S.units[["group_idx", "role"]].drop_duplicates(), on="group_idx").query("link == 'none'").role.value_counts().items()},
                h5ad_rows=dict(train=int(len(tr)), valid=int(len(va)), test_copy_of_valid=int(len(va))), test_units_written=0,
+               upstream_patch="utils.tqdm bound to tqdm.tqdm in memory for generate_unimol_feat (upstream name bug); files unchanged",
                ppi_reorder_key=key, ppi_identity_order=bool((order == np.arange(978)).all()),
                value_range=[float((x0 + d).min()), float((x0 + d).max())], unimol_shape=list(F.shape), hg_shape=list(H.shape),
                sha256={f: sha256(os.path.join(WORK, f)) for f in ["r7_drug_unimol.npy", "r7_drug_hg.npy", "r7_drug_link.tsv"]})
