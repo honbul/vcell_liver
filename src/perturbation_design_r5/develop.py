@@ -348,6 +348,22 @@ def main():
         hp["learned_loss_model_sha256"] = sha_file(path)
         hp["learned_loss_train"] = dict(rows=int(len(y)), r2_train=float(m.score(X, y)))
         print("LL", hp["learned_loss_train"])
+    if "mod1" in steps:
+        # modification 1: calibrate the spread of the heteroscedastic noise, nu = c * nu_D3 ** gamma (dev ML, same episodes as "gp")
+        res = _map([(c, f, s, "gp", None) for c, f in dev for s in (1, 2, 3)])
+        grid = []
+        for gam in (1.0, 1.5, 2.0, 3.0):
+            for c1 in C0 + [0.125, 0.0625]:
+                hh = dict(hp, hetero=True, noise_hetero=c1, nu_gamma=gam)
+                ll = sum(GP(r["ek"].K("combined"), nu_vector(r["ep"], r["ek"], hh), hp["sb2"], hp["s2"]["combined"]).loglik(r["S"], r["Z"]) for r in res)
+                grid.append(dict(nu_gamma=gam, c1=c1, ll=ll))
+        g = pd.DataFrame(grid)
+        g.to_csv(OUT("mod1_nu_gamma_grid_dev.tsv"), sep="\t", index=False, float_format="%.3f")
+        b = g.sort_values("ll", ascending=False).iloc[0]
+        hp["nu_gamma"], hp["noise_hetero"] = float(b.nu_gamma), float(b.c1)
+        hp["mod1"] = dict(gamma=float(b.nu_gamma), c1=float(b.c1), ll_gain_vs_gamma1=float(b.ll - g[g.nu_gamma == 1.0].ll.max()))
+        print("MOD1", hp["mod1"], g.sort_values("ll", ascending=False).head(6).to_string())
+        dump_json(hp, hp_path)
     if "calib" in steps:
         res = _map([(c, f, s, "calib", hp) for c, f in dev for s in (1, 2, 3)])
         df = pd.DataFrame([x for r in res for x in r])

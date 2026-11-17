@@ -49,7 +49,7 @@ def nu_vector(ep, ek, hp):
     if hp.get("hetero") and hp.get("beta") is not None:
         x = noise_features(ep, ek)
         x = np.nan_to_num(x, nan=np.nanmedian(x[:, 1]) if np.isnan(x[:, 1]).any() else 0.0)
-        return hp["noise_hetero"] * np.exp(x @ np.asarray(hp["beta"]))
+        return hp["noise_hetero"] * np.exp(hp.get("nu_gamma", 1.0) * (x @ np.asarray(hp["beta"])))
     return np.full(len(ep.groups), hp["noise_homo"])
 
 

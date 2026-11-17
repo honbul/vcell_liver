@@ -56,3 +56,11 @@ proposed − fixed_vr −0.0006 [−0.0039, +0.0020]; proposed − diversity −
 **가설(검증 안 함):** (a) 예측 분산이 큰 well을 고르는 정책(total_variance, learned_loss)이 크게 나쁜 것은 D2의 ν–이득 음의 상관과 같은 방향이다. (b) proposed와 fixed_vr의 차이가 작은 것은 T=1/32에서 mixture weight가 거의 갱신되지 않기 때문일 수 있다.
 
 **다음(수정 1의 근거 수집, dev만):** 수정 전에 dev random 순서에서 (i) 다음 공개 well의 표준화 오차비 E[(z−μ)²/(σ²+ν)]를 ν 5분위·K별로, (ii) query 잠재 평균의 표준화 오차비, (iii) mixture weight의 최댓값·entropy를 계산한다(`develop --steps calib`). 비율이 1에서 크게 벗어나면 계획 §7 수정 1(보정/likelihood tempering 또는 ν 수축) 중 해당하는 하나를 고른다. 1 근처면 수정 1의 근거가 없다고 기록한다.
+
+## 4. 수정 1 — ν 분산 폭 보정 (사전 기록)
+
+**관측(dev calib, job 25376, `calib_by_nu_dev.tsv`, `calib_by_K_dev.tsv`):** 다음 공개 well의 표준화 오차비는 전체로 0.87–1.04(K별)지만 예측 ν 5분위별로 **0.65 / 0.92 / 0.89 / 1.01 / 1.52**다. 조용하다고 예측한 well은 더 조용하고, 시끄럽다고 예측한 well은 더 시끄럽다. query 잠재평균 비율은 1.15(K=4)→1.36(K=28)로 커진다(정답 unit도 반복 평균이라 잡음이 남아 있어 원인을 나누지 못함). mixture weight 최댓값 0.20→0.33(6개 가설, 균등 0.167), entropy 1.78→1.55(최대 1.79).
+**가설:** ν 모형의 폭이 실제보다 좁아 proposed가 조용한 well을 충분히 선호하지 못한다.
+**수정 하나:** ν = c·ν_D3^γ, γ∈{1, 1.5, 2, 3}, c를 dev 동일 episode(seed 1–3, K=32 random)의 pooled marginal likelihood로 고른다(계획 §7 수정 1 “source calibration / noise” 범주). 다른 설정(kernel, sb2, s2, T, readout, shortlist)은 그대로다. 수정 전 설정은 `hyper_v0_before_mod1.json`으로 보존.
+**예상 차이:** γ>1이 선택되면 proposed·total_variance·pdbal의 선택이 조용한 plate 쪽으로 더 기운다. fixed_vr·random·diversity·latent_variance는 동분산이라 변하지 않는다.
+**판정 방법:** dev에서 proposed − random AUC를 수정 전후 비교, 이어서 meta-val에서 프로토콜 채택 조건을 다시 적용.
