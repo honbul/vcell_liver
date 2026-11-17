@@ -1,0 +1,31 @@
+run_id	setting	arm	status	job	commit	lr	seed	epochs	head_mode	drug_shrink	teacher	train_seconds	gpu	dev_rmse_p1	dev_rmse_p025	ckpt_sha256	note
+Z0_dev_v1	dev		finished		1f9fbe6												first Ridge grid; drug penalty at the grid edge, superseded by Z0_dev_v2 (DECISIONS D3)
+Z0_dev_v2	dev		finished		8ee360d												
+pilot_B00_lr1e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_B00_lr1e-3_s42_e60_r2	dev	B00	finished	25544	42df188	0.001	42	60	joint	0		1031.8	NVIDIA A30	0.09684	0.09687	5a4798ad8bc6d19899369cc1134465899fd9f1246197250c9e63c2570b43b043	
+pilot_B00_lr3e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_B00_lr3e-3_s42_e60_r2	dev	B00	finished	25579	42df188	0.003	42	60	joint	0		990.3	NVIDIA A30	0.09594	0.09599	690012b713b3c3856038d278011b85c44843401e089a5994a7a82065da714105	
+pilot_B00_lr3e-4_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_B00_lr3e-4_s42_e60_r2	dev		failed														CUDA out of memory: three runs were packed on one 24 GB A30 (array 25519); rerun as _r3 with two runs per GPU
+pilot_B00_lr3e-4_s42_e60_r3	dev	B00	finished	25578	42df188	0.0003	42	60	joint	0		995.1	NVIDIA A30	0.09360	0.09361	aa48d17bbc086b2c3e6e10b17f62c63ee47ce8b4e77f1e7b0ddbf4926868a7db	
+pilot_B10_lr1e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_B10_lr1e-3_s42_e60_r2	dev		not_finished														
+pilot_B10_lr3e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_B10_lr3e-3_s42_e60_r2	dev		not_finished														
+pilot_B10_lr3e-4_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_B10_lr3e-4_s42_e60_r2	dev	B10	finished	25579	42df188	0.0003	42	60	joint	0		990.3	NVIDIA A30	0.09372	0.09370	8026f6ed56a57204a559b456ce382d98bf6974ebc3dd85ea5665817571ed16e1	
+pilot_DEN_lr1e-3_s42_e60_r2	dev		not_finished														
+pilot_DEN_lr3e-4_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_DEN_lr3e-4_s42_e60_r2	dev		not_finished														
+pilot_TEACH0_lr1e-3_s42_e60	dev	TEACH0	finished	25501	45b91ea	0.001	42	60	joint	0		445.6	NVIDIA A30	0.09427	0.09478	77f5534fb59d6fcfbe63f4e25f3b89e4bbc27edf57c7285265f62831b7b83381	
+pilot_TEACH0_lr3e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_TEACH0_lr3e-3_s42_e60_r2	dev	TEACH0	finished	25544	42df188	0.003	42	60	joint	0		1031.8	NVIDIA A30	0.09562	0.09757	d9db1c6a254ed27bf44a5a509acbc726dca779d3cb813ee0c9c921b792845f0a	
+pilot_TEACH0_lr3e-4_s42_e60	dev	TEACH0	finished	25500	45b91ea	0.0003	42	60	joint	0		446.7	NVIDIA A30	0.09186	0.09268	90bece5fa824d4d6d48daec327412c19b13e6097ca180a2c6caf0f908653d959	
+pilot_TEACH1_lr1e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_TEACH1_lr1e-3_s42_e60_r2	dev		failed														CUDA out of memory: three runs were packed on one 24 GB A30 (array 25519); rerun as _r3 with two runs per GPU
+pilot_TEACH1_lr1e-3_s42_e60_r3	dev	TEACH1	finished	25578	42df188	0.001	42	60	joint	0		995.1	NVIDIA A30	0.09607	0.09921	e1951907a9d2f53584729e469b6974e8d8986809ef2972741c427f2938e34c10	
+pilot_TEACH1_lr3e-3_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_TEACH1_lr3e-3_s42_e60_r2	dev	TEACH1	finished	25543	42df188	0.003	42	60	joint	0		1010.5	NVIDIA A30	0.09638	0.09929	0d99d715422a7a4b6ca1b97a1dffabe5d36bab3fd9accd5dfbcc3ed4f5ae40a0	
+pilot_TEACH1_lr3e-4_s42_e60	dev		cancelled														cancelled by the operator (jobs 25502-25517): 18 single-GPU jobs had been submitted at once and up to 14 GPUs ran for about 2 minutes, above the 2-GPU limit; rerun as <run-id>_r2 in a 2-GPU array
+pilot_TEACH1_lr3e-4_s42_e60_r2	dev	TEACH1	finished	25543	42df188	0.0003	42	60	joint	0		1010.5	NVIDIA A30	0.09193	0.09354	dea87215279c072ee86723fb665aba041c7f398e8659abf897928e72363b6b77	
+smoke_B10_e2	dev	B10	finished	25496	1f9fbe6	0.001	42	2	joint	0		21.6	NVIDIA A30	0.09487	0.09502	33a92e7124d142ffd18ff58849866a35ad13fda0ec1bbc26aeb8abdb0b635ae2	2-epoch smoke test, not a result

@@ -1,0 +1,102 @@
+{
+ "setting": "dev",
+ "tag": "dev_selected",
+ "out": "reports/depth_robust_r6/tables",
+ "pred_out": "predictions/depth_robust_r6",
+ "arms": {
+  "nochange": [
+   "Z0_dev_v2/pred_dev_nochange.npz"
+  ],
+  "linemean": [
+   "Z0_dev_v2/pred_dev_linemean.npz"
+  ],
+  "Z0": [
+   "Z0_dev_v2/pred_dev_Z0.npz"
+  ],
+  "B00": [
+   "rev1_B00_shrink10_lr3e-3_s42_e60/pred_dev.npz"
+  ],
+  "B10": [
+   "rev1_B10_shrink10_lr1e-3_s42_e60/pred_dev.npz"
+  ],
+  "B01": [
+   "rev1_B01_shrink10_lr3e-3_s42_e60/pred_dev.npz"
+  ],
+  "B11": [
+   "rev1_B11_shrink10_lr3e-3_s42_e60/pred_dev.npz"
+  ],
+  "DEN": [
+   "rev1_DEN_shrink10_lr1e-3_s42_e60/pred_dev.npz"
+  ],
+  "NOSTATE": [
+   "rev1_NOSTATE_shrink10_lr3e-3_s42_e60/pred_dev.npz"
+  ],
+  "TEACH0": [
+   "rev1_TEACH0_shrink10_lr3e-3_s42_e60/pred_dev.npz"
+  ],
+  "TEACH1": [
+   "rev1_TEACH1_shrink10_lr1e-3_s42_e60/pred_dev.npz"
+  ],
+  "B00_joint": [
+   "pilot_B00_lr3e-4_s42_e60_r3/pred_dev.npz"
+  ]
+ },
+ "pairs": [
+  [
+   "B11",
+   "B00"
+  ],
+  [
+   "B11",
+   "Z0"
+  ],
+  [
+   "B11",
+   "DEN"
+  ],
+  [
+   "B10",
+   "B00"
+  ],
+  [
+   "B01",
+   "B00"
+  ],
+  [
+   "B11",
+   "B01"
+  ],
+  [
+   "B11",
+   "B10"
+  ],
+  [
+   "DEN",
+   "B00"
+  ],
+  [
+   "B00",
+   "Z0"
+  ],
+  [
+   "B00",
+   "linemean"
+  ],
+  [
+   "B00",
+   "NOSTATE"
+  ],
+  [
+   "B00",
+   "TEACH0"
+  ],
+  [
+   "Z0",
+   "linemean"
+  ],
+  [
+   "B00",
+   "B00_joint"
+  ]
+ ]
+}
