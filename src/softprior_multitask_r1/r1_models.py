@@ -8,6 +8,10 @@ Configuration keys (tuples):
                                       whole = eta 0, par = eta -> inf, perp = pathway part removed
                                       (diagnostic only), rK = eta / lam = K
     ("nuc", ratio, lam, tau_frac)     eta = ratio * lam, tau = tau_frac * tau_max(training set)
+    ("res", ratio, lam, tau_frac, lam2)   modification 1 (R1-3): the shared low-rank fit ("nuc", ratio, lam,
+                                      tau_frac) followed by one Ridge per drug (whole space, strength lam2) on
+                                      the training residuals of that fit; lam2 = inf adds nothing. A sequential
+                                      fit, not a joint optimum.
 """
 from __future__ import annotations
 
@@ -57,6 +61,7 @@ class Prep:
             self.tau_max = S.tau_max(self.XB, self.wt, self.Z)
         self._dual = {}
         self._nuc_warm = {}
+        self._nuc_C = {}
 
     # ---- tau = 0 ----
     def kernels(self, kernel: str) -> tuple:
@@ -81,16 +86,34 @@ class Prep:
         if tau_frac == 0:
             C = np.linalg.solve(H, Rm)
             return self.XtB @ C, dict(converged=True, iterations=0, rank=min(C.shape))
+        if (ratio, lam, tau_frac) in self._nuc_C:
+            C, info = self._nuc_C[(ratio, lam, tau_frac)]
+            return self.XtB @ C, dict(info, first_stage_new=False)      # solved before: not recorded twice
         warm = self._nuc_warm.get((ratio, lam))
         C, info = S.admm_nuclear(H, Rm, tau_frac * self.tau_max, C0=warm, tol=tol)
         self._nuc_warm[(ratio, lam)] = C
+        self._nuc_C[(ratio, lam, tau_frac)] = (C, info)
         return self.XtB @ C, info
+
+    # ---- modification 1: shared low-rank fit + per-drug Ridge on its training residuals ----
+    def predict_res_z(self, ratio: float, lam: float, tau_frac: float, lam2: float) -> tuple:
+        P1, info = self.predict_nuc_z(ratio, lam, tau_frac)
+        if np.isinf(lam2):
+            return P1, info
+        C = self._nuc_C[(ratio, lam, tau_frac)][0]
+        resid = self.Z - self.XB @ C
+        if "whole" not in self._dual:
+            self._dual["whole"] = (S.DualRidge(self.K, self.wt, self.Z), self.K_te)
+        dual, Kte = self._dual["whole"]
+        return P1 + Kte @ dual.alpha_for(resid, lam2), info
 
     def predict_z(self, cfg_key: tuple) -> tuple:
         if cfg_key[0] == "ridge":
             return self.predict_ridge_z(cfg_key[1], cfg_key[2]), None
         if cfg_key[0] == "nuc":
             return self.predict_nuc_z(cfg_key[1], cfg_key[2], cfg_key[3])
+        if cfg_key[0] == "res":
+            return self.predict_res_z(*cfg_key[1:])
         raise ValueError(cfg_key)
 
     def to_raw(self, Pz: np.ndarray) -> np.ndarray:
@@ -110,6 +133,11 @@ def nuc_configs(lams, ratios, tau_fracs) -> list:
             for t in sorted(tau_fracs, reverse=True)]
 
 
+def res_configs(lams, ratios, tau_fracs, lam2s) -> list:
+    return [("res", float(r), float(l), float(t), float(l2)) for r in ratios for l in lams
+            for t in sorted(tau_fracs, reverse=True) for l2 in lam2s]
+
+
 def key_str(k: tuple) -> str:
     return "|".join(str(x) for x in k)
 
@@ -125,7 +153,7 @@ def inner_losses(X, Y, fam, sets, configs, n_inner, seed, return_family=False):
     fam_loss = np.full((len(configs), len(fams), Y.shape[1]), np.nan)
     fam_fold = np.array([int(inner[fam == f][0]) for f in fams])
     records = []
-    need_reduced = any(c[0] == "nuc" for c in configs)
+    need_reduced = any(c[0] in ("nuc", "res") for c in configs)
     for k in range(n_inner):
         tr, te = inner != k, inner == k
         assert not set(fam[tr]) & set(fam[te])
@@ -140,7 +168,7 @@ def inner_losses(X, Y, fam, sets, configs, n_inner, seed, return_family=False):
             agg = np.zeros((len(f_te), Y.shape[1]))
             np.add.at(agg, inv, se)
             fam_loss[c, pos] = agg / cnt[:, None]
-            if info is not None:
+            if info is not None and info.get("first_stage_new", True):
                 records.append(dict(inner_fold=k, config=key_str(key), converged=info["converged"],
                                     iterations=info["iterations"], rank=info["rank"]))
     assert np.isfinite(fam_loss).all()
@@ -156,6 +184,15 @@ def select_per_drug(loss: np.ndarray, order: list) -> np.ndarray:
     sub = loss[order]
     best = len(order) - 1 - np.argmin(sub[::-1], axis=0)
     return np.asarray(order)[best]
+
+
+def select_hybrid(loss: np.ndarray, groups: list) -> np.ndarray:
+    """One group of configurations for all drugs, then one member per drug inside it.
+    `groups`: lists of row indices, groups ordered weakest -> strongest and members likewise.
+    Group score: mean over drugs of sqrt(best member loss); ties -> strongest group / member."""
+    score = np.array([np.sqrt(loss[g].min(axis=0)).mean() for g in groups])
+    best = len(groups) - 1 - int(np.argmin(score[::-1]))
+    return select_per_drug(loss, groups[best])
 
 
 def select_global(loss: np.ndarray, order: list) -> int:

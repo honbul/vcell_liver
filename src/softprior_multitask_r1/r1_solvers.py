@@ -80,6 +80,10 @@ class DualRidge:
     def alpha(self, lam: float) -> np.ndarray:
         return self.sq[:, None] * (self.V @ (self.VtZ / (self.e[:, None] + lam * self.D)))
 
+    def alpha_for(self, T: np.ndarray, lam: float) -> np.ndarray:
+        """Same solve for another target matrix T (N x D), e.g. the residual of a first-stage fit."""
+        return self.sq[:, None] * (self.V @ ((self.V.T @ (self.sq[:, None] * T)) / (self.e[:, None] + lam * self.D)))
+
 
 def soft_kernel(K_par: np.ndarray, K_perp: np.ndarray, ratio: float) -> np.ndarray:
     """lam * K(lam, eta) with eta = ratio * lam. ratio = inf keeps the pathway part only."""

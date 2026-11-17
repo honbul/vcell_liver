@@ -36,6 +36,8 @@ def grid_configs(cfg: dict, name: str) -> list:
         out += M.ridge_configs(g["lambda"], g["ridge_kernels"])
     if g.get("tau_fractions"):
         out += M.nuc_configs(g["lambda"], g["nuc_ratios"], g["tau_fractions"])
+    if g.get("res_tau_fractions"):
+        out += M.res_configs(g["lambda"], g["res_ratios"], g["res_tau_fractions"], [float(x) for x in g["res_lambda2"]])
     assert len(set(out)) == len(out)
     return out
 
@@ -103,13 +105,13 @@ def main() -> None:
         extra = dict(fam_loss=fam_loss.astype(np.float32), families=np.array([str(f) for f in fams]),
                      family_inner_fold=fam_fold) if args.store_family else {}
         if args.outer_predict:
-            need_reduced = any(c[0] == "nuc" for c in configs)
+            need_reduced = any(c[0] in ("nuc", "res") for c in configs)
             prep = M.Prep(X, Y, fam, X_te, sets, need_reduced=need_reduced)
             pred = np.empty((len(configs), len(te_models), Y.shape[1]))
             for c, key in enumerate(configs):
                 Pz, info = prep.predict_z(key)
                 pred[c] = prep.to_raw(Pz)
-                if info is not None:
+                if info is not None and info.get("first_stage_new", True):
                     records.append(dict(inner_fold=-1, config=keys[c], converged=info["converged"],
                                         iterations=info["iterations"], rank=info["rank"]))
             meta.update(pathway_rank=int(prep.r), par_fraction=prep.par_fraction,

@@ -242,3 +242,38 @@ def test_permuted_sets_keep_structure():
         for b in range(a + 1, 4):
             assert len(np.intersect1d(sets[a], sets[b])) == len(np.intersect1d(ps[a], ps[b]))
     assert any(not np.array_equal(a, b) for a, b in zip(sets, ps))
+
+
+def test_lowrank_residual_special_cases_and_hybrid_selection():
+    """Modification 1: lam2 = inf is the shared fit alone; tau >= tau_max (shared fit = 0) is per-drug
+    whole-space Ridge; the second stage is exactly a Ridge on the first-stage training residuals."""
+    import r1_select as SEL
+    X, Y, fam, sets, X_te = toy(seed=8)
+    prep = M.Prep(X, Y, fam, X_te, sets)
+    P1, _ = prep.predict_nuc_z(10.0, 0.1, 0.3)
+    Pinf, _ = prep.predict_res_z(10.0, 0.1, 0.3, np.inf)
+    assert np.array_equal(P1, Pinf)
+    P0, info = prep.predict_res_z(0.0, 0.1, 1.5, 0.5)
+    assert info["rank"] == 0 and np.abs(P0 - prep.predict_ridge_z("whole", 0.5)).max() < 1e-9
+    # explicit second stage with sklearn on the residuals
+    w = a1core.family_weights(fam)
+    sc = StandardScaler().fit(X, sample_weight=w)
+    C = prep._nuc_C[(10.0, 0.1, 0.3)][0]
+    resid = prep.Z - prep.XB @ C
+    ref = Ridge(alpha=2.0 * prep.D * w.sum()).fit(sc.transform(X), resid, sample_weight=w)
+    assert abs(ref.intercept_).max() < 1e-8
+    P2, _ = prep.predict_res_z(10.0, 0.1, 0.3, 2.0)
+    assert np.abs(P2 - (P1 + ref.predict(sc.transform(X_te)))).max() < 1e-8
+    # hybrid selection: one group for all drugs, a member per drug; plain Ridge forms its own group
+    keys = [("ridge", "whole", 1.0), ("ridge", "whole", 10.0), ("res", 0.0, 1.0, 0.3, 1.0), ("res", 0.0, 1.0, 0.3, np.inf)]
+    spec = dict(select="hybrid", ridge_kernels=["whole"], res_ratios=[0.0], res_tau_fractions=[0.3], **{"lambda": None})
+    loss = np.array([[1.0, 5.0], [5.0, 1.0], [2.0, 0.5], [0.5, 2.0]])
+    assert list(SEL.choose(spec, keys, loss)) == [3, 2]            # group "res" (0.5, 0.5) beats Ridge (1, 1)
+    loss[2:] = 3.0
+    assert list(SEL.choose(spec, keys, loss)) == [0, 1]
+    assert SEL.parse_key(M.key_str(keys[3])) == keys[3]
+    # inner-loss table: the lam2 = inf column equals the nuc configuration
+    cfgs = [("nuc", 0.0, 0.1, 0.3)] + M.res_configs([0.1], [0.0], [0.3], [1.0, np.inf])
+    loss, rec = M.inner_losses(X, Y, fam, sets, cfgs, 3, 11)
+    assert np.array_equal(loss[0], loss[2])
+    assert len(rec) == 3 and all(r["converged"] for r in rec)   # one first-stage solve per inner fold

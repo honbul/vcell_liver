@@ -76,6 +76,11 @@ grids:
     ridge_kernels: [r1, r10, r100]
     nuc_ratios: [0, 1, 10, 100]
     tau_fractions: [0.03, 0.1, 0.3]
+  r3_lowrank_residual:   # R1-3 modification 1: shared low-rank fit + per-drug Ridge on its residuals
+    lambda: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0]
+    res_ratios: [0, 1, 10, 100]
+    res_tau_fractions: [0.1, 0.3]
+    res_lambda2: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0, .inf]
   null_level:         # lambda so large that the prediction is the training mean (reference level in development tables)
     lambda: [1.0e+9]
     ridge_kernels: [whole]
@@ -93,6 +98,10 @@ models:
   soft_gl:   {select: global,   ridge_kernels: [whole, r1, r10, r100]}
   mt_noprior: {select: global,  ridge_kernels: [whole], nuc_ratios: [0], tau_fractions: [0.03, 0.1, 0.3]}                         # eta = 0, tau >= 0
   full:      {select: global,   ridge_kernels: [whole, r1, r10, r100], nuc_ratios: [0, 1, 10, 100], tau_fractions: [0.03, 0.1, 0.3]}  # eta >= 0, tau >= 0
+  # R1-3 modification 1. `hybrid`: one shared fit for all drugs, then lambda2 per drug. The group without a
+  # shared fit is per-drug whole-space Ridge, so ridge_pd is a special case of both models.
+  mt_resid:   {select: hybrid, ridge_kernels: [whole], res_ratios: [0], res_tau_fractions: [0.1, 0.3]}
+  full_resid: {select: hybrid, ridge_kernels: [whole], res_ratios: [0, 1, 10, 100], res_tau_fractions: [0.1, 0.3]}
   train_mean: {select: global,  ridge_kernels: [whole], lambda: [1.0e+9]}
 
 # Baselines outside the R1 objective. Each is tuned with the same inner family folds and inner loss.

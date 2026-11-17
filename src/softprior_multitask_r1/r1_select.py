@@ -23,6 +23,8 @@ def parse_key(s: str) -> tuple:
     p = s.split("|")
     if p[0] == "ridge":
         return ("ridge", p[1], float(p[2]))
+    if p[0] == "res":
+        return ("res", float(p[1]), float(p[2]), float(p[3]), float(p[4]))
     return ("nuc", float(p[1]), float(p[2]), float(p[3]))
 
 
@@ -30,7 +32,18 @@ def strength(key: tuple) -> tuple:
     """Sort key from weakest to strongest regularisation: lambda, then eta/lambda, then tau."""
     if key[0] == "ridge":
         return (key[2], M.KERNEL_RATIO.get(key[1], 0.0), 0.0)
+    if key[0] == "res":
+        return (key[2], key[1], key[3], key[4])
     return (key[2], key[1], key[3])
+
+
+def group_of(key: tuple) -> tuple:
+    """Hybrid selection: the part of a configuration shared by all drugs. Plain whole-space Ridge is the
+    group with no shared fit (its members are the per-drug lambda values)."""
+    if key[0] == "res":
+        return (key[2], key[1], key[3])
+    assert key[0] == "ridge" and key[1] == "whole"
+    return (-1.0, 0.0, 0.0)
 
 
 def model_spec(cfg: dict, name: str) -> dict:
@@ -46,6 +59,9 @@ def candidates(spec: dict, keys: list) -> list:
     for i, k in enumerate(keys):
         if k[0] == "ridge":
             ok = k[1] in spec.get("ridge_kernels", []) and (spec.get("lambda") is None or k[2] in spec["lambda"])
+        elif k[0] == "res":
+            ok = (k[1] in spec.get("res_ratios", []) and k[3] in spec.get("res_tau_fractions", [])
+                  and (spec.get("lambda") is None or k[2] in spec["lambda"]))
         else:
             ok = (k[1] in spec.get("nuc_ratios", []) and k[3] in spec.get("tau_fractions", [])
                   and (spec.get("lambda") is None or k[2] in spec["lambda"]))
@@ -60,6 +76,10 @@ def choose(spec: dict, keys: list, loss: np.ndarray) -> np.ndarray:
     order = candidates(spec, keys)
     if spec["select"] == "per_drug":
         return M.select_per_drug(loss, order)
+    if spec["select"] == "hybrid":
+        gid = sorted({group_of(keys[i]) for i in order})
+        groups = [[i for i in order if group_of(keys[i]) == g] for g in gid]
+        return M.select_hybrid(loss, groups)
     return np.full(loss.shape[1], M.select_global(loss, order))
 
 
