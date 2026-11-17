@@ -205,7 +205,7 @@ def main():
         z_explained_variance_32=float((s2[:32] ** 2).sum() / (s2 ** 2).sum()),
         f0_explained_variance_32=float((s[:32] ** 2).sum() / (s ** 2).sum()),
         ctl_sd_source=rows.loc[src, "ctl_sd"].describe().round(4).to_dict(),
-        ctl_sd_by_target_plate=rows[~src].groupby(["cell", "det_plate"]).ctl_sd.first().round(4).astype(str).to_dict(),
+        ctl_sd_by_target_plate={f"{c}|{p}": float(v) for (c, p), v in rows[~src].groupby(["cell", "det_plate"]).ctl_sd.first().round(4).items()},
         files=files)
     dump_json(summary, public("manifests", "perturbation_design_r5", "store_manifest.json"))
     print(json.dumps({k: v for k, v in summary.items() if k != "files"}, indent=1, default=str))
