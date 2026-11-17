@@ -1,0 +1,99 @@
+# Study R4 protocol: reliability-aware response geometry for unseen-compound transcriptional prediction.
+# Written and committed before any R4 job read an expression value. A rule change needs a dated entry under
+# `amendments` (reason, what had been seen). Plan: docs/hcc_perturbation_r4_r5/01_R4_RESPONSE_GEOMETRY.md (R4-v1.0).
+track: response_geometry_r4
+prior_study:
+  commit: d67bf68495be49a96598473c22fb5e2409d24429      # study B (data card = plan P01)
+  reused_read_only: [processed CMap LINCS 2020 Level 3 plate rows (cmap2020_v1), 978 landmark axis, ECFP4 2048 (Morgan r2, same call as WAVE's loader), drug groups, degenerate-row list (B amendment 1)]
+  not_reused: [B splits, B checkpoints, B scores, any R1-R3 output]
+  not_compared_head_to_head: "B / R2 scores (different task: those predict a drug already measured in source cells)"
+
+data:
+  rows: B plate rows (cell, pert_id, det_plate); X0 = plate DMSO mean, X1 = treated well(s) mean, official Level 3 scale, no normalize_total/log1p
+  degenerate_source_rows: removed everywhere (B list, 42 rows)
+  cells: 161 B source cells + HUH7, JHH5, JHH7 (HUH751 excluded, as in B)
+  unit: (cell, drug_group)
+  unit_delta: equal mean over the group's conditions (cell, pert_id) of [equal mean over plates of (X1 - X0)]
+  unit_x0: same equal mean of X0
+  unit_fingerprint: ECFP4 of the lexicographically first pert_id of the group (same for every cell)
+  families: >
+    connected components over identical Cellosaurus id, documented derivation pairs (list copied from the R2 family
+    rule, metadata only), all XC.* pools as one family, HIMG001/HIMG002 merged; HUH7, JHH5, JHH7 each its own family.
+
+split:
+  unit_of_split: drug_group (global; every cell uses the same role)
+  fractions: {train: 0.70, validation: 0.15, test: 0.15}
+  rule: sort the 8288 group ids, permute with numpy RandomState(20261117); first 70% train, next 15% validation, rest test
+  input: drugs.tsv / rows.tsv metadata only (no expression)
+  hcc: HCC units of training drugs are training units; HCC units of validation/test drugs are scored only
+  seed_change_after_scores: forbidden
+  scaffold_stress_test: not run (optional in the plan; not part of the main task)
+  sealing: test-role unit deltas are written to a separate file read only by test_eval.py, which requires the committed freeze manifest
+
+fit_only_on_training_drugs: [teacher PCA U, scale D, cell means m_c, reliability, Ridge, scalers, early stopping uses validation only]
+
+diagnostics:   # training drugs only; none of them reads validation or test responses
+  D1: per cell (cells with >= 40 training units, at most 12 cells by unit count + the 3 HCC lines), pairs of training units -> ECFP Tanimoto vs cosine of cell-centred delta; counts of (Tanimoto >= 0.6, cos <= 0) and (Tanimoto <= 0.2, cos >= 0.5); same-plate-set vs different-plate-set pairs reported separately
+  D2: units with >= 2 distinct det_plates: split plates into halves (alternate in sorted order), split-half Pearson of cell-centred delta, and top-10 cosine-neighbour overlap between halves (teacher space); well vs plate replicate distinction: B rows are one detection plate each, within-plate replicate wells are averaged by B (n_trt_wells), so every split here is across plates
+  D3: magnitude of unit deltas vs a DMSO-null scale (cell-wise RMS of half-vs-half differences of replicated units); fraction of units whose RMS is within the null scale
+  gate: >
+    If the median split-half Pearson of cell-centred delta over replicated training units is <= 0.1 AND the median top-10
+    neighbour overlap is <= 2x its random expectation, one train-only stabilisation (64-axis PCA shrinkage of the
+    half-deltas) is tried; if still below, the relational hypothesis is closed as "premise not supported" (W0/W1/baselines are still reported).
+
+models:
+  wave_upstream: {repo: https://github.com/ZJUFanLab/WAVE, commit: e27e453beb48d0ff912585060b5a09cb04335262, files_used: [wave/model.py]}
+  W0_native:
+    description: upstream WAVE module unchanged; final = VAE_recon(X0) + fusion(encoded(X0), DrugNN(fp)); delta_hat = final - X0
+    loss: upstream loss_fct (MSE(final, X1) + 1.0 * (1 - mean row Pearson) + 0.01 * KL)
+    sampler: rows (cell, pert_id, plate) of training drugs, uniform shuffle (upstream)
+    optimiser: Adam lr 1e-3 (upstream), batch 32 (upstream)
+    budget: 40 epochs (upstream default 300 shortened; recorded as a deviation), evaluated every epoch
+    selection: upstream rule, best validation delta Pearson (flattened) over epochs
+    changes_from_upstream: [in-memory arrays instead of h5ad/scanpy loader, our drug split and evaluation, epoch cap]
+  W1_delta_anchor:
+    description: same GeneVAE encoder, DrugNN, GeneDrugFusion; delta_hat = fusion(encoded(X0), DrugNN(fp)); prediction = X0 + delta_hat. VAE decoder / mu / logvar unused (no KL)
+    projection_head: Linear(256 -> 64) on the fusion's penultimate activation, present but unused (lambda_rel = 0) so W1 and W2 have equal parameters
+    loss: L_pred = mean over units of mean over genes (delta_hat - delta)^2
+  W2_proposed:
+    loss: L_pred + lambda_rel * L_rel
+    L_rel: "-mean_i r_i sum_j q_ij log softmax_j(cos(z_i, u_j) / tau_S)"
+    z: projection head output (64)
+    teacher: "u_i = U^T D^-1 (y_i - m_c); U = top 64 PCA axes of cell-centred, D-scaled training unit deltas; D = per-gene SD of cell-centred training deltas, floored at its 10th percentile over genes"
+    soft_target: "q_i = (1 - rho) onehot(i) + rho * p_i with p_ij = softmax_{j != i}(cos(u_i, u_j) / tau_T) * sqrt(r_i r_j), the removed off-diagonal mass returned to the diagonal"
+    rho: 0.5
+    tau_T: 0.1
+    tau_S: 0.1
+    reliability_r: "split-half Pearson of cell-centred delta (D2 definition), clipped to [0, 1]; units without a second plate get r = median r of replicated training units of the same cell (global median if the cell has < 10), flagged reliability_unknown"
+    stop_gradient: [u, q, r]
+  pairing: cell-matched batches (sample a cell uniformly, then up to 64 of its training units without replacement); same sampler for W1, W2, latent regression, delta-MLP
+  update_budget: 6000 updates of batch <= 64 for W1 / W2 / latent regression / delta-MLP (equal for every arm), validation every 250 updates, checkpoint = lowest validation primary metric
+  search: {lr: [3.0e-4, 1.0e-3], lambda_rel: [0.05, 0.5], seed: 42}   # <= 2 LR x <= 2 lambda; W1 has only the LR grid
+  final_candidates: <= 2, seeds [42, 43, 44]
+  development_subset: "LR / lambda screening on <= 1000 training groups x 12 cells (largest cells by training units, HCC excluded from the subset); final candidates and every comparison on the full panel"
+
+baselines:
+  no_change: delta = 0
+  train_cell_mean: m_c (equal mean of training units of the cell)
+  ecfp_x0_ridge: delta = Ridge([ECFP4 bits, standardised X0]); alpha from [1, 10, 100, 1000, 10000] by validation
+  cellmean_ecfp_ridge: delta = m_c + Ridge(ECFP4 bits) fit on (delta - m_c); alpha grid as above
+  delta_mlp: [ECFP4, X0] -> 512 -> 512 -> 978, ReLU, same sampler / budget / LR grid / selection as W1
+  latent_regression: W1 architecture + lambda * r_i * ||z_i - u_i||^2 (same teacher, head, reliability, lambda grid as W2)
+  sample_weights: Ridge rows weighted 1 / (n_cells * n_units_of_cell) (cell-balanced, the same balance as the sampler)
+  same_drug_mean: impossible (test drugs have no training response in any cell)
+
+evaluation:
+  unit: (cell, drug_group) of validation (development) or test (once, after freeze)
+  primary: per-unit RMSE over 978 genes of delta -> mean over units of each family -> equal mean over families (source panel: all non-HCC families)
+  hcc_table: HUH7, JHH5, JHH7 separately and their equal mean (exploratory; few test drugs)
+  secondary: [per-unit delta Pearson, centred Pearson (prediction and truth each minus their own cell mean over the scored units; scoring only), retrieval MRR (candidates = scored units of the same cell; cosine of centred vectors; candidate count reported), top-20 |delta| direction agreement, RMS ratio pred/true, primary split by true-RMS tertile (scoring only)]
+  bootstrap: {unit: drug_group (all cells move together), resamples: 2000, seed: 20261117, ci: 0.95, paired: true}
+  decision_rules:
+    W1_vs_W0: "direct-delta output helps if the W1 - W0 test contrast CI is below 0"
+    W2_signal_on_validation: "E2 signal = W2 (selected) mean validation primary over 3 seeds below W1 (selected) AND below latent regression AND below the best Ridge"
+    ablations_E3_E5: run only if the E2 signal holds (rho = 0; r = 1; pooled mixed-cell batches); 3 seeds each
+    W2_claim_on_test: "W2 improvement claimed only if the W2 - W1 test contrast CI is below 0 AND W2 is lower than W1 in each of the 3 seeds AND below latent regression and best Ridge"
+    hcc: "HCC improvement claimed only if the HCC-mean contrast CI is below 0; otherwise reported as not established"
+  modifications_allowed: 2   # from plan §6 table only, one change each, logged in DECISIONS.md before the run
+
+amendments: []
