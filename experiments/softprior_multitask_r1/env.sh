@@ -13,4 +13,5 @@ export PYTHONDONTWRITEBYTECODE=1
 # Caches of third-party packages stay inside this worktree (never in the home directory).
 export XDG_CACHE_HOME="$PWD/assets/external/xdg_cache"
 export TABPFN_MODEL_CACHE_DIR="$PWD/assets/external/tabpfn_cache"
+export SKRUB_DATA_DIRECTORY="$PWD/assets/external/skrub_data"   # tabpfn imports skrub, which otherwise creates ~/skrub_data (fails on nodes without a home directory)
 export HF_HOME="$PWD/assets/external/hf_home" MPLCONFIGDIR="$PWD/assets/external/mplconfig"
