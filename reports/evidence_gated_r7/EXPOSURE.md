@@ -16,6 +16,7 @@
 | training 약물 Δ(모든 세포주) | 기준선, D1 진단, 모든 학습 | protocol commit(`b76ae64`) 이후 |
 | validation 약물 Δ | checkpoint·LR 선택, validation 신호, 수정 판단 | 개발 중 |
 | 첫 pilot의 이른 validation 줄 | 취소된 job 25732–25746 로그(D-2 정정) | KG 보정 결정 뒤 두 줄만 읽음. 선택에 쓰지 않음 |
+| HCC validation unit 점수 | mock 배선 검사 job 25826(**절차 위반**, DECISIONS D-5) | 동결 목록 commit 뒤. 이후 설정 변경 없음 |
 | test 약물 Δ | `final_eval` 한 번(`R7_FINAL_EVAL=1`, 동결 manifest commit, clean tree 필요) | 동결 이후 |
 
 - 지식 그래프·표적 주석은 metadata만으로 만들었다(`kg_build`가 RNA 파일을 읽지 않음은 `leak_fixtures.json`에서 확인).

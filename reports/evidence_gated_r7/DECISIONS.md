@@ -159,3 +159,13 @@ validation source panel ΔRMSE, seed 42, 20000 update 중 최저 checkpoint:
   - (a) 어떤 표적 노드가 seed되는가(표적 정체성 = 약물 간 표적 공유 정보)
   - (b) 주석 있는 약물에만 붙는 추가 보정 용량(+ 세포 상태·약물 embedding 입력)
 - **미실행:** 표적 정체성을 약물 사이에서 섞어 재학습하는 대조. 사전 등록에 없었고, 수정 횟수도 남기지 않았다(수정 2 미사용 결정 유지). 결과 보고에 미실행으로 남긴다.
+
+## D-5. 절차 위반 기록 — mock 평가가 HCC validation 수치를 계산함 (2026-11-18 05:38)
+
+- **무엇이 있었나:** 최종 평가 배선 검사(`final_eval --mock`, job 25826)는 test 대신 validation unit에서 같은 코드를 돌린다. 그런데 이 코드가 HCC panel(HUH7·JHH5·JHH7, hcc_mean)까지 계산해 로그와 `manifests/evidence_gated_r7/mock/`에 썼다. 이는 protocol의 `no_hcc_selection: no HCC number is computed before the freeze`를 어긴 것이다.
+- **내가 본 것:** 로그 끝 부분(v0_fixed_graph의 HCC 행 몇 줄)과 mock 대비표의 B11 − chem_only 행 다섯 줄이다. 예: HCC-mean −0.00092 [−0.00265, +0.00089].
+- **영향 범위:**
+  - 동결 대상 모델, seed, 대비 목록, stress 모델은 mock 실행 **전에** commit `b6c72e0`(`freeze_args.sh`)으로 고정되어 있었다.
+  - XPert 설정(D-3)도 그 전에 고정되었다.
+  - 이 수치를 본 뒤 어떤 설정도 바꾸지 않는다. mock 결과 파일은 숨기지 않고 `mock/`에 그대로 commit한다.
+- **재발 방지:** 없음(남은 단계는 동결과 최종 평가뿐이다). 이 위반은 RESULTS·CLAIMS에도 적는다.
