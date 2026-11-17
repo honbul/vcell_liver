@@ -114,15 +114,17 @@ def key_str(k: tuple) -> str:
     return "|".join(str(x) for x in k)
 
 
-def inner_losses(X, Y, fam, sets, configs, n_inner, seed) -> tuple:
+def inner_losses(X, Y, fam, sets, configs, n_inner, seed, return_family=False):
     """Track A inner loss for every configuration: family-first squared error in inner-training-SD
-    units, pooled over the inner test families. Returns loss [config, drug] and solver records."""
+    units, pooled over the inner test families. Returns loss [config, drug] and solver records
+    (and, on request, the per-family terms [config, family, drug] with the family ids)."""
     fam = np.asarray(fam)
     inner = a1core.group_folds(fam, n_inner, seed)
-    loss = np.zeros((len(configs), Y.shape[1]))
+    fams = np.unique(fam)
+    f_pos = {f: i for i, f in enumerate(fams)}
+    fam_loss = np.full((len(configs), len(fams), Y.shape[1]), np.nan)
     records = []
     need_reduced = any(c[0] == "nuc" for c in configs)
-    n_total = 0
     for k in range(n_inner):
         tr, te = inner != k, inner == k
         assert not set(fam[tr]) & set(fam[te])
@@ -130,17 +132,21 @@ def inner_losses(X, Y, fam, sets, configs, n_inner, seed) -> tuple:
         Zte = prep.z_of(Y[te])
         f_te, inv = np.unique(fam[te], return_inverse=True)
         cnt = np.bincount(inv)
+        pos = np.array([f_pos[f] for f in f_te])
         for c, key in enumerate(configs):
             Pz, info = prep.predict_z(key)
             se = (Pz - Zte) ** 2
             agg = np.zeros((len(f_te), Y.shape[1]))
             np.add.at(agg, inv, se)
-            loss[c] += (agg / cnt[:, None]).sum(axis=0)
+            fam_loss[c, pos] = agg / cnt[:, None]
             if info is not None:
                 records.append(dict(inner_fold=k, config=key_str(key), converged=info["converged"],
                                     iterations=info["iterations"], rank=info["rank"]))
-        n_total += len(f_te)
-    return loss / n_total, records
+    assert np.isfinite(fam_loss).all()
+    loss = fam_loss.mean(axis=1)
+    if return_family:
+        return loss, records, fam_loss, fams
+    return loss, records
 
 
 def select_per_drug(loss: np.ndarray, order: list) -> np.ndarray:

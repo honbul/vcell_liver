@@ -74,6 +74,7 @@ def main() -> None:
     ap.add_argument("--task-index", type=int, default=0)
     ap.add_argument("--n-tasks", type=int, default=1)
     ap.add_argument("--outer-predict", action="store_true")
+    ap.add_argument("--store-family", action="store_true", help="keep per-family inner losses (dev bootstrap)")
     args = ap.parse_args()
     cfg = R.load_config()
     data = R.load_data(cfg)
@@ -94,12 +95,12 @@ def main() -> None:
         t0 = time.time()
         sets = data.prior_sets(prior)
         X, Y, fam = data.rank[tr], data.Y[tr], data.fam[tr]
-        loss, records = M.inner_losses(X, Y, fam, sets, configs, n_inner, seed)
+        loss, records, fam_loss, fams = M.inner_losses(X, Y, fam, sets, configs, n_inner, seed, return_family=True)
         meta = dict(set=sid, prior=prior, grid=args.grid, n_train_models=int(tr.sum()),
                     n_train_families=int(len(set(fam))), inner_seed=int(seed),
                     n_not_converged=int(sum(not r["converged"] for r in records)),
                     max_iterations=int(max([r["iterations"] for r in records], default=0)))
-        extra = {}
+        extra = dict(fam_loss=fam_loss.astype(np.float32), families=np.array(fams)) if args.store_family else {}
         if args.outer_predict:
             need_reduced = any(c[0] == "nuc" for c in configs)
             prep = M.Prep(X, Y, fam, X_te, sets, need_reduced=need_reduced)
@@ -118,7 +119,7 @@ def main() -> None:
             os.replace(os.path.join(args.run_dir, "pred", f"{sid}__{prior}.tmp.npz"),
                        os.path.join(args.run_dir, "pred", f"{sid}__{prior}.npz"))
         meta["seconds"] = round(time.time() - t0, 1)
-        np.savez(out[:-4] + ".tmp.npz", configs=np.array(keys), loss=loss, meta=json.dumps(meta),
+        np.savez_compressed(out[:-4] + ".tmp.npz", configs=np.array(keys), loss=loss, meta=json.dumps(meta),
                  records=json.dumps(records), **extra)
         os.replace(out[:-4] + ".tmp.npz", out)
         print(json.dumps(meta), flush=True)

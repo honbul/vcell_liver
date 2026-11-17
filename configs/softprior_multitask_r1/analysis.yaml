@@ -65,3 +65,19 @@ budget:
   designs: "initial integrated design + at most two diagnosis-backed modifications"
 
 amendments: []
+
+# Named configuration grids. A grid is added here (and motivated in DECISIONS.md) before it is run.
+grids:
+  d1_subspace:        # R1-1 diagnostic, tau = 0: whole space / pathway subspace only / complement only
+    lambda: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0]
+    ridge_kernels: [whole, par, perp]
+
+# Named models = candidate configurations + selection mode. `select: per_drug` picks per drug (as
+# Track A did), `select: global` picks one configuration for all 90 drugs of a training set.
+models:
+  ridge_pd:  {select: per_drug, ridge_kernels: [whole]}
+  ridge_gl:  {select: global,   ridge_kernels: [whole]}
+  par_pd:    {select: per_drug, ridge_kernels: [par]}       # pathway subspace only (eta -> inf)
+  par_gl:    {select: global,   ridge_kernels: [par]}
+  perp_pd:   {select: per_drug, ridge_kernels: [perp]}      # diagnostic: pathway subspace removed
+  perp_gl:   {select: global,   ridge_kernels: [perp]}
