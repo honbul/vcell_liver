@@ -29,4 +29,8 @@
 - **관측(metadata):** `mapping_ambiguities.tsv`에 `no_inchikey`가 384개 pert_id(340 그룹) 있었다. 그중 308 그룹은 어떤 pert_id에도 InChIKey가 없어서 ChEMBL에 연결되지 못했다.
 - **원인:** 연구 B 약물 표의 `inchi_keys` 열이 비어 있다. 구조(`rdkit_smiles`)는 모든 pert_id에 있다.
 - **변경:** 그런 pert_id는 같은 표의 RDKit SMILES로 InChIKey를 계산해 연결하고, 출처(`inchikey_source=computed_from_smiles`)를 남긴다. 이름으로는 여전히 연결하지 않는다.
-- **처리:** 첫 pilot 15개 job(25732–25746)은 시작 직후(약 37초) 취소했다. validation 점수는 한 번도 출력되지 않았다. 해당 run 디렉터리(`p_*`)는 미완료로 남기고, 새 pilot은 run id `pilot_*`로 다시 실행한다. 이것은 결과에 근거한 수정이 아니므로 수정 횟수 2회에 포함하지 않는다.
+- **처리:** 첫 pilot 15개 job(25732–25746)은 시작 약 37초 뒤 취소했다. 보정 결정은 metadata 표만 보고 내렸다.
+  - **정정(사실 기록):** 취소 전에 빠른 arm(chem, concat)은 로그에 이른 step의 validation 점수를 이미 출력했다(9개 로그, 43줄).
+  - 그중 내가 읽은 것은 결정 후 확인 과정에서 본 chem lr1e-4의 step 3500·4000 두 줄(val 0.5487, 0.5484)뿐이다.
+  - 이 점수는 어떤 설정 선택에도 쓰지 않는다. 해당 run 디렉터리(`p_*`)는 미완료로 남기고, 새 pilot은 run id `pilot_*`로 처음부터 다시 실행한다.
+  - 결과에 근거한 수정이 아니므로 수정 횟수 2회에 포함하지 않는다.
