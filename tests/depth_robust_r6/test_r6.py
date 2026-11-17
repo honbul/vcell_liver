@@ -199,5 +199,22 @@ class OrderInvariance(unittest.TestCase):
         self.assertTrue(torch.allclose(z1, z2, atol=1e-4))
 
 
+class AdditiveHead(unittest.TestCase):
+    def test_drug_part_starts_at_zero_and_state_part_ignores_drug(self):
+        torch.manual_seed(0)
+        d = toy()
+        m = ResponseModel(60, 32, obs_input=False, n_tok=16, n_blocks=1, d=16, head_mode="additive",
+                          x_mean=d.x_mean, x_sd=d.x_sd, tiebreak=d.tiebreak).eval()
+        c = torch.as_tensor(d.cnt[:128]).float().reshape(2, 64, -1); r = torch.as_tensor(d.crest[:128]).float().reshape(2, 64)
+        z, _ = m.state(set_features(c, r))
+        fp = torch.as_tensor(d.fp[:6]).reshape(2, 3, -1)
+        g, h = m.delta_parts(z, fp)
+        self.assertEqual(float(h.abs().max()), 0.0)                  # drug-specific part is zero at initialisation
+        self.assertEqual(tuple(g.shape), (2, 1, 60))                 # one state-only response per control set
+        self.assertTrue(torch.allclose(m.delta(z, fp), g.expand(-1, 3, -1)))
+        j = ResponseModel(60, 32, n_tok=16, n_blocks=1, d=16, x_mean=d.x_mean, x_sd=d.x_sd, tiebreak=d.tiebreak)
+        self.assertIsNone(j.state_head)                              # the original head is unchanged by default
+
+
 if __name__ == "__main__":
     unittest.main()
