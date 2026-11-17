@@ -139,7 +139,7 @@ class TeacherStopGradient(unittest.TestCase):
         parts = dict(supervised=torch.tensor(2.0), response=torch.tensor(3.0))
         self.assertEqual(float(LS.total(parts, dict(supervised=1.0, response=0.5))), 3.5)
         src = (SRC / "train.py").read_text()
-        self.assertIn("dict(supervised=1.0, **arm[\"w\"])", src)
+        self.assertIn("LS.total(parts, dict(supervised=1.0, ", src)      # weight 1 on the measured target, always
 
 
 class NoHeldOutTreatedAccess(unittest.TestCase):
