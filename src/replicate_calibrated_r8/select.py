@@ -18,7 +18,7 @@ def cv(tag):
     rows = []
     for rj in sorted(glob.glob(runs("cv", "*", "result.json"))):
         r = json.load(open(rj))
-        if tag and not r["run_id"].endswith(tag):
+        if tag and not any(r["run_id"].endswith("_" + t) for t in tag.split(",")):
             continue
         c = pd.read_csv(os.path.join(os.path.dirname(rj), "curve.tsv"), sep="\t")
         c.insert(0, "run_id", r["run_id"])
@@ -55,7 +55,7 @@ def final(tag):
     out, conf = {}, []
     for rj in sorted(glob.glob(runs("final", "*", "result.json"))):
         r = json.load(open(rj))
-        if tag and not r["run_id"].endswith(tag):
+        if tag and not any(r["run_id"].endswith("_" + t) for t in tag.split(",")):
             continue
         arm = r["arm"]
         assert r["stopped"] == "max_steps" and sha256(r["checkpoint"]) == r["checkpoint_sha256"]
@@ -73,6 +73,6 @@ def final(tag):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=["cv", "final"])
-    ap.add_argument("--tag", default="")
+    ap.add_argument("--tag", default="", help="comma-separated run-id suffixes to include (e.g. v1,v1g); empty = every run")
     a = ap.parse_args()
     cv(a.tag) if a.mode == "cv" else final(a.tag)
