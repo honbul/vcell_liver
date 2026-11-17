@@ -10,3 +10,7 @@ export R1_SRC="$PWD/src/softprior_multitask_r1"
 export R1_RUNS="$PWD/assets/runs"
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 export PYTHONDONTWRITEBYTECODE=1
+# Caches of third-party packages stay inside this worktree (never in the home directory).
+export XDG_CACHE_HOME="$PWD/assets/external/xdg_cache"
+export TABPFN_MODEL_CACHE_DIR="$PWD/assets/external/tabpfn_cache"
+export HF_HOME="$PWD/assets/external/hf_home" MPLCONFIGDIR="$PWD/assets/external/mplconfig"

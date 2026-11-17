@@ -103,7 +103,7 @@ def main() -> None:
             fin, fout = os.path.join(td, "in.mat"), os.path.join(td, "out.mat")
             savemat(fin, mat)
             cmd = f"cwkbmf_run('{code}', '{fin}', '{fout}')"
-            res = subprocess.run(["octave", "--no-gui", "--quiet", "--path", HERE, "--eval", cmd], capture_output=True,
+            res = subprocess.run(["octave", "--no-gui", "--quiet", "--no-init-file", "--no-history", "--path", HERE, "--eval", cmd], capture_output=True,
                                  text=True, cwd=td)
             if res.returncode != 0 or not os.path.exists(fout):
                 raise RuntimeError(f"octave failed for {sid}: {res.stderr[-2000:]}")

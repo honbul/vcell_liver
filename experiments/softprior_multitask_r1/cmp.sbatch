@@ -6,6 +6,7 @@
 #SBATCH --time=24:00:00
 #SBATCH --output=logs/r1_cmp_%A_%a.log
 # Comparator models (one array task per group of training sets).
+# cwKBMF needs Octave, which is on g1, g2, c3, c4, c5 only: add --exclude=g3,g4 for run_cwkbmf.py.
 # Submit: sbatch --array=0-(N-1) --export=ALL,RUN_ID=<id>,SCRIPT=run_enet.py,SETS=internal|external,NT=N experiments/softprior_multitask_r1/cmp.sbatch
 set -euo pipefail
 : "${RUN_ID:?}" "${SCRIPT:?}" "${SETS:?}" "${NT:?}"
