@@ -10,6 +10,6 @@
 set -euo pipefail
 source experiments/response_geometry_r4/env.sh
 echo "start=$(date -Is) commit=$R4_COMMIT host=$(hostname) job=${SLURM_JOB_ID:-} args=$*"
-nvidia-smi --query-gpu=name,memory.total --format=csv,noheader | head -1
+nvidia-smi --query-gpu=name,memory.total --format=csv,noheader 2>/dev/null | head -1 || true
 "$TB_PY" -m "src.response_geometry_r4.$1" "${@:2}"
 echo "end=$(date -Is)"
