@@ -85,6 +85,22 @@ def fig_secondary(table, out):
     fig.savefig(F / out, dpi=160, bbox_inches="tight"); plt.close(fig)
 
 
+def fig_pilot():
+    """User-approved post-gate pilot: paired difference to shifted control at matched mean (restoration v2)."""
+    lab = {"gauss_lr50": "Gaussian, low-rank k=50 (baseline)", "ddpm_resid": "residual DDPM (3 training seeds)",
+           "ddpm_abs": "absolute DDPM, mean-matched (3 seeds)", "cellflow": "CellFlow, mean-matched (1 seed)"}
+    fig, ax = plt.subplots(2, 1, figsize=(7.2, 4.8), gridspec_kw=dict(hspace=0.75))
+    for a, (tab, title) in zip(ax, [("pilot_final_all_lines.tsv", "Exploratory pilot, held-out drugs, all cell lines"),
+                                    ("pilot_final_snu423.tsv", "Exploratory pilot, held-out drugs, SNU-423 only")]):
+        R = pd.read_csv(T / tab, sep="\t").set_index("method")
+        S = R.reindex([m + ":anchored2" for m in lab])
+        k = "d_ed_vs_shifted:anchored2"
+        dots(a, list(lab.values()), S[k], S[k + "_lo"], S[k + "_hi"], C["anchored2"])
+        style(a, title)
+        a.set_xlabel("energy distance minus shifted control (same mean, restoration v2); above 0 = worse")
+    fig.savefig(F / "fig6_pilot_generators.png", dpi=160, bbox_inches="tight"); plt.close(fig)
+
+
 def main() -> None:
     F.mkdir(parents=True, exist_ok=True)
     fig_gate()
@@ -95,6 +111,8 @@ def main() -> None:
                     "fig3b_final_zoom.png", variants=("pre", "anchored2"))
         fig_methods("final_snu423.tsv", "Held-out drugs, SNU-423 only (post-freeze)", "fig4_final_snu423.png")
         fig_secondary("final_all_lines.tsv", "fig5_final_zero_variance.png")
+    if (T / "pilot_final_all_lines.tsv").exists():
+        fig_pilot()
     print(sorted(p.name for p in F.glob("*.png")))
 
 
