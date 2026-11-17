@@ -1,0 +1,50 @@
+{
+ "run_id": "dev_latreg_lr1e-3_lam0.5_s42",
+ "kind": "latreg",
+ "seconds": 119.9,
+ "commit": "c7cf83d",
+ "slurm_job": "25316",
+ "host": "G1",
+ "config": {
+  "arm": "latreg",
+  "run_id": "dev_latreg_lr1e-3_lam0.5_s42",
+  "subset": "dev",
+  "lr": 0.001,
+  "lam": 0.5,
+  "rho": 0.5,
+  "rel": "on",
+  "pairing": "cell",
+  "tau_t": 0.1,
+  "tau_s": 0.1,
+  "batch": 64,
+  "updates": 20000,
+  "eval_every": 500,
+  "epochs": 40,
+  "seed": 42,
+  "max_updates_smoke": 0,
+  "n_train_units": 9985,
+  "n_val_units": 6557,
+  "train_units_sha": "50d15780fbe3f0e2825731e3a847bfbe0890ff20f0f4e6571405e7bb14e0855e",
+  "val_units_sha": "17c1f7d9b52db5d0db70089d4f795ef05bbecfd934010b546ce0debe142eb226",
+  "teacher_explained": 0.4299814933979156,
+  "reliability_global_median": 0.11842408776283264,
+  "reliability_known_frac": 0.8731096644967451
+ },
+ "best": {
+  "score": 0.5038675876183585,
+  "step": 3000,
+  "val": {
+   "rmse": 0.5038675876183585,
+   "pearson": 0.07686824299176034,
+   "centred_pearson": 0.036026838102087656,
+   "mrr": 0.033563765858813856,
+   "top20_direction": 0.5454487783546148,
+   "rms_pred": 0.07667297441619844,
+   "rms_true": 0.5036309133025537,
+   "n_units": 6557,
+   "n_families": 12
+  },
+  "val_flat_delta_pearson": 0.1027468467351767
+ },
+ "gpu_max_mem_gb": 0.79
+}

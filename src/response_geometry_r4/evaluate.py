@@ -21,7 +21,9 @@ def unit_metrics(pred, true, cells):
         a = pcen[s] / (np.linalg.norm(pcen[s], axis=1, keepdims=True) + 1e-12)
         b = tcen[s] / (np.linalg.norm(tcen[s], axis=1, keepdims=True) + 1e-12)
         sim = a @ b.T                                   # row: prediction, column: candidate truth
-        rank = (sim > np.diag(sim)[:, None]).sum(1) + 1
+        d = np.diag(sim)[:, None]
+        # mid-rank for ties: a prediction that is constant within the cell (all candidates tie) gets the middle rank, not rank 1
+        rank = (sim > d).sum(1) + 0.5 * ((sim == d).sum(1) - 1) + 1
         mrr[s] = 1.0 / rank; ncand[s] = s.sum()
     a = pcen - pcen.mean(1, keepdims=True); b = tcen - tcen.mean(1, keepdims=True)
     cpear = (a * b).sum(1) / np.sqrt((a ** 2).sum(1) * (b ** 2).sum(1) + 1e-12)
