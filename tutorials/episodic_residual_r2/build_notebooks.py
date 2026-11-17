@@ -5,7 +5,7 @@ Notebook 02 needs the server-side source unit store and one frozen checkpoint; i
 import os
 import nbformat as nbf
 
-OUT = os.path.dirname(os.path.abspath(__file__))
+OUT = os.environ.get("R2_NB_OUT", os.path.dirname(os.path.abspath(__file__)))
 SETUP = '''import os, json, sys
 import numpy as np, pandas as pd
 import matplotlib

@@ -160,3 +160,16 @@
 - **예측:** (a)가 맞다면 대조군 feature를 뺀 변형의 plate 공유 query 이득이 사라진다. (b)가 맞다면 교환 학습 대조의 meta-val 점수가 최종 제안법의 "잔차 0" 값(0.5146/0.5076/0.5041)과 0.001 이내다.
 - **실험:** 최종 구성에서 (1) `use_ctrl=false` 변형, (2) 학습 중 support 중심화 잔차 행을 약물 간 교환한 대조, 각 seed 42–44. 비분리형(R2-3)도 seed 43·44를 추가해 3 seed로 맞춘다. 그 뒤 모든 방법을 meta-val episode(support seed 1–3, K=8/16/32, 모델 seed 3개)에서 한 번에 채점하고(`source_eval`), source 세포주 3개를 가짜 target으로 한 배선 점검(`hcc_eval --mock`)을 돌린다.
 - **결정 규칙:** 귀속 실행은 해석용이며 최종 제안법을 바꾸지 않는다. source 평가가 끝나면 선택 파일을 커밋하고 동결한다. 계획서 §12 판정은 mean-offset·비학습 KRR 대비로 하고, 추가 기준선 대비 결과는 따로 적는다.
+
+**결과 (D3, job 24492 `tsg_source_v1`, 45분; `d3_tsg_ft_grid.tsv`, `d3_batchnorm_contrast.tsv`, `tsg_ft_selection.json`):** meta-val 9 family, support seed 1, B0 seed 42, 미세조정 162회(9 세포주 × K 3 × 학습률 3 × BN 2), NaN 발산 0회.
+
+| K | 그대로 | +offset | full FT, BN train 모드 최저 | full FT, BN 통계 고정 최저 (선택) |
+|---|---:|---:|---|---|
+| 8 | 0.8509 | 0.5483 | 0.7124 (lr 1e-3, 50 update) | **0.5447** (lr 1e-4, 200 update) |
+| 16 | 0.8509 | 0.5367 | 0.6604 (lr 1e-3, 50 update) | **0.5204** (lr 1e-4, 400 update) |
+| 32 | 0.8509 | 0.5288 | 0.6416 (lr 1e-3, 50 update) | **0.5039** (lr 1e-4, 400 update) |
+
+- **관측:** 같은 학습률·update 수 54개 조합 전부에서 BN 통계 고정이 train 모드보다 낮았다(차이 −0.12 ~ −62, 52개 조합에서 9/9 family). train 모드는 NaN은 없었지만 ΔRMSE가 1을 넘거나 수십까지 커지는 조합이 많았다. 선택된 설정은 격자의 끝이 아니다(lr 1e-4는 가운데, update 200/400은 안쪽). 재학습한 TranSiGen을 그대로 쓰면(0.851) 무변화(0.537)보다 높다.
+- **해석 범위:** 이 구현(K개 약물의 plate 행으로 만든 작은 batch, B0 가중치, source 가상 target)에서 BN running statistics를 갱신하면 예측이 크게 나빠졌다는 **국소 관측**이다. 연구 B의 JHH7 실패나 fine-tuning 일반의 원인으로 단정하지 않는다. 진단을 넓히지 않았다.
+- **노출 메모:** meta-val 세포주들은 연구 B에서 B0의 조기 종료(source 검증)에 쓰였다. 따라서 source 가상 target에서 TranSiGen 계열 점수는 약간 유리할 수 있다(HCC에는 해당 없음).
+- **결정:** 규칙대로 full FT 기준선은 K=8: lr 1e-4·통계 고정·200 update, K=16/32: lr 1e-4·통계 고정·400 update로 고정한다. target 검증 라벨은 쓰지 않는다.

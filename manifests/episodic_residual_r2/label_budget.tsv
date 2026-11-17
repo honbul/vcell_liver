@@ -1,3 +1,10 @@
 stage	run_or_method	hcc_treated_labels_read	hcc_labels_used_for_selection	source_labels_used	note
 R2-0	families / build_units / leak_fixtures / closed_form_v1	0	0	meta-train units (f0, lambda selection on 121 dev cells); meta-val units (report only)	no HCC expression value read
 R2-1	d2_v1	0	0	meta-train and meta-val units, plate rows (diagnostic)	no HCC expression value read
+R2-1	tsg_source_v1 (D3 + full-FT setting selection)	0	0	meta-val units of 9 cells: K support labels per episode for fine-tuning, query labels for selecting lr / BatchNorm handling / update count	no HCC expression value read; no target validation label
+S1	diag_shrink_v1	0	0	meta-train dev units (kappa selection), meta-val units (report only)	no HCC expression value read
+R2-2	adapter_A1/A2/A3, cnp_C1/C2/C3 (seed 42) and seeds 43/44 of the selected settings	0	0	meta-train episodes (training); meta-val episodes (early stopping, lr selection at K=16)	no HCC expression value read
+R2-3	adapter_joint (seeds 42-44)	0	0	same as R2-2	comparison only
+R2-4	adapter_M1_shrink (seeds 42-44), adapter_M2_shrink_svd32 (seed 42)	0	0	same as R2-2; M2 residual basis from meta-train cells only	modification 1 adopted, modification 2 not adopted, both decided on meta-val K=16
+attribution	adapter_M1_noctrl, adapter_M1_trainshuffle (seeds 42-44)	0	0	same as R2-2	interpretation only; cannot change the frozen proposal
+pre-freeze	source_eval_v1, hcc_mock_v1	0	0	meta-val episodes (report); mock targets are three meta-val source cells	wiring check with source cells in the HCC code path; no HCC expression value read

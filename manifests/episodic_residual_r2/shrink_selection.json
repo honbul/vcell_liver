@@ -1,0 +1,78 @@
+{
+ "selected": {
+  "8": {
+   "shrunk_same_drug_mean": {
+    "kappa_f": 8.0,
+    "dev": 0.5404274388453605,
+    "meta_val": 0.5078150044988703
+   },
+   "shrunk_mean_offset": {
+    "kappa_f": 8.0,
+    "kappa_b": 16.0,
+    "dev": 0.5340655900607383,
+    "meta_val": 0.5021229331140166
+   },
+   "reference_meta_val": {
+    "source_same_drug_mean": 0.5144565800825754,
+    "mean_offset": 0.5301454111381814
+   }
+  },
+  "16": {
+   "shrunk_same_drug_mean": {
+    "kappa_f": 8.0,
+    "dev": 0.5404274388453605,
+    "meta_val": 0.5078150044988703
+   },
+   "shrunk_mean_offset": {
+    "kappa_f": 8.0,
+    "kappa_b": 16.0,
+    "dev": 0.5321415316729997,
+    "meta_val": 0.4993082262851574
+   },
+   "reference_meta_val": {
+    "source_same_drug_mean": 0.5144565800825754,
+    "mean_offset": 0.5150604512956407
+   }
+  },
+  "32": {
+   "shrunk_same_drug_mean": {
+    "kappa_f": 8.0,
+    "dev": 0.5404274388453605,
+    "meta_val": 0.5078150044988703
+   },
+   "shrunk_mean_offset": {
+    "kappa_f": 8.0,
+    "kappa_b": 16.0,
+    "dev": 0.5291573299060327,
+    "meta_val": 0.49693673076453027
+   },
+   "reference_meta_val": {
+    "source_same_drug_mean": 0.5144565800825754,
+    "mean_offset": 0.5077830453713735
+   }
+  }
+ },
+ "rule": "per K, lowest family-equal mean query delta RMSE on meta-train dev episodes",
+ "grids": {
+  "kappa_f": [
+   0.0,
+   0.5,
+   1.0,
+   2.0,
+   4.0,
+   8.0,
+   16.0
+  ],
+  "kappa_b": [
+   "0.0",
+   "4.0",
+   "8.0",
+   "16.0",
+   "32.0",
+   "64.0",
+   "inf"
+  ]
+ },
+ "run_id": "diag_shrink_v1",
+ "commit": "2d6ff69"
+}
