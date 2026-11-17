@@ -100,7 +100,7 @@ def main() -> None:
                     n_train_families=int(len(set(fam))), inner_seed=int(seed),
                     n_not_converged=int(sum(not r["converged"] for r in records)),
                     max_iterations=int(max([r["iterations"] for r in records], default=0)))
-        extra = dict(fam_loss=fam_loss.astype(np.float32), families=np.array(fams)) if args.store_family else {}
+        extra = dict(fam_loss=fam_loss.astype(np.float32), families=np.array([str(f) for f in fams])) if args.store_family else {}
         if args.outer_predict:
             need_reduced = any(c[0] == "nuc" for c in configs)
             prep = M.Prep(X, Y, fam, X_te, sets, need_reduced=need_reduced)
