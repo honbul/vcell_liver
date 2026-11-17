@@ -9,7 +9,7 @@
 # usage: sbatch -J r7_<name> experiments/evidence_gated_r7/gpu_step.sbatch <module> [args]
 set -euo pipefail
 source experiments/evidence_gated_r7/env.sh
-DIRTY=$(git status --porcelain --untracked-files=no); test -z "$DIRTY" || { echo "worktree not clean:"; echo "$DIRTY"; exit 3; }
+git update-index -q --refresh >/dev/null 2>&1 || true; DIRTY=$(git status --porcelain --untracked-files=no); test -z "$DIRTY" || { echo "worktree not clean:"; echo "$DIRTY"; exit 3; }
 echo "start=$(date -Is) commit=$R7_COMMIT host=$(hostname) job=${SLURM_JOB_ID:-} args=$*"
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader 2>/dev/null | head -1 || true
 "$TB_PY" -m "src.evidence_gated_r7.$1" "${@:2}"

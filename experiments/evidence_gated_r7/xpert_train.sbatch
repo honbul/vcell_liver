@@ -10,7 +10,7 @@
 # Upstream XPert training script, unchanged, on the R7 h5ad (train / valid / copy-of-valid as 'test'; no R7 test unit).
 set -euo pipefail
 source experiments/evidence_gated_r7/env.sh
-DIRTY=$(git status --porcelain --untracked-files=no); test -z "$DIRTY" || { echo "worktree not clean:"; echo "$DIRTY"; exit 3; }
+git update-index -q --refresh >/dev/null 2>&1 || true; DIRTY=$(git status --porcelain --untracked-files=no); test -z "$DIRTY" || { echo "worktree not clean:"; echo "$DIRTY"; exit 3; }
 RUN=$1; EP=$2; SEED=$3
 W="$R7_ASSETS/xpert_work"
 echo "start=$(date -Is) commit=$R7_COMMIT host=$(hostname) job=${SLURM_JOB_ID:-} run=$RUN epochs=$EP seed=$SEED"
