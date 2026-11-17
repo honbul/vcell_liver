@@ -45,16 +45,19 @@ def main():
                 torch.nn.init.normal_(p, std=0.01)
         bank = SeedBank(K)
         a = predict(m, T, bank, idx, dev)
+        a2 = predict(m, T, bank, idx, dev)                 # same inputs: GPU scatter-add run-to-run noise
         S._open = rng.normal(size=S._open.shape).astype(np.float32)
         b = predict(m, T, bank, idx, dev)
         S._open = keep
-        res[f"{arm}_prediction_independent_of_delta"] = bool(np.array_equal(a, b))
+        res[f"{arm}_rerun_max_abs_diff"] = float(np.abs(a - a2).max())
+        res[f"{arm}_delta_swap_max_abs_diff"] = float(np.abs(a - b).max())
+        res[f"{arm}_prediction_independent_of_delta"] = bool(np.abs(a - b).max() < 1e-5)
         res[f"{arm}_correction_nonzero"] = bool(np.abs(a - (T["CM"][torch.as_tensor(S.cell_idx[idx], device=dev)].cpu().numpy())).max() > 0)
     src = open(os.path.join(os.path.dirname(__file__), "kg_build.py")).read()
     import re
     reads = re.findall(r'r4proc\(([^)]*)\)', src)
     res["kg_build_reads_only_metadata"] = ("from .data" not in src) and ("unit_delta" not in src) and ("unit_x0" not in src) and reads == ['"groups.tsv"']
-    res["all_pass"] = all(v for k, v in res.items() if k != "all_pass")
+    res["all_pass"] = all(v for k, v in res.items() if k != "all_pass" and isinstance(v, bool))
     dump(res, pman("leak_fixtures.json"))
     print(json.dumps(res, indent=1))
     assert res["all_pass"]
