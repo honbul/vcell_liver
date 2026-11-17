@@ -1,3 +1,5 @@
 run_id	stage	date	code_commit	slurm_job	purpose	n_units	n_configs	status	notes
 r0_build_24485	R1-0	2026-11-17	81c3ffc	24485	fixed-ID gene axis + cached ranks/scores + solver fixtures	1	0	completed_with_test_failure	data build completed; pytest 10 passed, 1 skipped (torch not yet installed), 1 failed: fixture bug in the hard-limit test (a gene constant in training but varying in the test rows); fixture corrected, checks rerun as job below
 checks_24487	R1-0	2026-11-17	16bd90f	24487	solver fixtures	1	0	failed	1 failed: the dual solve with lam=1e-13 amplifies rounding error in the null space of the rank-deficient pathway kernel (deviation 3e-4 from least squares on set means); test now uses lam=1e-9. Dependent job 24488 never started and was cancelled.
+checks_24494	R1-0	2026-11-17	cdbf857	24494	solver fixtures	1	0	completed	11 passed, 1 skipped (PyTorch cross-check: torch still installing; rerun before R1-2)
+r0_tracka_cdbf857	R1-0	2026-11-17	cdbf857	24495	Track A predictors A0/A1/A1r/A3 on the fixed-ID axis (Track A code, Track A alpha grid) + scorer check	15	7	completed	scorer reproduces Track A committed numbers; 30 s
