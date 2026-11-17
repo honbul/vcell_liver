@@ -179,11 +179,22 @@ def main():
     lm = landmarks(ent)
     L = list(lm.hgnc_symbol)
     drugs = pd.read_csv(tb("drugs.tsv"), sep="\t")
+    # pert_ids without an InChIKey in the drug table: InChIKey computed from the table's RDKit SMILES (structure, flagged)
+    from rdkit import Chem, RDLogger
+    RDLogger.DisableLog("rdApp.*")
+    nokey = drugs.inchi_keys.isna() | (drugs.inchi_keys.astype(str).str.strip() == "")
+    comp = {}
+    for i in np.where(nokey)[0]:
+        m = Chem.MolFromSmiles(str(drugs.rdkit_smiles.iloc[i]))
+        comp[i] = Chem.MolToInchiKey(m) if m is not None else ""
+    drugs.loc[list(comp), "inchi_keys"] = pd.Series(comp)
+    drugs["inchikey_source"] = np.where(nokey, "computed_from_smiles", "drug_table")
     split = pd.read_csv(os.path.join(R4_MAN, "drug_split.tsv"), sep="\t").set_index("drug_group").role
     groups = pd.read_csv(r4proc("groups.tsv"), sep="\t")            # R4 group index order (metadata)
     dbp, rel = chembl_db()
     con = sqlite3.connect(f"file:{dbp}?mode=ro", uri=True)
     link, amb = link_drugs(con, drugs)
+    link["inchikey_source"] = link.pert_id.map(drugs.set_index("pert_id").inchikey_source)
     tg, unmapped_acc = target_genes(con, uni)
     ev, sign_table = evidence(con, link, tg)
     con.close()
@@ -263,7 +274,8 @@ def main():
     cov.reset_index().to_csv(pman("annotation_coverage.tsv"), sep="\t", index=False)
     files = ["edge_index.npy", "edge_rel.npy", "edge_feat.npy", "node_measured.npy", "landmark_node_idx.npy", "nodes.tsv", "drug_seeds.tsv", "group_status.tsv", "edges.tsv"]
     card = dict(chembl=dict(release=rel, db=dbp, db_bytes=os.path.getsize(dbp), pchembl_min=PCHEMBL_MIN, confidence_min=CONF_MIN,
-                            linked_pert_ids=int(link.pert_id.nunique()), linked_groups=int(link.drug_group.nunique()),
+                            linked_pert_ids=int(link.pert_id.nunique()), inchikey_computed_from_smiles=int(nokey.sum()),
+                            linked_pert_ids_with_computed_key=int(link[link.inchikey_source == "computed_from_smiles"].pert_id.nunique()), linked_groups=int(link.drug_group.nunique()),
                             evidence_rows=int(len(ev)), human_target_accessions_without_hgnc=int(unmapped_acc.accession.nunique())),
                 omnipath=om, hgnc=hg,
                 graph=dict(nodes=len(nodes), targets=len(T), intermediates=len(I), landmarks=len(L), edges=int(len(E)),

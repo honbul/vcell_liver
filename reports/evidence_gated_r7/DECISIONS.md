@@ -23,3 +23,10 @@
 - HG embedding 사전학습에 반응 유래 관계가 쓰였는지는 저장소에서 확인할 수 없다(기본 edge PPI·DTI·DDS). **미확인**으로 기록한다.
 - `flash_attn`은 같은 수식의 torch SDPA shim으로 바꾼다. 원 코드의 flash 경로는 원자 padding mask를 쓰지 않으며, 그 동작은 그대로 둔다.
 - 원 학습 스크립트는 마지막에 `test` split을 평가한다. 그래서 학습 h5ad의 `test` 칸에는 validation 복사본만 넣는다. R7 test unit은 학습 job에 들어가지 않는다.
+
+## D-2. Phase 0 보정: InChIKey 없는 pert_id (2026-11-18 03:1x, pilot 결과를 보기 전)
+
+- **관측(metadata):** `mapping_ambiguities.tsv`에 `no_inchikey`가 384개 pert_id(340 그룹) 있었다. 그중 308 그룹은 어떤 pert_id에도 InChIKey가 없어서 ChEMBL에 연결되지 못했다.
+- **원인:** 연구 B 약물 표의 `inchi_keys` 열이 비어 있다. 구조(`rdkit_smiles`)는 모든 pert_id에 있다.
+- **변경:** 그런 pert_id는 같은 표의 RDKit SMILES로 InChIKey를 계산해 연결하고, 출처(`inchikey_source=computed_from_smiles`)를 남긴다. 이름으로는 여전히 연결하지 않는다.
+- **처리:** 첫 pilot 15개 job(25732–25746)은 시작 직후(약 37초) 취소했다. validation 점수는 한 번도 출력되지 않았다. 해당 run 디렉터리(`p_*`)는 미완료로 남기고, 새 pilot은 run id `pilot_*`로 다시 실행한다. 이것은 결과에 근거한 수정이 아니므로 수정 횟수 2회에 포함하지 않는다.
