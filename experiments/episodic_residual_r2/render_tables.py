@@ -47,7 +47,7 @@ def contrasts(ref="mean_offset", qset="test", metric="delta_rmse"):
             cells = []
             for t in TARGETS:
                 r = idx.get((t, K, m))
-                cells.append("—" if r is None else f"{float(r['diff']):+.4f} [{float(r['lo']):+.4f}, {float(r['hi']):+.4f}]")
+                cells.append("—" if (r is None or r['diff'] == '') else f"{float(r['diff']):+.4f} [{float(r['lo']):+.4f}, {float(r['hi']):+.4f}]")
             print(f"| {lab} | " + " | ".join(cells) + " |")
 
 
