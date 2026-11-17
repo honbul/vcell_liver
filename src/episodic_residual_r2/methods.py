@@ -84,6 +84,18 @@ def mlp(d_in, hidden, d_out):
     return nn.Sequential(nn.Linear(d_in, hidden), nn.LayerNorm(hidden), nn.GELU(), nn.Linear(hidden, d_out), nn.LayerNorm(d_out))
 
 
+def shrunk_prediction(inp, kf, kb):
+    """Post-hoc added baseline (diagnostic S1): f0 * n/(n+kf) plus the support mean residual * K/(K+kb); kb=inf -> no support label used."""
+    wq = (inp["n0_q"] / (inp["n0_q"] + kf))[:, None]
+    ws = (inp["n0_s"] / (inp["n0_s"] + kf))[:, None]
+    base = inp["f0_q"] * wq
+    if kb == "inf" or math.isinf(float(kb)):
+        return base
+    K = len(inp["y_s"])
+    b = (inp["y_s"] - inp["f0_s"] * ws).mean(0, keepdim=True)
+    return base + b * (K / (K + float(kb)))
+
+
 class ResidualAdapter(nn.Module):
     """f0(q) + b_S + z_q^T Z_S^T (Z_S Z_S^T + lambda I)^-1 R_S with a learned embedding phi and one global lambda.
 
@@ -93,10 +105,11 @@ class ResidualAdapter(nn.Module):
                   'joint' : no separation; ridge on the uncentred residual e with a learned constant feature
       svd_basis : optional (978, r) orthonormal source-only basis; the per-drug correction is restricted to its span
       shrink_by_k : optional learned per-K multiplier in (0, 1) on the per-drug correction
+      shrink_offset : optional learned per-K multiplier in (0, 1) on the support mean offset b_S ('split' mode only)
     """
 
     def __init__(self, hidden=128, out=64, use_fp=True, use_ctrl=True, use_f0r=True, offset_mode="split", svd_basis=None,
-                 shrink_by_k=False, k_values=(8, 16, 32), lam_init=1.0, lam_bounds=(1e-3, 1e3)):
+                 shrink_by_k=False, shrink_offset=False, k_values=(8, 16, 32), lam_init=1.0, lam_bounds=(1e-3, 1e3)):
         super().__init__()
         self.use = dict(fp=use_fp, ctrl=use_ctrl, f0r=use_f0r)
         d_in = 2048 * use_fp + 32 * use_ctrl + 33 * use_f0r
@@ -113,6 +126,10 @@ class ResidualAdapter(nn.Module):
         if shrink_by_k:
             self.shrink_logit = nn.Parameter(torch.full((len(k_values),), 2.0))
         self.shrink_by_k = shrink_by_k
+        assert not (shrink_offset and offset_mode != "split")
+        if shrink_offset:
+            self.offset_logit = nn.Parameter(torch.full((len(k_values),), 2.0))
+        self.shrink_offset = shrink_offset
 
     def lam(self):
         return torch.exp(self.log_lam.clamp(*self.lam_bounds))
@@ -144,6 +161,8 @@ class ResidualAdapter(nn.Module):
             K = len(zs)
             assert K in self.k_values
             corr = corr * torch.sigmoid(self.shrink_logit[self.k_values.index(K)])
+        if self.shrink_offset:
+            b = b * torch.sigmoid(self.offset_logit[self.k_values.index(len(zs))])
         return b, corr
 
     def forward(self, inp, ft, **kw):

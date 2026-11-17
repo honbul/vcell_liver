@@ -51,6 +51,10 @@ class Suite:
             yield "no_change", -1, M.no_change(inp)
             yield "source_same_drug_mean", -1, M.same_drug_mean(inp)
             yield "mean_offset", -1, M.mean_offset(inp)
+            if "shrink" in self.sel:                       # added post-hoc baselines, kappa fixed on meta-train dev episodes
+                sh = self.sel["shrink"][str(K)]
+                yield "shrunk_same_drug_mean", -1, M.shrunk_prediction(inp, sh["shrunk_same_drug_mean"]["kappa_f"], "inf")
+                yield "shrunk_mean_offset", -1, M.shrunk_prediction(inp, sh["shrunk_mean_offset"]["kappa_f"], sh["shrunk_mean_offset"]["kappa_b"])
             for name, f in M.CLOSED_FORM.items():
                 yield name, -1, f(inp, ft, float(self.sel["lambda"][f"{name}|{K}"]["lam"]))
             for name, seeds in self.learned.items():
@@ -85,6 +89,9 @@ def current_selection(extra_learned=None, modes=None, committed_only=False):
     f = (lambda n: os.path.join(MAN, n)) if committed_only else man_file
     out = {"lambda": json.load(open(f("baseline_lambda_selection.json")))["selected"], "tsg_ft": json.load(open(f("tsg_ft_selection.json")))["selected"],
            "learned": {}, "modes": modes or {}}
+    sh = f("shrink_selection.json")
+    if os.path.exists(sh):
+        out["shrink"] = json.load(open(sh))["selected"]
     ms = f("model_selection.json")
     if os.path.exists(ms):
         out["learned"] = dict(json.load(open(ms))["final"])

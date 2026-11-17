@@ -28,7 +28,7 @@ def main():
     cfg = yaml.safe_load(open(CFG))
     dirty = subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], capture_output=True, text=True).stdout.strip()
     assert dirty == "", "working tree has uncommitted changes"
-    for f in ("baseline_lambda_selection.json", "tsg_ft_selection.json", "model_selection.json", "data_contract.json", "source_families.tsv"):
+    for f in ("baseline_lambda_selection.json", "tsg_ft_selection.json", "model_selection.json", "shrink_selection.json", "data_contract.json", "source_families.tsv"):
         assert os.path.exists(os.path.join(MAN, f)), f"{f} is not committed"
     sel = current_selection(committed_only=True)
     names = [a.final_method, "generic_cnp"] + [n for n in a.attribution.split(",") if n]
@@ -43,7 +43,7 @@ def main():
     fz = dict(track="episodic_residual_r2", frozen_on=subprocess.run(["date", "-Is"], capture_output=True, text=True).stdout.strip(),
               code_commit=subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip(),
               config=dict(path=CFG, sha256=sha256(CFG)), final_method=a.final_method, attribution_methods=[n for n in a.attribution.split(",") if n], note=a.note,
-              selection=dict(lambdas=sel["lambda"], tsg_ft=sel["tsg_ft"], learned=learned,
+              selection=dict(lambdas=sel["lambda"], tsg_ft=sel["tsg_ft"], shrink=sel["shrink"], learned=learned,
                              modes={a.final_method: ["zero_residual", "shuffle_residual"]}),
               transigen_checkpoints={str(s): dict(run_id=e["run_id"], checkpoint=e["checkpoint"], checkpoint_sha256=e["checkpoint_sha256"]) for s, e in G.checkpoints().items()},
               feature_basis=dict(path=fb, sha256=sha256(fb)), data_contract_sha256=sha256(os.path.join(MAN, "data_contract.json")),

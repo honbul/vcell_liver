@@ -14,20 +14,10 @@ from .common import CFG, public, dump, new_run_dir, run_record
 from .data import Source
 from .evalcore import family_mean
 from .closed_form import episodes_for
+from .methods import shrunk_prediction
 
 KF = [0.0, 0.5, 1.0, 2.0, 4.0, 8.0, 16.0]
 KB = [0.0, 4.0, 8.0, 16.0, 32.0, 64.0, float("inf")]
-
-
-def shrunk_prediction(inp, kf, kb):
-    wq = (inp["n0_q"] / (inp["n0_q"] + kf))[:, None]
-    ws = (inp["n0_s"] / (inp["n0_s"] + kf))[:, None]
-    base = inp["f0_q"] * wq
-    if np.isinf(kb):
-        return base
-    K = len(inp["y_s"])
-    b = (inp["y_s"] - inp["f0_s"] * ws).mean(0, keepdim=True)
-    return base + b * (K / (K + kb))
 
 
 def main():
