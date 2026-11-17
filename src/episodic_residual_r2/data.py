@@ -78,16 +78,19 @@ class Source:
         self.cell_units = {i: np.where(self.u_cell == i)[0] for i in range(len(c))}
         self.family_cells = {f: g.cell_idx.to_numpy() for f, g in c.groupby("family")}
         self.train_cell_mask = self.cell_role == "train"
+        self._delta64 = np.asarray(delta, np.float64)
         self.S_train, self.n_train = self._table(self.train_cell_mask)
         self.S_all, self.n_all = self._table(np.ones(len(c), bool))
+        del self._delta64
 
     def _table(self, cell_mask):
         """Per drug group: sum over allowed cells of unit deltas, and the number of allowed cells."""
-        um = torch.tensor(cell_mask[self.u_cell], device=self.dev)
-        gi = torch.tensor(self.u_group, device=self.dev)[um]
-        S = torch.zeros(self.G, N_GENES, device=self.dev).index_add_(0, gi, self.D[um])
-        n = torch.zeros(self.G, device=self.dev).index_add_(0, gi, torch.ones(len(gi), device=self.dev))
-        return S, n
+        um = cell_mask[self.u_cell]
+        gi = self.u_group[um]
+        S = np.zeros((self.G, N_GENES))
+        np.add.at(S, gi, self._delta64[um])             # CPU float64, fixed order: bit-reproducible tables
+        n = np.bincount(gi, minlength=self.G).astype(np.float32)
+        return torch.tensor(S, dtype=torch.float32, device=self.dev), torch.tensor(n, device=self.dev)
 
     # ---- f0
     def f0_table(self, regime, family=None):
@@ -242,3 +245,27 @@ class Features:
             out["ctrl_" + side] = self.ctrl(inp["x0_" + side], inp["x0_s"])
             out["f0r_" + side] = self.f0repr(inp["f0_" + side], inp["n0_" + side])
         return out
+
+
+def residual_basis(src, rank=32):
+    """Top principal axes of offset-removed residuals of meta-train cells (leave-family-out f0; each cell weighted equally).
+
+    Source-only: no meta-validation or HCC unit contributes.
+    """
+    C = torch.zeros(N_GENES, N_GENES, device=src.dev, dtype=torch.float64)
+    n_cells = 0
+    for fam, cells in src.family_cells.items():
+        if not src.train_cell_mask[cells].all():
+            continue
+        S, n = src.f0_table("meta_train", fam)
+        for c in cells:
+            ui = src.eligible_units(c, n)
+            if len(ui) < 16:
+                continue
+            f0, _ = src.f0_from(S, n, src.u_group[ui])
+            E = (src.D[torch.tensor(ui, device=src.dev)] - f0).double()
+            R = E - E.mean(0, keepdim=True)
+            C += R.T @ R / len(R)
+            n_cells += 1
+    evals, evecs = torch.linalg.eigh(C / n_cells)
+    return evecs[:, -rank:].flip(1).float(), (evals[-rank:].flip(0) / evals.sum()).float()

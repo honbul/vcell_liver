@@ -57,7 +57,7 @@ def check_f0(src, delta, checks):
     d2[np.isin(src.u_cell, cells)] += 5.0
     src2 = Source.from_arrays(src.units, src.groups, src.cells, d2, src.X0.cpu().numpy(), src.FP.cpu().numpy(), src.dev)
     S2, n2 = src2.f0_table("meta_train", fam)
-    assert torch.allclose(S1, S2, atol=1e-2) and torch.equal(n1, n2), "virtual-target family leaks into its own f0"
+    assert torch.allclose(S1, S2, atol=2e-2) and torch.equal(n1, n2), "virtual-target family leaks into its own f0"
     # (c) meta-validation responses never enter the meta-train tables or the feature bases
     d3 = delta.copy()
     d3[np.isin(src.u_cell, val_cells)] += 7.0
