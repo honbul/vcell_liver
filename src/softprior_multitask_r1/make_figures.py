@@ -56,7 +56,7 @@ def dot_ci(ax, tab, value, lo, hi, names, ref=None):
 
 def legend(ax, kinds):
     h = [plt.Line2D([], [], marker="o", ls="", color=GROUP[k], label=k) for k in GROUP if k in kinds]
-    ax.legend(handles=h, frameon=False, fontsize=8, loc="lower right")
+    ax.legend(handles=h, frameon=False, fontsize=8, loc="upper left", bbox_to_anchor=(1.01, 1.0))
 
 
 def fig_internal(T, out):
@@ -125,7 +125,7 @@ def fig_development(T, out):
     ax.set_yticklabels([f"{s}  {LABEL[m]}" for s, m in zip(d.stage, d.model)])
     ax.grid(axis="y", visible=False)
     ax.set_xlabel("macro nRMSE (the two scores use different training-set sizes; compare within a marker type)")
-    ax.legend(frameon=False, fontsize=8)
+    ax.legend(frameon=False, fontsize=8, loc="upper left", bbox_to_anchor=(1.01, 1.0))
     ax.set_title("Design steps: development score and final score", loc="left", fontsize=10.5)
     save(fig, out, "fig4_development_and_final")
 

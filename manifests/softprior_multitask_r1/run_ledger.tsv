@@ -28,3 +28,20 @@ r4_perm20_r2_98504e6	R1-4	2026-11-17	98504e6	24736	permuted-prior inner-fold los
 r4_perm20_r3_98504e6	R1-4	2026-11-17	98504e6	24737	permuted-prior inner-fold losses, seeds 101-120 (r3 grid)	300	448	completed	no ADMM failure
 r4_summary_24733	R1-4	2026-11-17	98504e6	24733	real versus permuted prior, development	1	0	failed	assertion: permuted seeds 102-120 missing (see r4_perm_* rows)
 r4_summary_24833	R1-4	2026-11-17	98504e6	24833	real versus permuted prior, development	1	0	completed	tables r4_real_vs_perm, r4_perm_scores
+f_d1_88d4c21	R1-5	2026-11-17	88d4c21	24869	frozen nested evaluation, internal, d1 grid (Ridge: whole / pathway-only / complement)	15	21	completed	checkout bdb52bd (freeze manifest only); 45 s summed over tasks
+f_r2_88d4c21	R1-5	2026-11-17	88d4c21	24872	frozen nested evaluation, internal, r2 grid (soft prior, nuclear norm)	15	105	completed	no ADMM failure; 717 s
+f_r3_88d4c21	R1-5	2026-11-17	88d4c21	24875	frozen nested evaluation, internal, r3 grid (low-rank + per-drug residual)	15	448	completed	no ADMM failure; 486 s
+fp_d1_88d4c21	R1-5	2026-11-17	88d4c21	24870	frozen nested evaluation, 20 permuted priors, d1 grid	300	21	completed	array of 30 tasks; 220 s
+fp_r2_88d4c21	R1-5	2026-11-17	88d4c21	24873	frozen nested evaluation, 20 permuted priors, r2 grid	300	105	completed	no ADMM failure; 12874 s; array throttled because the 64-job user limit is shared with other worktrees
+fp_r3_88d4c21	R1-5	2026-11-17	88d4c21	24876	frozen nested evaluation, 20 permuted priors, r3 grid	300	448	completed	no ADMM failure; 8953 s
+fx_d1_88d4c21	R1-5	2026-11-17	88d4c21	24871	LCCL predictions from LIMORE-only training (27 training sets: all LIMORE + 26 with one shared family removed), d1 grid	27	21	completed	83 s
+fx_r2_88d4c21	R1-5	2026-11-17	88d4c21	24874	LCCL predictions, r2 grid	27	105	completed	no ADMM failure; 1431 s
+fx_r3_88d4c21	R1-5	2026-11-17	88d4c21	24877	LCCL predictions, r3 grid	27	448	completed	no ADMM failure; 1090 s
+f_cmp_88d4c21/enet	R1-5	2026-11-17	88d4c21	24878;24879	raw-RNA ElasticNet comparator, internal (15) and external (27)	42	21	completed	5760 s + 2268 s; 27 internal predictions above 2 AA units (largest 37.5), see RESULTS section 6
+f_cmp_88d4c21/tabpfn	R1-5	2026-11-17	88d4c21	24880;24881	TabPFN v2 comparator on training-only PCA, internal and external	42	1	partly_failed	26 of 42 tasks failed on nodes without a home directory: the skrub dependency tried to create ~/skrub_data (PermissionError). No model or data setting involved; 16 tasks completed
+f_cmp_88d4c21/tabpfn (rerun of failed tasks)	R1-5	2026-11-17	88d4c21	25235;25236	the 26 failed TabPFN tasks, same code and settings, SKRUB_DATA_DIRECTORY pointed inside the worktree	26	1	completed	environment variable only (post-freeze, recorded as a deviation); 1365 s + 1593 s; all 42 outputs present
+f_cmp_88d4c21/cwkbmf	R1-5	2026-11-17	88d4c21	24882;24883	cwKBMF comparator (authors' code under Octave 6.4.0), internal and external	42	2	completed	R = 20 chosen in the training sets checked; about 40-57 min per training set; 38407 s + 70820 s; Octave nodes only (--exclude=g3,g4)
+f_cmp_88d4c21/A1,A1r,A3 external	R1-5	2026-11-17	88d4c21	24884	Track A predictors on the fixed-ID axis, LCCL predictions	27	7	completed	49 s; bootstrap of A1r recomputed with Track A's own functions, deviation 0.0
+final_eval_25297	R1-5	2026-11-17	88d4c21	25297	frozen evaluation: the only job that read outer-test AA and LCCL AUC/GI50; run once	1	0	completed	checkout fe0359b (adds job files, figure script, report drafts; evaluate.py byte-identical to the frozen commit); 629 s; tables final_*, predictions/softprior_multitask_r1; nothing listed in final_not_run.tsv
+finalize_25354	R1-5	2026-11-17	fe0359b	25354	figures from the final tables, tutorial notebooks executed, environment record	1	0	completed	31 s; no model fitted or scored for the study tables
+postdiag_25355	R1-5	2026-11-17	fe0359b	25355	label-free description of the committed prediction tables (spread across cells, extreme values)	1	0	completed	interactive srun, under one minute; used only for the explanation in RESULTS section 6

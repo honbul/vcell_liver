@@ -20,7 +20,7 @@ import numpy as np, pandas as pd
 import matplotlib.pyplot as plt
 pd.set_option("display.width", 200)
 T = os.path.join(root, "reports", "softprior_multitask_r1", "tables")
-print("저장소:", root)'''
+print("결과표 폴더를 찾았습니다:", os.path.isdir(T))'''
 
 NB = {}
 
@@ -102,7 +102,7 @@ NB["02_pathway_and_rest_one_cell.ipynb"] = [
     ("md", "# 02. 실제 세포 하나: 경로 부분과 나머지 부분\n\n"
            "이 노트북은 서버의 입력 캐시가 있어야 실행됩니다(`experiments/softprior_multitask_r1/r0_build.sbatch`가 만든 것). "
            "연구 전체를 다시 학습하지 않고, 한 학습 집합에서 닫힌 해로 풀리는 작은 Ridge 몇 개만 계산합니다(수 초). "
-           "원자료 값은 출력하지 않고 요약만 보여 줍니다."),
+           "RNA 값은 출력하지 않습니다(예시 약물 하나의 관측 AA와 예측만 나란히 보여 줍니다)."),
     ("code", SETUP + '\nimport r1_data as R, r1_models as M\ncfg = R.load_config(); data = R.load_data(cfg)\n'
                      'print("모델", len(data.models), "계열", len(set(data.fam)), "유전자", data.rank.shape[1], "약물", len(data.drugs), "경로", len(data.sets))'),
     ("md", "## 1. 유전자 19,018개의 방향 가운데 '경로 방향'은 몇 개인가\n\n"
