@@ -26,3 +26,11 @@
 **가설(검증 안 함):** 잠재 분산이 큰 후보가 오히려 덜 도움이 되는 것은 ν가 큰 well, 또는 f0가 약한(관측 세포가 적은) 약물에 분산이 몰리기 때문일 수 있다. D2의 상관만으로 원인을 확정하지 않는다.
 
 **다음 결정:** 계획 §6의 순서대로 dev에서 random, diversity, latent_variance, fixed_vr, proposed_nam 5개를 seed 1–10으로 실행한다. proposed_nam의 dev AUC가 random보다 낮을 때만 total_variance, pdbal_rna, learned_loss를 추가한다.
+
+## 2. dev 1단계 (job 25368, `dev_stage1_v1`, 16계열 × seed 10)
+
+**관측 (main readout, AUC, random 대비, family bootstrap 95%)**: diversity −0.0005 [−0.0014, +0.0003]; fixed_vr −0.0014 [−0.0023, −0.0005] (12/16); latent_variance **+0.0130** [+0.0099, +0.0161] (0/16, 더 나쁨); proposed_nam −0.0015 [−0.0038, +0.0006] (12/16). proposed − fixed_vr −0.0001 [−0.0020, +0.0016].
+- 효과 크기는 random AUC 0.5494의 약 0.3%다. 선택 시간은 proposed 13초/episode, 나머지 0.1초 미만.
+- source 대표 행 중 410개가 2개 이상 well의 평균이라 평균 처리 well 수가 32를 조금 넘는다(cost ledger에 그대로 기록).
+
+**결정:** 프로토콜 staging 규칙(“proposed_nam의 dev AUC가 random보다 낮으면”)의 조건은 점추정으로 충족 → total_variance, pdbal_rna, learned_loss를 dev에서 추가 실행. 동시에 meta-val에서 8개 정책 전체와 반복-분리 stress test를 실행한다. 이 시점에는 dev에서 실패로 볼 근거(무작위보다 나쁨)가 없으므로 수정 cycle은 쓰지 않는다. 축소 실험(ablation)은 meta-val에서 proposed가 random을 넘을 때만 한다.
