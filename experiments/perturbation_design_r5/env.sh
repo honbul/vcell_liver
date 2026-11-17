@@ -8,7 +8,7 @@ export R5_PUBLIC="$R5_ASSETS/public"               # small tables mirrored into 
 export TB_ROOT=/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_transigen_adaptation_b1
 export TB_PY="$TB_ROOT/assets/envs/tsg/bin/python"
 export TB_PROC="$TB_ROOT/assets/processed/cmap2020_v1"
-export TB_RAW="$TB_ROOT/assets/raw"
+export TB_RAW="$TB_ROOT/assets/raw/cmap2020"
 export LINCS_META=/mnt/S1/sdata/pubdata/LINCS/LINCS2020
 cd "$R5_ROOT"
 mkdir -p "$R5_ASSETS/logs" "$R5_PROC" "$R5_RUNS" "$R5_PUBLIC"
