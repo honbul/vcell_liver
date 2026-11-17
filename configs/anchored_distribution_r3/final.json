@@ -1,0 +1,15 @@
+{
+ "setting": "final",
+ "methods": ["control", "meanpoint", "shifted", "shifted@zero", "shifted@delta_linemean", "shifted_pool", "gauss_diag", "gauss_lr50"],
+ "sample_seeds": [0, 1, 2],
+ "n_cap": 64,
+ "min_n": 32,
+ "gauss_lowrank_k": 50,
+ "restoration_variant": "anchored2",
+ "restoration_note": "v2 (control zero fraction + additive mean match) adopted in cycle 1 on dev; pre and v1 are reported alongside",
+ "primary_space": "2000 genes / training within-well SD (floor q10)",
+ "sensitivity_space": "training-only PCA50 of the standardised genes",
+ "primary_contrasts": ["gauss_lr50:anchored2 - shifted:anchored2", "shifted_pool:anchored2 - shifted:anchored2", "shifted:anchored2 - shifted@zero:anchored2"],
+ "snu423_line_index": 14,
+ "generators": "not trained (gate R3-0 G1 failed): ddpm_abs, ddpm_resid, cellflow -> numbers left blank"
+}
