@@ -1,0 +1,7 @@
+step	job	treated_labels_read	role	n_drug_groups	n_cell_lines	purpose	selection_made
+R3-0 diagnostics	24444	real treated cells + oracle treated means (diagnostic only)	train	208	48	shape-signal and sample-stability gate	gate decision (generator on hold)
+R3-1 mean model CV	24467	condition mean delta Y	train (3 dev folds)	209	48	choose m_psi	kernel ridge, lambda=3
+R3-1 dev baselines	24525	real treated cells	train (fit folds 0,1: 130 groups; eval fold 2: 79 groups)	209	8	baseline scores, Gaussian k	k=50
+cycle 1 dev restoration	24601	real treated cells	train (same dev split)	209	8	restoration v1 vs v2	restoration v2
+validation drugs	-	none	val	70	-	not used by this study	none
+R3-6 final evaluation	24734	real treated cells, scoring only	test	70	48	post-freeze evaluation, run once	none (no setting changed afterwards)
