@@ -12,6 +12,9 @@ source experiments/episodic_residual_r2/env.sh
 export R2_NB_OUT="$R2_PUBLIC/tutorials/episodic_residual_r2"
 mkdir -p "$R2_NB_OUT"
 echo "start=$(date -Is) commit=$R2_COMMIT host=$(hostname) job=${SLURM_JOB_ID:-}"
+# kernel spec of the (read-only) study-B environment, registered under this study's own assets so the notebooks run with that interpreter
+"$TB_PY" -m ipykernel install --prefix "$R2_ASSETS/jupyter" --name python3 --display-name "Python 3" >/dev/null
+export JUPYTER_PATH="$R2_ASSETS/jupyter/share/jupyter"
 "$TB_PY" tutorials/episodic_residual_r2/build_notebooks.py
 for nb in "$R2_NB_OUT"/*.ipynb; do
   "$TB_PY" -m jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=python3 --ExecutePreprocessor.timeout=1800 "$nb"
