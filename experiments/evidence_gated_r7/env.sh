@@ -13,6 +13,7 @@ export TB_ROOT=/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_transigen
 export TB_PY="$TB_ROOT/assets/envs/tsg/bin/python"
 export TB_PROC="$TB_ROOT/assets/processed/cmap2020_v1"
 export XP_PY="$R7_ASSETS/envs/xpert/bin/python"    # separate env for the XPert comparator
+export HF_HUB_DISABLE_TELEMETRY=1                  # UniMol weights (public, no account) without telemetry
 cd "$R7_ROOT"
 mkdir -p "$R7_ASSETS/logs" "$R7_EXT" "$R7_KG" "$R7_RUNS" "$R7_PUBLIC"
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-4}
