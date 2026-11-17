@@ -1,5 +1,6 @@
 """Every compared method behind one call, so source virtual targets, matched-plate episodes and the HCC targets share the code path."""
 import json, os
+import numpy as np
 import torch
 
 from .common import sha256, man_file, proc
@@ -25,6 +26,10 @@ def current_selection(committed_only=False, with_tsg=True):
     out = dict(anchor_selection=json.load(open(f("anchor_selection.json"))), learned=json.load(open(f("model_selection.json")))["final"])
     if with_tsg:
         out["tsg"] = json.load(open(f("tsg_selection.json")))
+    rb = f("repeat_basis.json")
+    if os.path.exists(rb) and any(ARMS.get(n, {}).get("proj") for n in out["learned"]):
+        e = json.load(open(rb))["bases"]["all"]
+        out["repeat_basis"] = dict(path=e["path"], sha256=e["sha256"])
     return out
 
 
@@ -35,7 +40,10 @@ class Suite:
     def __init__(self, selection, st, dev, with_tsg=True, shuffle_modes=("B00",)):
         self.st, self.dev = st, dev
         self.fmap = Features.load(proc("feature_basis.npz"), dev)
-        self.ctx = Context(self.fmap, st.FP, selection["anchor_selection"])
+        rb = selection.get("repeat_basis")
+        if rb:
+            assert sha256(rb["path"]) == rb["sha256"], "repeat-informed basis changed"
+        self.ctx = Context(self.fmap, st.FP, selection["anchor_selection"], basis=np.load(rb["path"]) if rb else None)
         self.learned = {name: {int(s): load_learned(e, dev) for s, e in seeds.items()} for name, seeds in selection.get("learned", {}).items()}
         self.shuffle_modes = set(shuffle_modes)
         self.tsg, self.tsg_ft = {}, None
@@ -54,6 +62,8 @@ class Suite:
         for obs in ("iid", "cov"):
             yield f"C0_{obs}", c.c0(inp, obs)
             yield f"C1_{obs}", c.c1(inp, obs)
+        if c.basis is not None:
+            yield "C1r_iid", c.c1(inp, "iid", proj=True)
 
     def run(self, ep, K, ra=None, tsg=True):
         """Yields (method, model_seed or -1, prediction for the query units). Query labels are never passed in."""

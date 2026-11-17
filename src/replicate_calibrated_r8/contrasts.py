@@ -22,6 +22,8 @@ CONTRASTS = {
     # shuffled support residuals (does the per-drug residual assignment matter?)
     "B00__shuffle_residual-B00": _d("B00__shuffle_residual", "B00"), "B01__shuffle_residual-B01": _d("B01__shuffle_residual", "B01"),
     "B10__shuffle_residual-B10": _d("B10__shuffle_residual", "B10"), "B11__shuffle_residual-B11": _d("B11__shuffle_residual", "B11"),
+    # revision R-1: repeat-informed output basis
+    "B00r-B00": _d("B00r", "B00"), "C1r_iid-C1_iid": _d("C1r_iid", "C1_iid"), "B00r-C0_iid": _d("B00r", "C0_iid"),
     # simple and public references
     "C0_iid-no_change": _d("C0_iid", "no_change"), "C0_iid-same_drug_mean": _d("C0_iid", "same_drug_mean"), "C0_iid-shrunk_same_drug_mean": _d("C0_iid", "shrunk_same_drug_mean"),
     "C0_iid-mean_offset": _d("C0_iid", "mean_offset"), "mean_offset-same_drug_mean": _d("mean_offset", "same_drug_mean"),

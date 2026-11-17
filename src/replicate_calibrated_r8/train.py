@@ -52,6 +52,7 @@ def main():
     ap.add_argument("--run-id", required=True)
     ap.add_argument("--fold", type=int, default=None)
     ap.add_argument("--steps", type=int, default=None, help="final mode: fixed number of steps; fold mode: maximum (default from the protocol)")
+    ap.add_argument("--basis-tag", default="v1")
     a = ap.parse_args()
     cfg = yaml.safe_load(open(CFG))
     oc, ec = cfg["models"]["optimiser"], cfg["episodes"]
@@ -68,7 +69,11 @@ def main():
         fmap = Features.load(fpath, dev)
     else:
         fmap, fpath = Features.fit(st), ""
-    ctx = Context(fmap, st.FP)
+    basis, bpath = None, ""
+    if a.arm != "cnp" and ARMS[a.arm].get("proj"):
+        bpath = proc(f"repeat_basis_{'all' if final else 'fold' + str(a.fold)}_{a.basis_tag}.npy")
+        basis = np.load(bpath)
+    ctx = Context(fmap, st.FP, basis=basis)
     torch.manual_seed(a.seed)
     np.random.seed(a.seed)
     model = build_model(a.arm).to(dev)
@@ -127,7 +132,7 @@ def main():
         full.to_csv(os.path.join(out, "confirmation_episodes.tsv"), sep="\t", index=False, float_format="%.6g")
         agg, _ = family_mean(full, by=("K", "mode"))
         res.update(confirmation_delta_rmse={f"{r.mode}|{int(r.K)}": float(r.delta_rmse) for r in agg.itertuples()}, checkpoint=ck, checkpoint_sha256=sha256(ck),
-                   feature_basis_sha256=sha256(fpath), anchor_selection_run=ctx.sel.get("run_id", ""))
+                   feature_basis_sha256=sha256(fpath), repeat_basis=bpath, repeat_basis_sha256=sha256(bpath) if bpath else "", anchor_selection_run=ctx.sel.get("run_id", ""))
     dump(run_record(a.run_id, ("cv_" if not final else "final_") + a.arm, t0, **res), os.path.join(out, "result.json"))
     print(json.dumps(res, indent=1))
 

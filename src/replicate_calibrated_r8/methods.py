@@ -29,10 +29,16 @@ def omega(inp, obs):
     if obs is None or obs["kind"] == "iid":
         return eye
     o, q = inp["o_s"].double(), inp["q_s"].double()
-    off = obs["v_s"] * o * OFFDIAG_KEEP
-    diag = obs["v_r"] + obs["v_e"] * q + obs["v_s"] * torch.diagonal(o)
+    v_r = obs["v_r"] * obs.get("v_r_scale", 1.0)             # revision R-2 diagnostics only; the defaults reproduce the pre-registered model
+    structure = obs.get("structure", "full")
+    assert structure in ("full", "diag_only", "block_only")
+    od = torch.diagonal(o)
+    if structure == "block_only":                            # equal diagonal: only the shared-plate block differs between supports
+        q, od = torch.ones_like(q), torch.ones_like(od)
+    off = obs["v_s"] * o * OFFDIAG_KEEP * (0.0 if structure == "diag_only" else 1.0)
+    diag = v_r + obs["v_e"] * q + obs["v_s"] * od
     Om = off - torch.diag(torch.diagonal(off)) + torch.diag(diag)
-    return Om / (obs["v_r"] + obs["v_e"] + obs["v_s"]) + FLOOR * eye
+    return Om / (v_r + obs["v_e"] + obs["v_s"]) + FLOOR * eye
 
 
 def anchor(inp, kappa_f, kappa_b, obs=None):
