@@ -1,0 +1,71 @@
+{
+ "study": "R3 anchored_distribution_r3",
+ "frozen_at": "2026-11-17T11:53:50+0900",
+ "code_commit": "8a060db076f411f59365a5c6cffb4c189d62c868",
+ "source_sha256": {
+  "data.py": "dfbb9b1c983bed67eb788ebd7f7beee56e1cd6240cb6f85499731b268889978e",
+  "metrics.py": "dd6475e5465fb5dfa19a854f0bf043e807de7f97708ca55619ca230d2216422b",
+  "setting.py": "96a40c4e3eae84640754ddd94ac1151faf93713ed7985fe9d98e456f50519cfc",
+  "mean_model.py": "b7eca7cce17110c369b5b76d9a5c82966397be0a114e41f3d5ab3394b24b0a9a",
+  "baselines.py": "9f74dfe2915e9d28be0d89131c196574fea9a878907cccf4c3f1c371850672af",
+  "evaluate.py": "a5f0fd1d94ee30a2cd7bb0944c6a026a45cb03266d926e62cf0e8bb48cc20675",
+  "aggregate.py": "abbb806aa0390a06572386852f7a4ef406ea4815a3f1b5be65817907a04d1690"
+ },
+ "config": {
+  "setting": "final",
+  "methods": [
+   "control",
+   "meanpoint",
+   "shifted",
+   "shifted@zero",
+   "shifted@delta_linemean",
+   "shifted_pool",
+   "gauss_diag",
+   "gauss_lr50"
+  ],
+  "sample_seeds": [
+   0,
+   1,
+   2
+  ],
+  "n_cap": 64,
+  "min_n": 32,
+  "gauss_lowrank_k": 50,
+  "restoration_variant": "anchored2",
+  "restoration_note": "v2 (control zero fraction + additive mean match) adopted in cycle 1 on dev; pre and v1 are reported alongside",
+  "primary_space": "2000 genes / training within-well SD (floor q10)",
+  "sensitivity_space": "training-only PCA50 of the standardised genes",
+  "primary_contrasts": [
+   "gauss_lr50:anchored2 - shifted:anchored2",
+   "shifted_pool:anchored2 - shifted:anchored2",
+   "shifted:anchored2 - shifted@zero:anchored2"
+  ],
+  "snu423_line_index": 14,
+  "generators": "not trained (gate R3-0 G1 failed): ddpm_abs, ddpm_resid, cellflow -> numbers left blank"
+ },
+ "mean_model": {
+  "kind": "krr",
+  "hp": {
+   "lam": 3.0
+  },
+  "cv_rmse_cond": 0.09140422195196152,
+  "cv_rmse_linemean": 0.09164731701215108,
+  "cv_rmse_nochange": 0.1027882198492686,
+  "rule": "lowest 3-fold CV condition RMSE among Ridge-type and MLP candidates, TRAIN drugs only",
+  "n_fold_drugs": [
+   61,
+   69,
+   79
+  ]
+ },
+ "evaluation": {
+  "name": "post-freeze evaluation on a reused public benchmark",
+  "setting": "final: fit on all 209 TRAIN drug groups (all eligible cell lines); score TEST drug groups once",
+  "unused": "the prior study's 70 VALIDATION drug groups are used by no step of this study",
+  "exposure": "Tahoe-100M is public and this project reported test scores on this split before (chemCPA study); this is not a blind cohort",
+  "metric": "per-well unbiased (U-statistic) energy distance, Euclidean, genes / training within-well SD (floor at 10th percentile), no clipping; wells -> condition -> drug, equal weights; drug-block bootstrap 2000, seed 20261117",
+  "n_rule": "n = min(observed cells, same-plate control cells, 64); wells with n < 32 dropped",
+  "hcc_target": "SNU-423 (CVCL_0366) reported separately; HepG2/C3A is not called adult HCC"
+ },
+ "generator_status": "absolute DDPM, residual DDPM and CellFlow are NOT trained: gate R3-0 (G1) failed, generator claim on hold (reports/anchored_distribution_r3/DECISIONS.md)"
+}
