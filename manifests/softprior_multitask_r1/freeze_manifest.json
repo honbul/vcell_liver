@@ -1,0 +1,86 @@
+{
+ "track": "softprior_multitask_r1",
+ "frozen_on": "2026-11-17",
+ "statement": "Written and committed before the final nested evaluation was run. After this commit no model, grid, selection rule, comparator setting or reported comparison is changed. Results are a post-freeze evaluation on a reused public benchmark (LIMORE and LCCL scores were already seen in Track A, commit b442fd8), not a blind cohort.",
+ "frozen_code_commit": "88d4c2110055740564a91be8c6e7f645da1d65ee",
+ "file_sha256": {
+  "configs/softprior_multitask_r1/analysis.yaml": "f679b585a68a462459ae2e7f1e18e59df1001035e321fe50318dc0f34f2f1bd5",
+  "src/softprior_multitask_r1/build_data.py": "46468a07fa0f7465fa09fa0009a1eac46f35e4cfb706a735b561a0727150784f",
+  "src/softprior_multitask_r1/cwkbmf_run.m": "eacbe51da01b0ba0cd2720cdab9dc801b497cc8a629933ab8761e9f7ba22e788",
+  "src/softprior_multitask_r1/dev_perm.py": "2006fc415498aae70bd2ade9d6f0bbef5a7f40487347685e405b2c8704ca0e3d",
+  "src/softprior_multitask_r1/dev_summary.py": "b6cc8fc482f05e03ce677507ac288663d6c376f20b793430564ac4404558c4ea",
+  "src/softprior_multitask_r1/diag_dev.py": "585474e12f5372fd1ad5a6e8bf1c13544ce3125951df8b0b95a7bb2615a1d21c",
+  "src/softprior_multitask_r1/diag_drug_cov.py": "9d5a3473de3a7aab6fa8c1743643b6c71b997684520e054f01c910c875061285",
+  "src/softprior_multitask_r1/eval_r0.py": "6ad504fa440c71b43d56eb9ba59f6a792333cdc605a1864b3da1122d543a68e1",
+  "src/softprior_multitask_r1/evaluate.py": "6986db1a567bfd3c1f4e784840de2e5f97e7d0fc1f38c29e0377fa58e2aa5c41",
+  "src/softprior_multitask_r1/r1_data.py": "f52180147079c27639e5233a9d466e086350d3d8715954f63fdfa2cb91dfde7e",
+  "src/softprior_multitask_r1/r1_eval.py": "d2cfc5f7e6ae3556af0453238b8b163d01829fa4ed2d43553160016687c9f249",
+  "src/softprior_multitask_r1/r1_models.py": "e6607c208be7ffc3e1a315552c93a319f51b44fbdd7c9aee601e039d7745f4c4",
+  "src/softprior_multitask_r1/r1_select.py": "b8eafc3ac6927b8cb5e3f29714b075cf919957fdb0e5aabd886913e77b7d4fe4",
+  "src/softprior_multitask_r1/r1_solvers.py": "611ec7ff5c7e1743a46a0af0eec6efe7016cd22967b79fdbd7bf3e5348cc6121",
+  "src/softprior_multitask_r1/run_cwkbmf.py": "b19d20a5ce24f584f9529a6f439b034dce7190efd5081d4c0a683939191b2212",
+  "src/softprior_multitask_r1/run_enet.py": "d4cde7dff0fc5df66b88531f79523388d25626db633ff4c04b3f19ad7694ab91",
+  "src/softprior_multitask_r1/run_grid.py": "f1954baea1b77af59c96ef828c93c7d38557a884c3c7312117677f3f76e9a7a2",
+  "src/softprior_multitask_r1/run_tabpfn.py": "790169883e60701950386e82d81e176d3a05a006cd816f8b55a2dc15421f4bf0",
+  "src/softprior_multitask_r1/run_track_a_external.py": "b1ef54cb830af94bc922a13c49ec318cf9a8054da7d2e85c88152cd91705ea97",
+  "src/softprior_multitask_r1/run_track_a_models.py": "048523a33431e3995ad076e49ca8ec802d9795a5afb79a9d7476705758089203"
+ },
+ "design_history": {
+  "initial_design": "soft prior (eta) + nuclear-norm multi-drug shrinkage (tau), one configuration for all drugs (R1-2)",
+  "modification_1": "shared low-rank fit + per-drug Ridge on its training residuals, lambda2 per drug (R1-3); adopted by the pre-written rule",
+  "modification_2": "not used",
+  "budget": "initial design + at most two diagnosis-backed modifications"
+ },
+ "integrated_model": "full_resid",
+ "models_and_selection": "configs/softprior_multitask_r1/analysis.yaml: sections models, grids, final, objective.tie_break, objective.selection_loss",
+ "evaluation": {
+  "internal": "family 5-fold x 3 repeats (Track A split table, reused), inner family 3-fold inside every outer-training set; every configuration is refitted per outer-training set and each model picks from that set's inner losses only",
+  "external": "LCCL, 18 matched single agents; LIMORE-only training; shared families: that family removed from LIMORE training; new lineages (4 families) reported separately; Spearman(prediction, -AUC) primary, -GI50 secondary; AA and AUC never pooled",
+  "primary_metric": "family-balanced macro-drug normalised RMSE (Track A definition, denominator = AA SD of the outer-training fold)",
+  "interval": "family bootstrap, 2000 resamples, seed 9101 (internal) / 9202 (external), 95% percentile",
+  "wins_means": "the 95% family-bootstrap interval of the paired difference lies entirely below zero",
+  "permuted_prior": "20 whole-axis gene-label permutations (seeds 101-120) through the identical nested path",
+  "script": "src/softprior_multitask_r1/evaluate.py",
+  "pairs": "configs: final.pairs, final.external_pairs"
+ },
+ "comparators": {
+  "A0_A1_A1r_A3": "Track A routines and alpha grid on the fixed-ID axis; internal predictions from run r0_tracka_cdbf857 (R1-0, deterministic), external from run_track_a_external.py",
+  "enet": "raw log2-FPKM ElasticNet per drug, 7 alpha x 3 l1_ratio, same inner folds and loss (configs: baselines.enet)",
+  "cwkbmf": "authors' MATLAB archive (sha256 98759b68ea0e5bd9224b80b1b2bd4d4c778280fd394440bb8d2c48d469a8f236) run unmodified under GNU Octave 6.4.0; 50 Hallmark kernels + 1 kernel of the remaining genes, Gaussian kernel exp(-d^2/n_genes) on standardised rank RNA, identity drug kernel, published hyper-parameters (1,1,1,1; 0.1,0.1,1), 200 iterations, seed 1606, R in {10,20} by inner CV; unweighted fit. Kernel construction, iteration count and R set are this study's choices because the archive has no data pipeline",
+  "tabpfn": "TabPFN package 10.0.0, v2 regressor weights (newer default weights require an account registration, not done), CPU, random_state 0, default settings, per drug, training-only PCA to min(50, n_train - 1) dimensions of standardised rank RNA; nothing tuned",
+  "not_run": "GCNPath and other large external methods: the plan allows them only after a sufficient contribution is seen"
+ },
+ "planned_runs": {
+  "internal_real": [
+   "f_d1_88d4c21",
+   "f_r2_88d4c21",
+   "f_r3_88d4c21"
+  ],
+  "internal_permuted": [
+   "fp_d1_88d4c21",
+   "fp_r2_88d4c21",
+   "fp_r3_88d4c21"
+  ],
+  "external": [
+   "fx_d1_88d4c21",
+   "fx_r2_88d4c21",
+   "fx_r3_88d4c21"
+  ],
+  "comparators": "f_cmp_88d4c21",
+  "note": "run ids carry the frozen code commit; the freeze manifest itself is added by the next commit, which changes no code or config"
+ },
+ "development_evidence_before_freeze": {
+  "source": "inner folds of the 15 outer-training sets only (reports/softprior_multitask_r1/tables/r2_*, r3_*, r4_*)",
+  "dev_xsel": {
+   "ridge_pd": 1.030618,
+   "ridge_gl": 1.037688,
+   "par_gl": 1.055522,
+   "soft_pd": 1.033197,
+   "mt_noprior": 1.033567,
+   "full": 1.03577,
+   "mt_resid": 1.02957,
+   "full_resid": 1.02993
+  },
+  "note": "outer-test labels of the 15 folds and all LCCL labels were not read by any R1 development step; they had been read by Track A"
+ }
+}

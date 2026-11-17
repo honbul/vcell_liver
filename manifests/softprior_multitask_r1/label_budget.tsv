@@ -1,0 +1,11 @@
+stage	labels_read	rows_used	purpose	outer_test_labels_read	lccl_labels_read
+R1-0	LIMORE AA, all 79 models x 90 drugs (outer-fold scoring of Track A predictors on the fixed axis)	79 models / 76 families	check that the gene-axis fix does not change Track A numbers	yes (same folds and numbers already reported by Track A)	no
+R1-1 D1	LIMORE AA of outer-training families, inner folds only	15 training sets x 3 inner folds	pathway / complement Ridge diagnostic	no	no
+R1-1 D2	LIMORE AA of outer-training families, inner folds only	15 training sets x 3 inner folds	drug-covariance diagnostic	no	no
+R1-2	LIMORE AA of outer-training families, inner folds only	15 training sets x 3 inner folds	initial integrated design, development score	no	no
+R1-3	LIMORE AA of outer-training families, inner folds only	15 training sets x 3 inner folds	modification 1, development score	no	no
+R1-4	LIMORE AA of outer-training families, inner folds only	15 training sets x 3 inner folds x 20 permutations	real versus permuted prior, development score	no	no
+R1-5 internal	LIMORE AA, all 79 models x 90 drugs	79 models / 76 families, 3 repeats	frozen nested evaluation, run once	yes	no
+R1-5 external	LCCL AUC and GI50, 18 matched drugs	32 models / 30 families (26 shared + 4 new)	frozen external rank agreement, run once	no (LIMORE labels of the removed family are not used)	yes
+note	Every family's AA enters some inner fold of the training sets that contain it, so development used labels of all 76 families, never as the outer-test fold of the training set being tuned. Track A had already reported outer-fold and LCCL results on the same data.				
+note	No label of a target family is used to fit or select the model that predicts that family (new-cell task, zero target labels).				
