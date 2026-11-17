@@ -91,11 +91,17 @@ def test_hard_limit_is_pathway_subspace_regression():
     # (b) a very large eta/lam approaches it
     big, _ = prep.predict_nuc_z(1e9, lam, 0.0)
     assert np.abs(big - ref).max() < 1e-5
-    # (c) with almost no shrinkage it equals least squares on the *unstandardised* set means
+    # (c) with almost no shrinkage it equals least squares on the *unstandardised* set means.
+    # A gene that is constant in training carries no weight in standardised coordinates, so the
+    # identity holds for rows in which that gene keeps its training value (gene 7 here).
+    X_te2 = X_te.copy()
+    X_te2[:, 7] = 2.5
+    prep2 = M.Prep(X, Y, fam, X_te2, sets)
     Mraw = np.column_stack([X[:, idx].mean(axis=1) for idx in sets])
-    Mraw_te = np.column_stack([X_te[:, idx].mean(axis=1) for idx in sets])
+    Mraw_te = np.column_stack([X_te2[:, idx].mean(axis=1) for idx in sets])
     ols = LinearRegression().fit(Mraw, Z, sample_weight=wt).predict(Mraw_te)
-    assert np.abs(prep.predict_ridge_z("par", 1e-13) - ols).max() < 1e-5
+    assert np.abs(prep2.predict_ridge_z("par", 1e-13) - ols).max() < 1e-5
+    assert np.abs(prep.predict_ridge_z("par", 1e-13) - prep2.predict_ridge_z("par", 1e-13)).max() < 1e-12
     # (d) par + perp = whole
     assert np.abs(prep.K_par + prep.K_perp - prep.K).max() < 1e-9
     assert np.abs(Q.T @ Q - np.eye(Q.shape[1])).max() < 1e-10
