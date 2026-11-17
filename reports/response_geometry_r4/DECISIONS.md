@@ -117,3 +117,10 @@ source panel validation ΔRMSE, seed 42/43/44 평균(각 run의 최저 validatio
 
 - 가짜 평가(job 25369): 동결 초안으로 **validation unit**을 test 자리에 넣어 평가 코드 전체를 실행했다. 각 모델의 validation 값이 학습 기록과 일치했다(예: W2 0.56228). 결과는 `manifests/response_geometry_r4/mock/`(validation 값, test 아님).
 - `freeze_manifest.json`을 commit한 뒤 test 평가를 한 번 실행한다. 이 시점까지 어떤 R4 job도 `unit_delta_test.npy`를 열지 않았다.
+
+## test 평가 결과와 최종 판정 (job 25374, 한 번)
+
+- W1 − W0 = −0.1585 [−0.1677, −0.1376] → 직접-Δ 출력의 이득(규칙: 구간 < 0) **확인.**
+- W2 − W1 = −0.0005 [−0.0026, +0.0017], seed별 2/3 낮음, W2 − Ridge = +0.0125 [+0.0033, +0.0217] → W2 개선 주장 규칙 **실패. 채택하지 않음.**
+- HCC 평균 W2 − W1 = −0.0001 [−0.0025, +0.0027] → HCC 개선 **확인되지 않음.**
+- 이후 새 모델·손실·격자 확장은 하지 않는다. 연구 R4를 음성 결과로 종료한다.
