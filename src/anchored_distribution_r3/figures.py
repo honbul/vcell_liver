@@ -37,7 +37,7 @@ def dots(ax, labels, est, lo, hi, color, off=0.0, label=None):
 
 def fig_gate():
     d = json.loads((T / "d1_summary.json").read_text())
-    fig, ax = plt.subplots(1, 2, figsize=(10, 2.9), gridspec_kw=dict(wspace=0.9))
+    fig, ax = plt.subplots(2, 1, figsize=(7.2, 5.2), gridspec_kw=dict(hspace=0.75))
     k = [("all.c_raw", "same well, split in half"), ("all.a", "control vs treated"), ("all.e_raw", "another drug's well vs treated")]
     dots(ax[0], [x[1] for x in k], [d[x[0]]["est"] for x in k], [d[x[0]]["lo"] for x in k], [d[x[0]]["hi"] for x in k], C["pre"])
     style(ax[0], "Metric check: raw energy distance (208 train drugs)")
@@ -63,7 +63,7 @@ def fig_methods(table, title, out, variants=("pre", "anchored", "anchored2"), xl
     ax.set_xlabel("energy distance to the observed treated cells (lower is closer)")
     if xlim:
         ax.set_xlim(*xlim)
-    ax.legend(frameon=False, loc="lower right", fontsize=8)
+    ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.16), ncol=3, fontsize=8)
     fig.savefig(F / out, dpi=160, bbox_inches="tight"); plt.close(fig)
 
 
@@ -81,7 +81,7 @@ def fig_secondary(table, out):
     style(ax[0], "Zero-fraction error per gene (0 = matches observed)")
     style(ax[1], "Total variance, generated / observed (1 = matches)")
     ax[1].axvline(1, color=MUTED, lw=0.8)
-    ax[1].legend(frameon=False, fontsize=8, loc="lower left")
+    ax[1].legend(frameon=False, fontsize=8, loc="upper center", bbox_to_anchor=(0.0, -0.12), ncol=3)
     fig.savefig(F / out, dpi=160, bbox_inches="tight"); plt.close(fig)
 
 

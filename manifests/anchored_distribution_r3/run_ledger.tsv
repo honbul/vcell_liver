@@ -1,0 +1,12 @@
+run_id	stage	slurm_job	node_gpu	what	status	wall_s	peak_vram_gb	commit	outputs
+r3-cache-24439	R3-0a	24439	g1 (cpu partition, no GPU)	index the real-cell sample into the study cache	ok	90	-	96869ed	assets/cache/{X.npy,cells.npz,wells.tsv}; manifests/anchored_distribution_r3/{wells.tsv,cache_record.json}
+r3-diag-24444	R3-0	24444	g2 A30 x1	D1/D2 signal and sample-stability diagnostics on TRAIN drugs	ok	776	not measured	acb2997	reports/.../tables/d1_*
+r3-meancv-24467	R3-1	24467	A30 x1	mean predictor 3-fold CV (14 candidates)	ok	50	not measured	3271076	reports/.../tables/mean_model_cv.tsv; configs/.../mean_model.json
+r3-r31dev-24525	R3-1	24525	g2 A30 x1	fit m_psi on dev folds; score 7 baselines on dev fold 2 (restoration v1)	ok	253	0.66	4cbe06b	assets/runs/eval/dev/r31_base.*; tables/dev_r31_baselines.tsv
+r3-c1dev-24601	cycle 1	24601	g2 A30 x1	restoration v1 vs v2 on dev, mean-kind contrasts	ok	487	0.66	0ace11c	assets/runs/eval/dev/c1_base.*; tables/dev_c1_restoration.tsv
+r3-final-24734	R3-6	24734	g2 A30 x1	post-freeze held-out-drug evaluation, 8 methods x 3 sampling seeds	ok	2166	3.25	628e454	assets/runs/eval/final/final_v1.*; assets/gen/final/*.npz; tables/final_*.tsv; predictions/...
+cellflow-smoke-1	comparator setup	srun (id not recorded)	g2 A30 x1	CellFlow v0.0.9 (03bff12) install check on SYNTHETIC data, 500 iterations + unseen-drug predict	ok	63	0.16 (JAX peak in use)	-	logs/cellflow_smoke_1.log; assets/envs/cellflow
+ddpm_abs	R3-2	-	-	plain conditional DDPM on absolute expression	NOT RUN (gate R3-0 G1 failed; generator claim on hold)	-	-	-	-
+ddpm_resid	R3-2..R3-5	-	-	mean-anchored residual DDPM, cycles, late-concat and drug-removal contrasts	NOT RUN (gate R3-0 G1 failed)	-	-	-	-
+cellflow_real	comparator	-	-	CellFlow retrained on the same split	NOT RUN (gate R3-0 G1 failed; environment works)	-	-	-	-
+tutorial-nb	tutorials	login + srun cpu	no GPU	execute the two tutorial notebooks	ok	-	-	09ce3f1	tutorials/anchored_distribution_r3/*.ipynb
