@@ -32,6 +32,8 @@ def main():
                     inp = ep.inputs(K)
                     preds = dict(no_change=M.no_change(inp), same_drug_mean=M.same_drug_mean(inp), mean_offset=M.mean_offset(inp), C0_iid=ctx.c0(inp, "iid"),
                                  C1_iid=ctx.c1(inp, "iid"), C0_cov=ctx.c0(inp, "cov"), C1_cov=ctx.c1(inp, "cov"))
+                    if "cov2" in ctx.sel["anchor"]:
+                        preds["C0_cov2"], preds["C1_cov2"] = ctx.c0(inp, "cov2"), ctx.c1(inp, "cov2")
                     if ctx.basis is not None:
                         preds["C1r_iid"] = ctx.c1(inp, "iid", proj=True)
                     for m, p in preds.items():

@@ -5,7 +5,7 @@ import torch
 
 from .common import sha256, man_file, proc
 from .data import Features
-from .arms import ARMS, Context
+from .arms import ARMS, Context, load_anchor_selection
 from . import methods as M
 from .train import build_model
 from src.episodic_residual_r2 import tsg as G
@@ -23,7 +23,7 @@ def load_learned(entry, dev):
 def current_selection(committed_only=False, with_tsg=True):
     """Selection assembled from the source-side selection manifests."""
     f = lambda n: man_file(n, committed_only)
-    out = dict(anchor_selection=json.load(open(f("anchor_selection.json"))), learned=json.load(open(f("model_selection.json")))["final"])
+    out = dict(anchor_selection=load_anchor_selection(committed_only), learned=json.load(open(f("model_selection.json")))["final"])
     if with_tsg:
         out["tsg"] = json.load(open(f("tsg_selection.json")))
     rb = f("repeat_basis.json")
@@ -59,7 +59,7 @@ class Suite:
         yield "same_drug_mean", M.same_drug_mean(inp)
         yield "mean_offset", M.mean_offset(inp)
         yield "shrunk_same_drug_mean", c.shrunk_same_drug_mean(inp)
-        for obs in ("iid", "cov"):
+        for obs in ("iid", "cov") + (("cov2",) if "cov2" in c.sel["anchor"] else ()):
             yield f"C0_{obs}", c.c0(inp, obs)
             yield f"C1_{obs}", c.c1(inp, obs)
         if c.basis is not None:

@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 
-ADAPTERS = ("B00", "B01", "B10", "B11")
+ADAPTERS = ("B00", "B01", "B10", "B11")       # arms that also get the shuffled-residual control
 
 
 def _d(a, b):
@@ -24,6 +24,10 @@ CONTRASTS = {
     "B10__shuffle_residual-B10": _d("B10__shuffle_residual", "B10"), "B11__shuffle_residual-B11": _d("B11__shuffle_residual", "B11"),
     # revision R-1: repeat-informed output basis
     "B00r-B00": _d("B00r", "B00"), "C1r_iid-C1_iid": _d("C1r_iid", "C1_iid"), "B00r-C0_iid": _d("B00r", "C0_iid"),
+    # revision R-2: second observation model (diagonal only, signal variance x64)
+    "B10v2-B00": _d("B10v2", "B00"), "B11v2-B00": _d("B11v2", "B00"), "B11v2-B01": _d("B11v2", "B01"), "B10v2-B10": _d("B10v2", "B10"),
+    "interaction_v2(B11v2-B10v2-B01+B00)": {"B11v2": 1.0, "B10v2": -1.0, "B01": -1.0, "B00": 1.0},
+    "C0_cov2-C0_iid": _d("C0_cov2", "C0_iid"), "C1_cov2-C1_iid": _d("C1_cov2", "C1_iid"), "B10v2-C0_cov2": _d("B10v2", "C0_cov2"), "B10v2-C1_cov2": _d("B10v2", "C1_cov2"),
     # simple and public references
     "C0_iid-no_change": _d("C0_iid", "no_change"), "C0_iid-same_drug_mean": _d("C0_iid", "same_drug_mean"), "C0_iid-shrunk_same_drug_mean": _d("C0_iid", "shrunk_same_drug_mean"),
     "C0_iid-mean_offset": _d("C0_iid", "mean_offset"), "mean_offset-same_drug_mean": _d("mean_offset", "same_drug_mean"),
