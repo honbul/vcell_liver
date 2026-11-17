@@ -94,9 +94,10 @@ def main():
     # PPI gene vectors are stored in XPert's gene order (var of its example h5ad): reorder to the R4 gene axis
     xdir = os.path.join(os.environ["R7_ASSETS"], "external", "XPert", "processed_data")
     ex = ad.read_h5ad(os.path.join(xdir, "l1000_sdst_example.h5ad"), backed="r")
-    xv = [str(v) for v in ex.var_names]
+    xv = [str(v) for v in ex.var["gene_id"]]            # var_names are 0..977; Entrez ids in var.gene_id
     gt = pd.read_csv(tb("genes.tsv"), sep="\t", dtype=str)
-    key = "gene_id" if set(xv) <= set(gt.gene_id) else "gene_symbol"
+    key = "gene_id"
+    assert set(xv) == set(gt.gene_id), "XPert gene axis differs from the R4 gene axis"
     pos = {v: i for i, v in enumerate(xv)}
     order = np.array([pos[g] for g in gt[key]])
     assert len(set(order)) == 978
