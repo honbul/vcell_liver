@@ -16,12 +16,11 @@ cells = [
 HCC 세포주의 처리 후 값은 여기서 읽지 않는다. source(다른 암종) 세포주 22RV1 한 개의 episode를 따라간다.
 
 순서: (1) 초기 4개 공개 → (2) 정책이 다음 4개 선택 → (3) 그 4개 공개 → (4) 고정된 예측기로 나머지(query) 예측 → K=4, 8, 16, 32에서 오차 비교."""),
-    code("""import os, sys, json
+    code("""%matplotlib inline
+import os, sys, json
 sys.path.insert(0, os.environ.get("R5_ROOT", "."))
 os.chdir(os.environ.get("R5_ROOT", "."))
 import numpy as np, pandas as pd
-import matplotlib
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from src.perturbation_design_r5.data import Store, make_episode
 from src.perturbation_design_r5.models import EpisodeKernels, nu_vector
