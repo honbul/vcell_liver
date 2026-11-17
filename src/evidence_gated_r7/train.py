@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from .common import new_run_dir, run_record, dump, pman, sha_list, kg
+from .common import new_run_dir, run_record, dump, pman, sha_list, kg, runs
 from .data import Store, TrainStats, Knowledge
 from .evaluate import unit_metrics, summarise
 from .models import R7Model
@@ -158,6 +158,7 @@ def main():
     ap.add_argument("--eval_every", type=int, default=500)
     ap.add_argument("--graph", default="real", choices=["real", "rewired"])
     ap.add_argument("--evidence", default="on", choices=["on", "off"])
+    ap.add_argument("--backbone_from", default="", help="modification 1: kind/run_id of a chem_only run; backbone loaded and frozen")
     ap.add_argument("--max_updates_smoke", type=int, default=0)
     a = ap.parse_args()
     t0 = time.time()
@@ -170,7 +171,15 @@ def main():
     bank = SeedBank(K, a.evidence) if a.arm != "chem" else None
     model = R7Model(a.arm, load_graph(K, a.graph) if a.arm != "chem" else None).to(dev)
     T = tensors(S, st, dev)
-    opt = torch.optim.Adam(model.parameters(), lr=a.lr)
+    if a.backbone_from:
+        bk, br = a.backbone_from.split("/")
+        src_rec = json.load(open(runs(bk, br, "record.json")))
+        assert src_rec["config"]["arm"] == "chem" and src_rec["config"]["seed"] == a.seed, "backbone must come from the seed-matched chem_only run"
+        sd = torch.load(runs(bk, br, "best.pt"), map_location=dev)
+        model.backbone.load_state_dict({k[len("backbone."):]: v for k, v in sd.items() if k.startswith("backbone.")})
+        for p_ in model.backbone.parameters():
+            p_.requires_grad_(False)
+    opt = torch.optim.Adam([p_ for p_ in model.parameters() if p_.requires_grad], lr=a.lr)
     train, val = S.train, S.val
     ytrue_val = S.delta(val)
     Y = torch.zeros((len(S.units), 978), device=dev)
