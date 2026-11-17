@@ -60,3 +60,39 @@ validation source panel ΔRMSE, seed 42, 20000 update 중 최저 checkpoint:
   - 100 epoch는 약 560만 표본으로, R7 arm의 학습량(20000×64 ≈ 128만 표본, 약 23 epoch)의 4배 이상이다.
   - 원 설정의 다른 값(lr 0.004, 40 epoch 후 절반, 70 epoch 전 batch-정규화 손실, patience 50, validation PCC 손실로 checkpoint 선택)은 바꾸지 않는다.
 - seed 42·43·44를 각각 학습한다. 상한은 비교 결과를 보고 바꾸지 않는다.
+
+## V-1. validation 신호 판정 (사전 규칙, 3 seed, job 25793)
+
+- 3-seed 평균 validation source ΔRMSE:
+
+| arm | ΔRMSE |
+|---|---|
+| chem_only | 0.54595 |
+| B00 | 0.54640 |
+| B01 | 0.54659 |
+| B10 | 0.54536 |
+| B11 | 0.54532 |
+| fixed_graph | 0.54548 |
+
+- B11 − chem_only = −0.00063 [−0.00196, +0.00070]. 판정 조건 "≤ −0.001"과 "CI < 0"을 둘 다 충족하지 못했다 → **validation 신호 없음**.
+- B11 < B01은 성립했다(−0.00127 [−0.00229, −0.00031]). B11 vs B10은 −0.00004, B11 vs fixed는 −0.00016으로, 둘 다 CI가 0을 포함한다.
+- 수축 점검: B11 보정 RMS 0.029 / chemistry RMS 0.173 = 0.17. 보정이 0으로 수축하지는 않았다.
+
+## M-1. 수정 1 — 고정 chemistry backbone 위의 기전 보정 (실행 전 기록)
+
+- **관측(validation, 주석 상태별 B11 − chem_only):**
+  - complete −0.00112 [−0.00314, +0.00056]
+  - partial −0.00010 [−0.00202, +0.00211]
+  - missing +0.00298 [−0.00138, +0.00366]
+  - missing 약물에서 B11의 예측은 backbone만으로 나온다(m_available=0). 그런데도 함께 학습한 backbone이 단독 chem_only보다 점추정으로 나빴다.
+  - seed별 missing ΔRMSE: B11 0.5967/0.5949/0.6019, chem 0.5924/0.5972/0.5950. 편차가 크다.
+- **가능한 원인(가설, 미검증):** 공동 학습에서 보정 항이 주석 있는 약물의 신호 일부를 가져가 backbone 학습이 달라졌다.
+- **기획서 근거:** 수정표 1행("근거가 많은 약물에서만 개선, 결측에서 악화 → fallback 강도 보완").
+- **변경(하나):** 모든 지식 arm(B00, B01, B10, B11, fixed)의 backbone을 같은 seed의 chem_only checkpoint로 초기화하고 **고정**한 뒤, 보정 항만 학습한다(같은 lr 1e-4, 같은 update 예산과 sampler).
+  - seed 대응: s42 → `pilot_chem_lr1e-4_s42`, s43 → `sel_chem_lr1e-4_s43`, s44 → `sel_chem_lr1e-4_s44`.
+  - 이렇게 하면 missing 약물의 예측은 chem_only와 정확히 같아진다.
+- **예측(사전):**
+  - missing stratum 차이는 0이 된다.
+  - complete/partial의 차이는 지금과 비슷한 크기(−0.001 내외)로 예상한다.
+  - 전체 B11 − chem_only는 −0.0004~−0.0008 정도로 예상하므로, ≤ −0.001 조건은 **충족하지 못할 가능성이 높다**고 미리 적는다.
+- **판정 기준:** 사전 등록한 validation 신호 규칙을 그대로 적용한다(변경 없음). 보조로 annotated(complete+partial) unit에서의 B11 − chem_only CI를 보고한다.
