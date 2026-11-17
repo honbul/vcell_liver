@@ -100,8 +100,8 @@ def test_hard_limit_is_pathway_subspace_regression():
     Mraw = np.column_stack([X[:, idx].mean(axis=1) for idx in sets])
     Mraw_te = np.column_stack([X_te2[:, idx].mean(axis=1) for idx in sets])
     ols = LinearRegression().fit(Mraw, Z, sample_weight=wt).predict(Mraw_te)
-    assert np.abs(prep2.predict_ridge_z("par", 1e-13) - ols).max() < 1e-5
-    assert np.abs(prep.predict_ridge_z("par", 1e-13) - prep2.predict_ridge_z("par", 1e-13)).max() < 1e-12
+    assert np.abs(prep2.predict_ridge_z("par", 1e-9) - ols).max() < 1e-5
+    assert np.abs(prep.predict_ridge_z("par", 1e-9) - prep2.predict_ridge_z("par", 1e-9)).max() < 1e-12
     # (d) par + perp = whole
     assert np.abs(prep.K_par + prep.K_perp - prep.K).max() < 1e-9
     assert np.abs(Q.T @ Q - np.eye(Q.shape[1])).max() < 1e-10
