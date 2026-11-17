@@ -52,3 +52,11 @@ validation source panel ΔRMSE, seed 42, 20000 update 중 최저 checkpoint:
 - 사전 규칙대로 선택 설정에 seed 43·44를 추가한다.
 - fixed graph는 선택된 gated arm(B11, aug on)의 열과 lr 1e-4로 seed 42–44를 실행한다.
 - 아직 판정이 아니다. validation 신호 규칙은 3 seed 평균과 bootstrap CI로 판단한다.
+
+## D-3. XPert epoch 상한 (timing run 근거, validation 점수 미사용)
+
+- **관측:** timing run(job 25788, 2 epoch, A40)에서 데이터 적재 약 6분, epoch당 학습 4.7분, validation 0.3분이 걸렸다.
+- **결정:** 원 설정 `num_epochs 2500`(patience 50)은 seed당 수백 시간이 걸려 실행할 수 없다. 상한을 **100 epoch**로 고정한다.
+  - 100 epoch는 약 560만 표본으로, R7 arm의 학습량(20000×64 ≈ 128만 표본, 약 23 epoch)의 4배 이상이다.
+  - 원 설정의 다른 값(lr 0.004, 40 epoch 후 절반, 70 epoch 전 batch-정규화 손실, patience 50, validation PCC 손실로 checkpoint 선택)은 바꾸지 않는다.
+- seed 42·43·44를 각각 학습한다. 상한은 비교 결과를 보고 바꾸지 않는다.
