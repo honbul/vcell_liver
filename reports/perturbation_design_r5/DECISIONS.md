@@ -82,3 +82,9 @@ proposed − fixed_vr −0.0006 [−0.0039, +0.0020]; proposed − diversity −
 - 동결 정책 8개: random, diversity, latent_variance, fixed_vr, proposed_nam(수정 전 설계), total_variance, pdbal_rna, learned_loss(`learned_loss_v1.pkl`).
 - meta-val 판정(§3): proposed 채택 조건 불충족. fixed_vr는 random보다 낮았으나 diversity 대비 상한이 0을 넘는다. 축소 실험(ablation)은 “proposed가 도움이 될 때”의 조건이 충족되지 않아 실행하지 않는다.
 - HCC(계획 R5-E5)는 동결 후 한 번, 같은 8개 정책·seed 10개로 실행해 source 결과와의 차이를 보고한다. HCC 결과로 채택 판정을 바꾸지 않는다.
+
+## 7. 동결·HCC (job 25386 mock, 25387 HCC 한 번)
+
+- 동결 commit `a3c8146`(`freeze_manifest.json`: hyper·learned-loss·protocol sha256, 정책 8개, seed 1–10). mock(source 3계열)으로 HCC 코드 경로를 점검한 뒤 HCC를 한 번 실행했다.
+- **관측:** HCC3 동등 평균 AUC(random 0.6369): proposed −0.0035 [−0.0054, −0.0018], fixed_vr −0.0033 [−0.0051, −0.0017], pdbal −0.0007 [−0.0030, +0.0016], diversity +0.0003, latent_variance +0.0112, total_variance +0.0158, learned_loss +0.0228. proposed − fixed_vr −0.0001 [−0.0011, +0.0008]; JHH7에서는 proposed가 fixed_vr보다 나빴다(+0.0025 [+0.0008, +0.0040]). 구간은 계열 내 약물 그룹 재표집뿐(seed 고정).
+- **판정:** HCC는 source와 같은 방향이다. 프로토콜대로 채택 판정은 source(meta-val)에서 이미 “제안 미채택”으로 끝났고 HCC로 바꾸지 않는다. mixture·noise-aware 기여는 주장하지 않는다. 연구를 음성 결과(제안 정책)와 작은 양성 방향(고정 전역 분산 감소 > random, 단 diversity 대비 미확정)으로 종료한다.

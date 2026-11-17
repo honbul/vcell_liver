@@ -1,0 +1,22 @@
+job	name	purpose	status	commit	output
+25334	r5_build	store build	failed: protocol YAML parse error before any value was read	37ef43b	-
+25335	r5_build	store build	failed: raw path typo before any file was read	a87697f	-
+25336	r5_build	store build	store written; manifest JSON failed (tuple keys); superseded by 25356	a87697f	-
+25356	r5_build	store build	completed	-	assets/processed/store_v1, store_manifest.json
+srun	r5_smoke	fixtures without hyper + episode check	completed	-	fixtures.json (oracle, synthetic, GP)
+25367	r5_develop	D3, readout+D1, GP, temperature, D2, learned-loss v1	completed	a7dba3a	develop/*, hyper.json
+25368	r5_dev1	dev replay 5 policies	completed	c85b3a8	runs/dev_stage1_v1
+25370	r5_dev2	dev replay 3 added policies	completed	-	runs/dev_stage2_v1
+25371	r5_mval	meta-val 8 policies	completed	-	runs/mval_v1
+25372	r5_mvst	meta-val replicate-separated stress	completed	-	runs/mval_stress_v1
+25376	r5_calib	dev calibration diagnostic	completed	3a9a4fa	develop/calib_*
+25378	r5_mod1	modification 1 gamma fit + calibration	completed	202f720	develop/mod1_nu_gamma_grid_dev.tsv
+25379	r5_ll1	learned-loss retrain	cancelled immediately (submitted from an uncommitted server edit); no output used	-	-
+25380	r5_ll1	learned-loss retrain for modification 1	completed	-	learned_loss_mod1.pkl
+25381	r5_devm1	dev replay after modification 1	completed	-	runs/dev_mod1_v1
+25384	r5_bdiag	dev batch diagnostic (modification 2 check)	completed	ed75855	develop/batch_diag_dev_stage1_v1.tsv
+25385	r5_mvm1	meta-val after modification 1 (information only)	completed	-	runs/mval_mod1_v1
+25386	r5_mock	hcc.py --mock on 3 meta-val cells	completed	a3c8146	runs/hcc_mock_v1
+25387	r5_hcc	frozen HCC evaluation (once)	completed	a3c8146	runs/hcc_eval_v1
+25389	r5_nb	tutorial notebook (plots not rendered)	completed; superseded	-	-
+25390	r5_nb	tutorial notebook	completed	-	tutorials/perturbation_design_r5/01_one_episode_and_results.ipynb
