@@ -1,0 +1,58 @@
+{
+ "created": "2026-11-17",
+ "note": "frozen before any HCC treated value was opened; decision on meta-val already recorded in DECISIONS.md section 3-6",
+ "hyper_sha256": "5092158211387c77c7aa6611fcc9b6ae3dadb792ef9d8c5af6355f265b4c1299",
+ "learned_loss_model_sha256": "5062616e30c9f90fb5e56352b9309a1a7fd8b01c9ae0d7de15eed80f2934f82f",
+ "protocol_sha256": "bec7235f3383e682376f0dcb479ff985a1172e86c74569afd0a9d2849b7d7fe4",
+ "code_commit": "ed7585559cde7cd39d985b2a53c69b8885ceb7c3",
+ "policies": [
+  "random",
+  "diversity",
+  "latent_variance",
+  "fixed_vr",
+  "proposed_nam",
+  "total_variance",
+  "pdbal_rna",
+  "learned_loss"
+ ],
+ "seeds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10
+ ],
+ "budgets_K": [
+  4,
+  8,
+  16,
+  32
+ ],
+ "hcc_targets": [
+  "HUH7",
+  "JHH5",
+  "JHH7"
+ ],
+ "hcc_run_tag": "hcc_eval_v1",
+ "mock_cells": [
+  "22RV1",
+  "MINO",
+  "SKMEL5"
+ ],
+ "source_decision": {
+  "proposed_adopted": false,
+  "reason": "meta-val upper bounds vs random +0.0002 and vs fixed_vr +0.0020 are not < 0",
+  "modification_1": "not adopted (no dev improvement)",
+  "modification_2": "not run (no dev diagnostic support)"
+ },
+ "hcc_query_counts_per_seed": {
+  "HUH7": 21,
+  "JHH5": 196,
+  "JHH7": 33
+ }
+}

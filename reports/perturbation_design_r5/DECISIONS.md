@@ -65,3 +65,20 @@ proposed − fixed_vr −0.0006 [−0.0039, +0.0020]; proposed − diversity −
 **예상 차이:** γ>1이 선택되면 proposed·total_variance·pdbal의 선택이 조용한 plate 쪽으로 더 기운다. fixed_vr·random·diversity·latent_variance는 동분산이라 변하지 않는다.
 **판정 방법:** dev에서 proposed − random AUC를 수정 전후 비교, 이어서 meta-val에서 프로토콜 채택 조건을 다시 적용.
 | 2026-11-17 | learned-loss 재학습 job 25379는 서버 worktree를 직접 고친 상태로 제출되어 즉시 취소(실행 결과 없음). 모델 파일 이름을 인자로 받게 고쳐 commit 후 재제출. |
+
+### 수정 1 결과
+- dev(job 25381 `dev_mod1_v1`): proposed − random **−0.0012** [−0.0035, +0.0010] (수정 전 −0.0015). proposed AUC 0.54816 (수정 전 0.54786). **dev에서 개선 없음 → 수정 1 미채택.** pdbal_rna는 −0.0005→−0.0010, total_variance +0.0208→+0.0227.
+- meta-val(job 25385 `mval_mod1_v1`, 사전 기록대로 실행, 판단에는 쓰지 않음): proposed − random −0.0015 [−0.0046, +0.0014] (수정 전 −0.0022).
+- 보정 진단: ν 5분위 비율 0.77–1.32(수정 전 0.65–1.52)로 폭은 좁아졌지만 선택 성능은 나아지지 않았다.
+- 수정 1 설정은 `hyper_mod1_not_adopted.json`, 동결 설정은 수정 전 `hyper.json`(= `hyper_v0_before_mod1.json`).
+
+## 5. 수정 2 검토 — 근거 없음, 실행 안 함
+
+**관측(dev, job 25384, `develop/batch_diag_dev_stage1_v1.tsv`, 계열 동등 평균):** batch 내부 평균 Tanimoto proposed 0.113 / random 0.111 / fixed_vr 0.106; batch 내부 f0-cosine 0.297 / 0.384 / 0.230; batch당 plate 수 1.83 / 2.00 / 2.02; 고른 well의 예측 ν 0.367 / 0.412 / 0.427 (pool 평균 0.410); 고른 well의 plate DMSO 분산 0.436 / 0.467 / 0.467.
+**판단:** 계획 §7 수정 2의 전제(“동일 약물군 집중·중복”)가 dev에서 보이지 않는다. proposed의 batch는 random보다 약물 표현이 더 중복되지 않으며, 차이는 조용한 plate로 약간 모이는 점이다(이는 설계 의도). **수정 2는 실행하지 않는다.** 이로써 수정 cycle을 종료한다(1회 사용, 미채택).
+
+## 6. 동결 전 결론과 HCC 평가 계획
+
+- 동결 정책 8개: random, diversity, latent_variance, fixed_vr, proposed_nam(수정 전 설계), total_variance, pdbal_rna, learned_loss(`learned_loss_v1.pkl`).
+- meta-val 판정(§3): proposed 채택 조건 불충족. fixed_vr는 random보다 낮았으나 diversity 대비 상한이 0을 넘는다. 축소 실험(ablation)은 “proposed가 도움이 될 때”의 조건이 충족되지 않아 실행하지 않는다.
+- HCC(계획 R5-E5)는 동결 후 한 번, 같은 8개 정책·seed 10개로 실행해 source 결과와의 차이를 보고한다. HCC 결과로 채택 판정을 바꾸지 않는다.

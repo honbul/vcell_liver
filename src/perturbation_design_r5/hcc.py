@@ -64,6 +64,8 @@ def main():
     a = ap.parse_args()
     fr = json.load(open(FREEZE))
     assert sha_file(HYPER) == fr["hyper_sha256"], "hyper.json differs from the frozen one"
+    hp = json.load(open(HYPER))
+    assert sha_file(hp["learned_loss_model_path"]) == hp["learned_loss_model_sha256"] == fr["learned_loss_model_sha256"], "learned-loss model differs"
     pols = fr["policies"]
     seeds = fr["seeds"]
     if a.mock:
