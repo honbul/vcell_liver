@@ -104,6 +104,40 @@ models:
   full_resid: {select: hybrid, ridge_kernels: [whole], res_ratios: [0, 1, 10, 100], res_tau_fractions: [0.1, 0.3]}
   train_mean: {select: global,  ridge_kernels: [whole], lambda: [1.0e+9]}
 
+# Frozen final evaluation (R1-5): which models are assembled from the nested runs and which paired
+# differences are reported. Written before the final run; see manifests/.../freeze_manifest.json.
+final:
+  integrated: full_resid          # the R1 model after modification 1 (eta >= 0, shared low-rank fit, per-drug residual)
+  models: [ridge_pd, ridge_gl, par_pd, par_gl, soft_pd, soft_gl, mt_noprior, full, mt_resid, full_resid]
+  permuted_prior_models: [full_resid, soft_pd, par_pd]
+  comparators: [A0, A1, A1r, A3, enet, cwkbmf, tabpfn]      # A0-A3: Track A routines on the fixed-ID axis
+  pairs:
+    - [full_resid, A0]
+    - [full_resid, ridge_pd]
+    - [full_resid, A1r]
+    - [full_resid, A3]
+    - [full_resid, par_pd]
+    - [full_resid, mt_resid]
+    - [full_resid, soft_pd]
+    - [full_resid, full]
+    - [full_resid, enet]
+    - [full_resid, cwkbmf]
+    - [full_resid, tabpfn]
+    - [mt_resid, ridge_pd]
+    - [mt_noprior, ridge_gl]
+    - [soft_pd, ridge_pd]
+    - [soft_gl, ridge_gl]
+    - [ridge_pd, A1r]
+    - [ridge_pd, enet]
+    - [par_pd, A3]
+  external_models: [A1r, A3, ridge_pd, par_pd, soft_pd, mt_noprior, full, mt_resid, full_resid, enet, cwkbmf, tabpfn]
+  external_pairs:
+    - [full_resid, ridge_pd]
+    - [full_resid, A1r]
+    - [full_resid, A3]
+    - [full_resid, mt_resid]
+    - [mt_resid, ridge_pd]
+
 # Baselines outside the R1 objective. Each is tuned with the same inner family folds and inner loss.
 baselines:
   enet:               # raw-RNA ElasticNet, per drug; sklearn objective on standardised features/labels

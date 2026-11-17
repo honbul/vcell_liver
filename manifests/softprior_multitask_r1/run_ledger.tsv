@@ -20,3 +20,11 @@ r2_diag_24610	R1-2	2026-11-17	e12a638	24610	solution rank per configuration, per
 checks_24616	R1-3	2026-11-17	b6f7022	24616	solver fixtures incl. modification 1 special cases	1	0	completed	13 passed
 r3_lrres_b6f7022	R1-3	2026-11-17	b6f7022	24617	modification 1: shared low-rank fit (tau/tau_max 0.1, 0.3) + per-drug Ridge on residuals, inner-fold losses	15	448	completed	2520 first-stage ADMM solves, none failed; modification 1 of at most 2
 r3_summary_24633	R1-3	2026-11-17	b6f7022	24633	R1-3 development summary	1	0	completed	tables r3_dev_*
+r4_perm_d1_98504e6	R1-4	2026-11-17	98504e6	24635	permuted-prior inner-fold losses (d1 grid)	15	0	completed_not_used	submission error: sbatch --export split the seed list at commas, so only perm101 was computed; rerun under a new run id with all 20 seeds
+r4_perm_r2_98504e6	R1-4	2026-11-17	98504e6	24636	permuted-prior inner-fold losses (r2 grid)	15	0	completed_not_used	submission error: sbatch --export split the seed list at commas, so only perm101 was computed; rerun under a new run id with all 20 seeds
+r4_perm_r3_98504e6	R1-4	2026-11-17	98504e6	24637	permuted-prior inner-fold losses (r3 grid)	15	0	completed_not_used	submission error: sbatch --export split the seed list at commas, so only perm101 was computed; rerun under a new run id with all 20 seeds
+r4_perm20_d1_98504e6	R1-4	2026-11-17	98504e6	24735	permuted-prior inner-fold losses, seeds 101-120 (d1 grid)	300	21	completed	no ADMM failure
+r4_perm20_r2_98504e6	R1-4	2026-11-17	98504e6	24736	permuted-prior inner-fold losses, seeds 101-120 (r2 grid)	300	105	completed	no ADMM failure
+r4_perm20_r3_98504e6	R1-4	2026-11-17	98504e6	24737	permuted-prior inner-fold losses, seeds 101-120 (r3 grid)	300	448	completed	no ADMM failure
+r4_summary_24733	R1-4	2026-11-17	98504e6	24733	real versus permuted prior, development	1	0	failed	assertion: permuted seeds 102-120 missing (see r4_perm_* rows)
+r4_summary_24833	R1-4	2026-11-17	98504e6	24833	real versus permuted prior, development	1	0	completed	tables r4_real_vs_perm, r4_perm_scores
