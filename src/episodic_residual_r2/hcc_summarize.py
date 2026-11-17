@@ -40,7 +40,7 @@ def target_table(d, n_boot, seed):
             point[(m, v)] = float(np.mean(pts))
             draws[(m, v)] = np.nanmean(np.stack(bs), 0)
     n_groups = len(set().union(*[set(g) for g in gbs.values()]))
-    return methods, point, draws, n_groups, {s: len(g) for s, g in gbs.items()}
+    return methods, point, draws, n_groups, {int(s): len(g) for s, g in gbs.items()}
 
 
 def ci(x):
