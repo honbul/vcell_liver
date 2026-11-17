@@ -116,11 +116,12 @@ def main():
     del inst
 
     # ---- plates: control wells. Expression of SOURCE control wells only is read (dispersion and positional check).
-    is_src_plate = np.array([k in set(zip(rows.det_plate, rows.cell)) for k in zip(c.det_plate, c.cell_iname)])
+    src_keys = set(zip(rows.det_plate, rows.cell))
+    is_src_plate = np.array([k in src_keys for k in zip(c.det_plate, c.cell_iname)])
     cs = c[is_src_plate].reset_index(drop=True)
     genes = pd.read_csv(os.path.join(tb, "genes.tsv"), sep="\t", dtype=str)
     gid = genes.gene_id.astype(str).tolist() if "gene_id" in genes else genes.iloc[:, 0].astype(str).tolist()
-    print(f"reading {len(cs)} source control wells", flush=True)
+    print(f"metadata done {time.time() - t0:.0f}s; reading {len(cs)} source control wells", flush=True)
     xc_ = read_gctx_columns(os.path.join(raw, "level3_beta_ctl_n188708x12328.gctx"), cs.sample_id.tolist(), gid)
     x0 = np.load(os.path.join(tb, "x0_all.npy"), mmap_mode="r")
     wrow = cs.det_well.str[0].map(lambda ch: ord(ch) - ord("A")).to_numpy()
