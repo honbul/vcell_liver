@@ -126,6 +126,20 @@ def choose_from(spec: dict, keys: list, loss: np.ndarray) -> np.ndarray:
     return choose(spec, keys, loss)
 
 
+def dev_xsel_per_drug(inner: dict, spec: dict) -> np.ndarray:
+    """[training set, drug] sqrt of the selection-honest inner loss (see dev_xsel)."""
+    out = []
+    for sid, it in inner.items():
+        FL, ff = it["fam_loss"], it["fam_fold"]
+        D = FL.shape[2]
+        sel = np.empty((FL.shape[1], D))
+        for j in np.unique(ff):
+            idx = choose(spec, it["keys"], FL[:, ff != j].mean(axis=1))
+            sel[ff == j] = FL[idx][:, ff == j, :][np.arange(D), :, np.arange(D)].T
+        out.append(np.sqrt(sel.mean(axis=0)))
+    return np.array(out)
+
+
 def dev_xsel(inner: dict, spec: dict, all_families: list | None = None, W: np.ndarray | None = None):
     """Selection-honest development score. For each inner fold j the configuration is chosen from the
     inner losses of the *other* inner folds (families disjoint from fold j) and scored on fold j; the
