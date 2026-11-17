@@ -78,12 +78,24 @@ def wave_loss(pred, target, mu, logvar, alpha=1.0, beta=0.01):
     return mse_loss + alpha * pearson_loss + beta * kld_loss
 
 
-def soft_targets(u, r, rho, tau_t):
+def cross_half_similarity(u, ua, ub, has):
+    """Teacher similarity from independent plate views: for two replicated units, mean of cos(uA_i, uB_j) and cos(uB_i, uA_j)
+    (different plates, hence different DMSO pools); otherwise the consensus cosine."""
+    un = F.normalize(u, dim=1); an = F.normalize(ua, dim=1); bn = F.normalize(ub, dim=1)
+    cons = un @ un.T
+    cross = 0.5 * (an @ bn.T + bn @ an.T)
+    both = has[:, None] & has[None, :]
+    return torch.where(both, cross, cons)
+
+
+def soft_targets(u, r, rho, tau_t, sim=None):
     """q_i = (1 - rho) onehot(i) + rho * p~_i; p_ij = softmax_{j != i}(cos(u_i,u_j)/tau_T), off-diagonal scaled by sqrt(r_i r_j),
     the removed mass returned to the diagonal. u, r are constants (no gradient)."""
     n = u.shape[0]
-    un = F.normalize(u, dim=1)
-    s = un @ un.T / tau_t
+    if sim is None:
+        un = F.normalize(u, dim=1)
+        sim = un @ un.T
+    s = sim / tau_t
     eye = torch.eye(n, dtype=torch.bool, device=u.device)
     p = torch.softmax(s.masked_fill(eye, float("-inf")), 1) if n > 1 else torch.zeros_like(s)
     p = p * torch.sqrt(r[:, None] * r[None, :])

@@ -6,9 +6,9 @@ import pandas as pd
 import torch
 
 from .common import new_run_dir, run_record, dump, public, sha_list, proc
-from .data import Store, TrainStats, reliability_weights
+from .data import Store, TrainStats, reliability_weights, split_half_reliability
 from .evaluate import unit_metrics, summarise
-from .models import W0Native, W1DeltaAnchor, DeltaMLP, wave_loss, soft_targets, rel_loss
+from .models import W0Native, W1DeltaAnchor, DeltaMLP, wave_loss, soft_targets, rel_loss, cross_half_similarity
 
 
 def dev_subset(S, n_cells=12, n_groups=1000):
@@ -56,6 +56,7 @@ def main():
     ap.add_argument("--rho", type=float, default=0.5)
     ap.add_argument("--rel", default="on", choices=["on", "off"])
     ap.add_argument("--pairing", default="cell", choices=["cell", "pooled"])
+    ap.add_argument("--teacher_view", default="consensus", choices=["consensus", "cross_half"], help="modification 1: similarity for q from independent plate views")
     ap.add_argument("--tau_t", type=float, default=0.1)
     ap.add_argument("--tau_s", type=float, default=0.1)
     ap.add_argument("--batch", type=int, default=64)
@@ -129,6 +130,15 @@ def main():
         Ut = torch.zeros((len(S.units), 64), device=dev)
         Ut[torch.from_numpy(train).to(dev)] = torch.from_numpy(stats.teacher(S, train)).to(dev)
         R = torch.from_numpy(np.nan_to_num(rr, nan=0.0)).to(dev)
+        if a.teacher_view == "cross_half":
+            rep, _, ha, hb = split_half_reliability(S, stats)
+            m_ = stats.cell_mean[S.cell_idx[rep]]
+            UA = torch.zeros((len(S.units), 64), device=dev); UB = torch.zeros((len(S.units), 64), device=dev)
+            HAS = torch.zeros(len(S.units), dtype=torch.bool, device=dev)
+            rt = torch.from_numpy(rep).to(dev)
+            UA[rt] = torch.from_numpy((((ha - m_) / stats.scale - stats.pca_mu) @ stats.U).astype(np.float32)).to(dev)
+            UB[rt] = torch.from_numpy((((hb - m_) / stats.scale - stats.pca_mu) @ stats.U).astype(np.float32)).to(dev)
+            HAS[rt] = True
         by_cell = [train[S.cell_idx[train] == c] for c in range(S.n_cells)]
         by_cell = [x for x in by_cell if len(x)]
         rng = np.random.RandomState(a.seed)
@@ -147,7 +157,8 @@ def main():
             if use_rel:
                 u, r = Ut[bt], R[bt]
                 if a.arm == "w2":
-                    q = soft_targets(u, r, a.rho, a.tau_t)
+                    sim = cross_half_similarity(u, UA[bt], UB[bt], HAS[bt]) if a.teacher_view == "cross_half" else None
+                    q = soft_targets(u, r, a.rho, a.tau_t, sim)
                     lr_ = rel_loss(z, u, q, r, a.tau_s)
                 else:
                     lr_ = (r * ((z - u) ** 2).mean(1)).mean()

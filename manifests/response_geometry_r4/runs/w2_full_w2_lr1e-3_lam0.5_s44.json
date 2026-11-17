@@ -1,0 +1,50 @@
+{
+ "run_id": "full_w2_lr1e-3_lam0.5_s44",
+ "kind": "w2",
+ "seconds": 184.2,
+ "commit": "0040338",
+ "slurm_job": "25349",
+ "host": "G1",
+ "config": {
+  "arm": "w2",
+  "run_id": "full_w2_lr1e-3_lam0.5_s44",
+  "subset": "full",
+  "lr": 0.001,
+  "lam": 0.5,
+  "rho": 0.5,
+  "rel": "on",
+  "pairing": "cell",
+  "tau_t": 0.1,
+  "tau_s": 0.1,
+  "batch": 64,
+  "updates": 20000,
+  "eval_every": 500,
+  "epochs": 40,
+  "seed": 44,
+  "max_updates_smoke": 0,
+  "n_train_units": 56431,
+  "n_val_units": 11731,
+  "train_units_sha": "e0451ff35766adb730cd1c6f3b30395ed82d822868bede7773bd141be8b0baa0",
+  "val_units_sha": "d338efddb37725d08ea552c35be0604139131498343b4d2b329458a711bd615b",
+  "teacher_explained": 0.4299814933979156,
+  "reliability_global_median": 0.11842408776283264,
+  "reliability_known_frac": 0.6561996065992096
+ },
+ "best": {
+  "score": 0.5637733359386233,
+  "step": 3500,
+  "val": {
+   "rmse": 0.5637733359386233,
+   "pearson": 0.1822815736955301,
+   "centred_pearson": 0.11533201038877805,
+   "mrr": 0.3059096098572413,
+   "top20_direction": 0.6418999490508904,
+   "rms_pred": 0.09830222878785566,
+   "rms_true": 0.5782177930151029,
+   "n_units": 11602,
+   "n_families": 110
+  },
+  "val_flat_delta_pearson": 0.1864728946360525
+ },
+ "gpu_max_mem_gb": 0.86
+}
