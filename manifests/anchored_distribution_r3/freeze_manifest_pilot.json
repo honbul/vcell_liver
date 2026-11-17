@@ -1,0 +1,89 @@
+{
+ "study": "R3 anchored_distribution_r3 -- user-approved post-gate generator pilot (exploratory)",
+ "status": "The pre-specified gate G1 failed and the generator claim was put on hold; the baselines' held-out scores were reported BEFORE these models were designed. This is a second look at a reused benchmark.",
+ "frozen_at": "2026-11-17T14:52:39+0900",
+ "code_commit": "d8ca98092a0efa35339f1832bc9c213207527f8f",
+ "first_freeze": {
+  "code_commit": "8a060db076f411f59365a5c6cffb4c189d62c868",
+  "frozen_at": "2026-11-17T11:53:50+0900",
+  "evaluation_sources_unchanged": true
+ },
+ "evaluation_source_sha256": {
+  "data.py": "dfbb9b1c983bed67eb788ebd7f7beee56e1cd6240cb6f85499731b268889978e",
+  "metrics.py": "dd6475e5465fb5dfa19a854f0bf043e807de7f97708ca55619ca230d2216422b",
+  "setting.py": "96a40c4e3eae84640754ddd94ac1151faf93713ed7985fe9d98e456f50519cfc",
+  "mean_model.py": "b7eca7cce17110c369b5b76d9a5c82966397be0a114e41f3d5ab3394b24b0a9a",
+  "baselines.py": "9f74dfe2915e9d28be0d89131c196574fea9a878907cccf4c3f1c371850672af",
+  "evaluate.py": "a5f0fd1d94ee30a2cd7bb0944c6a026a45cb03266d926e62cf0e8bb48cc20675",
+  "aggregate.py": "abbb806aa0390a06572386852f7a4ef406ea4815a3f1b5be65817907a04d1690"
+ },
+ "pilot_source_sha256": {
+  "ddpm.py": "6be94a6f332f59e787a4762fc7f6ba766e5696f0b4c4da7e0a1a5a6a0d94b530",
+  "cellflow_adapter.py": "c910f924c98caf3baec92403a98106a7c0f6c5c2085cd0c1a737c92ce3d388a9",
+  "pilot_relabel.py": "9565a0ee2e2e38e82e6694e4349c52202ad7a1a417f2a18d937e5b4910491a69"
+ },
+ "config": {
+  "label": "user-approved post-gate generator pilot (exploratory); second look at a reused benchmark",
+  "setting": "final",
+  "sample_seeds": [
+   0,
+   1,
+   2
+  ],
+  "train_seeds": [
+   0,
+   1,
+   2
+  ],
+  "ddpm_common": {
+   "width": 256,
+   "blocks": 2,
+   "cond": "film",
+   "loss": "v",
+   "schedule": "cosine",
+   "steps": 20000,
+   "sampling_steps": 100,
+   "wells_per_batch": 256,
+   "cells_per_well": 8,
+   "ema": 0.999
+  },
+  "ddpm_resid": {
+   "target": "resid",
+   "scale": "resid_global",
+   "lr": 0.0003,
+   "selected_by": "lowest dev ED (restoration v2) among 4"
+  },
+  "ddpm_abs": {
+   "target": "abs",
+   "scale": "std",
+   "lr": 0.001,
+   "selected_by": "lowest dev native ED among 2"
+  },
+  "cellflow": {
+   "commit": "03bff12e71326742ad53a0909a4a8fee36958794",
+   "adapter": "src/anchored_distribution_r3/cellflow_adapter.py (CONFIG, unchanged from dev)",
+   "iters": 120000,
+   "iters_rule": "2x the dev count, fixed from throughput and budget only",
+   "train_seeds": [
+    0
+   ],
+   "note": "one training seed (about 1.5 GPU-hours each); single untuned configuration"
+  },
+  "improvement_cycle": "none (cycle 2 precondition not met; cycle 1 was spent on restoration v2)",
+  "attribution_contrasts": "not trained: on dev the residual DDPM was not better than Gaussian k=50 (+0.0028 [0.0006, 0.0054]); if an advantage over BOTH shifted control and Gaussian k=50 appears on test they are run post hoc and labelled so",
+  "mean_predictor": "shared m_psi (configs/anchored_distribution_r3/mean_model.json), fitted in the first freeze",
+  "restoration_variant": "anchored2",
+  "n_cap": 64,
+  "min_n": 32,
+  "snu423_line_index": 14,
+  "baseline_reference_tag": "final_v1 (scored before the pilot was designed)",
+  "primary_contrasts": [
+   "ddpm_resid:anchored2 - shifted:anchored2",
+   "ddpm_resid:anchored2 - gauss_lr50:anchored2",
+   "ddpm_abs:anchored2 - shifted:anchored2",
+   "cellflow:anchored2 - shifted:anchored2",
+   "ddpm_abs:native - control:native",
+   "cellflow:native - control:native"
+  ]
+ }
+}
