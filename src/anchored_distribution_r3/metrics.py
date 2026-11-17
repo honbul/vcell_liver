@@ -42,6 +42,31 @@ def restore_nonneg(V: torch.Tensor, mu: torch.Tensor, iters: int = 50) -> torch.
     return torch.where(target > 0, out, torch.zeros_like(out))
 
 
+def restore_zero_masked(V: torch.Tensor, mu: torch.Tensor, pi0: torch.Tensor, iters: int = 50) -> torch.Tensor:
+    """Restoration v2 (cycle 1): take the zero fraction from the control population.
+
+    Per gene, the round(pi0 * n) smallest generated values are set to zero (pi0 = zero fraction of
+    the same plate's control cells of that line, an allowed input), and the remaining cells get
+    the v1 rule: one shift a_g with mean_j max(v_jg + a_g, 0) = max(mu_g, 0) over all n cells.
+    When mu_g > 0 at least one cell is kept. No treated statistic is read.
+    """
+    n = V.shape[0]
+    target = mu.clamp(min=0)
+    k = torch.round(pi0 * n).long().clamp(min=0, max=n - 1)
+    rank = V.argsort(0).argsort(0)
+    keep = (rank >= k[None]).to(V.dtype)
+    nk = keep.sum(0)
+    lo = -V.max(0).values
+    hi = target * n / nk - V.min(0).values
+    for _ in range(iters):
+        mid = 0.5 * (lo + hi)
+        f = ((V + mid).clamp(min=0) * keep).mean(0) - target
+        hi = torch.where(f > 0, mid, hi)
+        lo = torch.where(f > 0, lo, mid)
+    out = (V + 0.5 * (lo + hi)).clamp(min=0) * keep
+    return torch.where(target > 0, out, torch.zeros_like(out))
+
+
 def shift_to_mean(V: torch.Tensor, mu: torch.Tensor) -> torch.Tensor:
     return V - V.mean(0, keepdim=True) + mu
 
