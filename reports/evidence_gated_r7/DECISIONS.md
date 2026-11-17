@@ -96,3 +96,9 @@ validation source panel ΔRMSE, seed 42, 20000 update 중 최저 checkpoint:
   - complete/partial의 차이는 지금과 비슷한 크기(−0.001 내외)로 예상한다.
   - 전체 B11 − chem_only는 −0.0004~−0.0008 정도로 예상하므로, ≤ −0.001 조건은 **충족하지 못할 가능성이 높다**고 미리 적는다.
 - **판정 기준:** 사전 등록한 validation 신호 규칙을 그대로 적용한다(변경 없음). 보조로 annotated(complete+partial) unit에서의 B11 − chem_only CI를 보고한다.
+
+## D-4. XPert 실행 디렉터리 분리 (운영 오류 수정, 점수 미관측)
+
+- 원 스크립트는 출력 폴더 이름을 시작 시각(초)으로 정한다. seed 43 run(job 25790)이 다른 run과 같은 초에 시작해 폴더 충돌로 실패했다.
+- 또 학습 후 "가장 최근 폴더"를 복사하던 방식은 병렬 run 사이에 checkpoint가 섞일 위험이 있었다.
+- 그래서 run 25789·25791을 2 epoch 무렵 취소했다. 이후에는 run마다 별도 작업 디렉터리를 쓰고, 폴더가 정확히 1개인지 확인한다. 새 run id는 `xpr_e100_s{42,43,44}`이다. 학습 설정은 바꾸지 않는다.
