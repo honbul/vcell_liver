@@ -216,3 +216,13 @@
 - **예측:** 세 계열 동등 평균 K=16 시험 ΔRMSE에서 제안법 − mean-offset < 0, 제안법 − (제안법, 잔차 0)의 크기는 그보다 작다. HCC 세 계열은 source 세포주와 f0 구성(161개 전체)이 달라 크기는 다를 수 있다.
 - **실험:** 선택 파일을 모두 커밋 → `freeze.py`(최종 방법 `residual_adapter`; 귀속·비교용 `residual_adapter_initial, adapter_joint, adapter_no_ctrl, adapter_train_shuffle`; 일반 CNP; 닫힌 해법 λ; 축소 κ; TranSiGen FT 설정; (target, split seed)별 support 목록) → `freeze_manifest.json` 커밋 → `hcc_eval` 한 번(K=8/16/32, split seed 3개 × 모델 seed 3개) → `hcc_summarize`.
 - **결정 규칙:** HCC 점수를 본 뒤에는 φ·λ·κ·학습률·update 수를 다시 고르지 않는다. 판정은 계획서 §12 표를 mean-offset·비학습 KRR 대비로 문자 그대로 적용하고, 추가 기준선 대비 결과를 같은 표에 싣는다. 결과가 부정적이어도 범위를 넓히지 않는다.
+
+**결과 (동결·HCC 평가):** 동결 `a4d0bba`(job 25275, `freeze_manifest.json` 커밋 `950dfb2`), HCC 평가 job 25276 `hcc_eval_v1` 한 번(300초, 실패 0건), 요약 job 25283. 수치는 `RESULTS.md`.
+
+### HCC 요약의 기준선 추가 (실행 전 기록, 2026-11-17, HCC 점수를 본 뒤)
+
+- **관측:** HCC 요약 스크립트는 짝 비교의 기준을 mean-offset과 f0 두 개만 계산했다. 계획서 §12는 "offset과 raw KRR 모두"를 묻고, 약물별 항의 몫은 "제안법 − 제안법(잔차 0)"으로 읽어야 한다. 점 추정으로는 K=16에서 제안법 0.6221, 비학습 KRR 0.6264, K=32에서 0.6072 대 0.6056이다.
+- **가설:** 해당 없음(판정에 필요한 구간 계산).
+- **예측:** 해당 없음.
+- **실험:** `hcc_summarize`의 기준 목록에 `allfeat_krr`, `shrunk_mean_offset`, `residual_adapter__zero_residual`을 더해 같은 per-unit 표·같은 bootstrap seed로 다시 요약한다. **예측은 다시 계산하지 않고, 방법·설정은 바뀌지 않는다.** 기존 두 기준의 수치는 그대로다.
+- **결정 규칙:** 이것은 HCC 점수를 본 뒤의 요약 추가이므로 그렇게 표시한다. 판정에는 사전 고정한 주 조건(K=16, test query, 세 계열 동등 평균)을 쓴다.

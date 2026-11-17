@@ -7,7 +7,9 @@ import pandas as pd
 from .common import runs, public, dump, sha256
 
 METRICS = ["delta_rmse", "centred_rmse", "centred_pearson", "delta_pearson", "top20_direction", "mrr", "mrr_centred"]
-REFS = ["mean_offset", "source_same_drug_mean"]
+REFS = ["mean_offset", "source_same_drug_mean",
+        # added after the frozen evaluation, summary only (no prediction recomputed): references needed to read plan section 12
+        "allfeat_krr", "shrunk_mean_offset", "residual_adapter__zero_residual"]
 
 
 def boot_weights(groups_by_split, n_boot, seed):
