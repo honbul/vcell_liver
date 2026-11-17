@@ -196,6 +196,30 @@ def _rand_job(args):
                                 latent_var=Sig0[p, p], total_var=Sig_h[p, p] + gh.nu[j], nu=gh.nu[j], A_fixed=A[p],
                                 tanimoto_dist=1 - T[j, S].max()))
         return out
+    if mode == "calib":
+        # predictive calibration of the selected acquisition model on random sequences (dev only)
+        out = []
+        nu = nu_vector(ep, ek, hp)
+        gps = make_gps(ek, nu, hp, "mixture")
+        g_fix = make_gps(ek, nu, hp, "fixed")[0][1]
+        Sall = np.array(sel["S"])
+        Zall = ek.to_z(ep, Sall, sel["Y"])
+        su = st.units[st.units.cell == cell].set_index("drug_group")
+        qz = ek.to_z(ep, ep.query, np.stack([np.asarray(st.unit_delta[int(su.loc[ep.groups[q], "unit_idx"])]) for q in ep.query]))
+        for K in range(4, len(Sall) - 3, 4):
+            S, Z = Sall[:K], Zall[:K]
+            B, ZB = Sall[K:K + 4], Zall[K:K + 4]
+            w = mixture_weights(gps, S, Z, hp["T"])
+            mu, Sig = g_fix.posterior(S, Z, np.concatenate([B, ep.query]))
+            v = np.diag(Sig)
+            rB = ((ZB - mu[:4]) ** 2).mean(1) / (v[:4] + g_fix.nu[B])
+            rQ = ((qz - mu[4:]) ** 2).mean(1) / v[4:]
+            for j, r in zip(B, rB):
+                out.append(dict(cell=cell, family=fam, seed=seed, K=K, kind="next_well", nu=g_fix.nu[j], latent_var=v[list(B).index(j)], ratio=r,
+                                w_max=w.max(), w_entropy=float(-(w * np.log(w + 1e-300)).sum())))
+            out.append(dict(cell=cell, family=fam, seed=seed, K=K, kind="query_latent_mean", nu=np.nan, latent_var=v[4:].mean(), ratio=rQ.mean(),
+                            w_max=w.max(), w_entropy=float(-(w * np.log(w + 1e-300)).sum())))
+        return out
     if mode == "ll":
         ro = Readout(hp["readout"]["alpha"], hp["readout"]["lam"], "main")
         rs = np.random.RandomState(int(sha_hex(f"ll|{cell}|{seed}")[:8], 16))
@@ -324,6 +348,19 @@ def main():
         hp["learned_loss_model_sha256"] = sha_file(path)
         hp["learned_loss_train"] = dict(rows=int(len(y)), r2_train=float(m.score(X, y)))
         print("LL", hp["learned_loss_train"])
+    if "calib" in steps:
+        res = _map([(c, f, s, "calib", hp) for c, f in dev for s in (1, 2, 3)])
+        df = pd.DataFrame([x for r in res for x in r])
+        df.to_csv(OUT("calib_dev.tsv.gz"), sep="\t", index=False)
+        nw = df[df.kind == "next_well"].copy()
+        nw["nu_quintile"] = pd.qcut(nw.nu, 5, labels=False, duplicates="drop")
+        t1 = nw.groupby(["family", "nu_quintile"]).ratio.mean().groupby("nu_quintile").mean().rename("next_well_ratio")
+        t2 = df.groupby(["family", "kind", "K"]).ratio.mean().groupby(["kind", "K"]).mean().unstack("kind")
+        t3 = df.groupby(["family", "K"])[["w_max", "w_entropy"]].mean().groupby("K").mean()
+        t1.to_csv(OUT("calib_by_nu_dev.tsv"), sep="\t", float_format="%.4f")
+        pd.concat([t2, t3], axis=1).to_csv(OUT("calib_by_K_dev.tsv"), sep="\t", float_format="%.4f")
+        print("CALIB", t1.to_string(), pd.concat([t2, t3], axis=1).to_string())
+        return
     hp["commit"] = commit()
     hp["seconds"] = round(time.time() - t0, 1)
     dump_json(hp, hp_path)

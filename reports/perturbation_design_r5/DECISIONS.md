@@ -34,3 +34,25 @@
 - source 대표 행 중 410개가 2개 이상 well의 평균이라 평균 처리 well 수가 32를 조금 넘는다(cost ledger에 그대로 기록).
 
 **결정:** 프로토콜 staging 규칙(“proposed_nam의 dev AUC가 random보다 낮으면”)의 조건은 점추정으로 충족 → total_variance, pdbal_rna, learned_loss를 dev에서 추가 실행. 동시에 meta-val에서 8개 정책 전체와 반복-분리 stress test를 실행한다. 이 시점에는 dev에서 실패로 볼 근거(무작위보다 나쁨)가 없으므로 수정 cycle은 쓰지 않는다. 축소 실험(ablation)은 meta-val에서 proposed가 random을 넘을 때만 한다.
+
+## 3. meta-val 비교 (job 25371 `mval_v1`, 25372 `mval_stress_v1`; dev 2단계 job 25370)
+
+**관측 (meta-val 8계열, main readout AUC, random 0.5371)**
+| 정책 | AUC | random 대비 [95%] | 낮은 계열 |
+|---|---:|---|---:|
+| proposed_nam | 0.5349 | −0.0022 [−0.0052, +0.0002] | 6/8 |
+| fixed_vr | 0.5354 | −0.0017 [−0.0026, −0.0008] | 7/8 |
+| pdbal_rna | 0.5375 | +0.0004 [−0.0039, +0.0041] | 2/8 |
+| diversity | 0.5377 | +0.0006 [−0.0015, +0.0028] | 4/8 |
+| latent_variance | 0.5469 | +0.0098 [+0.0069, +0.0127] | 0/8 |
+| total_variance | 0.5593 | +0.0222 [+0.0128, +0.0334] | 0/8 |
+| learned_loss | 0.5657 | +0.0286 [+0.0207, +0.0357] | 0/8 |
+
+proposed − fixed_vr −0.0006 [−0.0039, +0.0020]; proposed − diversity −0.0028 (표 `contrasts.tsv`). 반복-분리 stress(7계열): proposed − random −0.0031 [−0.0063, −0.0004], fixed_vr − random −0.0002 [−0.0034, +0.0022].
+- dev에서 learned_loss는 학습 episode(seed 7–10)와 평가 seed가 겹치므로 dev 수치는 낙관적이다. meta-val은 겹치지 않는다.
+
+**프로토콜 판정(문자 그대로):** adopt_proposed는 random·diversity·fixed_vr 각각에 대해 상한 < 0이어야 한다. random 대비 상한 +0.0002, fixed_vr 대비 상한 +0.0020 → **현재 설계는 채택 조건 불충족**. fixed_vr는 random을 넘지만 diversity 대비 상한 +0.0001로 역시 세 조건을 모두 넘지는 못한다.
+
+**가설(검증 안 함):** (a) 예측 분산이 큰 well을 고르는 정책(total_variance, learned_loss)이 크게 나쁜 것은 D2의 ν–이득 음의 상관과 같은 방향이다. (b) proposed와 fixed_vr의 차이가 작은 것은 T=1/32에서 mixture weight가 거의 갱신되지 않기 때문일 수 있다.
+
+**다음(수정 1의 근거 수집, dev만):** 수정 전에 dev random 순서에서 (i) 다음 공개 well의 표준화 오차비 E[(z−μ)²/(σ²+ν)]를 ν 5분위·K별로, (ii) query 잠재 평균의 표준화 오차비, (iii) mixture weight의 최댓값·entropy를 계산한다(`develop --steps calib`). 비율이 1에서 크게 벗어나면 계획 §7 수정 1(보정/likelihood tempering 또는 ν 수축) 중 해당하는 하나를 고른다. 1 근처면 수정 1의 근거가 없다고 기록한다.
