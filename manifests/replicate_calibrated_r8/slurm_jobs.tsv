@@ -32,23 +32,34 @@ slurm_job	job_name	status	start	end	seconds	host	commit	partition	cores	gpus	n_t
 25584	r8_final_v1r	completed	2026-11-17T18:46:48+09:00	2026-11-17T18:47:21+09:00	33.0	G1	f30073c	cpu	20	0	6	assets/tasks/final_v1r_part00 parallel=6
 25520	r8_fixtures	no end line (failed, cancelled or still running)	2026-11-17T18:17:27+09:00			G1	6a7aee2	cpu	8	0	1	fixtures
 25525	r8_fixtures	completed	2026-11-17T18:17:58+09:00	2026-11-17T18:18:01+09:00	3.0	G1	76b018a	cpu	8	0	1	fixtures
-25592	r8_ledger	no end line (failed, cancelled or still running)	2026-11-17T19:00:45+09:00			G1	dde61f2	cpu	8	0	1	ledger
+25685	r8_freeze	completed	2026-11-17T22:16:58+09:00	2026-11-17T22:17:04+09:00	6.0	G1	43500fc	cpu	8	0	1	freeze --note frozen after source confirmation and mock wiring check; two revisions used (R-1 not adopted, R-2 adopted literally)
+25686	r8_hcc	completed	2026-11-17T22:17:23+09:00	2026-11-17T22:28:05+09:00	642.0	G2	5a3b809	gpu	4	1	1	hcc_eval --run-id hcc_v1
+25688	r8_hccsum	completed	2026-11-17T22:28:21+09:00	2026-11-17T22:28:35+09:00	14.0	G1	5a3b809	cpu	8	0	1	summarize --run-id hcc_v1 --kind hcc
+25592	r8_ledger	completed	2026-11-17T19:00:45+09:00	2026-11-17T19:00:47+09:00	2.0	G1	dde61f2	cpu	8	0	1	ledger
+25690	r8_ledger	no end line (failed, cancelled or still running)	2026-11-17T22:29:52+09:00			G1	9361b22	cpu	8	0	1	ledger
+25658	r8_mock	completed	2026-11-17T21:47:35+09:00	2026-11-17T21:56:21+09:00	526.0	G2	3305283	gpu	4	1	1	hcc_eval --mock --run-id hcc_mock_v1
+25665	r8_mocksum	no end line (failed, cancelled or still running)	2026-11-17T21:55:52+09:00			G1	73cf1ef	cpu	8	0	1	summarize --run-id hcc_mock_v1 --kind hcc_mock
+25669	r8_mocksum	completed	2026-11-17T21:56:24+09:00	2026-11-17T21:56:34+09:00	10.0	G1	73cf1ef	cpu	8	0	1	summarize --run-id hcc_mock_v1 --kind hcc_mock
 25587	r8_mplate	completed	2026-11-17T18:47:28+09:00	2026-11-17T18:58:27+09:00	659.0	G1	f30073c	cpu	8	0	1	matched_plate --run-id matched_plate_v1
+25689	r8_nb	completed	2026-11-17T22:29:05+09:00	2026-11-17T22:29:36+09:00	31.0	G1	9361b22	cpu	8	0	1	
 25563	r8_rbasis	completed	2026-11-17T18:35:39+09:00	2026-11-17T18:37:28+09:00	109.0	C4	f9c7fe9	cpu	8	0	1	repeat_basis --tag v1
 25556	r8_selcv	completed	2026-11-17T18:34:07+09:00	2026-11-17T18:34:08+09:00	1.0	C4	032cf47	cpu	8	0	1	select cv --tag v1
 25573	r8_selcv	completed	2026-11-17T18:38:41+09:00	2026-11-17T18:38:42+09:00	1.0	C4	3bcd0ca	cpu	8	0	1	select cv --tag v1,v1g
 25582	r8_selcv	completed	2026-11-17T18:46:09+09:00	2026-11-17T18:46:10+09:00	1.0	G1	3bcd0ca	cpu	8	0	1	select cv --tag v1,v1g,v1r
 25580	r8_selfin	completed	2026-11-17T18:40:26+09:00	2026-11-17T18:40:27+09:00	1.0	G1	3bcd0ca	cpu	8	0	1	select final --tag v1
 25586	r8_selfin	completed	2026-11-17T18:47:27+09:00	2026-11-17T18:47:28+09:00	1.0	G1	f30073c	cpu	8	0	1	select final --tag v1,v1r
+25657	r8_srceval	completed	2026-11-17T21:47:35+09:00	2026-11-17T22:16:19+09:00	1724.0	G2	3305283	gpu	4	1	1	source_eval --run-id source_eval_v1 --tag source_eval
 25581	r8_srcpre	completed	2026-11-17T18:40:27+09:00	2026-11-17T18:42:36+09:00	129.0	G1	3bcd0ca	cpu	8	0	1	source_eval --run-id source_eval_prelim_v1 --tag source_eval_prelim --no-tsg
 25491	r8_store	no end line (failed, cancelled or still running)	2026-11-17T18:02:14+09:00			G2	b4b387c	cpu	8	0	1	build_store
 25518	r8_store	completed	2026-11-17T18:14:22+09:00	2026-11-17T18:16:05+09:00	103.0	C4	700c2a5	cpu	8	0	1	build_store
 25522	r8_tsg42	no end line (failed, cancelled or still running)	2026-11-17T18:17:27+09:00			G2	6a7aee2	gpu	4	1	1	tsg_train --seed 42 --run-id tsg_source_s42_v1
 25526	r8_tsg42	no end line (failed, cancelled or still running)	2026-11-17T18:17:58+09:00			G2	76b018a	gpu	4	1	1	tsg_train --seed 42 --run-id tsg_source_s42_v1
-25529	r8_tsg42	no end line (failed, cancelled or still running)	2026-11-17T18:18:32+09:00			G2	76b018a	gpu	4	1	1	tsg_train --seed 42 --run-id tsg_source_s42_v2
+25529	r8_tsg42	completed	2026-11-17T18:18:32+09:00	2026-11-17T19:53:14+09:00	5682.0	G2	76b018a	gpu	4	1	1	tsg_train --seed 42 --run-id tsg_source_s42_v2
 25523	r8_tsg43	no end line (failed, cancelled or still running)	2026-11-17T18:17:27+09:00			G2	6a7aee2	gpu	4	1	1	tsg_train --seed 43 --run-id tsg_source_s43_v1
 25527	r8_tsg43	no end line (failed, cancelled or still running)	2026-11-17T18:17:58+09:00			G2	76b018a	gpu	4	1	1	tsg_train --seed 43 --run-id tsg_source_s43_v1
-25530	r8_tsg43	no end line (failed, cancelled or still running)	2026-11-17T18:18:32+09:00			G2	76b018a	gpu	4	1	1	tsg_train --seed 43 --run-id tsg_source_s43_v2
+25530	r8_tsg43	completed	2026-11-17T18:18:32+09:00	2026-11-17T19:59:08+09:00	6036.0	G2	76b018a	gpu	4	1	1	tsg_train --seed 43 --run-id tsg_source_s43_v2
 25524	r8_tsg44	no end line (failed, cancelled or still running)	2026-11-17T18:17:27+09:00			G2	6a7aee2	gpu	4	1	1	tsg_train --seed 44 --run-id tsg_source_s44_v1
 25528	r8_tsg44	no end line (failed, cancelled or still running)	2026-11-17T18:17:58+09:00			G2	76b018a	gpu	4	1	1	tsg_train --seed 44 --run-id tsg_source_s44_v1
 25531	r8_tsg44	no end line (failed, cancelled or still running)	2026-11-17T18:18:32+09:00			G2	76b018a	gpu	4	1	1	tsg_train --seed 44 --run-id tsg_source_s44_v2
+25532	r8_tsg44	completed	2026-11-17T19:53:14+09:00	2026-11-17T21:24:15+09:00	5461.0	G2	3305283	gpu	4	1	1	tsg_train --seed 44 --run-id tsg_source_s44_v3
+25656	r8_tsgsel	completed	2026-11-17T21:24:16+09:00	2026-11-17T21:47:19+09:00	1383.0	G2	3305283	gpu	4	1	1	tsg_select --run-id tsg_select_v1 --source-runs tsg_source_s42_v2,tsg_source_s43_v2,tsg_source_s44_v3

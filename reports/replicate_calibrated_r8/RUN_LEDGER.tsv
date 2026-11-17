@@ -118,14 +118,19 @@ final_G_dummy_s44_v1	final_G_dummy	max_steps	25577	3bcd0ca	C3	19.3	"{""arm"": ""
 final_cnp_s42_v1	final_cnp	max_steps	25576	3bcd0ca	G1	76.8	"{""arm"": ""cnp"", ""gpu"": ""cpu"", ""lr"": 0.0003, ""max_steps"": 400, ""n_parameters"": 2861778, ""seed"": 42, ""steps_run"": 400, ""stopped"": ""max_steps""}"
 final_cnp_s43_v1	final_cnp	max_steps	25576	3bcd0ca	G1	75.5	"{""arm"": ""cnp"", ""gpu"": ""cpu"", ""lr"": 0.0003, ""max_steps"": 400, ""n_parameters"": 2861778, ""seed"": 43, ""steps_run"": 400, ""stopped"": ""max_steps""}"
 final_cnp_s44_v1	final_cnp	max_steps	25576	3bcd0ca	G1	71.6	"{""arm"": ""cnp"", ""gpu"": ""cpu"", ""lr"": 0.0003, ""max_steps"": 400, ""n_parameters"": 2861778, ""seed"": 44, ""steps_run"": 400, ""stopped"": ""max_steps""}"
+hcc_v1	hcc_eval	completed	25686	5a3b809	G2	638.9	"{""frozen_code_commit"": ""43500fcdd781c27cfc3bb148ab1c27bbdd857d05""}"
+hcc_mock_v1	hcc_mock	completed	25658	3305283	G2	521.8	"{""frozen_code_commit"": ""mock""}"
 matched_plate_v1	matched_plate	completed	25587	f30073c	G1	656.3	"{""n_rows"": 33708}"
 source_eval_prelim_v1	source_eval	completed	25581	3bcd0ca	G1	126.2	"{""n_rows"": 3483}"
+source_eval_v1	source_eval	completed	25657	3305283	G2	1720.4	"{""n_rows"": 4698}"
+tsg_select_v1	tsg_select	completed	25656	3305283	G2	1380.1	{}
 tsg_source_s42_v1	tsg_source	no_result (failed, cancelled or still running)					
-tsg_source_s42_v2	tsg_source	no_result (failed, cancelled or still running)					
+tsg_source_s42_v2	tsg_source	patience	25529	76b018a	G2	5679.3	"{""best_epoch"": 56, ""gpu"": ""NVIDIA A30"", ""lr"": 0.0003, ""seed"": 42, ""stopped"": ""patience"", ""val_delta_rmse_best"": 1.01057767868042}"
 tsg_source_s43_v1	tsg_source	no_result (failed, cancelled or still running)					
-tsg_source_s43_v2	tsg_source	no_result (failed, cancelled or still running)					
+tsg_source_s43_v2	tsg_source	patience	25530	76b018a	G2	6033.2	"{""best_epoch"": 60, ""gpu"": ""NVIDIA A30"", ""lr"": 0.0003, ""seed"": 43, ""stopped"": ""patience"", ""val_delta_rmse_best"": 1.0034475326538086}"
 tsg_source_s44_v1	tsg_source	no_result (failed, cancelled or still running)					
 tsg_source_s44_v2	tsg_source	no_result (failed, cancelled or still running)					
+tsg_source_s44_v3	tsg_source	patience	25532	3305283	G2	5457.9	"{""best_epoch"": 53, ""gpu"": ""NVIDIA A30"", ""lr"": 0.0003, ""seed"": 44, ""stopped"": ""patience"", ""val_delta_rmse_best"": 1.0097732543945312}"
 (store build, first attempt)	build_store	cancelled by owner	25491	b4b387c			plate membership test rebuilt a set per row (quadratic); fixed in 700c2a5
 store_v1	build_store	completed	25518	700c2a5	C4	84.5	source store without XC pools; HCC metadata only
 (fixtures, first attempt)	fixtures	failed	25520	6a7aee2	G1		float32 tolerance in the additive-trap check; check moved to float64 (76b018a)
@@ -134,3 +139,4 @@ fixtures	fixtures	completed	25525	76b018a			all synthetic checks passed (fixture
 (tsg_source_s42/43/44_v1 resubmitted)	tsg_source	failed	25526,25527,25528	76b018a			run ids already existed (immutable ids); resubmitted as _v2
 tsg_source_s44_v2	tsg_source	cancelled by owner	25531	76b018a			cancelled after seconds to stay within two GPUs; rerun as tsg_source_s44_v3
 cv_reference	cv_reference	completed	25549				closed-form references on the fold episodes (cv_reference.tsv)
+(hcc_mock summary, submitted too early)	summarize	failed	25665	73cf1ef			submitted by mistake before the mock run had finished (result.json missing); resubmitted after it ended
