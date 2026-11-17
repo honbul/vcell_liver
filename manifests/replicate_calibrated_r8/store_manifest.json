@@ -1,0 +1,182 @@
+{
+ "track": "replicate_calibrated_r8",
+ "seconds": 84.5,
+ "commit": "700c2a5",
+ "platform": "CMap LINCS 2020 Level 3, 10 uM, 24 h, 978 landmark genes (study B processed arrays, unchanged)",
+ "inputs": {
+  "study_b_processed": {
+   "dir": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_transigen_adaptation_b1/assets/processed/cmap2020_v1",
+   "files": {
+    "rows.tsv": {
+     "sha256": "b33f84b9b53c137476310f48a314a451201e2c929c35ea0b8a00709d784100df",
+     "bytes": 21050826
+    },
+    "drugs.tsv": {
+     "sha256": "00a0667ef1e95a5665dbd7980ee883eff9a669e11cdb0b3edd180664a9f89468",
+     "bytes": 2172949
+    },
+    "ecfp4.npy": {
+     "sha256": "0bf295786a49650fac2d564dfe0d7935c3058e082717cb52c8a5d42e26e9ebb8",
+     "bytes": 22243456
+    },
+    "x0_all.npy": {
+     "sha256": "60767fd866dc653539d092bf13fa7343044fb4e90652d00283b4d727609c11e0",
+     "bytes": 937029752
+    },
+    "x1_source.npy": {
+     "sha256": "7f52005013716e7e6a21851f681ec73d8f1845a7a332bd1c271de50e0a8bd2fc",
+     "bytes": 933301616
+    }
+   },
+   "build_manifest_sha256": "38b49d134665a7f3a2b44a5f62a1ac3e2cb239de3529b9b7ccc4ad89392f361f"
+  },
+  "r2_units": {
+   "dir": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_episodic_residual_r2/assets/processed/units_v1",
+   "files": {
+    "units.tsv": {
+     "sha256": "9e747def607615ce69d042e152918c628d267de2dc4508ffff0a0150c694e2f7",
+     "bytes": 9805330
+    },
+    "groups.tsv": {
+     "sha256": "628941d70ee638729d2c8dc76ae994aea8aa711c55e692af1a88a32fa62f8d4a",
+     "bytes": 346558
+    },
+    "cells.tsv": {
+     "sha256": "7f44403723dedc47ee586c71652a847080e2dd528cef8f8ecc8e8e91ddd93d4a",
+     "bytes": 4267
+    },
+    "unit_delta.npy": {
+     "sha256": "05477443fd2018711e282a70295c0e659df1388557eb390cb13d03420713a8d1",
+     "bytes": 308457416
+    },
+    "unit_x0.npy": {
+     "sha256": "2c113e53f4b093eae1b360d4564dc33c0ade97963584c02e331d2bbb6694c95f",
+     "bytes": 308457416
+    }
+   },
+   "origin_commit": "187ed0311692ba63f8d546ca3e2ba1ff63948160"
+  },
+  "r2_family_table": {
+   "path": "manifests/episodic_residual_r2/source_families.tsv",
+   "sha256": "bd5a1b205ad7256407f99df90a4bbcca168690ce3f634dbadc49114c6f9639ae"
+  },
+  "r5_rows_cross_check": {
+   "path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_noise_aware_design_r5/assets/processed/store_v1/rows.tsv",
+   "sha256": "cc7091a71b9fa9f471f6ce03d501ad6d62a3ed32fe7e1b101f6d0f2969d61f07",
+   "origin_commit": "cb060460057a9e659ff08667c4aa8c05dae71842",
+   "use": "read-only cross-check of n_ctl, ctl_sd, rep_tag"
+  },
+  "instinfo": {
+   "path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_transigen_adaptation_b1/assets/raw/cmap2020/instinfo_beta.txt",
+   "bytes": 674838120,
+   "sha256": "2676189e8ea4a4cfdafc6c7e1b9f1776f4459ebfe4f79f6a736c3f3a732d3249"
+  },
+  "control_level3": {
+   "path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_transigen_adaptation_b1/assets/raw/cmap2020/level3_beta_ctl_n188708x12328.gctx",
+   "bytes": 18611750206,
+   "sha256": "not recomputed (18.6 GB, read-only)"
+  }
+ },
+ "excluded": {
+  "xc_mixed_pools": {
+   "cells": 29,
+   "plate_rows": 13905,
+   "units": 4572,
+   "reason": "composition not documented in the release metadata"
+  },
+  "degenerate_rows": 42
+ },
+ "source": {
+  "cells": 132,
+  "families": 126,
+  "meta_train_cells": 121,
+  "meta_train_families": 115,
+  "meta_val_cells": [
+   "22RV1",
+   "BC3C",
+   "CW2",
+   "HCC515",
+   "HFL1",
+   "MCF10A",
+   "MINO",
+   "NCIH596",
+   "OCILY3",
+   "SKMEL5",
+   "TC32"
+  ],
+  "meta_val_families": 11,
+  "plate_rows": 224627,
+  "units": 74277,
+  "plates": 2745,
+  "units_multi_plate": 48031,
+  "cv_folds": 3,
+  "cv_fold_seed": 20261117,
+  "cv_fold_families": {
+   "0": 39,
+   "1": 38,
+   "2": 38
+  }
+ },
+ "target": {
+  "lines": [
+   "HUH7",
+   "JHH5",
+   "JHH7"
+  ],
+  "expression_values_read": false,
+  "plate_rows": {
+   "HUH7": 179,
+   "JHH5": 663,
+   "JHH7": 111
+  },
+  "plates": {
+   "HUH7": [
+    "CVD001_HUH7_24H_X1_F1B3_DUO52HI53LO",
+    "CVD001_HUH7_24H_X2_F1B3_DUO52HI53LO",
+    "CVD001_HUH7_24H_X3_F1B3_DUO52HI53LO"
+   ],
+   "JHH5": [
+    "ASG002_JHH5_24H_X1_B35",
+    "MOAR008_JHH5_24H_X1_B36",
+    "MOAR009_JHH5_24H_X1_B36",
+    "MOAR010_JHH5_24H_X1_B36",
+    "MOAR011_JHH5_24H_X1_B36",
+    "MOAR012_JHH5_24H_X1_B36"
+   ],
+   "JHH7": [
+    "ASG002_JHH7_24H_X1_B34"
+   ]
+  }
+ },
+ "files": {
+  "cells.tsv": {
+   "sha256": "bf8ccd3c12f48b45d68b4ca8e3f5a0e981f75020087fc7e1a480f0a504e40fac",
+   "bytes": 6341
+  },
+  "units.tsv": {
+   "sha256": "a379b634de3e62391f561c398cd5a693bc64e4766d124c9b2d04b3af6a05b785",
+   "bytes": 9979018
+  },
+  "unit_rows.tsv": {
+   "sha256": "0fd31fe901d6033fb92648ce790e38ecb650748bf1c5987cd15c3b834910f4b0",
+   "bytes": 7079611
+  },
+  "rows.tsv": {
+   "sha256": "cbc75f939bfba04a732a35040d1aca417f3e60330a09951fccd4ef4809a82ccb",
+   "bytes": 39428862
+  },
+  "plates.tsv": {
+   "sha256": "5f64dcb7c6f5d8d7f14a7dcddedca2216957675bff59a730282eba461d254d2c",
+   "bytes": 399760
+  },
+  "groups.tsv": {
+   "sha256": "628941d70ee638729d2c8dc76ae994aea8aa711c55e692af1a88a32fa62f8d4a",
+   "bytes": 346558
+  },
+  "target_rows_meta.tsv": {
+   "sha256": "957f54b549e5f33633b502053d21b299955f6c137d0830939944bbc13f9dc76c",
+   "bytes": 146871
+  }
+ },
+ "out_dir": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_replicate_calibrated_r8/assets/processed/store_v1"
+}
