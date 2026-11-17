@@ -6,7 +6,7 @@ import torch
 
 from .common import MAN, runs, public, dump, sha256, HCC
 from .data import Store, TrainStats, FREEZE
-from .evaluate import unit_metrics, summarise, paired_bootstrap
+from .evaluate import unit_metrics, summarise, paired_bootstrap, family_mean
 from .baselines import fit_all
 from .models import W0Native, W1DeltaAnchor, DeltaMLP
 from .train import predict
@@ -15,16 +15,29 @@ PANELS = ["source", "HUH7", "JHH5", "JHH7", "hcc_mean"]
 
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--mock", action="store_true", help="wiring check on VALIDATION units with the uncommitted freeze draft; test stays sealed")
+    a = ap.parse_args()
+    global MAN
     t0 = time.time()
-    assert os.environ.get("R4_FINAL_EVAL") == "1"
-    assert subprocess.run(["git", "ls-files", "--error-unmatch", FREEZE], capture_output=True).returncode == 0, "freeze manifest not committed"
-    assert subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], capture_output=True, text=True).stdout.strip() == "", "worktree not clean"
-    fr = json.load(open(FREEZE))
-    out = runs("test_eval", "test_eval_v1")
-    os.makedirs(out, exist_ok=False)
     S = Store(); st = TrainStats(S)
-    te = S.test
-    y = S.test_delta(te)
+    if a.mock:
+        assert os.environ.get("R4_FINAL_EVAL") != "1"
+        fr = json.load(open(public("manifests", "response_geometry_r4", "freeze_manifest.json")))
+        out = runs("test_eval", f"mock_{int(t0)}")
+        MAN = os.path.join(MAN, "mock")
+        te = S.val
+        y = S.delta(te)
+    else:
+        assert os.environ.get("R4_FINAL_EVAL") == "1"
+        assert subprocess.run(["git", "ls-files", "--error-unmatch", FREEZE], capture_output=True).returncode == 0, "freeze manifest not committed"
+        assert subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], capture_output=True, text=True).stdout.strip() == "", "worktree not clean"
+        fr = json.load(open(FREEZE))
+        out = runs("test_eval", "test_eval_v1")
+        te = S.test
+        y = S.test_delta(te)
+    os.makedirs(out, exist_ok=False)
     ut = S.units.iloc[te].reset_index(drop=True)
     cells = ut.cell.to_numpy()
     dev = torch.device("cuda")
@@ -64,7 +77,6 @@ def main():
     for name, ur in unit_rmse.items():
         for t in ["weak", "mid", "strong"]:
             s = (terc == t) & (ut.is_hcc.to_numpy() == 0)
-            from .evaluate import family_mean
             trows.append(dict(model=name, tertile=t, rmse=family_mean(ur[s], ut.family.to_numpy()[s]), n_units=int(s.sum())))
     pd.DataFrame(trows).to_csv(public(MAN, "test_by_strength.tsv"), sep="\t", index=False)
     crow = []
