@@ -12,11 +12,12 @@ set -euo pipefail
 source experiments/evidence_gated_r7/env.sh
 echo "start=$(date -Is) host=$(hostname) job=${SLURM_JOB_ID:-}"
 ENV="$R7_ASSETS/envs/xpert"
-if [ ! -x "$ENV/bin/python" ]; then
-  /usr/local/anaconda3/bin/conda create -y -q -p "$ENV" python=3.9 >/dev/null
+if [ ! -f "$ENV/.r7_installed" ]; then
+  [ -x "$ENV/bin/python" ] || /usr/local/anaconda3/bin/conda create -y -q -p "$ENV" python=3.9 >/dev/null
   "$ENV/bin/pip" install -q torch==2.1.0 --index-url https://download.pytorch.org/whl/cu121
   "$ENV/bin/pip" install -q "numpy<2" torch-geometric==2.6.1 scanpy==1.9.8 anndata h5py==3.10.0 PyYAML==6.0.1 scikit_learn==1.4.0 \
-      torchmetrics==1.6.0 tqdm==4.66.1 matplotlib==3.8.2 pandas==2.2.3 dask==2024.7.1 unimol-tools==0.1.4.post1 rdkit
+      torchmetrics==1.6.0 tqdm==4.66.1 matplotlib==3.8.2 unimol-tools==0.1.4.post1 rdkit
+  touch "$ENV/.r7_installed"
 fi
 SHIM="$ENV/lib/python3.9/site-packages/flash_attn"
 mkdir -p "$SHIM"
