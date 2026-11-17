@@ -19,6 +19,13 @@
 - HepG2/C3A를 성인 HCC로 부르지 않는다. HCC 관련 결과는 SNU-423 하나, 약물 70개에 한한다.
 - 다른 용량, 다른 자료, 환자 조직, 임상적 유용성으로 일반화하지 않는다.
 
+## 사후 pilot에 대하여 (탐색적)
+
+- 위의 "주장하지 않는 것" 첫 항목은 **사전 계획 평가** 기준으로 유지된다. 그 뒤 사용자 승인으로 실행한 pilot([PILOT_GENERATORS.md](PILOT_GENERATORS.md))은 탐색적 결과로만 다음을 말한다:
+  시험한 구성(폭 256·2 block DDPM, 유전자 공간 직접 학습의 축소 CellFlow 1개 설정)에서, 평균을 맞추고 복원 v2를 적용하면 잔차 DDPM은 shifted control보다 0.0048 [0.0025, 0.0069],
+  Gaussian k=50보다 0.0031 [0.0013, 0.0051] 나빴고, 절대 DDPM과 CellFlow도 shifted control을 이기지 못했다. SNU-423도 같다.
+- pilot은 gate 실패 뒤에 승인됐고 기준선의 시험 점수를 본 뒤 설계됐다. 확증 결과로 인용하지 않는다. CellFlow 수치를 CellFlow 일반의 성능으로, DDPM 수치를 diffusion 일반의 한계로 읽지 않는다.
+
 ## 한계
 
 1. **Gate 판정의 근거가 좁다.** G1은 well이 둘 이상인 조건(약물 26개)에서만 계산되고, 재현 well의 78%가 다른 plate에 있어 plate 효과가 재현 변동에 포함된다.
