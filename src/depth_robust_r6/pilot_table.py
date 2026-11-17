@@ -12,7 +12,7 @@ import pandas as pd
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--prefix", nargs="+", default=["pilot_"])
+    ap.add_argument("--prefix", nargs="+", default=["pilot_", "rev1_"])
     ap.add_argument("--out", default="reports/depth_robust_r6/tables/pilot_runs.tsv")
     ap.add_argument("--curves", default="reports/depth_robust_r6/tables/pilot_curves.tsv")
     a = ap.parse_args()
@@ -27,7 +27,8 @@ def main() -> None:
             continue
         r = json.loads(rf.read_text())
         dv = r["dev"]
-        rows.append(dict(run_id=r["run_id"], status="ok", arm=r["arm"], lr=r["lr"], seed=r["seed"], epochs=r["epochs"],
+        rows.append(dict(run_id=r["run_id"], status="ok", arm=r["arm"], head=r["hp"].get("head_mode", "joint"),
+                         drug_shrink=r["hp"].get("drug_shrink", 0.0), lr=r["lr"], seed=r["seed"], epochs=r["epochs"],
                          weights=json.dumps(r["weights"]), params=r["params"],
                          dev_p1=dv["p1.0_s0"], dev_p05=float(np.mean([dv[f"p0.5_s{s}"] for s in range(3)])),
                          dev_p025=float(np.mean([dv[f"p0.25_s{s}"] for s in range(3)])),
