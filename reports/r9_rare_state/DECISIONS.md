@@ -44,3 +44,29 @@
 - 둘 다 CI가 0을 포함하면 "label 정의·표현 우선 점검".
 - 판정은 target×head별로 따로 보고하고, 셋이 엇갈리면 엇갈린다고 적는다.
 - 회전 반복은 기술 반복이며 독립 n이 아니다(donor 내 평균 후 donor 단위 통계).
+
+### C1 결과 (실행 `a1_nxd_v1`, 30 task, 2026-11-18; `n_by_d_stress.tsv`, `n_by_d_effects.tsv`, `figures/fig1_n_by_d.png`)
+
+- 관측: 평가 donor 10명 전부(모든 target에서 시험 donor 양성 ≥10). D 효과(D 1→4, N 평균)는 6개 target×head 조합 모두 양수이고 CI 하한 > 0 (B LR +0.085 [0.045, 0.131], P1 +0.117; Endothelial LR +0.035, P1 +0.018; Fibroblast LR +0.172 [0.106, 0.238], P1 +0.088).
+- 사전 판정 규칙 적용: **B·Fibroblast**(두 head 모두) — D 효과 > N 효과, 차이 CI 하한 > 0 → "환자 지지도 가설 강화". **Endothelial** — LR: D 효과(+0.035)와 N 효과(+0.035)가 같고 차이 CI가 0 포함; P1: N 효과 CI가 0 포함, D−N 차이 CI 0 포함 → 규칙의 세 분기 중 어디에도 정확히 들지 않음: "D 효과는 있으나 N보다 크다고 할 수 없음".
+- 예: Fibroblast LR에서 N=32·D=4(0.790)가 N=128·D=1(0.721)보다 높다. D가 늘면 recall과 오탐(false positive)이 함께 늘어난다(AUPRC는 임계값 무관 순위 지표).
+- 해석 한계: 인공 희소화 결과이며 자연 희귀 상태 결론이 아니다. D=1 조건은 한 환자의 부위 구성·배치 특성을 함께 담으므로 "환자 수 노출 효과"이지 기술·생물 변동의 인과 분리가 아니다(§7).
+
+---
+
+## C2 — A2 같은 총 프로토타입 2×2 + §8 기준선 (계획; 실행 전 커밋)
+
+**관측:** C1에서 지지 donor 수가 세포 수보다 중요할 수 있다는 결과(B·Fibroblast). Smoke(배관 점검용, 결과 아님)에서 고정 k-means 배분이 Hepatocyte 프로토타입 일부를 한 donor 전용 모드(support 1)에 쓰는 것을 확인.
+
+**가설:** 같은 총 K에서, source donor를 하나씩 뺀 내부 검증 이득이 반복되고 두 자식 모두 ≥2 donor 지지를 받는 분할에만 용량을 주는 배분(A11)이 고정 배분(A10)보다 새 donor 인식을 개선한다.
+
+**변경:** 헤드 13종(`scripts/r9/r9arms.py`): LR_cell/LR_class/LR_donor, MLP_donor, P1_class/P1_donor, GMM_K, A00/A10/A01/A11, TL_donor(훈련 손실 기반 분할), RA_donor(무작위 배분). K = 3×클래스 수(Tier 1: 18, Myeloid: 42, B: 15). 대각 공분산+수축 0.3, 클래스 내 혼합가중치 합 1, 균일 클래스 prior, 300 step Adam(모든 프로토타입 arm 동일). 손실은 가중 손실만(샘플링 보정 없음). A01과 A11은 같은 배분(같은 seed)을 공유하고 손실만 다르다.
+
+**조건:** `nat`(Tier 1 자연 비율), `sparse_{B,Endothelial,Fibroblast}_N64_D4`(인공 희소화, C1에서 D 효과가 있던 지점), `lin_Myeloid`, `lin_B`(Tier 2 자연 희귀 군집, 탐색). 바깥 LOPO 10 × seed 3.
+
+**주 지표:** nat — donor-macro all-label AUPRC(자연 희귀 대분류 없음); sparse — 대상 label AUPRC; lin — fold별 정의된 자연 희귀 다환자 군집 AUPRC. 보조: macro-F1, Brier, NLL, 오탐.
+
+**예상 판별 결과 / 판정 규칙(사전 고정):**
+- 핵심 A11−A10: donor paired 차이, donor bootstrap 95% CI. 조건별로 따로 보고하고 자연 희귀(Tier 2)와 인공 희소(Tier 1 sparse)를 섞지 않는다.
+- A4에 보낼 "선정 버전" 규칙: A11−A10이 sparse 3개 target 중 ≥2개에서 CI 하한 > 0 **이고** nat macro-F1에서 A11−A10 평균 ≥ −0.005이면 A11을 선정. 아니면 A10(또는 A10이 LR_donor보다 sparse 3개 중 ≥2개에서 CI 하한 > 0로 낫지 않으면 LR_donor)을 선정 버전으로 둔다. 어느 경우든 A4에는 2×2 네 arm과 LR_donor·P1_donor·GMM_K를 함께 고정해 한 번에 평가한다.
+- A11이 A10을 못 넘고 A10이 A00을 넘으면 §10 "주 기여는 환자 균형 학습" 행; A11≈TL_donor면 "환자 지지도의 귀속 불명"으로 적는다.
