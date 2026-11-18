@@ -1,0 +1,55 @@
+# R8 follow-up v1 (observation transfer). Written before any follow-up number was computed.
+# Base: original R8 final tip 5530acb9f1536dfcbd5c5427728ad7d748ce82d8 (read-only). A change needs a dated amendment below.
+track: r8_followup_v1
+base_commit: 5530acb9f1536dfcbd5c5427728ad7d748ce82d8
+
+partitions:
+  holdout_unit: cell-line family
+  outer: existing 3-fold family manifest (cells.tsv cv_fold 0/1/2 over the 115 source-train families); confirmation families are 'off'
+  inner: "fixed family split inside each outer-train part: inner-validation = crc32('r8f_inner|' + family) % 3 == 0, inner-train = the rest"
+  final_inner: same rule over all 115 source-train families (constants of the frozen candidate); nuisance then refit on all source-train
+  refit_per_partition: [f0 / f* allowed families, PCA feature bases, covariance V0-V3 (v_e, v_s, v_r), kernel block scales, kappa_f, kappa_b, lambda, eta, J constants]
+  global_paths_replaced: anchor_selection.json and covariance_model.json are never read by a strict out-of-fold evaluation (only by V0 reproduction and fixed-hyper rows)
+
+episodes:
+  selection: {support_seeds: [1], query_cap: 200}          # inner-validation episodes (same rule as the original dev episodes)
+  evaluation: {support_seeds: [1, 2, 3], query_cap: null}  # outer-test episodes (same rule as the original confirmation episodes)
+  k_values: [8, 16, 32]
+  k_main: 16
+
+grids:
+  kappa_f: [0, 0.5, 1, 2, 4, 8, 16, 32]
+  kappa_b: [0, 2, 4, 8, 16, 32, 64, inf]
+  lambda: [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100, 300, 1000]
+  eta: [0.25, 0.5, 0.75, 1.0]
+  j1_ac: "a, c in {0, .25, .5, .75, 1}, a + c <= 1 (15 pairs)"
+  j2_tau_b_over_u: [0, 0.1, 0.3, 1]
+  j2_sigma0_over_u: [0.01, 0.1, 0.3, 1]
+  j3_tau_k_over_u: [0, 0.1, 0.3, 1]
+  kernel_mixture_rho: [0, 0.25, 0.5, 0.75, 1]
+  ties: lower score; then weaker correction (larger kappa_b, smaller eta, larger lambda, smaller a + c)
+
+covariance_versions:
+  V0: original diag.py rule (first-400-unit overlap summary, unshrunk leave-family-out f0, no off-diagonal centring term), floor 0.05 v_tot
+  V1: V0 + the off-diagonal centring term v_s * mean(O_off) (first-400 summary, f0)
+  V2: V1 with q, O_diag, O_off over every eligible unit (exact sums, Appendix A)
+  V3: V2 with residuals against the predictor's shrunk anchor f* (kappa_f of the partition)
+  floor: v_r_used = max(v_r_raw, 0.05 v_tot); raw, floored and per-cell negative fractions are all recorded
+  sufficiency: ">= 30 different-RNA-plate pairs and >= 10 families inside the partition's training families"
+  omega_rule: unchanged original normalisation (methods.omega); 'V3s' = V3 rescaled per episode to the trace of V0 (structure vs scale)
+
+statistics:
+  primary: K = 16 per-unit delta RMSE over 978 genes, original aggregation (query mean -> support seeds -> cells of a family -> families)
+  source_ci: family cluster bootstrap, 2000 draws, seed 20261117, 95%
+  matched_plate_ci: family cluster bootstrap (all pairs and A<->B orders of a family stay together)
+  hcc_ci: synchronised drug-ID bootstrap over the union of query drug groups of all three targets and splits (one weight per drug ID)
+  operating_criterion: 0.5% relative delta RMSE; adoption needs a mean improvement, the same direction in >= 2 of 3 outer folds and the 95% CI below 0
+  equivalence: only if the 90% CI lies inside +-0.5% of the reference mean
+  retrieval: tie-corrected expected reciprocal rank and Top-k (legacy mid-rank kept separately)
+
+compute:
+  job_prefix: r8f_
+  gpu_max_concurrent: 1
+  neural_retraining: only if a chosen branch needs it (<= 2 structures, 3 folds x seeds 42/43/44)
+
+amendments: []
