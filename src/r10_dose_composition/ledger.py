@@ -1,5 +1,6 @@
 """Collect run_ledger rows from R10 Slurm logs (assets/logs/r10_*.out): job, host, git SHA, command,
-start/end, wall time, max RSS, exit status. Purely descriptive; no outcome numbers."""
+start/end, wall time, CPU seconds (user+sys from /usr/bin/time), max RSS, exit status.
+Purely descriptive; no outcome numbers."""
 from __future__ import annotations
 
 import csv
@@ -9,17 +10,25 @@ import re
 import sys
 
 
+def _get(txt, pat):
+    m = re.search(pat, txt, re.M)
+    return m.group(1).strip() if m else ""
+
+
 def parse(path):
     txt = open(path, errors="replace").read()
-    g = lambda pat: (re.search(pat, txt, re.M).group(1).strip() if re.search(pat, txt, re.M) else "")
-    return dict(log=os.path.basename(path), job_name=os.path.basename(path).split("_")[0] + "_" +
-                os.path.basename(path).split("_")[1], host=g(r"host=(\S+)"), slurm_job=g(r"job=(\d+)"),
-                git=g(r"git=([0-9a-f]+)"), dirty=g(r"dirty=(\d+)"), start=g(r"start=(\S+)"), end=g(r"^end=(\S+)"),
-                cmd=g(r"^cmd: (.*)$")[:400], wall=g(r"Elapsed \(wall clock\) time \(h:mm:ss or m:ss\): (\S+)"),
-                max_rss_gb=(f"{int(g(r'Maximum resident set size \(kbytes\): (\d+)')) / 1e6:.2f}"
-                            if g(r"Maximum resident set size \(kbytes\): (\d+)") else ""),
-                user_cpu_s=g(r"User time \(seconds\): (\S+)"), exit_status=g(r"Exit status: (\d+)"),
-                traceback="yes" if "Traceback" in txt else "")
+    rss = _get(txt, r"Maximum resident set size \(kbytes\): (\d+)")
+    u = _get(txt, r"User time \(seconds\): (\S+)")
+    s = _get(txt, r"System time \(seconds\): (\S+)")
+    name = os.path.basename(path)[:-4]
+    return dict(log=os.path.basename(path), job_name=re.sub(r"_\d+(_\d+)?$", "", name),
+                slurm_job=_get(txt, r"job=(\d+)"), host=_get(txt, r"host=(\S+)"), git=_get(txt, r"git=([0-9a-f]+)"),
+                dirty=_get(txt, r"dirty=(\d+)"), start=_get(txt, r"start=(\S+)"), end=_get(txt, r"^end=(\S+)"),
+                cmd=_get(txt, r"^cmd: (.*)$")[:400],
+                wall=_get(txt, r"Elapsed \(wall clock\) time \(h:mm:ss or m:ss\): (\S+)"),
+                cpu_seconds=f"{float(u) + float(s):.0f}" if u and s else "",
+                max_rss_gb=f"{int(rss) / 1e6:.2f}" if rss else "",
+                exit_status=_get(txt, r"Exit status: (\d+)"), traceback="yes" if "Traceback" in txt else "")
 
 
 def main():
