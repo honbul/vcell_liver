@@ -1,0 +1,85 @@
+# R7 후속 결정 기록 (DECISIONS) — target attribution v1
+
+각 결정은 실행 **전에** 적고 commit한다. 형식: 관측 → 가능한 해석 → 선택 → 선택하지 않은 분기와 이유 → 판정 기준. 실행 뒤의 결과는 같은 항목 아래 "결과"로 덧붙이고 앞부분은 고치지 않는다.
+
+## F-0. 이전 단계의 고정 사항 (요약, 이미 commit됨)
+
+- 계약·비교군·재배정 규칙·K군·통계·§10 적용 규칙: `FOLLOWUP_PROTOCOL.md`(commit `67e7a50`, K군 `a703314`). D3 점수를 보기 전에 고정했다.
+- D2(고정 checkpoint, 원 validation source + train 일부, 개발 분석): 원 B11 checkpoint 3개 평균에서 주석 unit의 `RMS{r(S)−r(∅)} / RMS(r)` = 0.037(validation source annotated; seed별 0.034–0.039), 재배정 seed와의 차이 비율 0.045. K3에서는 1e-7 수준(구조상 도달 불가와 일치). `checkpoint_target_sensitivity.tsv`.
+- D3 실행: 3 fold × model seed 42/43/44 × {C, M, G0, GR, GS142/143/144} = 63 run, 모두 완료(array 25930 + plumbing 25878/25901). 학습 코드(`train.py`, `models.py`)는 모든 cell에서 같은 내용이다(`git diff 3853c0d 54a66eb -- src/` = `curves.py` 추가뿐).
+
+## F-1. D3 결과에 §10 분기표 적용 (2026-11-18 16:4x KST, 분기 실행 전)
+
+### 관측 (pooled source OOF, 55,846 source unit / 5,802 약물 그룹; job 26190, commit `54a66eb`)
+
+family-balanced ΔRMSE(낮을수록 좋음), model seed 평균(GS는 3 mapping × 3 seed 평균):
+
+| arm | 전체 | 주석 unit |
+|---|---|---|
+| C | 0.62883 | 0.62891 |
+| M | 0.62761 | 0.62743 |
+| G0 | 0.62804 | 0.62787 |
+| GR | 0.62800 | 0.62783 |
+| GS (평균) | 0.62794 | 0.62777 |
+
+| 대비 | 차이 | 95% 구간 | 동시 구간(97.5%) | Holm p |
+|---|---|---|---|---|
+| **GR − M** (핵심) | +0.00039 | [−0.00014, 0.00094] | [−0.00022, 0.00103] | 0.315 |
+| **GR − GS** (핵심) | +0.00005 | [−0.00006, 0.00016] | [−0.00007, 0.00018] | 0.370 |
+| GR − C | −0.00083 | [−0.00126, −0.00037] | — | — |
+| GR − G0 | −0.00004 | [−0.00015, 0.00006] | — | — |
+| M − C | −0.00122 | [−0.00185, −0.00061] | — | — |
+| G0 − C | −0.00079 | [−0.00122, −0.00033] | — | — |
+| GS − C | −0.00089 | [−0.00131, −0.00044] | — | — |
+
+- K0 unit은 모든 arm에서 backbone과 같다(최대 차이 < 1e-5, 구조적 결과).
+- K1∪K2: GR−M +0.00037 [동시 −0.00037, 0.00112], GR−GS +0.00005 [동시 −0.00009, 0.00019]. K3: GR−M +0.00152 [동시 −0.00057, 0.00564], GR−GS +0.00014 [동시 0.00000, 0.00025].
+- GR 보정 크기 상위 1/3(label-free 분위): GR−C −0.00187 [−0.00302, −0.00075] (악화 아님).
+- 양성 대조(split-half, held source unit 중 검출 plate ≥ 2): half A로 half B를 맞힌 RMSE 0.6558, 모델들 0.6885–0.6887; 동률 보정 MRR 0.674 대 모델 0.471–0.477(모든 후보 동률 기준 0.419).
+- 학습곡선(inner-validation): best step 중앙값 GR 13,500 / GS 15,500 / G0 12,000 / M 5,500; best가 마지막 평가인 run은 GR 1/9, G0 1/9, GS 4/27, M 0/9 → 구체적 미수렴 근거 없음, 연장하지 않는다.
+- `decision_table_rows`(score_oof 구현 출력): row1 false, **row2 true**, row3 false, row4 false, row5 false, row6 false, `core_meaningful_improvement_excluded` true.
+
+### 해석 (가설 수준)
+
+- GR이 C보다 낮은 오차를 보이지만, 같은 크기의 이득이 표적 정체성이 없는 대조(M, G0)와 대응을 깨뜨린 대조(GS)에서도 나온다. 현재 자료와 구조에서 GR의 이득은 **추가 보정 용량·주석 상태로 설명 가능**하고, 실제 약물–표적 대응의 추가 이득은 검출되지 않았다.
+- 두 핵심 대비의 동시 구간 하한(−0.00022, −0.00007)은 운영 기준 −0.001보다 크다. 즉 이 설계에서 "GR이 M·GS보다 0.001 이상 좋다"는 크기의 이득은 배제된다(§3.4의 "의미 있는 크기의 개선은 배제").
+- K2에서 GR−M이 +0.00161(95% [0.00073, 0.00234])로 M이 낫다. 사전 지정 주 하위군이지만 분기 규칙의 조건(5행)과는 다른 방향이며 탐색 결과로 둔다.
+
+### 선택: 2행 → F2(표적 유래 보정) 1회
+
+- 2행 조건: CI(GR−C) < 0, CI\*(GR−M)·CI\*(GR−GS)·CI(GR−G0) 모두 0 포함 → 성립. 6행은 성립하지 않는다(두 동시 구간 하한이 −0.001보다 큼).
+- F2 진입 조건(프로토콜 §9, 셋 모두):
+  - (a) generic 경로가 보정을 지배: D2 비율 0.037 < 0.5. D3에서도 CI(G0−C) < 0이고 CI(GR−G0)가 0 포함. **충족.**
+  - (b) 배울 여지: split-half A가 같은 목표에서 모든 모델보다 낮은 RMSE(0.6558 < 0.6885)와 높은 동률 보정 MRR(0.674 > 0.477). **충족.**
+  - (c) 현재 구조가 표적 정체성 이득을 분리하지 못함: 2행 성립. **충족.**
+- 따라서 F2를 1회 실행한다.
+
+### 선택하지 않은 분기와 이유
+
+| 분기 | 이유 |
+|---|---|
+| F1 (target-set pooling 대 graph) | 1행 불성립: GR이 M·GS를 이기지 못함. 표적 정보의 가치가 확인되지 않은 상태에서 전달 구조를 비교할 근거가 없다 |
+| F3 (보정량 수축) | 4행 불성립: CI(GR−C)가 0보다 위가 아니고, 보정 크기 상위 1/3에서도 GR−C < 0 |
+| F4 (도달 가능 여부 gate) | 5행 불성립: K1∪K2에서 CI(GR−M), CI(GR−GS)가 0 아래가 아님 |
+| 3행(M 유지, F2 조건부) | 불성립: CI\*(GR−GS)가 0 아래가 아님 |
+| 6행 점검만 | 불성립(위). 학습곡선·양성 대조·효과 범위 표는 어차피 산출했다(`learning_curve_summary.tsv`, `positive_control_split_half.tsv`, `effect_range.tsv`) |
+
+### F2 실행 계획 (사전 고정)
+
+- 구조(기존 구현, fixture C8로 빈 seed에서 정확히 0 확인): `r_target = F(S,q,G) − F(∅,q,G)`, `Δ̂ = Δ̂_chem + m·r_target`. 같은 GraphCorrection(gated), 같은 고정 backbone·batch 열·augmentation 열·MSE·lr 1e-4·20,000 update·500 update마다 inner-validation 선택. 데이터·손실·증강은 바꾸지 않는다.
+- arm: **TD**(실제 표적), **TDS142/143/144**(GS와 같은 null mapping manifest). 직접 단순 대조는 TDS와 M(이미 학습됨), 그리고 GS·GR·C를 그대로 유지한다.
+- 실행량: 3 fold × seed 42/43/44 × (TD + TDS 3개) = 36 run (array, `%2`, job 이름 `r7f_br`). 각 cell은 기존 fold backbone을 재사용한다.
+- 원 분할(`orig`) 모델: Phase E 재평가용으로 TD, TDS142/143/144를 seed 42/43/44로 같은 코드에서 학습한다(12 run, 원 test는 열지 않음).
+- 채점: `score_oof --tag branch_f2 --keys C M G0 GR GS142 GS143 GS144 TD TDS142 TDS143 TDS144 --branch_core TD:TDS TD:M --extra_pairs TD:C TD:GR TDS:C TDS:GS`. 분기 대비 family(TD−TDS, TD−M)는 Bonferroni 동시 구간(97.5%)과 Holm p를 쓴다. 나머지는 기술.
+- **판정 규칙(결과를 보기 전 고정):**
+  - 표적 정체성 이득이 분리됨: CI\*(TD−TDS) < 0 **그리고** CI\*(TD−M) < 0. 이때만 TD를 후속 후보로 적는다(크기가 −0.001 미만이면 "작은 효과"로 따로 표시).
+  - CI\*(TD−TDS) < 0 이지만 CI\*(TD−M)이 0을 포함하거나 위: "차분 구조에서 real이 null보다 낫지만 주석 상태 대조를 넘지 못함" — 지식 사용 성공으로 보고하지 않는다.
+  - CI\*(TD−TDS)가 0을 포함: **종료 조건**. 구조 확대를 끝내고 단순 모델을 유지한다. 유지 모델은 D3에서 C보다 낮은 오차가 검출된 M(주석 metadata 보정; 표적 정체성은 쓰지 않음)으로 적는다.
+  - 어느 경우에도 같은 3-fold에서 고른 분기의 결과이므로 "내부 재분할 안정성"으로 부른다(독립 확인 아님). 차분은 모델 내부 함수 차이이며 약물 표적의 인과 효과가 아니다.
+- 이 결과로 추가 분기·hyperparameter·epoch를 고르지 않는다.
+
+### Phase E 동결 내용 (사전 고정)
+
+- 동결 manifest(`freeze.py`): C(원 연구 chem_only checkpoint, 읽기 전용), M, G0, GR, GS142/143/144, TD, TDS142/143/144 × seed 42/43/44, 모두 원 train으로 학습·원 validation으로 선택.
+- 사전 지정 대비: 핵심 GR−M, GR−GS(Holm); 분기 family TD−TDS, TD−M(Holm); 기술 GR−C, M−C, G0−C, GS−C, GR−G0, TD−C, TD−GR, TDS−C, TDS−GS. 패널: source(primary), K1–K3, HCC 세 계열과 hcc_mean(보고만).
+- 원 R7의 1회 최종 평가 디렉터리(`test_eval_v1`)는 존재만 확인했고 내용은 읽지 않았다(프로토콜 §3 순서 규칙의 "완료 관측").

@@ -76,7 +76,7 @@ def main():
         return cache[(key, s)]
 
     blocks = [dict(name="test" if not a.mock else "validation", k=0, held=te, y=y, load=load)]
-    tables(S, blocks, keys, seeds, tag, role, official=False, extra_pairs=fr.get("extra_pairs", []), n_boot=fr.get("n_boot", 5000), halves=False,
+    tables(S, blocks, keys, seeds, tag, role, official=False, extra_pairs=fr.get("extra_pairs", []), branch_core=fr.get("branch_core", []), n_boot=fr.get("n_boot", 5000), halves=False,
            unit_file=f"{tag}_unit_rmse.tsv.gz")
     dump(dict(tag=tag, job=os.environ.get("SLURM_JOB_ID"), commit=os.environ.get("R7F_COMMIT"), frozen_commit=fr.get("frozen_commit"), seconds=round(time.time() - t0),
               n_units=int(len(te)), prediction_dir=out, prediction_sha256=hashes), pman(tag, "final_eval_record.json"))

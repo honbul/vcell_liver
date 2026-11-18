@@ -1,0 +1,67 @@
+{
+ "run_id": "fold2_s42_GS143",
+ "kind": "GS",
+ "seconds": 3344.1,
+ "commit": "54a66eb",
+ "slurm_job": "26106",
+ "slurm_array_task": "6",
+ "host": "g4",
+ "config": {
+  "arm": "GS",
+  "ctx": "fold2",
+  "run_id": "fold2_s42_GS143",
+  "seed": 42,
+  "null_seed": 143,
+  "backbone_from": "fold2_s42_chem",
+  "lr": 0.0001,
+  "batch": 64,
+  "updates": 20000,
+  "eval_every": 500,
+  "aug": 1,
+  "max_updates_smoke": 0,
+  "n_train_units": 32047,
+  "n_sel_units": 5936,
+  "n_held_units": 18448,
+  "train_units_sha": "339bb345bcba874471afba9812fac9000e1f4e31abe982dd0d28f0e0ac4edabd",
+  "sel_units_sha": "44e5e2a62a505b35131b612b1fd4d4818363d93f6cc408687f6d0ba90266bd6a",
+  "held_units_sha": "6e47c079fd3ed5d9ce5ec4bd161f4ec3c86ded269d7caf858671e85ce3749afe",
+  "aug_rates": {
+   "all": 0.5,
+   "source": 0.25,
+   "block": 0.25
+  },
+  "n_params_total": 2687553,
+  "n_params_correction": 373359,
+  "n_params_trainable": 373359,
+  "cells_without_train_units": 0,
+  "null_mapping": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r7_followup_v1/assets/cache/shuffle/fold2_null143.tsv",
+  "null_mapping_sha256": "2d68561b53706bcb8627895e7c0832952e8370dc7ff4661d31cd71069e8c82ce",
+  "samples_seen": 1280000
+ },
+ "best": {
+  "score": 0.6434218448156117,
+  "step": 15500,
+  "sel": {
+   "rmse": 0.6434218448156117,
+   "pearson": 0.26937797990652634,
+   "centred_pearson": 0.17402478100446553,
+   "mrr": 0.4942074884180846,
+   "top20_direction": 0.6865152510644963,
+   "rms_pred": 0.3394209187523768,
+   "rms_true": 0.6545427162839675,
+   "n_units": 5874,
+   "n_families": 123,
+   "corr_rms": 0.04211355373263359,
+   "chem_rms": 0.21203865110874176,
+   "mean_gate": 0.2304399311542511
+  }
+ },
+ "train_seconds": 3332.8,
+ "inference": {
+  "held_units": 18448,
+  "seconds": 11.04,
+  "sec_per_1000_units": 0.598
+ },
+ "gpu_max_mem_gb": 3.8,
+ "checkpoint_sha256": "14bc31c060f7aef5ce0f0acaa77748368e54dfd458441c1e5339a876e10ec187"
+}

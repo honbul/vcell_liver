@@ -38,6 +38,7 @@ def main():
     ap.add_argument("--tag", default="oof", help="oof: official tables; anything else: written under manifests/.../<tag>/")
     ap.add_argument("--n_boot", type=int, default=5000)
     ap.add_argument("--extra_pairs", nargs="*", default=[], help="branch contrasts candidate:comparator (descriptive unless listed in the branch decision)")
+    ap.add_argument("--branch_core", nargs="*", default=[], help="pre-registered branch contrasts candidate:comparator (own family: Bonferroni simultaneous interval + Holm)")
     a = ap.parse_args()
     official = a.tag == "oof"
     split_role = "source_out_of_fold(internal re-split of original train drugs)" if official else f"source_out_of_fold({a.tag})"
@@ -55,10 +56,10 @@ def main():
             assert rec["config"]["ctx"] == ctx and rec["config"]["seed"] == s
             return np.load(os.path.join(d, "held_pred.npy")).astype(np.float64), rec, pd.read_csv(os.path.join(d, "history.tsv"), sep="\t"), rid
         blocks.append(dict(name=ctx, k=k, held=held, y=S.delta(held), load=load))
-    tables(S, blocks, a.keys, a.seeds, a.tag, split_role, official, a.extra_pairs, a.n_boot, halves=True)
+    tables(S, blocks, a.keys, a.seeds, a.tag, split_role, official, a.extra_pairs, a.n_boot, halves=True, branch_core=a.branch_core)
 
 
-def tables(S, blocks, keys, seeds, tag, split_role, official, extra_pairs=(), n_boot=5000, halves=False, unit_file=None):
+def tables(S, blocks, keys, seeds, tag, split_role, official, extra_pairs=(), n_boot=5000, halves=False, unit_file=None, branch_core=()):
     """All result tables from per-block predictions. blocks: dict(name, k, held, y, load(key, seed) -> (pred, record, history, run_id))."""
     import types
     a = types.SimpleNamespace(seeds=list(seeds), tag=tag, n_boot=n_boot, extra_pairs=list(extra_pairs), folds=[b["k"] for b in blocks])
@@ -139,8 +140,10 @@ def tables(S, blocks, keys, seeds, tag, split_role, official, extra_pairs=(), n_
     tag_cols(at, split_role, metric_definition=agg, model_seeds="|".join(map(str, a.seeds)), view_or_null_seed="|".join(map(str, NULL_SEEDS)),
              candidate_pool="").to_csv(out("capacity_attribution.tsv"), sep="\t", index=False)
     # ---------------- contrasts
-    pairs = [(x, b, True) for x, b in CORE] + [(x, b, False) for x, b in OTHER] + [tuple(e.split(":")) + (False,) for e in a.extra_pairs]
+    # core family 1 = D3 core contrasts; family 2 = pre-registered branch contrasts (DECISIONS.md); 0 = descriptive
+    pairs = [(x, b, 1) for x, b in CORE] + [tuple(e.split(":")) + (2,) for e in branch_core] + [(x, b, 0) for x, b in OTHER] + [tuple(e.split(":")) + (0,) for e in a.extra_pairs]
     pairs = [(x, b, c) for x, b, c in pairs if x in arms and b in arms]
+    fam_size = {c: sum(1 for _, _, c_ in pairs if c_ == c) for c in (1, 2)}
     crow = []
     for sc, sm in scopes.items():
         for g, gm in groups.items():
@@ -149,18 +152,18 @@ def tables(S, blocks, keys, seeds, tag, split_role, official, extra_pairs=(), n_
                 continue
             for x, b, core in pairs:
                 d = avg(x) - avg(b)
-                r = contrast_row(fb, d, mk, core_m=2 if core else 1)
+                r = contrast_row(fb, d, mk, core_m=fam_size[core] if core else 1)
                 by_seed = [fb.stat(avg(x, seeds=[s]) - avg(b, seeds=[s]), mk, boot=False)[0] for s in a.seeds]
                 crow.append(dict(scope=sc, k_group=g, candidate=x, comparator=b, core=int(core), **r,
                                  diff_by_model_seed="|".join("%.6f" % v for v in by_seed), n_seeds_negative=int(sum(v < 0 for v in by_seed)),
                                  n_units=int(mk.sum()), n_drugs=int(U.drug_group[mk].nunique())))
     ct = pd.DataFrame(crow)
     ct["holm_p"] = np.nan
-    for (sc, g), d in ct[ct.core == 1].groupby(["scope", "k_group"]):
+    for (sc, g, _), d in ct[ct.core > 0].groupby(["scope", "k_group", "core"]):
         ct.loc[d.index, "holm_p"] = holm(d.boot_p.to_numpy())
     fold_sign = ct[ct.scope != "pooled"].groupby(["k_group", "candidate", "comparator"])["diff"].apply(lambda s: int((s < 0).sum())).rename("n_folds_negative").reset_index()
     ct = ct.merge(fold_sign, on=["k_group", "candidate", "comparator"], how="left")
-    tag_cols(ct, split_role, metric_definition="difference (candidate - comparator) of the " + agg + "; 95 % percentile interval of the paired drug-group bootstrap; core contrasts: Bonferroni simultaneous (97.5 %) interval and Holm p",
+    tag_cols(ct, split_role, metric_definition="difference (candidate - comparator) of the " + agg + "; 95 % percentile interval of the paired drug-group bootstrap; core=1 (GR-M, GR-GS) and core=2 (pre-registered branch family): Bonferroni simultaneous interval (1 - 0.05/family size) and Holm p within the family",
              operating_threshold=THR, n_boot=a.n_boot).to_csv(out("capacity_attribution_contrasts.tsv"), sep="\t", index=False)
     # ---------------- retrieval: legacy vs tie-corrected
     rrow = []
