@@ -80,7 +80,7 @@ def fig2():
                 rows.append((f"{lab}  [{s}]", r["diff"].iloc[0], r.lo.iloc[0], r.hi.iloc[0], C[j]))
     fig, ax = plt.subplots(figsize=(8, 4))
     interval_panel(ax, [r[0] for r in rows], [r[1] for r in rows], [r[2] for r in rows], [r[3] for r in rows], [r[4] for r in rows],
-                   "2  same plate (E1, blue) vs other X-tag replicate plate (E2, orange); source-train families, out-of-fold, K=16")
+                   "2  E1 same plate (blue) vs E2 other replicate plate (orange), K=16 OOF")
     fig.tight_layout()
     fig.savefig(fig_path("fig2_e1_e2_paired.png"), dpi=150)
 

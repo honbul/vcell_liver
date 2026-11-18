@@ -337,23 +337,22 @@ def method_preds(ctx, inp, K, const, fx, with_extras=True, jc=None):
         K0 = F.combine(bl0, "all")
         c = fx["c1"][ob][Ks]
         yield f"fx_C1_{name}", a["fq"] + a["b"] + c["eta"] * F.krr(K0[0], K0[1], a["w"], a["R"], c["lam"], Om), {}
-    if not with_extras:
-        return
-    # C1 direct residual shuffle (iid; 3 pre-fixed derangements); f*, b, features, queries fixed
     a = anc["iid"]
     c = const["c1"]["iid"][Ks]
     Om = torch.eye(K, dtype=torch.float64)
-    for j in (1, 2, 3):
-        p = torch.as_tensor(F.derangement(K, j))
-        yield f"C1_iid_shuf{j}", a["fq"] + a["b"] + c["eta"] * F.krr(Kall[0], Kall[1], a["w"], a["R"][p], c["lam"], Om), {}
-    # kernel components: original scale with the C1-iid constants (sensitivity) and normalised scale with own constants
-    for cfg in F.CONFIGS:
-        if cfg != "all":
-            Kc = F.combine(bl, cfg)
-            yield f"kr_{cfg}", a["fq"] + a["b"] + c["eta"] * F.krr(Kc[0], Kc[1], a["w"], a["R"], c["lam"], Om), {}
-        Kc = F.combine(bl, cfg, ctx.scales[Ks])
-        cc = const["kn"][cfg][Ks]
-        yield f"kn_{cfg}", a["fq"] + a["b"] + cc["eta"] * F.krr(Kc[0], Kc[1], a["w"], a["R"], cc["lam"], Om), {}
+    if with_extras:
+        # C1 direct residual shuffle (iid; 3 pre-fixed derangements); f*, b, features, queries fixed
+        for j in (1, 2, 3):
+            p = torch.as_tensor(F.derangement(K, j))
+            yield f"C1_iid_shuf{j}", a["fq"] + a["b"] + c["eta"] * F.krr(Kall[0], Kall[1], a["w"], a["R"][p], c["lam"], Om), {}
+        # kernel components: original scale with the C1-iid constants (sensitivity) and normalised scale with own constants
+        for cfg in F.CONFIGS:
+            if cfg != "all":
+                Kc = F.combine(bl, cfg)
+                yield f"kr_{cfg}", a["fq"] + a["b"] + c["eta"] * F.krr(Kc[0], Kc[1], a["w"], a["R"], c["lam"], Om), {}
+            Kc = F.combine(bl, cfg, ctx.scales[Ks])
+            cc = const["kn"][cfg][Ks]
+            yield f"kn_{cfg}", a["fq"] + a["b"] + cc["eta"] * F.krr(Kc[0], Kc[1], a["w"], a["R"], cc["lam"], Om), {}
     if jc is None:
         return
     # J1 / J2 / J3 (query metadata: planned plate overlap) and their unknown-environment mode (o_qS = 0)
