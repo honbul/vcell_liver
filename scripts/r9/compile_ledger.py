@@ -38,3 +38,9 @@ write_tsv(s, REPORT / 'run_ledger_summary.tsv')
     f"Total CPU hours (process CPU time, all parts): {df.cpu_seconds.sum() / 3600:.1f}\n"
     f"Total task wall hours: {df.wall_seconds.sum() / 3600:.1f}\nassets disk: {du}\n{dus}")
 print((REPORT / 'resource_summary.txt').read_text())
+
+# sha256 index of per-cell prediction arrays kept on the server (not in Git)
+idx = [dict(path=str(p.relative_to(ROOT)), bytes=p.stat().st_size, sha256=sha(p))
+       for p in sorted(RUNS.glob('*/*.npz')) if not p.parent.name.startswith('smoke')]
+write_tsv(pd.DataFrame(idx), MANIFEST / 'prediction_index.tsv')
+print('indexed prediction files:', len(idx))
