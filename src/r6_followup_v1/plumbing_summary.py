@@ -16,6 +16,11 @@ from .scoring import DEF_TOTAL, DEF_WITHIN
 
 
 def main() -> None:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--stage", default="plumbing")
+    ap.add_argument("--out", default="reports/r6_followup_v1/plumbing_summary.tsv")
+    a = ap.parse_args()
     d = C.load(eval_views=False)
     fit, dev = C.source_split(d, 2, inner=True)
     Lf, Df = d.conditions(fit); L, Dg = d.conditions(dev)
@@ -33,7 +38,7 @@ def main() -> None:
         t, w = score(mb.predict(L, Dg, pool, k)[0])
         for p in (1.0, 0.25):
             rows.append(dict(arm=name, run_id="", lr="", p=p, total_rmse=t, within_rmse=w))
-    for rd in sorted((C.assets() / "runs" / "plumbing").iterdir()):
+    for rd in sorted((C.assets() / "runs" / a.stage).iterdir()):
         if not (rd / "record.json").exists():
             rows.append(dict(arm="", run_id=rd.name, lr="", p="", note="no record: run failed (see RESULTS, failures)"))
             continue
@@ -45,12 +50,13 @@ def main() -> None:
             sc = [score(pr[k]) for k in C.PKEYS[p]]
             rows.append(dict(arm=r["arm"], run_id=r["run_id"], lr=r["lr"], p=p, total_rmse=np.mean([s[0] for s in sc]), within_rmse=np.mean([s[1] for s in sc]),
                              n_params=r["params"]["total"], updates=r["updates"], train_seconds=r["train_seconds"], peak_vram_MB=r["peak_vram_MB"],
-                             distinct_views_used=r["distinct_views_used"], final_train_loss=r["curve"][-1]["train_supervised"]))
+                             distinct_views_used=r["distinct_views_used"], anchor_kappa=r.get("anchor_kappa"), pair_lambda=r.get("pair_lambda"),
+                             drug_shrink=r["hp"].get("drug_shrink"), final_train_loss=r["curve"][-1]["train_supervised"]))
     out = pd.DataFrame(rows)
     for k, v in C.std_fields(split_role="source_inner_dev", fold=2, model_seed=42, n_drugs=len(dev), n_units=len(L)).items():
         out.insert(0, k, v)
     out["metric_definition"] = f"total: {DEF_TOTAL} | within: {DEF_WITHIN} (groups = pools, inner-dev drugs only); mean over thinning seeds"
-    out.to_csv("reports/r6_followup_v1/plumbing_summary.tsv", sep="\t", index=False, float_format="%.6f")
+    out.to_csv(a.out, sep="\t", index=False, float_format="%.6f")
     pd.set_option("display.width", 250)
     print(out.drop(columns=["metric_definition", "track", "version"]).to_string())
 
