@@ -219,6 +219,9 @@ def main():
     args = ap.parse_args()
     cfg = json.load(open(args.config))
     os.makedirs(args.out, exist_ok=True)
+    for s_ in args.seeds.split(","):
+        for k_ in args.heads.split(","):
+            assert not os.path.exists(f"{args.out}/{k_}_seed{s_}.pt"), "immutable run: head exists"
     torch.set_num_threads(int(os.environ.get("OMP_NUM_THREADS", 4)))
     Kmap = json.load(open(args.atlas_K))
     K_pad = max(Kmap.values())
@@ -263,8 +266,9 @@ def main():
                 chosen_wd=b["wd"], chosen_epoch=b["epoch"], dev_objective=b["dev"], dev_at_init=b["dev_at_init"],
                 grid=[dict(wd=r["wd"], dev=r["dev"], epoch=r["epoch"], sec=r["sec"]) for r in res],
                 curve=b["curve"])
-    json.dump(sel, open(f"{args.out}/selection.json", "w"), indent=1, default=float)
-    open(f"{args.out}/DONE", "w").write(time.strftime("%Y-%m-%dT%H:%M:%S"))
+    tag = "seeds" + args.seeds.replace(",", "-")
+    json.dump(sel, open(f"{args.out}/selection_{tag}.json", "w"), indent=1, default=float)
+    open(f"{args.out}/DONE_{tag}", "w").write(time.strftime("%Y-%m-%dT%H:%M:%S"))
 
 
 if __name__ == "__main__":
