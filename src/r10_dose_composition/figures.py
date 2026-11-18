@@ -56,11 +56,11 @@ def fig_failure_map(cond: pd.DataFrame, path):
     fig, axs = plt.subplots(1, 2, figsize=(9, 4))
     for ax, met, lab in ((axs[0], "comp_tv", "composition TV"), (axs[1], "within_mean_rmse", "within-state mean RMSE")):
         for line, s in cond.groupby("line"):
-            ax.scatter(s["strength"], s[met + "_excess"], s=8, alpha=0.5, color=LINE_COL[line], label=line,
+            ax.scatter(s["strength"].clip(lower=0.01), s[met + "_excess"], s=8, alpha=0.5, color=LINE_COL[line], label=line,
                        edgecolors="none")
         ax.axhline(0, color=MUTED, lw=1)
-        ax.set_xscale("symlog", linthresh=0.05)
-        ax.set_xlabel("response strength: ED(vehicle, query)", color=INK, fontsize=9)
+        ax.set_xscale("log")
+        ax.set_xlabel("response strength: ED(vehicle, query), clipped at 0.01", color=INK, fontsize=9)
         ax.set_ylabel(f"mixture {lab} minus replicate-oracle", color=INK, fontsize=9)
         _style(ax)
     axs[0].legend(frameon=False, fontsize=8)
@@ -99,12 +99,15 @@ def fig_budget(bud: pd.DataFrame, path):
     fig, axs = plt.subplots(1, len(mets), figsize=(10, 3.4))
     styles = {"mixture": ("#2a78d6", "o"), "state_moment": ("#eb6834", "s"), "nearest_low": ("#1baf7a", "^")}
     for ax, met in zip(axs, mets):
-        for m, s in bud.groupby("method"):
+        for i, (m, s) in enumerate(bud.groupby("method")):
             col, mk = styles.get(m, (MUTED, "d"))
             s = s.sort_values("budget")
-            ax.errorbar(s.budget, s[met], yerr=[s[met] - s[met + "_lo"], s[met + "_hi"] - s[met]], color=col,
-                        marker=mk, ms=5, lw=2, label=m, capsize=0)
+            x = s.budget * (1.06 ** (i - 1))                     # small horizontal offset per method
+            ax.errorbar(x, s[met], yerr=[s[met] - s[met + "_lo"], s[met + "_hi"] - s[met]], color=col,
+                        marker=mk, ms=5, lw=2, label=m, capsize=0, elinewidth=1, alpha=0.9)
         ax.set_xscale("log", base=2)
+        ax.set_xticks([32, 64, 1024])
+        ax.set_xticklabels(["32", "64", "all"])
         ax.set_xlabel("endpoint cells per well (cap)", color=INK, fontsize=9)
         ax.set_title(met, color=INK, fontsize=9)
         _style(ax)
