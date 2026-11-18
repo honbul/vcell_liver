@@ -1,0 +1,29 @@
+{
+ "label": "existing-benchmark follow-up evaluation, record only, after the follow-up concluded negative",
+ "split_role": "existing_benchmark_followup_eval_record_only",
+ "ps": [1.0, 0.25],
+ "seeds": [42, 43, 44],
+ "out_prefix": "final_followup_eval",
+ "arms": {
+  "S": {"stage": "final_followup", "pattern": "ff_S_s{seed}", "arm": "S", "lr": 1e-3, "anchor_kappa": null, "pair_lambda": 0.0},
+  "M": {"stage": "final_followup", "pattern": "ff_M_s{seed}", "arm": "M", "lr": 3e-3, "anchor_kappa": null, "pair_lambda": 0.0},
+  "F1A": {"stage": "final_followup", "pattern": "ff_F1A_s{seed}", "arm": "SD", "lr": 3e-3, "anchor_kappa": 2.0, "pair_lambda": 0.0}
+ },
+ "references": {
+  "note": "stored predictions of the ORIGINAL R6 runs, not retrained (paths in configs/r6_followup_v1/phase_a.json); B00 is the original SD (same architecture, trained with fresh views), Z0 the original ridge",
+  "final": ["B00", "Z0"],
+  "dev": ["B00", "Z0"]
+ },
+ "rehearsal": {
+  "note": "code check before the freeze: same script on source fold 2 (TRAIN drugs only) with the Phase C / F1 fold-2 models and the original R6 dev predictions; output to $R6F_ASSETS/scratch, never to reports",
+  "fold": 2,
+  "arms": {
+   "S": {"stage": "confirm", "pattern": "c_S_f2_s{seed}"},
+   "M": {"stage": "confirm", "pattern": "c_M_f2_s{seed}"},
+   "F1A": {"stage": "branch_f1", "pattern": "f1_F1A_f2_s{seed}"}
+  }
+ },
+ "pairs": [["S", "B00"], ["M", "S"], ["F1A", "M"],
+           ["S", "poolmean"], ["M", "poolmean"], ["F1A", "poolmean"],
+           ["B00", "poolmean"], ["Z0", "poolmean"], ["poolmean", "linemean"]]
+}

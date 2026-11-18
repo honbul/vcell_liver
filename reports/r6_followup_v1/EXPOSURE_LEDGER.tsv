@@ -10,5 +10,6 @@ budget_inference	confirmation checkpoints; truth of TRAIN drugs (3 source folds,
 branch_F1_dev	TRAIN drugs, fold 2 outer-fit; inner dev drugs	source_inner_dev	choice among 3 pair-loss settings (+ anchor-only control)	yes (F1 setting)	four runs, seed 42
 branch_F1	TRAIN drugs, 3 source folds x seeds 42/43/44	source_oof	F1 and F1A result	no (single pre-declared setting)	gates fixed in DECISIONS.md D4/D5 before the runs
 branch_F2	TRAIN drugs; one plate held out at a time (5 plates x seeds 42/43/44); ridge penalties on a second held-out plate inside the fit drugs	source_plate_transfer	plate-transfer result	no	TEST and VALIDATION drugs not used
-phase_E	none	-	-	-	not run: no frozen new model (see NOT_RUN.md); TEST drugs were read only by the phase A diagnostic rows above
+phase_E	none	-	-	-	not run as a selection step: no frozen new model (D6). Superseded by the record-only row below (user-approved after the negative conclusion)
+phase_E_record_only	TEST drugs (70, already scored once by original R6): truth + control cells; arms S / M / F1A refit on all 209 TRAIN drugs with Phase C / F1 settings (seeds 42/43/44); stored original B00 and Z0 test predictions	existing_benchmark_followup_eval_record_only	existing-benchmark follow-up evaluation, record only, after the follow-up concluded negative	no	scored once after the freeze commit (D7); nothing selected; any later change is a new version
 validation_drugs	none	-	-	-	the 70 historical VALIDATION drugs were used by no step
