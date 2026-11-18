@@ -25,7 +25,7 @@ RET = ["legacy_midrank_mrr", "mrr_tie_expected", "top1_tie_expected", "top5_tie_
 
 
 def run_dir(key, ctx, seed):
-    kind = "chem" if key == "C" else ("GS" if key.startswith("GS") else key)
+    kind = "chem" if key == "C" else ("GS" if key.startswith("GS") else ("TDS" if key.startswith("TDS") else key))
     rid = f"{ctx}_s{seed}_{'chem' if key == 'C' else key}"
     return fruns(kind, rid), rid
 
@@ -37,6 +37,7 @@ def main():
     ap.add_argument("--keys", nargs="+", default=KEYS)
     ap.add_argument("--tag", default="oof", help="oof: official tables; anything else: written under manifests/.../<tag>/")
     ap.add_argument("--n_boot", type=int, default=5000)
+    ap.add_argument("--extra_pairs", nargs="*", default=[], help="branch contrasts candidate:comparator (descriptive unless listed in the branch decision)")
     a = ap.parse_args()
     t0 = time.time()
     official = a.tag == "oof"
@@ -46,6 +47,8 @@ def main():
     klab, _ = k_groups(load_kg(os.environ["R7_KG"]))
     keys = a.keys
     has_gs = all(f"GS{n}" in keys for n in NULL_SEEDS)
+    has_tds = all(f"TDS{n}" in keys for n in NULL_SEEDS)
+    pooled_of = lambda key: "TDS" if key.startswith("TDS") else ("GS" if key.startswith("GS") else None)
     # ---------------- per-run metrics
     frames, per = [], {}       # per[(key, seed)] = dict of per-unit arrays over the concatenated held units
     runrows = []
@@ -80,7 +83,7 @@ def main():
                 for q, v in e.items():
                     per.setdefault((key, s), {}).setdefault(q, []).append(v)
                 hist = pd.read_csv(os.path.join(d, "history.tsv"), sep="\t")
-                runrows.append(dict(fold=k, model_seed=s, arm=key[:2] if key.startswith("GS") else key, view_or_null_seed=int(key[2:]) if key.startswith("GS") else "",
+                runrows.append(dict(fold=k, model_seed=s, arm=pooled_of(key) or key, view_or_null_seed=int(key[len(pooled_of(key)):]) if pooled_of(key) else "",
                                     run_id=rid, best_step=rec["best"]["step"], sel_rmse_best=rec["best"]["score"], sel_rmse_last=float(hist.sel_rmse.iloc[-1]),
                                     held_source_rmse=fbk.stat(e["rmse"], src, boot=False)[0], held_source_annotated_rmse=fbk.stat(e["rmse"], src & ann, boot=False)[0],
                                     corr_rms_annotated=float(np.sqrt((corr[src & ann] ** 2).mean())), n_units=int(src.sum()), n_drugs=int(u.drug_group[src].nunique()),
@@ -92,10 +95,10 @@ def main():
     tag_cols(rr, split_role, metric_definition="family-balanced source-panel delta RMSE of the held fold; sel = inner-validation selection score").to_csv(out("capacity_attribution_by_run.tsv"), sep="\t", index=False)
 
     def avg(key, q="rmse", seeds=None, maps=None):
-        ks = [f"GS{n}" for n in (maps or NULL_SEEDS)] if key == "GS" else [key]
+        ks = [f"{key}{n}" for n in (maps or NULL_SEEDS)] if key in ("GS", "TDS") else [key]
         return np.mean([per[(k_, s)][q] for k_ in ks for s in (seeds or a.seeds)], 0)
 
-    arms = [k_ for k_ in keys] + (["GS"] if has_gs else [])
+    arms = [k_ for k_ in keys] + (["GS"] if has_gs else []) + (["TDS"] if has_tds else [])
     src = (U.is_hcc == 0).to_numpy(); ann = (U.k_group != "K0").to_numpy()
     fb = FamBoot(U.drug_group.to_numpy(), U.family.to_numpy(), n_boot=a.n_boot)
     groups = {"all": np.ones(len(U), bool), "annotated": ann, "K0": (U.k_group == "K0").to_numpy(), "K1": (U.k_group == "K1").to_numpy(),
@@ -114,15 +117,15 @@ def main():
                            rmse_by_model_seed="|".join("%.6f" % x for x in by_seed), centred_pearson=fb.stat(avg(arm, "centred_pearson"), mk, boot=False)[0],
                            corr_rms_mean_unit=fb.stat(avg(arm, "corr_rms"), mk, boot=False)[0], n_units=int(mk.sum()), n_drugs=int(U.drug_group[mk].nunique()),
                            n_families=int(U.family[mk].nunique()))
-                if arm == "GS":
-                    bm = [fb.stat(avg("GS", maps=[n]), mk, boot=False)[0] for n in NULL_SEEDS]
+                if arm in ("GS", "TDS"):
+                    bm = [fb.stat(avg(arm, maps=[n]), mk, boot=False)[0] for n in NULL_SEEDS]
                     row.update(rmse_sd_across_null_mappings=float(np.std(bm, ddof=1)), rmse_by_null_mapping="|".join("%.6f" % x for x in bm))
                 rows.append(row)
     at = pd.DataFrame(rows)
     tag_cols(at, split_role, metric_definition=agg, model_seeds="|".join(map(str, a.seeds)), view_or_null_seed="|".join(map(str, NULL_SEEDS)),
              candidate_pool="").to_csv(out("capacity_attribution.tsv"), sep="\t", index=False)
     # ---------------- contrasts
-    pairs = [(x, b, True) for x, b in CORE] + [(x, b, False) for x, b in OTHER]
+    pairs = [(x, b, True) for x, b in CORE] + [(x, b, False) for x, b in OTHER] + [tuple(e.split(":")) + (False,) for e in a.extra_pairs]
     pairs = [(x, b, c) for x, b, c in pairs if x in arms and b in arms]
     crow = []
     for sc, sm in scopes.items():
