@@ -1,0 +1,45 @@
+{
+  "study": "R10 dose interpolation with composition and within-state components",
+  "version": "v1",
+  "raw_dir": "assets/raw/GSE139944_GSM4150378",
+  "cache_dir": "assets/cache/r10_v1",
+  "time_point_h": 24,
+  "qc": {
+    "qval_W_max": 0.05,
+    "qval_P_max": 0.05,
+    "top_to_second_best_ratio_W_min": 10.0,
+    "top_to_second_best_ratio_P_min": 10.0,
+    "n_umi_min": 500,
+    "note": "R10 pre-fixed hash-purity rule; the exact thresholds of the original paper are not verified here"
+  },
+  "split": {
+    "seed": 20261118,
+    "fractions": {"train": 0.6, "development": 0.2, "test": 0.2},
+    "stratify": "pathway_level_1",
+    "group": "identical SMILES string (hashTable metadata); otherwise the catalog number"
+  },
+  "atlas": {
+    "n_hvg": 2000,
+    "min_detect_frac": 0.01,
+    "n_pcs": 20,
+    "fit_cells_per_well": 64,
+    "fit_seed": 0,
+    "K_candidates": [4, 6],
+    "K_sensitivity": [2, 8],
+    "gmm_covariance": "full",
+    "gmm_reg_covar": 0.001,
+    "gmm_n_init": 3,
+    "K_rule": "per line, choose K in K_candidates maximising the occupancy-weighted mean Pearson correlation of rep1 vs rep2 state occupancy across train-drug conditions; if the difference is < 0.02 take the smaller K; every state must hold >= 2% of fit cells"
+  },
+  "episodes": {
+    "E100": {"low": 10.0, "high": 1000.0, "query": 100.0},
+    "E1000": {"low": 100.0, "high": 10000.0, "query": 1000.0}
+  },
+  "primary_episode": "E1000",
+  "min_cells_well": 20,
+  "min_cells_control": 50,
+  "shrink": {"kappa_mean": 5.0, "kappa_cov": 20.0, "min_state_neff_score": 5.0},
+  "n_gen_gaussian": 1000,
+  "bootstrap": {"B": 2000, "seed": 20261117},
+  "mmd_bandwidth": "median pairwise distance of fit cells per line (train only), fixed"
+}
