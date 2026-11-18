@@ -24,7 +24,9 @@ def main():
     w = pd.read_csv(f"{cfg['cache_dir']}/wells.tsv", sep="\t")
     split = pd.read_csv(args.split, sep="\t").set_index("drug")
     nmin, cmin = cfg["min_cells_well"], cfg["min_cells_control"]
-    key = w.set_index(["line", "drug", "dose", "replicate"])
+    nv = w[~w.vehicle]
+    assert not nv.duplicated(["line", "drug", "dose", "replicate"]).any()
+    key = {(r.line, r.drug, float(r.dose), r.replicate): (int(r.n_qc), r.culture_plate) for r in nv.itertuples()}
     ctrl = w[w.vehicle].groupby(["line", "replicate"]).n_qc.sum()
     rows = []
     for line in sorted(w.line.unique()):
@@ -33,11 +35,7 @@ def main():
                 for re_ in ("rep1", "rep2"):
                     for rq in ("rep1", "rep2"):
                         def get(dose, rep):
-                            try:
-                                r = key.loc[(line, drug, float(dose), rep)]
-                                return int(r.n_qc), r.culture_plate
-                            except KeyError:
-                                return 0, ""
+                            return key.get((line, drug, float(dose), rep), (0, ""))
                         nl, pl = get(e["low"], re_)
                         nh, ph = get(e["high"], re_)
                         nq, pq = get(e["query"], rq)
