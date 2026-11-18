@@ -37,7 +37,8 @@
    - 첫 pilot 취소 전 출력된 이른 점수 일부를 보았다(D-2).
    - 동결 전 mock 검사에서 HCC validation 수치를 계산하고 일부를 보았다(D-5, **절차 위반**). 동결 목록은 그보다 먼저 commit되었고, 동결 manifest가 그 목록과 동일하며, 예측 코드가 바뀌지 않았음을 확인했다(`hcc_deviation_check.json`). 위반 자체는 취소되지 않는다. 재발 방지로 mock 모드가 HCC panel을 계산하지 못하도록 고쳤다.
 4. **XPert:**
-   - epoch 상한 100(원 2500), flash_attn을 SDPA shim으로 대체, 원 코드의 UniMol 생성 함수 이름 버그를 메모리에서만 수정.
+   - epoch 상한 100(원 2500). 학습 곡선은 epoch 40 부근에서 평평해지고 이후 개선이 자체 변동 폭보다 작아, 상한이 실질적 제약이었다는 신호는 없다(`xpert_cap_check.json`). 2500 epoch에서 달라지지 않는다는 증명은 아니다.
+   - flash_attn을 SDPA shim으로 대체(같은 수식; 측정상 flash kernel 사용), 원 코드의 UniMol 생성 함수 이름 버그를 메모리에서만 수정.
    - 1,199개 그룹은 XPert 약물 색인에 연결되지 않아 HG embedding이 0이다.
    - HG embedding: DDS 관계는 구조 유사도이고(Pearson 0.995), embedding 이웃은 표적 공유(47.7% vs 무작위 0.77%)와 DDS 연결로 설명된다. 반응 유래 관계의 징후는 없다. 다만 사전학습 로그가 비공개라 '기본 관계만 사용'은 증명되지 않았다. HG를 쓰지 않는 비교군(A-2)으로 이 불확실성을 우회했다.
 5. **stress test:** 50% 조건은 ChEMBL 표적 항목 단위로 가린다. 표적 항목이 하나인 약물은 그대로 남는다.
