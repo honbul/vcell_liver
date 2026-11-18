@@ -90,3 +90,4 @@
 - 이들은 입력 표현·사전 처리·용량이 다르므로 "전체 pipeline 비교" 표에 따로 둔다(같은 embedding head 귀속 비교 아님). 실행이 실패하거나 계약 안에서 공정하게 돌릴 수 없으면 사유를 적고 "이겼다"고 세지 않는다.
 - Smoke(배관용, 결과 아님): scPoli 1 fold 약 9.5분(A40, peak CUDA 0.06 GiB 할당). ProtoCloud 시간은 smoke 종료 후 기록. ProtoCloud가 task당 30분을 넘으면 GPU 2장 제한 때문에 조건을 nat + sparse_Fibroblast로 줄이고 그 사실을 여기에 적는다.
 - scArches 0.6.1의 `classify()`가 SciPy 1.14에서 제거된 `csr.A`를 쓰므로 query 행렬을 dense로 넘겼다(방법 변경 아님).
+- (C2b 관측 추가, 실행 전) ProtoCloud smoke: 1 fold 학습 2,651초(약 44분, A40, peak CUDA 0.54 GiB, CPU 단일 스레드 속도 제한). 사전 규칙에 따라 ProtoCloud 조건을 **nat + sparse_Fibroblast_N64_D4**로 줄인다(`configs/r9/a2_ext_protocloud.json`). scPoli는 4개 조건 그대로.
