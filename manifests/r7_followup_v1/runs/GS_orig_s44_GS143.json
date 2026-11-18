@@ -1,0 +1,63 @@
+{
+ "run_id": "orig_s44_GS143",
+ "kind": "GS",
+ "seconds": 1319.3,
+ "commit": "ab31eab",
+ "slurm_job": "26217",
+ "slurm_array_task": "4",
+ "host": "G1",
+ "config": {
+  "arm": "GS",
+  "ctx": "orig",
+  "run_id": "orig_s44_GS143",
+  "seed": 44,
+  "null_seed": 143,
+  "backbone_from": "orig:chem/sel_chem_lr1e-4_s44",
+  "lr": 0.0001,
+  "batch": 64,
+  "updates": 20000,
+  "eval_every": 500,
+  "aug": 1,
+  "max_updates_smoke": 0,
+  "n_train_units": 56431,
+  "n_sel_units": 11731,
+  "n_held_units": 0,
+  "train_units_sha": "e0451ff35766adb730cd1c6f3b30395ed82d822868bede7773bd141be8b0baa0",
+  "sel_units_sha": "d338efddb37725d08ea552c35be0604139131498343b4d2b329458a711bd615b",
+  "held_units_sha": "",
+  "aug_rates": {
+   "all": 0.5,
+   "source": 0.25,
+   "block": 0.25
+  },
+  "n_params_total": 2687553,
+  "n_params_correction": 373359,
+  "n_params_trainable": 373359,
+  "cells_without_train_units": 0,
+  "null_mapping": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r7_followup_v1/assets/cache/shuffle/orig_null143.tsv",
+  "null_mapping_sha256": "b3ef4fe0917d36473ff12df6c781898f6068048b35e9f24b82024db802c4e2da",
+  "samples_seen": 1280000
+ },
+ "best": {
+  "score": 0.5445346775265979,
+  "step": 12000,
+  "sel": {
+   "rmse": 0.5445346775265979,
+   "pearson": 0.2980571081613776,
+   "centred_pearson": 0.16468268797725596,
+   "mrr": 0.3369173786272132,
+   "top20_direction": 0.7128865983064195,
+   "rms_pred": 0.24814643622211668,
+   "rms_true": 0.5782177930151029,
+   "n_units": 11602,
+   "n_families": 110,
+   "corr_rms": 0.03462234139442444,
+   "chem_rms": 0.1837298721075058,
+   "mean_gate": 0.21010200679302216
+  }
+ },
+ "train_seconds": 1319.2,
+ "inference": {},
+ "gpu_max_mem_gb": 3.8,
+ "checkpoint_sha256": "a217032a91afe5ed0a29a4809e44ffab54bea2db841aa473cda96a85105d74b8"
+}
