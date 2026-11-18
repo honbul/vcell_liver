@@ -186,3 +186,29 @@ validation source panel ΔRMSE, seed 42, 20000 update 중 최저 checkpoint:
 | HCC-mean (B11 − chem_only) | −0.00020 [−0.00098, +0.00059] | 미확립 |
 
 **결론:** 제안한 증거·세포 상태 조건부 기전 모듈(B11)은 **채택하지 않는다.** validation에서 경계선으로 선 신호(−0.00100)는 test에서 재현되지 않았다(−0.00076, CI가 0 포함). 귀속 실험에서는 validation과 test 모두 B11 ≈ 재배선 ≈ 근거 제거 ≈ fixed였다. 따라서 그래프 구조·근거 종류·조건부 gate·결측 학습의 기여는 확인되지 않았다.
+
+## D-5 보완 — "HCC를 보고 설정을 다시 고르지 않았다"의 검증 (2026-11-18 13:5x)
+
+D-5의 위반(동결 전에 HCC validation 수치를 계산하고 일부를 봄)은 되돌릴 수 없다. 대신 그 수치가 설정 선택에 들어가지 않았음을 기계적으로 확인했다(`manifests/evidence_gated_r7/hcc_deviation_check.json`).
+
+| 확인 항목 | 결과 |
+|---|---|
+| 동결 목록 commit `b6c72e0`(04:54:27) | mock job 25826 시작(05:20:56)보다 **먼저**다 |
+| 그 뒤 `freeze_args.sh` 변경 | 없음 |
+| `freeze_manifest.json`(동결 `a7ab705`, 13:23)의 모델·run id·XPert run·대비·stress 목록 | `b6c72e0`의 목록과 **완전히 같다** |
+| `b6c72e0` 이후 동결까지 바뀐 코드 | `ledger.py`(기록 문구), `val_signal.py`(XPert validation 보고) 두 파일뿐. 예측 경로는 그대로 |
+| Ridge α 선택 | validation source panel(job 25722) |
+| XPert epoch 상한 | D-3 |
+
+두 항목 모두 mock 이전이다.
+
+**결론:** 절차 규칙(동결 전 HCC 수치 미계산)은 어겼다. 그러나 HCC 수치를 본 뒤 고른 설정은 없다. 결과 해석에는 이 위반을 그대로 남긴다.
+
+## D-1 보완 — XPert HG drug embedding 출처 점검 (metadata만, RNA 미사용)
+
+`xpert_hg_check`(job 26028, `xpert_hg_provenance_check.json`) 결과:
+
+- **DDS(약물–약물) 관계 287,834개:** 가중치와 ECFP4 Tanimoto의 Pearson 0.995, Spearman 0.987이다. 가중치 하한은 0.50이고, 표본 edge의 Tanimoto 중앙값은 0.586이다(무작위 쌍은 0.103). → DDS는 **화학 구조 유사도 관계**다(RNA 반응 유래가 아님).
+- **DTI 12,890개:** 약물–표적 지식이다. PPI는 단백질 상호작용이다.
+- 원 사전학습 코드의 기본 관계는 PPI·DTI·DDS다. 반응에서 나왔을 수 있는 PCC·GSEA 관계 파일은 공개 묶음(`HG_data`)에 **포함되어 있지 않다**.
+- **남은 미확인:** 공개된 `HG_drug_embeddings.npy`가 실제로 기본 관계만으로 학습되었는지는 저장소로 확인할 수 없다(사전학습 로그 미공개). 따라서 XPert 결과는 "같은 split·실측 재학습, HG 입력은 구조·표적 지식 기반으로 확인된 범위"로 보고한다.

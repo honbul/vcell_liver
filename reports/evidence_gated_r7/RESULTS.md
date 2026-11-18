@@ -89,9 +89,9 @@
 
 **한계**
 - 이미 노출된 공개 benchmark다. R4 test가 한 번 열렸다.
-- 동결 전 mock 검사에서 HCC validation 수치가 계산되었다(D-5, 절차 위반). 동결 목록은 그 전에 고정되어 있었다.
+- 동결 전 mock 검사에서 HCC validation 수치가 계산되었다(D-5, 절차 위반). 동결 목록은 그 전에 commit되었고, 동결 manifest와 같음을 확인했다(`hcc_deviation_check.json`). HCC를 보고 바꾼 설정은 없다.
 - validation 신호는 기준선에서 0.000004 차이로 섰다.
-- XPert는 epoch 상한 100, flash_attn 대신 SDPA, HG embedding의 반응 유래 여부 미확인이다.
+- XPert: epoch 상한 100, flash_attn 대신 SDPA. HG embedding의 DDS 관계는 구조 유사도임을 확인했고, 기본 관계만으로 학습됐는지는 미확인이다.
 - HCC는 3계열(test 약물 HUH7 10, JHH5 98, JHH7 10)뿐이다.
 - 주석 있는 test 약물은 465/1,243 그룹(37%)이다.
 

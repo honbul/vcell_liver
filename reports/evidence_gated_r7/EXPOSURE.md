@@ -16,7 +16,7 @@
 | training 약물 Δ(모든 세포주) | 기준선, D1 진단, 모든 학습 | protocol commit(`b76ae64`) 이후 |
 | validation 약물 Δ | checkpoint·LR 선택, validation 신호, 수정 판단 | 개발 중 |
 | 첫 pilot의 이른 validation 줄 | 취소된 job 25732–25746 로그(D-2 정정) | KG 보정 결정 뒤 두 줄만 읽음. 선택에 쓰지 않음 |
-| HCC validation unit 점수 | mock 배선 검사 job 25826(**절차 위반**, DECISIONS D-5) | 동결 목록 commit 뒤. 이후 설정 변경 없음 |
+| HCC validation unit 점수 | mock 배선 검사 job 25826(**절차 위반**, DECISIONS D-5) | 동결 목록 commit `b6c72e0` 뒤. 동결 manifest가 그 목록과 동일함을 `hcc_deviation_check.json`에서 확인 |
 | test 약물 Δ | `final_eval` 한 번(`R7_FINAL_EVAL=1`, 동결 manifest commit, clean tree 필요) | 동결 이후 |
 
 - 지식 그래프·표적 주석은 metadata만으로 만들었다(`kg_build`가 RNA 파일을 읽지 않음은 `leak_fixtures.json`에서 확인).
@@ -29,6 +29,6 @@
 |---|---|---|
 | XPert 코드(GSanShui/XPert `d53ff497`) | 원 학습 스크립트를 수정하지 않고 R4 split으로 재학습 | 학습 h5ad에는 train·validation unit만 있고 test unit은 없다 |
 | XPert 저자 학습 가중치 | **쓰지 않음** | L1000 전체로 학습되어 R7 test 약물이 들어 있을 수 있음 |
-| XPert HG drug embedding(Zenodo, 8981 약물) | 약물 입력 feature로 사용 | 사전학습 그래프(PPI·DTI·DDS)에 반응 유래 관계가 들어 있는지 저장소에서 확인할 수 없다(DDS 정의 미기록). **미확인**으로 남기며, XPert 결과 해석 시 이 점을 함께 적는다 |
+| XPert HG drug embedding(Zenodo, 8981 약물) | 약물 입력 feature로 사용 | DDS 관계는 ECFP Tanimoto와 Pearson 0.995로 **구조 유사도**임을 확인했다(`xpert_hg_provenance_check.json`). 반응 유래 가능 관계(PCC·GSEA) 파일은 공개 묶음에 없다. 공개 embedding이 기본 관계(PPI·DTI·DDS)만으로 학습됐는지는 미확인이다 |
 | UniMol 사전학습 가중치(Hugging Face `dptech/Uni-Mol-Models`, 공개) | XPert 색인에 없는 1,199개 그룹의 UniMol feature 생성 | 분자 구조 사전학습. RNA 반응은 쓰지 않음 |
 | ChEMBL 37, OmniPath, HGNC | 지식 그래프 | RNA 반응 정보 없음. 단 ChEMBL activity 일부가 세포 기반 assay일 수는 있다(transcriptomic 반응 자체는 아님) |
