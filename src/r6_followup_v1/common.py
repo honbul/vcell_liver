@@ -68,7 +68,34 @@ def source_split(d: D.R6Data, fold: int, inner: bool = False):
     return [g for g in fit if not flag[g]], [g for g in fit if flag[g]]
 
 
+def plate_split(d: D.R6Data, plate: int, inner: bool = False):
+    """Branch F2 (plate transfer), TRAIN drugs only. fit = TRAIN drugs with NO valid condition whose
+    primary plate is `plate` (so no pool of that plate is seen in fitting); evaluation = TRAIN drugs
+    with at least one condition on it (scored on those conditions only, see `plate_conditions`).
+    inner=True repeats the construction inside the fitting drugs with the lowest other plate as the
+    held plate (used only for the ridge penalties)."""
+    tr = train_drugs(d)
+    plates = sorted(int(p) for p in d.pools.plate_index.unique())
+    assert plate in plates
+    on = {g: set(int(x) for x in d.plate[d.valid[:, g], g]) for g in tr}
+    fit = [g for g in tr if plate not in on[g]]
+    held = [g for g in tr if plate in on[g]]
+    if not inner:
+        return fit, held
+    q = [x for x in plates if x != plate][0]
+    return [g for g in fit if q not in on[g]], [g for g in fit if q in on[g]]
+
+
+def plate_conditions(d: D.R6Data, drugs, plate: int):
+    """Valid conditions of `drugs` whose primary plate is `plate`, plus their index in d.conditions(drugs)."""
+    L, Dg = d.conditions(drugs)
+    keep = d.plate[L, Dg] == plate
+    return L[keep], Dg[keep], np.nonzero(keep)[0]
+
+
 def split_spec(d: D.R6Data, setting: str, fold: int | None = None, inner: bool = False):
+    if setting == "plate":
+        return plate_split(d, fold, inner)
     if setting == "source":
         assert fold in FOLDS
         return source_split(d, fold, inner)

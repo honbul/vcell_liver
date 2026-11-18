@@ -75,7 +75,7 @@ def predict(W, b, Zc, Fd):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--setting", required=True, choices=["source", "final"])
+    ap.add_argument("--setting", required=True, choices=["source", "plate", "final"])
     ap.add_argument("--fold", type=int, default=None)
     ap.add_argument("--stage", required=True)
     ap.add_argument("--seed", type=int, default=42, help="seed of the view cache")
@@ -100,9 +100,12 @@ def main() -> None:
         ac, ad = json.loads(a.alphas)
         rec["alphas"] = dict(alpha_c=ac, alpha_d=ad, source="fixed by the caller")
     else:
-        ifit, idev = C.source_split(d, a.fold, inner=True)
+        ifit, idev = C.split_spec(d, a.setting, a.fold, True)
         nm = Normal(d, ifit, Xv, nv)
         Li, Di = d.conditions(idev)
+        if a.setting == "plate":                                       # inner held plate: score its own conditions only
+            q = [x for x in sorted(int(p_) for p_ in d.pools.plate_index.unique()) if x != a.fold][0]
+            Li, Di, _ = C.plate_conditions(d, idev, q)
         pi = C.pool_of(d, Li, Di)
         ev = eval_feats(d)
         Ti = d.Y[Li, Di]
@@ -124,7 +127,7 @@ def main() -> None:
     rec.update(n_fit_conditions=nm.n_cond, design_rows=nm.n_rows, n_features=int(W.shape[0]),
                drug_block_weight_rms=float((W[nm.Gc:] ** 2).mean().sqrt()), control_block_weight_rms=float((W[:nm.Gc] ** 2).mean().sqrt()))
     np.savez(run / "model.npz", W=W.float().numpy(), b=b.float().numpy(), alpha_c=ac, alpha_d=ad, fit_drugs=np.asarray(fit))
-    if a.setting == "source":
+    if a.setting in ("source", "plate"):
         L, Dg = d.conditions(held)
         pq = C.pool_of(d, L, Dg)
         ev = eval_feats(d)

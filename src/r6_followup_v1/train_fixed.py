@@ -179,7 +179,7 @@ def run_dir(stage: str, run_id: str) -> Path:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--arm", required=True, choices=ARMS)
-    ap.add_argument("--setting", required=True, choices=["source", "final"])
+    ap.add_argument("--setting", required=True, choices=["source", "plate", "final"])
     ap.add_argument("--fold", type=int, default=None)
     ap.add_argument("--inner", action="store_true")
     ap.add_argument("--stage", required=True, help="run group under $R6F_ASSETS/runs/ (plumbing, confirm, branch, final)")
@@ -193,8 +193,11 @@ def main() -> None:
     ap.add_argument("--pair-lambda", type=float, default=0.0)
     ap.add_argument("--np-aug", action="store_true", help="branch F3 only: also sample the number of cells N in {64, 32, 16} (fresh views)")
     ap.add_argument("--eval-every", type=int, default=10)
+    ap.add_argument("--drug-shrink", type=float, default=None, help="overrides hp.drug_shrink (branch F1 development only)")
     a = ap.parse_args()
     hp = json.loads(Path(a.hp).read_text())
+    if a.drug_shrink is not None:
+        hp["drug_shrink"] = a.drug_shrink
     if a.setting == "final":
         fm = Path("manifests/r6_followup_v1/freeze_manifest.json")
         assert fm.exists(), "freeze the follow-up configuration before any final-setting run"
@@ -273,7 +276,7 @@ def main() -> None:
             for k_, v_ in parts.items():
                 agg[k_] = agg.get(k_, 0.0) + float(v_.detach())
         row = dict(epoch=ep + 1, seconds=round(time.time() - t0, 1), **{f"train_{k_}": v_ / steps_per_epoch for k_, v_ in agg.items()})
-        if a.setting == "source" and a.inner and ((ep + 1) % a.eval_every == 0 or ep + 1 == a.epochs):
+        if a.setting in ("source",) and a.inner and ((ep + 1) % a.eval_every == 0 or ep + 1 == a.epochs):
             Le, De, pe = predict(model, d, eval_drugs, dev, y_scale, views=[(1.0, 0), (0.25, 0)], anchor=anc_np)
             T = d.Y[Le, De]
             row["inner_rmse_p1.0"] = drug_macro(cond_rmse(pe[(1.0, 0)], T), De)
@@ -292,13 +295,13 @@ def main() -> None:
                train_seconds=round(train_s, 1), peak_vram_MB=round(torch.cuda.max_memory_allocated() / 2 ** 20, 1),
                gpu=torch.cuda.get_device_name(0), job=os.environ.get("SLURM_JOB_ID"), array=os.environ.get("SLURM_ARRAY_JOB_ID"),
                curve=curve, ckpt_sha256=D.sha256_file(run / "ckpt.pt"), commit=C.git_commit())
-    if a.setting == "source":                                          # the TEST drugs are never predicted here
+    if a.setting in ("source", "plate"):                               # the TEST drugs are never predicted here
         t1 = time.time()
         Le, De, pe = predict(model, d, eval_drugs, dev, y_scale, anchor=anc_np)
         rec["predict_seconds"] = round(time.time() - t1, 2)
         np.savez_compressed(run / "pred.npz", line=Le, drug=De, **{f"p{p}_s{s}": v_.astype(np.float16) for (p, s), v_ in pe.items()})
         T = d.Y[Le, De]
-        rec["eval_role"] = "inner_dev" if a.inner else "held_fold"
+        rec["eval_role"] = "inner_dev" if a.inner else ("held_plate_drugs_all_conditions" if a.setting == "plate" else "held_fold")
         rec["scores"] = {f"p{p}_s{s}": drug_macro(cond_rmse(v_, T), De) for (p, s), v_ in pe.items()}
         rec["pred_sha256"] = D.sha256_file(run / "pred.npz")
     C.dump_json(rec, run / "record.json")
