@@ -133,11 +133,23 @@ def main() -> None:
                                  model_seed=",".join(map(str, seeds)), gap_closed=gc, gap_lo=lo, gap_hi=hi,
                                  total_candidate=pt[n], linemean_transfer=pt["linemean_transfer"], poolmean_inplate=pt["poolmean_inplate"]))
     out = pd.DataFrame(rows)
+    # The in-plate references are leave-drug-fold-out predictions, so inside one (plate, pool) group they are NOT
+    # constant across drugs (each drug fold gets a different pool mean). Centring by (plate, pool) therefore gives
+    # them a spurious within-pool contrast / retrieval value. Those fields are blanked; their within-pool numbers
+    # under the correct (drug fold, pool) grouping are in input_capacity_controls.tsv.
+    inpl = out.arm.astype(str).str.contains("inplate") | out.get("comparator", "").astype(str).str.contains("inplate")
+    inpl &= out.row_type.isin(["arm", "pair"])
+    for c in out.columns:
+        if c.startswith("within") or c.startswith("pool_"):
+            out.loc[inpl, c] = np.nan
+    out["note"] = ""
+    out.loc[inpl, "note"] = "within-pool and retrieval fields blank: in-plate reference is not constant inside a (plate, pool) group"
     out["metric_definition"] = f"total: {DEF_TOTAL} | within: {DEF_WITHIN}"
     out["n_fit_drugs_by_plate"] = json.dumps(n_fit)
     out.to_csv(spec["out"], sep="\t", index=False, float_format="%.6f")
     pd.set_option("display.width", 260); pd.set_option("display.max_rows", 500)
     al = out[out.subset == "all"]
+    print("n_fit", n_fit, {k: int(v.sum()) for k, v in masks.items()}, {k: len(set(Dg[v])) for k, v in masks.items()})
     print(al[al.row_type == "arm"][["arm", "p", "n_drugs", "n_units", "total_rmse", "total_lo", "total_hi", "within_rmse", "pool_top1", "pool_chance_top1"]].to_string())
     print(al[al.row_type == "pair"][["candidate", "comparator", "p", "total_diff", "total_lo", "total_hi", "total_rel", "total_category", "within_diff", "within_lo", "within_hi", "within_category"]].to_string())
     g = out[out.row_type == "gap_closed"]
