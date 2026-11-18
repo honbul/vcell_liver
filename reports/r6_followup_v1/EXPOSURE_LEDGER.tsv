@@ -6,5 +6,9 @@ ckpt_sensitivity	original R6 final checkpoints (B00, B01, TEACH0) and dev checkp
 positive_control	raw treated wells of the 209 TRAIN drugs (split halves) + reference control cells	source_heldfold_units_positive_control	metric calibration	no	VALIDATION and TEST wells were not opened
 plumbing	TRAIN drugs, fold 2 outer-fit; inner dev drugs (20% of outer-fit)	source_inner_dev	learning-rate choice for S / SD / M; pipeline check	yes (learning rate)	the fold-2 held drugs were not scored by plumbing neural runs
 confirmation	TRAIN drugs, 3 source folds x seeds 42/43/44; Ridge penalties on each fold's inner dev	source_oof	S / SD / M / R comparison; branch selection	yes (branch choice)	TEST drugs never predicted by these runs
-branch	TRAIN drugs, source folds	source_oof	branch result	no (single pre-declared setting)	see DECISIONS.md
+budget_inference	confirmation checkpoints; truth of TRAIN drugs (3 source folds, out-of-fold)	source_oof_inference_only	N x p observation-budget table	no	no training; N < 64 was never seen in training
+branch_F1_dev	TRAIN drugs, fold 2 outer-fit; inner dev drugs	source_inner_dev	choice among 3 pair-loss settings (+ anchor-only control)	yes (F1 setting)	four runs, seed 42
+branch_F1	TRAIN drugs, 3 source folds x seeds 42/43/44	source_oof	F1 and F1A result	no (single pre-declared setting)	gates fixed in DECISIONS.md D4/D5 before the runs
+branch_F2	TRAIN drugs; one plate held out at a time (5 plates x seeds 42/43/44); ridge penalties on a second held-out plate inside the fit drugs	source_plate_transfer	plate-transfer result	no	TEST and VALIDATION drugs not used
+phase_E	none	-	-	-	not run: no frozen new model (see NOT_RUN.md); TEST drugs were read only by the phase A diagnostic rows above
 validation_drugs	none	-	-	-	the 70 historical VALIDATION drugs were used by no step
