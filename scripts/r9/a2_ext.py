@@ -66,7 +66,9 @@ if method == 'scpoli':
         lr_patience=13, lr_factor=0.1), seed=seed)
     q = scPoli.load_query_data(adata=qry, reference_model=model, labeled_indices=[])
     q.train(n_epochs=50, pretraining_epochs=40, eta=10, seed=seed)
-    res = q.classify(qry, scale_uncertainties=False, get_prob=True)['label']
+    qd = qry.copy()
+    qd.X = np.asarray(qry.X.toarray())   # scArches 0.6.1 classify() uses csr.A, removed in SciPy 1.14: pass dense input
+    res = q.classify(qd, scale_uncertainties=False, get_prob=True)['label']
     inv = {v: k for k, v in q.model.cell_type_encoder.items()}
     P = np.zeros((len(te), C))
     for j in range(res['weighted_distances'].shape[1]):
