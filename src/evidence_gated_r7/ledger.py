@@ -9,6 +9,7 @@ INCOMPLETE = [
     dict(run_id="smoke_{chem,concat,gated,fixed}", kind="smoke", status="300 updates, timing / memory only (jobs 25727-25730)"),
     dict(run_id="xp_timing", kind="xpert", status="2 epochs timing run (job 25788) used for the epoch cap D-3 and the wrapper check (job 25792)"),
     dict(run_id="xp_e100_s{42,43,44}", kind="xpert", status="25790 failed (timestamp folder collision); 25789 / 25791 cancelled at ~2 epochs (shared work dir), D-4; relaunched as xpr_e100_*"),
+    dict(run_id="xpe_e100_s{42,43,44}", kind="xpert (addendum A-2)", status="input-matched XPert (ECFP folded to 1024, HG zero), jobs 26037-26039; addendum freeze 28cca70; eval job 26569"),
     dict(run_id="-", kind="setup", status="refused / failed setup jobs: 25718 (mamba binary), 25766 (huggingface_hub missing), 25768 (upstream tqdm bug), 25769-25772 (NFS stale clean-tree check), 25773 (gene-id alignment); none trained a model"),
 ]
 
