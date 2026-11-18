@@ -170,7 +170,8 @@ def main():
         if len(tr):
             fg.fig_failure_map(tr, f"{args.out}/figures/fig2_direct_interpolation_failure_map.png")
     for role in sorted(pr.role.unique()):
-        sub = pr[(pr.role == role) & (pr.direction == "cross") & pr.method.isin(learned + ["interaction"])]
+        sub = pr[(pr.role == role) & (pr.direction == "cross") & pr.method.isin(learned + ["interaction"])
+                 & pr.reference.isin(["D00", "D11-D10-D01+D00"])]
         if len(sub):
             fg.fig_forest(sub, f"{args.out}/figures/fig3_2x2_paired_vs_D00_{role}.png",
                           f"{role} drugs, cross-replicate: arm - D00 (drug-level bootstrap 95% CI)")
