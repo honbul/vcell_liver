@@ -129,3 +129,21 @@ E100 same: D11 구성비 TV −0.0069 [−0.0149, −0.0014], D01 상태 내부 
 - 가설이 맞으면: development E1000 cross에서 D10 − mixture_t 구성비 TV 차이의 CI가 0을 포함(또는 mixture_t가 더 낮음).
 - 가설이 틀리면: D10 − mixture_t의 CI 상한 < 0(상태별 보정이 전역 weight 이동보다 낫다).
 - mixture_t는 v1 freeze 이후 추가된 기준선이므로 test 수치는 blind가 아닌 사후 비교로만 표시한다.
+
+### C3 결과 (2026-11-18 20:05 KST 무렵)
+
+`r10_c3_tstar_v1.json`: train cross에서 t* = 0.325(E100·E1000 모두; t=0.5 대비 train 구성비 TV 0.1276 → 0.1237, E1000). 평가 run `r10_c3_v1`(job 26449 development, 26450 test).
+
+| development, 구성비 TV | E1000 cross | E1000 same |
+|---|---|---|
+| mixture_t − D00 | −0.0150 [−0.0237, −0.0068] | −0.0141 [−0.0222, −0.0063] |
+| D10(C1, cross 학습) − mixture_t | −0.0142 [−0.0246, −0.0054] | +0.0053 [−0.0046, +0.0135] |
+| D10(C2, same 학습) − mixture_t | −0.0067 [−0.0183, +0.0016] | −0.0019 [−0.0107, +0.0052] |
+
+**사전 기준 적용.** C3 기준(cross, C1 head): D10 − mixture_t CI 상한 < 0 → "D10 이득은 전역 weight 이동 하나로 설명된다"는 가설은 cross 계약에서 **기각**.
+
+**추가 분석(사전 기준 밖, 해석용).** same 계약(replicate 이동 없음)에서는 same으로 학습한 D10도 mixture_t와 구분되지 않는다(−0.0019 [−0.0107, +0.0052]). 즉 replicate 이동이 없는 조건에서 learned π-head의 구성비 이득은 "낮은 용량 쪽으로 기운 전역 mixing weight" 하나와 같은 수준이고, cross 계약에서 그 이상으로 얻는 몫은 replicate 구조와 연결된 것으로 보인다(추론; replicate 이동을 직접 분리한 측정은 아님).
+
+**§10 행 판정.** 주 지표 기준으로 cross에서는 "D10만 개선"(D11 ≈ D10, D01 단독은 작음, 상호작용 양수)에 해당한다. replicate 이동과 전역 t를 통제하면(same 계약 + mixture_t) "모든 learned arm이 (튜닝된) 직접 보간과 비슷" 행에 해당한다. 후자 행의 후속인 오류 지도(반응 강도별 실패 지도, endpoint 세포 예산 곡선)는 B2에서 이미 산출했다.
+
+**다음 결정.** 새 cycle을 열지 않는다. C1 v1(D11)의 test 결과를 그대로 보고하고, mixture_t의 test 수치는 freeze 이후 추가한 사후 비교로만 표시한다. 남은 후보(구성비 logit 정칙화, endpoint 불확실성 입력, replicate 이동을 명시적으로 쓰는 계약)는 실행하지 않은 열린 결정으로 남긴다.
