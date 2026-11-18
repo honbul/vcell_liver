@@ -127,3 +127,9 @@
 - A11−LR_donor: nat −0.005 [−0.009, −0.002], sparse_B +0.003 [−0.011, +0.017], sparse_Endo −0.078 [−0.132, −0.033], sparse_Fib −0.038 [−0.068, −0.007]. A01−A00(class 손실에서 적응 vs 고정)도 B +0.018 [0.002, 0.036], Fib +0.041 [0.019, 0.063], Endo −0.050.
 - 판정: 외부에서 적응 배분이 고정 배분보다 나은 target이 2개(B, Fib), 나쁜 target이 1개(Endo). 선정 버전(LR_donor)이나 같은 K 고정 GMM보다 일관되게 낫지는 않다. 선정 버전과 사전 규칙은 바꾸지 않는다. 외부 결과를 근거로 한 새 버전은 만들지 않았다.
 - (C2b 추가) 원인 재확인: r9ext의 SciPy가 1.15.3으로 설치되어 scanpy 1.10.4의 근사 kNN(pynndescent) 경로가 `csr_array`를 반환하고 anndata 0.10.9가 이를 거부한다(약 9천 세포 이상 query donor = HCC08에서만 발생; task 7·17 실패, 27·37도 같은 donor). alias만으로는 해결되지 않아, **HCC08 4개 task만** `R9_SCPOLI_EXACT_KNN=1`로 scPoli 프로토타입 초기화 내부 kNN을 scanpy exact(sklearn) kNN으로 바꿔 재실행한다. 기본 경로와 다른 편차이므로 결과 표에 표시한다.
+
+### 운영 변경 (OPS-1, 2026-11-18 22:48 KST; 과학적 설정 변경 아님)
+
+- 조정 에이전트가 전달한 사용자 승인(다른 연구 종료, GPU 약 24/28 여유)에 따라 R9 GPU 동시 사용 한도를 2 → **최대 8**로 올렸다(여유 GPU의 1/3 이상은 남김).
+- 변경: ProtoCloud array `26382` ArrayTaskThrottle 1→4, scPoli array `26374` 1→3, scPoli HCC08 exact-kNN 재실행 `26574` throttle 1(의존성 afterany:26374 유지). 합계 ≤8.
+- 실행 중 task는 취소하지 않았고, 코드·설정·seed·조건은 그대로다. 실행 시점만 바뀐다.
