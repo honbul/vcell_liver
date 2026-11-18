@@ -100,7 +100,8 @@ def main():
         sets = ("confirmation", "E1", "E2")
         allm = sorted(set([cand] + base + [x for p in pairs for x in p] + ["fx_C0_iid", "fx_C1_iid", "fx_C0_V0", "fx_C1_V0"]))
         sm = summary(df, allm, sets=sets)
-        cs = pd.concat([contrasts(df, pairs, sets=sets), contrasts(df, pairs, value="centred_rmse", sets=sets)], ignore_index=True)
+        lp = [(x, y, f"{x}-{y}") for x, y in pairs]
+        cs = pd.concat([contrasts(df, lp, sets=sets), contrasts(df, lp, value="centred_rmse", sets=sets)], ignore_index=True)
         sm.to_csv(pub_man("confirmation_followup_results.tsv"), sep="\t", index=False, float_format="%.6g")
         cs.to_csv(pub_man("confirmation_followup_contrasts.tsv"), sep="\t", index=False, float_format="%.6g")
         o = pd.read_csv(orig_man("source_eval_summary.tsv"), sep="\t")
