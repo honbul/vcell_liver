@@ -41,7 +41,8 @@
 | fixed graph (gate 제거) | 0.53592 | 0.130 | 0.332 | 0.60217 |
 | B11 재배선 그래프 | 0.53584 | 0.129 | 0.331 | 0.60204 |
 | B11 근거 feature 제거 | 0.53593 | 0.130 | 0.332 | 0.60225 |
-| XPert (재학습, 100 epoch) | 0.53604 ± 0.0016 | **0.183** | **0.352** | 0.60833 |
+| XPert (재학습, 100 epoch, 공식 입력) | 0.53604 ± 0.0016 | **0.183** | **0.352** | 0.60833 |
+| XPert-ECFP (입력 맞춤, HG 제거; 동결 후 추가 A-2) | 0.54385 ± 0.0021 | 0.136 | 0.322 | 0.61210 |
 | v0_B11 (수정 전) | 0.53662 ± 0.0021 | 0.129 | 0.332 | 0.60639 |
 
 **사전 지정 대비**(test, source; drug-group bootstrap 95% CI):
@@ -59,7 +60,12 @@
 | chem_only − Ridge | −0.00077 | [−0.00455, +0.00288] | 차이 미확립 |
 
 - **최선 단순 기준선:** source panel에서 모든 학습 모델의 점추정이 Ridge보다 낮았다. 그러나 CI가 0을 포함한다. HCC 평균에서는 Ridge가 가장 낮았다(점추정).
-- **공개 모델 XPert:** 같은 split으로 재학습했다. ΔRMSE는 B11과 같은 범위였고, 약물별 패턴 지표(centred Pearson 0.183, MRR 0.352)는 이 연구의 모든 모델보다 높았다. XPert는 UniMol·HG embedding을 쓰는 다른 입력 구성이다(입력을 맞춘 구조 비교가 아니다).
+- **공개 모델 XPert(공식 입력):** 같은 split으로 재학습했다. ΔRMSE는 B11과 같은 범위였고, 약물별 패턴 지표(centred Pearson 0.183, MRR 0.352)는 이 연구의 모든 모델보다 높았다.
+- **XPert 입력 맞춤 구조 비교**(동결 후 추가 A-2, 별도 동결 `28cca70` 뒤 1회 평가): 약물 입력을 같은 ECFP로 맞추고 HG embedding을 제거하면, XPert 구조는 결과가 더 나빴다.
+  - chem_only보다 +0.0071 [+0.0017, +0.0122]
+  - B11보다 +0.0079 [+0.0024, +0.0130]
+  - 공식 XPert보다 +0.0078 [+0.0031, +0.0148]
+  - 따라서 공식 XPert의 성능은 UniMol·HG 입력과 함께일 때의 결과다. 두 입력 중 어느 쪽의 기여인지는 분리하지 못했다.
 
 ## 4. 개선이 있었다면 어디서 왔는가
 
@@ -114,11 +120,12 @@
 | 표적 정체성 섞기 재학습 | 미실행 | 사전 등록에 없음, 수정 2 미사용 |
 | hop 3 그래프, 효능 수치(pchembl) 입력 | 미실행 | 진단 근거 없음(수정표의 해당 관측이 없었음) |
 | 결측률 후보 선택(augmentation rate) | 미실행 | 하나의 사전 설정만 씀(protocol에 기록) |
-| XPert 입력 맞춤(ECFP 입력) 구조 비교 | 미실행 | 공식 전체 설정만 재학습. 입력을 맞춘 비교가 아님을 명시 |
+| XPert 입력 맞춤(ECFP 입력, HG 제거) 구조 비교 | **동결 후 실행(A-2)** | R7 판정 뒤 추가한 비교군. 별도 동결 후 1회 평가 |
+| XPert UniMol vs HG 개별 기여 분리 | 미실행 | 사전 지정 없음 |
 | XPert 원 epoch 수(2500) | 미실행 | 계산량(D-3) |
 | 수정 2 | 미실행 | 수정 1 뒤 validation 신호가 서서 동결로 진행 |
 
 산출물:
-- 표: `manifests/evidence_gated_r7/` 아래 `test_summary.tsv`, `test_contrasts.tsv`, `test_by_stratum.tsv`, `annotation_stress.tsv`, `real_vs_rewired.tsv`, `annotation_coverage.tsv`, `test_unit_rmse.tsv.gz`(unit별 seed 평균 RMSE)
+- 표: `manifests/evidence_gated_r7/` 아래 `addendum_test_summary.tsv`, `addendum_test_contrasts.tsv`, `test_summary.tsv`, `test_contrasts.tsv`, `test_by_stratum.tsv`, `annotation_stress.tsv`, `real_vs_rewired.tsv`, `annotation_coverage.tsv`, `test_unit_rmse.tsv.gz`(unit별 seed 평균 RMSE)
 - 예측 배열: 서버 `assets/runs/test_eval/test_eval_v1/`에만 둔다(sha256은 `test_eval_record.json`)
 - checkpoint: sha256은 `freeze_manifest.json`

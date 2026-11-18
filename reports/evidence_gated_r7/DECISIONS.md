@@ -228,3 +228,22 @@ D-5의 위반(동결 전에 HCC validation 수치를 계산하고 일부를 봄)
   - xpert_ecfp − xpert
   - xpert_ecfp − ECFP+X0 Ridge
 - **판정 범위:** 이 비교는 XPert 구조의 경쟁력을 입력을 맞춰 보는 참고 결과다. 어떤 결과가 나와도 R7 제안 모듈의 미채택 판정은 바뀌지 않는다.
+
+### A-2 결과 (addendum 동결 `28cca70`, 평가 job 26569, `addendum_*`)
+
+- validation(보고용): XPert-ECFP 0.55824. 공식 XPert 0.54802, chem_only 0.54595보다 높다.
+- test source(3 seed 평균): XPert-ECFP 0.54385 ± 0.0021, centred Pearson 0.136, MRR 0.322.
+
+| 대비 | 차이 | 95% CI |
+|---|---|---|
+| XPert-ECFP − chem_only | +0.00711 | [+0.00173, +0.01222] |
+| XPert-ECFP − B11 | +0.00786 | [+0.00239, +0.01295] |
+| XPert-ECFP − 공식 XPert | +0.00781 | [+0.00313, +0.01482] |
+| XPert-ECFP − ECFP+X0 Ridge | +0.00634 | [−0.00101, +0.01372] |
+
+- 처리 후 RNA 칸 검사: validation·test 모두 차이 0.0이다.
+- 재사용한 동결 예측의 점수는 본 평가(job 25976)와 같다(B11 0.535984, chem_only 0.536741).
+- **해석(관측):** 약물 입력을 ECFP로 맞추고 HG를 제거하면, XPert 구조는 R7 chemistry backbone과 B11보다 ΔRMSE가 높다(CI > 0).
+  - 공식 XPert가 B11과 같은 범위였던 것은 UniMol·HG 입력과 함께일 때다.
+  - UniMol과 HG 중 무엇의 기여인지는 둘을 동시에 바꿨으므로 분리하지 못했다.
+- R7 제안 모듈의 미채택 판정은 그대로다.
