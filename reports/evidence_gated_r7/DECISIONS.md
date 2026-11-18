@@ -212,3 +212,19 @@ D-5의 위반(동결 전에 HCC validation 수치를 계산하고 일부를 봄)
 - **DTI 12,890개:** 약물–표적 지식이다. PPI는 단백질 상호작용이다.
 - 원 사전학습 코드의 기본 관계는 PPI·DTI·DDS다. 반응에서 나왔을 수 있는 PCC·GSEA 관계 파일은 공개 묶음(`HG_data`)에 **포함되어 있지 않다**.
 - **남은 미확인:** 공개된 `HG_drug_embeddings.npy`가 실제로 기본 관계만으로 학습되었는지는 저장소로 확인할 수 없다(사전학습 로그 미공개). 따라서 XPert 결과는 "같은 split·실측 재학습, HG 입력은 구조·표적 지식 기반으로 확인된 범위"로 보고한다.
+
+## A-2. 동결 후 추가 비교군 — 입력을 맞춘 XPert 구조 비교 (실행 전 기록, 2026-11-18 14:0x)
+
+- **이유:** 기획서 §6은 "XPert 공식 전체 설정 비교"와 "ECFP 등 입력을 맞춘 구조 비교"를 나눠 보고하라고 했다. 본 실행에서는 앞의 것만 했고, 뒤의 것은 미실행으로 남겼다. 공식 설정은 UniMol 원자 feature와 출처가 일부만 확인된 HG embedding을 쓰므로, 입력 차이와 구조 차이가 섞여 있다.
+- **성격:** R7 test를 이미 연(job 25976) 뒤에 추가하는 **비교군**이다. R7 모델·판정·사전 대비는 바꾸지 않는다(기존 결과 덮어쓰기 없음). 결과는 별도 표(`addendum_*`)로 보고한다.
+- **설정(실행 전 고정, 튜닝 없음):**
+  - XPert 공식 코드·학습 설정은 본 XPert run과 같다: config_l1000, lr 0.004, batch 128, 100 epoch 상한, patience 50, validation PCC 손실로 checkpoint 선택, seed 42·43·44.
+  - 약물 입력은 `--drug_feat morgan` 경로를 쓴다. 우리 모델과 같은 ECFP4 2048 bit를 1024 bit로 접어서(앞뒤 반을 OR) 넣는다. 원 코드의 morgan 입력 차원이 1024이기 때문이다.
+  - HG drug embedding은 0이다(출처 미확인 입력 제거).
+  - PPI gene vector, X0, cell index는 본 run과 같다.
+- **평가:** 학습 후 checkpoint sha256을 별도 addendum 동결 파일에 commit한다. 그 뒤 test 예측을 한 번 하고, 이미 저장된 동결 모델 예측(sha256 확인)과 같은 지표·bootstrap으로 비교한다. 사전 지정 대비는 다음과 같다.
+  - xpert_ecfp − chem_only
+  - xpert_ecfp − B11
+  - xpert_ecfp − xpert
+  - xpert_ecfp − ECFP+X0 Ridge
+- **판정 범위:** 이 비교는 XPert 구조의 경쟁력을 입력을 맞춰 보는 참고 결과다. 어떤 결과가 나와도 R7 제안 모듈의 미채택 판정은 바뀌지 않는다.
