@@ -51,6 +51,16 @@ def baseline(name: str, ctx: Context, cfg: dict, seed: int) -> Cloud:
         X, w, g, _ = _mix(ctx)
         I = interp_state(ctx, sh["kappa_mean"], sh["kappa_cov"])
         return Cloud(X, w, g, declared_pi=I["pi"], declared_means=I["m_raw"])
+    if name == "mixture_t":                        # C3: one train-fitted mixing weight per episode
+        t = float(cfg["mixture_t_star"][ctx.episode])
+        nL, nH = len(ctx.ZL), len(ctx.ZH)
+        X = np.concatenate([ctx.ZL, ctx.ZH])
+        w = np.concatenate([np.full(nL, (1 - t) / nL), np.full(nH, t / nH)])
+        g = np.concatenate([np.zeros(nL, int), np.ones(nH, int)])
+        if t <= 0 or t >= 1:
+            keep = w > 0
+            X, w, g = X[keep], w[keep], g[keep]
+        return Cloud(X, w / w.sum(), g)
     if name == "global_moment":
         t = ctx.t
         mL, mH = ctx.ZL.mean(0), ctx.ZH.mean(0)

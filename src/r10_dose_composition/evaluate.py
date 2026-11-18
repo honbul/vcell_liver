@@ -42,10 +42,13 @@ def main():
     ap.add_argument("--episodes", default="E100,E1000")
     ap.add_argument("--endpoint_budget", type=int, default=0)
     ap.add_argument("--budget_draw", type=int, default=0)
+    ap.add_argument("--t_star_json", default="", help="C3: train-fitted mixing weight per episode")
     ap.add_argument("--drugs", default="", help="optional comma list (pilot only)")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
     cfg = json.load(open(args.config))
+    if args.t_star_json:
+        cfg["mixture_t_star"] = json.load(open(args.t_star_json))["t_star"]
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     assert not os.path.exists(args.out), "immutable run output exists"
     torch.set_num_threads(int(os.environ.get("OMP_NUM_THREADS", 4)))
