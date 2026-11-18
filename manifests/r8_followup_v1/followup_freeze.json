@@ -1,0 +1,76 @@
+{
+ "track": "r8_followup_v1",
+ "frozen_on": "2026-11-18T16:42:17+09:00",
+ "code_commit": "98e4982d6d3e058552504e4a1977a4a81b26d1a9",
+ "candidate": {
+  "method": "J2",
+  "selection_rule": "BRANCH_DECISION.md section 6: the adopted model with the lowest source-OOF delta RMSE; adopted = J2 only (J3 failed the C1-iid condition); C1-iid has a lower OOF delta RMSE than J2 and is frozen alongside as a baseline"
+ },
+ "baselines": [
+  "shrunk_mean",
+  "C0_iid",
+  "C0_V3",
+  "C1_iid",
+  "C1_V3",
+  "J1",
+  "J3",
+  "fx_C0_iid",
+  "fx_C1_iid",
+  "fx_C0_V0",
+  "fx_C1_V0",
+  "no_change",
+  "same_drug_mean"
+ ],
+ "extra_contrasts": [
+  [
+   "C1_iid",
+   "C0_iid"
+  ],
+  [
+   "J3",
+   "C1_iid"
+  ],
+  [
+   "J3",
+   "J2"
+  ],
+  [
+   "J2",
+   "J1"
+  ],
+  [
+   "C0_V3",
+   "C0_iid"
+  ],
+  [
+   "C1_V3",
+   "C1_iid"
+  ],
+  [
+   "C1_iid",
+   "fx_C1_iid"
+  ]
+ ],
+ "constants": {
+  "path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r8_followup_v1/assets/runs/select/sel_final_inner_v1/constants.json",
+  "sha256": "c585e3303fb727a78378fc961939d596e13fb412005c8aaae16e6b873874f856"
+ },
+ "pairs": {
+  "path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r8_followup_v1/assets/runs/p1/p1_v1/d1_plate_pairs.tsv",
+  "sha256": "f735131b025de9b9cc99180164a146d0ab84da0491fb4dfea32f462d383d3627"
+ },
+ "nuisance": "global partition: original feature basis (eigen-signs of a refit differ only), covariance V0-V3 and kernel scales refit on all 115 source-train families",
+ "panels": {
+  "confirmation": "9 confirmation families, support seeds 1-3, K = 8/16/32",
+  "matched": "confirmation matched-plate E1/E2 (<= 6 pairs, seeds 1-3)",
+  "hcc": "HUH7 / JHH5 / JHH7, original frozen split lists (study B splits), split seeds 1-3, K = 8/16/32"
+ },
+ "target_validation_labels": 0,
+ "hcc_expression_values_read_in_this_followup_before_freeze": false,
+ "confirmation_values_read_in_this_followup_before_freeze": false,
+ "exposure": "existing-benchmark follow-up evaluation: HCC scored in studies B, R2, R8; confirmation families scored in R8",
+ "jconstants": {
+  "path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r8_followup_v1/assets/runs/branch_select/bsel_final_inner_v1/branch_constants.json",
+  "sha256": "8b36687f9d5deaaf65e894fccd9b9758f23f9f79573176434f7d817b25f0fb4e"
+ }
+}
