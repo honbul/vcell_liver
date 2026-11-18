@@ -128,8 +128,11 @@ def js(p, q, eps=1e-12):
 
 def neff(w):
     w = np.asarray(w, dtype=np.float64)
-    s = w.sum()
-    return float(s * s / (w * w).sum()) if s > 0 else 0.0
+    mx = w.max() if w.size else 0.0
+    if not mx > 0:
+        return 0.0
+    w = w / mx                                   # scale-free; avoids 0/0 when all weights underflow
+    return float(w.sum() ** 2 / (w * w).sum())
 
 
 # ------------------------------------------------------------------ the fixed atlas
