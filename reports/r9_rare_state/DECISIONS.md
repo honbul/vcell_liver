@@ -118,3 +118,4 @@
 - 배분 근거(`prototype_support.tsv`): donor-supported 배분은 단일 donor 지지 프로토타입 비율을 줄였다(lin_Myeloid 27% vs 고정 48%, 훈련 손실 기반 69%; sparse 1–6% vs 19–22%). 그러나 lineage 과제에서 탐욕 단계의 50%(Myeloid 420/840), 47%(B 141/300)가 허용 가능한 분할이 없어 고정 fallback으로 채워졌다.
 - §10 판정: A11은 A10을 어떤 조건에서도 CI 기준으로 넘지 못했고, A10도 A00을 넘지 못했다(nat·sparse에서 A10−A00 음수, CI 하한<0 또는 상한<0). 같은 K의 다중 프로토타입 arm 전체가 sparse_B에서 단일 프로토타입·logistic보다 낮다. → "adaptive와 같은 K 고정 mixture가 비슷" 행에 해당하나, 다중 대표 패턴 자체의 이득도 관측되지 않았다. **귀무가설(환자 균형 샘플링이나 고정 다중 프로토타입이면 충분, 적응적 배분 추가 가치 없음)을 기각하지 못함.**
 - 다음 결정: §10 행의 후속 실험(covariance 수축·regularization을 맞춘 대조)은 이 cycle에서 실행하지 않는다(미실행 항목으로 보고). A3·A4는 계획대로 진행.
+- (C2b 실행 중 관측) scPoli task 7(nat, HCC08)이 scanpy 1.10.4 `neighbors()`의 `csr_array.getnnz`(SciPy 1.14에서 제거) 호출로 실패. 수치에 영향 없는 alias 복원을 `a2_ext.py`에 추가하고, 실패한 task만 같은 run ID에 다시 실행한다(기존 결과 덮어쓰기 없음).

@@ -52,6 +52,10 @@ torch.manual_seed(seed)
 np.random.seed(seed)
 tm = time.time()
 if method == 'scpoli':
+    import scipy.sparse as _sp
+    if not hasattr(_sp.csr_array, 'getnnz'):
+        # scanpy 1.10.4 neighbors() calls csr_array.getnnz, removed in SciPy 1.14; restore the alias (no numeric change)
+        _sp.csr_array.getnnz = lambda self, axis=None: self._getnnz(axis=axis)
     from scarches.models.scpoli import scPoli
     ref = ad.AnnData(Xs.copy(), obs=pd.DataFrame(dict(sample=obs['sample'].values[src].astype(str), label=lab_src),
                                                 index=obs.index.values[src]))
