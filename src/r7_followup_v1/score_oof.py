@@ -39,24 +39,42 @@ def main():
     ap.add_argument("--n_boot", type=int, default=5000)
     ap.add_argument("--extra_pairs", nargs="*", default=[], help="branch contrasts candidate:comparator (descriptive unless listed in the branch decision)")
     a = ap.parse_args()
-    t0 = time.time()
     official = a.tag == "oof"
-    out = (lambda f: pman(f)) if official else (lambda f: pman(a.tag, f))
-    split_role = "source_out_of_fold(internal re-split of original train drugs)" if official else f"source_out_of_fold_partial({a.tag})"
+    split_role = "source_out_of_fold(internal re-split of original train drugs)" if official else f"source_out_of_fold({a.tag})"
     S = Store()
+    blocks = []
+    for k in a.folds:
+        ctx = f"fold{k}"
+        held = np.load(os.path.join(run_dir("C", ctx, a.seeds[0])[0], "held_idx.npy"))
+        assert (S.role[held] == "train").all()
+
+        def load(key, s, ctx=ctx, held=held):
+            d, rid = run_dir(key, ctx, s)
+            rec = json.load(open(os.path.join(d, "record.json")))
+            assert (np.load(os.path.join(d, "held_idx.npy")) == held).all()
+            assert rec["config"]["ctx"] == ctx and rec["config"]["seed"] == s
+            return np.load(os.path.join(d, "held_pred.npy")).astype(np.float64), rec, pd.read_csv(os.path.join(d, "history.tsv"), sep="\t"), rid
+        blocks.append(dict(name=ctx, k=k, held=held, y=S.delta(held), load=load))
+    tables(S, blocks, a.keys, a.seeds, a.tag, split_role, official, a.extra_pairs, a.n_boot, halves=True)
+
+
+def tables(S, blocks, keys, seeds, tag, split_role, official, extra_pairs=(), n_boot=5000, halves=False, unit_file=None):
+    """All result tables from per-block predictions. blocks: dict(name, k, held, y, load(key, seed) -> (pred, record, history, run_id))."""
+    import types
+    a = types.SimpleNamespace(seeds=list(seeds), tag=tag, n_boot=n_boot, extra_pairs=list(extra_pairs), folds=[b["k"] for b in blocks])
+    t0 = time.time()
+    out = (lambda f: pman(f)) if official else (lambda f: pman(tag, f))
     klab, _ = k_groups(load_kg(os.environ["R7_KG"]))
-    keys = a.keys
+    keys = list(keys)
     has_gs = all(f"GS{n}" in keys for n in NULL_SEEDS)
     has_tds = all(f"TDS{n}" in keys for n in NULL_SEEDS)
     pooled_of = lambda key: "TDS" if key.startswith("TDS") else ("GS" if key.startswith("GS") else None)
     # ---------------- per-run metrics
     frames, per = [], {}       # per[(key, seed)] = dict of per-unit arrays over the concatenated held units
     runrows = []
-    for k in a.folds:
-        ctx = f"fold{k}"
-        held = np.load(os.path.join(run_dir("C", ctx, a.seeds[0])[0], "held_idx.npy"))
-        assert (S.role[held] == "train").all()
-        y = S.delta(held)
+    k0_max = 0.0
+    for blk in blocks:
+        k, held, y = blk["k"], blk["held"], blk["y"]
         u = S.units.iloc[held][["unit_idx", "drug_group", "cell", "family", "is_hcc", "group_idx", "half_idx"]].reset_index(drop=True)
         u["fold"] = k; u["k_group"] = klab[u.group_idx.to_numpy()]
         frames.append(u)
@@ -65,11 +83,7 @@ def main():
         for s in a.seeds:
             pc = None
             for key in keys:
-                d, rid = run_dir(key, ctx, s)
-                rec = json.load(open(os.path.join(d, "record.json")))
-                assert (np.load(os.path.join(d, "held_idx.npy")) == held).all()
-                assert rec["config"]["ctx"] == ctx and rec["config"]["seed"] == s
-                p = np.load(os.path.join(d, "held_pred.npy")).astype(np.float64)
+                p, rec, hist, rid = blk["load"](key, s)
                 if key == "C":
                     pc = p
                 m = unit_metrics(p, y, cells)
@@ -77,14 +91,14 @@ def main():
                 assert np.allclose(r["legacy_midrank_mrr"], m.mrr.to_numpy()), "legacy retrieval differs from the original evaluator"
                 corr = np.sqrt(((p - pc) ** 2).mean(1))
                 if key != "C":
-                    assert float(corr[~ann].max()) == 0.0, "an unannotated (K0) unit differs from the backbone prediction"
+                    k0_max = max(k0_max, float(corr[~ann].max()))
+                    assert float(corr[~ann].max()) < 1e-5, "an unannotated (K0) unit differs from the backbone prediction"
                 e = dict(rmse=m.rmse.to_numpy(), centred_pearson=m.centred_pearson.to_numpy(), corr_rms=corr, n_candidates=r["n_candidates"],
                          tied=(r["n_tied"] > 1).astype(float), **{q: r[q] for q in RET})
                 for q, v in e.items():
                     per.setdefault((key, s), {}).setdefault(q, []).append(v)
-                hist = pd.read_csv(os.path.join(d, "history.tsv"), sep="\t")
                 runrows.append(dict(fold=k, model_seed=s, arm=pooled_of(key) or key, view_or_null_seed=int(key[len(pooled_of(key)):]) if pooled_of(key) else "",
-                                    run_id=rid, best_step=rec["best"]["step"], sel_rmse_best=rec["best"]["score"], sel_rmse_last=float(hist.sel_rmse.iloc[-1]),
+                                    run_id=rid, best_step=rec["best"]["step"], sel_rmse_best=rec["best"]["score"], sel_rmse_last=float(hist.sel_rmse.iloc[-1]) if hist is not None else np.nan,
                                     held_source_rmse=fbk.stat(e["rmse"], src, boot=False)[0], held_source_annotated_rmse=fbk.stat(e["rmse"], src & ann, boot=False)[0],
                                     corr_rms_annotated=float(np.sqrt((corr[src & ann] ** 2).mean())), n_units=int(src.sum()), n_drugs=int(u.drug_group[src].nunique()),
                                     n_params_correction=rec["config"]["n_params_correction"], train_seconds=rec.get("train_seconds"), gpu_max_mem_gb=rec.get("gpu_max_mem_gb"),
@@ -103,7 +117,7 @@ def main():
     fb = FamBoot(U.drug_group.to_numpy(), U.family.to_numpy(), n_boot=a.n_boot)
     groups = {"all": np.ones(len(U), bool), "annotated": ann, "K0": (U.k_group == "K0").to_numpy(), "K1": (U.k_group == "K1").to_numpy(),
               "K2": (U.k_group == "K2").to_numpy(), "K3": (U.k_group == "K3").to_numpy(), "K1K2": U.k_group.isin(["K1", "K2"]).to_numpy()}
-    scopes = {"pooled": np.ones(len(U), bool), **{f"fold{k}": (U.fold == k).to_numpy() for k in a.folds}}
+    scopes = {"pooled": np.ones(len(U), bool), **({b["name"]: (U.fold == b["k"]).to_numpy() for b in blocks} if len(blocks) > 1 else {})}
     agg = "seed-averaged unit RMSE -> unit mean within family -> equal mean over source families"
     # ---------------- arm table
     rows = []
@@ -207,7 +221,7 @@ def main():
     # ---------------- split-half positive control (replicate detection plates of held source units; diagnostic, not a predictor)
     hm = (U.half_idx >= 0).to_numpy() & src
     prow = []
-    if hm.sum() > 100:
+    if halves and hm.sum() > 100:
         ha = np.load(os.path.join(os.environ["R4_PROC"], "half_delta_a.npy"), mmap_mode="r"); hb = np.load(os.path.join(os.environ["R4_PROC"], "half_delta_b.npy"), mmap_mode="r")
         hi_ = U.half_idx.to_numpy()[hm]
         A = np.asarray(ha[hi_], np.float64); B = np.asarray(hb[hi_], np.float64)
@@ -253,15 +267,15 @@ def main():
         ut[f"rmse_{arm}"] = np.round(avg(arm), 5)
     if "GR" in arms:
         ut["corr_rms_GR"] = np.round(avg("GR", "corr_rms"), 5)
-    ut.to_csv(ppred("oof_unit_rmse.tsv.gz" if official else f"{a.tag}_unit_rmse.tsv.gz"), sep="\t", index=False)
+    ut.to_csv(ppred(unit_file or ("oof_unit_rmse.tsv.gz" if official else f"{a.tag}_unit_rmse.tsv.gz")), sep="\t", index=False)
     # ---------------- inputs of the pre-specified decision table (section 10), pooled source OOF
     g = lambda x, b, grp="all": ct[(ct.scope == "pooled") & (ct.k_group == grp) & (ct.candidate == x) & (ct.comparator == b)].iloc[0].to_dict() if ((ct.candidate == x) & (ct.comparator == b)).any() else None
     dec = dict(tag=a.tag, folds=a.folds, seeds=a.seeds, n_units_source=int(src.sum()), n_drugs=int(U.drug_group[src].nunique()),
                levels={arm: float(at[(at.scope == "pooled") & (at.k_group == "all") & (at.arm == arm)].rmse.iloc[0]) for arm in arms},
                contrasts={f"{x}-{b}": g(x, b) for x, b, _ in pairs}, contrasts_K1K2={f"{x}-{b}": g(x, b, "K1K2") for x, b, _ in pairs},
                contrasts_K3={f"{x}-{b}": g(x, b, "K3") for x, b, _ in pairs}, contrasts_annotated={f"{x}-{b}": g(x, b, "annotated") for x, b, _ in pairs},
-               seconds=round(time.time() - t0), commit=os.environ.get("R7F_COMMIT"), job=os.environ.get("SLURM_JOB_ID"))
-    if official and has_gs and all(k_ in arms for k_ in ("C", "M", "G0", "GR")):
+               k0_max_abs_difference_to_backbone=k0_max, seconds=round(time.time() - t0), commit=os.environ.get("R7F_COMMIT"), job=os.environ.get("SLURM_JOB_ID"))
+    if tag in ("oof", "plumbing") and has_gs and srow and all(k_ in arms for k_ in ("C", "M", "G0", "GR")):
         c = dec["contrasts"]; neg = lambda r, key="hi95": r[key] < 0; inc0 = lambda r, lo="lo95", hi="hi95": r[lo] <= 0 <= r[hi]
         k12, k3 = dec["contrasts_K1K2"], dec["contrasts_K3"]
         big = [r for r in srow if r["gr_correction_tertile"] == "large" and r["comparator"] == "C"][0]
