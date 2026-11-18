@@ -101,6 +101,7 @@ def fx_target_difference():
     G, n = _synthetic_graph()
     lm = len(G["lm_idx"])
     m = FollowupModel("TD", G)
+    torch.nn.init.normal_(m.corr.out.weight, std=1.0); torch.nn.init.normal_(m.corr.out.bias, std=1.0)
     B = 3
     fp = torch.randn(B, 2048); x0 = torch.randn(B, lm); status = torch.rand(B, 4)
     empty = (torch.zeros(0, dtype=torch.long), torch.zeros(0, dtype=torch.long), torch.zeros(0, 9))
