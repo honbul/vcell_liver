@@ -17,7 +17,8 @@ def load(run):
     from models.model_XPert import XPertNet
     from datasets.MyDataset import _digitize
     cfg = yaml.safe_load(open(runs("xpert", run, "config_r7.yaml")))
-    args = argparse.Namespace(mode="test", drug_feat="unimol", dataset="l1000_r7sdst", pretrained_mode="global", include_cell_idx=True,
+    df = "morgan" if cfg["dataset"].get("drug_morgan_path") == "r7_drug_morgan1024.npy" else "unimol"
+    args = argparse.Namespace(mode="test", drug_feat=df, dataset="l1000_r7sdst", pretrained_mode="global", include_cell_idx=True,
                               wo_HG=False, wo_atom=False, wo_atom_HG=False, wo_unimol=False, wo_ppi=False, use_gene_pos_emed=False,
                               output_attention=False, output_cls_embed=False)
     dev = torch.device("cuda")
@@ -28,7 +29,7 @@ def load(run):
     model.load_state_dict(torch.load(path, map_location=dev)["model_state_dict"])
     model.eval()
     bins = np.quantile(np.array([cfg["dataset"]["min_value"], cfg["dataset"]["max_value"]]), np.linspace(0, 1, cfg["dataset"]["n_bins"] - 1))
-    return model, dev, bins, _digitize, path
+    return model, dev, bins, _digitize, path, df
 
 
 @torch.no_grad()
@@ -55,15 +56,19 @@ def main():
     a = ap.parse_args()
     S = Store()
     root = os.getcwd()
-    model, dev, bins, dig, ck = load(a.run)
-    F = np.load(os.path.join(W, "r7_drug_unimol.npy"), mmap_mode="r")
+    model, dev, bins, dig, ck, df = load(a.run)
+    if df == "morgan":
+        d = np.load(os.path.join(W, "r7_drug_morgan1024.npy"), allow_pickle=True).item()
+        F = np.stack([d[g] for g in range(len(d))]).astype(np.float32)
+    else:
+        F = np.load(os.path.join(W, "r7_drug_unimol.npy"), mmap_mode="r")
     idx = S.val if a.split == "validation" else S.test
     p = predict(model, dev, bins, dig, S, idx, F, "noise", seed=0)
     chk = predict(model, dev, bins, dig, S, idx[:512], F, "zeros")
     diff = float(np.abs(chk - p[:512]).max())
     assert diff < 1e-4, f"prediction depends on the treated slot (max diff {diff})"
     f = runs("xpert", a.run, f"pred_{a.split}.npy"); np.save(f, p.astype(np.float32))
-    rec = dict(run=a.run, split=a.split, checkpoint=ck, checkpoint_sha256=sha256(ck), n=int(len(idx)), treated_slot_max_abs_diff=diff,
+    rec = dict(run=a.run, split=a.split, checkpoint=ck, checkpoint_sha256=sha256(ck), n=int(len(idx)), treated_slot_max_abs_diff=diff, drug_feat=df,
                pred_sha256=sha256(f), job=os.environ.get("SLURM_JOB_ID"))
     os.chdir(root)
     dump(rec, pman("runs", f"xpert_{a.run}_pred_{a.split}.json"))
