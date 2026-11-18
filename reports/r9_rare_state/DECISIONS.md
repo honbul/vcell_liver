@@ -139,3 +139,4 @@
 - AURC(낮을수록 좋음) A11−A10: nat −0.003 [−0.008, +0.000], sparse_B +0.002 [−0.003, +0.008], sparse_Endo −0.000 [−0.003, +0.002], sparse_Fib −0.007 [−0.022, +0.004], **lin_Myeloid −0.018 [−0.033, −0.005]**.
 - Pseudo-unknown(대분류 하나 제거, max prob): A11−A10 AUROC +0.019 [+0.005, +0.034], 그러나 A11−LR_donor −0.027 [−0.048, −0.004]; 최고는 LR_class 0.901, LR_donor 0.888, GMM_K(log density) 0.878. log density 점수에서 A11−A10 AUROC −0.003 [−0.014, +0.010].
 - 판정: Tier 1에서는 보류·순위 개선이 없다(규칙 (iii)). Tier 2 lin_Myeloid에서만 같은 분류 성능에서 AURC가 좋아졌으므로 §10 "분류는 같지만 보류가 좋아짐" 행이 **Tier 2 탐색 과제 한정**으로 관측되었다. 미관측 상태 보류에서 A11은 A10보다 낫지만 단순 logistic보다 나쁘다.
+- OPS-2 (2026-11-19 00:1x KST, 운영 변경만): scPoli 본 array 종료 후 HCC08 재실행 `26574` throttle 1→3, ProtoCloud `26382` throttle 4→7. R9 GPU 동시 사용 합계는 계속 ≤8.
