@@ -29,9 +29,13 @@ def main():
         per = []
         for kr in lst:
             kind, rid = kr.split("/")
-            assert (np.load(runs(kind, rid, "val_idx.npy")) == val).all()
-            p = np.load(runs(kind, rid, "val_pred.npy"))[src]
-            rec = json.load(open(runs(kind, rid, "record.json")))
+            if kind == "xpert":      # XPert predictions follow S.val order (xpert_predict); no run record of ours
+                p = np.load(runs(kind, rid, "pred_validation.npy"))[src]
+                rec = dict(config=dict(seed=int(rid.split("_s")[-1])), best=dict(val={}, step=None))
+            else:
+                assert (np.load(runs(kind, rid, "val_idx.npy")) == val).all()
+                p = np.load(runs(kind, rid, "val_pred.npy"))[src]
+                rec = json.load(open(runs(kind, rid, "record.json")))
             m = unit_metrics(p, y, cells); per.append(m.rmse.to_numpy())
             s = summarise(m, uv, "source")
             seed_rows.append(dict(model=name, run=rid, seed=rec["config"]["seed"], rmse=s["rmse"], centred_pearson=s["centred_pearson"], mrr=s["mrr"],
