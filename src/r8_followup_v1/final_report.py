@@ -34,7 +34,8 @@ def hcc_tables(u, pairs, qset="test"):
             Wind[k] = W[:, [pos[g] for g in drugs[k]]]
     piv = {}
     for v in METRICS:
-        p = u.pivot_table(index=["target", "split_seed", "K", "drug_group"], columns="method", values=v, aggfunc="mean")
+        p = u.pivot_table(index=["target", "split_seed", "K", "drug_group"], columns="method", values=v, aggfunc="mean", dropna=False)
+        p = p.reindex(columns=sorted(u.method.unique()))          # keep all-NaN columns (undefined Pearson of no_change)
         piv[v] = p
     res, con = [], []
     for K in sorted(u.K.unique()):
