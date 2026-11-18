@@ -24,11 +24,15 @@
 | [`RESULTS.md`](RESULTS.md) | 관측 / 추론 / 미검증을 나눈 결과 |
 | [`CLAIMS_AND_LIMITATIONS.md`](CLAIMS_AND_LIMITATIONS.md) | 주장 가능한 것과 아닌 것 |
 | [`BEGINNER_SUMMARY.md`](BEGINNER_SUMMARY.md) | 쉬운 한국어 요약 |
-| [`BASELINES.tsv`](BASELINES.tsv) | 같은 정보 계약의 기준선, 정보·출력 형태·비용·development 성능 |
+| [`BASELINES.tsv`](BASELINES.tsv) | 같은 정보 계약의 기준선, 정보·출력 형태·비용(triplet당 초, 채점 포함)·development 성능 |
 | `dose_replicate_map.tsv` | 24 h culture well 4,608개(세포 0 well 포함)의 replicate·plate·용량·QC 세포 수 |
 | `eligible_triplets.tsv` | 세포주×약물×episode×replicate 방향의 적격성과 제외 이유 |
 | `replicate_components.tsv` (+`_pairs.tsv.gz`) | 반복 well·vehicle·용량·약물 쌍의 구성비/상태 내부/전체 분포 차이 |
-| `composition_metrics.tsv`, `within_state_metrics.tsv`, `assembly_consistency.tsv` | 조건 단위(두 방향·seed 평균) 지표 |
+| `composition_metrics.tsv.gz`, `within_state_metrics.tsv.gz`, `assembly_consistency.tsv` | 조건 단위(role×세포주×약물×episode×방향×방법; 두 방향·seed 평균) 지표. 앞의 둘은 크기 때문에 gzip |
+| `summary_by_method.tsv`, `paired_vs_D00.tsv`, `summary_by_line.tsv`, `seed_level_summary.tsv` | 약물 단위 평균·paired bootstrap 구간(D00 및 nearest_low·state_moment·mixture_t 대비) |
+| `mixture_failure_map.tsv`, `mixture_failure_classes.tsv`, `endpoint_budget.tsv`, `decomposition_train_conditions.tsv.gz`, `K_selection.tsv`, `synthetic_controls.tsv` | B1·B2 진단 (`synthetic_controls.tsv`의 `case=null`은 문자열; pandas에서는 `keep_default_na=False`) |
+| `c2_same_contract_paired_vs_D00.tsv` | C2(same 계약 재학습) paired 표 |
+| `eval_inputs.json` | 최종 집계에 들어간 run 파일 목록 |
 | `run_ledger.tsv` | Slurm job·git SHA·시간·메모리 |
 | `figures/` | §11 그림 |
 

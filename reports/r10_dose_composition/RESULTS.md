@@ -78,7 +78,8 @@ development, cross, 35 약물, arm − D00:
 - [관측] 같은 head를 same triplet에 적용: 구성비 TV D10 −0.009 [−0.025, +0.004], D11 −0.007 [−0.023, +0.006](E1000); Q-head는 same에서 상태 내부 평균 RMSE를 키움(E100 +0.068 [+0.058, +0.078]).
 - [관측] cross 이득은 MCF7에서 가장 크다(E1000 ED: D00 0.726 → D11 0.223).
 - [관측] 조립 일관성(head가 선언한 구성비 vs 생성 구름 재판독): D11 TV 차이 평균 0.016(E1000, test), D00은 정의상 0.
-- W(compact whole-distribution): §5 표 참조.
+- [관측] W(같은 endpoint 요약을 받는 전역 affine 모델, ED로 학습, 3 seed) − D00, development E1000 cross: 구성비 TV −0.016 [−0.024, −0.010], 상태 내부 평균 RMSE −0.112 [−0.194, −0.065], ED −0.326 [−0.629, −0.153]. D11 − W: 구성비 TV −0.015 [−0.024, −0.007], ED +0.009 [−0.006, +0.029]. same 계약에서 W의 구성비 이득은 −0.003 [−0.011, +0.004], E100 상태 내부 평균 RMSE는 +0.069 [+0.058, +0.081](악화).
+- [추론] D11의 전체 분포(ED) 이득은 분해 구조 없이 전역 affine 보정(W)으로도 같은 크기로 얻어진다. 분해 구조가 W보다 나은 것은 구성비 쪽뿐이다.
 
 ## 5. test (freeze 후 1회, D11 v1)
 
@@ -112,3 +113,8 @@ freeze commit `f0ded27`, 평가 run `r10_test_v1`(job 26427), 집계 `r10_report
 - learned arm의 endpoint 예산 곡선(비학습 기준선만), 용량-대조(capacity control) 실험.
 - 공개 모델(CPA·sc2Flow·PerturbDiff·CellOT) 재학습 비교.
 - GPU 사용 없음(모든 계산 CPU).
+
+## 8. 자원
+
+- [관측] CPU만 사용, GPU 0 시간. `/usr/bin/time`으로 잰 CPU 시간 합계(user+sys) 약 61 CPU-시간(`run_ledger.tsv`의 `cpu_seconds`; 다운로드·환경 job과 대화형 srun 단계 제외). 가장 큰 항목은 W 학습(seed 1이 부하가 큰 노드에서 2시간 3분, 약 28 CPU-시간).
+- [관측] 서버 `assets/` 11 GB: raw 3.6 GB, cache 5.8 GB(희소 count 행렬 5.3 GB 포함), env 1.5 GB, runs 36 MB.
