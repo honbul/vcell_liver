@@ -42,6 +42,7 @@ def main():
     ap.add_argument("--episodes", default="E100,E1000")
     ap.add_argument("--endpoint_budget", type=int, default=0)
     ap.add_argument("--budget_draw", type=int, default=0)
+    ap.add_argument("--drugs", default="", help="optional comma list (pilot only)")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
     cfg = json.load(open(args.config))
@@ -54,6 +55,8 @@ def main():
     trip = pd.read_csv(args.triplets, sep="\t")
     t = trip[(trip.role == args.role) & (trip.line == args.line) & trip.eligible
              & trip.direction.isin(args.directions.split(",")) & trip.episode.isin(args.episodes.split(","))]
+    if args.drugs:
+        t = t[t.drug.isin(args.drugs.split(","))]
     methods = args.methods.split(",")
     learned = [m for m in methods if m in ("D10", "D01", "D11", "W")]
     seeds = [int(s) for s in args.seeds.split(",")]
