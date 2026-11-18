@@ -56,6 +56,13 @@ if method == 'scpoli':
     if not hasattr(_sp.csr_array, 'getnnz'):
         # scanpy 1.10.4 neighbors() calls csr_array.getnnz, removed in SciPy 1.14; restore the alias (no numeric change)
         _sp.csr_array.getnnz = lambda self, axis=None: self._getnnz(axis=axis)
+    if os.environ.get('R9_SCPOLI_EXACT_KNN') == '1':
+        # scanpy 1.10.4 + SciPy 1.15 + pynndescent: the approximate-kNN path returns csr_array, which anndata 0.10.9
+        # rejects (fails for >~9k-cell query donors, i.e. HCC08). Rerun of those tasks forces scanpy's exact sklearn kNN
+        # inside scPoli's prototype initialisation (deviation from the default approximate path; recorded in DECISIONS).
+        import scarches.trainers.scpoli.trainer as _tr
+        _orig = _tr.sc.pp.neighbors
+        _tr.sc.pp.neighbors = lambda adata, *a, **k: _orig(adata, *a, **dict(k, transformer='sklearn'))
     from scarches.models.scpoli import scPoli
     ref = ad.AnnData(Xs.copy(), obs=pd.DataFrame(dict(sample=obs['sample'].values[src].astype(str), label=lab_src),
                                                 index=obs.index.values[src]))
