@@ -1,0 +1,11 @@
+{"run_id": "a4_external_v1",
+ "cohort": "GSE151530 HCC samples only (25 donors / 32 samples / 50,023 cells); grouped by author patient",
+ "training": "all 10 GSE149614 donors; representation ALL__full / ALL__excl_<target>",
+ "calibration": "GSE149614 3-donor-group OOF only; temperature + tau_fine/tau_parent (EPS 0.02)",
+ "conditions": [{"name": "nat"},
+                {"name": "sparse_B_N64_D4", "target": "B", "N": 64, "D": 4},
+                {"name": "sparse_Endothelial_N64_D4", "target": "Endothelial", "N": 64, "D": 4},
+                {"name": "sparse_Fibroblast_N64_D4", "target": "Fibroblast", "N": 64, "D": 4}],
+ "seeds": [0, 1, 2],
+ "models": ["LR_donor", "P1_donor", "GMM_K", "A00", "A10", "A01", "A11"],
+ "selected_version_rule": "DECISIONS C2 rule applied to a2_main_v1 dev results (recorded in DECISIONS C4 before submission)"}

@@ -91,3 +91,14 @@
 - Smoke(배관용, 결과 아님): scPoli 1 fold 약 9.5분(A40, peak CUDA 0.06 GiB 할당). ProtoCloud 시간은 smoke 종료 후 기록. ProtoCloud가 task당 30분을 넘으면 GPU 2장 제한 때문에 조건을 nat + sparse_Fibroblast로 줄이고 그 사실을 여기에 적는다.
 - scArches 0.6.1의 `classify()`가 SciPy 1.14에서 제거된 `csr.A`를 쓰므로 query 행렬을 dense로 넘겼다(방법 변경 아님).
 - (C2b 관측 추가, 실행 전) ProtoCloud smoke: 1 fold 학습 2,651초(약 44분, A40, peak CUDA 0.54 GiB, CPU 단일 스레드 속도 제한). 사전 규칙에 따라 ProtoCloud 조건을 **nat + sparse_Fibroblast_N64_D4**로 줄인다(`configs/r9/a2_ext_protocloud.json`). scPoli는 4개 조건 그대로.
+
+---
+
+## C4 — A4 별도 코호트 한 번 평가 (계획; A2 결과를 보기 전 커밋)
+
+- 고정 설정: `configs/r9/a4_freeze.json`. GSE149614 10명 전체로 학습, GSE151530 HCC 25명(32 시료)에 한 번 적용. 조건 nat + sparse 3개(대상 세포를 GSE149614 10명 중 4명에서 64개; seed별 donor 회전), seed 0–2. 모델: 2×2 네 arm + LR_donor, P1_donor, GMM_K(모두 같은 PCA50 표현).
+- 대응표와 점수 대상은 A0에서 고정(5개 대응 label, Malignant/unclassified는 known 정답 아님). 주 지표: nat — 외부 donor별 5개 대응 label AUPRC 평균(양성 ≥10인 label만), sparse — 대상 label AUPRC. 외부 donor 단위 paired 차이와 donor bootstrap CI.
+- 보정: GSE149614 OOF만 사용. GSE151530에서는 아무 것도 적합하지 않는다(온도·임계값·prior 포함).
+- **선정 버전**은 C2 규칙을 A2 개발 결과에 기계적으로 적용해 결정하고, A4 제출 직전 이 절 아래에 기록한 뒤 freeze commit을 만든다. 외부 결과를 본 뒤 선정 버전·임계값을 바꾸지 않는다. 이후 바꾸면 새 버전 이름을 쓰고 이 자료를 blind test라고 부르지 않는다.
+- 외부 모델(scPoli, ProtoCloud)은 GPU 시간 제약으로 A4에서 실행하지 않는다(개발 LOPO 비교에만 사용) — 미실행 항목으로 보고.
+- 이 코호트는 phase2-v2에서 대분류가 이미 채점되었으므로 결과는 "R9 고정 버전의 첫 외부 적용"이며 blind 확인이 아니다.
