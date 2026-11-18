@@ -53,6 +53,12 @@ sel_B11_lr1e-4_s43	gated	gated	1.0	real	on	0.0001	43.0	20000.0	0.546189652975364
 sel_B11_lr1e-4_s44	gated	gated	1.0	real	on	0.0001	44.0	20000.0	0.5451944263465193	10500.0	1268.0	3.81	25784	a5422de	completed
 smoke_gated	gated	gated	1.0	real	on	0.0003	42.0	300.0	0.558526681339966	300.0	36.3	3.81	25729	f6e5443	completed
 xp_timing	xpert_predict												25792		split=validation treated_slot_max_abs_diff=0.0
+xpe_e100_s42	xpert_predict												26566		split=test treated_slot_max_abs_diff=0.0
+xpe_e100_s42	xpert_predict												26557		split=validation treated_slot_max_abs_diff=0.0
+xpe_e100_s43	xpert_predict												26567		split=test treated_slot_max_abs_diff=0.0
+xpe_e100_s43	xpert_predict												26558		split=validation treated_slot_max_abs_diff=0.0
+xpe_e100_s44	xpert_predict												26568		split=test treated_slot_max_abs_diff=0.0
+xpe_e100_s44	xpert_predict												26559		split=validation treated_slot_max_abs_diff=0.0
 xpr_e100_s42	xpert_predict												25973		split=test treated_slot_max_abs_diff=0.0
 xpr_e100_s42	xpert_predict												25937		split=validation treated_slot_max_abs_diff=0.0
 xpr_e100_s43	xpert_predict												25974		split=test treated_slot_max_abs_diff=0.0
@@ -63,4 +69,5 @@ p_* (15 runs)	pilot (first)														cancelled after ~37 s (jobs 25732-25746
 smoke_{chem,concat,gated,fixed}	smoke														300 updates, timing / memory only (jobs 25727-25730)
 xp_timing	xpert														2 epochs timing run (job 25788) used for the epoch cap D-3 and the wrapper check (job 25792)
 xp_e100_s{42,43,44}	xpert														25790 failed (timestamp folder collision); 25789 / 25791 cancelled at ~2 epochs (shared work dir), D-4; relaunched as xpr_e100_*
+xpe_e100_s{42,43,44}	xpert (addendum A-2)														input-matched XPert (ECFP folded to 1024, HG zero), jobs 26037-26039; addendum freeze 28cca70; eval job 26569
 -	setup														refused / failed setup jobs: 25718 (mamba binary), 25766 (huggingface_hub missing), 25768 (upstream tqdm bug), 25769-25772 (NFS stale clean-tree check), 25773 (gene-id alignment); none trained a model
