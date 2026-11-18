@@ -169,6 +169,7 @@ validation source panel ΔRMSE, seed 42, 20000 update 중 최저 checkpoint:
   - XPert 설정(D-3)도 그 전에 고정되었다.
   - 이 수치를 본 뒤 어떤 설정도 바꾸지 않는다. mock 결과 파일은 숨기지 않고 `mock/`에 그대로 commit한다.
 - **재발 방지(2026-11-18 22:4x 추가):** 처음에 '없음'이라고 적은 것은 잘못된 판단이었다. `final_eval`의 mock 모드가 HCC panel을 **계산하지 못하도록** 고쳤다(`MOCK_PANELS = ["source"]`, 주석 결측 stress의 HCC 행 제외, 결과 표에 HCC가 들어가면 중단하는 assert). 위반 자체는 취소되지 않으며, RESULTS·CLAIMS·EXPOSURE에 그대로 남긴다.
+  - **수정 확인(job 26581):** 같은 mock 명령을 다시 실행했다. 결과 표(`manifests/evidence_gated_r7/mock/`)의 panel 열은 `source` 하나뿐이고, 주석 stress·대비 표에도 HCC panel이 없다. 작업 로그에 HCC·HUH7·JHH5·JHH7 문자열이 0건이다. 이 재실행은 validation만 읽었고 test는 열지 않았다.
 
 ## F-1. 동결과 최종 평가 (2026-11-18 13:2x)
 
