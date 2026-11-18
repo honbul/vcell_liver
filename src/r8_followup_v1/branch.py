@@ -122,7 +122,7 @@ def evaluate(a, cfg, out):
                     continue
                 for m, p, ex in Eng.method_preds(ctx, Eng.inputs(ep, K), K, const, fx, with_extras=False, jc=jc):
                     if m in KEEP:
-                        rec.append(dict(fold=a.partition, **meta, block=block, K=K, method=m, **F.score(p.numpy(), pc["truth"]), **ex))
+                        rec.append(dict(dict(fold=a.partition, **meta), block=block, K=K, method=m, **F.score(p.numpy(), pc["truth"]), **ex))   # score n_query overrides meta
     pd.DataFrame(rec).to_csv(os.path.join(out, "matched_episodes.tsv.gz"), sep="\t", index=False, float_format="%.7g")
     log("matched", f"{time.time() - t0:.0f}s")
     if "budget" in jc:

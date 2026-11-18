@@ -38,8 +38,9 @@ def assert_frozen():
     dirty = subprocess.run(["git", "status", "--porcelain", "--", "src", "configs"], capture_output=True, text=True).stdout.strip()
     fix = os.environ.get("R8F_EVAL_FIX", "")
     assert (changed == "" and dirty == "") or fix, f"code changed after the freeze without a recorded reason:\n{changed}\n{dirty}"
-    for k in ("constants", "pairs"):
-        assert sha256(fz[k]["path"]) == fz[k]["sha256"], f"{k} file changed after the freeze"
+    for k in ("constants", "pairs", "jconstants"):
+        if k in fz:
+            assert sha256(fz[k]["path"]) == fz[k]["sha256"], f"{k} file changed after the freeze"
     return fz, fix
 
 
@@ -120,6 +121,8 @@ def main():
     out = new_run_dir("final_eval", a.run_id)
     const = json.load(open(fz["constants"]["path"]))
     assert const["partition"] == "final_inner"
+    jc = json.load(open(fz["jconstants"]["path"])) if "jconstants" in fz else None
+    assert jc is None or jc["partition"] == "final_inner"
     pairs = pd.read_csv(fz["pairs"]["path"], sep="\t")
     fx = Eng.load_fixed(orig_man("anchor_selection.json"))
     bank = Bank()
@@ -134,7 +137,7 @@ def main():
         for ep in ctx.episodes("val", [1, 2, 3], None):
             for K in (8, 16, 32):
                 inp = Eng.inputs(ep, K)
-                for m, p, ex in Eng.method_preds(ctx, inp, K, const, fx):
+                for m, p, ex in Eng.method_preds(ctx, inp, K, const, fx, jc=jc):
                     rows.append(dict(cell=ep.name, family=ep.family, support_seed=ep.seed, K=K, method=m, **F.score(p.numpy(), ep.y_q.numpy()), **ex))
         pd.DataFrame(rows).to_csv(os.path.join(out, "confirmation_episodes.tsv.gz"), sep="\t", index=False, float_format="%.7g")
         print("confirmation", f"{time.time() - t0:.0f}s", flush=True)
@@ -150,7 +153,7 @@ def main():
                 for K in (8, 16, 32):
                     if K > meta["kmax"]:
                         continue
-                    for m, p, ex in Eng.method_preds(ctx, Eng.inputs(ep, K), K, const, fx):
+                    for m, p, ex in Eng.method_preds(ctx, Eng.inputs(ep, K), K, const, fx, jc=jc):
                         rec.append(dict(b, block=block, K=K, method=m, ctrl_shift_rms=pc["ctrl_shift_rms"], **F.score(p.numpy(), pc["truth"]), **ex))
         pd.DataFrame(rec).to_csv(os.path.join(out, "matched_episodes.tsv.gz"), sep="\t", index=False, float_format="%.7g")
         print("matched", f"{time.time() - t0:.0f}s", flush=True)
@@ -170,7 +173,7 @@ def main():
                     if K > len(ep.g_s):
                         continue
                     inp = Eng.inputs(ep, K)
-                    for m, p, _ in Eng.method_preds(ctx, inp, K, const, fx):
+                    for m, p, _ in Eng.method_preds(ctx, inp, K, const, fx, jc=jc):
                         pn = p.numpy()
                         store[f"{m}|{K}"] = pn.astype(np.float32)
                         units += unit_table(pn, truth, qn, is_test, dict(method=m, K=K, split_seed=int(split), target=t))
