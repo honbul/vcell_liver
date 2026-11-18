@@ -110,3 +110,21 @@
 
 **미검증**
 - 외부에서 B·Fib에만 적응 배분 이득이 나타난 이유(외부 prior, 대상 세포 상태 구성, donor 수 12–15명의 변동)는 측정하지 않았다.
+
+## A3 — source 보정·3단계 출력·pseudo-unknown (`risk_coverage.tsv`, `a3_calibration_per_donor.tsv`, `a3_unknown_summary.tsv`, `a3_unknown_per_donor.tsv`, `a3_contrasts.tsv`)
+
+모든 모델에 같은 보정: source donor 3 group OOF → 온도 1개, τ_fine(OOF 세부 오류 ≤2%), τ_parent, 그 외 보류. 바깥 모델은 A2 seed 0. Pseudo-unknown: nat에서 대분류 하나씩 제거(6개 × 10 donor), seed 0.
+
+**관측**
+- nat 3단계 출력(10 donor 평균): 출력 오류 0.018–0.021로 모든 모델이 source 목표(2%) 근처. 세부 출력 비율 LR_class 0.70, A00 0.65, GMM_K 0.63, LR_donor 0.56, A11 0.55, A10 0.55; 보류 0.22–0.36.
+- 온도 보정은 nat에서 ECE를 낮추지 못했다(예: LR_donor 0.018→0.034, A11 0.019→0.067). 보정 전후 모두 보고한다.
+- AURC A11−A10: nat −0.003 [−0.008, +0.000], sparse_B +0.002 [−0.003, +0.008], sparse_Endo −0.000 [−0.003, +0.002], sparse_Fib −0.007 [−0.022, +0.004], lin_Myeloid −0.018 [−0.033, −0.005].
+- lin_Myeloid(Tier 2): 2% 오류 기준을 만족하는 세부 출력이 거의 없어(세부 0.1–0.6%) 대부분 상위(Myeloid) 출력 또는 보류였다.
+- sparse_Fibroblast에서 LR_class·LR_donor는 source 임계값이 시험 donor에서 세부 출력 0.1–2%만 허용(보류 79–86%)했다 — 보정 전이 실패 사례.
+- Pseudo-unknown AUROC(max prob, 6 label·10 donor 평균): LR_class 0.901, LR_donor 0.888, GMM_K 0.876, A00 0.864, A11 0.861, P1_donor 0.861, A10 0.842. log density 점수: GMM_K 0.878, 프로토타입 arm 0.77–0.79. A11−A10 +0.019 [+0.005, +0.034], A11−LR_donor −0.027 [−0.048, −0.004]. 같은 임계값에서 unknown 거부율은 0.83–0.91, known 거부율 0.27–0.44(max prob).
+
+**추론**
+- Tier 1에서는 분류 향상과 보류 향상 모두 A11에서 관측되지 않았다. Tier 2 Myeloid에서만 "분류는 같고 순위(AURC)가 좋아짐"이 관측되었다(탐색, 군집 번호 재현).
+- 미관측 상태 보류에서 적응 배분은 고정 배분보다 낫지만 단순 logistic보다 나쁘다 → 보류 개선을 R9 방법의 기여로 주장하지 않는다.
+
+**미검증:** pseudo-unknown은 대분류 제거 실험이며 실제 새로운 세포 상태의 발견 능력이 아니다.
