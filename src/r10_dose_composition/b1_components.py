@@ -186,10 +186,10 @@ def decomposition(cfg, split, K_by_line, out):
 
 def synthetic_controls(cfg, K_by_line, out, seed=0):
     """Vehicle rep1 cells = 'prediction'; vehicle rep2 cells, transformed, = 'truth'.
-    composition-only: subsample truth cells without replacement with prob. prop. to a target
-    composition (mass delta moved to the least-occupied state); within-only: shift every truth cell
+    composition-only: draw 400 truth cells with exact hard-state counts after moving a mass delta
+    from the largest to the second-largest state (realisable without replacement); within-only: shift every truth cell
     by sum_k s_k(z) * delta * sd_k * u_k with fixed random unit directions u_k; both: the two together.
-    The oracle-repair rows apply the true change to the prediction through the same assembly rules
+    The oracle-repair rows (oracle_pi uses the realised re-read truth composition) apply the true change to the prediction through the same assembly rules
     as the 2x2 heads (reweighting by pi ratios / shifting by state residuals)."""
     rows = []
     rng = np.random.default_rng(seed)
@@ -209,30 +209,38 @@ def synthetic_controls(cfg, K_by_line, out, seed=0):
         K, d = D.K, D.Z.shape[1]
         u = rng.normal(size=(K, d)); u /= np.linalg.norm(u, axis=1, keepdims=True)
         sdk = np.sqrt(np.trace(D.atlas.cov, axis1=1, axis2=2) / d)
-        j = int(np.argmin(piB))
-        m = min(len(B) // 2, 1000)
+        hard = D.S[B].argmax(1)
+        occ = np.bincount(hard, minlength=K)
+        big, second = np.argsort(-occ)[:2]
+        m = 400
         for case in ("null", "comp_only", "within_only", "both"):
             for lev in ((0,) if case == "null" else (1, 2)):
                 dc = {0: 0.0, 1: 0.10, 2: 0.25}[lev] if case in ("comp_only", "both") else 0.0
                 dw = {0: 0.0, 1: 0.5, 2: 1.0}[lev] if case in ("within_only", "both") else 0.0
-                target = (1 - dc) * piB + dc * np.eye(K)[j]
-                hard = D.S[B].argmax(1)
-                p = (target / piB)[hard]
-                pick = rng.choice(len(B), m, replace=False, p=p / p.sum())
+                # exact hard-state counts: move dc of the mass from the largest to the 2nd-largest state
+                tgt = occ / occ.sum()
+                tgt = tgt + dc * (np.eye(K)[second] - np.eye(K)[big])
+                cnt = np.floor(tgt * m).astype(int)
+                cnt[big] += m - cnt.sum()
+                assert (cnt <= occ).all(), "synthetic target not realisable"
+                pick = np.concatenate([rng.choice(np.where(hard == k)[0], cnt[k], replace=False)
+                                       for k in range(K) if cnt[k] > 0])
                 ZQ = D.Z[B][pick] + D.S[B][pick] @ (dw * sdk[:, None] * u)
                 SQ = D.atlas.read(ZQ)
                 Q = Query("", ZQ, SQ, np.zeros(D.G.shape[1]))
+                piT = SQ.mean(0)                      # realised truth composition (re-read)
                 for repair in ("none", "oracle_pi", "oracle_shift", "oracle_both"):
                     w = np.full(len(ZA), 1 / len(ZA))
                     X = ZA.copy()
                     if repair in ("oracle_pi", "oracle_both") and dc > 0:
-                        w = w * (SA @ (target / SA.mean(0)))
+                        w = w * (SA @ (piT / SA.mean(0)))
                         w /= w.sum()
                     if repair in ("oracle_shift", "oracle_both") and dw > 0:
                         X = X + SA @ (dw * sdk[:, None] * u)
                     s = score(D, Cloud(X, w, np.zeros(len(X), int)), Q)
                     rows.append(dict(line=line, case=case, level=lev, delta_comp=dc, delta_within_sd=dw,
-                                     repair=repair, n_pred=len(ZA), n_truth=m, true_tv_shift=float(0.5 * np.abs(SQ.mean(0) - D.S[B].mean(0)).sum()),
+                                     repair=repair, n_pred=len(ZA), n_truth=m,
+                                     true_tv_shift=float(0.5 * np.abs(piT - piB).sum()),
                                      **{k: s[k] for k in ("comp_tv", "within_mean_rmse", "within_ed", "ed",
                                                           "mean_rmse_latent")}))
         log(line, "synthetic done")
