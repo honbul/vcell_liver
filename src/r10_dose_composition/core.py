@@ -292,9 +292,10 @@ def score(D: LineData, P: Cloud, Q: Query, min_state_neff=5.0, ED_only=False) ->
     for k in range(D.K):
         wp = P.w * S_p[:, k]
         wq = Q.S[:, k]
-        nq, npp = neff(wq), neff(wp)
+        nq = neff(wq)
         out[f"neff_q_{k}"] = nq
-        if nq < min_state_neff or npp < min_state_neff:
+        out[f"neff_p_{k}"] = neff(wp)
+        if nq < min_state_neff or wp.sum() < 1e-8:
             out[f"within_mean_rmse_{k}"] = np.nan; out[f"within_ed_{k}"] = np.nan
             continue
         cm_p = (wp @ P.X) / wp.sum()

@@ -110,7 +110,17 @@ LINE_IDX = {"A549": 0, "K562": 1, "MCF7": 2}
 EP_IDX = {"E100": 0, "E1000": 1}
 
 
-def features(ctx: Context, cfg: dict) -> tuple[np.ndarray, dict]:
+def _pad(a, K_pad):
+    a = np.asarray(a, dtype=np.float64)
+    out = np.zeros((K_pad,) + a.shape[1:])
+    out[: len(a)] = a
+    return out.ravel()
+
+
+def features(ctx: Context, cfg: dict, K_pad: int) -> tuple[np.ndarray, dict]:
+    """Endpoint summaries only (control, both endpoints, dose position is constant 0.5 here and
+    therefore carried by the episode one-hot). State blocks are zero-padded to K_pad so that
+    lines with different K share one model."""
     sh = cfg["shrink"]
     I = interp_state(ctx, sh["kappa_mean"], sh["kappa_cov"])
     L, H = I["L"], I["H"]
@@ -118,10 +128,11 @@ def features(ctx: Context, cfg: dict) -> tuple[np.ndarray, dict]:
     oh = np.zeros(3); oh[LINE_IDX[ctx.line]] = 1
     oe = np.zeros(2); oe[EP_IDX[ctx.episode]] = 1
     mc = ctx.ZC.mean(0)
-    f = np.concatenate([oh, oe, L["pi"], H["pi"], C["pi"], np.log((H["pi"] + 1e-3) / (L["pi"] + 1e-3)),
-                        (L["m_shrunk"] - ctx.atlas.mu).ravel(), (H["m_shrunk"] - L["m_shrunk"]).ravel(),
+    f = np.concatenate([oh, oe, _pad(L["pi"], K_pad), _pad(H["pi"], K_pad), _pad(C["pi"], K_pad),
+                        _pad(np.log((H["pi"] + 1e-3) / (L["pi"] + 1e-3)), K_pad),
+                        _pad(L["m_shrunk"] - ctx.atlas.mu, K_pad), _pad(H["m_shrunk"] - L["m_shrunk"], K_pad),
                         ctx.ZL.mean(0) - mc, ctx.ZH.mean(0) - mc, [np.log(L["n"]), np.log(H["n"])],
-                        np.log1p(L["neff"]), np.log1p(H["neff"])])
+                        _pad(np.log1p(L["neff"]), K_pad), _pad(np.log1p(H["neff"]), K_pad)])
     return f.astype(np.float32), I
 
 
@@ -160,15 +171,15 @@ class Head:
                     z.get("hidden", 64))
 
 
-def predict_learned(arm: str, ctx: Context, cfg: dict, heads: dict) -> Cloud:
-    f, _ = features(ctx, cfg)
+def predict_learned(arm: str, ctx: Context, cfg: dict, heads: dict, K_pad: int) -> Cloud:
+    f, _ = features(ctx, cfg, K_pad)
+    K, d = ctx.SL.shape[1], ctx.ZL.shape[1]
     if arm == "W":
         o = heads["W"](f)
-        d = ctx.ZL.shape[1]
         X, w, g, _ = _mix(ctx)
         mu = w @ X
         X = mu + (X - mu) * np.exp(o[d:]) + o[:d]
         return Cloud(X, w, g)
-    r_pi = heads["pi"](f) if arm in ("D10", "D11") else None
-    r_m = heads["Q"](f).reshape(ctx.SL.shape[1], -1) if arm in ("D01", "D11") else None
+    r_pi = heads["pi"](f)[:K] if arm in ("D10", "D11") else None
+    r_m = heads["Q"](f).reshape(K_pad, d)[:K] if arm in ("D01", "D11") else None
     return assemble(ctx, cfg, r_pi, r_m)
