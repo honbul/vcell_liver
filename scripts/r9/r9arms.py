@@ -1,4 +1,6 @@
 """Model zoo shared by A2 (2x2 + baselines), A3 (calibration / pseudo-unknown) and A4 (external)."""
+import time
+
 import numpy as np
 
 from r9model import *
@@ -48,6 +50,7 @@ def run_models(Ztr, ytr, dtr, Zte, C, seed, models=MODELS, Zextra=None):
         return cache[kind]
 
     for m in models:
+        t0 = time.process_time()
         res = dict(logdens=None, alloc=None)
         Xs = [Zte] + ([Zextra] if Zextra is not None else [])
         if m.startswith('LR_'):
@@ -77,5 +80,6 @@ def run_models(Ztr, ytr, dtr, Zte, C, seed, models=MODELS, Zextra=None):
                 res['logdens'].append(ld)
             res['alloc'] = al
             res['n_proto'] = al.count()
+        res['cpu_seconds'] = time.process_time() - t0   # includes shared allocation cost for the first arm using it
         out[m] = res
     return out
