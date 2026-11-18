@@ -26,6 +26,7 @@ CONTRASTS = [('A11', 'A10', 'core: adaptive vs fixed allocation under donor-bala
              ('A11', 'GMM_K', 'adaptive discriminative vs generative GMM (same K)'),
              ('A10', 'P1_donor', 'fixed multi-prototype vs single prototype (donor loss)'),
              ('A11', 'LR_donor', 'A11 vs donor-balanced logistic'),
+             ('A10', 'LR_donor', 'A10 vs donor-balanced logistic (selection rule)'),
              ('A11', 'LR_class', 'A11 vs class-balanced logistic'),
              ('A11', 'MLP_donor', 'A11 vs donor-balanced MLP'),
              ('LR_donor', 'LR_class', 'donor- vs class-balanced logistic'),

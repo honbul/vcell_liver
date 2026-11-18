@@ -102,3 +102,12 @@
 - **선정 버전**은 C2 규칙을 A2 개발 결과에 기계적으로 적용해 결정하고, A4 제출 직전 이 절 아래에 기록한 뒤 freeze commit을 만든다. 외부 결과를 본 뒤 선정 버전·임계값을 바꾸지 않는다. 이후 바꾸면 새 버전 이름을 쓰고 이 자료를 blind test라고 부르지 않는다.
 - 외부 모델(scPoli, ProtoCloud)은 GPU 시간 제약으로 A4에서 실행하지 않는다(개발 LOPO 비교에만 사용) — 미실행 항목으로 보고.
 - 이 코호트는 phase2-v2에서 대분류가 이미 채점되었으므로 결과는 "R9 고정 버전의 첫 외부 적용"이며 blind 확인이 아니다.
+
+### C2 결과 — Tier 1 부분 (a2_main_v1, nat + sparse 3개 × 10 donor × 3 seed 완료; Tier 2는 실행 중)
+
+- 관측(donor paired, 95% donor bootstrap CI, 주 지표):
+  - 핵심 **A11−A10**: nat +0.0022 [−0.0001, 0.0045]; sparse_B +0.016 [−0.010, 0.041]; sparse_Endothelial −0.018 [−0.042, 0.004]; sparse_Fibroblast +0.018 [−0.022, 0.052]. CI 하한 > 0인 sparse target **0/3**.
+  - A10−LR_donor: nat −0.007 [−0.016, −0.001]; sparse_B −0.075 [−0.123, −0.032]; sparse_Endothelial +0.016 [+0.000, +0.034]; sparse_Fibroblast −0.028 [−0.083, +0.021] → CI 하한 > 0 은 1/3.
+  - 같은 K의 다중 프로토타입 arm(A00–A11, TL, RA)은 sparse_B에서 단일 프로토타입·logistic·MLP보다 낮다(예: A10 0.757, P1_donor 0.811, LR_donor 0.832, MLP_donor 0.897).
+- **C4 선정 버전(사전 규칙 기계 적용): `LR_donor`** (PCA50 + L_donor,class logistic). A11 기준(≥2/3) 불충족, A10 기준(≥2/3) 불충족.
+- A4는 freeze 설정대로 2×2 네 arm과 LR_donor·P1_donor·GMM_K를 모두 한 번에 평가하고, 선정 버전은 LR_donor로 표시한다.
