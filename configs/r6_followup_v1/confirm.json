@@ -1,0 +1,15 @@
+{
+ "split_role": "source_oof",
+ "out": "reports/r6_followup_v1/input_capacity_controls.tsv",
+ "per_condition": "predictions/r6_followup_v1/confirm_per_condition.tsv.gz",
+ "per_seed": true,
+ "arms": {
+  "S": {"stage": "confirm", "pattern": "c_S_f{fold}_s{seed}"},
+  "SD": {"stage": "confirm", "pattern": "c_SD_f{fold}_s{seed}"},
+  "M": {"stage": "confirm", "pattern": "c_M_f{fold}_s{seed}"},
+  "R": {"stage": "confirm", "pattern": "c_R_f{fold}_s{seed}"}
+ },
+ "pairs": [["SD", "S"], ["SD", "M"], ["SD", "R"], ["M", "R"], ["S", "poolmean"], ["SD", "poolmean"], ["M", "poolmean"], ["R", "poolmean"],
+           ["SD", "linemean"], ["S", "linemean"], ["poolmean", "linemean"]],
+ "depth_pairs": [["SD", "M"], ["SD", "R"], ["SD", "S"]]
+}
