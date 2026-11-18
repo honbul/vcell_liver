@@ -70,3 +70,15 @@
 - 핵심 A11−A10: donor paired 차이, donor bootstrap 95% CI. 조건별로 따로 보고하고 자연 희귀(Tier 2)와 인공 희소(Tier 1 sparse)를 섞지 않는다.
 - A4에 보낼 "선정 버전" 규칙: A11−A10이 sparse 3개 target 중 ≥2개에서 CI 하한 > 0 **이고** nat macro-F1에서 A11−A10 평균 ≥ −0.005이면 A11을 선정. 아니면 A10(또는 A10이 LR_donor보다 sparse 3개 중 ≥2개에서 CI 하한 > 0로 낫지 않으면 LR_donor)을 선정 버전으로 둔다. 어느 경우든 A4에는 2×2 네 arm과 LR_donor·P1_donor·GMM_K를 함께 고정해 한 번에 평가한다.
 - A11이 A10을 못 넘고 A10이 A00을 넘으면 §10 "주 기여는 환자 균형 학습" 행; A11≈TL_donor면 "환자 지지도의 귀속 불명"으로 적는다.
+
+---
+
+## C3 — A3 source calibration · 3단계 출력 · pseudo-unknown 보류 (계획; 실행 전 커밋)
+
+**관측:** C2 실행 중(결과 미확인 상태에서 작성). 분류 성능 비교만으로는 보류 품질 차이를 알 수 없다.
+
+**가설:** 다환자 지지 프로토타입(A11)은 donor 특이 모드에 용량을 덜 쓰므로, 같은 분류 성능에서도 새 donor의 신뢰도 순위(risk–coverage)와 미관측 상태 보류가 고정 배분(A10)보다 낫다.
+
+**변경:** 모든 모델에 같은 source 보정 기회: source donor 3 group OOF → 온도 1개(NLL 격자), τ_fine(OOF 세부 오류 ≤2%), τ_parent(나머지에서 상위 유형 오류 ≤2%), 그 외 보류. 바깥 모델은 A2 seed-0 학습본 그대로. Pseudo-unknown: nat 조건에서 대분류 u 하나를 source에서 제거(6개 각각), 내부 OOF에서 다른 label u'를 추가로 숨겨 source pseudo-unknown을 만들고 Youden J로 임계값 결정; 점수는 max prob(모든 모델)과 log density(프로토타입·GMM).
+
+**예상 판별 결과 / 규칙:** (i) A11−A10의 AURC(낮을수록 좋음)와 unknown AUROC를 donor paired CI로 비교. (ii) A2에서 분류 차이가 없는데 A3에서 AURC/보류가 CI 하한 기준으로 좋아지면 §10 "분류는 같지만 보류가 좋아짐" 행. (iii) 둘 다 차이 없으면 보류 개선 주장 없음. 외부 코호트에서는 calibration 전이 성능만 보고하며 coverage·정확도 보장을 주장하지 않는다.
