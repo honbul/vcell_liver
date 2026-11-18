@@ -100,7 +100,7 @@
 
 - A11−A10의 macro-F1(5 label): sparse_B −0.027 [−0.046, −0.012], Endo +0.028 [+0.007, +0.058], Fib +0.021 [+0.001, +0.041] — AUPRC와 부호가 엇갈린다.
 - Prior 차이: 외부 Myeloid 9.2%(개발 22.2%), Fibroblast 2.1%(3.2%), B 3.7%(5.1%), Hepatocyte 정답 없음, Malignant 31%·unclassified 14%.
-- 대응 없는 세포: Malignant cells는 모든 모델에서 84–99%가 Hepatocyte로 예측되었고, 보류 비율은 모델·조건에 따라 30–76%. 이는 taxonomy 대응 기술(탐색)이며 정확도가 아니다.
+- 대응 없는 세포: Malignant cells는 모든 모델·조건에서 82–99%가 Hepatocyte로 예측되었고, 보류 비율은 모델·조건에 따라 30–99%. 이는 taxonomy 대응 기술(탐색)이며 정확도가 아니다.
 - Source 보정 3단계 출력(nat, known 세포): LR_donor는 세부 출력 54%·보류 46%에서 출력 오류 0.000; A11은 세부 63%·상위 12%·보류 26%에서 0.002; GMM_K 세부 82%에서 0.001. Source에서 정한 임계값(오류 ≤2%)이 외부에서는 보수적으로 전이되었다(coverage 보장 주장 없음).
 
 **추론**
