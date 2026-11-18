@@ -13,6 +13,7 @@ from .train import SeedBank, load_graph, tensors, predict
 from src.response_geometry_r4.baselines import fit_all
 
 PANELS = ["source", "HUH7", "JHH5", "JHH7", "hcc_mean"]
+MOCK_PANELS = ["source"]   # D-5 fix: the pre-freeze wiring check must not compute any HCC number
 MASK_SEED = 20261117
 
 
@@ -28,12 +29,14 @@ def main():
         out = runs("test_eval", f"mock_{int(t0)}"); tag = "mock"
         te = S.val; y = S.delta(te)
         dst = lambda *p: pman("mock", *p)
+        panels = MOCK_PANELS
     else:
         assert os.environ.get("R7_FINAL_EVAL") == "1"
         fr = json.load(open(os.path.join(MAN, "freeze_manifest.json")))
         out = runs("test_eval", "test_eval_v1"); tag = "test"
         te = S.test; y = S.test_delta(te)
         dst = lambda *p: pman(*p)
+        panels = PANELS
     os.makedirs(out, exist_ok=False)
     ut = S.units.iloc[te].reset_index(drop=True)
     gst = K.status.set_index("group_idx")
@@ -77,7 +80,7 @@ def main():
         for k, p in enumerate(ps):
             f = os.path.join(out, f"{name}_{k}.npy"); np.save(f, p.astype(np.float32)); hashes[f"{name}_{k}.npy"] = sha256(f)
             met = unit_metrics(p, y, cells); per.append(met)
-            for pan in PANELS:
+            for pan in panels:
                 rows.append(dict(model=name, seed_index=k, panel=pan, **summarise(met, ut, pan)))
         unit_rmse[name] = np.mean([m.rmse.to_numpy() for m in per], 0)
         unit_cp[name] = np.mean([m.centred_pearson.to_numpy() for m in per], 0)
@@ -110,7 +113,7 @@ def main():
         levels = {"kept_100": preds[name], "kept_50": stress[name][0.5], "kept_0": stress[name][1.0]}
         for lev, ps in levels.items():
             ur = np.mean([unit_metrics(p, y, cells).rmse.to_numpy() for p in ps], 0)
-            for pan, s in [("source", src & ann)] + [(h, (cells == h) & ann) for h in HCC]:
+            for pan, s in [("source", src & ann)] + ([(h, (cells == h) & ann) for h in HCC] if not a.mock else []):
                 if s.any():
                     v = family_mean(ur[s], fam[s]) if pan == "source" else float(ur[s].mean())
                     strow.append(dict(model=name, annotation=lev, panel=pan, rmse=v, n_units=int(s.sum())))
@@ -124,7 +127,7 @@ def main():
     for x, b in fr["contrasts"]:
         if x not in unit_rmse or b not in unit_rmse:
             crow.append(dict(a=x, b=b, panel="source", diff=np.nan, lo=np.nan, hi=np.nan, note="model missing")); continue
-        for pan in PANELS:
+        for pan in panels:
             crow.append(dict(a=x, b=b, panel=pan, **paired_bootstrap(unit_rmse[x], unit_rmse[b], ut, pan)))
         for lev in ["complete", "partial", "missing"]:
             s = ut.status.to_numpy() == lev
@@ -141,6 +144,9 @@ def main():
                       **{f"rmse_{k}": np.round(v, 5) for k, v in unit_rmse.items()})).to_csv(dst("test_unit_rmse.tsv.gz"), sep="\t", index=False)
     dump(dict(job=os.environ.get("SLURM_JOB_ID"), commit=os.environ.get("R7_COMMIT"), seconds=round(time.time() - t0), n_units=int(len(te)), tag=tag,
               correction_rms=corr_rms, prediction_dir=out, prediction_sha256=hashes), dst("test_eval_record.json"))
+    if a.mock:
+        assert not tab.panel.isin([p for p in PANELS if p not in MOCK_PANELS]).any(), "mock must not score any HCC panel"
+        assert not pd.DataFrame(crow).panel.str.contains("hcc|HUH7|JHH5|JHH7", case=False).any()
     print(summ.reset_index()[["model", "panel", "rmse_mean", "rmse_std"]].to_string())
 
 
