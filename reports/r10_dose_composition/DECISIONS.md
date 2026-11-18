@@ -85,3 +85,18 @@ run: `r10_b3_v1`(job 26354–26356, seed 0·1·2), 평가 `eval_development_2x2_
 **해석(추론, 미검증).** cross-replicate 계약에서 head 이득의 상당 부분은 replicate 사이 체계적 이동을 배운 결과와 맞는다. same에서 이득이 사라진다는 것은 그 해석과 일관되지만, head를 cross로만 학습했으므로 "same 계약에서 학습한 head는 용량 정보로 이득을 낸다/못 낸다"는 아직 측정하지 않았다. 이 구분은 C2에서 한다.
 
 **다음 결정.** (1) D11 v1을 freeze하고 test 약물에 한 번 평가한다(비학습 기준선·oracle 진단 함께, cross·same 모두). (2) C2: same-replicate 계약으로 head를 다시 학습·평가해 replicate 이동이 없는 조건에서도 learned arm이 D00을 넘는지 development에서 가른다(새 버전 v2; test 결과는 이미 본 뒤이므로 v2를 test에서 보더라도 blind test라 부르지 않는다).
+
+---
+
+## C2. same-replicate 계약에서 다시 학습한 2×2 (2026-11-18, 실행 전 작성; D11 v1 test 평가는 제출됨, 결과 미확인)
+
+**관측(C1).** cross 계약에서 학습한 head는 development cross에서 D00보다 구성비 TV를 낮췄지만, 같은 head를 same-replicate triplet에 적용하면 구성비 이득의 CI가 0을 포함하고 Q-head는 상태 내부 오차를 키웠다. MCF7의 cross 이득이 가장 크다.
+
+**가설.** C1의 learned 이득은 주로 replicate 사이 체계적 이동의 보정이다. replicate 이동이 없는 same 계약에서 학습·선택·평가하면, endpoint 요약만으로 얻는 용량 보간 이득은 작다.
+
+**변경(핵심 1개).** train/development 예제를 same-replicate triplet으로 바꾼다(`--direction same`). 나머지(특징, head 구조, grid, 조립, seed 0·1·2)는 C1과 동일. W는 다시 학습하지 않는다.
+
+**판별 가능한 예상 결과.**
+- 가설이 맞으면: development same E1000에서 D10·D11 − D00 구성비 TV 차이의 CI가 0을 포함하거나, 음수여도 C1 cross 이득(−0.03)보다 크기가 훨씬 작다(절반 미만); D01의 상태 내부 이득도 작다.
+- 가설이 틀리면(용량 정보가 학습됨): same에서도 D10 또는 D11의 CI 상한 < 0이고 크기가 C1 cross 이득과 비슷하다.
+- 이 cycle은 해석용 대조이며 v1 선택·test 결과를 바꾸지 않는다. v2를 test에 평가하지 않는다.

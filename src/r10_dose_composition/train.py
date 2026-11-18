@@ -29,9 +29,10 @@ def log(*a):
     print(time.strftime("%H:%M:%S"), *a, flush=True)
 
 
-def build_examples(cfg, trip, Ds, role, K_pad, drugs=None, keep_clouds=False, max_cells=None, seed=0):
+def build_examples(cfg, trip, Ds, role, K_pad, drugs=None, keep_clouds=False, max_cells=None, seed=0,
+                   direction="cross"):
     rng = np.random.default_rng(seed)
-    t = trip[(trip.role == role) & (trip.direction == "cross") & trip.eligible]
+    t = trip[(trip.role == role) & (trip.direction == direction) & trip.eligible]
     if drugs is not None:
         t = t[t.drug.isin(drugs)]
     ex = []
@@ -214,6 +215,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--seeds", default="0,1,2")
     ap.add_argument("--heads", default="pi,Q,W")
+    ap.add_argument("--direction", default="cross", help="replicate contract of train and dev examples")
     ap.add_argument("--pilot_train_drugs", type=int, default=0)
     ap.add_argument("--pilot_dev_drugs", type=int, default=0)
     args = ap.parse_args()
@@ -235,14 +237,16 @@ def main():
         dv_drugs = list(rng.permutation(sorted(trip[trip.role == "development"].drug.unique()))[:args.pilot_dev_drugs])
     heads = args.heads.split(",")
     needW = "W" in heads
-    tr = build_examples(cfg, trip, Ds, "train", K_pad, tr_drugs, keep_clouds=needW, max_cells=128)
-    dv = build_examples(cfg, trip, Ds, "development", K_pad, dv_drugs, keep_clouds=needW, max_cells=None)
+    tr = build_examples(cfg, trip, Ds, "train", K_pad, tr_drugs, keep_clouds=needW, max_cells=128,
+                        direction=args.direction)
+    dv = build_examples(cfg, trip, Ds, "development", K_pad, dv_drugs, keep_clouds=needW, max_cells=None,
+                        direction=args.direction)
     log("examples train", len(tr), "dev", len(dv), "K_pad", K_pad)
     F = np.stack([e["f"] for e in tr])
     f_mean = torch.as_tensor(F.mean(0), dtype=torch.float32)
     f_sd = torch.as_tensor(F.std(0) + 1e-3, dtype=torch.float32)
     TR, DV = batch(tr, f_mean, f_sd), batch(dv, f_mean, f_sd)
-    sel = dict(n_train_examples=len(tr), n_dev_examples=len(dv), n_train_drugs=len({e["drug"] for e in tr}),
+    sel = dict(direction=args.direction, n_train_examples=len(tr), n_dev_examples=len(dv), n_train_drugs=len({e["drug"] for e in tr}),
                n_dev_drugs=len({e["drug"] for e in dv}), K_pad=K_pad, K=Kmap, heads={})
     for seed in [int(s) for s in args.seeds.split(",")]:
         for kind in heads:
