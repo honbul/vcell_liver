@@ -64,3 +64,24 @@
 
 - C0 "버전 선택 규칙"의 learned arm은 2×2의 D10·D01·D11을 뜻한다. W(compact whole-distribution)는 §8의 비교 기준선이며 버전 후보가 아니다. test에는 선택 버전과 비학습 기준선을 평가하고, W·다른 learned arm은 test에서 평가하지 않는다.
 - 학습 로그에서 W와 Q-head의 development 목적함수가 초기값(D00)보다 크게 낮아졌다(W ED 0.35 → 0.12, seed 0). 학습 triplet은 모두 cross-replicate이고 특징에 endpoint의 절대 상태 평균이 들어가므로, head가 **replicate 사이의 체계적 이동**(B1에서 MCF7이 큼)을 배울 수 있다. 이를 가르는 진단: 같은 head를 same-replicate triplet(이동 없음)에 적용한 development 결과와 세포주별 결과. cross에서만 이득이고 same에서 이득이 없거나 손해면 "용량 보간 정보"가 아니라 "replicate 이동 보정"으로 해석한다. 이 진단은 선택 규칙을 바꾸지 않으며 해석에만 쓴다.
+
+### C1 결과 (development, 2026-11-18 19:50 KST; test는 아직 보지 않음)
+
+run: `r10_b3_v1`(job 26354–26356, seed 0·1·2), 평가 `eval_development_2x2_*`(job 26404), 집계 `r10_report_dev2x2_v1`. 선택된 head는 모든 seed에서 weight decay 1e-4.
+
+| E1000, cross, 35 약물 | 구성비 TV 차이 vs D00 [95% CI] |
+|---|---|
+| D10 | −0.0292 [−0.0440, −0.0163] |
+| D01 | −0.0114 [−0.0183, −0.0060] |
+| D11 | −0.0312 [−0.0462, −0.0181] |
+| 상호작용 D11−D10−D01+D00 | +0.0094 [+0.0036, +0.0169] |
+| D10 − D11 | +0.0020 [+0.0001, +0.0040] |
+| D01 − D11 | +0.0198 [+0.0110, +0.0298] |
+
+**규칙 적용(문자 그대로).** 세 learned arm 모두 CI 상한 < 0, 주 지표 최저는 D11. D10−D11과 D01−D11의 CI가 모두 0을 포함하지 않으므로 단순화 조항은 적용되지 않는다 → **선택 버전 = D11 v1**. (D10−D11 하한 +0.0001로 경계에 가깝다는 점을 기록한다.)
+
+**사전 고정 진단(same-replicate, 같은 head).** E1000 same에서 구성비 TV 차이는 D10 −0.0088 [−0.0245, +0.0043], D11 −0.0073 [−0.0230, +0.0057]로 CI가 0을 포함한다. Q-head는 same에서 상태 내부 평균 RMSE를 오히려 키운다(E100 D01 +0.068 [+0.058, +0.078]). cross에서의 큰 ED·상태 내부 이득(D01 ED −0.30 [−0.59, −0.13])은 MCF7에서 가장 크다.
+
+**해석(추론, 미검증).** cross-replicate 계약에서 head 이득의 상당 부분은 replicate 사이 체계적 이동을 배운 결과와 맞는다. same에서 이득이 사라진다는 것은 그 해석과 일관되지만, head를 cross로만 학습했으므로 "same 계약에서 학습한 head는 용량 정보로 이득을 낸다/못 낸다"는 아직 측정하지 않았다. 이 구분은 C2에서 한다.
+
+**다음 결정.** (1) D11 v1을 freeze하고 test 약물에 한 번 평가한다(비학습 기준선·oracle 진단 함께, cross·same 모두). (2) C2: same-replicate 계약으로 head를 다시 학습·평가해 replicate 이동이 없는 조건에서도 learned arm이 D00을 넘는지 development에서 가른다(새 버전 v2; test 결과는 이미 본 뒤이므로 v2를 test에서 보더라도 blind test라 부르지 않는다).
