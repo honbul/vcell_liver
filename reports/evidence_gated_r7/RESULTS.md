@@ -97,7 +97,7 @@
 - 이미 노출된 공개 benchmark다. R4 test가 한 번 열렸다.
 - 동결 전 mock 검사에서 HCC validation 수치가 계산되었다(D-5, 절차 위반). 동결 목록은 그 전에 commit되었고, 동결 manifest와 같음을 확인했다(`hcc_deviation_check.json`). HCC를 보고 바꾼 설정은 없다.
 - validation 신호는 기준선에서 0.000004 차이로 섰다.
-- XPert: epoch 상한 100, flash_attn 대신 SDPA. HG embedding의 DDS 관계는 구조 유사도임을 확인했고, 기본 관계만으로 학습됐는지는 미확인이다.
+- XPert: epoch 상한 100(원 2500). 곡선이 epoch 40 부근에서 평평해져 상한이 실질적 제약이었다는 신호는 없다(`xpert_cap_check.json`). flash_attn 대신 SDPA(같은 수식). HG embedding은 표적·구조 관계와 정합하지만, 기본 관계만으로 학습됐는지는 사전학습 로그 비공개로 증명되지 않았다.
 - HCC는 3계열(test 약물 HUH7 10, JHH5 98, JHH7 10)뿐이다.
 - 주석 있는 test 약물은 465/1,243 그룹(37%)이다.
 
@@ -122,7 +122,7 @@
 | 결측률 후보 선택(augmentation rate) | 미실행 | 하나의 사전 설정만 씀(protocol에 기록) |
 | XPert 입력 맞춤(ECFP 입력, HG 제거) 구조 비교 | **동결 후 실행(A-2)** | R7 판정 뒤 추가한 비교군. 별도 동결 후 1회 평가 |
 | XPert UniMol vs HG 개별 기여 분리 | 미실행 | 사전 지정 없음 |
-| XPert 원 epoch 수(2500) | 미실행 | 계산량(D-3) |
+| XPert 원 epoch 수(2500) | 미실행 | 계산량(D-3). 상한이 제약이었는지는 학습 곡선으로 점검함(D-3 보완) |
 | 수정 2 | 미실행 | 수정 1 뒤 validation 신호가 서서 동결로 진행 |
 
 산출물:
