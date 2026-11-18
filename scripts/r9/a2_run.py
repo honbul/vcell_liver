@@ -27,17 +27,26 @@ if (rd / f'{tag}.npz').exists():
 
 obs = pd.read_csv(CACHE / 'gse149614_obs.tsv.gz', sep='\t', index_col=0)
 target = cond.get('target')
-rep = 'full' if not target else f'excl_{target.replace("/", "")}'
+lineage = cond.get('lineage')
+rep = f'lin_{lineage}' if lineage else ('full' if not target else f'excl_{target.replace("/", "")}')
 R = np.load(CACHE / 'repr' / f'{test}__{rep}.npz', allow_pickle=True)
 assert (R['cell_ids'] == obs.index.values).all()
 Z = R['Z']
-C = len(BROAD)
-yi = obs.broad.map({k: i for i, k in enumerate(BROAD)}).values
 donor = obs.patient.values
-src = np.where(donor != test)[0]
-te = np.where(donor == test)[0]
+if lineage:
+    # tier 2: author res.3 clusters inside one author lineage (parent assumed known)
+    LABELS = sorted(obs.res3[obs.broad == lineage].unique())
+    yi = obs.res3.map({k: i for i, k in enumerate(LABELS)}).fillna(-1).astype(int).values
+    inlin = obs.broad.values == lineage
+else:
+    LABELS = BROAD
+    yi = obs.broad.map({k: i for i, k in enumerate(BROAD)}).values
+    inlin = np.ones(len(obs), bool)
+C = len(LABELS)
+src = np.where((donor != test) & inlin)[0]
+te = np.where((donor == test) & inlin)[0]
 design = {}
-if target:
+if target and not lineage:
     ti = BROAD.index(target)
     tc = {d: src[(donor[src] == d) & (yi[src] == ti)] for d in np.unique(donor[src])}
     pool = sorted(d for d, ix in tc.items() if len(ix) >= 128)
@@ -47,11 +56,17 @@ if target:
     src = np.concatenate([src[yi[src] != ti], idx])
     design = dict(target=target, N=cond['N'], D=cond['D'], pool=pool, chosen=chosen)
 dnames, dcode = np.unique(donor[src], return_inverse=True)
-out = run_models(Z[src], yi[src], dcode, Z[te], C, seed, models=cfg['models'])
-save = dict(cell_ids=obs.index.values[te].astype(str), truth=yi[te], models=np.array(list(out)))
+present = np.unique(yi[src])            # classes absent from the source cannot be predicted (logp = -inf)
+remap = {k: i for i, k in enumerate(present)}
+ysrc = np.array([remap[k] for k in yi[src]])
+out = run_models(Z[src], ysrc, dcode, Z[te], len(present), seed, models=cfg['models'])
+save = dict(cell_ids=obs.index.values[te].astype(str), truth=yi[te], models=np.array(list(out)),
+            labels=np.array(LABELS), train_present=present)
 rows = []
 for m, r in out.items():
-    save[f'logp__{m}'] = r['logp'][0].astype(np.float32)
+    full = np.full((len(te), C), -np.inf, np.float32)
+    full[:, present] = r['logp'][0]
+    save[f'logp__{m}'] = full
     if r['logdens'] is not None:
         save[f'logdens__{m}'] = r['logdens'][0].astype(np.float32)
     if r['alloc'] is not None and m in ('A00', 'A01', 'P1_class', 'TL_donor', 'RA_donor'):
@@ -59,11 +74,11 @@ for m, r in out.items():
             rows.append(dict(condition=cond['name'], test_donor=test, seed=seed,
                              allocation={'A00': 'fixed', 'A01': 'donor_supported', 'P1_class': 'single',
                                          'TL_donor': 'training_loss', 'RA_donor': 'random'}[m],
-                             class_label=BROAD[row.pop('class_idx')], **row))
+                             class_label=LABELS[present[row.pop('class_idx')]], **row))
         if m in ('A01', 'TL_donor', 'RA_donor'):
             write_json(rd / f'{tag}__alloclog_{m}.json', r['alloc'].log)
 np.savez_compressed(rd / f'{tag}.npz', **save)
 write_tsv(pd.DataFrame(rows), rd / f'{tag}__prototypes.tsv')
 write_json(rd / f'{tag}.run.json', dict(run_id=run_id, condition=cond, test=test, seed=seed, repr=rep, design=design,
-           n_train=int(len(src)), commit=git_commit(), models=cfg['models'], resources=t0.finish()))
+           n_train=int(len(src)), labels=LABELS, train_present=[LABELS[k] for k in present], commit=git_commit(), models=cfg['models'], resources=t0.finish()))
 print('done', tag, t0.finish(), flush=True)
