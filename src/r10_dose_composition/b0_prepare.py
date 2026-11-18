@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import time
 
@@ -93,7 +94,9 @@ def main():
     cell_map = np.full(len(p) + 1, -1, dtype=np.int64)
     cell_map[kept.col_index.values + 1] = np.arange(len(kept))
     path = f"{raw}/{PFX}A549_MCF7_K562_screen_UMI.count.matrix.gz"
-    proc = subprocess.Popen(["pigz", "-dc", "-p", "4", path], stdout=subprocess.PIPE)
+    dec = ["pigz", "-dc", "-p", "4"] if shutil.which("pigz") else ["gzip", "-dc"]
+    log("decompressor", dec[0])
+    proc = subprocess.Popen(dec + [path], stdout=subprocess.PIPE)
     R, C, D = [], [], []
     n_lines = n_kept = 0
     max_count = 0
