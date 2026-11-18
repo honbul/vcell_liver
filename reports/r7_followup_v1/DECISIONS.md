@@ -83,3 +83,12 @@ family-balanced ΔRMSE(낮을수록 좋음), model seed 평균(GS는 3 mapping �
 - 동결 manifest(`freeze.py`): C(원 연구 chem_only checkpoint, 읽기 전용), M, G0, GR, GS142/143/144, TD, TDS142/143/144 × seed 42/43/44, 모두 원 train으로 학습·원 validation으로 선택.
 - 사전 지정 대비: 핵심 GR−M, GR−GS(Holm); 분기 family TD−TDS, TD−M(Holm); 기술 GR−C, M−C, G0−C, GS−C, GR−G0, TD−C, TD−GR, TDS−C, TDS−GS. 패널: source(primary), K1–K3, HCC 세 계열과 hcc_mean(보고만).
 - 원 R7의 1회 최종 평가 디렉터리(`test_eval_v1`)는 존재만 확인했고 내용은 읽지 않았다(프로토콜 §3 순서 규칙의 "완료 관측").
+
+## F-2. 운영 변경: GPU 한도 상향과 arm 단위 분할 (2026-11-18 17:2x KST, 방법 변경 아님)
+
+- **승인:** 사용자가 coordinator를 통해 후속 연구의 `r7f_` job에 동시 GPU 8개까지 사용을 승인했다(이전 한도 2). 다른 사용자·`r7_`·`r8f_` job에는 손대지 않고, 빈 GPU의 1/3 이상을 남긴다.
+- **변경:** 아직 시작하지 않은 task를 cell 단위(한 GPU에서 여러 arm 병렬)에서 **arm 단위 job**(한 GPU에 한 arm)으로 나눴다. 스크립트 `experiments/r7_followup_v1/arm.sbatch`는 `cell.sbatch`와 같은 `train.py` 호출·인자·run id 규칙·backbone·process당 thread 수(2)를 쓴다. 코드·설정·seed·데이터·update 예산·선택 규칙은 바꾸지 않았다. 모든 run id는 처음 쓰는 것이며 덮어쓰지 않는다.
+  - 취소(시작 전, 출력 없음): `26020_2`(orig seed 44 cell), `26194`(F2 fold cell 9개), `26195`(F2 orig cell 3개).
+  - 대체: `configs/r7_followup_v1/tasks_branch_f2_folds.txt`(36 arm: 3 fold × seed 42–44 × TD/TDS142/143/144), `configs/r7_followup_v1/tasks_orig_split.txt`(18 arm: orig seed 44의 M/G0/GR/GS142–144, orig seed 42–44의 TD/TDS142–144). job id는 아래 "결과"에 적는다.
+  - 실행 중이던 `26020_0`, `26020_1`(orig seed 42, 43 cell)은 그대로 끝까지 둔다.
+- 한 GPU를 여러 process가 나눠 쓰는지 여부는 부동소수 연산 순서만 바꿀 수 있고(원래도 비트 단위 결정성은 없음) arm의 정의는 같다. 채점·분기 판정 규칙(F-1)은 그대로다.
