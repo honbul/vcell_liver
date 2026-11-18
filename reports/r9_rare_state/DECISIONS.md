@@ -119,3 +119,10 @@
 - §10 판정: A11은 A10을 어떤 조건에서도 CI 기준으로 넘지 못했고, A10도 A00을 넘지 못했다(nat·sparse에서 A10−A00 음수, CI 하한<0 또는 상한<0). 같은 K의 다중 프로토타입 arm 전체가 sparse_B에서 단일 프로토타입·logistic보다 낮다. → "adaptive와 같은 K 고정 mixture가 비슷" 행에 해당하나, 다중 대표 패턴 자체의 이득도 관측되지 않았다. **귀무가설(환자 균형 샘플링이나 고정 다중 프로토타입이면 충분, 적응적 배분 추가 가치 없음)을 기각하지 못함.**
 - 다음 결정: §10 행의 후속 실험(covariance 수축·regularization을 맞춘 대조)은 이 cycle에서 실행하지 않는다(미실행 항목으로 보고). A3·A4는 계획대로 진행.
 - (C2b 실행 중 관측) scPoli task 7(nat, HCC08)이 scanpy 1.10.4 `neighbors()`의 `csr_array.getnnz`(SciPy 1.14에서 제거) 호출로 실패. 수치에 영향 없는 alias 복원을 `a2_ext.py`에 추가하고, 실패한 task만 같은 run ID에 다시 실행한다(기존 결과 덮어쓰기 없음).
+
+### C4 결과 (a4_external_v1, 12 task 완료, freeze a9c47d9 이후 1회 채점; `a4_model_table.tsv`, `a4_contrasts.tsv`, `a4_per_donor.tsv`, `a4_unmapped_cells.tsv`, `a4_prior_shift.tsv`, `figures/fig4_external.png`)
+
+- 선정 버전 **LR_donor**: nat 0.998 [0.996, 0.999] (25명), sparse_B 0.926 [0.895, 0.954] (15명), sparse_Endothelial 0.925 [0.891, 0.954] (16명), sparse_Fibroblast 0.880 [0.821, 0.934] (12명).
+- 핵심 A11−A10(외부 donor paired): nat +0.0002 [−0.0018, +0.0029]; sparse_B **+0.015 [+0.002, +0.030]**; sparse_Endothelial **−0.016 [−0.030, −0.003]**; sparse_Fibroblast **+0.035 [+0.016, +0.055]**. 개발(A2)에서는 세 sparse 모두 CI가 0을 포함했고 부호는 같았다(B +, Endo −, Fib +).
+- A11−LR_donor: nat −0.005 [−0.009, −0.002], sparse_B +0.003 [−0.011, +0.017], sparse_Endo −0.078 [−0.132, −0.033], sparse_Fib −0.038 [−0.068, −0.007]. A01−A00(class 손실에서 적응 vs 고정)도 B +0.018 [0.002, 0.036], Fib +0.041 [0.019, 0.063], Endo −0.050.
+- 판정: 외부에서 적응 배분이 고정 배분보다 나은 target이 2개(B, Fib), 나쁜 target이 1개(Endo). 선정 버전(LR_donor)이나 같은 K 고정 GMM보다 일관되게 낫지는 않다. 선정 버전과 사전 규칙은 바꾸지 않는다. 외부 결과를 근거로 한 새 버전은 만들지 않았다.
