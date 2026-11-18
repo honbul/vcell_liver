@@ -11,6 +11,10 @@
 
 **자료.** GEO GSE139944 / GSM4150378 원본(pData·UMI 행렬·hash 메타데이터)만 사용. 수신 기록·해시는 [`DATA_CONTRACT.md`](DATA_CONTRACT.md)와 `manifests/r10_dose_composition/raw_data_receipt.json`.
 
+**기획서.** 비공개 연구 기획서(Git에 넣지 않음): 448줄, 35,257 bytes, sha256 `aaecd39d95f967d7883a0bcdf18bb029f23da38cd401cda77ba49805f502f884`. 이 보고서는 그 §4–10 설계와 §12 산출물 규칙을 따른다.
+
+**현재 단계 (2026-11-18).** B0–B3 완료, cycle C1(2×2 v1)·C2(same-replicate 재학습)·C3(전역 mixing weight 기준선) 완료. development 규칙으로 **D11 v1을 선택해 freeze(commit `f0ded27`) 후 test 약물에 1회 평가**했다. 추가 cycle은 열지 않았다. 결론과 범위는 [`RESULTS.md`](RESULTS.md) §0과 [`CLAIMS_AND_LIMITATIONS.md`](CLAIMS_AND_LIMITATIONS.md).
+
 **문서.**
 
 | 파일 | 내용 |
