@@ -59,3 +59,8 @@
 - 가설이 맞으면: D10의 development E1000 구성비 TV 차이(D10−D00)가 음수이고 95% CI 상한 < 0, D01의 상태 내부 지표 차이는 CI가 0을 포함.
 - 가설이 틀리면: D10 차이 CI가 0을 포함(학습한 구성비 보정이 보간을 넘지 못함). 이 경우 §10 표의 "모든 learned arm이 직접 보간과 비슷" 행을 적용한다.
 - W가 D10/D11보다 좋으면 분해 구조보다 일반 보정의 이득으로 해석한다.
+
+### C1 부록 — 선택 규칙의 해석 (B3 development 평가 결과를 보기 전, 2026-11-18 19:07 KST)
+
+- C0 "버전 선택 규칙"의 learned arm은 2×2의 D10·D01·D11을 뜻한다. W(compact whole-distribution)는 §8의 비교 기준선이며 버전 후보가 아니다. test에는 선택 버전과 비학습 기준선을 평가하고, W·다른 learned arm은 test에서 평가하지 않는다.
+- 학습 로그에서 W와 Q-head의 development 목적함수가 초기값(D00)보다 크게 낮아졌다(W ED 0.35 → 0.12, seed 0). 학습 triplet은 모두 cross-replicate이고 특징에 endpoint의 절대 상태 평균이 들어가므로, head가 **replicate 사이의 체계적 이동**(B1에서 MCF7이 큼)을 배울 수 있다. 이를 가르는 진단: 같은 head를 same-replicate triplet(이동 없음)에 적용한 development 결과와 세포주별 결과. cross에서만 이득이고 same에서 이득이 없거나 손해면 "용량 보간 정보"가 아니라 "replicate 이동 보정"으로 해석한다. 이 진단은 선택 규칙을 바꾸지 않으며 해석에만 쓴다.
