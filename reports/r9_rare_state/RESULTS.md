@@ -1,5 +1,17 @@
 # R9 RESULTS — 관측 / 추론 / 미검증 분리
 
+## 한눈에 (최종)
+
+| 단계 | 결과 | 판정 |
+|---|---|---|
+| A0 | 배포 주석은 대분류 6개뿐, 자연 희귀 대분류 없음 | 주장 범위 축소(§4): Tier 1 인공 희소화 + Tier 2 군집 탐색 |
+| A1 N×D | B·Fibroblast에서 D 효과 > N 효과(CI>0), Endothelial은 우열 없음 | 인공 희소화에서 환자 지지도 가설 강화 |
+| A2 2×2 | A11−A10 CI가 6개 조건 모두 0 포함; 다중 프로토타입 arm < logistic/MLP | 귀무가설 기각 못함, 선정 버전 LR_donor |
+| A3 | Tier 1 보류·순위 개선 없음; Tier 2 Myeloid AURC만 개선; pseudo-unknown은 A11>A10이나 < LR | 보류 기여 주장 없음 |
+| A4 (GSE151530) | LR_donor 외부 nat 0.998, sparse 0.88–0.93; A11−A10 B·Fib +, Endo − | 개발 결론(채택 안 함) 유지 |
+| §10 행 | "adaptive와 같은 K 고정 mixture가 비슷"(다중 패턴 이득도 없음) | 완료된 음성 결과 |
+| 외부 모델 | ProtoCloud가 sparse_Fib에서 모든 같은-표현 head보다 높음; scPoli는 혼재 | R9 방법이 이겼다고 할 수 없음 |
+
 모든 GSE149614 수치는 **개발 증거**(바깥 LOPO 10명; HCC02·HCC09 포함 전원 이전 노출)다. 통계 단위는 donor, 괄호는 donor bootstrap 95% CI. seed·회전은 donor 안에서 평균했다. 숫자 출처 파일을 각 절에 적었다.
 
 ## A0 — inventory (`label_inventory.tsv`, `donor_class_counts.tsv`, `rare_definition_by_fold.tsv`, `cohort_overlap.tsv`)
@@ -71,6 +83,21 @@
 - 사전 규칙(C2)상 A11 선정 기준 0/3, A10 기준 1/3 → 선정 버전은 `LR_donor`.
 - §10: "adaptive와 같은 K 고정 mixture가 비슷" 행. 다만 다중 대표 패턴 자체의 이득도 관측되지 않았으므로 "다중 대표 패턴의 효과"도 주장하지 않는다. 귀무가설을 기각하지 못한 **완료된 음성 결과**다.
 
+### A2 외부 프로토타입 모델 (전체 pipeline 비교, `BASELINES.tsv` external_full_pipeline 블록, `a2_external_model_contrasts.tsv`)
+
+seed 0만, 같은 source 세포·label·fold HVG 2000개 raw count. scPoli는 transductive(시험 donor RNA로 query surgery), ProtoCloud는 공식 기본값(GPU 시간 때문에 nat + sparse_Fibroblast만). HCC08 scPoli 4 task는 scanpy/SciPy 비호환 때문에 exact kNN으로 재실행(편차). 같은 head 비교가 아니다.
+
+| 조건 | scPoli | ProtoCloud | A11 | LR_donor | MLP_donor |
+|---|---|---|---|---|---|
+| nat | 0.932 [0.909, 0.951] | 0.921 [0.895, 0.944] | 0.943 | 0.948 | 0.953 |
+| sparse_B | 0.818 [0.752, 0.877] | 미실행 | 0.773 | 0.832 | 0.897 |
+| sparse_Endo | 0.782 [0.672, 0.871] | 미실행 | 0.907 | 0.908 | 0.951 |
+| sparse_Fib | 0.627 [0.456, 0.777] | **0.920 [0.882, 0.954]** | 0.787 | 0.798 | 0.865 |
+
+- donor paired: A11−scPoli nat +0.011 [−0.006, +0.024], sparse_B −0.045 [−0.096, −0.008], sparse_Endo +0.125 [+0.034, +0.235], sparse_Fib +0.161 [+0.006, +0.325]. A11−ProtoCloud nat +0.022 [+0.016, +0.029], sparse_Fib **−0.132 [−0.222, −0.051]**; LR_donor−ProtoCloud sparse_Fib −0.122 [−0.182, −0.063]; MLP_donor−ProtoCloud sparse_Fib −0.054 [−0.087, −0.023].
+- 관측: ProtoCloud는 인공 희소화 Fibroblast에서 같은 표현의 모든 head보다 높았다(같은 정보 계약; 다만 자체 encoder·희귀 type 증강·raw count 입력이라 아키텍처 귀속은 불가). scPoli는 sparse_B에서 A11보다 높고 Endo·Fib에서 낮았다.
+- 따라서 R9 방법(A11)은 ProtoCloud를 sparse_Fibroblast에서 이기지 못했고, scPoli도 sparse_B에서 이기지 못했다. ProtoCloud는 sparse_B·sparse_Endo·Tier 2에서 실행하지 않았으므로 그 조건의 비교는 미확인이다.
+
 **미검증(가설로만 남김)**
 - 다중 프로토타입 arm이 단일 프로토타입보다 낮은 이유(64세포에 3개 성분 → 과적합, 300 step 최적화, 수축 0.3 등)는 측정하지 않았다.
 - Tier 2에서 fallback 비율이 높은 것이 결과에 미친 영향은 분리하지 않았다.
@@ -128,3 +155,8 @@
 - 미관측 상태 보류에서 적응 배분은 고정 배분보다 낫지만 단순 logistic보다 나쁘다 → 보류 개선을 R9 방법의 기여로 주장하지 않는다.
 
 **미검증:** pseudo-unknown은 대분류 제거 실험이며 실제 새로운 세포 상태의 발견 능력이 아니다.
+
+## 자원 (`run_ledger.tsv`, `run_ledger_summary.tsv`, `resource_summary.txt`)
+
+- 결과 실행 CPU 시간 합계 약 676 CPU-h(프로세스 CPU 시간; smoke 포함 683), task wall 합계 약 98 h. GPU: scPoli 40 task 6.8 GPU-h, ProtoCloud 20 task 13.5 GPU-h(+ smoke 0.9) → 약 21.2 GPU-h(A40/A30).
+- `assets/` 디스크 14 GB(env 7.5 GB, cache 4.7 GB, runs 1.1 GB). 세포 단위 예측(.npz 362개)은 서버에만 두고 sha256을 `manifests/r9_rare_state/prediction_index.tsv`에 기록.

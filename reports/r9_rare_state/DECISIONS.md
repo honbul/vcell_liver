@@ -140,3 +140,15 @@
 - Pseudo-unknown(대분류 하나 제거, max prob): A11−A10 AUROC +0.019 [+0.005, +0.034], 그러나 A11−LR_donor −0.027 [−0.048, −0.004]; 최고는 LR_class 0.901, LR_donor 0.888, GMM_K(log density) 0.878. log density 점수에서 A11−A10 AUROC −0.003 [−0.014, +0.010].
 - 판정: Tier 1에서는 보류·순위 개선이 없다(규칙 (iii)). Tier 2 lin_Myeloid에서만 같은 분류 성능에서 AURC가 좋아졌으므로 §10 "분류는 같지만 보류가 좋아짐" 행이 **Tier 2 탐색 과제 한정**으로 관측되었다. 미관측 상태 보류에서 A11은 A10보다 낫지만 단순 logistic보다 나쁘다.
 - OPS-2 (2026-11-19 00:1x KST, 운영 변경만): scPoli 본 array 종료 후 HCC08 재실행 `26574` throttle 1→3, ProtoCloud `26382` throttle 4→7. R9 GPU 동시 사용 합계는 계속 ≤8.
+
+### C2b 결과 (a2_ext_v1_scpoli 40 task, a2_ext_v1_protocloud 20 task; `BASELINES.tsv`, `a2_external_model_contrasts.tsv`)
+
+- scPoli: nat 0.932, sparse_B 0.818, sparse_Endo 0.782, sparse_Fib 0.627. ProtoCloud: nat 0.921, sparse_Fib 0.920.
+- A11−ProtoCloud sparse_Fib −0.132 [−0.222, −0.051]; A11−scPoli sparse_B −0.045 [−0.096, −0.008]. → R9 방법이 두 외부 모델을 일관되게 이겼다고 할 수 없다. ProtoCloud 미실행 조건은 미확인.
+
+---
+
+## 종료 (2026-11-19)
+
+- 최종 판정: §10 "adaptive와 같은 K의 고정 mixture가 비슷" 행(다중 패턴 이득도 없음). 적응적 배분의 증분 가치는 주장하지 않는다. 주 기여도 "환자 균형 학습"으로 볼 수 없다(A10−A00 음수).
+- 다음 가설(실행하지 않음, 열린 결정): (1) 다중 프로토타입 head가 단일 프로토타입보다 낮은 원인 분리(수축·regularization·최적화 예산 대조), (2) A1의 D 효과를 부위·배치를 맞춘 donor 부분집합으로 재검증, (3) ProtoCloud가 희소 Fibroblast에서 강한 이유(희귀 type 증강 vs encoder)를 같은 표현에서 분리. 실행하려면 새 버전 이름과 새 cycle로 시작한다.

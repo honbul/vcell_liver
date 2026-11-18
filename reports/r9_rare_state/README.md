@@ -1,6 +1,6 @@
 # R9 — 환자 지지도를 반영한 희귀 세포 상태 인식 (donor-supported rare cell-state recognition)
 
-**상태:** 실행 완료 보고는 [RESULTS.md](RESULTS.md), 주장 범위는 [CLAIMS_AND_LIMITATIONS.md](CLAIMS_AND_LIMITATIONS.md), cycle 기록은 [DECISIONS.md](DECISIONS.md). 쉬운 요약은 [BEGINNER_SUMMARY.md](BEGINNER_SUMMARY.md).
+**상태 (2026-11-19):** A0–A4 및 외부 모델 비교 실행 완료. 결론은 **완료된 음성 결과** — 환자 지지도 기반 적응적 프로토타입 배분(A11)은 같은 총 K의 고정 배분(A10)보다 개발 LOPO에서 낫지 않았고(6개 조건 CI 모두 0 포함), 사전 규칙에 따라 외부 평가 선정 버전은 `LR_donor`(PCA50 + donor-class 균형 logistic, freeze `a9c47d9`)였다. 인공 희소화에서는 같은 세포 수에서 지지 donor 수를 늘리는 효과가 B·Fibroblast에서 세포 수 효과보다 컸다. 실행 완료 보고는 [RESULTS.md](RESULTS.md), 주장 범위는 [CLAIMS_AND_LIMITATIONS.md](CLAIMS_AND_LIMITATIONS.md), cycle 기록은 [DECISIONS.md](DECISIONS.md). 쉬운 요약은 [BEGINNER_SUMMARY.md](BEGINNER_SUMMARY.md).
 
 ## 무엇을 입력받아 무엇을 예측하나
 
