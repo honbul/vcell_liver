@@ -82,3 +82,11 @@
 **변경:** 모든 모델에 같은 source 보정 기회: source donor 3 group OOF → 온도 1개(NLL 격자), τ_fine(OOF 세부 오류 ≤2%), τ_parent(나머지에서 상위 유형 오류 ≤2%), 그 외 보류. 바깥 모델은 A2 seed-0 학습본 그대로. Pseudo-unknown: nat 조건에서 대분류 u 하나를 source에서 제거(6개 각각), 내부 OOF에서 다른 label u'를 추가로 숨겨 source pseudo-unknown을 만들고 Youden J로 임계값 결정; 점수는 max prob(모든 모델)과 log density(프로토타입·GMM).
 
 **예상 판별 결과 / 규칙:** (i) A11−A10의 AURC(낮을수록 좋음)와 unknown AUROC를 donor paired CI로 비교. (ii) A2에서 분류 차이가 없는데 A3에서 AURC/보류가 CI 하한 기준으로 좋아지면 §10 "분류는 같지만 보류가 좋아짐" 행. (iii) 둘 다 차이 없으면 보류 개선 주장 없음. 외부 코호트에서는 calibration 전이 성능만 보고하며 coverage·정확도 보장을 주장하지 않는다.
+
+### C2b — §8-6 외부 프로토타입 모델 (계획; 실행 전 커밋)
+
+- scPoli(scArches 0.6.1, PyPI)와 ProtoCloud(Ding-Group GitHub, commit 90c2678)를 A2와 같은 source 세포·label·같은 fold HVG 2000개 raw count로 학습. 조건 nat + sparse 3개, seed 0, 바깥 LOPO 10.
+- scPoli는 공식 query surgery(시험 donor RNA로 비지도 적응)를 거치므로 **transductive**; ProtoCloud는 공식 기본값(클래스당 6 프로토타입, 100 epoch, 내부 10% 무작위 검증, 희귀 type 증강)으로 inductive.
+- 이들은 입력 표현·사전 처리·용량이 다르므로 "전체 pipeline 비교" 표에 따로 둔다(같은 embedding head 귀속 비교 아님). 실행이 실패하거나 계약 안에서 공정하게 돌릴 수 없으면 사유를 적고 "이겼다"고 세지 않는다.
+- Smoke(배관용, 결과 아님): scPoli 1 fold 약 9.5분(A40, peak CUDA 0.06 GiB 할당). ProtoCloud 시간은 smoke 종료 후 기록. ProtoCloud가 task당 30분을 넘으면 GPU 2장 제한 때문에 조건을 nat + sparse_Fibroblast로 줄이고 그 사실을 여기에 적는다.
+- scArches 0.6.1의 `classify()`가 SciPy 1.14에서 제거된 `csr.A`를 쓰므로 query 행렬을 dense로 넘겼다(방법 변경 아님).
