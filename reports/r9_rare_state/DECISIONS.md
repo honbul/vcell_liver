@@ -111,3 +111,10 @@
   - 같은 K의 다중 프로토타입 arm(A00–A11, TL, RA)은 sparse_B에서 단일 프로토타입·logistic·MLP보다 낮다(예: A10 0.757, P1_donor 0.811, LR_donor 0.832, MLP_donor 0.897).
 - **C4 선정 버전(사전 규칙 기계 적용): `LR_donor`** (PCA50 + L_donor,class logistic). A11 기준(≥2/3) 불충족, A10 기준(≥2/3) 불충족.
 - A4는 freeze 설정대로 2×2 네 arm과 LR_donor·P1_donor·GMM_K를 모두 한 번에 평가하고, 선정 버전은 LR_donor로 표시한다.
+
+### C2 결과 — 전체 (a2_main_v1 180 task 완료; `a2_model_table.tsv`, `a2_contrasts.tsv`, `prototype_support.tsv`, `figures/fig2_2x2_contrasts.png`, `figures/fig3_natural_rare_support.png`)
+
+- Tier 2(자연 희귀 다환자 군집, 탐색) A11−A10: lin_Myeloid +0.007 [−0.020, +0.035], lin_B +0.019 [−0.008, +0.048] (평가 donor 각 9명). 두 lineage 모두 LR_class가 가장 높다(Myeloid 0.725, B 0.775).
+- 배분 근거(`prototype_support.tsv`): donor-supported 배분은 단일 donor 지지 프로토타입 비율을 줄였다(lin_Myeloid 27% vs 고정 48%, 훈련 손실 기반 69%; sparse 1–6% vs 19–22%). 그러나 lineage 과제에서 탐욕 단계의 50%(Myeloid 420/840), 47%(B 141/300)가 허용 가능한 분할이 없어 고정 fallback으로 채워졌다.
+- §10 판정: A11은 A10을 어떤 조건에서도 CI 기준으로 넘지 못했고, A10도 A00을 넘지 못했다(nat·sparse에서 A10−A00 음수, CI 하한<0 또는 상한<0). 같은 K의 다중 프로토타입 arm 전체가 sparse_B에서 단일 프로토타입·logistic보다 낮다. → "adaptive와 같은 K 고정 mixture가 비슷" 행에 해당하나, 다중 대표 패턴 자체의 이득도 관측되지 않았다. **귀무가설(환자 균형 샘플링이나 고정 다중 프로토타입이면 충분, 적응적 배분 추가 가치 없음)을 기각하지 못함.**
+- 다음 결정: §10 행의 후속 실험(covariance 수축·regularization을 맞춘 대조)은 이 cycle에서 실행하지 않는다(미실행 항목으로 보고). A3·A4는 계획대로 진행.
