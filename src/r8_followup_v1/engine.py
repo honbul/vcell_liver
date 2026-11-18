@@ -236,10 +236,24 @@ def select(ctx, pairs, grids, log=print):
     for cfg in F.CONFIGS:
         c, _ = _choose([r for r in rows_kn if r["cfg"] == cfg], ["lam", "eta"], ["eta", "lam"], [True, False])
         const["kn"][cfg] = c
-    # D: J1 and J2 (same kappa_f; J2 scale u = V3 v_tot of the partition)
+    const["cov"] = ctx.cov
+    const["scales"] = ctx.scales
+    const["n_selection_episodes"] = len(eps)
+    const["n_selection_families"] = int(len({e.family for e in eps}))
+    log(f"[{ctx.name}] kappa_b {const['kappa_b']} c1 {const['c1']}")
+    return const
+
+
+def select_j(ctx, const, grids, with_j3=False, log=print):
+    """Branch section 8 (run only after BRANCH_DECISION.md): J1 (15 pairs), J2 (16 candidates, tau_k = 0) and, if justified, J3
+    (64 candidates incl. tau_k = 0) on the inner-validation episodes; kappa_f, nuisance and kernel scales as in select()."""
+    eps = ctx.episodes("val", [1], 200)
+    kappa_f = const["kappa_f"]
+    base = lambda ep, K: dict(cell=ep.name, family=ep.family, support_seed=ep.seed, K=K)
     u = max(ctx.cov["V3"]["v_tot"], 1e-8)
     ve, vs = ctx.cov["V3"]["v_e"], ctx.cov["V3"]["v_s"]
-    rows1, rows2 = [], []
+    rows1, rows2, rows3 = [], [], []
+    tks = [float(x) for x in grids["j3_tau_k_over_u"]] if with_j3 else [0.0]
     with torch.no_grad():
         for ep in eps:
             for K in (8, 16, 32):
@@ -250,24 +264,30 @@ def select(ctx, pairs, grids, log=print):
                 E = inp["y_s"] - fs
                 for a_, c_ in F.J1_GRID:
                     rows1.append(dict(a=a_, c=c_, ac=a_ + c_, delta_rmse=F.rmse(F.j1(fq, E, inp["o_qs"], a_, c_), ep.y_q), **base(ep, K)))
+                Kn = F.combine(F.kernel_blocks(ctx.feats(inp, fs, fq)), "all", ctx.scales[str(K)]) if with_j3 else (None, None)
                 for tb in grids["j2_tau_b_over_u"]:
                     for s0 in grids["j2_sigma0_over_u"]:
-                        p = F.joint(fq, E, inp["o_s"], inp["o_qs"], inp["q_s"], tb * u, vs, ve, s0 * u, jitter=1e-6 * u)
-                        rows2.append(dict(tau_b_over_u=float(tb), sigma0_over_u=float(s0), delta_rmse=F.rmse(p, ep.y_q), **base(ep, K)))
-    const["j1"], _ = _choose(rows1, ["a", "c"], ["a", "c"], [True, True])
-    const["j2"], _ = _choose(rows2, ["tau_b_over_u", "sigma0_over_u"], ["tau_b_over_u", "sigma0_over_u"], [True, False])
-    const["j2_scale"] = dict(u=u, v_e=ve, v_s=vs, jitter_over_u=1e-6)
-    const["cov"] = ctx.cov
-    const["scales"] = ctx.scales
-    const["n_selection_episodes"] = len(eps)
-    const["n_selection_families"] = int(len({e.family for e in eps}))
-    log(f"[{ctx.name}] kappa_b {const['kappa_b']} c1 {const['c1']} j1 {const['j1']} j2 {const['j2']}")
-    return const
+                        for tk in tks:
+                            p = F.joint(fq, E, inp["o_s"], inp["o_qs"], inp["q_s"], tb * u, vs, ve, s0 * u, tau_k=tk * u, Kss=Kn[0], Kqs=Kn[1], jitter=1e-6 * u)
+                            r = dict(tau_b_over_u=float(tb), sigma0_over_u=float(s0), tau_k_over_u=tk, delta_rmse=F.rmse(p, ep.y_q), **base(ep, K))
+                            rows3.append(r)
+                            if tk == 0.0:
+                                rows2.append(r)
+    out = {}
+    out["j1"], g1 = _choose(rows1, ["a", "c"], ["a", "c"], [True, True])
+    out["j2"], g2 = _choose(rows2, ["tau_b_over_u", "sigma0_over_u"], ["tau_b_over_u", "sigma0_over_u"], [True, False])
+    if with_j3:
+        out["j3"], g3 = _choose(rows3, ["tau_b_over_u", "sigma0_over_u", "tau_k_over_u"], ["tau_k_over_u", "tau_b_over_u", "sigma0_over_u"], [True, True, False])
+    out["j_scale"] = dict(u=u, v_e=ve, v_s=vs, jitter_over_u=1e-6, kernel="block-normalised 'all' kernel (source scales), uncentred")
+    out["grid_tables"] = dict(j1=g1.to_dict("records"), j2=g2.to_dict("records"), j3=g3.to_dict("records") if with_j3 else [])
+    log(f"[{ctx.name}] j1 {out['j1']} j2 {out['j2']} j3 {out.get('j3')}")
+    return out
 
 
 # ---------------------------------------------------------------- evaluation method set
-def method_preds(ctx, inp, K, const, fx, with_extras=True):
-    """Yields (method, prediction, extra-dict). const: retuned constants (inner selection); fx: original constants (fixed-hyper)."""
+def method_preds(ctx, inp, K, const, fx, with_extras=True, jc=None):
+    """Yields (method, prediction, extra-dict). const: retuned constants (inner selection); fx: original constants (fixed-hyper);
+    jc: J-model constants from select_j (branch section 8 only; None -> no J model is computed)."""
     Ks = str(K)
     st = ctx.st
     yield "no_change", torch.zeros_like(inp["f0_q"]), {}
@@ -334,17 +354,24 @@ def method_preds(ctx, inp, K, const, fx, with_extras=True):
         Kc = F.combine(bl, cfg, ctx.scales[Ks])
         cc = const["kn"][cfg][Ks]
         yield f"kn_{cfg}", a["fq"] + a["b"] + cc["eta"] * F.krr(Kc[0], Kc[1], a["w"], a["R"], cc["lam"], Om), {}
-    # J1 / J2 (query metadata: planned plate overlap) and their unknown-environment mode (o_qS = 0)
-    j = const["j1"][Ks]
+    if jc is None:
+        return
+    # J1 / J2 / J3 (query metadata: planned plate overlap) and their unknown-environment mode (o_qS = 0)
+    j = jc["j1"][Ks]
     yield "J1", F.j1(fq, E, inp["o_qs"], j["a"], j["c"]), {}
     yield "J1_unknown_env", F.j1(fq, E, torch.zeros_like(inp["o_qs"]), j["a"], j["c"]), {}
     u, ve, vs = ctx.cov["V3"]["v_tot"], ctx.cov["V3"]["v_e"], ctx.cov["V3"]["v_s"]
-    j = const["j2"][Ks]
-    for mode, oq in (("J2", inp["o_qs"]), ("J2_unknown_env", torch.zeros_like(inp["o_qs"]))):
-        p = F.joint(fq, E, inp["o_s"], oq, inp["q_s"], j["tau_b_over_u"] * u, vs, ve, j["sigma0_over_u"] * u, jitter=1e-6 * u)
-        corr = p - fq
-        yield mode, p, (dict(corr_mean_rms=float(corr.mean(0).pow(2).mean().sqrt()), corr_spec_rms=float((corr - corr.mean(0, keepdim=True)).pow(2).mean().sqrt()))
-                        if mode == "J2" else {})
+    Kn = F.combine(bl, "all", ctx.scales[Ks])
+    for name in ("j2", "j3"):
+        if name not in jc:
+            continue
+        j = jc[name][Ks]
+        tk = j.get("tau_k_over_u", 0.0) * u
+        for mode, oq in ((name.upper(), inp["o_qs"]), (name.upper() + "_unknown_env", torch.zeros_like(inp["o_qs"]))):
+            p = F.joint(fq, E, inp["o_s"], oq, inp["q_s"], j["tau_b_over_u"] * u, vs, ve, j["sigma0_over_u"] * u, tau_k=tk, Kss=Kn[0], Kqs=Kn[1], jitter=1e-6 * u)
+            corr = p - fq
+            yield mode, p, (dict(corr_mean_rms=float(corr.mean(0).pow(2).mean().sqrt()), corr_spec_rms=float((corr - corr.mean(0, keepdim=True)).pow(2).mean().sqrt()))
+                            if "unknown" not in mode else {})
 
 
 def fit_outer(ctx, pairs, const):
