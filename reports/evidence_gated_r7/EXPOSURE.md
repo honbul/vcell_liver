@@ -29,6 +29,6 @@
 |---|---|---|
 | XPert 코드(GSanShui/XPert `d53ff497`) | 원 학습 스크립트를 수정하지 않고 R4 split으로 재학습 | 학습 h5ad에는 train·validation unit만 있고 test unit은 없다 |
 | XPert 저자 학습 가중치 | **쓰지 않음** | L1000 전체로 학습되어 R7 test 약물이 들어 있을 수 있음 |
-| XPert HG drug embedding(Zenodo, 8981 약물) | 약물 입력 feature로 사용 | DDS 관계는 ECFP Tanimoto와 Pearson 0.995로 **구조 유사도**임을 확인했다(`xpert_hg_provenance_check.json`). 반응 유래 가능 관계(PCC·GSEA) 파일은 공개 묶음에 없다. 공개 embedding이 기본 관계(PPI·DTI·DDS)만으로 학습됐는지는 미확인이다 |
+| XPert HG drug embedding(Zenodo, 8981 약물) | 약물 입력 feature로 사용(공식 설정 run만; A-2는 0으로 제거) | DDS 관계는 구조 유사도이고(Pearson 0.995), embedding 이웃은 표적 공유 47.7%(무작위 0.77%)·DDS 연결 23.1%로 설명된다(`xpert_hg_provenance_check.json`, `xpert_hg_embedding_check.json`). 반응 유래 가능 관계(PCC·GSEA) 파일은 공개 묶음에 없다. 사전학습 로그 비공개로 '기본 관계만 사용'은 증명되지 않았다 |
 | UniMol 사전학습 가중치(Hugging Face `dptech/Uni-Mol-Models`, 공개) | XPert 색인에 없는 1,199개 그룹의 UniMol feature 생성 | 분자 구조 사전학습. RNA 반응은 쓰지 않음 |
 | ChEMBL 37, OmniPath, HGNC | 지식 그래프 | RNA 반응 정보 없음. 단 ChEMBL activity 일부가 세포 기반 assay일 수는 있다(transcriptomic 반응 자체는 아님) |
