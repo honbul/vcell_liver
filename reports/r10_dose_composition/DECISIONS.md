@@ -48,7 +48,7 @@
 2. 같은 조건의 replicate well 간 구성비 TV 중앙값은 0.079–0.099(full n)이고 n=32에서 0.108–0.147로 커진다 → 관측 구성비 차이의 상당 부분이 유한 표본 잡음이다. vehicle 대비 처리 조건의 TV 중앙값(0.071–0.081)도 같은 수준이다. 대부분의 약물·용량은 이 해상도에서 vehicle과 구분되지 않는다.
 3. MCF7은 vehicle끼리도 cross-replicate ED(0.35)가 같은 replicate 안(0.05–0.09)보다 훨씬 크다(replicate/plate 묶음 차이). K562는 중간, A549는 거의 없다.
 4. 평균 변화의 대칭 분해에서 구성비 항의 비중 중앙값은 0.14–0.26, 상태 내부 항이 더 크다(고정 K=4 atlas 기준 기술 통계).
-5. 직접 보간(mixture=D00)의 오류는 source triplet 대부분(E1000 train: 약 80%)에서 replicate-oracle 한계 안이다. 한계를 넘는 경우는 주로 구성비 쪽(E1000 train 37/301 약물·세포주 조건이 composition, 6이 within_state, 9가 both).
+5. 직접 보간(mixture=D00)의 오류는 source triplet 대부분(E1000 train: 261/313 = 83%)에서 replicate-oracle 한계 안이다. 한계를 넘는 경우는 주로 구성비 쪽(E1000 train 313 약물·세포주 조건 중 37이 composition, 6이 within_state, 9가 both).
 6. development E1000에서 고정 state_moment 보간이 D00보다 구성비 TV −0.0022 [−0.0035, −0.0008], 상태 내부 평균 RMSE −0.024 [−0.031, −0.018]로 작게 낫다. nearest_low는 전체 ED가 D00보다 낮다(−0.17 [−0.40, −0.02]); 10 µM endpoint가 혼합에 큰 이동을 넣는 약물이 평균을 끌어올린다.
 
 **가설.** 직접 보간이 replicate 한계를 넘는 오류는 주로 구성비 쪽이며, endpoint 요약에서 그 방향(어느 상태가 과대/과소 보간되는지)을 일부 학습할 수 있다. 상태 내부 오류는 대부분 replicate 잡음 수준이라 Q-head가 개선할 여지가 작다.
