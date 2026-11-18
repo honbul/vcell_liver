@@ -16,6 +16,11 @@ REPORT = ROOT / 'reports/r9_rare_state'
 MANIFEST = ROOT / 'manifests/r9_rare_state'
 CACHE = ASSETS / 'cache'
 RUNS = ASSETS / 'runs'
+FIG = REPORT / 'figures'
+try:
+    FIG.mkdir(parents=True, exist_ok=True)
+except OSError:
+    pass
 
 GEO149614 = Path('/mnt/S1/sdata/pubdata/Virtual_Cell/GEO/GSE149614')
 GEO151530 = Path('/mnt/S1/sdata/pubdata/Virtual_Cell/GEO/GSE151530')
