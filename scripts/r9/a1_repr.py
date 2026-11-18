@@ -3,8 +3,8 @@ then train StandardScaler on PCs). HVG candidates are restricted to gene symbols
 fixed before any modelling so that the development and external pipelines are identical.
 
 Usage: a1_repr.py <fold>   fold in {HCC01..HCC10, ALL}; R9_TASK indexes the list when fold == 'task'.
-For each fold builds: 'full' (all training cells) and 'excl_<t>' for t in SPARSE_TARGETS (training cells of t removed
-from HVG/scaler/PCA fitting, section 7). ALL = all 10 GSE149614 donors (external A4 pipeline; also transforms GSE151530 HCC).
+For each fold builds: 'full' (all training cells), 'excl_<t>' for t in SPARSE_TARGETS (training cells of t removed
+from HVG/scaler/PCA fitting, section 7) and 'lin_<l>' (fitted on training cells of lineage l only; tier-2 tasks). ALL = all 10 GSE149614 donors (external A4 pipeline; also transforms GSE151530 HCC).
 """
 import os
 import sys
@@ -50,13 +50,18 @@ patient = obs.patient.values
 broad = obs.broad.values
 
 variants = [('full', None)] + [(f'excl_{tt.replace("/", "")}', tt) for tt in SPARSE_TARGETS]
+LINEAGES = ['Myeloid', 'B']   # tier-2 (res.3 cluster) tasks: lineage-specific HVG/PCA fitted on training cells of that lineage
+variants += [(f'lin_{l}', l) for l in LINEAGES]
 for name, target in variants:
     path = out / f'{fold}__{name}.npz'
     if path.exists():
         print('exists', path)
         continue
     train = (patient != fold) if fold != 'ALL' else np.ones(len(patient), bool)
-    fitmask = train & (broad != target) if target else train
+    if name.startswith('lin_'):
+        fitmask = train & (broad == target)
+    else:
+        fitmask = train & (broad != target) if target else train
     Xf = X[fitmask]
     mu = np.asarray(Xf.mean(0)).ravel()
     var = np.asarray(Xf.power(2).mean(0)).ravel() - mu ** 2
@@ -69,7 +74,7 @@ for name, target in variants:
     Z = sc2.transform(Z).astype(np.float32)
     res = dict(Z=Z, cell_ids=obs.index.values.astype(str), hvg_symbols=np.array(shared)[hvg],
                fitmask=fitmask, evr=pca.explained_variance_ratio_)
-    if fold == 'ALL':
+    if fold == 'ALL' and not name.startswith('lin_'):
         Xe = lognorm(ext.X[:, pd.Series(np.arange(len(ext_sym)), index=ext_sym)[np.array(shared)[hvg]].values].tocsr())
         Ze = sc2.transform(pca.transform(sc.transform(Xe.toarray()))).astype(np.float32)
         res.update(Z_ext=Ze, ext_cell_ids=ext.obs_names.values.astype(str))
