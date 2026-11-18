@@ -1,0 +1,104 @@
+{
+ "hcc_viewing_event": {
+  "job": "25826",
+  "started": "2026-11-18T05:20:56+09:00",
+  "note": "pre-freeze mock wiring check computed HCC validation panels and some were viewed (DECISIONS D-5). This is a breach of the goal's prohibition and cannot be undone."
+ },
+ "setting_decisions": [
+  {
+   "kind": "commit",
+   "what": "protocol (pre-registered rules, gates, metrics)",
+   "ref": "b76ae64",
+   "time": "2026-11-18T02:13:38+09:00",
+   "before_hcc": true
+  },
+  {
+   "kind": "commit",
+   "what": "Phase-0 KG correction D-2",
+   "ref": "88d89f6",
+   "time": "2026-11-18T03:10:44+09:00",
+   "before_hcc": true
+  },
+  {
+   "kind": "commit",
+   "what": "pilot LR selection P-1",
+   "ref": "e8c94f7",
+   "time": "2026-11-18T03:44:35+09:00",
+   "before_hcc": true
+  },
+  {
+   "kind": "commit",
+   "what": "V-1 verdict and modification 1 written before running",
+   "ref": "e48d60d",
+   "time": "2026-11-18T04:17:25+09:00",
+   "before_hcc": true
+  },
+  {
+   "kind": "commit",
+   "what": "modification 1 implementation",
+   "ref": "1786563",
+   "time": "2026-11-18T04:17:42+09:00",
+   "before_hcc": true
+  },
+  {
+   "kind": "commit",
+   "what": "freeze list: models, seeds, XPert runs, contrasts, stress",
+   "ref": "b6c72e0",
+   "time": "2026-11-18T04:54:27+09:00",
+   "before_hcc": true
+  },
+  {
+   "kind": "job",
+   "what": "validation signal, original 2x2 (V-1)",
+   "ref": "25793",
+   "finished": "2026-11-18T04:16:25+09:00",
+   "before_hcc": true
+  },
+  {
+   "kind": "job",
+   "what": "validation signal after modification 1 (V-2)",
+   "ref": "25816",
+   "finished": "2026-11-18T04:51:07+09:00",
+   "before_hcc": true
+  },
+  {
+   "kind": "job",
+   "what": "attribution analysis on validation (A-1)",
+   "ref": "25824",
+   "finished": "2026-11-18T05:20:05+09:00",
+   "before_hcc": true
+  },
+  {
+   "kind": "job",
+   "what": "baseline alpha selection",
+   "ref": "25722",
+   "finished": "2026-11-18T02:39:22+09:00",
+   "before_hcc": true
+  }
+ ],
+ "all_setting_decisions_before_hcc_viewing": true,
+ "events_after_hcc_viewing": [
+  {
+   "kind": "job",
+   "what": "mock wiring check that computed HCC validation numbers (D-5 breach)",
+   "ref": "25826",
+   "time": "2026-11-18T05:20:56+09:00"
+  },
+  {
+   "kind": "commit",
+   "what": "freeze manifest written (record of the b6c72e0 list; verified byte-identical)",
+   "ref": "a7ab705",
+   "time": "2026-11-18T13:23:25+09:00"
+  },
+  {
+   "kind": "job",
+   "what": "final test evaluation, once",
+   "ref": "25976",
+   "time": "2026-11-18T13:24:30+09:00"
+  }
+ ],
+ "freeze_manifest_identical_to_pre_hcc_list": "hcc_deviation_check.json: models, run ids, seeds, XPert runs, contrasts and stress list all equal to commit b6c72e0 (04:54:27, before 05:20:56)",
+ "code_changed_between_list_and_freeze": "ledger.py (text) and val_signal.py (XPert reporting) only; prediction path unchanged",
+ "recurrence_prevented": "final_eval mock mode now scores only the source panel; reverified in job 26581 (no HCC panel in any output, 0 HCC strings in the log)",
+ "what_this_does_not_do": "It establishes that every setting-determining decision and every validation verdict was finished before the HCC numbers were produced, and that the frozen configuration is byte-identical to the pre-event list. It does not undo the prohibited viewing."
+}
