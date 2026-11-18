@@ -64,7 +64,7 @@ for lab, g in obs.groupby('res3'):
                     broad_purity=bc.max() / len(g), cross_cohort_map='none (cluster ids are cohort-specific)'))
 
 counts = []
-for keys, g in obs.groupby(['patient', 'sample', 'site', 'stage', 'virus']):
+for keys, g in obs.groupby(['patient', 'sample', 'site', 'stage', 'virus'], observed=True):
     for tier, col in [('broad_author', 'broad'), ('res3_cluster', 'res3')]:
         for lab, n in g[col].value_counts().items():
             counts.append(dict(cohort='GSE149614', patient=keys[0], sample=keys[1], site=keys[2], stage=keys[3],
@@ -106,7 +106,7 @@ for path in sorted(GEO151530.glob('*series_matrix.txt.gz')):
         d = dict(S_ID=sid, GSM=gsm[i], series_matrix=path.name)
         for row in chars:
             k, v = row[i].split(':', 1)
-            d[k.strip()] = v.strip()
+            d[' '.join(k.split())] = ' '.join(v.split())   # GEO text contains non-breaking spaces
         samples[sid] = d
 smeta = pd.DataFrame(samples.values())
 assert set(smeta.S_ID) == set(info.S_ID)
