@@ -83,6 +83,8 @@ INFO = {
     "D01": ("learned Q-head", "endpoint+vehicle summaries", "state-shifted mixture cells"),
     "D11": ("learned pi+Q heads", "endpoint+vehicle summaries", "re-weighted, shifted mixture cells"),
     "W": ("learned whole-distribution", "endpoint+vehicle summaries", "affine-transformed mixture cells"),
+    "mixture_t": ("1 train-fitted scalar per episode (C3, post-freeze)", "both endpoint wells, t*=0.325",
+                  "weighted cells"),
 }
 
 
@@ -125,9 +127,10 @@ def main():
     summ.round(5).to_csv(f"{args.out}/summary_by_method.tsv", sep="\t", index=False)
     baselines_table(ev, summ, args.out, args.baseline_role)
     learned = [m for m in ("D10", "D01", "D11", "W") if m in methods]
-    base = [m for m in ("control", "nearest_low", "nearest_high", "global_moment", "state_moment", "ot_displacement")
-            if m in methods]
+    base = [m for m in ("control", "nearest_low", "nearest_high", "global_moment", "state_moment", "ot_displacement",
+                        "mixture_t") if m in methods]
     pairs = [(m, "D00") for m in learned + base]
+    pairs += [(m, ref) for m in learned for ref in ("nearest_low", "state_moment", "mixture_t") if ref in methods]
     pr = pd.concat([ag.paired(drug, m, pairs) for m in ag.METRICS], ignore_index=True)
     pr.round(5).to_csv(f"{args.out}/paired_vs_D00.tsv", sep="\t", index=False)
     ag.per_line_summary(cond, ag.METRICS, methods).round(5).to_csv(f"{args.out}/summary_by_line.tsv", sep="\t",
