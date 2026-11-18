@@ -34,7 +34,7 @@ def select(obs, cond, test, seed):
         ti = BROAD.index(target)
         tc = {d: src[(donor[src] == d) & (yi[src] == ti)] for d in np.unique(donor[src])}
         pool = sorted(d for d, ix in tc.items() if len(ix) >= 128)
-        rng = np.random.default_rng([BROAD.index(target), int(test[3:]), seed, cond['N'], cond['D']])
+        rng = np.random.default_rng([BROAD.index(target), int(test[3:]) if test.startswith('HCC') else 0, seed, cond['N'], cond['D']])
         chosen = sorted(rng.choice(pool, cond['D'], replace=False))
         idx = np.concatenate([rng.choice(tc[d], cond['N'] // cond['D'], replace=False) for d in chosen])
         src = np.concatenate([src[yi[src] != ti], idx])
