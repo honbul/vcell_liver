@@ -1,0 +1,143 @@
+{
+ "note": "prediction files of the ORIGINAL R6 runs (read-only), relative to $R6_ORIG_ASSETS/runs/<final|dev>/",
+ "final": {
+  "nochange": [
+   "Z0_final_v1/pred_final_nochange.npz"
+  ],
+  "linemean": [
+   "Z0_final_v1/pred_final_linemean.npz"
+  ],
+  "Z0": [
+   "Z0_final_v1/pred_final_Z0.npz"
+  ],
+  "B00": [
+   "final_B00_s42/pred_final.npz",
+   "final_B00_s43/pred_final.npz",
+   "final_B00_s44/pred_final.npz"
+  ],
+  "B01": [
+   "final_B01_s42/pred_final.npz",
+   "final_B01_s43/pred_final.npz",
+   "final_B01_s44/pred_final.npz"
+  ],
+  "B10": [
+   "final_B10_s42/pred_final.npz",
+   "final_B10_s43/pred_final.npz",
+   "final_B10_s44/pred_final.npz"
+  ],
+  "B11": [
+   "final_B11_s42/pred_final.npz",
+   "final_B11_s43/pred_final.npz",
+   "final_B11_s44/pred_final.npz"
+  ],
+  "DEN": [
+   "final_DEN_s42/pred_final.npz",
+   "final_DEN_s43/pred_final.npz",
+   "final_DEN_s44/pred_final.npz"
+  ],
+  "NOSTATE": [
+   "final_NOSTATE_s42/pred_final.npz",
+   "final_NOSTATE_s43/pred_final.npz",
+   "final_NOSTATE_s44/pred_final.npz"
+  ],
+  "TEACH0": [
+   "final_TEACH0_s42/pred_final.npz",
+   "final_TEACH0_s43/pred_final.npz",
+   "final_TEACH0_s44/pred_final.npz"
+  ]
+ },
+ "dev": {
+  "nochange": [
+   "Z0_dev_v2/pred_dev_nochange.npz"
+  ],
+  "linemean": [
+   "Z0_dev_v2/pred_dev_linemean.npz"
+  ],
+  "Z0": [
+   "Z0_dev_v2/pred_dev_Z0.npz"
+  ],
+  "B00": [
+   "rev1_B00_shrink10_lr3e-3_s42_e60/pred_dev.npz"
+  ],
+  "B10": [
+   "rev1_B10_shrink10_lr1e-3_s42_e60/pred_dev.npz"
+  ],
+  "B01": [
+   "rev1_B01_shrink10_lr3e-3_s42_e60/pred_dev.npz"
+  ],
+  "B11": [
+   "rev1_B11_shrink10_lr3e-3_s42_e60/pred_dev.npz"
+  ],
+  "DEN": [
+   "rev1_DEN_shrink10_lr1e-3_s42_e60/pred_dev.npz"
+  ],
+  "NOSTATE": [
+   "rev1_NOSTATE_shrink10_lr3e-3_s42_e60/pred_dev.npz"
+  ],
+  "TEACH0": [
+   "rev1_TEACH0_shrink10_lr3e-3_s42_e60/pred_dev.npz"
+  ]
+ },
+ "pairs": [
+  [
+   "B00",
+   "poolmean"
+  ],
+  [
+   "B00",
+   "SHRUNK"
+  ],
+  [
+   "B00",
+   "linemean"
+  ],
+  [
+   "B00",
+   "Z0"
+  ],
+  [
+   "Z0",
+   "poolmean"
+  ],
+  [
+   "Z0",
+   "SHRUNK"
+  ],
+  [
+   "poolmean",
+   "linemean"
+  ],
+  [
+   "SHRUNK",
+   "linemean"
+  ],
+  [
+   "B01",
+   "B00"
+  ],
+  [
+   "B11",
+   "B00"
+  ],
+  [
+   "B10",
+   "B00"
+  ],
+  [
+   "DEN",
+   "B00"
+  ],
+  [
+   "B00",
+   "NOSTATE"
+  ],
+  [
+   "B00",
+   "TEACH0"
+  ],
+  [
+   "NOSTATE",
+   "linemean"
+  ]
+ ]
+}

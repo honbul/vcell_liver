@@ -1,0 +1,10 @@
+step	what_was_read	split_role	used_for	used_for_selection	note
+phase_A_baselines	truth of TRAIN drugs (3 source folds, out-of-fold)	source_oof_baselines	pool/line/global mean baselines; kappa of the shrunk pool mean	yes (kappa only)	no model prediction involved
+phase_A_dev	stored predictions of original R6 development runs (fold 2) + truth of fold-2 TRAIN drugs	source_dev_fold2_existing	within-pool contrast, retrieval, teacher depth interaction of existing models	no	fold 2 was the original R6 development fold; original hyper-parameters were chosen on it
+phase_A_test	stored predictions of original R6 final runs + truth of the 70 TEST drugs	existing_test_diagnostic	cause-diagnosis tables of the existing benchmark only	no	TEST set had already been scored once by original R6; nothing was chosen from these rows
+ckpt_sensitivity	original R6 final checkpoints (B00, B01, TEACH0) and dev checkpoints (B00, B01)	existing_test_diagnostic / source_dev_fold2_existing	h=0 and drug-swap sensitivity	no	read-only; nothing fitted
+positive_control	raw treated wells of the 209 TRAIN drugs (split halves) + reference control cells	source_heldfold_units_positive_control	metric calibration	no	VALIDATION and TEST wells were not opened
+plumbing	TRAIN drugs, fold 2 outer-fit; inner dev drugs (20% of outer-fit)	source_inner_dev	learning-rate choice for S / SD / M; pipeline check	yes (learning rate)	the fold-2 held drugs were not scored by plumbing neural runs
+confirmation	TRAIN drugs, 3 source folds x seeds 42/43/44; Ridge penalties on each fold's inner dev	source_oof	S / SD / M / R comparison; branch selection	yes (branch choice)	TEST drugs never predicted by these runs
+branch	TRAIN drugs, source folds	source_oof	branch result	no (single pre-declared setting)	see DECISIONS.md
+validation_drugs	none	-	-	-	the 70 historical VALIDATION drugs were used by no step
