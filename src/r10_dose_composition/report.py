@@ -70,13 +70,50 @@ def condition_tables(ev, out):
     return ev, cond
 
 
+INFO = {
+    "control": ("non-learned", "vehicle cells of the endpoint replicate", "cells"),
+    "nearest_low": ("non-learned", "low endpoint well", "cells"),
+    "nearest_high": ("non-learned", "high endpoint well", "cells"),
+    "mixture": ("non-learned (=D00)", "both endpoint wells, t", "weighted cells"),
+    "D00": ("non-learned (=mixture)", "both endpoint wells, t", "weighted cells"),
+    "global_moment": ("non-learned", "both endpoints: mean+cov (LW)", "1000 Gaussian samples"),
+    "state_moment": ("non-learned", "both endpoints: state pi, shrunk state moments", "1000 samples, Gaussian per state"),
+    "ot_displacement": ("non-learned", "both endpoint wells, exact OT coupling", "weighted displaced points"),
+    "D10": ("learned pi-head", "endpoint+vehicle summaries", "re-weighted mixture cells"),
+    "D01": ("learned Q-head", "endpoint+vehicle summaries", "state-shifted mixture cells"),
+    "D11": ("learned pi+Q heads", "endpoint+vehicle summaries", "re-weighted, shifted mixture cells"),
+    "W": ("learned whole-distribution", "endpoint+vehicle summaries", "affine-transformed mixture cells"),
+}
+
+
+def baselines_table(ev, summ, out, role="development"):
+    cost = ev[ev.is_oracle == 0].groupby("method").agg(sec_per_triplet=("sec", "mean"), points=("n_points", "mean"))
+    rows = []
+    for m in sorted(set(summ.method)):
+        fam, inf, form = INFO.get(m, ("", "", ""))
+        r = dict(method=m, family=fam, endpoint_information=inf, output=form,
+                 sec_per_triplet=round(float(cost.sec_per_triplet.get(m, np.nan)), 4),
+                 mean_points=round(float(cost.points.get(m, np.nan)), 1))
+        for ep in ("E1000", "E100"):
+            for met in ("comp_tv", "within_mean_rmse", "ed", "dmean_rmse_gene"):
+                x = summ[(summ.role == role) & (summ.episode == ep) & (summ.direction == "cross") & (summ.method == m)
+                         & (summ.metric == met)]
+                if len(x):
+                    x = x.iloc[0]
+                    r[f"{ep}_{met}"] = f"{x['mean']:.4f} [{x.lo:.4f}, {x.hi:.4f}]"
+        rows.append(r)
+    pd.DataFrame(rows).to_csv(f"{out}/BASELINES.tsv", sep="\t", index=False)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--b1", required=True)
     ap.add_argument("--evals", nargs="+", required=True)
     ap.add_argument("--budget", nargs="*", default=[])
+    ap.add_argument("--baseline_role", default="development")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
+    assert not os.path.exists(f"{args.out}/summary_by_method.tsv"), "immutable report run exists"
     os.makedirs(f"{args.out}/figures", exist_ok=True)
     b1_tables(args.b1, args.out)
     ev, files = load(args.evals)
@@ -86,6 +123,7 @@ def main():
     methods = sorted(cond.method.unique())
     summ = pd.concat([ag.summary(drug, m, methods) for m in ag.METRICS], ignore_index=True)
     summ.round(5).to_csv(f"{args.out}/summary_by_method.tsv", sep="\t", index=False)
+    baselines_table(ev, summ, args.out, args.baseline_role)
     learned = [m for m in ("D10", "D01", "D11", "W") if m in methods]
     base = [m for m in ("control", "nearest_low", "nearest_high", "global_moment", "state_moment", "ot_displacement")
             if m in methods]
