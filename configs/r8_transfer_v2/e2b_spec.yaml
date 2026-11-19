@@ -34,4 +34,6 @@ sru:
     chemistry_transfer_without_same_drug_response: "(fb_C1chem - fb_C0) or (ridge_C1chem - fb_C0) centred RMSE 95% CI < 0"
     information_gap: "ref_* minus the best unavailable-contract arm is reported as an input-contract difference, never as an architecture ranking"
   never: no claim about other structure encodings; no statement that chemistry cannot work in general
-amendments: []
+amendments:
+  - date: 2026-11-19
+    change: "code only: held-out episodes now carry the (unused) query-support overlap attribute that engine.inputs requires; sru jobs 27234 / 27235 stopped in the inner selection before any score was written. No design change."

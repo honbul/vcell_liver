@@ -193,6 +193,7 @@ def held_episodes(st_full, st_held, held, role, seeds, cap, min_q, min_s, max_k=
             assert torch.equal(n0s, ep.n0_s) and torch.allclose(f0s, ep.f0_s, atol=1e-6), "support f0 must not depend on the held groups"
             eh = Episode(name=ep.name, family=ep.family, seed=seed, g_s=ep.g_s, g_q=ep.g_q, x0_s=ep.x0_s, x0_q=ep.x0_q, f0_s=f0s, f0_q=torch.zeros_like(ep.f0_q),
                          n0_s=n0s, n0_q=torch.zeros_like(ep.n0_q), y_s=ep.y_s, y_q=ep.y_q, o_s=ep.o_s, q_s=ep.q_s)
+            ep.o_qs = eh.o_qs = Eng.cross_overlap(st_full, q, s)     # metadata only; no E2-B arm uses it
             out.append((eh, ep))
     return out, elig
 
