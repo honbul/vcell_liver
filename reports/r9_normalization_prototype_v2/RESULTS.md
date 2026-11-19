@@ -4,7 +4,17 @@ branch `research/r9-normalization-prototype-v2` (base R9 tip `1d863eb`). 근거:
 서버 `/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r9_norm_proto_v2` (v1 자산은 `vcell_liver_r9_rare_state`에서 읽기 전용 symlink).
 Freeze commit(R9-C1·E1/E2 실행 명세, 외부/source 점수 산출 전): `5c9340e`.
 
-__SUMMARY__
+## 한눈에
+
+| 패키지 | 결과 | 판정 |
+|---|---|---|
+| R9-C2 matched seed 0 외부 모델 대비 | 60/60 key 일치. 방향이 바뀐 3행: Fib MLP_donor−ProtoCloud −0.048 [−0.099, +0.001], B A11−scPoli −0.041 [−0.123, +0.044], Fib A11−scPoli +0.150 [−0.003, +0.315] → 모두 우열 불확실 | 문구 정정 완료(v1 문서에 노트) |
+| R9-C1 외부 정규화 정정 | 변환 비트 재현(T1), 84 head 중 81 replay 통과(T2), 2,100 key×3 version 완전. LR_donor Corrected−Replay: nat −0.0006 [−0.0011, −0.0002], B −0.0010 [−0.0025, +0.0004], Endo +0.0009 [−0.0042, +0.0081], **Fib −0.0197 [−0.0328, −0.0084]**; fine coverage 0.2–7.8%p 감소 | 정정 완료; 선정 LR_donor 유지 |
+| R9-E1 K × 대각 분산 | (a) +0.027 미확립, (b) +0.013 미확립(target별 반대 방향), **(c) pooled가 성분별 고정 분산보다 0.014 유리(확립)** | 원인 후보 = 희소 성분 분산 추정; 확정 아님 |
+| R9-E2 fallback vs capacity | supported_stop·matched_kstar가 A11보다 +0.023·+0.025(확립), 서로 ±0.01 안 동등 | 이득은 용량(target 성분 수) 감소로 설명됨; donor-supported partition의 추가 가치 미관측 |
+| 강한 기준선 | 새 arm 최선도 LR_donor와 차이 미확립, MLP_donor보다 −0.06 이상 낮음 | 새 prototype 채택 근거 없음 |
+| §6.4 자연 희귀 자료 | 조건만 기록 | 미실행(자료 없음) |
+
 
 ## R9-C2 — seed 0 matched 외부 모델 대비 (집계만, 새 학습 없음)
 
@@ -66,10 +76,77 @@ Replay − Original은 LR_donor 4조건 모두 정확히 0이므로 Corrected �
 v1 문서에는 원문을 남기고 정정 노트를 추가했다(`reports/r9_rare_state/RESULTS.md` A4 행).
 
 
-__E12__
+## R9-E1/E2 — prototype 실패 원인 분리 (`reports/r9_rare_state/prototype_diagnostics_v1/`)
+
+**지위**: 이미 반복 개발한 source(GSE149614 바깥 LOPO, 전원 노출)의 후속 원인 진단. 독립 검증 아님. A4 v2 결과는 읽지 않았다. 명세 `RUN_SPEC.md`·`configs/r9/prototype_diagnostics_v1.json`, freeze `5c9340e`(주 대비 6개, 실용 크기 AUPRC 0.01, family별 Bonferroni 동시 98.33% CI, 동등 margin ±0.01(90% CI), 조건부 E2 분산 재적합 규칙).
+
+- **목적**: A10/A11(class당 3성분)이 P1(1성분)·LR/MLP보다 낮은 원인을 (E1) 성분 수 K와 대각 분산 학습, (E2) 강제 fallback과 effective capacity로 나눈다.
+- **실험 입력/정답**: sparse B/Endothelial/Fibroblast N64/D4 × 시험 donor 10 × seed 3 = **90 task**, v1 target 제외 fold 표현과 v1과 같은 학습 세포(90/90 design·n_train 일치). 주 지표 = 시험 donor target AUPRC(양성 <10이면 NA). seed를 donor 안에서 평균 → donor별 평가 가능 target 동일 가중 → donor paired bootstrap 10,000회(10 donor). 1,530행(90×17 arm), 누락 0.
+- **비교 조건**: E1 P1_current / P3_current / P1_fixedvar / P3_fixedvar / P3_pooledvar; E2 A11_refit / supported_stop / matched_kstar(모두 L_donor,class, 300 step). 기준선 = 같은 key의 v1 저장 예측 LR_class·LR_donor·MLP_donor(+ P1_donor·A10·A11).
+- **재현 확인** (`replay_vs_v1.tsv`): P1_current는 v1 P1_donor와 90/90 argmax 완전 일치(최대 |Δp| 8.7e-5). P3_current는 v1 A10과 평균 일치 0.99992(최저 0.9928). A11_refit은 v1 A11과 평균 0.9985(최저 0.970)이고 target AUPRC가 −0.003 [−0.008, −0.000] 낮다: donor-supported greedy가 재실행에서 일부 split을 다르게 골랐다(B·HCC01·s0는 step 10부터 다름; fallback 횟수·시점이 v1과 같은 task 87/90). 사전 명세대로 E2 대비는 같은 실행 안의 A11_refit 기준이다.
+
+**결과 — 주 대비 (target 동일 가중, 10 donor)**
+
+| id | 대비 | 평균 | 95% CI | 동시 98.33% CI | +/− donor | 판정 |
+|---|---|---|---|---|---|---|
+| E1 a | P3_pooledvar − P1_fixedvar (class 분산 고정 K 효과) | +0.027 | [+0.004, +0.052] | [−0.001, +0.057] | 7/3 | 미확립 |
+| E1 b | P3_current − P3_fixedvar (분산 최적화 효과) | +0.013 | [−0.001, +0.028] | [−0.004, +0.031] | 6/4 | 미확립 |
+| E1 c | P3_fixedvar − P3_pooledvar (성분별 초기 분산 효과) | −0.014 | [−0.028, −0.003] | [−0.031, −0.000] | 2/8 | **확립·실용 크기 이상(pooled 유리)** |
+| E2 d | supported_stop − A11_refit | +0.023 | [+0.010, +0.039] | [+0.009, +0.043] | 10/0 | **확립·실용 크기 이상** |
+| E2 e | matched_kstar − A11_refit | +0.025 | [+0.013, +0.041] | [+0.011, +0.045] | 10/0 | **확립·실용 크기 이상** |
+| E2 f | supported_stop − matched_kstar | −0.002 | [−0.006, +0.001] | [−0.007, +0.001] | 3/7 | **±0.01 안 동등**(90% CI [−0.005, +0.000]) |
+
+target별(보조): E1 b는 B −0.037 [−0.058, −0.019](고정 분산 유리), Fib +0.066 [+0.033, +0.103](학습 분산 유리), Endo +0.011 [+0.001, +0.021] — target 간 방향이 반대라 평균이 0 근처다. E1 a는 B +0.045 [+0.014, +0.088], Endo·Fib는 CI가 0 포함. E2 d/e는 세 target 모두 양(B +0.050, Endo +0.009, Fib +0.009/+0.016).
+
+보조 대비(95% CI): P3_current − P1_current −0.027 [−0.046, −0.004](현재 방식에서는 K=1이 우세), P3_fixedvar − P1_fixedvar +0.012 [−0.009, +0.032](K와 성분 분산이 섞인 대비, 미확립), P1_current − P1_fixedvar +0.052 [+0.029, +0.078](K=1에서는 분산 학습이 유리), matched_kstar − P3_current +0.027 [+0.006, +0.047].
+
+**강한 기준선 대비 (보조, 95% CI)**: supported_stop − LR_donor −0.004 [−0.021, +0.012], matched_kstar − LR_donor −0.002 [−0.017, +0.013], P1_current − LR_donor −0.002 [−0.020, +0.014] (모두 미확립); 그러나 − MLP_donor는 모든 새 arm에서 −0.060 ~ −0.113(CI가 0 제외), − LR_class는 −0.033 ~ −0.085(CI가 0 제외). 새 arm 중 어느 것도 MLP_donor·LR_class를 넘지 못했다.
+
+**진단** (`capacity_variance.tsv`, `matched_k.tsv`, `fallback_audit.tsv`, `rejection_reasons.tsv`)
+- 분산 floor에 붙은 좌표는 모든 arm에서 0. 학습 분산 arm의 |log-variance 변화| 평균 0.36–0.40.
+- 3성분일 때 target 성분의 최소 ESS는 B 9.6·Endo 15.1·Fib 14.7(64세포 중), 최대 donor 점유율 0.66–0.79; 학습 CE는 낮아지고(예: B 0.110→0.066) held-out class-balanced CE는 높아져(0.91→1.68) CE gap이 P1 0.80–0.91에서 P3 1.39–1.62로 커졌다.
+- Fallback: v1 로그에서 fallback이 생긴 task는 B 26/30, Endo 17/30, Fib 14/30. **target class의 split은 거의 모두 fallback**이었다(v1 B 25/29, Endo 13/14, Fib 8/8). 그 결과 supported_stop의 target 성분 수 K*는 평균 B 1.13·Endo 1.03·Fib 1.00(A11_refit 2.0·1.47·1.27). 첫 fallback 시점의 target 후보는 child donor support <2(B 31/31, Endo 11/16, Fib 11/14)와 held-out gain ≤0으로 거절됐다.
+- 조건부 E2 pooled-variance 재적합(조건 c 충족 → 실행, 조건 b 미충족 → fixedvar 재적합 미실행): d +0.006 [−0.003, +0.018], e +0.007 [−0.007, +0.020] 미확립, f −0.001 [−0.010, +0.009](±0.01 동등). pooled 분산은 E2 arm의 절대 점수를 낮췄다(A11_refit_pooledvar − LR_donor −0.037 [−0.058, −0.016]).
+
+**의미 (사전 규칙의 literal 적용)**
+- E1: 분산 최적화 효과(b)는 평균으로 미확립이며 target별 방향이 반대다 → "fixedvar만 개선"에 해당하지 않는다. pooledvar가 성분별 고정 분산보다 유리(c, 확립) → plan 규칙상 **희소 성분의 분산 추정/수축이 후속 질문**이다. "K=1이 모든 분산 조건에서 강함"은 성립하지 않는다(현재 방식에서만 K=1 우세; 고정·공유 분산에서는 K=3이 미확립 또는 수치상 높음). 원인은 "성분별 분산 추정과 분산 학습이 64세포 3성분에서 불안정"이라는 가설과 부합하나 확정하지 않는다.
+- E2: supported_stop과 matched_kstar가 모두 A11보다 좋고 서로 ±0.01 안에서 동등 → **fallback 제거의 이득은 같은 성분 수의 일반 k-means로도 재현되므로 용량(target 성분 수) 감소의 설명과 일치**한다. 같은 capacity에서 donor-supported partition의 추가 가치는 관측되지 않았다. 이것을 fallback 자체의 인과 효과라고 부르지 않는다.
+- 채택: 개선은 P1/A10/A11 대비 원인 분석 결과일 뿐이다. 가장 좋은 새 arm도 LR_donor와 차이 미확립, MLP_donor·LR_class보다는 낮다 → 새 prototype arm 채택 근거 없음. 선정 모델 LR_donor 유지.
+- 다음 질문(실행하지 않음): 희소 성분 분산 수축 강도(SHRINK)·class 공유 분산의 별도 사전 고정 대조; greedy 배분의 수치 비결정성(실행 간 split 차이)의 원인 확인. 결과를 보고 grid를 확장하지 않았다.
+
 
 ## §6.4 — 자연 희귀 상태 자료 조건
 
 새 자료 수집 없이 조건만 기록했다: `reports/r9_rare_state/NATURAL_RARE_DATA_CONDITIONS_v2.md` (label 정의·주석 근거·≥3 donor·batch 비혼입·donor 비중복·raw count·무료 공개 접근; 확보 시 N×D 진단과 LR/MLP/P1 기준선 먼저).
 
-__LEDGER__
+## 자원 ledger (`run_ledger_v2.tsv`, `resource_summary_v2.tsv`)
+
+| run | parts | CPU-h | task wall 합 (h) | peak RSS (GiB) |
+|---|---|---|---|---|
+| c1_transform (4 표현 재구성 + 정정 외부 변환) | 1 | 0.05 | 0.03 | 9.3 |
+| a4_external_norm_v2 (84 head 재적합 + replay/corrected 추론) | 12 | 15.37 | 2.00 | 0.81 |
+| a4_external_norm_v2_oof (T2 실패 2 task의 source OOF) | 2 | 3.70 | 0.47 | 0.73 |
+| prototype_diagnostics_v1 (pilot 3 포함 90 task) | 90 | 120.17 | 15.59 | 0.80 |
+| prototype_diagnostics_v1_e2pooledvar (조건부) | 90 | 7.59 | 1.01 | 0.85 |
+| 합계 | | **≈146.9** | ≈19.1 | |
+
+평가·집계 job(C2, C1 eval, E1/E2 eval ×2, ledger)은 각 1–2분. GPU 0 GPU-h. 새 디스크 사용 ≈0.6 GB(서버 v2 worktree, v1 자산은 symlink; runs 394 MB, 변환 bundle 191 MB). 동시 job 최대 14(한 차례 16으로 수 초간 초과 — 아래 편차). Pilot(1 donor·seed × 3 target): task당 50–87 CPU-min, wall 6–11 min → 90 task 추정 ≈2 h wall(cap 14) → 전체 실행.
+
+## 편차·사건
+- **동시 job cap 일시 초과**: C1 OOF 2 job 제출 시 diag array의 running task가 throttle 축소 전 14개라 r9v2 running이 16이 됐다. 즉시 OOF job을 scancel(시작 직후, 산출물 없음)하고 running ≤12 확인 후 재제출했다.
+- **v1 greedy 배분의 비결정성**: 같은 코드·seed·입력으로 donor-supported greedy를 재실행하면 일부 task에서 다른 split을 고른다(A4: 84 중 3 head T2 실패; E2: A11_refit vs v1 A11 최저 argmax 일치 0.970). 원인(BLAS/OpenMP 실행 host 차이 추정)은 확인하지 않았다(가설). 사전 정책대로 C1은 해당 2 task calibration을 새 OOF로, E2는 같은 실행의 A11_refit을 기준으로 썼다.
+- E2에서 K*=K(fallback 없음)인 task도 적합을 생략하지 않고 수행해 `kstar_eq_K`로 표시했다(plan은 중복 fit 생략을 허용; 동일성 확인 목적). 
+- 계획 제안 경로와 다른 점: 코드는 `scripts/r9/v2/`(제안 `scripts/r9/a2_diagnostics.py`), 트랙 결과는 이 문서. per-target E1/E2 행에도 category가 붙어 있지만 명세상 보조다.
+
+## 미실행 기록
+- **E2 frozen-variance(fixedvar) 재적합**: 조건 (b) 동시 CI 상한 <0 & 평균 ≤ −0.01 미충족(+0.013 [−0.004, +0.031]) → 실행 안 함. 해소 조건 없음(사전 규칙상 종료).
+- **외부 모델 seed 1/2 (C2 후속)**: 정정의 선행 조건이 아니며 GPU cap 0 → 실행 안 함. 실행하려면 같은 select 표본으로 scPoli 80 task·ProtoCloud 40 task GPU 학습 필요(v1 기준 약 40 GPU-h).
+- **ProtoCloud sparse_B/Endo**: v1 미실행, 채우지 않음(같은 이유).
+- **자연 희귀 세부 상태 평가(§6.4)**: 조건을 만족하는 다환자 전문가 세부 주석 자료 없음; 조건 문서만 작성.
+- **새 prototype 변경의 A3 calibration·A4 적용**: plan §6.3.1상 모델 후보로 남을 때만 확장 — 강한 기준선을 넘지 못해 미실행.
+
+## 열린 결정 (사용자)
+1. R9-E1 (c) 결과를 근거로 희소 성분 분산 수축/공유의 사전 고정 대조를 새 버전으로 열지 여부(강한 기준선 대비 이득이 아직 없음을 감안).
+2. donor-supported greedy의 실행 간 비결정성을 원인 확인(스레드 고정 재실행)할지 여부 — v1·v2 A11 수치의 재현성에 영향.
+3. 외부 모델 seed 1/2 추가(GPU 필요) 여부.
+
