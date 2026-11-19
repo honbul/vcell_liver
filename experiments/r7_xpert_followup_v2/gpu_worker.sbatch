@@ -14,6 +14,7 @@ source experiments/r7_xpert_followup_v2/env.sh
 Q=$1; shift
 tree() { echo "$(git rev-parse HEAD:src/r7_xpert_followup_v2) $(git rev-parse HEAD:configs/r7_xpert_followup_v2) $(git rev-parse HEAD:experiments/r7_xpert_followup_v2)"; }
 T0=$(tree)
+mkdir -p logs   # unimol_tools (imported by upstream utils) creates ./logs at import; pre-create to avoid a race (git-ignored)
 CL="$R7V2_ASSETS/claims/$(basename "$Q" .txt)"; mkdir -p "$CL"
 echo "worker start=$(date -Is) commit=$R7V2_COMMIT host=$(hostname) job=${SLURM_JOB_ID:-} task=${SLURM_ARRAY_TASK_ID:-} gpu=$(nvidia-smi --query-gpu=name --format=csv,noheader | head -1)"
 while read -r TRAJ; do
