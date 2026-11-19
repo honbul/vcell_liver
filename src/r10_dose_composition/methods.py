@@ -48,9 +48,10 @@ def baseline(name: str, ctx: Context, cfg: dict, seed: int) -> Cloud:
     if name == "nearest_high":
         return Cloud.uniform(ctx.ZH)
     if name == "mixture":
-        X, w, g, _ = _mix(ctx)
+        X, w, g, S = _mix(ctx)
         I = interp_state(ctx, sh["kappa_mean"], sh["kappa_cov"])
-        return Cloud(X, w, g, declared_pi=I["pi"], declared_means=I["m_raw"])
+        meta = dict(assembly_diagnostics(ctx, I, w, S), diag_pi_shift_tv=0.0, diag_q_shift_rms=0.0)
+        return Cloud(X, w, g, declared_pi=I["pi"], declared_means=I["m_raw"], meta=meta)
     if name == "mixture_t":                        # C3: one train-fitted mixing weight per episode
         t = float(cfg["mixture_t_star"][ctx.episode])
         nL, nH = len(ctx.ZL), len(ctx.ZH)
@@ -102,6 +103,7 @@ def assemble(ctx: Context, cfg: dict, r_pi=None, r_m=None) -> Cloud:
     I = interp_state(ctx, sh["kappa_mean"], sh["kappa_cov"])
     pi_int = I["pi"]
     pi_hat = pi_int
+    meta = assembly_diagnostics(ctx, I, w, S)
     if r_pi is not None:
         lg = np.log(pi_int + EPS) + r_pi
         pi_hat = np.exp(lg - lg.max())
@@ -109,10 +111,27 @@ def assemble(ctx: Context, cfg: dict, r_pi=None, r_m=None) -> Cloud:
         w = w * (S @ (pi_hat / pi_int))
         w = w / w.sum()
     means = I["m_raw"]
+    meta["diag_pi_shift_tv"] = float(0.5 * np.abs(pi_hat - pi_int).sum())       # declared change vs D00
+    meta["diag_q_shift_rms"] = 0.0
     if r_m is not None:
         X = X + S @ r_m
         means = means + r_m
-    return Cloud(X, w, g, declared_pi=pi_hat, declared_means=means)
+        meta["diag_q_shift_rms"] = float(np.sqrt((pi_int * (r_m ** 2).mean(1)).sum()))
+    return Cloud(X, w, g, declared_pi=pi_hat, declared_means=means, meta=meta)
+
+
+def assembly_diagnostics(ctx: Context, I: dict, w: np.ndarray, S: np.ndarray, min_neff: float = 5.0) -> dict:
+    """Endpoint-only diagnostics of the soft assembly (v2, E2 audit). No query information.
+
+    diag_membership_entropy  mixture-weighted mean entropy (nats) of the fixed-atlas memberships
+    diag_neff_low_min/high   smallest per-state effective n of the low / high endpoint
+    diag_lowsupport_mass     interpolated mass pi_int on states whose low AND high effective n < min_neff
+    """
+    ent = -(S * np.log(np.clip(S, 1e-12, 1))).sum(1)
+    nl, nh = I["L"]["neff"], I["H"]["neff"]
+    low = (nl < min_neff) & (nh < min_neff)
+    return dict(diag_membership_entropy=float(w @ ent / w.sum()), diag_neff_low_min=float(nl.min()),
+                diag_neff_high_min=float(nh.min()), diag_lowsupport_mass=float(I["pi"][low].sum()))
 
 
 # ------------------------------------------------------------------ features (endpoint summaries)

@@ -44,11 +44,20 @@ def main():
     ap.add_argument("--budget_draw", type=int, default=0)
     ap.add_argument("--t_star_json", default="", help="C3: train-fitted mixing weight per episode")
     ap.add_argument("--drugs", default="", help="optional comma list (pilot only)")
+    # v2 contract keys (R10-E1): every row carries the training contract of the arm that produced it
+    ap.add_argument("--train_contract", default="none",
+                    help="replicate contract the learned heads in --heads_dir were trained/selected on (cross/same)")
+    ap.add_argument("--assembly_version", default="v1_soft_empirical_residual")
+    ap.add_argument("--atlas_version", default="r10_v1_trainonly_pca20_K4")
+    ap.add_argument("--max_triplets", type=int, default=0, help="pilot only: first n triplets")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
     cfg = json.load(open(args.config))
+    tstar_contract = "none"
     if args.t_star_json:
-        cfg["mixture_t_star"] = json.load(open(args.t_star_json))["t_star"]
+        tj = json.load(open(args.t_star_json))
+        cfg["mixture_t_star"] = tj["t_star"]
+        tstar_contract = tj.get("direction", "cross")
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     assert not os.path.exists(args.out), "immutable run output exists"
     torch.set_num_threads(int(os.environ.get("OMP_NUM_THREADS", 4)))
@@ -60,8 +69,12 @@ def main():
              & trip.direction.isin(args.directions.split(",")) & trip.episode.isin(args.episodes.split(","))]
     if args.drugs:
         t = t[t.drug.isin(args.drugs.split(","))]
+    if args.max_triplets:
+        t = t.iloc[:args.max_triplets]
     methods = args.methods.split(",")
     learned = [m for m in methods if m in ("D10", "D01", "D11", "W")]
+    if learned:
+        assert args.train_contract in ("cross", "same"), "learned arms need --train_contract"
     seeds = [int(s) for s in args.seeds.split(",")]
     heads = {}
     for s in seeds if learned else []:
@@ -70,6 +83,8 @@ def main():
             p = f"{args.heads_dir}/{kind}_seed{s}.pt"
             if os.path.exists(p):
                 h[kind] = Head.load(p)
+                tc = torch.load(p, weights_only=False).get("train_contract")
+                assert tc in (None, args.train_contract), f"{p}: train_contract {tc} != {args.train_contract}"
         heads[s] = h
     log(args.role, args.line, "triplets", len(t), "methods", methods, "K", D.K)
     rows = []
@@ -105,8 +120,12 @@ def main():
                 else:
                     P = baseline(m, ctx, cfg, seed)
                 sc = score(D, P, q, cfg["shrink"]["min_state_neff_score"])
+                tcon = args.train_contract if m in learned else (tstar_contract if m == "mixture_t" else "none")
                 rows.append(dict(base, method=m, seed=-1 if s is None else s, is_oracle=int(m == "oracle_replicate"),
-                                 n_points=len(P.X), pred_neff=float(1 / (P.w ** 2).sum()), sec=time.time() - tm, **sc))
+                                 train_contract=tcon, assembly_version=args.assembly_version,
+                                 atlas_version=args.atlas_version,
+                                 n_points=len(P.X), pred_neff=float(1 / (P.w ** 2).sum()), sec=time.time() - tm,
+                                 **{k: v for k, v in P.meta.items() if k.startswith("diag_")}, **sc))
         if i % 50 == 0:
             log(i, "/", len(t), f"{time.time() - t0:.0f}s")
     pd.DataFrame(rows).to_csv(args.out, sep="\t", index=False)

@@ -21,7 +21,7 @@ def load(patterns):
     fs = sorted(f for p in patterns for f in glob.glob(p))
     if not fs:
         return pd.DataFrame(), []
-    return pd.concat([pd.read_csv(f, sep="\t") for f in fs], ignore_index=True), fs
+    return ag.ensure_keys(pd.concat([pd.read_csv(f, sep="\t") for f in fs], ignore_index=True)), fs
 
 
 def b1_tables(b1, out):
