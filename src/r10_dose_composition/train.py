@@ -246,7 +246,7 @@ def main():
     f_mean = torch.as_tensor(F.mean(0), dtype=torch.float32)
     f_sd = torch.as_tensor(F.std(0) + 1e-3, dtype=torch.float32)
     TR, DV = batch(tr, f_mean, f_sd), batch(dv, f_mean, f_sd)
-    sel = dict(direction=args.direction, n_train_examples=len(tr), n_dev_examples=len(dv), n_train_drugs=len({e["drug"] for e in tr}),
+    sel = dict(direction=args.direction, train_contract=args.direction, n_train_examples=len(tr), n_dev_examples=len(dv), n_train_drugs=len({e["drug"] for e in tr}),
                n_dev_drugs=len({e["drug"] for e in dv}), K_pad=K_pad, K=Kmap, heads={})
     for seed in [int(s) for s in args.seeds.split(",")]:
         for kind in heads:
@@ -264,7 +264,8 @@ def main():
             b = min(res, key=lambda r: r["dev"])
             n_out = K_pad if kind == "pi" else (K_pad * d if kind == "Q" else 2 * d)
             torch.save(dict(kind=kind, state_dict=b["state"], f_mean=f_mean.numpy(), f_sd=f_sd.numpy(),
-                            n_in=len(f_mean), n_out=n_out, K=K_pad, d=d, hidden=64, wd=b["wd"], epoch=b["epoch"]),
+                            n_in=len(f_mean), n_out=n_out, K=K_pad, d=d, hidden=64, wd=b["wd"], epoch=b["epoch"],
+                            train_contract=args.direction),
                        f"{args.out}/{kind}_seed{seed}.pt")
             sel["heads"][f"{kind}_seed{seed}"] = dict(
                 chosen_wd=b["wd"], chosen_epoch=b["epoch"], dev_objective=b["dev"], dev_at_init=b["dev_at_init"],
