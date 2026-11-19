@@ -1,0 +1,33 @@
+{
+ "package": "R6-O observation budget with matched training (private plan 2026-11-19 section 3.4)",
+ "exposure_status": "follow-up development on exposed source data (source out-of-fold of the TRAIN drugs, as in v1 sections 2-3). No test or validation drug is predicted.",
+ "hypothesis": "Part of the N=16 loss of the v1 inference-only table (models trained with N=64 only) is a train/inference mismatch; training with N in {16, 32, 64} (O1) reduces the N=16 total RMSE relative to N64-only training (O0) at the same evaluation inputs.",
+ "model": "M of the v1 follow-up (mean RNA MLP + ECFP4, additive head, drug_shrink 10; configs/r6_followup_v1/model.json), lr 3e-3, 60 epochs, last epoch",
+ "arms": {
+  "O0": {"stage": "obs", "pattern": "obs_O0_f{fold}_s{seed}", "train_N": [64]},
+  "O1": {"stage": "obs", "pattern": "obs_O1_f{fold}_s{seed}", "train_N": [16, 32, 64]}
+ },
+ "matching": "fresh views in both arms; identical main RNG stream (pools, 64 cells, drugs, p, thinning of all 64 cells); O1 keeps the first N of the same 64 thinned cells; N from a separate generator drawn in both arms; same updates/optimiser/schedule",
+ "folds": [0, 1, 2],
+ "seeds": [42, 43, 44],
+ "evaluation_inputs": "first N of the 64 fixed eval_input cells (N in 64, 32, 16; 8 auxiliary outside training range), stored thinning draws p in {1, 0.5 (3 draws), 0.25 (3 draws)}; identical for every model and the pool-mean reference",
+ "metrics": "total RMSE (drug-macro) and within-pool contrast RMSE, drug-structure-group bootstrap 2000 (seed 0), per-condition values averaged over training seeds and thinning draws first",
+ "primary_family": "O1 - O0 total RMSE at N=16 for p in {1, 0.5, 0.25}: three contrasts, Holm alpha 0.05 on two-sided bootstrap p",
+ "secondary_families": ["O1 - O0 at N=64 (cost of O1 at the training-matched N), Holm within the family", "O1 - O0 at N=32", "O1 - O0 at N=8 (auxiliary, outside both training ranges)"],
+ "practical_threshold": "0.5% relative total RMSE (plan section 2.3 R6 proposal); categories with 0.5% as the operating value",
+ "also_reported": [
+  "within-pool contrast RMSE for every contrast (O1 - O0 is not read as drug-specific recovery unless the within-pool contrast improves)",
+  "same model: N64,p0.25 vs N16,p1 and N64,p0.5 vs N32,p1 (equal N x p) and the cells effect N vs 64 at fixed p",
+  "observed UMI per set and per cell, usable cells, for every (N, p) input; N x p is not claimed to equal UMI or money",
+  "auxiliary UMI-matched comparison: per pool 16 cells at p=1 vs 64 cells thinned to the same expected UMI (p* clipped to [0.25, 1], 3 fixed draws)",
+  "share of the O0 N16-N64 gap that O1 removes (point estimate)",
+  "train seconds, cells processed, GPU per run"
+ ],
+ "interpretation_rule": {
+  "mismatch_supported": "all three primary contrasts Holm-significant negative (O1 better) -> part of the N16 loss was a train/inference mismatch",
+  "partial": "one or two primary contrasts Holm-significant negative",
+  "not_supported": "no primary contrast Holm-significant negative",
+  "tradeoff": "if in O1 the N64,p0.25 vs N16,p1 CI is below 0, the shallow-many > deep-few ordering remains in this data/model under matched training (still N x p, not cost)"
+ },
+ "sd_arm": "not added (plan: only if this result creates a need for a set-encoder comparison)"
+}
