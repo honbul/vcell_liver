@@ -1,0 +1,122 @@
+# R8 observation-transfer v2 run specification. Written and committed BEFORE any v2 number was computed (freeze F1 = the commit
+# that adds this file). Source: private plan 2026-11-19 sections 5.1-5.4 (cited, not copied). Base: R8 follow-up v1 tip
+# 2f4329e2e048935c50b8d8f702643dcf30c4d5fb (read-only); original R8 tip 5530acb (read-only).
+# A change after F1 needs a dated amendment below; primary contrasts and thresholds are never changed after results are seen.
+track: r8_transfer_v2
+base_commit: 2f4329e2e048935c50b8d8f702643dcf30c4d5fb
+exposure: >
+  Every family used here was already analysed in R8 / R8 follow-up v1: source-train families (inner selection and outer OOF) were
+  scored in v1 (general episodes, matched E1/E2 with 2 pairs / seed 1); the 9 confirmation families and HCC were scored in R8 and v1.
+  v2 numbers on these data are corrections (P0) or follow-up analyses of already-exposed data (E1/E2-A); the HCC table of E1 is a
+  frozen follow-up evaluation of an existing benchmark, not a blind test. No new external data exist in this track.
+tie_rule: v2          # engine2.RULES: documented 'weaker correction' order; undefined orders keep the v1 behaviour
+nuisance_mode: v2     # covariance keyed by (partition, reference, kappa_f); kernel scales by (partition, reference, K, kappa_f)
+
+# ---------------------------------------------------------------- P0 (corrections; plan 5.1)
+p0:
+  A:
+    wording_errata: [C0 centred equals shrunk mean only for the same kappa_f, "~1e-6 is a family-mean delta-RMSE difference (V3-V0), not an Omega / prediction difference",
+                     covariance effect = shrinkage only exactly for the C0 common correction in E1/E2 (general OOF keeps a conditional weights term)]
+    anchor_matched: "f* with kf = const['kappa_f'][K] of the same partition as C0/C1; shrunk_mean (independently selected kappa_f) kept as a separate row"
+    decomposition: [anchor_matched -> C0 -> C1]   # shrunk_mean -> C0 is reported separately as a different-anchor comparison
+    sets: [source OOF general (outer0-2, seeds 1-3), source OOF E1/E2 (v1 design: 2 pairs, seed 1), confirmation (seeds 1-3), confirmation E1/E2 (6 pairs, seeds 1-3), HCC 3 targets x 3 splits]
+    done_when: "C0 and anchor_matched centred predictions equal within numerical precision; reproduction rows (60 original-constant C0/C1) separated from the 15 independently reselected shrunk_mean rows"
+  B:
+    affected_rows: [final_inner K=8 (kappa_f 4 vs 8): kappa_b V3, C1 V3 lambda/eta, kn_* lambda/eta, J2 (u), J3 (u, kernel scale); global-panel K=8 rows C0_V3, C1_V3, P_*_V3(s), kn_*, J2, J3, J2/J3 zero-overlap]
+    unaffected_expected: [inner0, inner1, inner2 (one kappa_f for all K), every K=16 / K=32 row, iid C0/C1, fx_* rows (kappa_f 8 = V3_fx)]
+    variants: {replay: v1 nuisance + v1 constants, fixed: v2 nuisance + v1 constants (pure repair), reselected: v2 nuisance + v2 source-inner constants}
+  C:
+    rule: "exact equality of the unrounded inner family-mean score only; grids regenerated where v1 did not store them; no target / confirmation value used"
+    outputs: [tie_rule_impact.tsv, correction_impact.md]
+
+# ---------------------------------------------------------------- E1 + E2-A (plan 5.2, 5.3)
+grids:
+  kappa_b: [0, 2, 4, 8, 16, 32, 64, inf]
+  lambda: [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100, 300, 1000]
+  eta: [0.25, 0.5, 0.75, 1.0]                 # C1 / C1J1 (as v1); E2-A kernel arms add eta = 0 (= C0 fallback)
+  j1_ac: "a, c in {0, .25, .5, .75, 1}, a + c <= 1 (15 pairs)"
+  j2_tau_b_over_u: [0, 0.1, 0.3, 1]
+  j2_sigma0_over_u: [0.01, 0.1, 0.3, 1]
+  j3_tau_k_over_u: [0, 0.1, 0.3, 1]           # J2 = the tau_k = 0 sub-grid
+  c1j1_full: "a, c (15) x lambda (11) x eta (4) = 660 candidates (sensitivity arm, budget stated)"
+anchor: kappa_f and the shrunk kappa_f from the P0-B corrected source-inner selection (constants_v2.json of each inner partition); shared by every arm
+selection:
+  contexts: {gen_planned: general inner episodes with real o_qS, gen_missing: general inner episodes with o_qS := 0, M1: inner matched-plate same-plate support (o_qS = 1), M2: inner matched-plate other-X-replicate-plate support (o_qS = 0)}
+  general: {support_seeds: [1], query_cap: 200}
+  matched: {max_pairs: 2, support_seeds: [1]}
+  order: "per context: kappa_b (C0 score) -> C1 lambda, eta -> J1 a,c; C1J1 a,c with the context's C1 lambda, eta fixed; C1J1_full jointly; J2; J3; kn_* lambda, eta (eta = 0 allowed)"
+evaluation:
+  partitions: [outer0, outer1, outer2]        # outer-test (source-train) families; nuisance refit on outer-train families
+  general: {support_seeds: [1, 2, 3], query_cap: null}
+  matched: {max_pairs: 6, support_seeds: [1, 2, 3]}   # new environment-held-out episode set (v1 used 2 pairs / seed 1)
+  k_main: 16
+  k_robustness: [8, 32]                        # reported after the main judgement
+  views:
+    G:  {planned: gen_planned + real o_qS, missing_reselected: gen_missing + o_qS 0, missing_zero_overlap_fallback: gen_planned + o_qS 0}
+    M1: {planned: M1 + o_qS 1, fixed_gen_constants: gen_planned + o_qS 1, missing_reselected: gen_missing + o_qS 0, missing_zero_overlap_fallback: gen_planned + o_qS 0}
+    M2: {known_separate: M2 + o_qS 0, fixed_gen_constants: gen_planned + o_qS 0, missing_reselected: gen_missing + o_qS 0}
+  query_control_unobserved: not run (no use scenario in this track needs it; see NOT_RUN)
+statistics:
+  unit: "(cell, drug group) unit delta RMSE over 978 genes; centred RMSE (each side centred on its own query mean)"
+  aggregation: episodes -> cells of a family -> families (equal weights)
+  ci: family cluster bootstrap, 2000 draws, seed 20261117, 95% (a family carries all its cells, seeds, pairs and A<->B orders)
+  sensitivity_ci: compound-plate cluster bootstrap for the matched views (compound plates are shared across families)
+  p_value: two-sided bootstrap p = 2 min(P(d* <= 0), P(d* >= 0))
+  practical: 0.5% relative delta RMSE (of the reference mean)
+  adoption_rule: "mean < 0, 95% CI < 0, the same direction in >= 2 of 3 outer folds"
+primary:
+  multiplicity: Holm over the two primary tests (alpha 0.05, delta RMSE)
+  H2_J3:
+    view: M2 / known_separate, K = 16
+    test: "intersection-union: J3 - C1 and J3 - C1J1 both meet the adoption rule (p_IUT = max of the two p)"
+    labels: {adopted_transfer: "adoption rule met AND J3 - best centred RMSE 95% CI < 0", observation_correction_only: "adoption rule met on delta RMSE but centred not improved", not_adopted: otherwise}
+    practical_reported: relative difference vs the stronger of C1 / C1J1 (lower family mean), against 0.5%
+  H1_transfer:
+    views: [M1 / planned, M2 / known_separate], K = 16, paired by family (same queries, same support drugs, same truth)
+    statistic: "(dc - dr) with dc = [C0 - anchor_matched]_M2 - [C0 - anchor_matched]_M1, dr = [C1 - C0]_M2 - [C1 - C0]_M1"
+    supported_if: "(dc - dr) 95% CI > 0 (Holm) AND [C1 - C0]_M2 95% CI < 0"
+secondary:   # all reported with unadjusted 95% CI, labelled secondary
+  - J3 vs C1 / C1J1 in G / planned and M1 / planned (same IUT rule) and in every missing contract
+  - C1J1 - C1, C1J1_full - C1J1, J1 - C0, J2 - J1 in every view / contract
+  - reselected vs fixed constants (M1, M2), missing_reselected vs zero-overlap fallback
+  - C0 - anchor_matched and C1 - C0 per view; C1 - anchor_matched
+  - K = 8 / 32 robustness; centred Pearson, tie-corrected centred MRR, prediction / truth RMS; per-fold and per-family directions
+decisions_after_E1:   # plan 5.2 text, applied literally
+  - "J3 adopted only under H2 (both strong baselines); C0 / J1 wins alone are not enough"
+  - "only delta RMSE improves and centred worsens -> 'observation-correction improvement' only"
+  - "C1J1 similar to or better than J3 -> prefer the simple environment correction; no joint-model extension"
+  - "improvement only in M1 (same plate) -> restricted to same-environment use; keep C1 for unknown / separate environments"
+  - "meaningful delta-RMSE and centred improvement that holds in M2 -> independent external panel would be next (none available here)"
+e2a:
+  view_primary: M2 / known_separate, K = 16 (secondary: G / planned, M1 / planned)
+  arms: [C0 (eta = 0), kn_ctrl, kn_chem+ctrl, kn_f0+ctrl, kn_all (= chem + f0 + ctrl)]
+  scales: block-normalised with source-train scales of the K's own kappa_f (P0-B)
+  controls: {residual_only_shuffle: "kn_all with the support residual rows deranged (3 fixed derangements); f*, b, kernels, queries fixed",
+             f0_stratified_permutation: "support f0 representation permuted inside pre-fixed n0 strata [1],[2-3],[4-7],[8-15],[16+] (anchor untouched) for kn_all and kn_f0+ctrl",
+             full_row_permutation: invariance check only}
+  contrasts: {f0_given_chem: kn_all - kn_chem+ctrl, chem_given_f0: kn_all - kn_f0+ctrl, f0_alone: kn_f0+ctrl - C0, chem_alone: kn_chem+ctrl - C0, ctrl_alone: kn_ctrl - C0}
+  labels:
+    same_drug_source_response_assisted: "f0_given_chem centred RMSE 95% CI < 0 AND chem_given_f0 centred CI not below 0"
+    chemistry_adds_beyond_f0: "chem_given_f0 centred RMSE 95% CI < 0"
+    f0_correspondence_used: "kn_all_f0perm - kn_all centred RMSE 95% CI > 0"
+  never: no generalisation to other structure encodings or to an impossibility claim
+e2b:
+  entry_condition: >
+    (a) a target set of this track contains queries without any same-drug source response: HCC has 0 such queries in all 9
+    target x split episodes (v1 final_eval record) -> (a) false; or (b) E2-A confirms the source-response dependence on M2 / known_separate
+    (label same_drug_source_response_assisted AND f0_correspondence_used). If neither holds: NOT RUN record with the unlock condition.
+    If (b) holds: first the eligibility / coverage count and the channel sensitivity; the source-reference-unavailable validation
+    needs its own specification commit before it is scored.
+e3:
+  entry_condition: an actual next-measurement decision (support acquisition plan with its cost units) exists. None is known -> NOT RUN record.
+hcc_followup:
+  when: once, after the source decisions are committed (freeze F2 = e1_source_freeze.json commit), final_inner constants
+  contracts: [planned (real o_qS from the frozen split lists and target det_plate metadata), missing_reselected, missing_zero_overlap_fallback]
+  ci: synchronised drug-ID bootstrap (one multinomial weight per drug ID over all targets and splits), 2000 draws; equal mean of 3 targets
+  rule: "no candidate is changed because of an HCC value"
+compute:
+  job_prefix: r8v2_
+  concurrent_jobs_max: 6
+  gpu: 0
+  disk_budget_gb: 5
+amendments: []
