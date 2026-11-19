@@ -1,0 +1,66 @@
+{
+ "run_id": "prototype_diagnostics_v1",
+ "package": "R9-E1/E2 prototype failure-cause diagnostics (private plan 2026-11-19 section 6.3)",
+ "exposure_status": "follow-up diagnosis on already-exposed source development data (GSE149614 outer LOPO; every donor was seen during v1 development). Not an independent validation. GSE151530 / A4 v2 results are not read by this package.",
+ "source_contract": {
+  "conditions": [
+   {"name": "sparse_B_N64_D4", "target": "B", "N": 64, "D": 4},
+   {"name": "sparse_Endothelial_N64_D4", "target": "Endothelial", "N": 64, "D": 4},
+   {"name": "sparse_Fibroblast_N64_D4", "target": "Fibroblast", "N": 64, "D": 4}
+  ],
+  "test_donors": ["HCC01", "HCC02", "HCC03", "HCC04", "HCC05", "HCC06", "HCC07", "HCC08", "HCC09", "HCC10"],
+  "seeds": [0, 1, 2],
+  "n_tasks": 90,
+  "representation": "v1 target-excluded fold representation <test>__excl_<target>.npz (read-only), identical to a2_main_v1",
+  "training_cells": "r9tasks.select(obs, cond, test, seed) - identical to a2_main_v1 (design and n_train asserted against the v1 run JSON)",
+  "loss": "L_donor,class for every arm; 300 Adam steps, lr 0.02 (v1 settings)"
+ },
+ "E1_arms": {
+  "P1_current": "1 component/class, learnable diagonal variance (v1 ProtoHead) - refit of v1 P1_donor",
+  "P3_current": "3 components/class (k-means init), learnable diagonal variance - refit of v1 A10",
+  "P1_fixedvar": "1 component/class, initial shrunk diagonal variance frozen (excluded from the optimizer)",
+  "P3_fixedvar": "3 components/class, each component's initial shrunk diagonal variance frozen",
+  "P3_pooledvar": "3 components/class, every component uses the frozen class-level variance vector of P1_fixedvar",
+  "sharing": "same-K arms share initial membership, means and mixture weights; P3_pooledvar variance == P1_fixedvar class variance"
+ },
+ "E2_arms": {
+  "A11_refit": "donor-supported greedy allocation to K=3C with the v1 fixed fallback (refit of v1 A11; current variance)",
+  "supported_stop": "the same greedy sequence stopped at the first step without an admissible candidate (K*); K* is set in the source fold only",
+  "matched_kstar": "per-class k-means partition with the same per-class component counts as supported_stop (current variance)",
+  "kstar_equals_K": "when no fallback occurs supported_stop == A11_refit allocation and matched_kstar has 3/class; fits are still run (cheap) and flagged kstar_eq_K",
+  "logging": "every examined candidate per step: support of both children, mean held-out gain, fraction positive, n evaluable donors, rejection_reason",
+  "variance_rule": "current (learnable) variance is primary for E2",
+  "conditional_variance_rerun": "ONLY if E1 contrast (b) P3_current-P3_fixedvar has simultaneous CI upper < 0 and mean <= -0.01 -> refit the three E2 arms with frozen per-component variance; ONLY if E1 contrast (c) P3_fixedvar-P3_pooledvar has simultaneous CI upper < 0 and mean <= -0.01 -> refit them with pooled class variance. Uses the saved E2 memberships; otherwise record as not run."
+ },
+ "baselines": "saved a2_main_v1 predictions for the same 90 keys: LR_class, LR_donor, MLP_donor (strong baselines) and P1_donor, A10, A11 (v1 references); refit arms are also compared with the saved v1 predictions (replay agreement reported)",
+ "metrics": {
+  "primary": "target-label AUPRC on the held-out source donor (NA, never 0, when the donor has <10 target positives; v1 a2_eval rule)",
+  "secondary": "target recall, target false positives, all-cell NLL; diagnostics: variance-floor fraction, mean/max |log-variance change|, component ESS, max donor share, train weighted CE, held-out class-balanced CE, CE gap, K*, fallback step and rejection reasons"
+ },
+ "aggregation": "seeds averaged within (target, donor); primary summary = target-equally-weighted donor vector (mean over the targets evaluable for that donor; identical for both arms of a contrast); donor paired bootstrap 10,000 resamples (seed 0). Per-target contrasts are secondary.",
+ "primary_contrasts": {
+  "E1": {"a": "P3_pooledvar - P1_fixedvar (K effect with the class covariance fixed)",
+         "b": "P3_current - P3_fixedvar (variance optimisation effect)",
+         "c": "P3_fixedvar - P3_pooledvar (per-component initial variance estimate effect)"},
+  "E2": {"d": "supported_stop - A11_refit",
+         "e": "matched_kstar - A11_refit",
+         "f": "supported_stop - matched_kstar"},
+  "not_pure_K_effect": "P3_fixedvar - P1_fixedvar mixes K and per-component variance; reported as secondary only"
+ },
+ "multiplicity": "within each family of 3: Bonferroni-simultaneous 98.333% percentile bootstrap CI decides 'established'; 95% CI also reported",
+ "practical_threshold_auprc": 0.01,
+ "practical_threshold_note": "plan section 2.3 proposal for R9; fixed here before any run; not a v1 threshold",
+ "decision_categories": {
+  "established_practical": "simultaneous CI excludes 0 and |mean| >= 0.01",
+  "established_below_practical": "simultaneous CI excludes 0 and |mean| < 0.01",
+  "equivalent_within_margin": "90% percentile donor-bootstrap CI entirely inside [-0.01, +0.01] (pre-set equivalence margin)",
+  "not_established": "simultaneous CI contains 0 and the equivalence condition is not met"
+ },
+ "secondary_contrasts": ["P3_fixedvar - P1_fixedvar", "P3_current - P1_current", "P1_current - P1_fixedvar", "each arm - LR_donor", "each arm - MLP_donor", "each arm - LR_class", "matched_kstar - P3_current"],
+ "decision_rules_from_plan": {
+  "E1": "fixedvar-only improvement -> stabilising variance optimisation is the first follow-up; K=1 strong under every variance condition -> low need for multiple components at this N/D; pooledvar favourable -> sparse-component variance estimation/shrinkage is the follow-up question; uncertain -> cause not identified (do not infer a bigger encoder).",
+  "E2": "supported_stop > A11 alone is not a causal fallback effect; matched_kstar also improving -> consistent with capacity reduction; supported_stop > matched_kstar -> donor-supported partition value at equal capacity is a follow-up question.",
+  "adoption": "beating P1/A10/A11 is a cause-analysis result, not a win over LR/MLP; adoption of any new arm requires its effect vs the strong baselines with uncertainty and cost and is not decided here."
+ },
+ "cost_rule": "pilot = 1 (test donor, seed) x 3 targets; measure CPU time/memory; run all 90 only if the estimate fits ~24 h wall under the track cap (14 concurrent jobs, CPU only)"
+}

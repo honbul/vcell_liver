@@ -1,0 +1,70 @@
+{
+ "run_id": "a4_external_norm_v2",
+ "package": "R9-C1 external normalization correction (private plan 2026-11-19 section 6.1)",
+ "exposure_status": "correction of an already-exposed external evaluation (GSE151530 scored once in a4_external_v1); not a blind or independent test",
+ "parent_run": "a4_external_v1",
+ "parent_freeze_config": "configs/r9/a4_freeze.json",
+ "parent_commit": "1d863eb6e082de909ce17c780c94c9fe8a5f7005",
+ "cohort": "GSE151530 HCC samples only (25 donors / 32 samples / 50,023 cells); grouped by author patient",
+ "training": "all 10 GSE149614 donors; representation ALL__full / ALL__excl_<target> (same select(obs, cond, 'ALL', seed) as v1)",
+ "conditions": [
+  {"name": "nat"},
+  {"name": "sparse_B_N64_D4", "target": "B", "N": 64, "D": 4},
+  {"name": "sparse_Endothelial_N64_D4", "target": "Endothelial", "N": 64, "D": 4},
+  {"name": "sparse_Fibroblast_N64_D4", "target": "Fibroblast", "N": 64, "D": 4}
+ ],
+ "seeds": [0, 1, 2],
+ "models": ["LR_donor", "P1_donor", "GMM_K", "A00", "A10", "A01", "A11"],
+ "selected_version": "LR_donor",
+ "selected_version_note": "unchanged from v1 (source-only C2 rule); external labels select nothing in v2",
+ "normalization": {
+  "v1_external_bug": "external counts restricted to the 2,000 source HVGs BEFORE CP10k+log1p (library = HVG counts only)",
+  "corrected": "external raw counts aligned to the full shared unique-symbol list (same list/order as the source), library = sum over that list, CP10k+log1p, then the source HVG columns, then the source scaler -> PCA50 -> PC scaler",
+  "shared_symbol_rule": "symbols unique in both cohorts, sorted (v1 a1_repr.py); length must equal v1 ALL__meta.json n_shared_unique_symbols",
+  "fit_on_external": "nothing"
+ },
+ "tolerances": {
+  "representation_T1": {
+   "exact": ["n_shared_unique_symbols", "shared symbol list", "hvg_symbols (order)", "fitmask", "source cell_ids", "ext_cell_ids"],
+   "source_Z_max_abs": 0.001,
+   "source_Z_min_per_pc_pearson": 0.99999,
+   "ext_Z_v1method_max_abs": 0.001,
+   "on_pass": "compatible: heads fitted on the stored v1 source Z; Replay input = stored v1 Z_ext; Corrected input = corrected external matrix through the rebuilt transform",
+   "on_fail": "rebuilt: heads fitted on the rebuilt source Z; Replay input = external counts with the v1 (HVG-only) normalization through the rebuilt transform; Corrected = corrected normalization through the same rebuilt transform; calibration from a new 3-group source OOF on the rebuilt Z (mandatory)"
+  },
+  "prediction_replay_T2": {
+   "unit": "(condition, seed, model) on all 50,023 external cells, raw (pre-temperature) class probabilities of the refit head on the Replay input vs the stored v1 ext_logp",
+   "min_argmax_agreement": 0.999,
+   "max_p99_of_cellwise_max_abs_dprob": 0.001
+  }
+ },
+ "calibration_policy": {
+  "rule": "per task (condition, seed): if T1 passed and all 7 models of the task pass T2 -> reuse the v1 source-OOF logp of that task (temperature grid fit + tau_fine/tau_parent with EPS 0.02, exactly as v1 a4_eval) for both Replay and Corrected; otherwise -> new 3-donor-group source OOF (same groups, all 7 models, same Z as the final heads) in run a4_external_norm_v2_oof and the new T/tau applied to BOTH Replay and Corrected of that task. v1 calibration is kept only for the Original column.",
+  "eps": 0.02,
+  "fit_on_external": "nothing"
+ },
+ "evaluation_units": {
+  "rows_per_version": 2100,
+  "valid_primary_values_per_version": 1428,
+  "per_head_valid_primary": {"nat": 75, "sparse_B_N64_D4": 45, "sparse_Endothelial_N64_D4": 48, "sparse_Fibroblast_N64_D4": 36},
+  "seed_mean_donor_rows": 700,
+  "model_summary_rows": 28,
+  "unmapped_seed_rows": 168,
+  "unmapped_seed_mean_rows": 56,
+  "known_cells": 27212,
+  "unmapped_malignant": 15723,
+  "unmapped_unclassified": 7088,
+  "class_evaluable_rule": ">=10 positives of that class in the external donor (unchanged)",
+  "missing_values": "kept as NA with reason; never dropped or set to 0"
+ },
+ "contrasts": {
+  "versions": ["original (stored v1 predictions + v1 calibration)", "replay (refit pipeline + old external input)", "corrected (same head and calibration as replay + corrected external input)"],
+  "primary": "Corrected - Replay on the v1 primary metric (nat: all-mapped donor-macro AUPRC; sparse: target AUPRC) for the selected model LR_donor in each of the 4 conditions",
+  "aggregation": "seeds averaged within external donor; donor paired bootstrap 10,000 resamples (seed 0) -> mean, 95% percentile CI, per-donor sign counts",
+  "multiplicity": "primary family of 4 (LR_donor x 4 conditions): Bonferroni-simultaneous 98.75% percentile CI reported next to the 95% CI",
+  "secondary": "same contrast for the other 6 heads and all metrics; decomposition Corrected-Original = (Corrected-Replay) + (Replay-Original) for every condition x model x metric",
+  "practical_threshold_auprc": 0.01,
+  "practical_threshold_note": "plan section 2.3 proposal for R9 (not a v1 threshold); describes magnitude only, selects nothing",
+  "interpretation": "correction is complete when the contract, provenance and the 2,100-key evaluation are complete and drift is separated from the normalization effect, regardless of score direction. A11 external scores do not change the v1 source-based selection."
+ }
+}
