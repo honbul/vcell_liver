@@ -2,6 +2,8 @@
 
 **작성일:** 2026-11-18 · 브랜치 `research/r8-followup-observation-transfer-v1` · 동결 커밋 `73be6d3`(동결 코드 `98e4982`) · 기존 패널 평가 job 26200(`final_v1`, 한 번)
 
+> **정정 안내 (2026-11-19, v2 브랜치 `research/r8-observation-transfer-v2`에서 추가):** 이 문서의 세 문구(§0 "예측 차이 ~1e-6", §0 "공분산의 효과는 전부 공통 보정의 축소량", §2.1 "C0 = 축소 평균")와 재현행 표기는 `reports/r8_transfer_v2/ERRATA_v1.md`로 정정되었다. 아래 원문은 보존한다.
+
 모든 수치는 CMap LINCS 2020 Level 3, 978 landmark, 10 µM·24 h, (세포주, 약물 그룹) unit 단위다. 차이는 "앞 − 뒤", 음수면 앞 방법의 오차가 작다. 별도 표시가 없으면 K=16, unit ΔRMSE, 95% CI. source는 family cluster bootstrap, HCC는 약물 ID 동기화 bootstrap. `[k/3]`은 앞 방법이 좋았던 outer fold 수.
 HCC와 확인 9 family는 **이미 여러 번 채점된 패널**이며, 이번 평가는 동결 후 한 번 적용한 **기존 벤치마크 후속 평가**다(target 검증 라벨 0개).
 
