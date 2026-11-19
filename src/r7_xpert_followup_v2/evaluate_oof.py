@@ -107,8 +107,6 @@ def panel_summary(m, C, mask=None):
 def calibrate_fold(C, Ytrain, Pin, Pout, k, arms=ARMS):
     """Fit every arm on the inner OOF of A_k (truth from Ytrain rows of A_k only) and apply to T_k predictions."""
     A = np.where(C.outer != k)[0]; T = np.where(C.outer == k)[0]
-    if C.pilot:
-        A = A[~np.isnan(Pin[A]).any(1)]
     assert not np.isnan(Pin[A]).any() and not np.isnan(Pout[T]).any()
     res = {}
     for arm in arms:
@@ -196,10 +194,7 @@ def main():
             Zg = {arm: np.full(C.Y.shape, np.nan) for arm in ARMS}
             FB = {arm: np.zeros(len(C.Y), bool) for arm in ARMS}
             for k in kk:
-                Pin = load_inner(C, sel, seed, k, [0] if a.pilot else (0, 1, 2))
-                if a.pilot:
-                    Pin_valid = ~np.isnan(Pin).any(1)
-                    C.inner[k][Pin_valid] = np.arange(Pin_valid.sum()) % 3     # pilot only: pseudo CV folds inside inner fold 0
+                Pin = load_inner(C, sel, seed, k)
                 res = calibrate_fold(C, C.Y, Pin, Pout, k)
                 shifts.append(dict(seed=seed, base=base, outer=k, **{f"{w}_{q}": v for w, d in shift_record(C, Pin, Pout, k).items() for q, v in d.items()}))
                 for arm, r in res.items():
