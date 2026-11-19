@@ -32,7 +32,8 @@ def parse(path):
 
 
 def main():
-    rows = [parse(p) for p in sorted(glob.glob(sys.argv[1] + "/r10_*.out"))]
+    prefix = sys.argv[3] if len(sys.argv) > 3 else "r10_"          # v2 track logs: r10v2_
+    rows = [parse(p) for p in sorted(glob.glob(sys.argv[1] + f"/{prefix}*.out"))]
     w = csv.DictWriter(open(sys.argv[2], "w"), fieldnames=list(rows[0]), delimiter="\t", lineterminator="\n")
     w.writeheader()
     w.writerows(rows)
