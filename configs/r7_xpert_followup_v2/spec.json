@@ -1,0 +1,54 @@
+{
+ "spec_version": "r7v2_spec_v1",
+ "plan_reference": "private plan 2026-11-19 sections 4.1-4.5 (not in repo)",
+ "base_commit": "b962a8405f620fa79075568056b8c463d30a72b0",
+ "upstream_xpert": "GSanShui/XPert d53ff497e465692c80fac7b899e3cc5cc8e7bfed (read-only working copy of the original R7, verified clean)",
+ "exposure": {
+  "R4_train_drugs_outer_folds": "follow-up development on exposed data (train-drug labels were training data of every earlier study); outer-fold scores are the official R7-C/R7-L evaluation of this track",
+  "R4_validation_source": "checkpoint selection population only (never an evaluation set here)",
+  "R4_validation_HCC": "used only to replay the original (contaminated) selection rule for impact measurement in the full-train correction runs; never used for any new choice",
+  "R4_test": "exposed benchmark (opened by R4 and R7): correction re-evaluation and frozen follow-up evaluation, not blind"
+ },
+ "packages": {
+  "4.1_correction": {
+   "finding_part1": "HCC validation units (129 of 11731) were in the automatic checkpoint selection of all six original XPert runs (official + A-2 ECFP); no per-epoch snapshots -> retrain",
+   "change": "selection rows = R4 validation units with is_hcc == 0 (11602 units, unit_idx_sha256 3271b832...); unit-weighted upstream loss4 selector, L0 loss, config, seeds 42/43/44, 100 epochs, patience 50 (emulated) unchanged",
+   "replay": "same trajectory also records the original rule (all validation units) -> old replay checkpoint",
+   "variants": ["official (UniMol + HG)", "ecfp (A-2 comparator: Morgan 1024 + zero HG)"],
+   "impact": "test source family-equal dRMSE (+ centred Pearson, tie-corrected MRR, HCC lines): corrected - old original, corrected - old replay, old replay - old original; paired drug-group bootstrap 2000 / seed 20261117; descriptive, no gate (a correction is complete when the contract is restored and impact measured)"
+  },
+  "R7-C": {
+   "hypothesis": "part of XPert's dRMSE gap is predicted magnitude / cell-line common shift that a pattern-preserving per-cell affine map (positive scalar a_c, gene-vector b_c) removes",
+   "base": "L0 recipe, U selector (corrected upstream rule) -- primary; L0-R and L0-P bases secondary",
+   "arms": ["C0 identity", "Cg global a0,b0", "Cs per-cell a_c", "Cb per-cell b_c", "Csb per-cell a_c and b_c"],
+   "fit": "src/r7_xpert_followup_v2/fit_calibrator.py: two-stage (family-equal source global prior with identity prior penalty; per-cell sum-of-unit-MSE + lam*v_c^2 + lam*||u_c||^2/G), units of one fixed RMS s of the fitting truths; a_c = exp(alpha0 + v_c)",
+   "lambda_grid": [0.01, 0.1, 1, 10, 100, "identity"],
+   "lambda_selection": "drug-group calibration CV over the 3 inner folds of A_k, source (non-HCC) family-equal mean unit RMSE of pooled held-out predictions; inner score = tuning record",
+   "tie_rule": "CV RMSE within 1e-6 of the minimum counts as tie -> strongest shrinkage (identity > 100 > 10 > 1 > 0.1 > 0.01)",
+   "hcc": "per-cell coefficients of HCC lines fitted from HCC train-drug OOF pairs (allowed); lambda/arm/checkpoint from non-HCC only; diagnostic 'HCC global-only' reported separately",
+   "fallback": "cell line without fitting units in A_k -> global prior (flagged, counted)",
+   "outer_eval": "coefficients fitted on A_k OOF, applied to the outer model's T_k predictions; T_k truths used only by the scorer",
+   "step6": "coefficients refit on full-train cross-fit OOF (outer-model predictions, CV over outer folds) and applied to the corrected full-train L0-U model on the R4 test (frozen follow-up evaluation)",
+   "primary_contrast": "Csb - C0 (L0-U base), outer-fold family-equal source dRMSE, seed-mean unit values, paired drug-group bootstrap 95% CI",
+   "decision": "improvement established iff hi95 < 0; operationally meaningful iff additionally diff <= -0.001; CI containing 0 = not established; no equivalence claim (no margin)",
+   "secondary": ["Csb-Cs", "Csb-Cb", "Cg-C0", "Cs-C0", "Cb-C0", "L0R: Csb-C0", "L0P: Csb-C0", "calibrated R-P (L0, Csb)", "HCC per line and mean", "centred Pearson / MRR / RMS ratio"],
+   "invariance_checks": "identity reproduces raw; outer-label tamper leaves coefficients, lambda and calibrated T predictions identical; all a_c > 0; candidate sets (cell x outer fold) identical across arms; centred Pearson and tie-corrected MRR identical (float64, |diff| < 1e-9) between C0 and every arm"
+  },
+  "R7-L": {
+   "hypothesis": "XPert's dRMSE vs pattern trade-off depends on the training recipe and/or the checkpoint objective",
+   "recipes": {"L0": "upstream composite loss (weights 0.2/0.003/0.2/1, init_epoch 70 switch)", "L1": "mean_i mean_g (delta_hat - delta)^2 only, constant, auxiliary heads kept with weight 0"},
+   "selectors": {"R": "min family-equal mean unit RMSE_978 (source validation)", "P": "max family-equal mean unit gene Pearson (raw, not centred)", "U": "upstream unit-weighted loss4, source only, patience 50 (report only)"},
+   "horizon": "fixed 100 epochs, no validation early stopping for R/P; both selectors see the same candidate epochs",
+   "horizon_boundary_rule": "if the median best epoch over the 9 outer trajectories of a recipe x selector is >= 95, an extension of all arms is indicated; executed only if budget allows, else recorded as not run",
+   "primary_contrasts": ["L0: R-P", "L1: R-P", "R: L1-L0", "P: L1-L0", "interaction (L1R-L1P)-(L0R-L0P)"],
+   "multiplicity": "Holm over the 5 primary bootstrap p values and Bonferroni-simultaneous CIs (level 1 - 0.05/5); categories with practical threshold 0.001",
+   "secondary": ["centred Pearson, tie-corrected MRR, RMS for every contrast", "U-selector rows (report)", "HCC lines"]
+  }
+ },
+ "folds": {"outer": 3, "inner": 3, "fold_seed": 20261119, "folds_file": "configs/r7_xpert_followup_v2/folds.tsv", "folds_sha": "18c38f8739198137d87292d58659de01c4586b15010c0369fe274b1c2e66cb9f"},
+ "seeds": [42, 43, 44],
+ "aggregation": "metrics per seed; unit values averaged over seeds; source = non-HCC units, family-equal mean (families from R4); MRR pool = cell line x outer fold (outer evaluation) or cell line (test)",
+ "bootstrap": {"draws": 2000, "seed": 20261117, "unit": "R4 drug group (all cell lines move together)"},
+ "practical_threshold_abs_dRMSE": 0.001,
+ "staging": "see SPEC.md section 6 (decided from the measured pilot cost before this freeze)"
+}
