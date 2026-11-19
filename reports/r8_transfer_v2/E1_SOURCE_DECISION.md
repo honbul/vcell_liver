@@ -16,7 +16,7 @@ source-train 91 family(일반 episode)·41 family(matched E1/E2, 360 ordered pai
 
 - J3 신규 채택 근거 없음 (주 전이 조건 M2에서 C1J1 대비 미확립).
 - C1J1과 J3의 차이가 M2에서 확립되지 않았다 → 단순 환경 보정(C1J1)을 우선하고 joint 모델 확대는 보류.
-- J3가 두 기준선을 모두 넘은 곳은 같은 plate(M1 planned: −0.00081 / −0.00113, centred도 CI < 0)뿐이고 크기는 0.5% 미만 → 같은 환경 관측값 예측용으로만 한정. unknown/별도 환경에서는 C1 유지.
+- 계약별로 재선택한 기준선 대비 J3가 두 기준선을 모두 넘은 곳은 같은 plate(M1 planned: −0.00081 / −0.00113, centred도 CI < 0)뿐이고 크기는 0.5% 미만 → 같은 환경 관측값 예측용으로만 한정. unknown/별도 환경에서는 C1 유지. (M2의 `fixed_gen_constants`·`missing_reselected` 행에서도 J3가 앞섰지만(−0.0049 / −0.0035 대 C1), 그 C1/C1J1은 M2용으로 재선택되지 않은 일반 episode 상수를 쓴 행이라 채택 근거로 쓰지 않는다.)
 - 일반 episode(G planned)에서 J3 − C1 −0.00023 [−0.00080, +0.00037] → 미확립.
 
 ## E2-A (M2 known_separate, centred RMSE)
