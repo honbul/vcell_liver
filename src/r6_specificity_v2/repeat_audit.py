@@ -214,12 +214,16 @@ def main() -> None:
         l, d, P = int(r.line), int(r.drug), int(r.plate_index)
         w = wells[(wells.line == l) & (wells.drug == d) & (wells.plate_index == P)].sort_values("sample")
         w1, w2 = w.iloc[0], w.iloc[1]
-        pw = pool_wells[(l, P)]; pw = pw[pw.drug != d]
-        cen = np.asarray(tm[2, pw.wid.to_numpy()], np.float64).mean(0)
+        pw = pool_wells[(l, P)]; pw = pw[pw.drug != d].sort_values("sample")
+        # the two wells share one pool: centre them by DISJOINT halves of the other wells (alternating by
+        # sample id) so that a shared centring vector does not create agreement by itself
+        wid_o = pw.wid.to_numpy()
+        cen1 = np.asarray(tm[2, wid_o[0::2]], np.float64).mean(0); cen2 = np.asarray(tm[2, wid_o[1::2]], np.float64).mean(0)
         x1, x2 = np.asarray(tm[2, int(w1.wid)], np.float64), np.asarray(tm[2, int(w2.wid)], np.float64)
         two[(l, d, P)] = (x1, x2)
-        s6.append(dict(line=l, drug=d, plate=P, name_class=r.name_class, cos_poolloo=cos(x1 - cen, x2 - cen), rmse=rmse(x1, x2),
-                       rmse_zero=float(np.sqrt((np.mean((x1 - cen) ** 2) + np.mean((x2 - cen) ** 2)) / 2))))
+        s6.append(dict(line=l, drug=d, plate=P, name_class=r.name_class, sample_1=w1["sample"], sample_2=w2["sample"],
+                       compound_1=w1.compound_name, compound_2=w2.compound_name, cos_poolloo=cos(x1 - cen1, x2 - cen2), rmse=rmse(x1 - cen1, x2 - cen2),
+                       rmse_zero=float(np.sqrt((np.mean((x1 - cen1) ** 2) + np.mean((x2 - cen2) ** 2)) / 2))))
     for (l, P), g in same.groupby(["line", "plate_index"]):
         ds = sorted(int(x) for x in g.drug)
         for d, e in itertools.combinations(ds, 2):
