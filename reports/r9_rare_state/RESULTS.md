@@ -12,6 +12,8 @@
 | §10 행 | "adaptive와 같은 K 고정 mixture가 비슷"(다중 패턴 이득도 없음) | 완료된 음성 결과 |
 | 외부 모델 | ProtoCloud가 sparse_Fib에서 모든 같은-표현 head보다 높음; scPoli는 혼재 | R9 방법이 이겼다고 할 수 없음 |
 
+> **v2 정정(2026-11-19, branch `research/r9-normalization-prototype-v2`; R9-C2·R9-C1)** — 아래 "외부 모델" 행과 A2 외부 모델 절의 donor paired 차이는 우리 head의 3-seed 평균에서 외부 모델 seed 0을 뺀 **표본 불일치 비교**였다(`r9tasks.select`의 seed가 sparse source donor·세포를 바꿈). seed 0끼리 짝지은 정정 표는 `a2_external_model_contrasts_matched_seed0.tsv`(키 확인 `..._keys.tsv`, 60/60 일치)이며, 정정 문구: ProtoCloud는 sparse_Fib에서 A11·LR_donor보다 높음(CI가 0 제외), **MLP_donor와는 우열 불확실**(−0.048 [−0.099, +0.001]); scPoli 대비 A11은 sparse_B −0.041 [−0.123, +0.044]·sparse_Fib +0.150 [−0.003, +0.315]로 **우열 불확실**, sparse_Endo +0.144 [+0.048, +0.259]는 A11 우세 유지. A4 외부 정규화 정정은 `a4_external_norm_v2/`와 `reports/r9_normalization_prototype_v2/RESULTS.md` 참조. 아래 원문은 역사 기록으로 보존한다.
+
 모든 GSE149614 수치는 **개발 증거**(바깥 LOPO 10명; HCC02·HCC09 포함 전원 이전 노출)다. 통계 단위는 donor, 괄호는 donor bootstrap 95% CI. seed·회전은 donor 안에서 평균했다. 숫자 출처 파일을 각 절에 적었다.
 
 ## A0 — inventory (`label_inventory.tsv`, `donor_class_counts.tsv`, `rare_definition_by_fold.tsv`, `cohort_overlap.tsv`)
@@ -97,6 +99,8 @@ seed 0만, 같은 source 세포·label·fold HVG 2000개 raw count. scPoli는 tr
 - donor paired: A11−scPoli nat +0.011 [−0.006, +0.024], sparse_B −0.045 [−0.096, −0.008], sparse_Endo +0.125 [+0.034, +0.235], sparse_Fib +0.161 [+0.006, +0.325]. A11−ProtoCloud nat +0.022 [+0.016, +0.029], sparse_Fib **−0.132 [−0.222, −0.051]**; LR_donor−ProtoCloud sparse_Fib −0.122 [−0.182, −0.063]; MLP_donor−ProtoCloud sparse_Fib −0.054 [−0.087, −0.023].
 - 관측: ProtoCloud는 인공 희소화 Fibroblast에서 같은 표현의 모든 head보다 높았다(같은 정보 계약; 다만 자체 encoder·희귀 type 증강·raw count 입력이라 아키텍처 귀속은 불가). scPoli는 sparse_B에서 A11보다 높고 Endo·Fib에서 낮았다.
 - 따라서 R9 방법(A11)은 ProtoCloud를 sparse_Fibroblast에서 이기지 못했고, scPoli도 sparse_B에서 이기지 못했다. ProtoCloud는 sparse_B·sparse_Endo·Tier 2에서 실행하지 않았으므로 그 조건의 비교는 미확인이다.
+
+> **v2 정정(R9-C2)**: 위 donor paired 수치는 3-seed 평균 대 외부 seed 0(표본 불일치)이다. seed 0 matched 값: A11−ProtoCloud sparse_Fib −0.143 [−0.238, −0.050], LR_donor−ProtoCloud −0.111 [−0.162, −0.056], MLP_donor−ProtoCloud −0.048 [−0.099, +0.001](우열 불확실); A11−scPoli sparse_B −0.041 [−0.123, +0.044](우열 불확실), sparse_Endo +0.144 [+0.048, +0.259], sparse_Fib +0.150 [−0.003, +0.315](우열 불확실), nat +0.012 [−0.006, +0.024]. 따라서 "ProtoCloud가 모든 같은-표현 head보다 높다"와 "scPoli가 sparse_B에서 A11보다 높다"는 matched 비교에서 확립되지 않는다. 전체 표: `a2_external_model_contrasts_matched_seed0.tsv`.
 
 **미검증(가설로만 남김)**
 - 다중 프로토타입 arm이 단일 프로토타입보다 낮은 이유(64세포에 3개 성분 → 과적합, 300 step 최적화, 수축 0.3 등)는 측정하지 않았다.

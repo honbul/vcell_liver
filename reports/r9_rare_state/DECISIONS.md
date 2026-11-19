@@ -145,6 +145,7 @@
 
 - scPoli: nat 0.932, sparse_B 0.818, sparse_Endo 0.782, sparse_Fib 0.627. ProtoCloud: nat 0.921, sparse_Fib 0.920.
 - A11−ProtoCloud sparse_Fib −0.132 [−0.222, −0.051]; A11−scPoli sparse_B −0.045 [−0.096, −0.008]. → R9 방법이 두 외부 모델을 일관되게 이겼다고 할 수 없다. ProtoCloud 미실행 조건은 미확인.
+  > **v2 정정(R9-C2)**: 위 수치는 3-seed 평균 대 외부 seed 0. seed 0 matched: A11−ProtoCloud sparse_Fib −0.143 [−0.238, −0.050], A11−scPoli sparse_B −0.041 [−0.123, +0.044](우열 불확실). `a2_external_model_contrasts_matched_seed0.tsv`.
 
 ---
 

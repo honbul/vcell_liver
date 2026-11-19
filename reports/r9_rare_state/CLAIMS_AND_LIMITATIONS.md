@@ -29,6 +29,7 @@
 
 - ProtoCloud(공식 기본값, inductive)는 sparse_Fibroblast에서 모든 같은-표현 head보다 높았다. R9 방법은 이 조건에서 ProtoCloud를 이기지 못했다. ProtoCloud는 GPU 시간 때문에 nat·sparse_Fibroblast만 실행했으므로 다른 조건의 우열은 미확인이다.
 - scPoli(transductive)는 sparse_B에서 A11보다 높고 Endo·Fib에서 낮았다. HCC08 4개 task는 비호환 회피용 exact kNN으로 실행한 편차가 있다.
+  > **v2 정정(R9-C2, seed 0 matched)**: 위 두 줄은 3-seed 평균 대 외부 seed 0 비교였다. 같은 seed 0 표본으로 짝지으면 ProtoCloud는 sparse_Fib에서 A11(−0.143 [−0.238, −0.050])·LR_donor(−0.111 [−0.162, −0.056])보다 높지만 MLP_donor와는 우열 불확실(−0.048 [−0.099, +0.001]). A11−scPoli는 sparse_B −0.041 [−0.123, +0.044], sparse_Fib +0.150 [−0.003, +0.315]로 우열 불확실, sparse_Endo +0.144 [+0.048, +0.259]만 A11 우세. 근거 `a2_external_model_contrasts_matched_seed0.tsv`.
 - 두 모델 모두 입력·encoder·증강이 달라 "아키텍처만의 우열"로 해석하지 않는다.
 
 ## 미실행 (사유)
