@@ -9,4 +9,5 @@
 | label-free overlap prior (missing 계약의 별도 후보, §5.2) | 미실행 | 기획서에서 "필요하면" 두는 선택 후보다. missing 계약은 0-overlap fallback과 source 재선택 두 가지로 비교했다 | missing 계약이 실제 주 시나리오가 되면 source plate 설계에서 label 없이 정한 overlap 기대값을 후보로 사전 등록 |
 | 다른 compound plate·날짜·배양 shift stratum (§5.2) | 해당 자료 없음 | 적격 matched pair는 모두 한 compound plate의 X-tag 반복이다(`e1_report_inputs.json`의 eligibility). 같은 X 반복을 독립 날짜/배양이라 부르지 않는다 | 다른 compound plate/날짜/배양 반복이 확인되는 자료 |
 | 독립 외부 HCC/반복 패널 (§5.2, §1.3) | 자료 없음 | 이 트랙에 새 외부 자료가 없다. 새 source 분할도 이미 노출된 자료의 내부 일반화 검사다 | 새 배양/날짜 HCC 패널(intervention·dose·batch·vehicle metadata와 보류 정답) |
+| E2-B source-reference-unavailable의 matched plate(M1/M2) 버전 | 미실행 (사양) | drug hold-out 뒤 같은 pair의 공유 약물(≥ 36)에서 query와 support가 1/3·2/3로 나뉘어 표본이 희소하다. 사양(`e2b_spec.yaml`)에서 일반 episode만 두었다 | 공유 약물이 충분히 많은 반복 plate 자료 |
 | GPU 학습 | 0 GPU-시간 | 모든 패키지가 닫힌식 CPU 계산이다 (트랙 GPU 상한 0) | — |
