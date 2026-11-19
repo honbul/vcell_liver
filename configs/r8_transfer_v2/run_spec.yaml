@@ -72,7 +72,7 @@ primary:
     labels: {adopted_transfer: "adoption rule met AND J3 - best centred RMSE 95% CI < 0", observation_correction_only: "adoption rule met on delta RMSE but centred not improved", not_adopted: otherwise}
     practical_reported: relative difference vs the stronger of C1 / C1J1 (lower family mean), against 0.5%
   H1_transfer:
-    views: [M1 / planned, M2 / known_separate], K = 16, paired by family (same queries, same support drugs, same truth)
+    views: "[M1 / planned, M2 / known_separate], K = 16, paired by family (same queries, same support drugs, same truth)"
     statistic: "(dc - dr) with dc = [C0 - anchor_matched]_M2 - [C0 - anchor_matched]_M1, dr = [C1 - C0]_M2 - [C1 - C0]_M1"
     supported_if: "(dc - dr) 95% CI > 0 (Holm) AND [C1 - C0]_M2 95% CI < 0"
 secondary:   # all reported with unadjusted 95% CI, labelled secondary
@@ -88,7 +88,7 @@ decisions_after_E1:   # plan 5.2 text, applied literally
   - "improvement only in M1 (same plate) -> restricted to same-environment use; keep C1 for unknown / separate environments"
   - "meaningful delta-RMSE and centred improvement that holds in M2 -> independent external panel would be next (none available here)"
 e2a:
-  view_primary: M2 / known_separate, K = 16 (secondary: G / planned, M1 / planned)
+  view_primary: "M2 / known_separate, K = 16 (secondary: G / planned, M1 / planned)"
   arms: [C0 (eta = 0), kn_ctrl, kn_chem+ctrl, kn_f0+ctrl, kn_all (= chem + f0 + ctrl)]
   scales: block-normalised with source-train scales of the K's own kappa_f (P0-B)
   controls: {residual_only_shuffle: "kn_all with the support residual rows deranged (3 fixed derangements); f*, b, kernels, queries fixed",
@@ -119,4 +119,6 @@ compute:
   concurrent_jobs_max: 6
   gpu: 0
   disk_budget_gb: 5
-amendments: []
+amendments:
+  - date: 2026-11-19
+    change: "YAML syntax only: quoted the H1_transfer 'views' value (H1_transfer 'views' and e2a 'view_primary'; plain scalars containing ': ' or a flow list followed by text did not parse; e1 select jobs 26845-26848 stopped while reading this file, before any computation). No content, contrast or threshold changed; no E1 number existed."
