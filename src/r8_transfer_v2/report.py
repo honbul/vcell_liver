@@ -347,6 +347,58 @@ def e1(a):
     log(json.dumps(dict(H1=dict(supported=h1["supported"], p=h1["p"]), H2=dict(label=h2["final_label"], p=h2["p_iut"]), e2b=e2b, elig=elig), indent=1, default=str))
 
 
+# ================================================================= E2-B
+def e2b(a):
+    out = []
+    if a.channel:
+        ep = load_runs(a.channel, "episodes.tsv.gz")
+        ep["support_seed"] = ep.support_seed.astype(str)
+        fold_of = ep.drop_duplicates("family").set_index("family").fold.to_dict()
+        pairs = [("K_no_f0_kernel", "K_full"), ("K_no_anchor", "K_full"), ("K_no_both", "K_full"), ("K_no_both", "C0_full"), ("K_full", "C0_full"),
+                 ("C0_no_anchor", "C0_full"), ("K_no_anchor", "C0_no_anchor"), ("K_no_both", "C0_no_anchor")]
+        for view in ("G", "M1", "M2"):
+            d = ep[ep.view == view]
+            for v in ("delta_rmse", "centred_rmse"):
+                fam = S.family_table(d, v, by=("K", "method"))
+                for (K, m), h in fam.groupby(["K", "method"]):
+                    out.append(dict(part="channel", view=view, K=K, row="summary", a=m, metric=v, diff=float(h[v].mean()), n_families=len(h)))
+                for K in sorted(fam.K.unique()):
+                    for x, y in pairs:
+                        r = pair_stat(fam[fam.K == K], x, y, v, fold_of)
+                        if r:
+                            out.append(dict(part="channel", view=view, K=K, row="contrast", a=x, b=y, metric=v, **r))
+    elig = {}
+    if a.sru:
+        ep = load_runs(a.sru, "episodes.tsv.gz")
+        el = load_runs(a.sru, "eligibility.tsv")
+        W("e2b_sru_eligibility.tsv", el.groupby(["fold", "drug_fold"]).agg(n_episodes=("eligible", "size"), n_eligible=("eligible", "sum"),
+                                                                          n_families_eligible=("family", lambda f: f[el.loc[f.index, "eligible"]].nunique()),
+                                                                          mean_query=("n_query", "mean"), mean_support=("n_support", "mean")).reset_index())
+        elig = dict(n_scored_rows=int(len(ep)), n_scored_families=int(ep.family.nunique()) if len(ep) else 0)
+        if len(ep):
+            fold_of = ep.drop_duplicates("family").set_index("family").fold.to_dict()
+            pairs = [("fb_C1chem", "fb_C0"), ("ridge_C0", "fb_C0"), ("ridge_C1chem", "fb_C0"), ("ridge_C1chem", "ridge_C0"), ("ridge_C1chem", "fb_C1chem"),
+                     ("ref_C1", "ridge_C1chem"), ("ref_C1", "fb_C1chem"), ("ref_C0", "fb_C0")]
+            for v in ("delta_rmse", "centred_rmse", "centred_pearson"):
+                fam = S.family_table(ep, v, by=("K", "method"))
+                for (K, m), h in fam.groupby(["K", "method"]):
+                    out.append(dict(part="sru", view="G", K=K, row="summary", a=m, metric=v, diff=float(h[v].mean()), n_families=len(h)))
+                for K in sorted(fam.K.unique()):
+                    for x, y in pairs:
+                        r = pair_stat(fam[fam.K == K], x, y, v, fold_of)
+                        if r:
+                            out.append(dict(part="sru", view="G", K=K, row="contrast", a=x, b=y, metric=v, **r))
+    t = pd.DataFrame(out)
+    W("information_ablation_e2b.tsv", t)
+    lab = {}
+    if a.sru and len(t):
+        c = t[(t.part == "sru") & (t.K == 16) & (t.row == "contrast") & (t.metric == "centred_rmse")].set_index(["a", "b"])
+        hit = [k for k in (("fb_C1chem", "fb_C0"), ("ridge_C1chem", "fb_C0")) if k in c.index and bool(c.loc[k, "ci_below_0"])]
+        lab["chemistry_transfer_without_same_drug_response"] = bool(hit)
+    dump(dict(channel=a.channel, sru=a.sru, eligibility=elig, labels=lab), pub_man("e2b_report_inputs.json"))
+    log("e2b done", lab)
+
+
 # ================================================================= HCC follow-up
 def hcc(a):
     fz = json.load(open(os.path.join(MAN, "e1_source_freeze.json")))
@@ -367,7 +419,9 @@ def hcc(a):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["p0", "e1", "hcc"])
+    ap.add_argument("stage", choices=["p0", "e1", "e2b", "hcc"])
+    ap.add_argument("--channel", nargs="*", default=[])
+    ap.add_argument("--sru", nargs="*", default=[])
     ap.add_argument("--p0-select", nargs="*", default=[])
     ap.add_argument("--p0-anchor", nargs="*", default=[])
     ap.add_argument("--p0-k8", default="")
@@ -375,4 +429,4 @@ if __name__ == "__main__":
     ap.add_argument("--evaluate", nargs="*", default=[])
     ap.add_argument("--run", default="")
     a = ap.parse_args()
-    {"p0": p0, "e1": e1, "hcc": hcc}[a.stage](a)
+    {"p0": p0, "e1": e1, "e2b": e2b, "hcc": hcc}[a.stage](a)

@@ -1,0 +1,37 @@
+# R8-E2-B specification (freeze F3 = the commit that adds this file). Written after the E1 / E2-A source decisions and BEFORE any
+# E2-B number is computed. Entry: run_spec.yaml e2b.entry_condition (b) met on M2 / known_separate (e1_source_decisions.json).
+# Source: private plan 2026-11-19 section 5.3 E2-B (cited, not copied). Exposure: same already-analysed source-train families.
+track: r8_transfer_v2
+package: E2-B
+channel:
+  purpose: "input-channel sensitivity (NOT unseen-drug generalisation: query responses were inside the PCA / nuisance fits)"
+  episodes: the E1 evaluation episodes (outer0-2; views G with gen constants, M1 with M1 constants, M2 with M2 constants)
+  masks: {full: "f* anchor + kernel chem+ctrl+f0", no_f0_kernel: "f* anchor + kernel chem+ctrl", no_anchor: "f* := 0 (support and query), kernel chem+ctrl+f0", no_both: "f* := 0, kernel chem+ctrl"}
+  arms: "per mask C0_<mask> (kappa_b selected on the mask's C0 score) and K_<mask> (lambda, eta with eta = 0 allowed, given that kappa_b)"
+  selection: matching inner partition, contexts gen / M1 / M2 as E1 (seed 1, cap 200; matched 2 pairs, seed 1), tie rule v2, same grids
+  report: K = 16 delta RMSE and centred RMSE; contrasts mask vs full and no_both vs C0_full; secondary K = 8 / 32
+sru:
+  purpose: source-reference-unavailable validation (plan 5.3 E2-B second bullet), general episodes only (matched plates are too sparse after a drug hold-out)
+  n_drug_folds: 3                 # canonical store drug groups; fold = crc32('r8v2_drug|' + drug_group) % 3
+  held_out_from: [source f0 table (anchor and f0 kernel), f0 PCA basis (Features.fit), kernel block scales, ridge map, every selection (inner partition rebuilt the same way)]
+  covariance_nuisance: not used by any E2-B arm (all iid); the plate-pair v_e / v_s table is therefore irrelevant here
+  episodes: "E1 general-episode RNG on the full store's eligible units; queries = held-fold units of the 20% query part; supports = first 32 non-held units of the support order; outer seeds 1-3, inner seed 1 (query cap 200)"
+  min_query: 10
+  min_support: 16
+  min_families_per_fold: 10       # per (outer fold, drug fold); otherwise that drug fold is not scored (recorded)
+  ridge_alpha: [1.0, 10.0, 100.0, 1000.0, 10000.0]   # ECFP4 (2048 bits) -> family-balanced source response, primal ridge; alpha chosen on the inner ridge_C0 score with kappa_b = 16 (ties: larger alpha)
+  arms:
+    fb_C0: "f0_q = 0, n0_q = 0 for held query drugs only; support f0 kept; C0 common correction"
+    fb_C1chem: "fb_C0 + kernel chem+ctrl residual transfer (lambda, eta with eta = 0 allowed)"
+    ridge_C0: "query anchor = source-train ECFP ridge prediction; C0 common correction"
+    ridge_C1chem: "ridge_C0 + kernel chem+ctrl residual transfer"
+    ref_C0: "full f0 (more-informed reference contract; not an upper bound)"
+    ref_C1: "full f0 + kernel chem+ctrl+f0"
+  primary_k: 16
+  contrasts: [fb_C1chem - fb_C0, ridge_C0 - fb_C0, ridge_C1chem - fb_C0, ridge_C1chem - ridge_C0, ridge_C1chem - fb_C1chem, ref_C1 - ridge_C1chem, ref_C1 - fb_C1chem, ref_C0 - fb_C0]
+  ci: family cluster bootstrap (a family carries all its cells, seeds and drug folds), 2000 draws, seed 20261117; outer-fold direction recorded
+  labels:
+    chemistry_transfer_without_same_drug_response: "(fb_C1chem - fb_C0) or (ridge_C1chem - fb_C0) centred RMSE 95% CI < 0"
+    information_gap: "ref_* minus the best unavailable-contract arm is reported as an input-contract difference, never as an architecture ranking"
+  never: no claim about other structure encodings; no statement that chemistry cannot work in general
+amendments: []
