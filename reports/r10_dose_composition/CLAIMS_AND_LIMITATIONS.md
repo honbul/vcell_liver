@@ -1,5 +1,7 @@
 # R10 CLAIMS_AND_LIMITATIONS
 
+> **v2 정정 노트 (2026-11-19).** 이 v1 문서의 test 범위(D11만 평가), C3 t*의 계약(train-cross, freeze 이후), same 계약과 plate 효과의 관계, CI가 0을 포함한 비교의 해석은 [`ERRATA_AND_CLARIFICATIONS_v2.md`](ERRATA_AND_CLARIFICATIONS_v2.md)에서 정정·명확화했다. 아래 원문과 수치는 보존한다.
+
 (결과 수치는 [`RESULTS.md`](RESULTS.md); 이 문서는 주장의 범위만 정한다.)
 
 ## 주장할 수 있는 것 (이 자료·이 설정 안에서)

@@ -1,0 +1,259 @@
+id	tier	role	episode	eval_contract	a	b	metric	sign	multiplicity	practical_threshold	equivalence
+P1	primary	test	E1000	same	D11[same]	D11[cross]	comp_tv	a-b (negative = a better)	Holm over P1-P6	|est|>=0.005	90% CI inside +-0.005
+P2	primary	test	E1000	cross	D11[cross]	D11[same]	comp_tv	a-b (negative = a better)	Holm over P1-P6	|est|>=0.005	90% CI inside +-0.005
+P3	primary	test	E1000	same	D10[same]	tstar[same]	comp_tv	a-b (negative = a better)	Holm over P1-P6	|est|>=0.005	90% CI inside +-0.005
+P4	primary	test	E1000	cross	D10[cross]	tstar[cross]	comp_tv	a-b (negative = a better)	Holm over P1-P6	|est|>=0.005	90% CI inside +-0.005
+P5	primary	test	E1000	same	D11[same]	W[same]	comp_tv	a-b (negative = a better)	Holm over P1-P6	|est|>=0.005	90% CI inside +-0.005
+P6	primary	test	E1000	cross	D11[cross]	W[cross]	comp_tv	a-b (negative = a better)	Holm over P1-P6	|est|>=0.005	90% CI inside +-0.005
+S1	secondary	test	E1000	same	D10[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S2	secondary	test	E1000	same	D01[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S3	secondary	test	E1000	same	D11[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S4	secondary	test	E1000	same	W[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S5	secondary	test	E1000	same	tstar[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S6	secondary	test	E1000	same	D10[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S7	secondary	test	E1000	same	D10[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S8	secondary	test	E1000	same	D11[same]	D10[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S9	secondary	test	E1000	same	D11[same]	W[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S10	secondary	test	E1000	same	D11[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S11	secondary	test	E1000	same	W[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S12	secondary	test	E1000	same	D11-D10-D01+D00[same]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S13	secondary	test	E1000	same	D10[same]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S14	secondary	test	E1000	same	D01[same]	D01[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S15	secondary	test	E1000	same	D11[same]	D11[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S16	secondary	test	E1000	same	W[same]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S17	secondary	test	E1000	same	tstar[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S18	secondary	test	E1000	same	D10[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S19	secondary	test	E1000	same	D01[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S20	secondary	test	E1000	same	D11[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S21	secondary	test	E1000	same	W[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S22	secondary	test	E1000	same	tstar[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S23	secondary	test	E1000	same	D10[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S24	secondary	test	E1000	same	D10[cross]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S25	secondary	test	E1000	same	D11[cross]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S26	secondary	test	E1000	same	D11[cross]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S27	secondary	test	E1000	same	D11[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S28	secondary	test	E1000	same	W[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S29	secondary	test	E1000	same	D11-D10-D01+D00[cross]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S30	secondary	test	E1000	cross	D10[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S31	secondary	test	E1000	cross	D01[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S32	secondary	test	E1000	cross	D11[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S33	secondary	test	E1000	cross	W[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S34	secondary	test	E1000	cross	tstar[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S35	secondary	test	E1000	cross	D10[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S36	secondary	test	E1000	cross	D10[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S37	secondary	test	E1000	cross	D11[same]	D10[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S38	secondary	test	E1000	cross	D11[same]	W[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S39	secondary	test	E1000	cross	D11[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S40	secondary	test	E1000	cross	W[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S41	secondary	test	E1000	cross	D11-D10-D01+D00[same]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S42	secondary	test	E1000	cross	D10[same]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S43	secondary	test	E1000	cross	D01[same]	D01[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S44	secondary	test	E1000	cross	D11[same]	D11[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S45	secondary	test	E1000	cross	W[same]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S46	secondary	test	E1000	cross	tstar[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S47	secondary	test	E1000	cross	D10[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S48	secondary	test	E1000	cross	D01[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S49	secondary	test	E1000	cross	D11[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S50	secondary	test	E1000	cross	W[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S51	secondary	test	E1000	cross	tstar[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S52	secondary	test	E1000	cross	D10[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S53	secondary	test	E1000	cross	D10[cross]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S54	secondary	test	E1000	cross	D11[cross]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S55	secondary	test	E1000	cross	D11[cross]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S56	secondary	test	E1000	cross	D11[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S57	secondary	test	E1000	cross	W[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S58	secondary	test	E1000	cross	D11-D10-D01+D00[cross]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S59	secondary	test	E100	same	D10[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S60	secondary	test	E100	same	D01[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S61	secondary	test	E100	same	D11[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S62	secondary	test	E100	same	W[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S63	secondary	test	E100	same	tstar[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S64	secondary	test	E100	same	D10[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S65	secondary	test	E100	same	D10[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S66	secondary	test	E100	same	D11[same]	D10[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S67	secondary	test	E100	same	D11[same]	W[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S68	secondary	test	E100	same	D11[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S69	secondary	test	E100	same	W[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S70	secondary	test	E100	same	D11-D10-D01+D00[same]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S71	secondary	test	E100	same	D10[same]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S72	secondary	test	E100	same	D01[same]	D01[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S73	secondary	test	E100	same	D11[same]	D11[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S74	secondary	test	E100	same	W[same]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S75	secondary	test	E100	same	tstar[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S76	secondary	test	E100	same	D10[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S77	secondary	test	E100	same	D01[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S78	secondary	test	E100	same	D11[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S79	secondary	test	E100	same	W[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S80	secondary	test	E100	same	tstar[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S81	secondary	test	E100	same	D10[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S82	secondary	test	E100	same	D10[cross]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S83	secondary	test	E100	same	D11[cross]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S84	secondary	test	E100	same	D11[cross]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S85	secondary	test	E100	same	D11[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S86	secondary	test	E100	same	W[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S87	secondary	test	E100	same	D11-D10-D01+D00[cross]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S88	secondary	test	E100	cross	D10[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S89	secondary	test	E100	cross	D01[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S90	secondary	test	E100	cross	D11[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S91	secondary	test	E100	cross	W[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S92	secondary	test	E100	cross	tstar[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S93	secondary	test	E100	cross	D10[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S94	secondary	test	E100	cross	D10[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S95	secondary	test	E100	cross	D11[same]	D10[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S96	secondary	test	E100	cross	D11[same]	W[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S97	secondary	test	E100	cross	D11[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S98	secondary	test	E100	cross	W[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S99	secondary	test	E100	cross	D11-D10-D01+D00[same]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S100	secondary	test	E100	cross	D10[same]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S101	secondary	test	E100	cross	D01[same]	D01[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S102	secondary	test	E100	cross	D11[same]	D11[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S103	secondary	test	E100	cross	W[same]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S104	secondary	test	E100	cross	tstar[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S105	secondary	test	E100	cross	D10[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S106	secondary	test	E100	cross	D01[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S107	secondary	test	E100	cross	D11[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S108	secondary	test	E100	cross	W[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S109	secondary	test	E100	cross	tstar[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S110	secondary	test	E100	cross	D10[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S111	secondary	test	E100	cross	D10[cross]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S112	secondary	test	E100	cross	D11[cross]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S113	secondary	test	E100	cross	D11[cross]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S114	secondary	test	E100	cross	D11[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S115	secondary	test	E100	cross	W[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S116	secondary	test	E100	cross	D11-D10-D01+D00[cross]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S117	secondary	development	E1000	same	D10[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S118	secondary	development	E1000	same	D01[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S119	secondary	development	E1000	same	D11[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S120	secondary	development	E1000	same	W[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S121	secondary	development	E1000	same	tstar[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S122	secondary	development	E1000	same	D10[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S123	secondary	development	E1000	same	D10[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S124	secondary	development	E1000	same	D11[same]	D10[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S125	secondary	development	E1000	same	D11[same]	W[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S126	secondary	development	E1000	same	D11[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S127	secondary	development	E1000	same	W[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S128	secondary	development	E1000	same	D11-D10-D01+D00[same]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S129	secondary	development	E1000	same	D10[same]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S130	secondary	development	E1000	same	D01[same]	D01[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S131	secondary	development	E1000	same	D11[same]	D11[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S132	secondary	development	E1000	same	W[same]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S133	secondary	development	E1000	same	tstar[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S134	secondary	development	E1000	same	D10[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S135	secondary	development	E1000	same	D01[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S136	secondary	development	E1000	same	D11[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S137	secondary	development	E1000	same	W[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S138	secondary	development	E1000	same	tstar[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S139	secondary	development	E1000	same	D10[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S140	secondary	development	E1000	same	D10[cross]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S141	secondary	development	E1000	same	D11[cross]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S142	secondary	development	E1000	same	D11[cross]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S143	secondary	development	E1000	same	D11[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S144	secondary	development	E1000	same	W[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S145	secondary	development	E1000	same	D11-D10-D01+D00[cross]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S146	secondary	development	E1000	cross	D10[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S147	secondary	development	E1000	cross	D01[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S148	secondary	development	E1000	cross	D11[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S149	secondary	development	E1000	cross	W[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S150	secondary	development	E1000	cross	tstar[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S151	secondary	development	E1000	cross	D10[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S152	secondary	development	E1000	cross	D10[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S153	secondary	development	E1000	cross	D11[same]	D10[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S154	secondary	development	E1000	cross	D11[same]	W[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S155	secondary	development	E1000	cross	D11[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S156	secondary	development	E1000	cross	W[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S157	secondary	development	E1000	cross	D11-D10-D01+D00[same]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S158	secondary	development	E1000	cross	D10[same]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S159	secondary	development	E1000	cross	D01[same]	D01[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S160	secondary	development	E1000	cross	D11[same]	D11[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S161	secondary	development	E1000	cross	W[same]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S162	secondary	development	E1000	cross	tstar[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S163	secondary	development	E1000	cross	D10[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S164	secondary	development	E1000	cross	D01[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S165	secondary	development	E1000	cross	D11[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S166	secondary	development	E1000	cross	W[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S167	secondary	development	E1000	cross	tstar[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S168	secondary	development	E1000	cross	D10[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S169	secondary	development	E1000	cross	D10[cross]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S170	secondary	development	E1000	cross	D11[cross]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S171	secondary	development	E1000	cross	D11[cross]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S172	secondary	development	E1000	cross	D11[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S173	secondary	development	E1000	cross	W[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S174	secondary	development	E1000	cross	D11-D10-D01+D00[cross]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S175	secondary	development	E100	same	D10[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S176	secondary	development	E100	same	D01[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S177	secondary	development	E100	same	D11[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S178	secondary	development	E100	same	W[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S179	secondary	development	E100	same	tstar[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S180	secondary	development	E100	same	D10[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S181	secondary	development	E100	same	D10[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S182	secondary	development	E100	same	D11[same]	D10[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S183	secondary	development	E100	same	D11[same]	W[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S184	secondary	development	E100	same	D11[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S185	secondary	development	E100	same	W[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S186	secondary	development	E100	same	D11-D10-D01+D00[same]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S187	secondary	development	E100	same	D10[same]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S188	secondary	development	E100	same	D01[same]	D01[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S189	secondary	development	E100	same	D11[same]	D11[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S190	secondary	development	E100	same	W[same]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S191	secondary	development	E100	same	tstar[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S192	secondary	development	E100	same	D10[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S193	secondary	development	E100	same	D01[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S194	secondary	development	E100	same	D11[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S195	secondary	development	E100	same	W[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S196	secondary	development	E100	same	tstar[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S197	secondary	development	E100	same	D10[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S198	secondary	development	E100	same	D10[cross]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S199	secondary	development	E100	same	D11[cross]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S200	secondary	development	E100	same	D11[cross]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S201	secondary	development	E100	same	D11[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S202	secondary	development	E100	same	W[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S203	secondary	development	E100	same	D11-D10-D01+D00[cross]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S204	secondary	development	E100	cross	D10[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S205	secondary	development	E100	cross	D01[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S206	secondary	development	E100	cross	D11[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S207	secondary	development	E100	cross	W[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S208	secondary	development	E100	cross	tstar[same]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S209	secondary	development	E100	cross	D10[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S210	secondary	development	E100	cross	D10[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S211	secondary	development	E100	cross	D11[same]	D10[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S212	secondary	development	E100	cross	D11[same]	W[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S213	secondary	development	E100	cross	D11[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S214	secondary	development	E100	cross	W[same]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S215	secondary	development	E100	cross	D11-D10-D01+D00[same]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S216	secondary	development	E100	cross	D10[same]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S217	secondary	development	E100	cross	D01[same]	D01[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S218	secondary	development	E100	cross	D11[same]	D11[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S219	secondary	development	E100	cross	W[same]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S220	secondary	development	E100	cross	tstar[same]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S221	secondary	development	E100	cross	D10[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S222	secondary	development	E100	cross	D01[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S223	secondary	development	E100	cross	D11[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S224	secondary	development	E100	cross	W[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S225	secondary	development	E100	cross	tstar[cross]	D00	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S226	secondary	development	E100	cross	D10[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S227	secondary	development	E100	cross	D10[cross]	tstar[same]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S228	secondary	development	E100	cross	D11[cross]	D10[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S229	secondary	development	E100	cross	D11[cross]	W[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S230	secondary	development	E100	cross	D11[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S231	secondary	development	E100	cross	W[cross]	tstar[cross]	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S232	secondary	development	E100	cross	D11-D10-D01+D00[cross]	(arm_interaction)	comp_tv,within_mean_rmse,within_ed,ed,mmd,dmean_rmse_gene	a-b	none (secondary)	comp_tv: 0.005 (descriptive)	comp_tv only, descriptive
+S233	secondary	test	E1000	both (common eligible set)	contract_interaction[D10]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S234	secondary	test	E1000	both (common eligible set)	contract_interaction[D01]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S235	secondary	test	E1000	both (common eligible set)	contract_interaction[D11]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S236	secondary	test	E1000	both (common eligible set)	contract_interaction[W]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S237	secondary	test	E1000	both (common eligible set)	contract_interaction[tstar]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S238	secondary	test	E100	both (common eligible set)	contract_interaction[D10]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S239	secondary	test	E100	both (common eligible set)	contract_interaction[D01]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S240	secondary	test	E100	both (common eligible set)	contract_interaction[D11]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S241	secondary	test	E100	both (common eligible set)	contract_interaction[W]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S242	secondary	test	E100	both (common eligible set)	contract_interaction[tstar]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S243	secondary	development	E1000	both (common eligible set)	contract_interaction[D10]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S244	secondary	development	E1000	both (common eligible set)	contract_interaction[D01]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S245	secondary	development	E1000	both (common eligible set)	contract_interaction[D11]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S246	secondary	development	E1000	both (common eligible set)	contract_interaction[W]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S247	secondary	development	E1000	both (common eligible set)	contract_interaction[tstar]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S248	secondary	development	E100	both (common eligible set)	contract_interaction[D10]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S249	secondary	development	E100	both (common eligible set)	contract_interaction[D01]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S250	secondary	development	E100	both (common eligible set)	contract_interaction[D11]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S251	secondary	development	E100	both (common eligible set)	contract_interaction[W]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		
+S252	secondary	development	E100	both (common eligible set)	contract_interaction[tstar]	(X[same]@same-X[cross]@same)-(X[same]@cross-X[cross]@cross)	all six	drug-paired	none (secondary)		

@@ -1,5 +1,7 @@
 # R10 쉬운 요약
 
+> **v2 정정 노트 (2026-11-19).** 이 v1 문서의 test 범위(D11만 평가), C3 t*의 계약(train-cross, freeze 이후), same 계약과 plate 효과의 관계, CI가 0을 포함한 비교의 해석은 [`ERRATA_AND_CLARIFICATIONS_v2.md`](ERRATA_AND_CLARIFICATIONS_v2.md)에서 정정·명확화했다. 아래 원문과 수치는 보존한다.
+
 ## 무엇을 했나
 
 암 세포주(A549, K562, MCF7)에 약을 네 가지 농도(10 nM, 100 nM, 1 µM, 10 µM)로 처리하고 세포 하나하나의 RNA를 읽은 공개 실험(Sci-Plex3)을 사용했다.

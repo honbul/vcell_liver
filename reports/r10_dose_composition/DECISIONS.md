@@ -1,5 +1,7 @@
 # R10 DECISIONS
 
+> **v2 정정 노트 (2026-11-19).** 이 v1 문서의 test 범위(D11만 평가), C3 t*의 계약(train-cross, freeze 이후), same 계약과 plate 효과의 관계, CI가 0을 포함한 비교의 해석은 [`ERRATA_AND_CLARIFICATIONS_v2.md`](ERRATA_AND_CLARIFICATIONS_v2.md)에서 정정·명확화했다. 아래 원문과 수치는 보존한다.
+
 각 cycle은 실행 **전에** 관측 → 가설 → 변경 → 판별 가능한 예상 결과를 적고, 실행 후 결과와 다음 결정을 덧붙인다. 이전 항목의 이름과 결과는 고치지 않는다(정정이 필요하면 새 항목으로 남긴다).
 
 ---

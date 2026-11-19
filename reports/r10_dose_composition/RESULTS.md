@@ -1,5 +1,7 @@
 # R10 RESULTS
 
+> **v2 정정 노트 (2026-11-19).** 이 v1 문서의 test 범위(D11만 평가), C3 t*의 계약(train-cross, freeze 이후), same 계약과 plate 효과의 관계, CI가 0을 포함한 비교의 해석은 [`ERRATA_AND_CLARIFICATIONS_v2.md`](ERRATA_AND_CLARIFICATIONS_v2.md)에서 정정·명확화했다. 아래 원문과 수치는 보존한다.
+
 모든 수치는 `assets/runs/`의 immutable run에서 나왔고, 표 파일은 이 디렉터리에 있다. 구간은 약물 단위 paired bootstrap 95% CI(B=2000), "cross"는 endpoint와 query가 다른 replicate인 주 계약이다. 표기: **[관측]** 측정값, **[추론]** 측정에서 끌어낸 해석, **[미검증]** 측정하지 않은 것.
 
 ## 0. 한 줄 요약

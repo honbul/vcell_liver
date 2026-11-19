@@ -1,5 +1,7 @@
 # R10 — 구성비와 상태 내부 변화를 분리한 용량 보간 (Sci-Plex3)
 
+> **v2 정정 노트 (2026-11-19).** 이 v1 문서의 test 범위(D11만 평가), C3 t*의 계약(train-cross, freeze 이후), same 계약과 plate 효과의 관계, CI가 0을 포함한 비교의 해석은 [`ERRATA_AND_CLARIFICATIONS_v2.md`](ERRATA_AND_CLARIFICATIONS_v2.md)에서 정정·명확화했다. 아래 원문과 수치는 보존한다.
+
 **무엇을 예측하나.** 같은 약물·같은 세포주에서 두 용량(endpoint)을 실제로 측정했을 때, 그 사이의 측정하지 않은 용량(query)에서 관측될 세포 집단 분포를 예측한다. 출력은 고정 상태 atlas에서의 상태 구성비와 상태 내부 분포(및 이를 조립한 세포 구름)다.
 
 | episode | 입력 endpoint | 예측 대상 | 비고 |
