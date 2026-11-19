@@ -23,6 +23,7 @@ import argparse
 import itertools
 import json
 import os
+import re
 from pathlib import Path
 
 import numpy as np
@@ -59,6 +60,26 @@ def main() -> None:
     sm = pq.read_table(Path(os.environ["TAHOE_RAW"]) / "metadata" / "sample_metadata.parquet").to_pandas()
     sm = sm[sm["sample"].isin(set(u["sample"]))]
     culture_cols = [c for c in sm.columns if any(k in c.lower() for k in ("date", "batch", "passage", "day", "culture", "replicate"))]
+    smi = sm.set_index("sample")
+    u = u.copy()
+    u["compound_name"] = [str(smi.loc[x, "drug"]) for x in u["sample"]]
+    u["conc_record"] = [str(smi.loc[x, "drugname_drugconc"]) for x in u["sample"]]
+    assert all("0.5, 'uM'" in c for c in u.conc_record), "every usable well must be the 0.5 uM dose"
+
+    # ---- compound identity behind a drug group (structure group = the R6 unit) ----------------------
+    # identical: same catalog name (case-insensitive) on every well of the group in the comparison
+    # salt_variant: same name after removing a trailing parenthetical (salt / solvate)
+    # other: different names (stereoisomer, related compound or other catalog entry of the same group)
+    base = lambda n: re.sub(r"\s*\(.*\)\s*$", "", n.strip()).lower()
+    names = u.groupby(["drug", "plate_index"]).compound_name.apply(lambda s: sorted(set(s))).to_dict()
+
+    def name_class(drug: int, plates) -> str:
+        allnames = sorted(set(itertools.chain.from_iterable(names[(drug, p)] for p in plates)))
+        if len({n.lower() for n in allnames}) == 1:
+            return "identical"
+        if len({base(n) for n in allnames}) == 1:
+            return "salt_variant"
+        return "other"
 
     # ---- per (line, drug): plates and wells ---------------------------------------------------------
     per = u.groupby(["line", "drug", "plate_index"]).agg(n_wells=("sample", "nunique"), n_cells=("n_full", "sum")).reset_index()
@@ -78,19 +99,25 @@ def main() -> None:
             others = [x for x in ds if x not in (d, e)]
             n_disjoint = len(others) * (len(others) - 1) // 2
             pair_rows.append(dict(line=l, plate_P=P, plate_Q=Q, plate_pair=f"{P}-{Q}", drug_d=d, drug_e=e,
-                                  n_common_drugs=len(ds), n_disjoint_pairs=n_disjoint))
+                                  n_common_drugs=len(ds), n_disjoint_pairs=n_disjoint,
+                                  name_class_d=name_class(d, (P, Q)), name_class_e=name_class(e, (P, Q))))
         if len(ds) >= 3:
             for d in ds:
-                drug_rows.append(dict(line=l, plate_P=P, plate_Q=Q, plate_pair=f"{P}-{Q}", drug=d, n_anchor_drugs=len(ds) - 1))
+                drug_rows.append(dict(line=l, plate_P=P, plate_Q=Q, plate_pair=f"{P}-{Q}", drug=d, n_anchor_drugs=len(ds) - 1,
+                                      name_class=name_class(d, (P, Q))))
     pairs, drugs_c, strata_df = pd.DataFrame(pair_rows), pd.DataFrame(drug_rows), pd.DataFrame(strat_rows)
     same = per[per.n_wells >= 2].copy()
+    same["name_class"] = [name_class(int(g), (int(p),)) for g, p in zip(same.drug, same.plate_index)]
+    comp = pd.DataFrame([dict(drug=int(g), plate_index=int(p), plate=plate_name[int(p)], compound_names=" | ".join(n)) for (g, p), n in sorted(names.items())
+                         if g in set(multi.drug) or g in set(same.drug)])
 
     OUT.mkdir(parents=True, exist_ok=True)
+    comp.to_csv(OUT / "repeat_compound_names.tsv", sep="\t", index=False)
     pairs.to_csv(OUT / "eligible_pair_links.tsv", sep="\t", index=False)
     drugs_c.to_csv(OUT / "eligible_anchor_links.tsv", sep="\t", index=False)
     strata_df.to_csv(OUT / "eligible_strata.tsv", sep="\t", index=False)
     same.to_csv(OUT / "eligible_sameplate_wells.tsv", sep="\t", index=False)
-    u[["sample", "plate", "plate_index", "line", "cell_line_id", "drug", "pool", "wid", "n_A", "n_B", "n_full"]].to_csv(
+    u[["sample", "plate", "plate_index", "line", "cell_line_id", "drug", "compound_name", "pool", "wid", "n_A", "n_B", "n_full"]].to_csv(
         OUT / "usable_wells.tsv", sep="\t", index=False)
 
     def eff(x: pd.Series) -> float:
@@ -124,7 +151,10 @@ def main() -> None:
                           by_plate_pair=by_pp.to_dict(orient="records") if len(by_pp) else []),
         common_anchor=dict(n_drug_links=int(len(drugs_c)), n_unique_drugs=int(drugs_c.drug.nunique()) if len(drugs_c) else 0,
                            n_plate_pairs=int(drugs_c.plate_pair.nunique()) if len(drugs_c) else 0),
-        same_plate_repeat_wells=dict(n_line_drug_plate=int(len(same)), n_drugs=int(same.drug.nunique()),
+        name_class_pair_links=(pd.concat([pairs.name_class_d, pairs.name_class_e]).value_counts().to_dict() if len(pairs) else {}),
+        n_pair_links_all_identical_or_salt=int(((pairs.name_class_d != "other") & (pairs.name_class_e != "other")).sum()) if len(pairs) else 0,
+        n_pair_links_all_identical_or_salt_with_disjoint=int(((pairs.name_class_d != "other") & (pairs.name_class_e != "other") & (pairs.n_disjoint_pairs > 0)).sum()) if len(pairs) else 0,
+        same_plate_repeat_wells=dict(name_class=same.name_class.value_counts().to_dict(), n_line_drug_plate=int(len(same)), n_drugs=int(same.drug.nunique()),
                                      n_plates=int(same.plate_index.nunique()), drugs=sorted(int(x) for x in same.drug.unique())),
         culture_metadata=dict(sample_metadata_columns=list(sm.columns), culture_like_columns=culture_cols,
                               independent_culture_identifiable=bool(culture_cols),
