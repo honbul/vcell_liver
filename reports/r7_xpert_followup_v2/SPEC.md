@@ -46,3 +46,8 @@ metric을 seed별로 계산한 뒤 unit 값을 seed 평균. source = non-HCC uni
 ## 6. 비용과 단계 결정 (pilot 측정 후 기록)
 
 pilot(fold 0 / seed 42, 2 epoch; 2026-11-19): epoch당 학습 시간 A30 기준 전체 train 280 s, outer(≈37.5k unit) 185 s, inner(≈25k unit) 120 s, 선택 평가 12–24 s, 최대 GPU 메모리 21 GB. A40 ≈ A30, A100 = 64 s(inner) ≈ 1.86배. trajectory 51개 = A30 환산 약 250 GPU-h. A100 6장 + 기타 2장이면 약 19–22 h로 ~24 h 예산 안이다. 따라서 §4.4 단계 결정(공식 recipe 보정 + raw 2×2 공유, L1 보정은 질문이 생길 때만)대로 51개 전체를 한 번에 실행한다. 실행 순서는 긴 작업 우선(정정 6 → outer 18 → inner 27).
+
+pilot 배선 확인(성능 증거로 쓰지 않음):
+- wrapper 동등성: v1 checkpoint(xpr_e100_s42, epoch 96)의 validation 예측이 원 `pred_validation.npy`와 최대 절대차 0.0, 재계산 loss4 0.72355 = 로그 0.724(소수 셋째 자리). treated slot 비의존 확인(< 1e-4).
+- CPU 평가 pilot(fold 0 / seed 42, 2 epoch 모델, T 정답 합성 잡음): 9분, 11 GB. 불변 확인 centred Pearson 최대 1.4e-11, MRR 0, tie 수·후보군 동일. outer label 변조 시 계수·λ·보정 예측 동일. identity 재현 0.0. synthetic 회복 fixture 통과(`calibrator_synthetic_fixtures.json`).
+- 동결 후 변경 없음 원칙: 이 commit 이후 `src/r7_xpert_followup_v2`, `configs/r7_xpert_followup_v2`(freeze.json 추가 제외), `experiments/r7_xpert_followup_v2`를 바꾸면 GPU worker가 새 trajectory를 집지 않는다.
