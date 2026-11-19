@@ -14,6 +14,8 @@
 
 > **v2 정정(2026-11-19, branch `research/r9-normalization-prototype-v2`; R9-C2·R9-C1)** — 아래 "외부 모델" 행과 A2 외부 모델 절의 donor paired 차이는 우리 head의 3-seed 평균에서 외부 모델 seed 0을 뺀 **표본 불일치 비교**였다(`r9tasks.select`의 seed가 sparse source donor·세포를 바꿈). seed 0끼리 짝지은 정정 표는 `a2_external_model_contrasts_matched_seed0.tsv`(키 확인 `..._keys.tsv`, 60/60 일치)이며, 정정 문구: ProtoCloud는 sparse_Fib에서 A11·LR_donor보다 높음(CI가 0 제외), **MLP_donor와는 우열 불확실**(−0.048 [−0.099, +0.001]); scPoli 대비 A11은 sparse_B −0.041 [−0.123, +0.044]·sparse_Fib +0.150 [−0.003, +0.315]로 **우열 불확실**, sparse_Endo +0.144 [+0.048, +0.259]는 A11 우세 유지. A4 외부 정규화 정정은 `a4_external_norm_v2/`와 `reports/r9_normalization_prototype_v2/RESULTS.md` 참조. 아래 원문은 역사 기록으로 보존한다.
 
+> **v2 정정(R9-C1)**: 위 A4 행은 외부 count를 HVG 2,000개로 먼저 자른 뒤 정규화한 잘못된 분모의 값이다. 공통 unique gene 전체로 정규화한 정정값(같은 head·calibration): LR_donor nat 0.997, sparse_B 0.925, sparse_Endo 0.926, **sparse_Fib 0.860**(−0.020 [−0.033, −0.008]); 보류 coverage도 감소. 선정(LR_donor)은 유지. 상세 `a4_external_norm_v2/`, `reports/r9_normalization_prototype_v2/RESULTS.md`.
+
 모든 GSE149614 수치는 **개발 증거**(바깥 LOPO 10명; HCC02·HCC09 포함 전원 이전 노출)다. 통계 단위는 donor, 괄호는 donor bootstrap 95% CI. seed·회전은 donor 안에서 평균했다. 숫자 출처 파일을 각 절에 적었다.
 
 ## A0 — inventory (`label_inventory.tsv`, `donor_class_counts.tsv`, `rare_definition_by_fold.tsv`, `cohort_overlap.tsv`)
