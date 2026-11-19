@@ -1,0 +1,335 @@
+{
+ "question": "did HCC validation units enter the automatic checkpoint selection of the original R7 XPert runs?",
+ "upstream_working_copy": {
+  "path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/external/XPert",
+  "head": "d53ff497e465692c80fac7b899e3cc5cc8e7bfed",
+  "matches_protocol_ref": true,
+  "porcelain_lines": 0,
+  "files": {
+   "train_xpert.py": {
+    "worktree_blob": "183eb739d445e6eb4f9e904bf8b81ef3c9b733ad",
+    "head_blob": "183eb739d445e6eb4f9e904bf8b81ef3c9b733ad",
+    "identical": true
+   },
+   "utils.py": {
+    "worktree_blob": "c34c43187ba310be37fd69230f991ab1456b72c0",
+    "head_blob": "c34c43187ba310be37fd69230f991ab1456b72c0",
+    "identical": true
+   },
+   "datasets/MyDataset.py": {
+    "worktree_blob": "169daddfc606a16d55abd10325e885049db76bc4",
+    "head_blob": "169daddfc606a16d55abd10325e885049db76bc4",
+    "identical": true
+   },
+   "configs/config_l1000.yaml": {
+    "worktree_blob": "172b0a6fae231023e94ccf8e4c589c74c4e46122",
+    "head_blob": "172b0a6fae231023e94ccf8e4c589c74c4e46122",
+    "identical": true
+   },
+   "models/model_XPert.py": {
+    "worktree_blob": "b5e46bc8d6ffa391f3ffbf0c541d479688d7fb57",
+    "head_blob": "b5e46bc8d6ffa391f3ffbf0c541d479688d7fb57",
+    "identical": true
+   },
+   "models/model_utils.py": {
+    "worktree_blob": "3645a1e60c7c362d5f7857f0906fe824954fda0f",
+    "head_blob": "3645a1e60c7c362d5f7857f0906fe824954fda0f",
+    "identical": true
+   }
+  }
+ },
+ "code_path": {
+  "prep": "src/evidence_gated_r7/xpert_prep.py: tr, va = S.train, S.val (no HCC filter) -> h5ad r7_split='valid'",
+  "loader": "upstream utils.load_dataloader: val_data = data[data.obs[nfold] == 'valid'] (all rows)",
+  "dataset": "upstream datasets/MyDataset.py: every row, no cell filter",
+  "selector": "upstream train_xpert.py: stopper.step(val_loss4, ...), val_loss4 = sum(1 - Pearson(delta_hat, delta)) / n_valid_rows",
+  "checkpoint": "upstream utils.EarlyStopping.save_checkpoint overwrites one {fold}_fold_early_stop.pth on each strict improvement"
+ },
+ "h5ad": {
+  "path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_work/processed_data/l1000_r7sdst.h5ad",
+  "sha256": "79e8d4f96aa60307c5acbca589f3e5487c601be374ccaaa0e53c162caa9a709b",
+  "split_counts": {
+   "train": 56431,
+   "test": 11731,
+   "valid": 11731
+  },
+  "valid_rows_equal_store_validation_units": true,
+  "train_rows_equal_store_train_units": true,
+  "roles_in_valid": {
+   "validation": 11731
+  },
+  "treated_profile_crosscheck_max_abs": 0.0
+ },
+ "prior_selection_population": {
+  "rule": "all h5ad 'valid' rows (= every R4 validation unit, HCC included), unit-weighted",
+  "n_units": 11731,
+  "n_hcc_units": 129,
+  "hcc_units_by_cell": {
+   "JHH5": 99,
+   "JHH7": 17,
+   "HUH7": 13
+  },
+  "hcc_share_of_unit_weight": 0.010996504986787146,
+  "n_drug_groups": 1243,
+  "unit_idx_sha256": "d338efddb37725d08ea552c35be0604139131498343b4d2b329458a711bd615b"
+ },
+ "corrected_selection_population": {
+  "rule": "R4 validation units with is_hcc == 0 (source only), same unit-weighted selector",
+  "n_units": 11602,
+  "n_drug_groups": 1243,
+  "n_families": 110,
+  "empty": false,
+  "unit_idx_sha256": "3271b832bc3247607cf69ab2fadb40f92828e2f7ae5c7e78aafeeb52d7a79586"
+ },
+ "runs": {
+  "xpr_e100_s42": {
+   "variant": "official",
+   "log": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_runs_work/xpr_e100_s42/experiment/l1000/20261118_042200/20261118_042200.log",
+   "args": {
+    "mode": "train",
+    "nfold": "r7_split",
+    "drug_feat": "unimol",
+    "config": "config_r7",
+    "seed": "42",
+    "dataset": "l1000_r7sdst",
+    "include_cell_idx": "True",
+    "use_gradscaler": "True"
+   },
+   "logged_valid_rows": [
+    11731
+   ],
+   "epochs_logged": 100,
+   "early_stop_triggered": false,
+   "checkpoint": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/runs/xpert/xpr_e100_s42/expt/r7_split_fold_early_stop.pth",
+   "checkpoint_sha256": "ca25864dd8ab68a2ff25cca34eaa7da8b28058ede47ef642fbac827558ab5a88",
+   "checkpoint_epoch": 96,
+   "checkpoint_logged_loss4": 0.724,
+   "log_min_loss4_3dp": 0.724,
+   "log_epochs_at_min_3dp": [
+    96
+   ],
+   "checkpoint_files_in_experiment_folder": [
+    "r7_split_fold_early_stop.pth"
+   ],
+   "per_epoch_snapshots": false,
+   "run_workcopy_files_identical_to_upstream_head": {
+    "train_xpert.py": true,
+    "utils.py": true,
+    "datasets/MyDataset.py": true,
+    "models/model_XPert.py": true,
+    "models/model_utils.py": true
+   },
+   "h5ad_link": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_work/processed_data/l1000_r7sdst.h5ad"
+  },
+  "xpr_e100_s43": {
+   "variant": "official",
+   "log": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_runs_work/xpr_e100_s43/experiment/l1000/20261118_042247/20261118_042247.log",
+   "args": {
+    "mode": "train",
+    "nfold": "r7_split",
+    "drug_feat": "unimol",
+    "config": "config_r7",
+    "seed": "43",
+    "dataset": "l1000_r7sdst",
+    "include_cell_idx": "True",
+    "use_gradscaler": "True"
+   },
+   "logged_valid_rows": [
+    11731
+   ],
+   "epochs_logged": 100,
+   "early_stop_triggered": false,
+   "checkpoint": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/runs/xpert/xpr_e100_s43/expt/r7_split_fold_early_stop.pth",
+   "checkpoint_sha256": "d150a0bf56dc1782bcfe54a2ee134d20b51c992a6778aba82c70d4d4cd84a00e",
+   "checkpoint_epoch": 84,
+   "checkpoint_logged_loss4": 0.728,
+   "log_min_loss4_3dp": 0.728,
+   "log_epochs_at_min_3dp": [
+    84
+   ],
+   "checkpoint_files_in_experiment_folder": [
+    "r7_split_fold_early_stop.pth"
+   ],
+   "per_epoch_snapshots": false,
+   "run_workcopy_files_identical_to_upstream_head": {
+    "train_xpert.py": true,
+    "utils.py": true,
+    "datasets/MyDataset.py": true,
+    "models/model_XPert.py": true,
+    "models/model_utils.py": true
+   },
+   "h5ad_link": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_work/processed_data/l1000_r7sdst.h5ad"
+  },
+  "xpr_e100_s44": {
+   "variant": "official",
+   "log": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_runs_work/xpr_e100_s44/experiment/l1000/20261118_042308/20261118_042308.log",
+   "args": {
+    "mode": "train",
+    "nfold": "r7_split",
+    "drug_feat": "unimol",
+    "config": "config_r7",
+    "seed": "44",
+    "dataset": "l1000_r7sdst",
+    "include_cell_idx": "True",
+    "use_gradscaler": "True"
+   },
+   "logged_valid_rows": [
+    11731
+   ],
+   "epochs_logged": 100,
+   "early_stop_triggered": false,
+   "checkpoint": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/runs/xpert/xpr_e100_s44/expt/r7_split_fold_early_stop.pth",
+   "checkpoint_sha256": "32ef8720e99901ffe7a8f5996089620713b481adbe46b723f6c0e8f1166cde80",
+   "checkpoint_epoch": 76,
+   "checkpoint_logged_loss4": 0.728,
+   "log_min_loss4_3dp": 0.728,
+   "log_epochs_at_min_3dp": [
+    76
+   ],
+   "checkpoint_files_in_experiment_folder": [
+    "r7_split_fold_early_stop.pth"
+   ],
+   "per_epoch_snapshots": false,
+   "run_workcopy_files_identical_to_upstream_head": {
+    "train_xpert.py": true,
+    "utils.py": true,
+    "datasets/MyDataset.py": true,
+    "models/model_XPert.py": true,
+    "models/model_utils.py": true
+   },
+   "h5ad_link": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_work/processed_data/l1000_r7sdst.h5ad"
+  },
+  "xpe_e100_s42": {
+   "variant": "ecfp",
+   "log": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_runs_work/xpe_e100_s42/experiment/l1000/20261118_135133/20261118_135133.log",
+   "args": {
+    "mode": "train",
+    "nfold": "r7_split",
+    "drug_feat": "morgan",
+    "config": "config_r7",
+    "seed": "42",
+    "dataset": "l1000_r7sdst",
+    "include_cell_idx": "True",
+    "use_gradscaler": "True"
+   },
+   "logged_valid_rows": [
+    11731
+   ],
+   "epochs_logged": 100,
+   "early_stop_triggered": false,
+   "checkpoint": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/runs/xpert/xpe_e100_s42/expt/r7_split_fold_early_stop.pth",
+   "checkpoint_sha256": "1763be0dc0b5fa5df7df2bfd80c86dcf690bb30494374e4cb7d427e0804acae4",
+   "checkpoint_epoch": 96,
+   "checkpoint_logged_loss4": 0.748,
+   "log_min_loss4_3dp": 0.748,
+   "log_epochs_at_min_3dp": [
+    96
+   ],
+   "checkpoint_files_in_experiment_folder": [
+    "r7_split_fold_early_stop.pth"
+   ],
+   "per_epoch_snapshots": false,
+   "run_workcopy_files_identical_to_upstream_head": {
+    "train_xpert.py": true,
+    "utils.py": true,
+    "datasets/MyDataset.py": true,
+    "models/model_XPert.py": true,
+    "models/model_utils.py": true
+   },
+   "h5ad_link": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_work/processed_data/l1000_r7sdst.h5ad"
+  },
+  "xpe_e100_s43": {
+   "variant": "ecfp",
+   "log": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_runs_work/xpe_e100_s43/experiment/l1000/20261118_135133/20261118_135133.log",
+   "args": {
+    "mode": "train",
+    "nfold": "r7_split",
+    "drug_feat": "morgan",
+    "config": "config_r7",
+    "seed": "43",
+    "dataset": "l1000_r7sdst",
+    "include_cell_idx": "True",
+    "use_gradscaler": "True"
+   },
+   "logged_valid_rows": [
+    11731
+   ],
+   "epochs_logged": 100,
+   "early_stop_triggered": false,
+   "checkpoint": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/runs/xpert/xpe_e100_s43/expt/r7_split_fold_early_stop.pth",
+   "checkpoint_sha256": "864755849e1fbce34734db1a0630985711f9ba92d8d65132ad9ed58a99a10eda",
+   "checkpoint_epoch": 89,
+   "checkpoint_logged_loss4": 0.749,
+   "log_min_loss4_3dp": 0.749,
+   "log_epochs_at_min_3dp": [
+    89,
+    95
+   ],
+   "checkpoint_files_in_experiment_folder": [
+    "r7_split_fold_early_stop.pth"
+   ],
+   "per_epoch_snapshots": false,
+   "run_workcopy_files_identical_to_upstream_head": {
+    "train_xpert.py": true,
+    "utils.py": true,
+    "datasets/MyDataset.py": true,
+    "models/model_XPert.py": true,
+    "models/model_utils.py": true
+   },
+   "h5ad_link": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_work/processed_data/l1000_r7sdst.h5ad"
+  },
+  "xpe_e100_s44": {
+   "variant": "ecfp",
+   "log": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_runs_work/xpe_e100_s44/experiment/l1000/20261118_135157/20261118_135157.log",
+   "args": {
+    "mode": "train",
+    "nfold": "r7_split",
+    "drug_feat": "morgan",
+    "config": "config_r7",
+    "seed": "44",
+    "dataset": "l1000_r7sdst",
+    "include_cell_idx": "True",
+    "use_gradscaler": "True"
+   },
+   "logged_valid_rows": [
+    11731
+   ],
+   "epochs_logged": 100,
+   "early_stop_triggered": false,
+   "checkpoint": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/runs/xpert/xpe_e100_s44/expt/r7_split_fold_early_stop.pth",
+   "checkpoint_sha256": "c8ce27983d27c1b8782d80090d36d7943368a93451997fa8bb8bcf565d9c9c2b",
+   "checkpoint_epoch": 75,
+   "checkpoint_logged_loss4": 0.748,
+   "log_min_loss4_3dp": 0.748,
+   "log_epochs_at_min_3dp": [
+    75
+   ],
+   "checkpoint_files_in_experiment_folder": [
+    "r7_split_fold_early_stop.pth"
+   ],
+   "per_epoch_snapshots": false,
+   "run_workcopy_files_identical_to_upstream_head": {
+    "train_xpert.py": true,
+    "utils.py": true,
+    "datasets/MyDataset.py": true,
+    "models/model_XPert.py": true,
+    "models/model_utils.py": true
+   },
+   "h5ad_link": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/xpert_work/processed_data/l1000_r7sdst.h5ad"
+  }
+ },
+ "finding": {
+  "hcc_validation_in_selection": true,
+  "per_epoch_snapshots_available": false,
+  "consequence": "no per-epoch snapshots: source-only re-selection from saved checkpoints is impossible; the correction retrains XPert with a source-only selection mask (plan 4.1 last paragraph)"
+ },
+ "hcc_cells": [
+  "HUH7",
+  "JHH5",
+  "JHH7"
+ ],
+ "commit": "3cd4739",
+ "slurm_job": "26735",
+ "host": "G3",
+ "time": "2026-11-19T11:34:28"
+}
