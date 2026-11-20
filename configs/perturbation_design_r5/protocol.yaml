@@ -1,0 +1,142 @@
+# Study R5 protocol (noise-aware perturbation design). Written and committed before any R5 job read an expression value.
+# Plan: docs/hcc_perturbation_r4_r5/02_R5_NOISE_AWARE_DESIGN.md (R5-v1.0). Rules are fixed here; a change needs a dated entry
+# under `amendments` with the reason and what had been seen at that time.
+track: perturbation_design_r5
+plan: docs/hcc_perturbation_r4_r5/02_R5_NOISE_AWARE_DESIGN.md
+question: >
+    With a budget of K revealed treated wells in a new HCC line, which drugs should be observed so that a FIXED readout predicts
+    the remaining (sealed query) drugs' mean 978-gene delta best? Retrospective sequential-reveal evaluation on already
+    published CMap 2020 data; not a new wet-lab result and not drug zero-shot (source responses of the same drugs are allowed).
+
+prior_study_assets_read_only:
+  study_b_commit: d67bf68495be49a96598473c22fb5e2409d24429
+  processed: vcell_liver_transigen_adaptation_b1/assets/processed/cmap2020_v1 (rows.tsv, x0_all.npy, x1_source.npy, x1_target.npy, ecfp4.npy, drugs.tsv, genes.tsv)
+  raw_control_gctx: vcell_liver_transigen_adaptation_b1/assets/raw/level3_beta_ctl_n188708x12328.gctx (control wells only, for the plate DMSO dispersion feature)
+  degenerate_source_rows: manifests/transigen_adaptation_b1/source_rows_excluded_degenerate.tsv (removed everywhere)
+  source_families: copied metadata table manifests/episodic_residual_r2/source_families.tsv from study R2 commit 187ed03
+    (connected components of Cellosaurus id / documented derivations / all XC pools; meta split 150 train / 11 val cells).
+    Only this metadata table is reused; no R2 model, prediction, score or store is read.
+
+data:
+  row: (cell, pert_id, det_plate) of study B; X0 = plate qc-pass DMSO mean of the same cell, X1 = treated well mean; official Level 3 scale
+  well_delta: X1 - X0 of one row
+  unit: (cell, drug_group)
+  unit_delta: equal mean over the group's conditions (cell, pert_id) of [equal mean over plates of well_delta]   # query truth and f0 input
+  plate_control_features: "per (det_plate, cell) from the qc-pass 24 h DMSO wells used by study B for X0 -
+    ctl_sd = sqrt(mean over 978 genes of the unbiased across-well variance), n_ctl = number of DMSO wells"
+  drug_features: ECFP4 2048 bits of the group's representative pert_id (lexicographically first pert_id of the group)
+
+oracle:
+  cost_unit: one revealed treatment row = n_trt_wells treated wells (all HCC rows are single wells)
+  representative_row: >
+      per (cell, drug_group), among rows with n_trt_wells == 1 (all rows if none), the row with the smallest
+      sha256("{cell}|{drug_group}|{pert_id}|{det_plate}") hex. Fixed from metadata before any value is read.
+  reveal: oracle.reveal(group) returns the well_delta of that one row only (never other replicates or aliases)
+  controls: the plate DMSO profile (X0) and plate_control_features are pre-experiment inputs available for every candidate;
+    their wells are counted once per plate as a fixed overhead in the cost ledger
+  no_repeat_measurement: a group is revealed at most once; replicate selection is not part of this study
+  target_x1_access: only through the oracle (reveal) and the evaluator (query truth); hcc mode requires the committed freeze manifest
+
+episodes:
+  eligibility: a drug group is eligible in an episode if the cell measured it and f0 exists (>= 1 allowed source cell measured it)
+  virtual_target_min_groups: 50
+  pool_cap: 600            # operational: if a source cell has more eligible groups, keep the 600 with the smallest sha256(cell|group)
+  split: >
+      seed s: groups sorted by name, permuted with numpy RandomState(20261117 + 1000*s);
+      first round(0.3 n) = sealed query, rest = acquisition pool in permuted order; initial4 = first 4 pool groups.
+  seeds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  batch: 4
+  budgets_K: [4, 8, 16, 32]     # total revealed rows including initial4; budgets above the pool size are not evaluated
+  reference_pool: unrevealed pool groups, capped at 256 by the smallest sha256(cell|group|seed); input features only
+  roles:
+    dev: >
+        meta-train families with an eligible cell; one cell per family (most eligible groups, ties by name);
+        at most 16 families, the 16 smallest sha256(family). Used for hyper-parameters, calibration, learned-loss training, diagnostics.
+    meta_val: every meta-validation family with an eligible cell (policy comparison and the decision before freeze)
+    hcc: HUH7, JHH5, JHH7 (after freeze, once)
+  f0_allowed_cells:
+    dev: meta-train cells minus the whole family of the virtual target
+    meta_val: meta-train cells
+    hcc: all 161 source cells
+  f0: per drug group, equal mean over allowed families of [equal mean over the family's cells of unit_delta]
+
+readout:   # identical code and hyper-parameters for every policy; only the support differs
+  main: "yhat_q = f0(q) + b_S + k(q,S) [K_SS + lambda I]^-1 (e_S - b_S),  e_i = y_i - f0(p_i), b_S = mean(e_S)"
+  kernel: alpha * Tanimoto(ECFP4) + (1 - alpha) * cosine(standardised f0_repr)
+  f0_repr: f0 projected on the top 32 principal axes of the dev-role f0 table (fit once on meta-train units), plus log1p(n allowed cells)
+  selection: alpha in {0, 0.5, 1} x lambda in {0.1, 0.3, 1, 3, 10, 30, 100}; lowest dev AUC (below) under RANDOM supports only
+  second_readout: mean_offset "yhat_q = f0(q) + b_S" (used to repeat the main contrast once)
+
+acquisition_model:   # shared by the Bayesian policies; never used by the readout
+  space: residual e projected on the top d=32 principal axes of meta-train within-cell-centred residuals (unit_delta - f0),
+    each axis scaled to unit variance (z). Acquisition only; scoring is always in the 978-gene space.
+  gp: "z_m(S) ~ N(0, sb2 * 11' + s2_h * K_h + diag(c_h * nu_j))  independently over the d axes"
+  hypotheses_h: kernels {tanimoto, f0_cosine, combined_0.5} x noise multiplier {1, 2}  (6, fixed before any target)
+  hyper_parameters: sb2, s2_h, base noise by pooled type-II maximum likelihood on dev episodes with random K=32 supports (grid)
+  nu: per-row observation noise in z units. Homoscedastic = constant fitted base noise. Heteroscedastic = D3 model (below),
+    used only if the D3 gate passes.
+  latent_variance_V: weighted mean over the reference pool of the latent (noise-free) posterior variance, mixture form
+    sum_h w_h [var_h + |mu_h - mu_bar|^2 / d]
+  likelihood_temperature: T in {1/32, 1/8, 1/2, 1} on the summed d-axis log marginal likelihood; chosen on dev by the
+    log predictive density of the next revealed batch under random supports
+
+diagnostics:   # source only
+  D1: random-policy learning curve (K = 4..32) on dev and meta_val, main and mean_offset readouts
+  D2: >
+      on dev episodes (seeds 1-3) at random supports K in {4, 16}: for up to 64 pool candidates, actual query delta-RMSE change
+      after adding that one candidate (diagnostic oracle, never an acquisition input) vs. latent variance, total predictive variance,
+      Tanimoto distance to support, predicted nu; Spearman per episode, family-equal mean
+  D3: >
+      replicate pairs (same cell, same group, two single-well rows on different plates) in meta-train cells: h_ab = |z_a - z_b|^2 / (2d).
+      Model nu(row) = exp(beta' x), x = [1, log ctl_sd, log n_ctl, log |f0|_z, log1p n_f0_cells]; E[h_ab] = (nu_a + nu_b)/2,
+      fitted by the gamma deviance on meta-train pairs. Evaluated on meta-val pairs.
+      Gate (heteroscedastic used only if): family-equal mean Spearman(pred, h) >= 0.10 and its family-bootstrap 95% lower bound > 0.
+      Rows of the virtual target / HCC are never used to fit; their nu uses only the control-side and f0 features.
+
+policies:
+  random: uniform from the pool, RandomState(seed, round)
+  diversity: ECFP farthest-first (max of min Tanimoto distance to revealed + already chosen in the batch); ties by group name
+  latent_variance: top-4 by latent posterior variance, single combined-kernel homoscedastic GP, no batch conditioning
+  fixed_vr: batch-greedy global variance reduction A(j), single combined-kernel homoscedastic GP; each pick conditions the next
+  total_variance: top-4 by predictive variance (latent + nu_j), single combined-kernel GP with the selected nu model
+  proposed_nam: >
+      noise-aware outcome-adaptive mixture: weights p(h|S) updated from revealed values (tempered), shortlist 64 by the
+      weight-averaged A(j), 8 fantasies per candidate, A_mix(j) = V(S) - E[V(S + {j, y_j})], batch-greedy conditioning of the
+      per-hypothesis covariances on chosen candidates (weights and means held, kriging-believer)
+  pdbal_rna: >
+      adapted BATCHIE PDBAL: 32 joint posterior samples over reference pool + shortlist; d = RMS difference on the reference
+      pool; batch greedily minimising sum_pairs d * prod_j BC_j, BC_j = exp(-|f - f'|_j^2 / (8 nu_j)); same mixture posterior
+  learned_loss: >
+      adapted loss-prediction acquisition: gradient-boosted regressor (sklearn defaults, random_state 0) trained on dev
+      episodes (random supports K in {4, 8, 16}) to predict log readout RMSE of a revealed candidate from
+      [latent var, nu_j, ctl_sd, |f0|_z, log1p n_f0_cells, max Tanimoto to support, mean Tanimoto to pool, K]; top-4 predicted loss
+  staging: >
+      start with random, diversity, latent_variance, fixed_vr, then proposed_nam. total_variance, pdbal_rna and learned_loss are run
+      only if proposed_nam has a lower dev AUC than random (plan section 6); otherwise they are recorded as not run.
+  ablations_if_proposed_helps: [nu -> homoscedastic, weights held at prior (no outcome update), batch conditioning -> top-b]
+
+evaluation:
+  per_episode: query delta-RMSE over 978 genes per query unit, mean over query units, at each K
+  primary: AUC = trapezoid over K in {4, 8, 16, 32} of the per-episode error divided by (32 - 4); lower is better
+  aggregation: >
+      mean over seeds -> family mean (one cell per family) -> equal mean over families; HCC: equal mean over the 3 lines
+  secondary: K=16 delta-RMSE; delta Pearson; centred Pearson (own means); per-K curves; cost ledger; selection wall time
+  contrasts: >
+      vs random (and vs fixed_vr, diversity); source: family bootstrap 2000, seed 20261117, 95%;
+      hcc: per line paired drug-group bootstrap (resample the line's eligible groups, each episode re-weighted by multiplicity), 2000
+  stress_test: >
+      source meta_val only, replicate-separated: reveal only from plates of the first replicate tag (_X<n> token),
+      query truth only from rows on other replicate tags (groups without such rows leave the stress query). JHH7 has one plate: not possible.
+  fixtures: [query-swap invariance of the selection sequence, unrevealed-label permutation invariance, one row per reveal,
+    synthetic informative-vs-noisy candidate, GP posterior variance non-negative and equal to the direct inverse]
+
+decision:
+  adopt_proposed: meta_val AUC lower than random, diversity and fixed_vr with family-bootstrap upper bound < 0 for each; then HCC
+    (equal mean of 3 lines) in the same direction vs random. Source-only improvement is reported as such.
+  mixture_needed: proposed vs fixed_vr bound excludes 0; else the simpler fixed design is the adopted variant
+  noise_aware_claim: only if the nu -> homoscedastic ablation is worse with bound excluding 0
+  modifications_allowed: 2, from the plan list only (calibration / likelihood tempering or nu shrinkage; batch fantasy / reference
+    coverage), each justified by a dev diagnostic written in DECISIONS.md before running; never from meta_val or HCC values
+  negative: after the two modifications, if no policy beats random on meta_val, close the policy and report the negative result
+
+amendments: []
