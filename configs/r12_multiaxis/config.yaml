@@ -1,0 +1,51 @@
+study: r12_multiaxis_20261121
+path: N
+revision: 2dc57900b7981cfcf5e211527169a0b006546a95
+tahoe_root: /mnt/S1/sdata/pubdata/Tahoe/Tahoe-100M
+r11_assets: /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r11_chemical_probe/assets
+scgpt_checkpoint: /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver/checkpoints/scgpt-whole-human
+depmap_root: /mnt/S1/sdata/pubdata/DepMap/25Q3
+plates: [plate2, plate5, plate8, plate11]
+dose_uM: 0.5
+time_h: 24
+minimum_cells: 20
+minimum_groups: 3
+panel_size: 2000
+split_seed: 20261121
+permutation_seeds: [42, 43, 44, 45, 46]
+training:
+  seed: 42
+  confirmation_seeds: [42, 43, 44]
+  learning_rates: [0.0003, 0.001]
+  max_epochs: 100
+  min_epochs: 20
+  patience: 15
+  proximate_epoch_fraction: 0.9
+  dropout: 0.1
+  weight_decay: 0.001
+  batch_rows: 512
+  offset_shrinkage: 2
+  legacy_ridge: [0.1, 1, 10, 100, 1000]
+  extension_ridge: [10, 100, 1000, 10000, 100000]
+  pool_shrinkage: [0, 2, 8, 32]
+  calibration_penalties: [0.1, 1, 10, 100, identity]
+  context_ranks: [0, 1, 2]
+  vicreg: [0.01, 0.05, 0.1]
+  tie: 0.000001
+optional:
+  cells_per_control_line: 128
+  cell_seed: 20261121
+  gene_weight_draws: 32
+evaluation:
+  replicates: 10000
+  seed: 42
+  novelty_bands: [0.25, 0.5]
+budget:
+  gpu_hours: 96
+  concurrent_gpus: 2
+  cpu_core_hours: 512
+  concurrent_cpu_jobs: 4
+  cores_per_job: 8
+  memory_fraction: 0.75
+  download_gib: 20
+  scratch_gib: 100
