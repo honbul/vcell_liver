@@ -30,3 +30,15 @@
 ## 파일럿 후 사전 고정한 보조 운영값
 
 전체 개발 모델 실행 전에 fold별 적격 화합물군 수로 개발 점수를 가중하도록 확정했다. 각 그룹은 하나의 held fold에만 등장한다. 기능 파일럿은 초기 동일 fold 가중값으로 기록을 보존한다. 또한 metadata에서 진입 가능성을 확인한 scaffold 보조 검사를 지정했다. 고정 모델로 source에 없는 비어 있지 않은 Bemis–Murcko scaffold의 test group만 채점하되, 해당 group의 모든 entity가 조건을 충족해야 한다. 적격 pool에서 평균을 다시 계산한다. 모델 재적합을 추가하지 않으며 사전 지정된 공식 대비는 동일하다.
+
+## 실행 인터페이스
+
+저장소 루트에서 `python -m src.r11_chemical_probe.<module> --config configs/r11_chemical_probe/config.yaml --assets <R11 전용 자산 디렉터리>`를 공통으로 사용한다. G1에서는 [cpu.sbatch](../../experiments/r11_chemical_probe/cpu.sbatch)가 동일 인자를 전달한다.
+
+| 순서 | 모듈과 추가 인자 | 산출물 |
+|---|---|---|
+| E0 | `prepare --stage metadata`, `features --checkpoint-dir <고정 체크포인트 디렉터리>` | metadata와 entity별 입력 벡터 |
+| E1 | `prepare --stage pilot`, `run --stage pilot-panels`, `run --stage pilot --role A` 및 `B` | 실제 8개 군의 기능 비교 |
+| E2/E3 | `prepare --stage source`, `run --stage panels`, `run --stage development --role A` 및 `B` | role별 개발 표와 선택, E3 판정 |
+| E4 | `freeze --commit <코드 commit>`, `prepare --stage final`, `run --stage final --role A` 및 `B`, `report` | 동결, 최종 예측, 한 차례 채점 |
+| 기술 진단 | `repeats --legacy-halves <R6 halves_v1>` | source 물리 웰 반복과 기존 기술적 split-half |

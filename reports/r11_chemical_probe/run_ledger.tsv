@@ -1,0 +1,18 @@
+run_id	stage	status	code_or_version	allocated_resource	evidence_path	note
+r11_meta_20261120	E0 metadata	completed	R6 1b47c0c; R11 staged prepare	local CPU	manifest/receipt.json	Public Tahoe mirror metadata and R6 identity manifest checked
+r11_chem_66b895c	E0 chemical features	completed	66b895cab8adebea0cb59a8effa66b2020f204ca	local 4 CPU threads	manifest/feature_receipt.json	Initial generic task-head load rejected; documented regression keys excluded and frozen backbone load verified. Fingerprint array conversion retried with RDKit native API.
+27929	E1 pilot raw aggregation	completed	R11 staged prepare	G1 8 CPU threads	manifest/pilot/data_receipt.json	10 wells including 2 controls; 769030 cells; 61.58 s
+27931	E1 pilot panels	completed	R11 staged run	G1 8 CPU threads	G1 assets/pilot_panels/panels.json	Common 2000 genes per fit
+27932	E1 pilot role A	completed	R11 staged run	G1 8 CPU threads	manifest/pilot/A/grid.tsv	Function and I/O only
+27933	E1 pilot role B	completed	R11 staged run	G1 8 CPU threads	manifest/pilot/B/grid.tsv	Function and I/O only
+27934	E2 source raw aggregation	in_progress	R11 staged prepare	G1 8 CPU threads	G1 logs/r11_source_data_27934.log	Source treatment groups plus previously assigned physical DMSO wells
+27937	E2 source panels	scheduled	04faf32	G1 8 CPU threads	G1 assets/development/panels.json	After verified source aggregation
+27938	E2 development role A	scheduled	04faf32	G1 8 CPU threads	G1 assets/development/A	Independent role selection
+27939	E2 development role B	scheduled	04faf32	G1 8 CPU threads	G1 assets/development/B	Independent role selection
+27946	source repeat diagnostics	scheduled	7c1fcbf	G1 8 CPU threads	G1 assets/repeat_diagnostics	Source only
+27948	E1 deterministic replay	completed	d2e26a4	G1 4 CPU threads	manifest/pilot/replay.json	Selected E/C and two-epoch MLP predictions reproduced with zero max absolute difference
+27949	E4 freeze	scheduled	d2e26a4	G1 8 CPU threads	G1 assets/freeze.json	Ordered after both role selections
+27950	E4 final aggregation	scheduled	d2e26a4	G1 8 CPU threads	G1 assets/final	Ordered after freeze
+27951	E4 final role A	scheduled	d2e26a4	G1 8 CPU threads	G1 assets/predictions/A	Prediction only
+27952	E4 final role B	scheduled	d2e26a4	G1 8 CPU threads	G1 assets/predictions/B	Prediction only
+27953	E4 score	scheduled	d2e26a4	G1 8 CPU threads	G1 assets/metrics	Single score job after both predictions
