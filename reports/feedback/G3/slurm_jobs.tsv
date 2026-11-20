@@ -1,0 +1,16 @@
+job	purpose	partition/node	resources	wall	result
+20353	g3_pie_fetch: 4 ckpt + pinned data/sources/splits (44.76 GB assets + 3.6 GB models)	cpu/c4	4 CPU, 24G	575 s (14:15-14:26)	done; 4/4 ckpt sha256 = HF LFS oid
+20355	g3_pie_eval cuda (4 folds)	gpu/g2 (1x A30)	1 GPU, 8 CPU, 96G	<1 min	FAILED: started before ckpt download finished (checkpoint not found); resubmitted as 20403
+20358	baseline smoke (sbatch --wrap)	cpu	-	-	FAILED: --wrap runs /bin/sh (source not found)
+20361	baseline smoke	cpu/c5	16 CPU, 96G	~11 min	FAILED at bootstrap: dict key collision (fixed)
+20402	baseline smoke (nboot 200)	cpu/c5	16 CPU, 96G	682 s	done (smoke only; superseded)
+20400	g3_pie_eval cpu hepg2 (device sensitivity)	cpu/c5	32 CPU, 128G	666 s + 1347 s + 1860 s (end 15:31:59)	done; 3/3 close (max |diff| 0.0046), AUPRC 0.002-0.005 lower than GPU/published
+20403	g3_pie_eval cuda hepg2 jurkat k562 rpe1 (12 evals, save_predictions)	gpu/g2 (1x A30, driver 565.57.01)	1 GPU, 8 CPU, 96G	~12 min (14:44:56-14:56:47); 32-92 s per eval	done; all 12 close to published
+20440-20442	g3_pie_eval cpu jurkat/k562/rpe1	cpu	24 CPU, 96G	-	CANCELLED (GPU 20403 covered them)
+20447, 20448	baselines/f3metrics reading cpu repro	cpu	-	-	CANCELLED (re-pointed to cuda repro)
+20449	g3_pie_baselines hepg2 (cuda repro, nboot 2000)	cpu/c4	16 CPU, 96G	969 s	done (final)
+20450	g3_pie_f3metrics hepg2	cpu/c4	8 CPU, 48G	<1 min	FAILED: panel file holds Ensembl ids, not indices (fixed)
+20471	g3_pie_f3metrics hepg2	cpu/c4	8 CPU, 48G	~1 min	done; superseded by 20472 (adds LFC-head rows)
+20472	g3_pie_f3metrics hepg2 (final)	cpu/c4	8 CPU, 48G	~1 min	done (final)
+20478, 20480, 20482	supplement: g3_pie_baselines jurkat/k562/rpe1 (cuda repro, nboot 500)	cpu/c3,c4	16 CPU, 96G	~14-16 min each (end 15:35-15:37)	done
+20479, 20481, 20483	supplement: g3_pie_f3metrics jurkat/k562/rpe1	cpu	8 CPU, 48G	~1 min each	done

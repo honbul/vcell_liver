@@ -1,0 +1,10 @@
+run_id	kind	status	slurm_job	commit	host	seconds	detail
+(store build, first attempt)	build_store	cancelled by owner	25491	b4b387c			plate membership test rebuilt a set per row (quadratic); fixed in 700c2a5
+store_v1	build_store	completed	25518	700c2a5	C4	84.5	source store without XC pools; HCC metadata only
+(fixtures, first attempt)	fixtures	failed	25520	6a7aee2	G1		float32 tolerance in the additive-trap check; check moved to float64 (76b018a)
+fixtures	fixtures	completed	25525	76b018a			all synthetic checks passed (fixtures.json)
+(tsg_source_s42/43/44_v1)	tsg_source	failed	25522,25523,25524	6a7aee2			study-B array path pointed one level too deep; no training step ran
+(tsg_source_s42/43/44_v1 resubmitted)	tsg_source	failed	25526,25527,25528	76b018a			run ids already existed (immutable ids); resubmitted as _v2
+tsg_source_s44_v2	tsg_source	cancelled by owner	25531	76b018a			cancelled after seconds to stay within two GPUs; rerun as tsg_source_s44_v3
+cv_reference	cv_reference	completed	25549				closed-form references on the fold episodes (cv_reference.tsv)
+(hcc_mock summary, submitted too early)	summarize	failed	25665	73cf1ef			submitted by mistake before the mock run had finished (result.json missing); resubmitted after it ended

@@ -1,0 +1,98 @@
+{
+ "C1 O=11' -> centred shared contribution 0": {
+  "passed": true,
+  "detail": "1.942890293094024e-16"
+ },
+ "C2 O=I -> centred shared contribution v_s (=1)": {
+  "passed": true,
+  "detail": "1.0000000000000002"
+ },
+ "C3 trace formula == exact-sum formula (non-trivial W, repeated plates)": {
+  "passed": true,
+  "detail": "0.336325533580 vs 0.336325533580"
+ },
+ "C3b exact-sum O_off == N x N matrix mean": {
+  "passed": true,
+  "detail": ""
+ },
+ "C3c Monte Carlo centred variance matches the formula incl. the drug-mean term": {
+  "passed": true,
+  "detail": "0.38594 vs 0.38606"
+ },
+ "C4 Omega x a -> K_eff / a": {
+  "passed": true,
+  "detail": "0.664844 -> 0.221615"
+ },
+ "C5a full support-row permutation leaves the C1 prediction unchanged": {
+  "passed": true,
+  "detail": "5.960464477539063e-08"
+ },
+ "C5b residual-only derangement changes the prediction (correspondence broken)": {
+  "passed": true,
+  "detail": "0.4134765863418579"
+ },
+ "C5c residual-only permutation keeps f* and b (no common correction leaks: permuted R still sums to 0 under w = 1/K)": {
+  "passed": true,
+  "detail": "1.043081283569336e-06"
+ },
+ "C5d non-uniform w: permuted residuals re-centred by P_w = I - 1w' have zero w-weighted mean": {
+  "passed": true,
+  "detail": ""
+ },
+ "C7a joint covariance is PSD": {
+  "passed": true,
+  "detail": "0.16501153190097553"
+ },
+ "C7b SS and QS are blocks of the same joint matrix": {
+  "passed": true,
+  "detail": ""
+ },
+ "C7c removing the query overlap removes only the shared-environment cross term": {
+  "passed": true,
+  "detail": ""
+ },
+ "C8a zero trust -> f* fallback (J2 tau=v_s=0, C0 kappa_b=inf, J1 a=c=0)": {
+  "passed": true,
+  "detail": ""
+ },
+ "C8b n0 = 0 -> f* is the zero vector for every kappa_f (shared by all methods)": {
+  "passed": true,
+  "detail": ""
+ },
+ "C10a synchronised bootstrap: a drug shared by several targets gets the same weight in a draw": {
+  "passed": true,
+  "detail": ""
+ },
+ "C10b per-target conditional bootstrap streams are independent SeedSequence children (not a restarted common seed)": {
+  "passed": true,
+  "detail": ""
+ },
+ "C10c family bootstrap summary keeps the family as the unit (n draws x n families)": {
+  "passed": true,
+  "detail": ""
+ },
+ "C6a features (PCA bases) unchanged when held-family labels change": {
+  "passed": true,
+  "detail": ""
+ },
+ "C6b f0 table of the training families unchanged": {
+  "passed": true,
+  "detail": ""
+ },
+ "C6c unit residual / overlap table (covariance input) unchanged": {
+  "passed": true,
+  "detail": ""
+ },
+ "C6d replicate constants v_e / v_s ignore held-family pairs": {
+  "passed": true,
+  "detail": ""
+ },
+ "C6e a held cell's method-visible inputs depend only on its support labels (f0 of queries unchanged)": {
+  "passed": true,
+  "detail": ""
+ },
+ "C9a every method and K of an episode is scored on the same query list (n_query constant)": {
+  "passed": true,
+  "detail": "0 episodes differ"
+ }
+}

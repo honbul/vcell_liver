@@ -1,0 +1,58 @@
+{
+ "checkpoints": {
+  "42": {
+   "run_id": "tsg_source_s42_v2",
+   "checkpoint": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_replicate_calibrated_r8/assets/runs/tsg_source/tsg_source_s42_v2/best.pt",
+   "checkpoint_sha256": "963060b98cf1589bf29e6e8f9e470c3e7a0eff4df15e224ab87ce541405c2531",
+   "best_epoch": 56,
+   "val_delta_rmse_best": 1.01057767868042,
+   "lr": 0.0003
+  },
+  "43": {
+   "run_id": "tsg_source_s43_v2",
+   "checkpoint": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_replicate_calibrated_r8/assets/runs/tsg_source/tsg_source_s43_v2/best.pt",
+   "checkpoint_sha256": "e08a514941afc4eac4e00225626303f354932c00adbcd5faa96e2ff89a05306d",
+   "best_epoch": 60,
+   "val_delta_rmse_best": 1.0034475326538086,
+   "lr": 0.0003
+  },
+  "44": {
+   "run_id": "tsg_source_s44_v3",
+   "checkpoint": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_replicate_calibrated_r8/assets/runs/tsg_source/tsg_source_s44_v3/best.pt",
+   "checkpoint_sha256": "b4ffaa08635ca73d0ec523b64115527343d5b4dafd876ae81f9c11de13312b06",
+   "best_epoch": 53,
+   "val_delta_rmse_best": 1.0097732543945312,
+   "lr": 0.0003
+  }
+ },
+ "ft": {
+  "8": {
+   "lr": 0.0001,
+   "bn": "frozen_running_stats",
+   "updates": 200,
+   "source_delta_rmse": 0.5478896962271796,
+   "as_is": 0.8624972965982225,
+   "offset": 0.5540748404131995
+  },
+  "16": {
+   "lr": 0.0001,
+   "bn": "frozen_running_stats",
+   "updates": 400,
+   "source_delta_rmse": 0.5285873081949022,
+   "as_is": 0.8624972965982225,
+   "offset": 0.5414776570267148
+  },
+  "32": {
+   "lr": 0.0001,
+   "bn": "frozen_running_stats",
+   "updates": 400,
+   "source_delta_rmse": 0.5077329079310099,
+   "as_is": 0.8624972965982225,
+   "offset": 0.5330600473615859
+  }
+ },
+ "rule": "frozen BatchNorm statistics; per K the lowest confirmation-family query delta RMSE over lr x updates (seed 42, support seed 1)",
+ "run_id": "tsg_select_v1",
+ "n_ft_runs_with_divergence": 0,
+ "commit": "3305283"
+}

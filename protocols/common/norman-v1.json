@@ -1,0 +1,31 @@
+{
+  "version": "C0-Norman-v1",
+  "source": "Harvard Dataverse file 6154020 / norman/perturb_processed.h5ad",
+  "expression": "Author-provided X; no renormalization; ignore counts, uns and DE rankings",
+  "cell_line": "K562 by Norman GSE133344 provenance; the processed file has a contradictory constant A549 obs label, which is not used",
+  "batch": "No batch or replicate identifiers in obs; single pooled unknown technical stratum, never an independent replicate",
+  "canonical_condition": "Sorted non-control gene symbols; pool all source aliases of the same unordered target set",
+  "output_genes": "In original var order, exact symbol intersection with public whole-human scGPT vocabulary; discard interventions with any missing target",
+  "split": {
+    "seed": 26,
+    "reserve_seeds": [27, 28],
+    "algorithm": "Hash-rank single interventions; allocate 15% each to validation and test (round to nearest integer); hash-rank combinations separately within count of constituent singles assigned to train and apply the same allocation within stratum. Group all cells by canonical intervention. No response-dependent splitting."
+  },
+  "control": {
+    "eval_max_per_batch": 32,
+    "eval_rule": "Use one hash-ranked subset of up to 32 control cell IDs without replacement for every evaluated condition in the only recorded stratum; compute mean of per-cell treated predictions",
+    "train_rule": "Each train treated cell is assigned one control from the full matched stratum by seeded hashing with replacement; assignment stays fixed for D0 and changes with epoch for D1; held-out treated cells are never inputs",
+    "inference_only": "The test outcome is stored separately and is scored only with a frozen confirmation plan"
+  },
+  "metrics": {
+    "primary": "Mean over conditions of RMSE across all shared genes of (prediction minus provided control mean) vs (truth minus same control mean)",
+    "secondary": ["Delta Pearson over all genes", "Direction agreement on top 20 nonzero measured absolute deltas", "Recall of the top 20 measured absolute delta genes among equally many predicted absolute delta genes", "Paired gain against no-change", "Wall time and compute usage"],
+    "definitions": "Zero variance Pearson is undefined and omitted with a count; absent predictions are rejected unless additive coverage is explicitly allowed. Top ranks are evaluation-only, with original gene order breaking ties."
+  },
+  "linear": {
+    "features": "Mean of the L2-normalized one-hot exact target and L2-normalized outgoing GO neighbor vector for each intervention target, concatenated at equal weight; retain GO edge weights from public author go.csv for shared genes",
+    "alphas": [0.01, 0.1, 1.0, 10.0],
+    "selection": "Choose by validation condition-macro delta RMSE, break ties by smaller alpha",
+    "fit": "Kernel ridge on train intervention mean responses, centering the response using only train interventions"
+  }
+}

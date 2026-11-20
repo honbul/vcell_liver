@@ -1,0 +1,108 @@
+{
+ "selected": {
+  "P0": {
+   "lr_scale": 0.3,
+   "val_seed42": 0.103257
+  },
+  "P1": {
+   "lr_scale": 0.3,
+   "val_seed42": 0.103699
+  },
+  "P2": {
+   "lr_scale": 0.3,
+   "val_seed42": 0.104594
+  },
+  "P2b": {
+   "lr_scale": 1.0,
+   "val_seed42": 0.105942
+  }
+ },
+ "aggregates": {
+  "P0": {
+   "lr_scale": 0.3,
+   "per_seed_score": {
+    "42": 0.103257,
+    "43": 0.104107,
+    "44": 0.104881
+   },
+   "n_seeds": 3,
+   "seed_mean_of_scores": 0.104082,
+   "seed_sd_of_scores": 0.000812,
+   "score_of_mean_prediction": 0.099545
+  },
+  "P1": {
+   "lr_scale": 0.3,
+   "per_seed_score": {
+    "42": 0.103699,
+    "43": 0.102243,
+    "44": 0.103693
+   },
+   "n_seeds": 3,
+   "seed_mean_of_scores": 0.103212,
+   "seed_sd_of_scores": 0.000839,
+   "score_of_mean_prediction": 0.098159
+  },
+  "P2": {
+   "lr_scale": 0.3,
+   "per_seed_score": {
+    "42": 0.104594,
+    "43": 0.104946,
+    "44": 0.103537
+   },
+   "n_seeds": 3,
+   "seed_mean_of_scores": 0.104359,
+   "seed_sd_of_scores": 0.000733,
+   "score_of_mean_prediction": 0.099555
+  },
+  "P2b": {
+   "lr_scale": 1.0,
+   "per_seed_score": {
+    "42": 0.105942,
+    "43": 0.105281,
+    "44": 0.105454
+   },
+   "n_seeds": 3,
+   "seed_mean_of_scores": 0.105559,
+   "seed_sd_of_scores": 0.000343,
+   "score_of_mean_prediction": 0.098564
+  }
+ },
+ "baselines": {
+  "no_change": 0.10280454158782959,
+  "line_mean": 0.09131733328104019,
+  "ridge": 0.09127973765134811
+ },
+ "gate": {
+  "by_variant": {
+   "P2": {
+    "P2_over_P0_pct": -0.2661,
+    "P2_over_P1_pct": -1.1113,
+    "seeds_agreeing_P2_beats_P1": 1,
+    "n_seeds": 3,
+    "beats_baselines": {
+     "no_change": false,
+     "line_mean": false,
+     "ridge": false
+    },
+    "threshold_pct": 2.0,
+    "promote": false
+   },
+   "P2b": {
+    "P2b_over_P0_pct": -1.4191,
+    "P2b_over_P1_pct": -2.274,
+    "seeds_agreeing_P2b_beats_P1": 0,
+    "n_seeds": 3,
+    "beats_baselines": {
+     "no_change": false,
+     "line_mean": false,
+     "ridge": false
+    },
+    "threshold_pct": 2.0,
+    "promote": false
+   }
+  },
+  "promoted": [],
+  "train_P3": false
+ },
+ "note": "positive percentages mean the routed variant is better; the two seed aggregates are different statistics, not two estimates of one"
+}

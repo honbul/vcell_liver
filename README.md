@@ -1,53 +1,21 @@
-# HCC Virtual Cell 튜토리얼
+# 유전자 개입 뒤 RNA 반응 예측
 
-공개 GSE149614 raw count에서 PCA, scGPT whole-human, Geneformer-V2-104M의 환자 분리 세포 유형 분류와 Reactome 경로 특징을 비교한다. Geneformer 가상 삭제는 **실측 섭동 검증 전 embedding 변화 탐색**이다.
+[연구 계획](docs/REPRODUCTION_FIRST_RESEARCH_PLAN.md)에 따라 GEARS와 scGPT의 원 논문 조건을 조사하고 실제 학습·평가한다. 이후 같은 대조군과 출력 유전자를 제공하는 공통 조건에서 단순 기준선과 적응 학습을 비교한다. 이전 작업의 복구 위치는 [아카이브](archive/README.md)에 있다.
 
-G1에 두 격리 환경과 공개 HCC 입력을 준비하고, 2,000세포 PCA/scGPT/Geneformer 비교 및 KG 실험을 실제 실행했다. 한국어 노트북 6개는 새 kernel에서 Run All을 통과했다. 10,000세포 비교, 100세포 가상 삭제 및 110개 정합성 점검을 완료했다. 실제 결과는 [요약](reports/final_summary.md), 사용법은 [서버 튜토리얼](docs/SERVER_TUTORIAL.md)을 참고한다.
+저자 자료와 실행 조건은 [GEARS 계약](protocols/reproduction/gears_norman.yaml), [scGPT 계약](protocols/reproduction/scgpt_norman.yaml), [공개 자산 영수증](manifests/public_receipt.json)에 기록했다. 원래 비공개로 보관된 split과 control 배정은 회수하지 못했다. 새 실행은 저자가 배포한 Norman 데이터를 사용하는 수정 재현이다.
 
-## 서버 경로
+[공통 데이터](docs/COMMON_NORMAN_DATA.md)는 별도로 준비했고 [분할 영수증](manifests/common_norman_v1_s26.json)을 남겼다. [연구 보고서](reports/FINAL_REPORT.md)에 논문 재현, 공통 기준선, 모델 튜닝, 샘플링 검증과 홀드아웃 결과를 정리했다. [사람 간암 자료 조사](reports/HCC_DATA_FEASIBILITY.md)에서 이번 개입 예측 조건을 충족하는 후보는 확보하지 못했다.
 
-- 접속: `ssh gssong@g1.sysmed.kr`
-- 코드/환경/노트북: `/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver`
-- 원본 count/metadata: `/mnt/S1/sdata/pubdata/Virtual_Cell/GEO/GSE149614`
-- 변환 데이터/체크포인트/출력: `/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver`
-- `data`, `checkpoints`는 위 데이터 영역을 가리키는 로컬 symlink이며 Git에서 제외한다.
+[실행 튜토리얼](tutorials/README.md)에서 논문 재현·튜닝·간암 자료 검토를 따라 할 수 있다. [결과 탐색 노트북](tutorials/inspect_results.ipynb)은 학습 작업을 제출하지 않는다.
 
-## 시작
+[조건부 전문가 구조 약물 반응 실험](reports/moe_drug_v1/README.md)은 Tahoe-100M 0.5 µM에서 미관측 약물의 평균 RNA 반응을 예측할 때 조건부 soft-MoE가 규모를 맞춘 Dense보다 나은지 확인했다. 개선은 없었고(+0.07 %, 구간 [−0.05 %, +0.19 %]) 두 모델 모두 같은 입력의 ridge에 약 5 % 뒤져, 후보를 종료했다.
 
-```bash
-ssh gssong@g1.sysmed.kr
-cd /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver
-source envs/activate.sh scgpt
-python scripts/00_inspect_environment.py --out reports/environment.json
-python scripts/02_baseline_annotation.py --config configs/pca_smoke.yaml
-python scripts/03_scgpt_annotation.py --config configs/scgpt_smoke.yaml
-source envs/activate.sh geneformer
-python scripts/04_geneformer_annotation.py --config configs/geneformer_smoke.yaml
-```
+[공개 chemCPA 기반 조건부 전문가 실험](reports/chemcpa_moe_v2/RESULTS_FIXED.md)은 같은 Tahoe-100M 0.5 µM, 미관측 약물 과제를 공개 chemCPA 위에서 다시 물었다. 첫 실행의 평가자가 세포주 one-hot을 학습 loader와 다른 순서로 넣어 48개 중 43개 세포주에 다른 세포주 정보를 준 것이 확인되어, 그 수치는 [철회](reports/chemcpa_moe_v2/RESULTS.md)하고 고친 평가자로 재학습했다. 원형(P0), 규모를 맞춘 Dense 잔차(P1), 세포주 라우터 MoE(P2), 계획서의 basal 라우터 MoE(P2b)를 비교한 결과 두 MoE 변형 모두 사전 등록 승격 기준을 전부 충족하지 못해 P3는 학습하지 않았고, 시험(버그 수정 후 재평가)에서도 P1보다 나빴다(P2 −0.64 %, 구간에 0 포함; P2b −1.65 %). 네 모델 모두 무변화 예측(0.1043)과 세포주 평균·ridge(0.092)를 넘지 못했으며, 약물 중심 상관만 chemCPA 쪽이 높았다(0.25 대 ridge 0.097). 이 구성은 채택하지 않는다. [모델 비교(첫 실행, 철회)](reports/chemcpa_moe_v2/MODEL_COMPARISON.md), [데이터 카드](reports/chemcpa_moe_v2/DATA_CARD_V2.md), [PIE 외부 비교군 미실행 사유](reports/chemcpa_moe_v2/X1_PIE.md), [재현 노트북](notebooks/chemcpa_moe_v2/01_reproduce.ipynb).
 
-사전 준비된 64세포 파일은 `$VCELL_DATA_ROOT/subsets/smoke.h5ad`. 원본 다운로드/전체 sparse 변환은 `scripts/download_hcc.sh`와 `scripts/01_prepare_hcc.py --config configs/hcc_gse149614.yaml`; 작은 실습에서 다시 실행할 필요 없다. `configs/paths.yaml`에 절대 경로를 명시했다.
+[HCC genotype-FiLM v3 데이터 감사](reports/genotype_film_v3/FEASIBILITY_DECISION.md)는 "실제 genotype 주석과 FiLM 조건화가 보류 HCC 세포주의 평균 약물 반응 예측을 개선하는가"를 묻기 전에, 그 실험을 만들 자료가 있는지 metadata로 확인했다. 서버의 L1000 두 GEO release(Level 3)에는 약물 처리된 성인 HCC 계열이 Huh-7 하나뿐이고, Tahoe-100M에도 SNU-423 하나뿐이며 모든 처리 well을 다른 세포주와 공유해 엄격한 세포주 보류 평가가 불가능하다. CMap 2020에는 3계열(Huh-7, JHH-5, JHH-7)이 있으나 서버에 Level 5만 있고, 세 계열 공통 약물은 5개다. 판정은 `STOP_DATA_INSUFFICIENT`이며 모델은 학습하지 않았다. 이는 데이터 적격성 실패이고 가설의 반증이 아니다. [상세 감사](reports/genotype_film_v3/DATA_AUDIT.md), [사전 고정 규칙](manifests/genotype_film_v3/audit_policy.yaml).
 
-전체 계획과 생물학적 한계는 [실행 요청서](docs/AGENT_EXPERIMENT_PLAN.md), [모델 비교](docs/MODEL_COMPARISON.md), [자원 예산](reports/run_budget.md)를 참고한다. 모델 입력 차이 때문에 실용 pipeline 비교이며 아키텍처만의 비교가 아니다. frozen embedding + supervised logistic head를 사용하며 시스템 전체를 zero-shot classifier라 부르지 않는다.
+[TranSiGen 소량 HCC 적응 실험(연구 B)](reports/transigen_adaptation_b1/RESULTS.md)은 CMap LINCS 2020 Level 3(10 µM·24 h, 978 landmark)에서 공개 TranSiGen 구조를 HCC 계열을 뺀 161개 세포주로 다시 학습한 뒤, Huh-7·JHH-5·JHH-7 각각에서 약물 16개로 미세조정했을 때 그 세포주에서 미관측인 약물의 RNA 반응 예측이 좋아지는지 물었다. 미세조정(B2)은 두 세포주에서 범용 모델(B0)과 HCC-only 학습(B1)보다 시험 ΔRMSE가 낮았지만, 세 세포주 모두에서 적응 약물의 평균 잔차를 더하는 mean-offset 보정보다 나빴고 JHH-5·JHH-7에서는 무변화 기준선보다도 나빴다. 그래서 이 설정의 미세조정은 채택하지 않았고 새 모델을 추가하지 않고 종료했다. 세 세포주와 이 설정에 한정된 결과다. [쉬운 설명](reports/transigen_adaptation_b1/BEGINNER_SUMMARY.md), [데이터 카드](reports/transigen_adaptation_b1/DATA_CARD.md), [노출 감사](reports/transigen_adaptation_b1/EXPOSURE_AUDIT.md), [튜토리얼](tutorials/transigen_adaptation_b1/)을 함께 남겼다.
 
-raw count·대형 표현·가중치·비밀값은 Git에 올리지 않는다. 각 자산의 URL, revision, SHA256, size와 실제 실행 환경/자원을 manifests, envs, reports, results에 기록한다. test donor는 downstream holdout이며 사전학습 중복은 확인 불가 시 unknown이다.
+[소량 HCC 실험을 쓰는 episodic 잔차 적응 실험(연구 R2)](reports/episodic_residual_r2/RESULTS.md)은 같은 CMap LINCS 2020 자료에서, 새 세포주의 약물 K개(8/16/32)만 보고 나머지 약물의 RNA 변화를 맞힐 때 source 세포주 episode로 학습한 "닮은 약물의 잔차를 빌려 오는 규칙"이 평균 보정(mean-offset)보다 나은지 물었다. target 검증 라벨은 쓰지 않았고 모든 설정은 source에서 정한 뒤 동결했다. 동결 후 평가(이미 연구 B에서 채점된 벤치마크의 재사용)에서 제안법은 세 계열 동등 평균으로 mean-offset보다 낮았지만(K=16: 0.622 대 0.635), 같은 입력의 비학습 KRR과 구분되지 않았고 학습 없는 표본 수 기반 축소 기준선(0.594, 사후 추가)보다 높아 채택하지 않고 종료했다. 세 세포주와 이 설정에 한정된 결과다. [쉬운 설명](reports/episodic_residual_r2/BEGINNER_SUMMARY.md), [진단](reports/episodic_residual_r2/DIAGNOSTICS.md), [결정 기록](reports/episodic_residual_r2/DECISIONS.md), [주장과 한계](reports/episodic_residual_r2/CLAIMS_AND_LIMITATIONS.md), [노출 기록](reports/episodic_residual_r2/EXPOSURE.md), [튜토리얼](tutorials/episodic_residual_r2/).
 
-## 튜토리얼과 검증
-
-`notebooks/00_*.ipynb`부터 `05_*.ipynb`까지 순서대로 진행한다. 기본 입력은 64세포이며 자동 전체 다운로드를 하지 않는다. `source envs/activate.sh scgpt` 후 `python scripts/08_execute_notebooks.py`로 화면 없이 Run All을 실행할 수 있다. 실제 출력/실행 기록은 [notebook_execution.json](reports/notebook_execution.json)에 있다.
-
-2,000세포 test macro-F1: PCA **0.9359**, scGPT **0.9327**, Geneformer **0.9210**. scGPT+Reactome **0.9288**로 추가 이득이 없었다. peak CUDA allocated는 scGPT 약0.37GiB, Geneformer 약1.65GiB(각 batch8/1200, batch4/4096; frozen inference). 전체 CLI 시간은 stages, 모델 자원 측정 구간은 run.json에 기록했다. [환경 lock 안내](envs/README.md), [모델 비교](docs/MODEL_COMPARISON.md), [실제 결과](reports/final_summary.md)를 참고한다.
-
-
-## 10,000세포 실제 비교
-
-같은 두 test 환자의 1,240세포에서 측정했다.
-
-| 입력 표현 | macro-F1 | balanced accuracy | peak process GPU GiB |
-|---|---:|---:|---:|
-| PCA | 0.9566 | 0.9498 | CPU |
-| scGPT whole-human | 0.9527 | 0.9496 | 0.72 |
-| Geneformer-V2-104M | 0.9456 | 0.9463 | 2.50 |
-
-이 설정에서는 foundation embedding이 PCA를 넘지 못했다. scGPT+Reactome의 macro-F1은 0.9436이며 추가 이득이 없었다. 두 모델은 frozen embedding + supervised head로 비교했다. 가상 삭제는 train hepatocyte100세포에서 ALB/HNF4A를 독립 실행했고 no-op/발현량 유사 무작위 대조를 포함한다. **실측 섭동 검증 전 embedding 변화 탐색**이며 발현량·약효 예측이 아니다.
-
-[최종 정합성 점검](reports/completion_audit.json), [자산 체크섬 검증](reports/asset_verification.json), [큰 로컬 산출물 위치/해시](manifests/local_artifacts.json). 필수 단계의 미해결 차단은 없으며, 미세조정/scFoundation/GEARS는 선택적 후속으로 실행하지 않았다. 사전학습 중복은 unknown이다. 다음 실험은 고정 protocol의 leave-one-patient-out 평가다.
+[복제 보정·상태 보존 적응 실험(연구 R8)](reports/replicate_calibrated_r8/RESULTS.md)은 같은 과제에서 (1) 약물별 잔차 보정이 공통 보정보다 나은지, (2) support 측정의 복제·plate 공유 구조를 반영한 관측 가중과 (3) 대조군 상태 보존이 도움이 되는지를 2×2로 물었다(혼합 pool 제외, target 검증 라벨 0개, source에서 동결). 동결 후 평가(이미 채점된 벤치마크의 재사용)에서 학습 없는 kernel 약물별 보정은 공통 보정보다 조금 낮았지만(세 계열 동등 평균 K=16: 0.590 대 0.595), 학습한 적응기는 그 kernel과 구분되지 않았고 관측 가중·상태 보존은 이득이 없어 채택하지 않고 종료했다. source 세포주의 같은 plate/다른 plate 검사에서 공통 보정의 이득은 같은 plate 안에서만 뚜렷했다. 세 세포주와 이 설정에 한정된 결과다. [쉬운 설명](reports/replicate_calibrated_r8/BEGINNER_SUMMARY.md), [복제 구조 카드](reports/replicate_calibrated_r8/REPLICATE_CARD.md), [결정 기록](reports/replicate_calibrated_r8/DECISIONS.md), [주장과 한계](reports/replicate_calibrated_r8/CLAIMS_AND_LIMITATIONS.md), [노출 기록](reports/replicate_calibrated_r8/EXPOSURE.md), [튜토리얼](tutorials/replicate_calibrated_r8/).

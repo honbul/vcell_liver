@@ -1,0 +1,46 @@
+{
+ "track": "replicate_calibrated_r8",
+ "written": "2026-11-17",
+ "platform": "CMap LINCS 2020 Level 3, 10 uM, 24 h, 978 landmark genes",
+ "one_example": {
+  "unit": "(cell line, drug group): one drug group measured in one cell line",
+  "input": [
+   "source reference f0: family-balanced mean of the same drug group's measured RNA change over the other source cell families (target family and held-out families excluded)",
+   "K support units of the target line: their measured RNA change (treated minus plate control), control mean profile, drug fingerprint (ECFP4), and metadata (plates, wells, control wells)",
+   "query drug group: fingerprint and the source reference only; its treated RNA is never an input"
+  ],
+  "truth": "measured RNA change of the query unit = mean over its plate rows of (treated Level 3 profile - mean of DMSO control wells on the same detection plate), 978 genes",
+  "independent_unit": "cell family (lines that share an origin are one family); results are family-balanced means. Wells, plates, drug groups, model seeds and support seeds are not independent units.",
+  "metric": "per-unit root mean squared error over 978 genes of predicted vs measured RNA change, averaged over query units, then over support seeds / model seeds, then with equal weight over families"
+ },
+ "held_out": {
+  "source_train": "121 cell lines in 115 families; 3 family folds (39/38/38, seed 20261117) for every choice of constants, learning rate and number of steps",
+  "source_confirmation": "11 cell lines (meta-validation role inherited unchanged from study R2); 9 families have enough units to form episodes. Used only for fixed confirmation, never for selection.",
+  "target": "HUH7, JHH5, JHH7 (hepatocellular carcinoma lines). No expression value of these lines was read in this study before the freeze commit. Splits and support order are the ones fixed in study B (manifests/transigen_adaptation_b1/splits).",
+  "target_validation_labels": 0,
+  "exposure": "The HCC lines and these test splits were already scored in studies B and R2 (see EXPOSURE.md). This is a pre-specified follow-up, not a first look."
+ },
+ "support_budget": {
+  "K": "number of drug groups with a measured treated profile in the target line; primary 16, auxiliary 8 and 32, nested (8 within 16 within 32)",
+  "same_for_all_methods": true,
+  "queries_identical_across_K": true,
+  "cost_table": "manifests/replicate_calibrated_r8/support_cost.tsv (drug groups, treated wells, independent plates, control wells listed separately)"
+ },
+ "excluded": {
+  "xc_mixed_pools": {"cells": 29, "plate_rows": 13905, "units": 4572, "reason": "composition of the pooled lines is not documented in the release metadata", "table": "manifests/replicate_calibrated_r8/excluded_xc_pools.tsv"},
+  "degenerate_rows": 42
+ },
+ "counts": {"source_cells": 132, "source_families": 126, "source_units": 74277, "source_plate_rows": 224627, "source_detection_plates": 2745,
+            "target_plate_rows": {"HUH7": 179, "JHH5": 663, "JHH7": 111}, "target_units": {"HUH7": 69, "JHH5": 652, "JHH7": 111}},
+ "leakage_rules": [
+  "query treated RNA is never used for inputs, normalisation, shrinkage, weights or confidence (fixture: predictions unchanged when query labels change)",
+  "the source reference for a family never contains that family (fixture against brute force)",
+  "feature maps, output bases and covariance constants are fitted on source-train families only; inside a fold they are refitted without the fold families",
+  "observation covariance uses only replicate / control-sharing metadata of the support wells and constants estimated on source-train replicate plates"
+ ],
+ "store": {
+  "manifest": "manifests/replicate_calibrated_r8/store_manifest.json (input and output sha256)",
+  "arrays": "not duplicated: expression arrays of studies B and R2 are indexed read-only on the server; nothing with expression values is in Git"
+ },
+ "not_verifiable_from_release": "whether X-tag replicate plates are independent cultures; composition of XC pools; well-level batch effects beyond plate and bead batch"
+}

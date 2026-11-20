@@ -1,0 +1,28 @@
+claim: "Predict the measured expression of unseen Norman two-gene combinations; GEARS Fig. 2e–f."
+target_panel: "https://doi.org/10.1038/s41587-023-01905-6"
+reference_source: "GEARS_misc f88211870dfa89c38a2eedbd69ca1abd28a25f3c paper/Fig2f.ipynb; original author W&B project kexinhuang/pert_gnn_simulation_norman2019"
+reference_value: "manifests/reference/gears_fig2f_author.tsv; ratio of means: 0 unseen 0.23215254, 1 unseen 0.33217836, 2 unseen 0.40935261"
+data:
+  accession: GSE133344
+  archived_release: "Dataverse 6154020; SHA-256 c1938353f6f41829c9137f073ecb843ce4d4114528b001b48312b019f739d877"
+  author_run_input: "norman_same_splits private local directory in W&B code/run.py; original saved split and graph pairs not found in public run files"
+  local_input: "new extraction of the official Norman release; not a claim of byte identity to private norman_same_splits"
+split:
+  algorithm: "author commit simulation split; regenerate rather than load inaccessible private split files"
+  seeds: [1, 2, 3, 4, 5]
+  training_randomness: "original separate seed unavailable; local torch/python/numpy explicitly seeded, logged"
+model:
+  source: "https://github.com/snap-stanford/GEARS/commit/9d27bd619935cebe6f1519c3b53f61d2777dee59"
+  checkpoint: "scratch training; no old weights"
+  hidden_size: 64
+training:
+  epochs: 20
+  batch: 32
+  eval_batch: 32
+  optimizer: "author Adam 0.001, weight decay 0.0005; StepLR gamma 0.5; FP32"
+  source: "public original run 3m9uygq6 code/run.py, 20 epoch logs for each of the five originals; public figure demonstration notebooks use different budgets"
+selection: "unchanged author train method, validation top-20 DE MSE"
+evaluation: "author non_dropout_analysis; split groups checked against actual training genes; normalize group-average MSE by group-average paired no-perturb MSE across five splits. Also compare against original author denominator separately."
+repetitions: "five splits. Do not count the cells as independent biological replicates."
+compatibility_changes: "new Python/PyTorch/PyG runtime; disabled logging to external W&B; added epoch-boundary checkpointing and export; public data instead of private split artifact"
+comparison_rule: "report exact author and replay values/differences for all groups. Modified reproduction due to missing saved split/pairs and runtime differences. No numeric equivalence criterion inferred from overlapping CI."

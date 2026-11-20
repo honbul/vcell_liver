@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# F1-diag A2: parameter change vs reconstructed seed init + epoch-15 Adam state (CPU, read-only on prior runs).
+#SBATCH --job-name=f1_diag_params
+#SBATCH --partition=cpu
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=24G
+#SBATCH --time=01:30:00
+#SBATCH --array=0-6
+#SBATCH --output=logs/f1_diag_params_%A_%a.log
+set -euo pipefail
+export OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 MKL_NUM_THREADS=4 PYTHONHASHSEED=0 PYTHONDONTWRITEBYTECODE=1
+WT=$(pwd)
+LABELS=(M0 M1 M2 M3 M-random D1 D2)
+.venvs/scgpt/bin/python -u src/feedback/f1_diag_params.py --label "${LABELS[$SLURM_ARRAY_TASK_ID]}" \
+  --prior-root /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_reproduction_first_20261105 \
+  --dataset "$WT/prior_assets/common/C0-Norman-v1-s26" --runs "$WT/prior_assets/runs" \
+  --public "$WT/prior_assets/public" --out "$WT/assets/feedback/F1/diag"

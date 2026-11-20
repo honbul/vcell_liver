@@ -1,0 +1,23 @@
+run_id	slurm_job	stage	base_commit	exec_commit	data_ids	cpus	mem_req	wall	user_sys_cpu_s	max_rss_gb	status	note
+alias_v1	login-node	alias (metadata: SMILES/InChIKey alias clusters)	b419b3e	bd64e78	TB cmap2020_v1 drugs.tsv; R8 store_v1 groups.tsv	1	-	~10 s	-	-	completed	login node, < 1 min, no matrix load; output = configs/r8_unseen_drug_v3/alias_exceptions.tsv (sha256 c6b21049...)
+splits_v1	login-node	splits (metadata only)	b419b3e	38d688f	R8 store_v1 cells.tsv, groups.tsv; alias table	1	-	~5 s	-	-	completed	outer_splits.json, inner_splits.json, drug_folds.tsv.gz
+chk_outer0_v1	27751	check (P0, no score)	b419b3e	d894ab3	R8 store_v1 (store_manifest sha256 fbb5fa95...); R2 units_v1; TB ecfp4	4	24G	1:20	175.7	7.09	completed	v2-reference row bug (unit vs group ids; doc row only) -> superseded by _v2
+chk_outer1_v1	27752	check (P0, no score)	b419b3e	d894ab3	same	4	24G	1:05	123.8	7.05	completed	superseded by _v2 (same v3 checks, all 0)
+chk_outer2_v1	27753	check (P0, no score)	b419b3e	d894ab3	same	4	24G	1:26	195.4	7.03	completed	superseded by _v2 (same v3 checks, all 0)
+pilot_outer0_d0_v1	27755	pilot (inner selection only; no outer score)	b419b3e	d894ab3	same	4	24G	0:45	119.8	6.92	completed	resource pilot: 45 s, 6.9 GB per block
+chk_outer0_v2	27758	check (P0, no score)	b419b3e	38d688f	same	4	24G	1:18	175.0	7.05	completed	P0 gate: v3 checks all 0; v2 reference row 435/418/416
+chk_outer1_v2	27759	check (P0, no score)	b419b3e	38d688f	same	4	24G	1:03	126.8	7.05	completed	v2 reference row 564/555/564
+chk_outer2_v2	27760	check (P0, no score)	b419b3e	38d688f	same	4	24G	1:24	196.1	7.03	completed	v2 reference row 775/746/770
+FREEZE	-	run spec frozen	b419b3e	f0589c6	configs/r8_unseen_drug_v3/run_spec.yaml sha256 f347aa2f...	-	-	-	-	-	frozen	before any outer score
+run_outer0_d0_v1	27761	run (select + score)	b419b3e	f0589c6	same	4	24G	1:00	167.3	6.89	completed
+run_outer0_d1_v1	27762	run	b419b3e	f0589c6	same	4	24G	1:03	196.9	6.91	completed
+run_outer0_d2_v1	27763	run	b419b3e	f0589c6	same	4	24G	0:57	158.8	6.91	completed
+run_outer1_d0_v1	27764	run	b419b3e	f0589c6	same	4	24G	1:08	215.3	6.90	completed
+run_outer1_d1_v1	27765	run	b419b3e	f0589c6	same	4	24G	0:56	158.7	6.89	completed
+run_outer1_d2_v1	27766	run	b419b3e	f0589c6	same	4	24G	1:06	207.1	6.89	completed
+run_outer2_d0_v1	27767	run	b419b3e	f0589c6	same	4	24G	1:12	210.9	6.92	completed
+run_outer2_d1_v1	27768	run	b419b3e	f0589c6	same	4	24G	1:01	173.2	6.92	completed
+run_outer2_d2_v1	27769	run	b419b3e	f0589c6	same	4	24G	0:00	0	-	failed	submitted from the login home dir: 'source experiments/.../env.sh' not found; no computation, no run dir; restarted as _v2
+run_outer2_d2_v2	27770	run	b419b3e	f0589c6	same	4	24G	0:58	166.4	6.93	completed	technical restart of _v1 (same code / spec)
+report_v1	27771	report (bootstrap)	b419b3e	f0589c6	9 run dirs (prediction hashes checked)	4	24G	0:39	114.7	1.04	failed	crash in the consistency section (argparse namespace shadowed by loop variable); primary tables had been written; superseded
+report_v2	27772	report (bootstrap)	b419b3e	36b5998	9 run dirs (prediction hashes checked)	4	24G	0:35	112.3	1.04	completed	code fix only (variable name); same frozen statistics; numbers reported from this run

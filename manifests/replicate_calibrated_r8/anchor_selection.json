@@ -1,0 +1,126 @@
+{
+ "anchor": {
+  "iid": {
+   "8": {
+    "kappa_f": 8.0,
+    "kappa_b": 16.0,
+    "dev": 0.5407393029430411,
+    "at_grid_edge": false
+   },
+   "16": {
+    "kappa_f": 8.0,
+    "kappa_b": 16.0,
+    "dev": 0.5377376207283565,
+    "at_grid_edge": false
+   },
+   "32": {
+    "kappa_f": 8.0,
+    "kappa_b": 16.0,
+    "dev": 0.5347737417771266,
+    "at_grid_edge": false
+   }
+  },
+  "cov": {
+   "8": {
+    "kappa_f": 8.0,
+    "kappa_b": 32.0,
+    "dev": 0.5418124185813652,
+    "at_grid_edge": false
+   },
+   "16": {
+    "kappa_f": 8.0,
+    "kappa_b": 16.0,
+    "dev": 0.53884439432359,
+    "at_grid_edge": false
+   },
+   "32": {
+    "kappa_f": 8.0,
+    "kappa_b": 8.0,
+    "dev": 0.5358277133532933,
+    "at_grid_edge": false
+   }
+  }
+ },
+ "shrunk_same_drug_mean": {
+  "8": {
+   "kappa_f": 8.0,
+   "dev": 0.5472330824359433
+  },
+  "16": {
+   "kappa_f": 8.0,
+   "dev": 0.5472330824359433
+  },
+  "32": {
+   "kappa_f": 8.0,
+   "dev": 0.5472330824359433
+  }
+ },
+ "c1": {
+  "iid": {
+   "8": {
+    "lam": 0.3,
+    "eta": 0.25,
+    "dev": 0.5389653632601539,
+    "at_grid_edge": false
+   },
+   "16": {
+    "lam": 1.0,
+    "eta": 0.5,
+    "dev": 0.5324921454047109,
+    "at_grid_edge": false
+   },
+   "32": {
+    "lam": 3.0,
+    "eta": 0.75,
+    "dev": 0.5254174965423543,
+    "at_grid_edge": false
+   }
+  },
+  "cov": {
+   "8": {
+    "lam": 1.0,
+    "eta": 0.25,
+    "dev": 0.5403980293444225,
+    "at_grid_edge": false
+   },
+   "16": {
+    "lam": 3.0,
+    "eta": 0.5,
+    "dev": 0.5338518919198068,
+    "at_grid_edge": false
+   },
+   "32": {
+    "lam": 3.0,
+    "eta": 0.75,
+    "dev": 0.5262254894107252,
+    "at_grid_edge": false
+   }
+  }
+ },
+ "covariance_model": {
+  "kind": "cov",
+  "v_r": 0.016714403041443983,
+  "v_e": 0.38338440031686105,
+  "v_s": 0.055374324108338695,
+  "provenance": {
+   "run_id": "diag_v1",
+   "estimated_on": "source-train families only; plate pairs from different RNA plates",
+   "n_pairs": 853,
+   "n_cells": 52,
+   "n_families": 49,
+   "replicate_data_sufficient": true,
+   "v_tot_unit_residual": 0.33428806082887963,
+   "mean_q": 0.7257458452995007,
+   "mean_o_diag": 0.7274270471144508,
+   "rule": "v_r = max(v_tot - v_e * mean q - v_s * mean o_ii, 0.05 v_tot); all three are gene-averaged variances in Level 3 units",
+   "shares": {
+    "v_r": 0.036696792924777,
+    "v_e": 0.8417278148751771,
+    "v_s": 0.12157539220004586
+   }
+  }
+ },
+ "rule": "per K, lowest family-equal query delta RMSE on source-train dev episodes; no confirmation family, no HCC value",
+ "run_id": "closed_form_v1",
+ "commit": "76b018a"
+}

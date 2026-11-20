@@ -1,0 +1,72 @@
+{
+ "premise_correction": "The other 48 Tahoe-100M lines are already on the shared NFS: /mnt/S1/sdata/pubdata/Tahoe/Tahoe-100M (HF mirror, 3,388/3,388 expression shards = 337.6 GB, obs_metadata 2.3 GB, sample/drug/cell_line/gene metadata, pseudobulk_differential_expression 1,026 shards = 88.9 GB). Owner: hg (group sysmed, readable). No download is required for R3.",
+ "verification": {
+  "expression_shards": 3388,
+  "expression_bytes_on_disk": 337644770670,
+  "hf_card_download_size": 337644770670,
+  "pbde_shards": 1026,
+  "pbde_bytes": 88859760359,
+  "obs_metadata_rows": 100648790,
+  "cells_pass_full_all_lines": 95624334,
+  "shard_layout": "each expression shard holds one plate (all 50 lines, ~60 wells, 28,225 cells)"
+ },
+ "bytes_per_cell_parquet": 3531,
+ "options": [
+  {
+   "id": "A0",
+   "what": "Use Tahoe official pseudobulk DESeq2 (log2FC, padj) for all 50 lines; extract lfc matrix for ~5,000 genes x 65,218 line-drug-dose-plate conditions",
+   "new_download_GB": 0,
+   "derived_storage_GB": 2.6,
+   "cpu": "one 16-CPU Slurm pass ~10 min (measured: summary pass 9.5 min, job 20326)",
+   "caveat": "DESeq2 statistics not null-calibrated (no DMSO-vs-DMSO); lfc usable as target, padj not as response filter"
+  },
+  {
+   "id": "A1 (recommended first)",
+   "what": "Per-well raw-count pseudobulk for all 50 lines (sample x line, plus DMSO pseudo-wells), all 62,713 genes, one streaming pass over the local shards",
+   "new_download_GB": 0,
+   "derived_storage_GB_compressed": 2.7,
+   "derived_storage_GB_dense_float32": 16.9,
+   "cpu_estimate": "~95.6M cells; SNU-423 h5ad pass took 241 s for 1.5M cells on 4 CPUs (job 20327) -> ~4.3 CPU-h single stream; ~20-40 min wall with 16 parallel shard workers (estimate)",
+   "enables": "chemCPA/linear/nearest-line/mean baselines and pseudobulk LOCO; same noise model as F4"
+  },
+  {
+   "id": "A2",
+   "what": "Cell-level subset for distributional models (State/chemCPA cell-level): cap 100 cells per (line, well), all wells",
+   "cells_max": 6720000,
+   "derived_storage_GB_all_genes": 23.7,
+   "derived_storage_GB_2000HVG_est": "~5-8 (estimate)",
+   "new_download_GB": 0
+  },
+  {
+   "id": "A3",
+   "what": "Restricted cell-level subset chosen on training lines only: drug-doses strong (>=3x line-median Tahoe DE count) in >=10 of the 48 non-liver lines, plus all DMSO wells; cap 100 cells/(line, well)",
+   "n_drug_dose": 232,
+   "n_drugs": 160,
+   "n_wells": 312,
+   "cells_max": 1700000,
+   "derived_storage_GB_all_genes": 6.0,
+   "new_download_GB": 0,
+   "check_on_snu423_after_the_fact": {
+    "snu423_wells_in_selection": 315,
+    "detectable_fraction": 0.61,
+    "detectable_fraction_all_wells": 0.315
+   },
+   "caveat": "selection uses non-liver lines only; SNU-423 numbers above are a descriptive check, not used for selection"
+  },
+  {
+   "id": "fallback_if_local_mirror_unavailable",
+   "what": "Re-download from HF; cells of one line are spread over all shards, so a line subset still needs the full 337.6 GB scan (streaming possible: SNU-423 network extraction took 1 h 37 min). A plate subset is ~24 GB per plate (shard = plate). Pseudobulk DE only: 88.9 GB.",
+   "new_download_GB": [
+    337.6,
+    88.9
+   ]
+  }
+ ],
+ "gpu_estimate": "Pseudobulk models (A0/A1): CPU or 1 GPU, minutes-hours. Cell-level chemCPA on ~3-7M cells x 2,000 genes: 1 A100, several hours per run (estimate, not measured). State: pretrained Tahoe checkpoints may have seen SNU-423 (needs checking before any LOCO claim); training from scratch is multi-GPU scale.",
+ "leakage_rules": [
+  "Hold out every SNU-423 treated well; SNU-423 DMSO cells may be used as the context input (separate regime)",
+  "Choose drugs/genes/hyperparameters on training lines (or a validation line such as HepG2/C3A) only",
+  "Report a same-well baseline (mean response of other lines in the same well) because all lines share well/plate technical effects",
+  "Do not use pretrained checkpoints trained on Tahoe-100M including SNU-423 for the 'unseen cell line' claim"
+ ]
+}

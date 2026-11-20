@@ -1,0 +1,107 @@
+{
+ "checkpoint": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver_chemcpa_moe_v2/chemcpa_project/checkpoints/example/z0t21uxq/last.ckpt",
+ "split_key": "split_random",
+ "dataset": {
+  "n_genes": 2000,
+  "n_drugs": 188,
+  "num_covariates": [
+   3
+  ],
+  "sizes": {
+   "training": 248202,
+   "training_control": 9062,
+   "training_treated": 239140,
+   "test": 53460,
+   "test_control": 2056,
+   "test_treated": 51404,
+   "ood": 52978
+  }
+ },
+ "hparams": {
+  "adversary_depth": 3,
+  "adversary_lr": 0.0011926173789223548,
+  "adversary_steps": 3,
+  "adversary_wd": 9.846738873614555e-06,
+  "adversary_width": 128,
+  "autoencoder_depth": 4,
+  "autoencoder_lr": 0.0015751320499779737,
+  "autoencoder_wd": 6.251373574521742e-07,
+  "autoencoder_width": 256,
+  "batch_size": 256,
+  "dim": 32,
+  "dosers_depth": 3,
+  "dosers_lr": 0.0015751320499779737,
+  "dosers_wd": 6.251373574521742e-07,
+  "dosers_width": 64,
+  "dropout": 0.262378,
+  "embedding_encoder_depth": 4,
+  "embedding_encoder_width": 128,
+  "penalty_adversary": 0.4550475813202185,
+  "reg_adversary": 9.100951626404369,
+  "reg_adversary_cov": 16.165583124257587,
+  "reg_multi_task": 0,
+  "step_size_lr": 6
+ },
+ "batch_layout": [
+  "0:(2000,)",
+  "1:(1,)",
+  "2:(1,)",
+  "3:(2000,)",
+  "4:(3,)"
+ ],
+ "io": {
+  "input_genes": [
+   8,
+   2000
+  ],
+  "output": [
+   8,
+   4000
+  ],
+  "output_halves": "[mean | softplus(variance)], so 2 x n_genes",
+  "latent_basal": [
+   8,
+   32
+  ],
+  "drug_embedding": [
+   8,
+   32
+  ],
+  "latent_treated": [
+   8,
+   32
+  ],
+  "cell_drug_embedding": [
+   8,
+   64
+  ]
+ },
+ "params": {
+  "total": 2188276,
+  "encoder": 719904,
+  "decoder": 1235872,
+  "adversary_drugs": 62268,
+  "dosers": 20353
+ },
+ "objective": "GaussianNLLLoss on (mean, var) against the cell's own expression; the autoencoder step subtracts reg_adversary * drug-adversary loss and reg_adversary_cov * covariate-adversary loss; every adversary_steps-th global step updates the adversaries instead, with a gradient penalty",
+ "authors_r2": {
+  "train": {
+   "R2_mean": 0.80384,
+   "R2_mean_de": 0.78043,
+   "R2_var": 0.83108,
+   "R2_var_de": 0.74889
+  },
+  "test": {
+   "R2_mean": 0.74075,
+   "R2_mean_de": 0.73791,
+   "R2_var": 0.69439,
+   "R2_var_de": 0.64091
+  },
+  "ood": {
+   "R2_mean": 0.74094,
+   "R2_mean_de": 0.73933,
+   "R2_var": 0.69058,
+   "R2_var_de": 0.64106
+  }
+ }
+}

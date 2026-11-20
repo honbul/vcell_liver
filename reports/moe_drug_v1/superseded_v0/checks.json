@@ -1,0 +1,61 @@
+{
+ "split_disjoint": {
+  "n_groups": 350,
+  "per_split": {
+   "train": 210,
+   "val": 71,
+   "test": 69
+  },
+  "drug_names_in_two_splits": {},
+  "treated_wells_in_two_splits": 0,
+  "other_dose_wells_excluded_from_training": 905,
+  "pass_": true
+ },
+ "alignment": {
+  "n_panel_genes": 2000,
+  "panel_is_train_only": "top variance of train-split responses only",
+  "technical_excluded": 15,
+  "y_lookup_matches_table": true,
+  "basal_identical_across_drugs": true,
+  "basal_shape": [
+   50,
+   2000
+  ],
+  "fp_shape": [
+   350,
+   2048
+  ],
+  "no_nan_in_valid_conditions": true,
+  "pass_": true
+ },
+ "optimisation": {
+  "A": {
+   "loss_first": 0.08211332559585571,
+   "loss_last": 0.0029845181852579117,
+   "overfits_small_batch": true,
+   "all_finite": true,
+   "n_params_unmoved": 0,
+   "pass_": true
+  },
+  "C": {
+   "loss_first": 0.08031521737575531,
+   "loss_last": 0.0030093102250248194,
+   "overfits_small_batch": true,
+   "all_finite": true,
+   "n_params_unmoved": 0,
+   "router_params_moved": true,
+   "every_expert_moved": true,
+   "router_mean_weight": [
+    0.2327449470758438,
+    0.1885705292224884,
+    0.40130168199539185,
+    0.17738285660743713
+   ],
+   "router_entropy": 1.271010398864746,
+   "router_entropy_max": 1.3862943611198906,
+   "router_collapsed": false,
+   "pass_": true
+  }
+ },
+ "all_pass": true
+}

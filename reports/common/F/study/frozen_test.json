@@ -1,0 +1,142 @@
+{
+  "stage": "frozen_test",
+  "plan_sha256": "796f70a7cce1c14177cc6b8d3d60adc36934355d42ff5ec0da8b0c6805f746be",
+  "simple_baselines": {
+    "validation_sha256": "3e96b168dc18bafdc5f5b7db3d1480fc1e0035c141063fa90d050cb43ef7c84c",
+    "selected_alpha": 1.0
+  },
+  "benchmark_rows": [
+    {
+      "arm": "GEARS",
+      "job": {
+        "phase": "C0",
+        "run_id": "C0-Norman-v1-gears-M0-D0-s26-r0",
+        "model": "gears",
+        "mode": "M0",
+        "data_mode": "D0",
+        "seed": 0,
+        "lr": 0.001
+      },
+      "val_delta_rmse": 0.06363260179977359,
+      "result_sha256": "524c0f47c68f5b278f1b1a6623e38a03eaea30526f39e62c91093e839cea17b1",
+      "checkpoint_sha256": "38fbb394b0143aedb4b433540367fe2451b3750bc27e86fe5bcfe7a4e57b1041",
+      "trainable": 1807113,
+      "gpu": "NVIDIA A40",
+      "epoch_seconds": 1216.2939903442748
+    }
+  ],
+  "protocol_sha256": "731caa41b108637cee065f24d1150dab87eecd31ac75b8c6b0cfdb44d9ca01d1",
+  "dataset_sha256": "5fefe283fbda95f555f3cf5f7fc1f05fd99796af8376b3f07ad283cb63f99787",
+  "primary_arm": "D*M0",
+  "primary_metric": "delta_rmse",
+  "rows": [
+    {
+      "arm": "D0M0",
+      "job": {
+        "phase": "C0",
+        "run_id": "C0-Norman-v1-scgpt-M0-D0-s26-r0",
+        "model": "scgpt",
+        "mode": "M0",
+        "data_mode": "D0",
+        "seed": 0,
+        "lr": 0.0001
+      },
+      "val_delta_rmse": 0.03428896553071097,
+      "result_sha256": "1a55e10aeb643155b0f4c9c080de4c84d07cb9aac15eb40b38e3dc8dee2957da",
+      "checkpoint_sha256": "c056992f4de410e0b42d4370742ac6a1993f1c25f96c6886f22388aafab432d2",
+      "trainable": 51331586,
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "epoch_seconds": 4446.207285323646
+    },
+    {
+      "arm": "D0M0",
+      "job": {
+        "phase": "F",
+        "run_id": "F-Norman-v1-scgpt-M0-D0-s26-r1",
+        "model": "scgpt",
+        "mode": "M0",
+        "data_mode": "D0",
+        "seed": 1,
+        "lr": 0.0001
+      },
+      "val_delta_rmse": 0.03541598945473542,
+      "result_sha256": "5bc3ceb4bb747db4b1aa56a6f08a07b15e5abef2b45617c199143db941995bd0",
+      "checkpoint_sha256": "80219c6ce61b09c9293ad684c93f8fb7986b5d6f476c8f320d606fc27044824a",
+      "trainable": 51331586,
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "epoch_seconds": 4499.2102844156325
+    },
+    {
+      "arm": "D0M0",
+      "job": {
+        "phase": "F",
+        "run_id": "F-Norman-v1-scgpt-M0-D0-s26-r2",
+        "model": "scgpt",
+        "mode": "M0",
+        "data_mode": "D0",
+        "seed": 2,
+        "lr": 0.0001
+      },
+      "val_delta_rmse": 0.036104091244247016,
+      "result_sha256": "bb58e847e87e430b075db1bd6471e5fe80e64b79f08385d7669a7296baa3121c",
+      "checkpoint_sha256": "877ff8447daeac2093ed8153163558fe2c1a2fe28c8ff0a91a3205b3f37dccda",
+      "trainable": 51331586,
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "epoch_seconds": 4440.925691831391
+    },
+    {
+      "arm": "D*M0",
+      "job": {
+        "phase": "D",
+        "run_id": "D-Norman-v1-scgpt-M0-D1-s26-r0",
+        "model": "scgpt",
+        "mode": "M0",
+        "data_mode": "D1",
+        "seed": 0,
+        "lr": 0.0001
+      },
+      "val_delta_rmse": 0.03493735006551507,
+      "result_sha256": "98a1b40f658972cce408b100c32f8d63d16d76b4b5cff9ce0b4bea1107c88d79",
+      "checkpoint_sha256": "1503f9013441e57f48c160bdc579840bb7aaa7d9abc979f7262f11f5b3e59962",
+      "trainable": 51331586,
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "epoch_seconds": 4500.790640058462
+    },
+    {
+      "arm": "D*M0",
+      "job": {
+        "phase": "F",
+        "run_id": "F-Norman-v1-scgpt-M0-D1-s26-r1",
+        "model": "scgpt",
+        "mode": "M0",
+        "data_mode": "D1",
+        "seed": 1,
+        "lr": 0.0001
+      },
+      "val_delta_rmse": 0.03438287322535881,
+      "result_sha256": "8ae70201cdf5777c6e09d4f0e63415c6e343813ca99a585bbe270069e863c237",
+      "checkpoint_sha256": "e5bca36646bbaa052f4cb16aa5655201dc095e4fbca7e76548b8200f0cb9c3a0",
+      "trainable": 51331586,
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "epoch_seconds": 4434.700350669213
+    },
+    {
+      "arm": "D*M0",
+      "job": {
+        "phase": "F",
+        "run_id": "F-Norman-v1-scgpt-M0-D1-s26-r2",
+        "model": "scgpt",
+        "mode": "M0",
+        "data_mode": "D1",
+        "seed": 2,
+        "lr": 0.0001
+      },
+      "val_delta_rmse": 0.03776693610468857,
+      "result_sha256": "1404e1d4558e4a82fc1a4b272d9bd774677a90a4327a45252901f811e38f970d",
+      "checkpoint_sha256": "1a6a8158d8467c4068cd3a4c92d2721684b5cc398ba314c3b23231a9b8bacd40",
+      "trainable": 51331586,
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "epoch_seconds": 4483.364951558411
+    }
+  ]
+}

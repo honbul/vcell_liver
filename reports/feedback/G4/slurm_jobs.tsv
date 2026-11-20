@@ -1,0 +1,16 @@
+job	purpose	partition/node	resources	wall	gpu_hours	result
+20618	g4_pie_seed seed0 (first attempt)	gpu/g4 (2x A100 80GB, GPUs 4+7)	2 GPU, 16 CPU, 256G	17:17:01-17:34:15 (17 min)	0.57	CANCELLED by us: hung in first NCCL collective (no progress, GPUs 100% util with context memory only); resubmitted with NCCL_P2P_DISABLE=1 + all_reduce preflight
+20619, 20620	g4_pie_seed seed1/seed2 (first submission)	gpu	2 GPU each	never started	0	CANCELLED while pending (held the old script copy); resubmitted as 20626/20627
+20621	g4_state_fetch: ST-HVG-Replogle zeroshot (best.ckpt, eval adata, small files)	cpu/c4	4 CPU, 16G	17:20:53-17:24:15 (200 s)	0	done; 12.38 GB
+20623	g4_state_fetch (+ final.ckpt x4)	cpu/c4	4 CPU, 16G	17:27:39-17:29:09 (89 s)	0	done; total 14.27 GB, 40/40 LFS sha256 match
+20625	g4_pie_seed seed0 (hepg2 fold, official recipe)	gpu/g3 (2x A40 48GB)	2 GPU, 16 CPU, 256G	17:43:43-00:16:41 (train 23,351 s + eval 210 s)	13.09	done (A40, 2.25x slower than A100)
+20626	g4_pie_seed seed1	gpu/g4 (2x A100 80GB)	2 GPU, 16 CPU, 256G	17:59:52-20:54:48 (train 10,371 s + eval 119 s)	5.83	done
+20627	g4_pie_seed seed2	gpu/g4 (2x A100 80GB)	2 GPU, 16 CPU, 256G	18:01:52-20:56:10 (train 10,354 s + eval 98 s)	5.81	done
+20631-20634	g4_state_infer hepg2/jurkat/k562/rpe1 (final p42/p43, best p42)	cpu/c3,c5	32 CPU, 128G each	9.6-12.5 min each (17:58-18:22)	0	done
+20637	g4_f3metrics state (4 folds, nboot 2000)	cpu/c4	8 CPU, 64G	18:22:11-18:29:11 (7 min)	0	done
+20652	g4_pie_seed_score dry run (official ckpt as fake seed; checks scorer = G3 values)	cpu/c4	16 CPU, 96G	2 min	0	done; reproduced official metrics exactly (temp outputs deleted)
+20670	g4_pie_seed_score (interim, seeds 1-2)	cpu/c4	16 CPU, 96G	20:56:28-21:00:32	0	done; superseded by 20711
+20671	g4_f3metrics pie_seeds (interim, seeds 1-2)	cpu/c4	8 CPU, 64G	21:00:32-21:01:27	0	done; superseded by 20712
+20711	g4_pie_seed_score (final, seeds 0-2, nboot 2000)	cpu/c4	16 CPU, 96G	00:16:57-00:22:38	0	done
+20712	g4_f3metrics pie_seeds (final, seeds 0-2)	cpu/c4	8 CPU, 64G	00:22:38-00:23:45	0	done
+TOTAL	GPU: A100 0.57 (hung) + 5.83 + 5.81 = 12.21 GPU-h; A40 13.09 GPU-h; all = 25.30 GPU-h. CPU jobs ~1.5 node-h. Wall (first submit 17:16 -> last result 00:24) = 7.1 h	-	-	-	25.30	-

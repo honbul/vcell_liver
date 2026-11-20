@@ -1,0 +1,141 @@
+# Phase 0 audit policy for the HCC genotype-FiLM study (plan v3, 2026-11-16).
+# Written and committed BEFORE any cell-line, condition or replicate count was computed.
+# Nothing here uses a response value, a model score or a QC metric derived from treated profiles.
+policy_version: 2
+written: 2026-11-16
+status_before_audit: DATA_ELIGIBILITY_PENDING
+
+releases:
+  # Each release is audited on its own. Releases are never pooled as independent replicates.
+  - id: GSE92742            # LINCS Phase I
+    level3_local: true
+    level5_local: true
+  - id: GSE70138            # LINCS Phase II
+    level3_local: true
+    level5_local: true
+  - id: LINCS2020           # CMap 2020 "beta"
+    level3_local: false     # only siginfo/cellinfo/compoundinfo and Level 5 matrices are on the server
+    level5_local: true
+    note: >
+      Metadata is audited so the cross-release overlap is known. With Level 5 only it cannot be the
+      Level 3 main path (plan 4.1/4.2); if it were the only release with enough HCC families the
+      outcome is CONTRACT_CHANGE_REQUIRED, not a silent switch. No automatic download.
+  - id: Tahoe-100M
+    assay: scRNA, MOSAIC co-culture
+
+release_selection:
+  # one platform, chosen from eligibility counts only
+  order:
+    - n_independent_adult_hcc_families_with_eligible_conditions
+    - n_drugs_supported_in_at_least_3_families
+    - n_independent_replicate_blocks
+  tie_break: earliest release id in the list above
+  level5_only_release: reported as CONTRACT_CHANGE_REQUIRED, never selected for the Level 3 task
+
+cell_identity:
+  candidates: >
+    every platform cell whose platform annotation says liver (primary_site / cell_lineage / organ),
+    plus every platform cell whose DepMap OncotreeLineage is Liver after ID mapping
+  mapping:
+    - exact Cellosaurus accession when the platform provides one
+    - otherwise exact match of the platform name to DepMap StrippedCellLineName
+      (upper-case, alphanumerics only); the DepMap RRID then gives the Cellosaurus accession
+    - no fuzzy matching; an unmatched or conflicting name is inclusion_status=held_ambiguous
+  adult_hcc_rule: >
+    is_adult_hcc = DepMap OncotreePrimaryDisease/OncotreeSubtype is hepatocellular carcinoma
+    AND DepMap AgeCategory is Adult AND Cellosaurus disease is not hepatoblastoma.
+    Primary hepatocytes, hepatoblastoma, cholangiocarcinoma, adenocarcinoma of unclear liver
+    origin, and engineered/derived sub-lines of an excluded parent are not adult HCC.
+  fixed_exclusions:
+    - {cell: Hep-G2, cellosaurus: CVCL_0027, reason: hepatoblastoma-derived (Cellosaurus)}
+    - {cell: C3A / HepG2-C3A, cellosaurus: CVCL_1098, reason: clonal derivative of Hep-G2}
+  family_id: >
+    DepMap PatientID when present; cells that Cellosaurus lists as derived from one another or from
+    the same individual share one family_id. A family counts once however many clones it has.
+
+intervention:
+  pert_type: trt_cp only (single small molecule). No CRISPR/shRNA/OE/ligand/combination.
+  compound_key: platform compound id (BRD pert_id for L1000, drug name + pubchem_cid for Tahoe)
+  salt_stereo_policy: >
+    distinct platform compound ids are distinct interventions; nothing is merged by name,
+    fingerprint or InChIKey prefix. Compounds without a parsable structure are listed, not zero-filled.
+  dose_key: >
+    the dose exactly as reported in the instance-level metadata (value rounded to 4 significant
+    digits only to remove float formatting noise) with its unit. No nearest-dose binning.
+    A nominal-dose bin may be printed as a labelled diagnostic; it never enters a gate.
+  time_key: reported time value and unit. Missing values (-666, empty) are 'unknown' and excluded.
+  dose_time_selection:
+    candidates: every observed (dose_key, time_key) pair in the selected release
+    order:
+      - n_independent_adult_hcc_families
+      - n_drugs_with_>=3_families
+      - n_independent_replicate_blocks
+    tie_break: lower time, then lower dose
+    forbidden_inputs: response magnitude, signature strength (tas/ss_ngene/cc_q75), model scores
+
+control_and_replicates:
+  l1000_block: >
+    one detection plate (rna_plate / det_plate) = one independent experimental block. Wells of the
+    same compound+dose on one plate are technical replicates and are collapsed first.
+  l1000_matched_control: >
+    ctl_vehicle wells on the SAME detection plate (same cell, same time). A treated well with no
+    vehicle well on its own plate is unlinked and excluded; no cross-plate/time/cell substitution.
+  l1000_independent_replicates: number of distinct detection plates carrying the condition
+  tahoe_block: one treatment well (obs `sample`) on one plate
+  tahoe_matched_control: DMSO_TF wells of the same cell line on the same plate
+
+tahoe_strict_loco:
+  rule: >
+    for target family t and condition (drug, dose): remove every source row measured in a treatment
+    well that also contains t. The condition stays eligible only if the same drug at the same dose
+    is still observed in >=1 source family in a well that contains no cell of t.
+  if_none_remain: STRICT_LOCO_INELIGIBLE; no relaxation to other doses or to same-well data
+
+genotype:
+  source: DepMap 25Q3 (OmicsSomaticMutations.csv, OmicsProfiles.csv, Model.csv)
+  driver_candidates: [TP53, CTNNB1, AXIN1, ARID1A, RB1, CDKN2A, PTEN, PIK3CA]
+  states:
+    - confirmed_functional_LoF
+    - confirmed_activating_or_GoF
+    - other_or_unresolved_coding_variant
+    - no_qualifying_variant_reported_with_assay_available
+    - unmeasured_or_unresolved
+  rules:
+    - a gene with no MAF row is NOT wild type; it is no_qualifying_variant_reported_with_assay_available
+      when the model has a DNA sequencing profile (wes/wgs) in OmicsProfiles, else unmeasured_or_unresolved
+    - LoF requires the DepMap LikelyLoF or TumorSuppressorHighImpact flag
+    - GoF requires the DepMap OncogeneHighImpact or Hotspot flag on a non-LoF variant
+    - any other protein-changing variant is other_or_unresolved_coding_variant
+    - TERT promoter is not part of the block; CNV is not part of the Phase 0 block
+
+gates:
+  DATA_FAIL: >
+    independent adult HCC families < 3 at the best single (dose, time), or controls / annotation /
+    identical conditions cannot be linked, or an independent LOCO is impossible
+  PILOT_ONLY: 3-7 independent families, or a key genotype state present in essentially one family
+  ELIGIBLE_FOR_BENCHMARK: >
+    >= 8 independent families, inner split possible, >= 30 drugs in every outer evaluation, each
+    drug observed in >= 3 independent source families, control and batch links satisfied
+  on_fail: commit DATA_AUDIT.md + FEASIBILITY_DECISION.md and stop. No pan-cancer, multi-platform
+    or patient-transfer extension.
+
+amendments:
+  - version: 2
+    date: 2026-11-16
+    made_when: >
+      after the liver-annotated cell names of the three L1000 releases and the DepMap liver model
+      list had been printed, and before any Tahoe cell list, any condition count, any replicate
+      count or any coverage table existed
+    change: >
+      adult_hcc_rule tightened to the plan's "two sources disagree -> hold" rule (plan 3.2).
+      is_adult_hcc now requires BOTH DepMap (OncotreeSubtype = Hepatocellular Carcinoma, AgeCategory =
+      Adult) AND Cellosaurus (NCIt disease = Adult hepatocellular carcinoma). When DepMap says adult
+      HCC and Cellosaurus says something else (for example a 'Problematic cell line: Misclassified'
+      entry), the cell is inclusion_status=held_ambiguous and is NOT counted. Counts are also printed
+      with held cells added, as a labelled sensitivity figure that does not enter the gate.
+    also: >
+      family_id = Cellosaurus root ancestor merged with Cellosaurus same-individual (OI) links and
+      DepMap PatientID (union-find over all three). L1000 replicate plates of one plate design
+      (same pert-plate prefix, cell and time, X1/X2/X3) are counted as blocks, and the number of
+      distinct plate designs is reported next to them as the stricter independent-experiment count.
+    reference_table: manifests/genotype_film_v3/cellosaurus_lookup.tsv (Cellosaurus 57.0, 2026-10-22)

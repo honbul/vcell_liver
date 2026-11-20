@@ -1,0 +1,58 @@
+{
+  "version": "F1-ablation-v1",
+  "scope": "Validation-only ablations A6-A9 of FEEDBACK_PLAN_20261110 section 1-3. No test/holdout outcomes are loaded or scored.",
+  "dataset": "prior_assets/common/C0-Norman-v1-s26",
+  "dataset_receipt_sha256": "5fefe283fbda95f555f3cf5f7fc1f05fd99796af8376b3f07ad283cb63f99787",
+  "fixed": {
+    "protocol": "protocols/common/neural-v1.json (epochs 15, batch 32, Adam, StepLR gamma 0.9/epoch, grad-norm clip 1, bf16 autocast, 1536-gene train panel with targets forced in, validation macro delta RMSE each epoch on 34 val interventions x 32 fixed eval controls)",
+    "split_seed": 26,
+    "train_seed": 0,
+    "examples_per_epoch": 56049,
+    "updates_per_epoch": 1752,
+    "model": "scgpt"
+  },
+  "lora_scale_rule": "alpha = 2 x rank, so the LoRA scale alpha/rank stays 2 as in the registered M3 (rank 8, alpha 16)",
+  "prior_references": {
+    "C0-Norman-v1-scgpt-M0-D0-s26-r0": {"path": "prior_assets/runs/C0/C0-Norman-v1-scgpt-M0-D0-s26-r0", "label": "M0 full FT, D0, lr 1e-4", "val_delta_rmse": 0.03429},
+    "M-Norman-v1-scgpt-M1-D0-s26-r0": {"path": "prior_assets/runs/M/M-Norman-v1-scgpt-M1-D0-s26-r0", "label": "M1 decoder+pert only, lr 1e-4", "val_delta_rmse": 0.05760},
+    "M-Norman-v1-scgpt-M2-D0-s26-r0": {"path": "prior_assets/runs/M/M-Norman-v1-scgpt-M2-D0-s26-r0", "label": "M2 last 2 blocks, lr 1e-4", "val_delta_rmse": 0.04003},
+    "M-Norman-v1-scgpt-M3-D0-s26-r0": {"path": "prior_assets/runs/M/M-Norman-v1-scgpt-M3-D0-s26-r0", "label": "M3 QKV-LoRA r8, lr 1e-4", "val_delta_rmse": 0.04384},
+    "M-Norman-v1-scgpt-M-random-D0-s26-r0": {"path": "prior_assets/runs/M/M-Norman-v1-scgpt-M-random-D0-s26-r0", "label": "random init full FT, lr 1e-4", "val_delta_rmse": 0.03685},
+    "D-Norman-v1-scgpt-M0-D1-s26-r0": {"path": "prior_assets/runs/D/D-Norman-v1-scgpt-M0-D1-s26-r0", "label": "M0, D1 per-epoch control resampling", "val_delta_rmse": 0.03494},
+    "D-Norman-v1-scgpt-M0-D2-s26-r0": {"path": "prior_assets/runs/D/D-Norman-v1-scgpt-M0-D2-s26-r0", "label": "M0, D2 balanced oversampling", "val_delta_rmse": 0.03576}
+  },
+  "runs": [
+    {"run_id": "A-Norman-v1-scgpt-M0lr3em5-D0-s26-r0", "experiment": "A6", "change": "M0 lr 1e-4 -> 3e-5",
+     "mode": "M0", "lr": 3e-05, "adapt": {}, "data_mode": "D0",
+     "reference": "C0-Norman-v1-scgpt-M0-D0-s26-r0", "secondary_reference": null},
+    {"run_id": "A-Norman-v1-scgpt-M2lr3em4-D0-s26-r0", "experiment": "A6", "change": "M2 lr 1e-4 -> 3e-4",
+     "mode": "M2", "lr": 0.0003, "adapt": {}, "data_mode": "D0",
+     "reference": "M-Norman-v1-scgpt-M2-D0-s26-r0", "secondary_reference": "C0-Norman-v1-scgpt-M0-D0-s26-r0"},
+    {"run_id": "A-Norman-v1-scgpt-M3lr3em4-D0-s26-r0", "experiment": "A6", "change": "M3 lr 1e-4 -> 3e-4",
+     "mode": "M3", "lr": 0.0003, "adapt": {}, "data_mode": "D0",
+     "reference": "M-Norman-v1-scgpt-M3-D0-s26-r0", "secondary_reference": "C0-Norman-v1-scgpt-M0-D0-s26-r0"},
+    {"run_id": "A-Norman-v1-scgpt-M3lr1em3-D0-s26-r0", "experiment": "A6", "change": "M3 lr 1e-4 -> 1e-3",
+     "mode": "M3", "lr": 0.001, "adapt": {}, "data_mode": "D0",
+     "reference": "M-Norman-v1-scgpt-M3-D0-s26-r0", "secondary_reference": "C0-Norman-v1-scgpt-M0-D0-s26-r0"},
+    {"run_id": "A-Norman-v1-scgpt-M3r16-D0-s26-r0", "experiment": "A7", "change": "M3 QKV-LoRA rank 8 -> 16 (alpha 32)",
+     "mode": "M3", "lr": 0.0001, "adapt": {"lora_rank": 16, "lora_alpha": 32}, "data_mode": "D0",
+     "reference": "M-Norman-v1-scgpt-M3-D0-s26-r0", "secondary_reference": "C0-Norman-v1-scgpt-M0-D0-s26-r0"},
+    {"run_id": "A-Norman-v1-scgpt-M3ffn-D0-s26-r0", "experiment": "A7", "change": "M3 LoRA r8 on QKV -> QKV + FFN linear1/linear2",
+     "mode": "M3", "lr": 0.0001, "adapt": {"lora_ffn": true}, "data_mode": "D0",
+     "reference": "M-Norman-v1-scgpt-M3-D0-s26-r0", "secondary_reference": "C0-Norman-v1-scgpt-M0-D0-s26-r0"},
+    {"run_id": "A-Norman-v1-scgpt-M2b4-D0-s26-r0", "experiment": "A7", "change": "M2 trainable last blocks 2 -> 4",
+     "mode": "M2", "lr": 0.0001, "adapt": {"partial_blocks": 4}, "data_mode": "D0",
+     "reference": "M-Norman-v1-scgpt-M2-D0-s26-r0", "secondary_reference": "C0-Norman-v1-scgpt-M0-D0-s26-r0"},
+    {"run_id": "A-Norman-v1-scgpt-M0-Dmean-s26-r0", "experiment": "A8", "change": "single fixed control cell input -> mean of the full train control pool (7,353 cells) for every treated cell",
+     "mode": "M0", "lr": 0.0001, "adapt": {}, "data_mode": "Dmean",
+     "reference": "C0-Norman-v1-scgpt-M0-D0-s26-r0", "secondary_reference": "D-Norman-v1-scgpt-M0-D1-s26-r0"},
+    {"run_id": "A-Norman-v1-scgpt-M0-Dcap-s26-r0", "experiment": "A9", "change": "natural exposure -> capped balanced downsampling: per epoch two fresh non-duplicating capped passes (each cell at most 2x/epoch)",
+     "mode": "M0", "lr": 0.0001, "adapt": {}, "data_mode": "Dcap",
+     "reference": "C0-Norman-v1-scgpt-M0-D0-s26-r0", "secondary_reference": "D-Norman-v1-scgpt-M0-D2-s26-r0"}
+  ],
+  "data_modes": {
+    "D0": "Fixed control pairs; all 56,049 train cells once per epoch in a seeded shuffle (inherited, unchanged).",
+    "Dmean": "Same rows, order, panel and targets as D0. The control input of every treated cell is the dense mean of all 7,353 train-pool control cells (restricted to the batch gene panel). Validation is unchanged (per-eval-control predictions averaged); a diagnostic also scores the model when fed the mean of the 32 eval controls.",
+    "Dcap": "Per epoch exactly 56,049 examples (1,752 updates). Cap c = largest integer with 2*sum_i min(n_i, c) <= 56,049; intervention i receives e_i = 2*min(n_i, c) examples, and the remainder (< 2 x #capped) is spread round-robin (seeded order) over capped interventions. Rows of i are drawn by cycling a fresh per-epoch permutation of its cells, so the epoch equals two consecutive non-duplicating capped passes; each cell is used at most twice per epoch and capped interventions (n_i >= c+1) never repeat a cell when e_i <= n_i. Original fixed control pairs; global shuffle with the D0/D2 rng stream."
+  }
+}

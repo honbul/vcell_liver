@@ -1,0 +1,112 @@
+{
+ "eligibility": {
+  "n_general_episodes": 279,
+  "n_matched_episodes": 1080,
+  "n_matched_families": 41,
+  "n_matched_cells": 43,
+  "pair_kinds": {
+   "x_tag_same_compound_plate": 360
+  },
+  "n_compound_plates": 44,
+  "compound_plates_shared_by_families": 20,
+  "same_support_groups_E1_E2": true,
+  "same_truth_E1_E2": true,
+  "full_row_permutation_max_abs": 8.34e-07,
+  "different_compound_plate_or_date_stratum": "none: every eligible pair is an X-tag replicate of one compound plate"
+ },
+ "evaluate": [
+  "assets/runs/e1_evaluate/e1ev_outer0_v1",
+  "assets/runs/e1_evaluate/e1ev_outer1_v1",
+  "assets/runs/e1_evaluate/e1ev_outer2_v1"
+ ],
+ "select": [
+  "assets/runs/e1_select/e1sel_inner0_v2",
+  "assets/runs/e1_select/e1sel_inner1_v2",
+  "assets/runs/e1_select/e1sel_inner2_v2",
+  "assets/runs/e1_select/e1sel_final_inner_v2"
+ ],
+ "results": {
+  "assets/runs/e1_evaluate/e1ev_outer0_v1": {
+   "run_id": "e1ev_outer0_v1",
+   "kind": "e1_evaluate",
+   "seconds": 5584.2,
+   "commit": "6a66d0b31681ac11dd1bfd8728ed6a50fb6a496b",
+   "dirty_tree": false,
+   "slurm_job": "26881",
+   "host": "G1",
+   "partition": "outer0",
+   "e1_select": "assets/runs/e1_select/e1sel_inner0_v2",
+   "context_constants_sha256": "45f4116f6ccf4740cb08f8fc73e8cd7283bdf812b6f9076fd23858228f7f0134",
+   "n_general": 99,
+   "n_matched": 432
+  },
+  "assets/runs/e1_evaluate/e1ev_outer1_v1": {
+   "run_id": "e1ev_outer1_v1",
+   "kind": "e1_evaluate",
+   "seconds": 3748.8,
+   "commit": "6a66d0b31681ac11dd1bfd8728ed6a50fb6a496b",
+   "dirty_tree": false,
+   "slurm_job": "26882",
+   "host": "G1",
+   "partition": "outer1",
+   "e1_select": "assets/runs/e1_select/e1sel_inner1_v2",
+   "context_constants_sha256": "6979fca4f1626ba6fb30f62b3c91d63515aad733634e01ac71624cf36421aef0",
+   "n_general": 87,
+   "n_matched": 318
+  },
+  "assets/runs/e1_evaluate/e1ev_outer2_v1": {
+   "run_id": "e1ev_outer2_v1",
+   "kind": "e1_evaluate",
+   "seconds": 3153.3,
+   "commit": "6a66d0b31681ac11dd1bfd8728ed6a50fb6a496b",
+   "dirty_tree": false,
+   "slurm_job": "26883",
+   "host": "G1",
+   "partition": "outer2",
+   "e1_select": "assets/runs/e1_select/e1sel_inner2_v2",
+   "context_constants_sha256": "9815429c9737195ce9a2aa99e9d6b4ecaaca5d61131c22d0dc17897569b48244",
+   "n_general": 93,
+   "n_matched": 330
+  },
+  "assets/runs/e1_select/e1sel_inner0_v2": {
+   "run_id": "e1sel_inner0_v2",
+   "kind": "e1_select",
+   "seconds": 72.7,
+   "commit": "6a66d0b31681ac11dd1bfd8728ed6a50fb6a496b",
+   "dirty_tree": false,
+   "slurm_job": "26852",
+   "host": "C5",
+   "partition": "inner0"
+  },
+  "assets/runs/e1_select/e1sel_inner1_v2": {
+   "run_id": "e1sel_inner1_v2",
+   "kind": "e1_select",
+   "seconds": 65.5,
+   "commit": "6a66d0b31681ac11dd1bfd8728ed6a50fb6a496b",
+   "dirty_tree": false,
+   "slurm_job": "26853",
+   "host": "G1",
+   "partition": "inner1"
+  },
+  "assets/runs/e1_select/e1sel_inner2_v2": {
+   "run_id": "e1sel_inner2_v2",
+   "kind": "e1_select",
+   "seconds": 82.7,
+   "commit": "6a66d0b31681ac11dd1bfd8728ed6a50fb6a496b",
+   "dirty_tree": false,
+   "slurm_job": "26854",
+   "host": "G2",
+   "partition": "inner2"
+  },
+  "assets/runs/e1_select/e1sel_final_inner_v2": {
+   "run_id": "e1sel_final_inner_v2",
+   "kind": "e1_select",
+   "seconds": 121.5,
+   "commit": "6a66d0b31681ac11dd1bfd8728ed6a50fb6a496b",
+   "dirty_tree": false,
+   "slurm_job": "26857",
+   "host": "G2",
+   "partition": "final_inner"
+  }
+ }
+}

@@ -1,0 +1,290 @@
+{
+ "model": {
+  "formula": "Omega_ij = [delta_ij (v_r + v_e q_i) + v_s o_ij (x0.9 off the diagonal)] / (v_r + v_e + v_s) + 0.05 delta_ij",
+  "constants": {
+   "v_r": 0.016714403041443983,
+   "v_e": 0.38338440031686105,
+   "v_s": 0.055374324108338695
+  },
+  "provenance": {
+   "run_id": "diag_v1",
+   "estimated_on": "source-train families only; plate pairs from different RNA plates",
+   "n_pairs": 853,
+   "n_cells": 52,
+   "n_families": 49,
+   "replicate_data_sufficient": true,
+   "v_tot_unit_residual": 0.33428806082887963,
+   "mean_q": 0.7257458452995007,
+   "mean_o_diag": 0.7274270471144508,
+   "rule": "v_r = max(v_tot - v_e * mean q - v_s * mean o_ii, 0.05 v_tot); all three are gene-averaged variances in Level 3 units",
+   "shares": {
+    "v_r": 0.036696792924777,
+    "v_e": 0.8417278148751771,
+    "v_s": 0.12157539220004586
+   }
+  }
+ },
+ "replicate_data_sufficient": true,
+ "plate_pair_decomposition": [
+  {
+   "meta_role": "train",
+   "pair_kind": "different_compound_plate",
+   "n_pairs": 82,
+   "n_cells": 8,
+   "n_families": 8,
+   "v_e": 0.467571,
+   "v_s": 0.0712082,
+   "naive_ctl_mean_var": 0.0368993,
+   "response_var": 0.612759,
+   "v_s_median": 0.0485633,
+   "frac_pairs_v_s_positive": 1,
+   "v_s_same_bead_batch": 0.253031,
+   "v_s_other_bead_batch": 0.0627421,
+   "v_s_over_naive": 1.9298,
+   "implied_effective_control_wells_ratio": 0.518189
+  },
+  {
+   "meta_role": "train",
+   "pair_kind": "same_rna_plate",
+   "n_pairs": 1,
+   "n_cells": 1,
+   "n_families": 1,
+   "v_e": 0.155072,
+   "v_s": 0.0318774,
+   "naive_ctl_mean_var": 0.0270848,
+   "response_var": 0.185101,
+   "v_s_median": 0.0318774,
+   "frac_pairs_v_s_positive": 1,
+   "v_s_same_bead_batch": 0.0318774,
+   "v_s_other_bead_batch": NaN,
+   "v_s_over_naive": 1.17695,
+   "implied_effective_control_wells_ratio": 0.849655
+  },
+  {
+   "meta_role": "train",
+   "pair_kind": "x_tag_same_compound_plate",
+   "n_pairs": 771,
+   "n_cells": 52,
+   "n_families": 49,
+   "v_e": 0.379902,
+   "v_s": 0.0543641,
+   "naive_ctl_mean_var": 0.0242002,
+   "response_var": 0.538874,
+   "v_s_median": 0.0226696,
+   "frac_pairs_v_s_positive": 1,
+   "v_s_same_bead_batch": 0.0392147,
+   "v_s_other_bead_batch": 0.0624053,
+   "v_s_over_naive": 2.24643,
+   "implied_effective_control_wells_ratio": 0.44515
+  },
+  {
+   "meta_role": "val",
+   "pair_kind": "different_compound_plate",
+   "n_pairs": 1,
+   "n_cells": 1,
+   "n_families": 1,
+   "v_e": 0.684698,
+   "v_s": 0.0953378,
+   "naive_ctl_mean_var": 0.0379488,
+   "response_var": 0.903478,
+   "v_s_median": 0.0953378,
+   "frac_pairs_v_s_positive": 1,
+   "v_s_same_bead_batch": NaN,
+   "v_s_other_bead_batch": 0.0953378,
+   "v_s_over_naive": 2.51228,
+   "implied_effective_control_wells_ratio": 0.398045
+  },
+  {
+   "meta_role": "val",
+   "pair_kind": "x_tag_same_compound_plate",
+   "n_pairs": 97,
+   "n_cells": 6,
+   "n_families": 6,
+   "v_e": 0.364562,
+   "v_s": 0.0421032,
+   "naive_ctl_mean_var": 0.0258146,
+   "response_var": 0.542175,
+   "v_s_median": 0.0306986,
+   "frac_pairs_v_s_positive": 1,
+   "v_s_same_bead_batch": 0.0487513,
+   "v_s_other_bead_batch": 0.0505838,
+   "v_s_over_naive": 1.63098,
+   "implied_effective_control_wells_ratio": 0.613127
+  }
+ ],
+ "numerical": {
+  "solver": "Omega=I gives the plain mean, K_eff=K and shrink K/(K+kappa); Cholesky solve equals the explicit inverse; Omega symmetric positive definite",
+  "one_shared_plate": "with every support on one plate the shared component changes only the mean-correction shrinkage and the ridge scale",
+  "condition_number_max": {
+   "confirmation|K8": 7.6421,
+   "confirmation|K16": 9.6989,
+   "confirmation|K32": 10.636,
+   "dev|K8": 6.037,
+   "dev|K16": 6.8313,
+   "dev|K32": 8.8542
+  },
+  "k_eff": {
+   "confirmation|K8": {
+    "mean": 12.454,
+    "min": 4.4055,
+    "max": 22.075,
+    "max_relative_weight": 2.8997
+   },
+   "confirmation|K16": {
+    "mean": 21.338,
+    "min": 5.9452,
+    "max": 42.632,
+    "max_relative_weight": 3.0722
+   },
+   "confirmation|K32": {
+    "mean": 34.59,
+    "min": 7.204,
+    "max": 80.464,
+    "max_relative_weight": 3.294
+   },
+   "dev|K8": {
+    "mean": 10.382,
+    "min": 4.4055,
+    "max": 27.542,
+    "max_relative_weight": 2.6541
+   },
+   "dev|K16": {
+    "mean": 18.056,
+    "min": 5.9452,
+    "max": 53.75,
+    "max_relative_weight": 3.7192
+   },
+   "dev|K32": {
+    "mean": 29.282,
+    "min": 7.204,
+    "max": 92.754,
+    "max_relative_weight": 4.9797
+   }
+  }
+ },
+ "closed_form_effect": {
+  "C0_cov_minus_C0_iid": [
+   {
+    "set": "confirmation",
+    "K": 8,
+    "diff": 0.00179938,
+    "lo": 7.0254e-06,
+    "hi": 0.00372127,
+    "n_families": 9
+   },
+   {
+    "set": "confirmation",
+    "K": 16,
+    "diff": 0.00294916,
+    "lo": -0.000228578,
+    "hi": 0.00745521,
+    "n_families": 9
+   },
+   {
+    "set": "confirmation",
+    "K": 32,
+    "diff": 0.00210763,
+    "lo": 0.000144856,
+    "hi": 0.00474532,
+    "n_families": 9
+   },
+   {
+    "set": "dev",
+    "K": 8,
+    "diff": 0.00107312,
+    "lo": 0.00028132,
+    "hi": 0.00187424,
+    "n_families": 91
+   },
+   {
+    "set": "dev",
+    "K": 16,
+    "diff": 0.00110677,
+    "lo": 0.000458296,
+    "hi": 0.00180282,
+    "n_families": 91
+   },
+   {
+    "set": "dev",
+    "K": 32,
+    "diff": 0.00105397,
+    "lo": 0.000508618,
+    "hi": 0.00160646,
+    "n_families": 91
+   }
+  ],
+  "C1_cov_minus_C1_iid": [
+   {
+    "set": "confirmation",
+    "K": 8,
+    "diff": 0.00147158,
+    "lo": 1.66552e-05,
+    "hi": 0.00331064,
+    "n_families": 9
+   },
+   {
+    "set": "confirmation",
+    "K": 16,
+    "diff": 0.0014976,
+    "lo": -0.000376181,
+    "hi": 0.00386315,
+    "n_families": 9
+   },
+   {
+    "set": "confirmation",
+    "K": 32,
+    "diff": 0.000605711,
+    "lo": -0.00113573,
+    "hi": 0.0025162,
+    "n_families": 9
+   },
+   {
+    "set": "dev",
+    "K": 8,
+    "diff": 0.00143267,
+    "lo": 0.000656075,
+    "hi": 0.00222653,
+    "n_families": 91
+   },
+   {
+    "set": "dev",
+    "K": 16,
+    "diff": 0.00135975,
+    "lo": 0.000595244,
+    "hi": 0.00210554,
+    "n_families": 91
+   },
+   {
+    "set": "dev",
+    "K": 32,
+    "diff": 0.000807993,
+    "lo": 6.76821e-05,
+    "hi": 0.00143881,
+    "n_families": 91
+   }
+  ]
+ },
+ "revision_R2": {
+  "decision": {
+   "rule": "adopt the best K=16 variant only if its paired family interval against equal weights lies below 0 on source-train dev episodes",
+   "best_k16": {
+    "variant": "diag_only|x64",
+    "delta_rmse": 0.5376142877471316,
+    "diff_vs_iid": -0.00012332626751491,
+    "lo": -0.00024217917368962215,
+    "hi": -1.0241027716753473e-06,
+    "kappa_b": 16.0
+   },
+   "adopt": true,
+   "seconds": 13.6,
+   "commit": "f9c7fe9"
+  },
+  "table": "cov_strength_dev.tsv",
+  "reading": "every variant with the shared-plate block is not better than equal weights; the adopted diagonal-only variant differs from equal weights by about 1e-4"
+ },
+ "not_verified": [
+  "a gene-by-gene covariance (only a K x K observation covariance scaled by gene-averaged variances is modelled)",
+  "the covariance of an HCC target's own plates (source-estimated constants are applied to the target's plate metadata)",
+  "whether X-tag replicate plates are independent cultures"
+ ]
+}

@@ -1,0 +1,37 @@
+slurm_job	job_name	status	commit	wall_seconds	cpu_seconds_user_sys	max_rss_gb	cores_reserved	args_or_note
+26881	r8v2_e1ev	completed	6a66d0b	5592	43700	5.13	8	src.r8_transfer_v2.e1 evaluate --run-id e1ev_outer0_v1 --partition outer0 --e1-select assets/runs/e1_select/e1sel_inner0_v2
+26882	r8v2_e1ev	completed	6a66d0b	3756	29463	5.12	8	src.r8_transfer_v2.e1 evaluate --run-id e1ev_outer1_v1 --partition outer1 --e1-select assets/runs/e1_select/e1sel_inner1_v2
+26883	r8v2_e1ev	completed	6a66d0b	3157	24936	5.11	8	src.r8_transfer_v2.e1 evaluate --run-id e1ev_outer2_v1 --partition outer2 --e1-select assets/runs/e1_select/e1sel_inner2_v2
+27229	r8v2_e1rep	completed	6a66d0b	27	26	0.22	8	src.r8_transfer_v2.report e1 --select assets/runs/e1_select/e1sel_inner0_v2 assets/runs/e1_select/e1sel_inner1_v2 assets/runs/e1_select/e1sel_inner2_v2 assets/runs/e1_select/e1sel_final_inner_v2 --evaluate assets/runs/e1_evaluate/e1ev_outer0_v1 assets/runs/e1_evaluate/e1ev_outer1_v1 assets/runs/e1_evaluate/e1ev_outer2_v1
+26845	r8v2_e1sel	failed	1b59b76	3	3	0.48	8	src.r8_transfer_v2.e1 select --run-id e1sel_inner0_v1 --partition inner0 --p0-select assets/runs/p0_select/p0sel_inner0_v1
+26846	r8v2_e1sel	failed	1b59b76	3	3	0.48	8	src.r8_transfer_v2.e1 select --run-id e1sel_inner1_v1 --partition inner1 --p0-select assets/runs/p0_select/p0sel_inner1_v1
+26847	r8v2_e1sel	failed	1b59b76	3	3	0.48	8	src.r8_transfer_v2.e1 select --run-id e1sel_inner2_v1 --partition inner2 --p0-select assets/runs/p0_select/p0sel_inner2_v1
+26848	r8v2_e1sel	failed	1b59b76	3	3	0.48	8	src.r8_transfer_v2.e1 select --run-id e1sel_final_inner_v1 --partition final_inner --p0-select assets/runs/p0_select/p0sel_final_inner_v1
+26852	r8v2_e1sel	completed	6a66d0b	76	428	4.90	8	src.r8_transfer_v2.e1 select --run-id e1sel_inner0_v2 --partition inner0 --p0-select assets/runs/p0_select/p0sel_inner0_v1
+26853	r8v2_e1sel	completed	6a66d0b	68	420	4.89	8	src.r8_transfer_v2.e1 select --run-id e1sel_inner1_v2 --partition inner1 --p0-select assets/runs/p0_select/p0sel_inner1_v1
+26854	r8v2_e1sel	completed	6a66d0b	85	551	4.92	8	src.r8_transfer_v2.e1 select --run-id e1sel_inner2_v2 --partition inner2 --p0-select assets/runs/p0_select/p0sel_inner2_v1
+26857	r8v2_e1sel	completed	6a66d0b	124	742	4.94	8	src.r8_transfer_v2.e1 select --run-id e1sel_final_inner_v2 --partition final_inner --p0-select assets/runs/p0_select/p0sel_final_inner_v1
+27231	r8v2_e2bch	completed	0be3577	2680	20646	6.17	8	src.r8_transfer_v2.e2b channel --run-id e2bch_outer0_v1 --partition outer0 --p0-select assets/runs/p0_select/p0sel_inner0_v1
+27232	r8v2_e2bch	completed	0be3577	1196	9017	6.20	8	src.r8_transfer_v2.e2b channel --run-id e2bch_outer1_v1 --partition outer1 --p0-select assets/runs/p0_select/p0sel_inner1_v1
+27233	r8v2_e2bch	completed	0be3577	1839	14139	6.23	8	src.r8_transfer_v2.e2b channel --run-id e2bch_outer2_v1 --partition outer2 --p0-select assets/runs/p0_select/p0sel_inner2_v1
+27262	r8v2_e2brep	completed	6dfac2b	4	4	0.09	8	src.r8_transfer_v2.report e2b --channel assets/runs/e2b_channel/e2bch_outer0_v1 assets/runs/e2b_channel/e2bch_outer1_v1 assets/runs/e2b_channel/e2bch_outer2_v1
+27286	r8v2_e2brep	completed	6dfac2b	5	5	0.09	8	src.r8_transfer_v2.report e2b --channel assets/runs/e2b_channel/e2bch_outer0_v1 assets/runs/e2b_channel/e2bch_outer1_v1 assets/runs/e2b_channel/e2bch_outer2_v1 --sru assets/runs/e2b_sru/e2bsru_outer0_v2 assets/runs/e2b_sru/e2bsru_outer1_v2 assets/runs/e2b_sru/e2bsru_outer2_v2
+27234	r8v2_e2bsru	failed	0be3577	37	171	4.92	8	src.r8_transfer_v2.e2b sru --run-id e2bsru_outer0_v1 --partition outer0 --p0-select-inner assets/runs/p0_select/p0sel_inner0_v1
+27235	r8v2_e2bsru	failed	0be3577	33	107	4.89	8	src.r8_transfer_v2.e2b sru --run-id e2bsru_outer1_v1 --partition outer1 --p0-select-inner assets/runs/p0_select/p0sel_inner1_v1
+27259	r8v2_e2bsru	completed	6dfac2b	447	3131	8.36	8	src.r8_transfer_v2.e2b sru --run-id e2bsru_outer0_v2 --partition outer0 --p0-select-inner assets/runs/p0_select/p0sel_inner0_v1
+27260	r8v2_e2bsru	completed	6dfac2b	508	3629	8.38	8	src.r8_transfer_v2.e2b sru --run-id e2bsru_outer1_v2 --partition outer1 --p0-select-inner assets/runs/p0_select/p0sel_inner1_v1
+27261	r8v2_e2bsru	completed	6dfac2b	399	2773	8.32	8	src.r8_transfer_v2.e2b sru --run-id e2bsru_outer2_v2 --partition outer2 --p0-select-inner assets/runs/p0_select/p0sel_inner2_v1
+27230	r8v2_hcc	completed	0be3577	88	512	3.81	8	src.r8_transfer_v2.e1 hcc --run-id e1hcc_v1
+27236	r8v2_hccrep	completed	0be3577	29	29	0.17	8	src.r8_transfer_v2.report hcc --run assets/runs/e1_hcc/e1hcc_v1
+26816	r8v2_p0anc	completed	1b59b76	81	544	5.09	8	src.r8_transfer_v2.p0 anchor --run-id p0anc_outer0_v1 --partition outer0
+26817	r8v2_p0anc	completed	1b59b76	141	931	5.09	8	src.r8_transfer_v2.p0 anchor --run-id p0anc_outer1_v1 --partition outer1
+26818	r8v2_p0anc	completed	1b59b76	62	367	5.03	8	src.r8_transfer_v2.p0 anchor --run-id p0anc_outer2_v1 --partition outer2
+26843	r8v2_p0anc	completed	1b59b76	235	1717	4.88	8	src.r8_transfer_v2.p0 anchor --run-id p0anc_global_v1 --partition global --hcc
+26844	r8v2_p0k8	completed	1b59b76	2146	16751	6.03	8	src.r8_transfer_v2.p0 k8 --run-id p0k8_global_v1 --p0-select assets/runs/p0_select/p0sel_final_inner_v1
+27028	r8v2_p0rep	completed	6a66d0b	17	17	0.23	8	src.r8_transfer_v2.report p0 --p0-select assets/runs/p0_select/p0sel_inner0_v1 assets/runs/p0_select/p0sel_inner1_v1 assets/runs/p0_select/p0sel_inner2_v1 assets/runs/p0_select/p0sel_final_inner_v1 --p0-anchor assets/runs/p0_anchor/p0anc_outer0_v1 assets/runs/p0_anchor/p0anc_outer1_v1 assets/runs/p0_anchor/p0anc_outer2_v1 assets/runs/p0_anchor/p0anc_global_v1 --p0-k8 assets/runs/p0_k8/p0k8_global_v1
+26788	r8v2_p0sel	completed	1b59b76	83	233	4.95	8	src.r8_transfer_v2.p0 select --run-id p0sel_inner0_v1 --partition inner0
+26812	r8v2_p0sel	completed	1b59b76	62	255	5.03	8	src.r8_transfer_v2.p0 select --run-id p0sel_inner1_v1 --partition inner1
+26813	r8v2_p0sel	completed	1b59b76	71	313	5.02	8	src.r8_transfer_v2.p0 select --run-id p0sel_inner2_v1 --partition inner2
+26814	r8v2_p0sel	completed	1b59b76	93	446	5.07	8	src.r8_transfer_v2.p0 select --run-id p0sel_final_inner_v1 --partition final_inner
+27111	r8v2_repdry	failed at submit (sbatch --wrap used sh; nothing ran)		0	0	0.00	4	report e1 dry run (outer1, outer2) before the full E1 report
+27112	r8v2_repdry	dry-run (report code check on 2 folds; output to a scratch dir, deleted)		0	0	0.00	4	report e1 dry run (outer1, outer2) before the full E1 report

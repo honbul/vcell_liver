@@ -1,0 +1,15 @@
+model	in_domain	unseen_perturbation	combo	unseen_cell_context	double_ood	chemical_unseen_context	multi_cell_line_training	predict_with_target_controls_only	evidence
+linear_mean_baselines	yes	yes	additive	partial	no	no	yes	yes	Ahlmann-Eltze 2025 Nat Methods 22:1657
+GEARS	yes	yes	yes	no	no	no	no	no	TxPert 2026; Ahlmann-Eltze 2025
+scGPT	yes	yes	yes	no	no	no	no	no	Cui 2024; Systema 2026
+Geneformer	embedding only	no	no	no	no	no	no	no	Ahlmann-Eltze 2025 Methods
+scFoundation	yes	panel-limited	yes	no	no	no	no	no	Hao 2024; Ahlmann-Eltze 2025
+TxPert	yes	yes	yes (Norman)	yes (4-line LOCO)	not reported	no	yes	yes	Nat Biotechnol 2026 s41587-026-03113-4
+State	yes	no (one-hot pert)	no	yes (underrepresented 30% + zero-shot FT)	no	yes (Tahoe 5 held-out lines)	yes	partial	Cell 189:5914 (2026); HF ST-HVG-Replogle
+Stack	n/a	no	no	partial (ICL cell type/donor)	no	partial (OpenProblems drugs)	n/a	prompt-based	bioRxiv 2026.01.09.698608
+PIE	yes	yes	yes	yes (4-line LOCO)	yes (unseen_ctx_pert)	yes (tahoe_wdataset)	yes	yes (controls_only=true)	HF PIE_replogle_wdataset; ArcInstitute/pie AGENTS.md
+CPA_chemCPA	yes	drugs only	yes	partial	no	partial	yes (covariates)	partial	theislab/cpa; Ahlmann-Eltze 2025
+scLAMBDA	yes	yes	yes	partial (adapted by TxPert)	no	no	yes (multi-cell-line script)	unverified	TxPert 2026; bioRxiv 2024.12.04.626878
+PRESAGE	yes	yes	no	no	no	no	no	no	Genentech/PRESAGE; bioRxiv 2025.06.03.657653
+LPM	yes	partial	n/a	no (out-of-vocabulary contexts)	no	no	yes	no	Nat Comput Sci 10.1038/s43588-025-00870-1
+Tahoe-x1	yes	n/a	n/a	via State transition scripts	no	yes	yes	yes	tahoebio/tahoe-x1 README

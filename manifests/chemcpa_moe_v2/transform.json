@@ -1,0 +1,34 @@
+{
+ "truth": "mean over cells of log1p(1e4 * count / library), treated minus same-plate DMSO pool of the same cell line, replicate wells equally weighted",
+ "v1_truth": "log1p(1e4 * sum count / sum library), same subtraction",
+ "n_lines": 50,
+ "n_drug_groups": 349,
+ "n_panel_genes": 2000,
+ "n_valid_conditions": 16521,
+ "n_valid_train": 9883,
+ "n_valid_val": 3305,
+ "n_valid_test": 3333,
+ "lines_with_zero_coverage": [
+  "CVCL_1531",
+  "CVCL_1571"
+ ],
+ "min_cells_treated": 50,
+ "min_cells_dmso": 100,
+ "unmapped_drug_names": [
+  "Erdafitinib ",
+  "Sacubitril/Valsartan",
+  "Selinexor ",
+  "Verteporfin"
+ ],
+ "basal_pooled_over_plates": [
+  "plate11",
+  "plate13",
+  "plate2",
+  "plate5",
+  "plate8"
+ ],
+ "truth_rms_against_zero": 0.11351693421602249,
+ "sha256_Y": "ca65f5e0d00cea0416d12e42e18ebf210b92fb386c4779d61ea2e4b339d44c7b",
+ "panel_from": "manifests/moe_drug_v1/genes.tsv (selected on v1 train responses only)",
+ "split_from": "manifests/moe_drug_v1/splits.tsv (seed 20261112)"
+}

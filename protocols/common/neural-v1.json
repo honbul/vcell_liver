@@ -1,0 +1,34 @@
+{
+  "version": "C0-M-D-F-neural-v1",
+  "epochs": 15,
+  "patience": 10,
+  "training_batch_size": 32,
+  "validation_control_chunk": 4,
+  "train_seed": 0,
+  "confirmation_training_seeds": [0, 1, 2],
+  "scgpt": {
+    "learning_rates": [0.0001, 0.00005],
+    "default_lr": 0.0001,
+    "max_train_genes": 1536,
+    "dtype": "bf16 autocast with fp32 loss and optimizer",
+    "optimizer": "Adam, StepLR gamma 0.9, gradient norm clipping 1",
+    "model_modes": ["M0", "M1", "M2", "M3", "M-random"],
+    "partial_last_blocks": 2,
+    "lora_rank": 8,
+    "lora_alpha": 16
+  },
+  "gears": {
+    "default_lr": 0.001,
+    "dtype": "fp32",
+    "optimizer": "Adam with weight decay 0.0005, StepLR gamma 0.5, gradient value clipping 1",
+    "coexpression": "Absolute Pearson from train single-intervention expression only, incoming top 21 and threshold > 0.4; same graph on each cell in the batch",
+    "go": "Author GO prior, incoming top 21 within the shared output gene set"
+  },
+  "loss": "Mean squared post-treatment expression residual, on all output genes for GEARS and up to 1536 sampled genes per scGPT train batch with all targets forced in",
+  "model_selection": "Select epoch on validation macro delta RMSE only. In the M/D screens score no test outcomes. Preserve equal example/update opportunity; record actual exposure and early stopping.",
+  "data_modes": {
+    "D0": "Fixed control pairs and shuffled train cells exactly once per epoch",
+    "D1": "Same train cells, shuffle and budget; hash a new control assignment per epoch",
+    "D2": "Same total examples; intervention counts differ by at most one per epoch. Permute each condition's cells and cycle through if needed, using original fixed control IDs"
+  }
+}
