@@ -3,7 +3,7 @@
 # Written BEFORE any v3 outer score. The commit that freezes this file (status: frozen) is the freeze SHA; a later change needs a
 # dated amendment below and never touches the primary contrast, thresholds, eligibility minima or the decision table.
 track: r8_unseen_drug_v3
-status: draft
+status: frozen   # freeze = the commit that sets this line (recorded in reports/r8_unseen_drug_selection_v3/run_ledger.tsv)
 question: >
   When the outer query drug's source response is excluded from model fitting AND from constant selection, does the chemistry path
   (ECFP ridge query anchor + chem/ctrl kernel residual transfer, ridge_C1chem) beat the simple fallback (fb_C0) in centred RMSE?
@@ -90,4 +90,11 @@ compute:
   concurrent_jobs: "2 at plan time; raised to 8 v3r8_ jobs on 2026-11-20 (user request via coordinator); split = one job per (outer fold, drug fold) block, no design change"
   memory_per_job: 24G
   stop_rule: "if the pilot predicts > 24 h wall-clock for the package, stop and report"
+p0_record:   # written before any outer score (P0-R8 gate)
+  checks: "runs check/chk_outer{0,1,2}_v1 (jobs 27751-27753) and _v2 (27758-27760, v2-reference row fixed): every v3 overlap check = 0"
+  outer_episodes_vs_v2: "per (cell, support seed): n_query, n_support, eligibility identical to v2 e2bsru_outer*_v2/eligibility.tsv in all 9 blocks"
+  eligibility: "all 9 (outer fold, drug fold) blocks have 16-22 eligible families (>= 10) -> all scored"
+  pilot: "pilot_outer0_d0_v1 (job 27755): inner selection only, 45 s wall, 6.9 GB max RSS; no outer score computed. The pilot's selected
+          kappa_f = 32 is the upper grid end; the grid is NOT changed (fixed before the pilot)."
+  package_estimate: "9 blocks x ~1-3 min + report << 24 h"
 amendments: []
