@@ -1,0 +1,58 @@
+{
+  "spec": "configs/r9/a4_external_norm_v2.json",
+  "transform_bundle": {
+    "n_shared_unique_symbols": 18618,
+    "source_h5ad": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/processed/GSE149614.h5ad",
+    "source_sha256_expected": "b234f5ca91c5655ede829e7520c07d361b578f8d1b59bb09d60a49976f48be6d",
+    "ext_h5ad_sha256": "a41f037ba1f7e6311bb6366027504f5401d483489951de0a01644d0c4f51a64d",
+    "versions": {
+      "numpy": "1.26.4",
+      "scipy": "1.14.1",
+      "sklearn": "1.5.2"
+    },
+    "threads": "8",
+    "random_state": 42,
+    "commit": "5c9340e40499e066a8ac7aa65fd6441c90f7b771",
+    "resources": {
+      "wall_seconds": 95.56,
+      "cpu_seconds": 175.06,
+      "peak_rss_gib": 9.332,
+      "host": "g4",
+      "slurm_job": "26738",
+      "slurm_task": null
+    },
+    "files": {
+      "ALL__full.npz": "62e7f516ce4292172120414e63e08521050241d1fd1bf30a1b95b12d79273b53",
+      "ALL__excl_B.npz": "bc63e12e83fb1a79c85843d43f6ae4399658d47c6b5883e19ff4f8abd85801c0",
+      "ALL__excl_Endothelial.npz": "d4f88f2bdf62278efd29bd9709927365e321a97346d5d316f184d44218354b6b",
+      "ALL__excl_Fibroblast.npz": "221740c9388f731ab0fa4fc0ef5aa406e353c6beb5568a74dd8a22559f93ea9b"
+    }
+  },
+  "compat": {
+    "T1_pass": true,
+    "path": "compatible",
+    "tolerances": {
+      "exact": [
+        "n_shared_unique_symbols",
+        "shared symbol list",
+        "hvg_symbols (order)",
+        "fitmask",
+        "source cell_ids",
+        "ext_cell_ids"
+      ],
+      "source_Z_max_abs": 0.001,
+      "source_Z_min_per_pc_pearson": 0.99999,
+      "ext_Z_v1method_max_abs": 0.001,
+      "on_pass": "compatible: heads fitted on the stored v1 source Z; Replay input = stored v1 Z_ext; Corrected input = corrected external matrix through the rebuilt transform",
+      "on_fail": "rebuilt: heads fitted on the rebuilt source Z; Replay input = external counts with the v1 (HVG-only) normalization through the rebuilt transform; Corrected = corrected normalization through the same rebuilt transform; calibration from a new 3-group source OOF on the rebuilt Z (mandatory)"
+    },
+    "commit": "5c9340e40499e066a8ac7aa65fd6441c90f7b771"
+  },
+  "replay_T2_pass_rows": 81,
+  "replay_rows": 84,
+  "tasks_failing_T2": [
+    "sparse_B_N64_D4__s2",
+    "sparse_Fibroblast_N64_D4__s1"
+  ],
+  "calibration_provenance": "reports/r9_rare_state/a4_external_norm_v2/calibration_provenance.tsv"
+}

@@ -12,3 +12,17 @@ __pycache__/
 .env
 prior_assets
 .venv*/
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store
+
+# Large transient artifacts; keep curated reports/manifests in Git
+/tmp/
+/wandb/
+/results/raw/
+/reports/render_preview/
+
+# R9 (donor-supported rare state): all caches, runs, envs, checkpoints, predictions live under assets/
+/assets/

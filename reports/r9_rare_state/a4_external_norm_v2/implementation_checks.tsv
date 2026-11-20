@@ -1,0 +1,11 @@
+check	value	passed
+source rows through corrected external path (permuted genes, +3 non-shared genes) == source HVG values	4.76837e-07	True
+same rows through the v1 external path differ from source values (bug reproduced)	0.497467	True
++100 counts on a shared non-HVG gene lowers all nonzero corrected HVG values	1	True
+same bump leaves the v1 (HVG-only library) values unchanged	0	True
+zero-library cell -> all-zero, finite HVG values	0	True
+duplicated external symbols excluded from the shared list	0	True
+n duplicated external symbols (info)	6	True
+shared list sorted and unique; length equals v1 ALL__meta n_shared_unique_symbols	18618	True
+symbol intersection incl. duplicates (v1 RESULTS 18,624; info)	18624	True
+external zero-library cells over shared genes (info)	0	True
