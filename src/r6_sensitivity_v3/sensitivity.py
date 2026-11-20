@@ -412,7 +412,7 @@ def main() -> None:
                             abs_diff=float(np.abs(m[q] - m[q + "_v2"]).max())))
         chk.append(dict(item="verdict primary conditional", field="label", v2=np.nan, v3_recomputed=np.nan,
                         abs_diff=float(verd["primary | conditional"][0] != v2[v2.row_type == "verdict"].quantity.iloc[0])))
-    C = pd.DataFrame(chk)
+    C = pd.DataFrame(chk, columns=["item", "field", "v2", "v3_recomputed", "abs_diff"])
     tol = float(spec["reproduction_tolerance"])
     repro_ok = bool(len(C) and (C.abs_diff <= tol).all())
     C["pass"] = C.abs_diff <= tol
