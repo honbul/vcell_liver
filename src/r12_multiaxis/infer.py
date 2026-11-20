@@ -35,6 +35,11 @@ def argmin(options, tie):
 def integrated_options(cfg, source, development, device):
     records, shifts = development["records"], development["shift"]
     arms, winners, calibrated, shift, shift_pool, shift_nn = single_choices(records, shifts, cfg["training"])
+    if {"D1", "D1_match"} <= set(arms):
+        comparison = arms["D1_match"][1]
+        dose = arms["D1"][1]
+        arms["D1"] = (None, replace(dose, epoch=comparison.epoch, lr=comparison.lr,
+                                    horizon=comparison.horizon))
     best_context = winners["Context"][1]
     best_structure = winners["Structure"][1]
     best_loss = winners["Loss"][1]
@@ -209,13 +214,24 @@ def create_predictions(cfg, source, out, selection, device):
     for label in ("Context", "Structure", "Loss"):
         final.alias(f"{label}_matched", selection["attribution"][label])
     np.save(out / "panel.npy", fit.panel)
+    np.save(out / "anchor.npy", fit.offset)
+    for arm, value in selection["arm_fits"].items():
+        rank = value["candidate"]["response_rank"]
+        if rank:
+            vectors, center = fit.inputs("pca", rank=rank).response_head
+            original = fit.residual / fit.scale
+            lost = original - ((original - center) @ vectors.T @ vectors + center)
+            rmse = np.sqrt(np.square(lost * fit.scale).mean(axis=1))
+            np.savez(out / f"models/{arm}_projection.npz", vectors=vectors, center=center, scale=fit.scale,
+                     train_reconstruction_rmse=np.average(rmse, weights=fit.weight))
+            final.checkpoints.append(f"models/{arm}_projection.npz")
     fit.query.rows.to_csv(out / "rows.tsv", sep="\t", index=False)
     write_json(out / "prediction_index.json", final.entries)
     write_json(out / "selection.json", selection)
     write_json(out / "runtime.json", {"ledger": final.ledger, "aliases": final.aliases,
                                      "vicreg_representation": final.diagnostic_by_seed,
                                      "pool_offset_fallback": {k: fit.offset_level.count(k) for k in sorted(set(fit.offset_level))}})
-    files = {"panel.npy", "rows.tsv", "selection.json", "prediction_index.json", "runtime.json", "joint_dev.json",
+    files = {"panel.npy", "anchor.npy", "rows.tsv", "selection.json", "prediction_index.json", "runtime.json", "joint_dev.json",
              *final.checkpoints, *(file for specs in final.entries.values() for file in specs.values())}
     return {f: sha256(out / f) for f in sorted(files)}
 

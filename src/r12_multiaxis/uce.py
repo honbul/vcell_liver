@@ -123,7 +123,7 @@ def embed(cfg, assets, root, repo, out, batch_size):
                     pos[j, :len(seq)] = torch.as_tensor(seq)
                     mask[j, :len(seq)] = 1
                 with torch.inference_mode(), torch.autocast("cuda", dtype=torch.float16):
-                    seq_embedding = nn.functional.normalize(model.pe_embedding(pos.cuda()), dim=2)
+                    seq_embedding = nn.functional.normalize(model.pe_embedding(pos.T.contiguous().cuda()), dim=2)
                     _, result = model(seq_embedding, mask=mask.cuda())
                 embeds.append(result.float().cpu().numpy())
             if first % (batch_size * 64) == 0:

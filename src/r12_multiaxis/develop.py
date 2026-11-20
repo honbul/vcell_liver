@@ -209,6 +209,17 @@ def single_choices(records, shift, cfg):
     return results, winners, diag, official, simple, neural
 
 
+def registered(fit, phase):
+    choices = registry(fit)
+    if phase == "scaffold":
+        return [a for a in choices if not a.arm.startswith(("D1", "E"))]
+    if phase == "core":
+        mandatory = {*BASELINES, "C1", "C2", "C3", "C3_rank0", "A1", "A2", "A3", "A4", "A5", "A6",
+                     "L1", "L2", "L3", "L5", "L6", "J1_FiLM_L2"}
+        return [a for a in choices if a.arm in mandatory]
+    return choices
+
+
 def run_development(cfg, source, args, prior):
     start = time.monotonic()
     records = [] if prior is None else prior["records"]
@@ -220,11 +231,7 @@ def run_development(cfg, source, args, prior):
         fit_rows, query_rows = source.inner(inner)
         fit = Fit(source, fit_rows, query_rows, observe_query=True)
         eval_fit = Evaluator(fit, args.device)
-        arms = registry(fit)
-        if args.phase == "core":
-            mandatory = {*BASELINES, "C1", "C2", "C3", "C3_rank0", "A1", "A2", "A3", "A4", "A5", "A6",
-                         "L1", "L2", "L3", "L5", "L6", "J1_FiLM_L2"}
-            arms = [a for a in arms if a.arm in mandatory]
+        arms = registered(fit, args.phase)
         add_grid(eval_fit, arms, inner, records, ledger, known)
         if not any(r["inner"] == inner for r in shift):
             cross = CalibratorFits(source, fit, fit_rows, args.device, cfg["split_seed"] + inner + 100)
@@ -237,7 +244,7 @@ def run_development(cfg, source, args, prior):
             fit_rows, query_rows = source.inner(inner)
             fit = Fit(source, fit_rows, query_rows, observe_query=True)
             eval_fit = Evaluator(fit, args.device)
-            arms = registry(fit)
+            arms = registered(fit, args.phase)
             add_grid(eval_fit, expansion(arms, tuning), inner, records, ledger, known)
             del fit, eval_fit
         boundary = {
@@ -253,7 +260,7 @@ def run_development(cfg, source, args, prior):
             fit_rows, query_rows = source.inner(inner)
             fit = Fit(source, fit_rows, query_rows, observe_query=True)
             evaluator = Evaluator(fit, args.device)
-            specs = registry(fit)
+            specs = registered(fit, args.phase)
             extend = [replace(a, horizon=2 * tuning["max_epochs"])
                       for a in specs + expansion(specs, tuning) if a.network and a.arm in boundary]
             add_grid(evaluator, extend, inner, records, ledger, known)
@@ -271,7 +278,7 @@ def main():
     parser.add_argument("--outer", type=int, choices=[0, 1, 2], required=True)
     parser.add_argument("--roles", nargs="+", choices=["A", "B"], default=["A", "B"])
     parser.add_argument("--device", choices=["cpu", "cuda"], required=True)
-    parser.add_argument("--phase", choices=["core", "expanded"], required=True)
+    parser.add_argument("--phase", choices=["core", "expanded", "scaffold"], required=True)
     parser.add_argument("--prior", type=Path)
     parser.add_argument("--split-dir", default="partition")
     parser.add_argument("--stage-dir", default="staged")
@@ -284,7 +291,8 @@ def main():
         source = Source(cfg, args.assets, args.outer, role, args.split_dir, args.stage_dir)
         results = run_development(cfg, source, args, prior)
         results.update(config_sha256=sha256(args.config), partition_sha256=source.split["manifest_sha256"],
-                       device=args.device)
+                       device=args.device,
+                       code={str(p): sha256(p) for p in Path("src/r12_multiaxis").glob("*.py")})
         write_json(args.out / f"outer{args.outer}-{role}.json", results)
         print(f"outer {args.outer} role {role}: {len(results['records']) // 2} completed grid fits", flush=True)
 

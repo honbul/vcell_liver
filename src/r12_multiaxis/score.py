@@ -35,6 +35,8 @@ ATTRIBUTION = {
     "J1_FiLM_L2-B_contrast": ("contrast", {"J1_FiLM_L2": 1, "B_contrast": -1}),
     "J2_raw-single": ("contrast", {"J2_raw": 1, "single": -1}),
     "J2_calibrated-single": ("contrast", {"J2_calibrated": 1, "single": -1}),
+    "J2_raw-J2_pca_context": ("contrast", {"J2_raw": 1, "J2_pca_context": -1}),
+    "J2_raw-J2_mse": ("contrast", {"J2_raw": 1, "J2_mse": -1}),
     "J2_raw-B_contrast": ("contrast", {"J2_raw": 1, "B_contrast": -1}),
     "J2_calibrated-B_contrast": ("contrast", {"J2_calibrated": 1, "B_contrast": -1}),
 }
@@ -173,6 +175,26 @@ class FoldScore:
         np.savez(args.out / f"outer{fold}-{role}-truth.npz", absolute=self.measured,
                  own_control=self.own, score_delta=self.observed, panel=self.panel)
 
+    def response_compression(self):
+        projections = sorted(self.folder.glob("models/*_projection.npz"))
+        if not projections:
+            return []
+        anchor = np.load(self.folder / "anchor.npy")
+        target = self.measured - self.own - anchor
+        records = []
+        for path in projections:
+            with np.load(path) as cached:
+                vectors, center, scale = (cached[k] for k in ("vectors", "center", "scale"))
+                z = target / scale
+                reconstructed = ((z - center) @ vectors.T @ vectors + center) * scale
+                error = cond_rmse(reconstructed, target)
+                records.append({
+                    "fold": self.fold, "role": self.role, "rank": len(vectors),
+                    "train_reconstruction_rmse": float(cached["train_reconstruction_rmse"]),
+                    "held_out_reconstruction_rmse": float(np.average(error, weights=self.weights["all"])),
+                })
+        return records
+
     def scope_weights(self, mask):
         result = np.zeros(len(mask))
         if mask.any():
@@ -293,7 +315,7 @@ def combine_panels(parts, effects, out):
             control = next((statistics[(a, scope)][metric] for a, c in arms.items() if c == -1), None)
             stats.append(dict(contrast=label, scope=scope, metric=metric, confidence=label_confidence,
                               ri=parts[0].draws.shape[0], unit="compound_group", effect=score,
-                              lower=lower, upper=upper, relative_percent=100 * score / control if control else None,
+                              lower=lower, upper=upper, relative_percent=100 * score / control if control and len(arms) == 2 else None,
                               groups=statistics[(next(iter(arms)), scope)]["groups"],
                               classification="improves" if upper < 0 else "worse" if lower > 0 else "inconclusive"))
             intervals[f"{label}|{scope}"] = sampled[:, j]
@@ -342,6 +364,9 @@ def final_score(args, cfg):
             name = f"{family}_{base}"
             effects[f"{name}-S_base_{base}"] = ("absolute", {name: 1, f"S_base_{base}": -1})
     combine_panels(parts, effects, args.out)
+    compression = [row for part in parts for row in part.response_compression()]
+    if compression:
+        pd.DataFrame(compression).to_csv(args.out / "response_pca_diagnostics.tsv", sep="\t", index=False)
     write_json(args.out / "receipt.json", dict(
         freeze_sha256=sha256(args.freeze), bootstrap_draws=len(draws), groups=len(group_ids),
         files={p.name: sha256(p) for p in args.out.iterdir() if p.is_file()}))
