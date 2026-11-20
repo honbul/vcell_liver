@@ -100,11 +100,11 @@ def ci(x):
     return float(np.percentile(x, 2.5)), float(np.percentile(x, 97.5)), int(len(x))
 
 
-def main(a):
+def main(args):
     sp = yaml.safe_load(open(SPEC))
-    out = runs("report", a.run_id)
+    out = runs("report", args.run_id)
     os.makedirs(out, exist_ok=False)
-    eps, meta = load(a.blocks)
+    eps, meta = load(args.blocks)
     fams = sorted({e["family"] for e in eps})
     fam_idx = {f: i for i, f in enumerate(fams)}
     drugs = sorted({g for e in eps for g in e["groups"]})
@@ -175,7 +175,7 @@ def main(a):
     w.columns = [f"{m}__{v}" for v, m in w.columns]
     w.reset_index().to_csv(os.path.join(out, "per_family_drug_metrics.tsv.gz"), sep="\t", index=False, float_format="%.5f")
     # ---- consistency: per-episode centred RMSE from the Gram path vs the scores written at run time
-    ep_tab = pd.concat([pd.read_csv(os.path.join(d, "episodes.tsv.gz"), sep="\t") for d in a.blocks])
+    ep_tab = pd.concat([pd.read_csv(os.path.join(d, "episodes.tsv.gz"), sep="\t") for d in args.blocks])
     ep_tab["seed"] = ep_tab.support_seed.str.split("|").str[0].astype(int)
     ep_tab["drug_fold"] = ep_tab.support_seed.str.split("|").str[1]
     # episodes are unique per (partition, drug fold, cell, seed); rebuild that key on the Gram side
@@ -199,7 +199,7 @@ def main(a):
     cons["max_abs_family_mean_vs_gram"] = max(abs(fm[m_][a_] - float(point[a_][m_][0])) for m_ in fm for a_ in ARMS)
     dump(cons, os.path.join(out, "consistency.json"))
     assets = [dict(block=os.path.basename(d), path=os.path.join(d, f), sha256=e["sha256"], bytes=e["bytes"])
-              for d in a.blocks for f, e in json.load(open(os.path.join(d, "result.json")))["files"].items()]
+              for d in args.blocks for f, e in json.load(open(os.path.join(d, "result.json")))["files"].items()]
     pd.DataFrame(assets).to_csv(os.path.join(out, "prediction_assets.tsv"), sep="\t", index=False)
     log("state", state, json.dumps(cons))
 
