@@ -1,0 +1,83 @@
+{
+  "audited_utc": "2026-11-20T09:51:47.219994+00:00",
+  "freeze_sha256": "6a647da2e191bd44de6bcabfabfde51038fa505fb41274a09800f8bd773c26fc",
+  "implementation_files": 15,
+  "frozen_asset_paths": 12,
+  "certified_files": {
+    "source": [
+      "A_counts.npz",
+      "A_rows.tsv",
+      "B_counts.npz",
+      "B_rows.tsv",
+      "shards.tsv",
+      "treated_counts.npz",
+      "treated_rows.tsv"
+    ],
+    "pilot": [
+      "A_counts.npz",
+      "A_rows.tsv",
+      "B_counts.npz",
+      "B_rows.tsv",
+      "shards.tsv",
+      "treated_counts.npz",
+      "treated_rows.tsv"
+    ],
+    "final": [
+      "shards.tsv",
+      "treated_counts.npz",
+      "treated_rows.tsv"
+    ],
+    "predictions/A": [
+      "B2_linear_model.npz",
+      "B2_mlp_seed42.pt",
+      "B2_mlp_seed43.pt",
+      "B2_mlp_seed44.pt",
+      "C_model.npz",
+      "E_model.npz",
+      "rows.tsv",
+      "vectors.npz"
+    ],
+    "predictions/B": [
+      "B2_linear_model.npz",
+      "B2_mlp_seed42.pt",
+      "B2_mlp_seed43.pt",
+      "B2_mlp_seed44.pt",
+      "C_model.npz",
+      "E_model.npz",
+      "rows.tsv",
+      "vectors.npz"
+    ],
+    "metrics": [
+      "arm_metrics.tsv",
+      "bootstrap.npz",
+      "group_effect.tsv",
+      "paired.tsv",
+      "per_prediction_metrics.tsv.gz",
+      "scoring_rows.tsv",
+      "truth_A.npz",
+      "truth_B.npz",
+      "unseen_scaffold_stress.tsv"
+    ],
+    "repeat_diagnostics": [
+      "physical.tsv",
+      "summary.tsv",
+      "technical.tsv"
+    ]
+  },
+  "split_group_overlap": 0,
+  "split_well_overlap": 0,
+  "physical_control_overlap": 0,
+  "joined_scoring_rows": 3347,
+  "bootstrap_rows": 2000,
+  "exact_quantile_checks": 22,
+  "independent_direct_contrast_checks": 24,
+  "independent_direct_max_abs_difference": 8.456776945386935e-17,
+  "checked": [
+    "data/prediction/score hashes",
+    "frozen code and assets",
+    "chemical and well isolation",
+    "physical control isolation",
+    "direct recentering from original predictions on full and 2 liver scopes",
+    "weighted bootstrap recalculated per draw without the scoring Gram implementation"
+  ]
+}

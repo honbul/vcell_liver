@@ -1,0 +1,13 @@
+asset	existing_run	compatible	changed_contract	required_action
+compound split and folds	R6 drug_split.json	yes	plate13 quarantine after split and well-row identity	open metadata and verify original assignments across all doses
+physical sample join	R3 wells.tsv + Tahoe sample_metadata	yes	verify against raw labels and controls	reuse R3 metadata as assertion, use raw sample IDs
+treated target and control cache	R6 v1/v2	partial	R6 means cells' transformed counts and may combine wells or use barcode halves	rebuild aggregate from existing raw Tahoe shards
+gene mapping	Tahoe and chemCPA v2	partial	fold-local role-neutral gene selection	reuse original mapping, select per training partition
+ECFP4 features	R6 / chemCPA v2	partial	entity-level standardized original SMILES and same input for both arms	reuse ECFP4 family and R6 identity normalization; regenerate inexpensive features
+pool mean	R6 follow-up	partial	new row and group hierarchy, controls and normalization	retain line/pool/global semantics and whole-group exclusion
+linear and mean-state MLP	R6 follow-up	partial	physical controls, single depth, residual targets, pure-group weighting	retain full input baselines and minimally refit
+within-pool metrics	R6 follow-up	partial	group/entity weighting, positive bootstrap, physical control	reuse per-row RMSE and Gram helper, validate recentering
+repeat evidence	R6 v3	interpretation only	old repeatability not established	preserve prior conclusion and report current eligibility
+strict chemical transfer	R8 v3	interpretation only	alternate benchmark and contract	preserve −0.00266 result, compare R11 from scratch under common contract
+rare-state utility	R9 v3	not required	annotation task	preserve existing decision
+independent cross	R10 v3	not required	independent replication unavailable	preserve separate data-wait state

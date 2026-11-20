@@ -1,0 +1,67 @@
+{
+  "baseline": "B2_linear",
+  "chosen": {
+    "B0": "fixed",
+    "B1_line": "fixed",
+    "B1_pool": "0",
+    "B2_linear": "1000",
+    "C": "1000",
+    "C_permuted": "1000",
+    "E": "1000"
+  },
+  "context": {
+    "0": {
+      "positive": false,
+      "strata": []
+    },
+    "2": {
+      "positive": false,
+      "strata": []
+    }
+  },
+  "e3": {
+    "all_folds_chemical_direction": false,
+    "chemical_direction_folds": [],
+    "enter": false,
+    "residual_positive_folds": [],
+    "resource_rule": "two CPU fits per family on existing allocation; no new GPU allocation"
+  },
+  "epochs": {},
+  "grid_sha256": "4842fdf3b42197cc11236a31bbfd7e0cd614992a31feac6e65331d256690a330",
+  "offset_fallback": {
+    "0": {
+      "fit": {
+        "pool": 194
+      },
+      "query": {
+        "pool": 195
+      }
+    },
+    "2": {
+      "fit": {
+        "pool": 195
+      },
+      "query": {
+        "pool": 194
+      }
+    }
+  },
+  "role": "A",
+  "runtime": {
+    "backend": "CPU BLAS / deterministic Torch when used",
+    "host": "G1",
+    "packages": {
+      "numpy": "2.2.6",
+      "pandas": "2.2.3",
+      "pyarrow": "19.0.1",
+      "scikit-learn": "1.6.1",
+      "scipy": "1.15.3",
+      "torch": "2.8.0+cpu"
+    },
+    "python": "3.10.12",
+    "slurm": "27932"
+  },
+  "seconds": 5.52,
+  "stage": "pilot",
+  "structure_baseline": null
+}

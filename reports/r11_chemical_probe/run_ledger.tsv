@@ -1,0 +1,19 @@
+run_id	stage	status	code_or_version	allocated_resource	evidence_path	note
+r11_meta_20261120	E0 metadata	completed	R6 1b47c0c; R11 staged prepare	local CPU	manifest/receipt.json	Public Tahoe mirror metadata and R6 identity manifest checked
+r11_chem_66b895c	E0 chemical features	completed	66b895cab8adebea0cb59a8effa66b2020f204ca	local 4 CPU threads	manifest/feature_receipt.json	Initial generic task-head load rejected; documented regression keys excluded and frozen backbone load verified. Fingerprint array conversion retried with RDKit native API.
+27929	E1 pilot raw aggregation	completed	R11 staged prepare	G1 8 CPU threads	manifest/pilot/data_receipt.json	10 wells including 2 controls; 769030 cells; 61.58 s
+27931	E1 pilot panels	completed	R11 staged run	G1 8 CPU threads	G1 assets/pilot_panels/panels.json	Common 2000 genes per fit
+27932	E1 pilot role A	completed	R11 staged run	G1 8 CPU threads	manifest/pilot/A/grid.tsv	Function and I/O only
+27933	E1 pilot role B	completed	R11 staged run	G1 8 CPU threads	manifest/pilot/B/grid.tsv	Function and I/O only
+27934	E2 source raw aggregation	completed	R11 staged prepare	G1 8 CPU threads	manifest/source/receipt.json	11m25s; 17949646 cells
+27937	E2 source panels	completed	04faf32	G1 8 CPU threads	manifest/source/panels.json	1m02s; fold-local gene panels
+27938	E2 development role A	completed	04faf32	G1 8 CPU threads	manifest/development/A/selection.json	1m25s; independent B* and E3 decisions
+27939	E2 development role B	completed	04faf32	G1 8 CPU threads	manifest/development/B/selection.json	1m25s; independent B* and E3 decisions
+27946	source repeat diagnostics	completed	7c1fcbf	G1 8 CPU threads	manifest/repeats/summary.tsv	1m13s; source only
+27948	E1 deterministic replay	completed	d2e26a4	G1 4 CPU threads	manifest/pilot/replay.json	Selected E/C and two-epoch MLP predictions reproduced with zero max absolute difference
+27949	E4 freeze	completed	d2e26a4	G1 8 CPU threads	manifest/freeze.json	After both role selections; SHA-256 6a647da2e191bd44de6bcabfabfde51038fa505fb41274a09800f8bd773c26fc
+27950	E4 final aggregation	completed	d2e26a4	G1 8 CPU threads	manifest/final/receipt.json	5m21s; 5012743 cells
+27951	E4 final role A	completed	d2e26a4	G1 8 CPU threads	predictions/A/receipt.json	1m01s; role A prediction only
+27952	E4 final role B	completed	d2e26a4	G1 8 CPU threads	predictions/B/receipt.json	30s; role B prediction only
+27953	E4 score	completed	d2e26a4	G1 8 CPU threads	metrics/receipt.json	57s; scoring job once after both roles
+27954	E4 independent result audit	completed	d2e26a4	G1 4 CPU threads	manifest/completion_audit.json	1m04s; 22 intervals and 24 independent calculations verified
