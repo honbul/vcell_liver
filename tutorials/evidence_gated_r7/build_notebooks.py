@@ -94,6 +94,11 @@ ax.set_xlabel("test source-panel delta RMSE (lower is better)"); fig.tight_layou
 ct[ct.panel.isin(["source", "hcc_mean", "source_complete", "source_partial", "source_missing"])].round(5)"""),
     code("""stress = pd.read_csv("manifests/evidence_gated_r7/annotation_stress.tsv", sep="\\t")
 stress[stress.panel == "source"].round(5)"""),
+    md("""### 동결 후 추가 비교 (A-2): 입력을 맞춘 XPert
+
+R7 판정 뒤에 추가한 비교군이다(별도 동결 후 1회 평가). XPert에 ECFP만 주고 사전학습 HG embedding을 뺐다."""),
+    code("""ad = pd.read_csv("manifests/evidence_gated_r7/addendum_test_contrasts.tsv", sep="\\t")
+ad[ad.panel.isin(["source", "hcc_mean"])].round(5)"""),
     md("""## 5. 정리
 
 - 결론은 `reports/evidence_gated_r7/RESULTS.md`와 `CLAIMS_AND_LIMITATIONS.md`에 있다. 여기 숫자는 그 표를 다시 보여 줄 뿐이다.

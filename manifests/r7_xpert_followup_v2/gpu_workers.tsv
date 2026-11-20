@@ -1,0 +1,6 @@
+array_job	name	gpu_type	node	n_workers	submitted_kst	ended	note
+26958	r7v2_main_a100	A100 80GB	g4	6	2026-11-19 12:06	stop claiming after the queue_retry1 commit (configs tree change); current trajectories finish normally	initial (cap 8)
+26959	r7v2_main_any	A30	g1	2	2026-11-19 12:06	scancel by coordinator ~14:30	full_official_L0_s42/s43 aborted at epoch 28/29
+27289	r7v2_main_a40	A40	g3	6	2026-11-19 ~14:25	scancel by coordinator ~14:30	added after cap raise to 18; aborted after 1 epoch
+27290	r7v2_main_a30	A30	g1(2),g2(2)	4	2026-11-19 ~14:25	scancel by coordinator ~14:30	added after cap raise to 18; aborted after 1 epoch
+27314-27319	r7v2_retry_a100	A100 80GB	g4 (-w g4)	6	2026-11-19 ~14:40	-	user directive: g4 only, <=6 GPUs; each task starts afterany one 26958 task; queue_retry1 (45 trajectories, LPT order)
