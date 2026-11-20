@@ -45,3 +45,7 @@ J2는 한 role×outer의 context, head, loss winner를 조합한다. 보정은 �
 ## 자원 및 산출물
 
 G1/Slurm에서 동시 GPU 2개와 CPU 4개(작업당 8 threads 이하)를 사용한다. 상한은 96 GPU-hour, 512 CPU core-hour, 노드 가용 RAM의 75%, 신규 다운로드 20 GiB, scratch 100 GiB다. 서버에 예측·정답·모델을 보관하고 해시와 위치를 기록한다.
+
+Scaffold 평가는 scaffold를 공유하는 화합물군을 연결 성분으로 묶고, 그 성분 단위로 다시 분할한다. 내부 선택에는 본 평가와 같은 기준선·축·통합 규칙을 사용한다. R11 final과 V3 설정은 평가값을 읽기 전에 primary inner 선택을 역할별 최빈값으로 고정했다. 동률은 사전에 정한 단순성 순서로 해결했다. 선택된 설정의 epoch 중앙값으로 다시 학습했다. V3의 line·물리 query 웰은 모두 train에서 제외하며 다른 물리 웰에서 관측한 동일 entity를 사용한다.
+
+G1에서 학습은 `experiments/r12_multiaxis/complete_outer.sbatch`로, 동결 후 채점은 `experiments/r12_multiaxis/finalize.sbatch`로 수행했다. `src.r12_multiaxis.audit`는 서버의 동결된 예측, 정답과 bootstrap 가중을 읽어 공식 효과를 독립 재계산한다. [자산 경로와 해시](artifacts.tsv) · [실행 장부](run_ledger.tsv)
