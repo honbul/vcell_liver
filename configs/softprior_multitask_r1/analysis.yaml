@@ -1,0 +1,147 @@
+# Study R1 analysis contract (soft pathway prior + multi-drug shrinkage on LIMORE, LCCL external).
+# Follow-up of Track A (commit b442fd8). LIMORE/LCCL scores were already seen in Track A, so every
+# result of this study is a post-freeze evaluation on a reused public benchmark, not a blind cohort.
+# Rules that affect model development are appended to `amendments` with date and reason; the frozen
+# final configuration is written to manifests/softprior_multitask_r1/freeze_manifest.json.
+contract_version: 1
+created: "2026-11-17"
+track: softprior_multitask_r1
+
+paths:
+  # Server paths. Track A inputs are read-only; everything written goes under this worktree's assets/.
+  a1_worktree: /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1
+  a1_cache: /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1/assets/cache/data_c774a7bbf856
+  limore_rna: /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1/assets/raw/GSE97098/GSE97098_HCC81.genes.fpkm_table.log2.txt.gz
+  lccl_rna: /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1/assets/raw/LCCL/RNAseqFPKM.txt
+  hallmark_gmt: /mnt/S1/sdata/pubdata/Virtual_Cell/MSigDB/2026.1.Hs/h.all.v2026.1.Hs.symbols.gmt
+  assets: assets                      # this worktree, git-ignored
+  a1_manifests: manifests/pathway_sensitivity_a1   # registry, splits, drug match: reused unchanged
+
+expected_sha256:
+  limore_rna: 3b6ecf05ff5baebfea4726af2a0d934672af14673166f79e073c3e8d46083728
+  lccl_rna: bfa155ca86432330e4754514e5978c35d5727544791798853647569609ccc9be
+  hallmark_gmt: eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596
+  a1_limore_response_long: null       # recorded at build time in data_contract.json
+
+gene_axis:
+  # The only change relative to Track A. Track A kept, among Ensembl IDs sharing a gene symbol, the ID
+  # with the highest mean LIMORE expression (an expression-dependent rule). R1 keeps the
+  # lexicographically smallest Ensembl ID. No expression or response value enters the rule.
+  universe: "protein_coding Ensembl IDs of the GSE97098 matrix that are also in the LCCL FPKM table"
+  duplicate_symbol_rule: smallest_ensembl_id
+  order: sorted_by_ensembl_id
+  rank: "within-sample rank over the axis, ties='min', divided by the number of axis genes (as Track A)"
+
+hallmark:
+  release: "2026.1.Hs"
+  min_genes: 15
+  min_fraction: 0.5
+  permutation_seeds: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120]
+  permutation: "whole-axis gene-label permutation, RandomState(seed).permutation(G); gene i takes the label of gene perm[i] (Track A scheme: set sizes, overlaps and gene multiplicities kept)"
+
+split:
+  outer: "manifests/pathway_sensitivity_a1/splits_outer.tsv (family 5-fold x 3 repeats; reused, results previously exposed)"
+  inner_folds: 3
+  inner_seed_base: 7100              # inner seed = base + 100 * repeat + outer_fold (Track A rule)
+  external_inner_seed: 8800
+
+objective:
+  # (1/D) sum_p sum_i wt_i (yhat_ip - y_ip)^2 + lambda ||W||_F^2 + eta ||(I - QQ^T) W||_F^2 + tau ||W||_*
+  # wt_i = family weight normalised to sum to one over the training rows (plan: (1/(N D)) sum w_i ...),
+  # features and labels standardised with training-only weighted mean/SD.
+  lambda_grid: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0]
+  eta_over_lambda_grid: [0, 1, 10, 100]
+  tau_fraction_grid: [0, 0.03, 0.1, 0.3]   # fractions of tau_max = ||grad of the smooth part at W=0||_op (training data only); fixed in DECISIONS.md R1-2 before the first tau > 0 fit
+  tie_break: "largest regularisation (lambda, then eta/lambda, then tau)"
+  selection_loss: "family-first squared error in inner-training-SD units pooled over inner test families (Track A inner loss); per-drug models pick per drug, global models minimise the mean over drugs of sqrt(loss)"
+
+metric:
+  primary: macro_drug_normalized_rmse   # identical definition to Track A
+  bootstrap: {n: 2000, seed: 9101, unit: family_id, ci: [0.025, 0.975]}
+  external_bootstrap_seed: 9202
+  min_families_for_spearman: 4
+
+budget:
+  designs: "initial integrated design + at most two diagnosis-backed modifications"
+
+amendments: []
+
+# Named configuration grids. A grid is added here (and motivated in DECISIONS.md) before it is run.
+grids:
+  d1_subspace:        # R1-1 diagnostic, tau = 0: whole space / pathway subspace only / complement only
+    lambda: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0]
+    ridge_kernels: [whole, par, perp]
+  r2_soft_multitask:  # R1-2 initial integrated design (the eta = 0, tau = 0 column is in d1_subspace)
+    lambda: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0]
+    ridge_kernels: [r1, r10, r100]
+    nuc_ratios: [0, 1, 10, 100]
+    tau_fractions: [0.03, 0.1, 0.3]
+  r3_lowrank_residual:   # R1-3 modification 1: shared low-rank fit + per-drug Ridge on its residuals
+    lambda: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0]
+    res_ratios: [0, 1, 10, 100]
+    res_tau_fractions: [0.1, 0.3]
+    res_lambda2: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0, 100.0, .inf]
+  null_level:         # lambda so large that the prediction is the training mean (reference level in development tables)
+    lambda: [1.0e+9]
+    ridge_kernels: [whole]
+
+# Named models = candidate configurations + selection mode. `select: per_drug` picks per drug (as
+# Track A did), `select: global` picks one configuration for all 90 drugs of a training set.
+models:
+  ridge_pd:  {select: per_drug, ridge_kernels: [whole]}
+  ridge_gl:  {select: global,   ridge_kernels: [whole]}
+  par_pd:    {select: per_drug, ridge_kernels: [par]}       # pathway subspace only (eta -> inf)
+  par_gl:    {select: global,   ridge_kernels: [par]}
+  perp_pd:   {select: per_drug, ridge_kernels: [perp]}      # diagnostic: pathway subspace removed
+  perp_gl:   {select: global,   ridge_kernels: [perp]}
+  soft_pd:   {select: per_drug, ridge_kernels: [whole, r1, r10, r100]}          # eta >= 0, tau = 0
+  soft_gl:   {select: global,   ridge_kernels: [whole, r1, r10, r100]}
+  mt_noprior: {select: global,  ridge_kernels: [whole], nuc_ratios: [0], tau_fractions: [0.03, 0.1, 0.3]}                         # eta = 0, tau >= 0
+  full:      {select: global,   ridge_kernels: [whole, r1, r10, r100], nuc_ratios: [0, 1, 10, 100], tau_fractions: [0.03, 0.1, 0.3]}  # eta >= 0, tau >= 0
+  # R1-3 modification 1. `hybrid`: one shared fit for all drugs, then lambda2 per drug. The group without a
+  # shared fit is per-drug whole-space Ridge, so ridge_pd is a special case of both models.
+  mt_resid:   {select: hybrid, ridge_kernels: [whole], res_ratios: [0], res_tau_fractions: [0.1, 0.3]}
+  full_resid: {select: hybrid, ridge_kernels: [whole], res_ratios: [0, 1, 10, 100], res_tau_fractions: [0.1, 0.3]}
+  train_mean: {select: global,  ridge_kernels: [whole], lambda: [1.0e+9]}
+
+# Frozen final evaluation (R1-5): which models are assembled from the nested runs and which paired
+# differences are reported. Written before the final run; see manifests/.../freeze_manifest.json.
+final:
+  integrated: full_resid          # the R1 model after modification 1 (eta >= 0, shared low-rank fit, per-drug residual)
+  models: [ridge_pd, ridge_gl, par_pd, par_gl, soft_pd, soft_gl, mt_noprior, full, mt_resid, full_resid]
+  permuted_prior_models: [full_resid, soft_pd, par_pd]
+  comparators: [A0, A1, A1r, A3, enet, cwkbmf, tabpfn]      # A0-A3: Track A routines on the fixed-ID axis
+  pairs:
+    - [full_resid, A0]
+    - [full_resid, ridge_pd]
+    - [full_resid, A1r]
+    - [full_resid, A3]
+    - [full_resid, par_pd]
+    - [full_resid, mt_resid]
+    - [full_resid, soft_pd]
+    - [full_resid, full]
+    - [full_resid, enet]
+    - [full_resid, cwkbmf]
+    - [full_resid, tabpfn]
+    - [mt_resid, ridge_pd]
+    - [mt_noprior, ridge_gl]
+    - [soft_pd, ridge_pd]
+    - [soft_gl, ridge_gl]
+    - [ridge_pd, A1r]
+    - [ridge_pd, enet]
+    - [par_pd, A3]
+  external_models: [A1r, A3, ridge_pd, par_pd, soft_pd, mt_noprior, full, mt_resid, full_resid, enet, cwkbmf, tabpfn]
+  external_pairs:
+    - [full_resid, ridge_pd]
+    - [full_resid, A1r]
+    - [full_resid, A3]
+    - [full_resid, mt_resid]
+    - [mt_resid, ridge_pd]
+
+# Baselines outside the R1 objective. Each is tuned with the same inner family folds and inner loss.
+baselines:
+  enet:               # raw-RNA ElasticNet, per drug; sklearn objective on standardised features/labels
+    alpha: [0.01, 0.0316227766, 0.1, 0.316227766, 1.0, 3.16227766, 10.0]
+    l1_ratio: [0.1, 0.5, 0.9]
+    max_iter: 2000
+    tol: 1.0e-3

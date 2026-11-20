@@ -1,0 +1,104 @@
+{
+ "cache_key": "7be7ace80420",
+ "change_vs_track_a": {
+  "lccl": {
+   "expr_sha256": "099e32ffe6cc7d85dd871a337128def7e1290a47ede4eed2795c8fdb480dc7bf",
+   "genes_shared_with_track_a": 19014,
+   "max_abs_dev_numpy_vs_R_singscore": 6.106226635438361e-16,
+   "max_abs_hallmark_score_change": 0.00150252186418387,
+   "max_abs_relative_rank_change_on_shared_genes": 0.0001577452939320878,
+   "n_models": 34,
+   "rank_sha256": "a1f3166be9c4c23a78cdf8358f891156867f296bbef39fcd6df22d9ba7f4ccfd",
+   "singscore_version": "singscore 1.30.0 R version 4.5.3 (2026-03-11)"
+  },
+  "limore": {
+   "expr_sha256": "1aada61d809992eb0b1ceab7e58ee2e736adde67307a521532a4bce3457351be",
+   "genes_shared_with_track_a": 19014,
+   "max_abs_dev_numpy_vs_R_singscore": 6.106226635438361e-16,
+   "max_abs_hallmark_score_change": 0.002537415106413761,
+   "max_abs_relative_rank_change_on_shared_genes": 0.00021032705857609857,
+   "n_models": 81,
+   "rank_sha256": "211f53261ee16e77ae99b4f52798608b3179219e87e64a046c95f95979a70af1",
+   "singscore_version": "singscore 1.30.0 R version 4.5.3 (2026-03-11)"
+  }
+ },
+ "gene_axis": {
+  "gene_axis_sha256": "eba58c98cc81010b9822fc2f2f190d43b746e67239baaf83912af605e61803cf",
+  "n_before_symbol_dedup": 19025,
+  "n_duplicated_symbols": 7,
+  "n_genes": 19018,
+  "n_symbols_where_kept_id_differs_from_track_a": 4,
+  "rule": {
+   "duplicate_symbol_rule": "smallest_ensembl_id",
+   "order": "sorted_by_ensembl_id",
+   "rank": "within-sample rank over the axis, ties='min', divided by the number of axis genes (as Track A)",
+   "universe": "protein_coding Ensembl IDs of the GSE97098 matrix that are also in the LCCL FPKM table"
+  }
+ },
+ "hallmark": {
+  "K": 50,
+  "genes_in_any_set": 4222,
+  "permutation_seeds": [
+   101,
+   102,
+   103,
+   104,
+   105,
+   106,
+   107,
+   108,
+   109,
+   110,
+   111,
+   112,
+   113,
+   114,
+   115,
+   116,
+   117,
+   118,
+   119,
+   120
+  ]
+ },
+ "inputs": {
+  "drug_match_lccl": {
+   "sha256": "697259bd9d45253098fcc57b423bba5b6d6eefed8129275b195cf9faab28847a"
+  },
+  "hallmark_gmt": {
+   "release": "2026.1.Hs",
+   "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596"
+  },
+  "lccl_response_long": {
+   "sha256": "fb9c53523fb3e178c3d484746fbdf2dd4ca9c286671795b3ddb0f48cec081cef"
+  },
+  "lccl_rna": {
+   "sha256": "bfa155ca86432330e4754514e5978c35d5727544791798853647569609ccc9be",
+   "source": "LCCL catalogue (Track A download, read-only)"
+  },
+  "limore_response_long": {
+   "sha256": "1369874a1ee6b8204593b99ccf8d3f48d92ab3f757f1b2b6ff5ce32292f960cb",
+   "source": "Track A cache table built from LIMORE drug.txt; local copy, original-source verification not claimed"
+  },
+  "limore_rna": {
+   "sha256": "3b6ecf05ff5baebfea4726af2a0d934672af14673166f79e073c3e8d46083728",
+   "source": "GEO GSE97098 (Track A download, read-only)"
+  },
+  "model_registry": {
+   "sha256": "e97acd2aba8a4a9356821179ed5515e789891b583512fdb0a71e98c47788bb70"
+  },
+  "splits_outer": {
+   "sha256": "ca1a46fb2f0e2aeba441c4cf06a177efe89969d0278fd5e5c4bd2e8d6f212764"
+  }
+ },
+ "labels": {
+  "endpoint": "LIMORE Activity Area (no clipping, no imputation)",
+  "external": "LCCL AUC (primary) / GI50; 18 matched single agents; never pooled with AA",
+  "n_drugs": 90,
+  "n_families": 76,
+  "n_models": 79
+ },
+ "prior_exposure": "LIMORE and LCCL results were reported in Track A (b442fd8); post-freeze evaluation on a reused public benchmark",
+ "track": "softprior_multitask_r1",
+ "unit_of_independence": "family_id (76 LIMORE families; 79 models x 90 drugs are not independent samples)"
+}

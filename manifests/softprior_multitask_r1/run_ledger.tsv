@@ -1,0 +1,47 @@
+run_id	stage	date	code_commit	slurm_job	purpose	n_units	n_configs	status	notes
+r0_build_24485	R1-0	2026-11-17	81c3ffc	24485	fixed-ID gene axis + cached ranks/scores + solver fixtures	1	0	completed_with_test_failure	data build completed; pytest 10 passed, 1 skipped (torch not yet installed), 1 failed: fixture bug in the hard-limit test (a gene constant in training but varying in the test rows); fixture corrected, checks rerun as job below
+checks_24487	R1-0	2026-11-17	16bd90f	24487	solver fixtures	1	0	failed	1 failed: the dual solve with lam=1e-13 amplifies rounding error in the null space of the rank-deficient pathway kernel (deviation 3e-4 from least squares on set means); test now uses lam=1e-9. Dependent job 24488 never started and was cancelled.
+checks_24494	R1-0	2026-11-17	cdbf857	24494	solver fixtures	1	0	completed	11 passed, 1 skipped (PyTorch cross-check: torch still installing; rerun before R1-2)
+r0_tracka_cdbf857	R1-0	2026-11-17	cdbf857	24495	Track A predictors A0/A1/A1r/A3 on the fixed-ID axis (Track A code, Track A alpha grid) + scorer check	15	7	completed	scorer reproduces Track A committed numbers; 30 s
+d1_subspace_b53f5dd	R1-1	2026-11-17	b53f5dd	24497	D1 inner-fold losses: whole / pathway-only / complement-only Ridge	15	21	completed	array 0-14; about 1.4 s per training set
+d2_diag_24517	R1-1	2026-11-17	f3d2d10	24517	D2 drug-covariance diagnostics	15	0	completed_superseded_in_part	parts (a)-(c) stand; part (d) reported losses in training-SD units of training-fitted components (scale error, see DECISIONS); table kept as d2_rna_predicts_components_v1_scale_error.tsv and part (d) rerun
+d1_summary_24518	R1-1	2026-11-17	f3d2d10	24518	D1 development summary	1	0	failed	sbatch --export split the ARGS string at commas; no output written; resubmitted with environment export
+d2_diag_24521	R1-1	2026-11-17	e440d21	24521	D2 drug-covariance diagnostics, part (d) as skill against the training-mean error	15	0	completed	replaces part (d) of 24517
+d1_summary_24522	R1-1	2026-11-17	e440d21	24522	D1 development summary	1	0	failed	family ids were stored as an object array that cannot be read without pickle; run d1_subspace_b53f5dd left in place unused, grid rerun with string ids
+d1_subspace_9b3930b	R1-1	2026-11-17	9b3930b	24526	D1 inner-fold losses (string family ids)	15	21	completed_superseded	numbers identical in content to the next run; rerun only to also store each family's inner fold id (needed for the selection-honest development score)
+d1_summary_24527	R1-1	2026-11-17	9b3930b	24527	D1 development summary (minimum-inner-loss score only)	1	0	completed_superseded	showed that the minimum-inner-loss score favours per-drug selection by construction; replaced by the selection-honest score
+d1_subspace_0cfcfcf	R1-1	2026-11-17	0cfcfcf	24547	D1 inner-fold losses: whole / pathway-only / complement-only Ridge, with per-family terms and inner fold ids	15	21	completed	used for all later development tables (eta=0, tau=0 column)
+d1_null_0cfcfcf	R1-1	2026-11-17	0cfcfcf	24548	training-mean reference level (lambda 1e9)	15	1	completed	
+d1_summary_24549	R1-1	2026-11-17	0cfcfcf	24549	D1 development summary with the selection-honest score	1	0	completed	tables d1_*
+checks_24579	R1-2	2026-11-17	6440a4d	24579	solver fixtures before the first tau > 0 fit	1	0	completed	12 passed including the PyTorch cross-check; CUDA driver warning only
+r2_softmt_6440a4d	R1-2	2026-11-17	6440a4d	24580	initial integrated design: inner-fold losses, soft-prior Ridge (eta/lambda 1,10,100) and nuclear-norm fits (tau/tau_max 0.03,0.1,0.3)	15	105	completed	3780 ADMM solves, none failed to converge, at most 570 iterations; 565 CPU-seconds in total
+r2_summary_24599	R1-2	2026-11-17	6440a4d	24599	R1-2 development summary	1	0	completed	tables r2_dev_*
+r2_diag_24610	R1-2	2026-11-17	e12a638	24610	solution rank per configuration, per-drug development scores	1	0	completed	tables r2_rank_by_config, r2_per_drug_*
+checks_24616	R1-3	2026-11-17	b6f7022	24616	solver fixtures incl. modification 1 special cases	1	0	completed	13 passed
+r3_lrres_b6f7022	R1-3	2026-11-17	b6f7022	24617	modification 1: shared low-rank fit (tau/tau_max 0.1, 0.3) + per-drug Ridge on residuals, inner-fold losses	15	448	completed	2520 first-stage ADMM solves, none failed; modification 1 of at most 2
+r3_summary_24633	R1-3	2026-11-17	b6f7022	24633	R1-3 development summary	1	0	completed	tables r3_dev_*
+r4_perm_d1_98504e6	R1-4	2026-11-17	98504e6	24635	permuted-prior inner-fold losses (d1 grid)	15	0	completed_not_used	submission error: sbatch --export split the seed list at commas, so only perm101 was computed; rerun under a new run id with all 20 seeds
+r4_perm_r2_98504e6	R1-4	2026-11-17	98504e6	24636	permuted-prior inner-fold losses (r2 grid)	15	0	completed_not_used	submission error: sbatch --export split the seed list at commas, so only perm101 was computed; rerun under a new run id with all 20 seeds
+r4_perm_r3_98504e6	R1-4	2026-11-17	98504e6	24637	permuted-prior inner-fold losses (r3 grid)	15	0	completed_not_used	submission error: sbatch --export split the seed list at commas, so only perm101 was computed; rerun under a new run id with all 20 seeds
+r4_perm20_d1_98504e6	R1-4	2026-11-17	98504e6	24735	permuted-prior inner-fold losses, seeds 101-120 (d1 grid)	300	21	completed	no ADMM failure
+r4_perm20_r2_98504e6	R1-4	2026-11-17	98504e6	24736	permuted-prior inner-fold losses, seeds 101-120 (r2 grid)	300	105	completed	no ADMM failure
+r4_perm20_r3_98504e6	R1-4	2026-11-17	98504e6	24737	permuted-prior inner-fold losses, seeds 101-120 (r3 grid)	300	448	completed	no ADMM failure
+r4_summary_24733	R1-4	2026-11-17	98504e6	24733	real versus permuted prior, development	1	0	failed	assertion: permuted seeds 102-120 missing (see r4_perm_* rows)
+r4_summary_24833	R1-4	2026-11-17	98504e6	24833	real versus permuted prior, development	1	0	completed	tables r4_real_vs_perm, r4_perm_scores
+f_d1_88d4c21	R1-5	2026-11-17	88d4c21	24869	frozen nested evaluation, internal, d1 grid (Ridge: whole / pathway-only / complement)	15	21	completed	checkout bdb52bd (freeze manifest only); 45 s summed over tasks
+f_r2_88d4c21	R1-5	2026-11-17	88d4c21	24872	frozen nested evaluation, internal, r2 grid (soft prior, nuclear norm)	15	105	completed	no ADMM failure; 717 s
+f_r3_88d4c21	R1-5	2026-11-17	88d4c21	24875	frozen nested evaluation, internal, r3 grid (low-rank + per-drug residual)	15	448	completed	no ADMM failure; 486 s
+fp_d1_88d4c21	R1-5	2026-11-17	88d4c21	24870	frozen nested evaluation, 20 permuted priors, d1 grid	300	21	completed	array of 30 tasks; 220 s
+fp_r2_88d4c21	R1-5	2026-11-17	88d4c21	24873	frozen nested evaluation, 20 permuted priors, r2 grid	300	105	completed	no ADMM failure; 12874 s; array throttled because the 64-job user limit is shared with other worktrees
+fp_r3_88d4c21	R1-5	2026-11-17	88d4c21	24876	frozen nested evaluation, 20 permuted priors, r3 grid	300	448	completed	no ADMM failure; 8953 s
+fx_d1_88d4c21	R1-5	2026-11-17	88d4c21	24871	LCCL predictions from LIMORE-only training (27 training sets: all LIMORE + 26 with one shared family removed), d1 grid	27	21	completed	83 s
+fx_r2_88d4c21	R1-5	2026-11-17	88d4c21	24874	LCCL predictions, r2 grid	27	105	completed	no ADMM failure; 1431 s
+fx_r3_88d4c21	R1-5	2026-11-17	88d4c21	24877	LCCL predictions, r3 grid	27	448	completed	no ADMM failure; 1090 s
+f_cmp_88d4c21/enet	R1-5	2026-11-17	88d4c21	24878;24879	raw-RNA ElasticNet comparator, internal (15) and external (27)	42	21	completed	5760 s + 2268 s; 27 internal predictions above 2 AA units (largest 37.5), see RESULTS section 6
+f_cmp_88d4c21/tabpfn	R1-5	2026-11-17	88d4c21	24880;24881	TabPFN v2 comparator on training-only PCA, internal and external	42	1	partly_failed	26 of 42 tasks failed on nodes without a home directory: the skrub dependency tried to create ~/skrub_data (PermissionError). No model or data setting involved; 16 tasks completed
+f_cmp_88d4c21/tabpfn (rerun of failed tasks)	R1-5	2026-11-17	88d4c21	25235;25236	the 26 failed TabPFN tasks, same code and settings, SKRUB_DATA_DIRECTORY pointed inside the worktree	26	1	completed	environment variable only (post-freeze, recorded as a deviation); 1365 s + 1593 s; all 42 outputs present
+f_cmp_88d4c21/cwkbmf	R1-5	2026-11-17	88d4c21	24882;24883	cwKBMF comparator (authors' code under Octave 6.4.0), internal and external	42	2	completed	R = 20 (the larger candidate) chosen in all 42 training sets; about 40-57 min per training set; 38407 s + 70820 s; Octave nodes only (--exclude=g3,g4)
+f_cmp_88d4c21/A1,A1r,A3 external	R1-5	2026-11-17	88d4c21	24884	Track A predictors on the fixed-ID axis, LCCL predictions	27	7	completed	49 s; bootstrap of A1r recomputed with Track A's own functions, deviation 0.0
+final_eval_25297	R1-5	2026-11-17	88d4c21	25297	frozen evaluation: the only job that read outer-test AA and LCCL AUC/GI50; run once	1	0	completed	checkout fe0359b (adds job files, figure script, report drafts; evaluate.py byte-identical to the frozen commit); 629 s; tables final_*, predictions/softprior_multitask_r1; nothing listed in final_not_run.tsv
+finalize_25354	R1-5	2026-11-17	fe0359b	25354	figures from the final tables, tutorial notebooks executed, environment record	1	0	completed	31 s; no model fitted or scored for the study tables
+postdiag_25355	R1-5	2026-11-17	fe0359b	25355	label-free description of the committed prediction tables (spread across cells, extreme values)	1	0	completed	interactive srun, under one minute; used only for the explanation in RESULTS section 6

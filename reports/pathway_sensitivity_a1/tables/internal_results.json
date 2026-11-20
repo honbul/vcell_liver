@@ -1,0 +1,221 @@
+{
+ "run_dir": "a2_main_d284715",
+ "cache_key": "c774a7bbf856",
+ "n_models": 79,
+ "n_families": 76,
+ "n_drugs": 90,
+ "n_constant_response_drugs": 0,
+ "n_features": {
+  "A0": 1,
+  "A1": 19018,
+  "A1r": 19018,
+  "A2": 19018,
+  "A3": 50
+ },
+ "bootstrap": {
+  "n": 2000,
+  "seed": 9101,
+  "unit": "family_id",
+  "ci": [
+   0.025,
+   0.975
+  ]
+ },
+ "gate": {
+  "criterion": "A3 lower than A0 and A1 with both 95% family-bootstrap intervals entirely below zero",
+  "A3_minus_A0": {
+   "difference": -0.018353777650972347,
+   "ci_low": -0.04635495121360376,
+   "ci_high": 0.00977272953436316
+  },
+  "A3_minus_A1": {
+   "difference": 0.02271379527983486,
+   "ci_low": -0.016120533689211982,
+   "ci_high": 0.05755683768748429
+  },
+  "met": false
+ },
+ "summary": [
+  {
+   "model": "A0",
+   "macro_drug_normalized_rmse": 1.0536910141005313,
+   "ci_low": 0.957570610768658,
+   "ci_high": 1.143047446024624,
+   "repeat0": 1.047242235224003,
+   "repeat1": 1.0601991335621208,
+   "repeat2": 1.0536316735154698,
+   "repeat_sd": 0.006478652993860446,
+   "ensemble_of_repeats_macro_nrmse": 1.0163409401854093,
+   "mean_spearman": -0.18667336286461694,
+   "median_spearman": -0.1879305455260581,
+   "n_drugs_scored": 90,
+   "mean_rmse_raw": 0.1396729607923293,
+   "mean_mae_raw": 0.11013828849787036
+  },
+  {
+   "model": "A1",
+   "macro_drug_normalized_rmse": 1.0126234411697241,
+   "ci_low": 0.9244899402849757,
+   "ci_high": 1.0884891906308696,
+   "repeat0": 1.0489452580369165,
+   "repeat1": 0.9897954998198154,
+   "repeat2": 0.9991295656524406,
+   "repeat_sd": 0.031799952541510794,
+   "ensemble_of_repeats_macro_nrmse": 0.9617175196239435,
+   "mean_spearman": 0.2992836172148726,
+   "median_spearman": 0.32075280868692757,
+   "n_drugs_scored": 90,
+   "mean_rmse_raw": 0.13207822858775356,
+   "mean_mae_raw": 0.1015031113784886
+  },
+  {
+   "model": "A1r",
+   "macro_drug_normalized_rmse": 0.9916052997702343,
+   "ci_low": 0.9033942505928337,
+   "ci_high": 1.0720596511159488,
+   "repeat0": 0.9897067404498756,
+   "repeat1": 0.988568475312728,
+   "repeat2": 0.9965406835480991,
+   "repeat_sd": 0.004311893047922259,
+   "ensemble_of_repeats_macro_nrmse": 0.9505491945372314,
+   "mean_spearman": 0.30246337210701213,
+   "median_spearman": 0.33719567419884733,
+   "n_drugs_scored": 90,
+   "mean_rmse_raw": 0.12876534779080506,
+   "mean_mae_raw": 0.0997086303721471
+  },
+  {
+   "model": "A2",
+   "macro_drug_normalized_rmse": 1.0027128654976993,
+   "ci_low": 0.9124701960439906,
+   "ci_high": 1.0868202001328797,
+   "repeat0": 0.9980473966258994,
+   "repeat1": 1.0015102221574683,
+   "repeat2": 1.00858097770973,
+   "repeat_sd": 0.005368784393627718,
+   "ensemble_of_repeats_macro_nrmse": 0.9579400577709045,
+   "mean_spearman": 0.24707340511622494,
+   "median_spearman": 0.27715113928563656,
+   "n_drugs_scored": 90,
+   "mean_rmse_raw": 0.13033321952713856,
+   "mean_mae_raw": 0.10114736862901705
+  },
+  {
+   "model": "A3",
+   "macro_drug_normalized_rmse": 1.035337236449559,
+   "ci_low": 0.9347035758235284,
+   "ci_high": 1.1276799327625835,
+   "repeat0": 1.0263121289993564,
+   "repeat1": 1.0325910175176303,
+   "repeat2": 1.0471085628316905,
+   "repeat_sd": 0.010666733513696947,
+   "ensemble_of_repeats_macro_nrmse": 0.988374868738639,
+   "mean_spearman": 0.17498691320342086,
+   "median_spearman": 0.18970144383345594,
+   "n_drugs_scored": 90,
+   "mean_rmse_raw": 0.1356018773538504,
+   "mean_mae_raw": 0.10449320761934722
+  }
+ ],
+ "differences": [
+  {
+   "model": "A1",
+   "reference": "A0",
+   "difference": -0.041067572930807206,
+   "ci_low": -0.08272272986112808,
+   "ci_high": 0.002365970931580663,
+   "boot_fraction_below_zero": 0.9625,
+   "drugs_model_better": 69,
+   "drugs_reference_better": 21,
+   "n_drugs": 90
+  },
+  {
+   "model": "A1r",
+   "reference": "A0",
+   "difference": -0.06208571433029708,
+   "ci_low": -0.09018497392284902,
+   "ci_high": -0.031252989390848473,
+   "boot_fraction_below_zero": 0.9995,
+   "drugs_model_better": 75,
+   "drugs_reference_better": 15,
+   "n_drugs": 90
+  },
+  {
+   "model": "A2",
+   "reference": "A0",
+   "difference": -0.05097814860283201,
+   "ci_low": -0.07433010447245435,
+   "ci_high": -0.02567366168733239,
+   "boot_fraction_below_zero": 0.9995,
+   "drugs_model_better": 67,
+   "drugs_reference_better": 23,
+   "n_drugs": 90
+  },
+  {
+   "model": "A3",
+   "reference": "A0",
+   "difference": -0.018353777650972347,
+   "ci_low": -0.04635495121360376,
+   "ci_high": 0.00977272953436316,
+   "boot_fraction_below_zero": 0.9,
+   "drugs_model_better": 54,
+   "drugs_reference_better": 36,
+   "n_drugs": 90
+  },
+  {
+   "model": "A3",
+   "reference": "A1",
+   "difference": 0.02271379527983486,
+   "ci_low": -0.016120533689211982,
+   "ci_high": 0.05755683768748429,
+   "boot_fraction_below_zero": 0.1215,
+   "drugs_model_better": 30,
+   "drugs_reference_better": 60,
+   "n_drugs": 90
+  },
+  {
+   "model": "A3",
+   "reference": "A1r",
+   "difference": 0.043731936679324734,
+   "ci_low": 0.022555030246256744,
+   "ci_high": 0.06161354522868228,
+   "boot_fraction_below_zero": 0.0,
+   "drugs_model_better": 13,
+   "drugs_reference_better": 77,
+   "n_drugs": 90
+  },
+  {
+   "model": "A3",
+   "reference": "A2",
+   "difference": 0.03262437095185966,
+   "ci_low": 0.013074037170385916,
+   "ci_high": 0.050196360954821224,
+   "boot_fraction_below_zero": 0.0,
+   "drugs_model_better": 17,
+   "drugs_reference_better": 73,
+   "n_drugs": 90
+  },
+  {
+   "model": "A1r",
+   "reference": "A1",
+   "difference": -0.021018141399489876,
+   "ci_low": -0.048055656623639385,
+   "ci_high": 0.0037252582167558255,
+   "boot_fraction_below_zero": 0.9395,
+   "drugs_model_better": 65,
+   "drugs_reference_better": 25,
+   "n_drugs": 90
+  },
+  {
+   "model": "A2",
+   "reference": "A1r",
+   "difference": 0.011107565727465074,
+   "ci_low": 0.0026352843777617207,
+   "ci_high": 0.01828871913426054,
+   "boot_fraction_below_zero": 0.0065,
+   "drugs_model_better": 13,
+   "drugs_reference_better": 77,
+   "n_drugs": 90
+  }
+ ]
+}
