@@ -1,0 +1,36 @@
+{
+  "version": "R10 2x2 v1",
+  "chosen_arm": "D11",
+  "rule": "reports/r10_dose_composition/DECISIONS.md C0 selection rule, applied in 'C1 결과'",
+  "frozen_on": "2026-11-18",
+  "code_commit": "the commit that adds this file (freeze commit); evaluation runs record their git SHA in run_ledger.tsv",
+  "config": {"path": "configs/r10/r10_v1.json", "sha256": "be07c1be969abc7b37e77321439b22cbc127cb26df44220fbc461b9f85d54443"},
+  "atlas_K": {"path": "assets/runs/r10_b1_v3/atlas_K.json", "value": {"A549": 4, "K562": 4, "MCF7": 4},
+              "sha256": "11d79085913e85d8ff94daa1e825dcac8bc3379d9f0ff7cd124736fbaeff4666"},
+  "triplets": {"path": "reports/r10_dose_composition/eligible_triplets.tsv",
+               "sha256": "e0b0dada774d0a48a323a06f8ca3f615d3a1a78050c6c37fd6043ee27e3676d8"},
+  "atlas_files_sha256": {
+    "A549/gmm_K4.npz": "b129f33ebfce402911bb32c34eb5fc4f4242b1e7b7f0dc4b00a925f9c073a239",
+    "K562/gmm_K4.npz": "7625e77b928d29386a49c802c6ababe025f6cb9ed6448283be58836137ca5e75",
+    "MCF7/gmm_K4.npz": "0a8971b585fa34b98597594edb0c43bb8dc60a6f2d612b08380182c594720347",
+    "A549/decoder.npz": "e67c36684d9587a45a65e47591d8c0a5dabaaed6098caad2d36c7bd2f850250c",
+    "K562/decoder.npz": "0a99806797d3fa024cb1cde1bbc808564bca149fdcea33d3337ec8102f62967c",
+    "MCF7/decoder.npz": "d2cb09ecae236a8f1daf397918dce806c6bb897459666620b82a1b486c387c2f"
+  },
+  "heads_dir": "assets/runs/r10_b3_v1",
+  "heads_sha256": {
+    "pi_seed0.pt": "7150d08cd7cbb432a993f6b36211bea7e13a783fe400db2d7d04534244baff9c",
+    "pi_seed1.pt": "0e53db4224cbd588a92646418d9e6debf1e9a8d868abcd013d918f43d9906fff",
+    "pi_seed2.pt": "ba761ce7f6a44d5f831dad395dd41d386158b7fb222b334e40600ebb095dc89b",
+    "Q_seed0.pt": "902330b28c283ca3420341a63cf0dbdbb3f6e5f85d61159d8e9601990de1baec",
+    "Q_seed1.pt": "b98645ca9c95554c64f475cea12cf2d417d75207dfd87f65bb7efb9cec785263",
+    "Q_seed2.pt": "8da82fc557927c3bab1af010655213ce587259cf1bbaf7bc02d39ef1ef1d621a"
+  },
+  "test_plan": {
+    "role": "test", "episodes": ["E1000", "E100"], "directions": ["cross", "same"], "seeds": [0, 1, 2],
+    "methods": ["D11", "control", "nearest_low", "nearest_high", "mixture", "global_moment", "state_moment",
+                "ot_displacement", "oracle_replicate"],
+    "primary": "E1000 cross composition TV, D11 - D00 (mixture), drug-level paired bootstrap B=2000",
+    "evaluated_once": true
+  }
+}

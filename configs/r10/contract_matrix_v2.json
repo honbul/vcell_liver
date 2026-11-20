@@ -1,0 +1,91 @@
+{
+  "study": "R10-E1a train x evaluation contract matrix and R10-E2 declared/actual assembly audit",
+  "version": "contract_matrix_v2",
+  "plan_ref": "private plan 2026-11-19 sections 7.1.1-7.1.4, 7.1.6, 7.2.1-7.2.2 (conditional 7.1.5, 7.2.3, 7.2.4)",
+  "base_commit": "0c35756378ad8ff0261d75677a516f634c08eff2",
+  "exposure_status": {
+    "development": "head selection set (early stopping, weight decay) of every learned arm; reported as in-selection, optimistic",
+    "test": "v1 test 38 drugs, already exposed (v1 D11[cross], non-learned baselines and mixture_t[cross] were scored on it); E1a test numbers are a frozen follow-up comparison on previously exposed data, NOT a blind or independent test"
+  },
+  "hypothesis": "The same-contract deterioration of cross-trained heads relates to the train/evaluation replicate-contract mismatch; same-trained heads must be judged against same-fitted simple baselines (t*_same, W_same). The design does not identify a causal environment share.",
+  "input_contract": "unchanged from v1: line, episode/dose, endpoint replicate low/high wells, endpoint-replicate vehicle; query RNA/composition/cell number never enter features (configs/r10/r10_v1.json, reports/r10_dose_composition/DATA_CONTRACT.md)",
+  "fixed_from_v1": {
+    "config": "configs/r10/r10_v1.json",
+    "cache": "assets/cache/r10_v1 (read-only symlink to the v1 worktree)",
+    "atlas": "train-only HVG2000/PCA20/GMM K=4 per line (atlas_K.json of r10_b1_v3)",
+    "triplets": "assets/cache/r10_v1/eligible_triplets.tsv (min_cells_well 20)",
+    "scoring": "core.score on the fixed atlas re-read of the assembled cloud",
+    "heads": "MLP hidden 64x2, dropout 0.1, Adam 1e-3, weight decay grid {1e-4, 1e-2}; pi/Q max 600 epochs patience 60 (KL / weighted residual MSE); W max 150 epochs patience 30, energy distance, batch 64, 128 cells per endpoint in training",
+    "selection": "per head and seed: weight decay and epoch by the drug-balanced development objective of the SAME replicate contract the head is trained on (pi: declared TV; Q: weighted residual MSE; W: energy distance)"
+  },
+  "train_contracts": {
+    "cross": {"pi_Q_W": "v1 run r10_b3_v1 seeds 0,1,2 (reused, hash-verified)", "t_star": "v1 r10_c3_tstar_v1.json (train cross, t*=0.325 both episodes)"},
+    "same": {"pi_Q": "v1 run r10_c2_same_v1 seeds 0,1,2 (reused, hash-verified)", "W": "NEW r10_contract_matrix_v2/train_same_W seeds 0,1,2, same code path with --direction same", "t_star": "NEW r10_contract_matrix_v2/tstar_same.json (train drugs, same triplets, same grid 0..1 step 0.025)"}
+  },
+  "arms_per_cell": ["D00", "tstar[cross]", "tstar[same]", "D10[tc]", "D01[tc]", "D11[tc]", "W[tc]"],
+  "cells": "train contract tc in {same, cross} x evaluation contract (triplet direction) in {same, cross}; roles test (primary) and development (secondary); episodes E1000 (primary) and E100 (pre-specified secondary)",
+  "d00_rule": "D00 does not depend on the training contract; it is evaluated once per triplet and never counted twice",
+  "aggregation": "seeds -> triplet -> replicate direction -> line (equal weight) -> drug; drug-level bootstrap B=2000 seed 20261117",
+  "pairing": "within one (role, episode, evaluation contract) cell, on the triplet intersection where both arms have a finite metric; training-contract effects therefore compare cross- and same-trained arms on the same query wells",
+  "eval_contract_sensitivity": "comparisons across evaluation contracts use the common eligible (line, drug, episode) set with both contracts present; they are drug-paired, not query-well paired",
+  "primary": {
+    "role": "test",
+    "episode": "E1000",
+    "metric": "comp_tv",
+    "family": [
+      {"id": "P1", "question": "same-contract training helps on same evaluation", "a": "D11[same]", "b": "D11[cross]", "eval": "same"},
+      {"id": "P2", "question": "cross-contract training helps on cross evaluation", "a": "D11[cross]", "b": "D11[same]", "eval": "cross"},
+      {"id": "P3", "question": "pi-head beyond the matched global mixing weight (same)", "a": "D10[same]", "b": "tstar[same]", "eval": "same"},
+      {"id": "P4", "question": "pi-head beyond the matched global mixing weight (cross)", "a": "D10[cross]", "b": "tstar[cross]", "eval": "cross"},
+      {"id": "P5", "question": "decomposed assembly beyond the global affine model (same)", "a": "D11[same]", "b": "W[same]", "eval": "same"},
+      {"id": "P6", "question": "decomposed assembly beyond the global affine model (cross)", "a": "D11[cross]", "b": "W[cross]", "eval": "cross"}
+    ],
+    "sign": "a - b; negative = a has lower (better) actual composition TV",
+    "multiplicity": "Holm over the six primary contrasts using two-sided percentile-bootstrap p-values p = min(1, 2 min(P*(d<=0), P*(d>=0))); Bonferroni simultaneous intervals (1 - 0.05/6) reported alongside the 95% intervals",
+    "practical_threshold": {"comp_tv": 0.005, "note": "plan proposal value (not a v1 rule), fixed here before scoring"},
+    "equivalence": {"margin": {"comp_tv": 0.005}, "interval": 0.90, "rule": "equivalence only if the 90% bootstrap interval lies inside (-margin, +margin); a 95% interval containing 0 alone is 'difference not established'"},
+    "decision_labels": {
+      "practical_difference_established": "Holm-adjusted p < 0.05 and |estimate| >= 0.005",
+      "difference_below_practical_threshold": "Holm-adjusted p < 0.05 and |estimate| < 0.005",
+      "equivalent_within_margin": "not Holm-significant and 90% interval inside (-0.005, 0.005)",
+      "not_established": "otherwise"
+    }
+  },
+  "secondary": {
+    "status": "all reported, no multiplicity correction, labelled secondary; never promoted to primary after seeing results",
+    "contrasts_per_cell": [
+      "X[tc] - D00 for X in D10, D01, D11, W, tstar",
+      "D10[tc] - tstar[tc] and D10[tc] - tstar[other tc] (baseline contract sensitivity)",
+      "D11[tc] - D10[tc] (within-state mean RMSE / within ED / ED: does Q add to pi)",
+      "D11[tc] - W[tc] (TV and ED claimed separately)",
+      "D11[tc] - tstar[tc]",
+      "X[same] - X[cross] for X in D10, D01, D11, W, tstar (training-contract effect, same query wells)",
+      "arm_interaction[tc] = D11 - D10 - D01 + D00"
+    ],
+    "metrics": ["comp_tv", "within_mean_rmse", "within_ed", "ed", "mmd", "dmean_rmse_gene"],
+    "contract_interaction": "(X[same]@same - X[cross]@same) - (X[same]@cross - X[cross]@cross) on the common eligible set; named contract_interaction, distinct from arm_interaction",
+    "strata": "line; replicate direction (rep_endpoint->rep_query); query plate relation (query on low-endpoint plate / high-endpoint plate / neither); descriptive, with drug bootstrap intervals"
+  },
+  "e2_audit": {
+    "values": {"tv_declared_query": "head_comp_tv = TV(pi_declared, pi_query)", "tv_actual_query": "comp_tv = TV(pi_actual reread, pi_query) -- always the primary metric", "tv_declared_actual": "assembly_tv_head_vs_reread = TV(pi_declared, pi_actual)"},
+    "d00_tolerance": 1e-6,
+    "diagnostics": ["diag_membership_entropy", "diag_neff_low_min", "diag_neff_high_min", "diag_lowsupport_mass", "diag_pi_shift_tv", "diag_q_shift_rms"],
+    "strata": "tertiles of each endpoint diagnostic within role x episode (cut points computed on all triplets of that role x episode, before looking at mismatch)",
+    "no_reselection": "drugs with large mismatch are never used to redefine the primary analysis"
+  },
+  "conditional_unlocks": {
+    "evaluated_on": "development role only (source/selection data), E1000, matched cells (same->same, cross->cross); test numbers never unlock anything",
+    "U1_mismatch_limits_performance": "for D10[tc] in its matched cell, mean drug-level (comp_tv - head_comp_tv) >= 0.005 with 95% lower bound > 0, in BOTH training contracts",
+    "U2_ranking_changes": "for any tc and any pair in {(D10,D00), (D11,D00), (D10,tstar[tc]), (D11,tstar[tc])}: the declared-TV estimate and the actual-TV estimate have opposite signs and at least one of their 95% intervals excludes 0",
+    "epoch_ranking": "not assessable from v1 artifacts (only the best checkpoint and the declared-TV curve are stored); recorded as such",
+    "unlock_7_2_3_objective_arms": "U1 or U2",
+    "unlock_7_2_4_hard_partition": "only together with 7.2.3 (mismatch-repair control, not a required fix)",
+    "unlock_7_1_5_source_oof": "only if 7.2.3 is unlocked (new objective/model selection continues and needs source-only selection data)"
+  },
+  "cost_rule": "same-W pilot = seed 0 with both weight decays; remaining seeds only if the measured cost keeps the full package within ~24 h wall under the track caps (12 jobs, CPU)",
+  "outputs": {
+    "runs": "assets/runs/r10_contract_matrix_v2/ (server)",
+    "manifests": "manifests/r10_dose_composition/contract_matrix_v2/{artifact_registry.tsv,predeclared_contrasts.tsv}",
+    "reports": "reports/r10_dose_composition/contract_matrix_v2/, reports/r10_dose_composition/assembly_audit_v2/{declared_vs_actual,selection_disagreement,endpoint_support}.tsv"
+  }
+}

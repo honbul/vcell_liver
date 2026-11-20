@@ -1,0 +1,155 @@
+{
+ "rule": {
+  "evaluated_on": "development role only (source/selection data), E1000, matched cells (same->same, cross->cross); test numbers never unlock anything",
+  "U1_mismatch_limits_performance": "for D10[tc] in its matched cell, mean drug-level (comp_tv - head_comp_tv) >= 0.005 with 95% lower bound > 0, in BOTH training contracts",
+  "U2_ranking_changes": "for any tc and any pair in {(D10,D00), (D11,D00), (D10,tstar[tc]), (D11,tstar[tc])}: the declared-TV estimate and the actual-TV estimate have opposite signs and at least one of their 95% intervals excludes 0",
+  "epoch_ranking": "not assessable from v1 artifacts (only the best checkpoint and the declared-TV curve are stored); recorded as such",
+  "unlock_7_2_3_objective_arms": "U1 or U2",
+  "unlock_7_2_4_hard_partition": "only together with 7.2.3 (mismatch-repair control, not a required fix)",
+  "unlock_7_1_5_source_oof": "only if 7.2.3 is unlocked (new objective/model selection continues and needs source-only selection data)"
+ },
+ "U1": {
+  "same": {
+   "est": 0.00020510329464652456,
+   "lo": -0.0010335149197340243,
+   "hi": 0.00147965626627974,
+   "lo90": -0.0008454797034966412,
+   "hi90": 0.0012893328635688035,
+   "lo_bonf": -0.001506243474667358,
+   "hi_bonf": 0.0019332045581546683,
+   "p_boot": 0.738,
+   "n_drugs": 35,
+   "met": false
+  },
+  "cross": {
+   "est": -0.0010111937832733217,
+   "lo": -0.0028106573313484372,
+   "hi": 0.000756654113987341,
+   "lo90": -0.002529699551905862,
+   "hi90": 0.0004971119335960693,
+   "lo_bonf": -0.0032924379124048657,
+   "hi_bonf": 0.0015643434639131019,
+   "p_boot": 0.283,
+   "n_drugs": 35,
+   "met": false
+  }
+ },
+ "U1_met": false,
+ "U2_pairs": [
+  {
+   "eval_contract": "same",
+   "a": "D10[same]",
+   "b": "D00",
+   "declared_est": -0.01617433669813068,
+   "declared_lo": -0.031009779236155027,
+   "declared_hi": -0.003948203866058217,
+   "actual_est": -0.015969233403484162,
+   "actual_lo": -0.03019195611854875,
+   "actual_hi": -0.004361930222331716,
+   "sign_change": false,
+   "any_ci_excludes_0": true
+  },
+  {
+   "eval_contract": "same",
+   "a": "D11[same]",
+   "b": "D00",
+   "declared_est": -0.01617433669813068,
+   "declared_lo": -0.031009779236155027,
+   "declared_hi": -0.003948203866058217,
+   "actual_est": -0.01763873511703286,
+   "actual_lo": -0.03325850962629798,
+   "actual_hi": -0.005072274274441186,
+   "sign_change": false,
+   "any_ci_excludes_0": true
+  },
+  {
+   "eval_contract": "same",
+   "a": "D10[same]",
+   "b": "tstar[same]",
+   "declared_est": -0.006552551562059729,
+   "declared_lo": -0.017324448200882584,
+   "declared_hi": 0.001818641633154638,
+   "actual_est": -0.006347448267413206,
+   "actual_lo": -0.016534780217996394,
+   "actual_hi": 0.0016603335223398645,
+   "sign_change": false,
+   "any_ci_excludes_0": false
+  },
+  {
+   "eval_contract": "same",
+   "a": "D11[same]",
+   "b": "tstar[same]",
+   "declared_est": -0.006552551562059729,
+   "declared_lo": -0.017324448200882584,
+   "declared_hi": 0.001818641633154638,
+   "actual_est": -0.008016949980961908,
+   "actual_lo": -0.019493658802119146,
+   "actual_hi": 0.000660269447296967,
+   "sign_change": false,
+   "any_ci_excludes_0": false
+  },
+  {
+   "eval_contract": "cross",
+   "a": "D10[cross]",
+   "b": "D00",
+   "declared_est": -0.028157382703828757,
+   "declared_lo": -0.0436897930059423,
+   "declared_hi": -0.014635672022873783,
+   "actual_est": -0.029168576487102083,
+   "actual_lo": -0.043996861772344374,
+   "actual_hi": -0.016263895883450282,
+   "sign_change": false,
+   "any_ci_excludes_0": true
+  },
+  {
+   "eval_contract": "cross",
+   "a": "D11[cross]",
+   "b": "D00",
+   "declared_est": -0.028157382703828757,
+   "declared_lo": -0.0436897930059423,
+   "declared_hi": -0.014635672022873783,
+   "actual_est": -0.031194110294711638,
+   "actual_lo": -0.046205488505023776,
+   "actual_hi": -0.018090371393682157,
+   "sign_change": false,
+   "any_ci_excludes_0": true
+  },
+  {
+   "eval_contract": "cross",
+   "a": "D10[cross]",
+   "b": "tstar[cross]",
+   "declared_est": -0.013163912290354157,
+   "declared_lo": -0.024003867691729703,
+   "declared_hi": -0.0036805348551841384,
+   "actual_est": -0.014175106073627477,
+   "actual_lo": -0.02462310573109736,
+   "actual_hi": -0.005414155250590548,
+   "sign_change": false,
+   "any_ci_excludes_0": true
+  },
+  {
+   "eval_contract": "cross",
+   "a": "D11[cross]",
+   "b": "tstar[cross]",
+   "declared_est": -0.013163912290354157,
+   "declared_lo": -0.024003867691729703,
+   "declared_hi": -0.0036805348551841384,
+   "actual_est": -0.016200639881237038,
+   "actual_lo": -0.026287169510789708,
+   "actual_hi": -0.007500714033772929,
+   "sign_change": false,
+   "any_ci_excludes_0": true
+  }
+ ],
+ "U2_met": false,
+ "epoch_ranking": "not assessable from v1 artifacts",
+ "unlock_7_2_3": false,
+ "unlock_7_2_4": false,
+ "unlock_7_1_5": false,
+ "d00_tolerance_check": {
+  "n": 1660,
+  "max_assembly_tv": 2.6008655445259807e-09,
+  "max_abs_declared_minus_actual": 2.6008655090725696e-09,
+  "pass": true
+ }
+}
