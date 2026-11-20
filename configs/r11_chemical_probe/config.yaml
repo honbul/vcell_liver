@@ -1,0 +1,44 @@
+study: r11_chemical_probe_v1
+exposure: project_seen_source / fit-held-out / protocol-frozen follow-up
+data:
+  root: /mnt/S1/sdata/pubdata/Tahoe/Tahoe-100M
+  revision: 2dc57900b7981cfcf5e211527169a0b006546a95
+  dose_uM: 0.5
+  time_h: 24
+  quarantine: plate13
+  minimum_cells: 20
+  panel_size: 2000
+  normalization: log1p_cp10k_of_well_counts_over_all_mapped_genes
+  liver:
+    CVCL_1098: HepG2/C3A
+    CVCL_0366: SNU-423
+  workers: 7
+  batch_cells: 8192
+features:
+  checkpoint: DeepChem/ChemBERTa-77M-MTR
+  revision: 66b895cab8adebea0cb59a8effa66b2020f204ca
+  weights_sha256: 7882205587d3985c07e425632d0e57ba0fc2fc778e3b47aab02aef9b7961407f
+  pooling: last_hidden_cls
+  ecfp_radius: 2
+  ecfp_bits: 2048
+  ecfp_chirality: false
+  drug_dim: 32
+  control_dim: 16
+model:
+  alpha: [0.1, 1, 10, 100, 1000]
+  shrinkage: [0, 2, 8, 32]
+  mlp_lr: [0.0003, 0.001]
+  max_epochs: 100
+  patience: 10
+  batch_rows: 256
+evaluation:
+  minimum_groups: 3
+  bootstrap_replicates: 2000
+  seed: 42
+  practical_margin: null
+budget:
+  max_gpu_hours: 48
+  max_cpu_jobs: 4
+  max_threads_per_job: 8
+  max_download_gib: 20
+  max_scratch_gib: 60
