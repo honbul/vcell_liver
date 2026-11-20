@@ -1,0 +1,17 @@
+{
+ "track": "R7",
+ "version": "followup-v1",
+ "reference_commit": "a3a9eb5f107766cc0444fcb391beae869d1c00e8",
+ "source_folds": {"n_folds": 3, "fold_seed": 20261118, "unit": "original TRAIN drug groups, all cell lines of a group together", "inner_val_fraction_of_outer_train": 0.15},
+ "model_seeds": [42, 43, 44],
+ "null_mapping_seeds": [142, 143, 144],
+ "training": {"lr": 1e-4, "batch": 64, "updates": 20000, "eval_every": 500, "aug": 1, "loss": "MSE", "selection": "inner-validation source-panel family-balanced delta RMSE"},
+ "arms": ["chem", "M", "G0", "GS", "GR"],
+ "gr_correction_params_total": 373359,
+ "gr_identity_rows_that_cannot_reach_a_landmark": 1113,
+ "gr_correction_params_operating": 337743,
+ "m_arm_h2": 125,
+ "m_arm_params": 337945,
+ "operating_threshold_abs_rmse": 0.001,
+ "bootstrap": {"n": 5000, "seed": 20261118, "unit": "drug group (all cell lines together)", "core_contrasts": ["GR-M", "GR-GS"], "simultaneous": "Bonferroni 97.5 % percentile intervals for the two core contrasts; Holm-adjusted two-sided bootstrap p"}
+}

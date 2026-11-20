@@ -1,0 +1,28 @@
+track	version	split_role	feature	where	index	evidence_on_mean	evidence_off_value	changed_by_evidence_off	note
+R7	followup-v1	implementation_audit	mech	seed feature of the drug-target stub (input of GraphCorrection.ws)	0	0.19744	1.0	yes	channel 0 is reused as a presence indicator
+R7	followup-v1	implementation_audit	actB	seed feature of the drug-target stub (input of GraphCorrection.ws)	1	0.7299657142857143	0.0	yes	set to 0 for every stub
+R7	followup-v1	implementation_audit	actF	seed feature of the drug-target stub (input of GraphCorrection.ws)	2	0.24242285714285713	0.0	yes	set to 0 for every stub
+R7	followup-v1	implementation_audit	sign_pos	seed feature of the drug-target stub (input of GraphCorrection.ws)	3	0.03958857142857143	0.0	yes	set to 0 for every stub
+R7	followup-v1	implementation_audit	sign_neg	seed feature of the drug-target stub (input of GraphCorrection.ws)	4	0.15085714285714286	0.0	yes	set to 0 for every stub
+R7	followup-v1	implementation_audit	action_unknown	seed feature of the drug-target stub (input of GraphCorrection.ws)	5	0.8096	0.0	yes	set to 0 for every stub
+R7	followup-v1	implementation_audit	map_exact	seed feature of the drug-target stub (input of GraphCorrection.ws)	6	0.94496	0.0	yes	set to 0 for every stub
+R7	followup-v1	implementation_audit	map_connect_only	seed feature of the drug-target stub (input of GraphCorrection.ws)	7	0.05504	0.0	yes	set to 0 for every stub
+R7	followup-v1	implementation_audit	multi_gene_target	seed feature of the drug-target stub (input of GraphCorrection.ws)	8	0.13746285714285714	0.0	yes	set to 0 for every stub
+R7	followup-v1	implementation_audit	status[0] has_mechanism	drug-level status vector (input of Cond -> q)	0		0	yes	target count survives evidence_off
+R7	followup-v1	implementation_audit	status[1] has_activity	drug-level status vector (input of Cond -> q)	1		0	yes	target count survives evidence_off
+R7	followup-v1	implementation_audit	status[2] log_target_count	drug-level status vector (input of Cond -> q)	2		kept	no	target count survives evidence_off
+R7	followup-v1	implementation_audit	status[3] signed_fraction	drug-level status vector (input of Cond -> q)	3		0	yes	target count survives evidence_off
+R7	followup-v1	implementation_audit	edge_feat[0] rel_onehot_0	graph edge provenance (input of the edge gate ke)	0	0.3103393614292145	unchanged	no	evidence_off never touches the graph tensors
+R7	followup-v1	implementation_audit	edge_feat[1] rel_onehot_1	graph edge provenance (input of the edge gate ke)	1	0.09890248626470566	unchanged	no	evidence_off never touches the graph tensors
+R7	followup-v1	implementation_audit	edge_feat[2] rel_onehot_2	graph edge provenance (input of the edge gate ke)	2	0.12480627745389938	unchanged	no	evidence_off never touches the graph tensors
+R7	followup-v1	implementation_audit	edge_feat[3] rel_onehot_3	graph edge provenance (input of the edge gate ke)	3	0.3549039959907532	unchanged	no	evidence_off never touches the graph tensors
+R7	followup-v1	implementation_audit	edge_feat[4] rel_onehot_4	graph edge provenance (input of the edge gate ke)	4	0.05974633991718292	unchanged	no	evidence_off never touches the graph tensors
+R7	followup-v1	implementation_audit	edge_feat[5] rel_onehot_5	graph edge provenance (input of the edge gate ke)	5	0.051301516592502594	unchanged	no	evidence_off never touches the graph tensors
+R7	followup-v1	implementation_audit	edge_feat[6] n_sources_log	graph edge provenance (input of the edge gate ke)	6	0.5022910833358765	unchanged	no	evidence_off never touches the graph tensors
+R7	followup-v1	implementation_audit	edge_feat[7] n_refs_log	graph edge provenance (input of the edge gate ke)	7	0.29641348123550415	unchanged	no	evidence_off never touches the graph tensors
+R7	followup-v1	implementation_audit	edge_feat[8] curation_effort_log	graph edge provenance (input of the edge gate ke)	8	0.29666972160339355	unchanged	no	evidence_off never touches the graph tensors
+R7	followup-v1	implementation_audit	edge_feat[9] from_complex	graph edge provenance (input of the edge gate ke)	9	0.2881835699081421	unchanged	no	evidence_off never touches the graph tensors
+R7	followup-v1	implementation_audit	edge_feat[10] sign_known	graph edge provenance (input of the edge gate ke)	10	0.8238922357559204	unchanged	no	evidence_off never touches the graph tensors
+R7	followup-v1	implementation_audit	edge_rel (6 relation channels)	relation-typed weights w_rel / b_rel	-1		unchanged	no	direction / sign channels kept
+R7	followup-v1	implementation_audit	target identity (seeded node index)	which node receives the seed	-1		unchanged	no	evidence_off keeps the drug-target identity
+R7	followup-v1	implementation_audit	m_available	hard availability gate on the correction	-1	0.40082046332046334	unchanged	no	

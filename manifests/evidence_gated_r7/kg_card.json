@@ -1,0 +1,126 @@
+{
+ "chembl": {
+  "release": "chembl_37",
+  "db": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/external/chembl_37/chembl_37/chembl_37_sqlite/chembl_37.db",
+  "db_bytes": 30480314368,
+  "pchembl_min": 6.0,
+  "confidence_min": 7,
+  "linked_pert_ids": 7983,
+  "inchikey_computed_from_smiles": 384,
+  "linked_pert_ids_with_computed_key": 144,
+  "linked_groups": 6265,
+  "evidence_rows": 31473,
+  "human_target_accessions_without_hgnc": 70
+ },
+ "omnipath": {
+  "path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_evidence_gated_r7/assets/external/omnipath/interactions_omnipath_collectri.tsv",
+  "sha256": "13719218e8bbefc08dfeeeb5a50e74fc9f1a6d49e795b2f31863bc939507e749",
+  "rows": 150705,
+  "complex_rows": 76419,
+  "endpoint_pairs_dropped_no_unique_hgnc": 7797
+ },
+ "hgnc": {
+  "path": "/mnt/S1/sdata/pubdata/HGNC/hgnc_complete_set_2026-09-08.txt",
+  "sha256": "6f43d6ff43aa9fdfa5fb2f20a20a7cace66e6e02e2a0dcf19d9b726e2e248d20",
+  "approved_symbols": 45045
+ },
+ "graph": {
+  "nodes": 4696,
+  "targets": 2453,
+  "intermediates": 1540,
+  "landmarks": 978,
+  "edges": 63234,
+  "edges_by_channel": {
+   "tf_pos": 22442,
+   "sig_pos": 19624,
+   "sig_unk": 7892,
+   "sig_neg": 6254,
+   "tf_neg": 3778,
+   "tf_unk": 3244
+  },
+  "targets_in_landmarks": 275,
+  "targets_in_graph_with_outgoing_edge": 1299
+ },
+ "seeds": {
+  "rows": 21875,
+  "feats": [
+   "mech",
+   "actB",
+   "actF",
+   "sign_pos",
+   "sign_neg",
+   "action_unknown",
+   "map_exact",
+   "map_connect_only",
+   "multi_gene_target"
+  ]
+ },
+ "channels": [
+  "sig_pos",
+  "sig_neg",
+  "sig_unk",
+  "tf_pos",
+  "tf_neg",
+  "tf_unk"
+ ],
+ "coverage_by_role": {
+  "test": {
+   "complete": 172,
+   "missing": 778,
+   "partial": 293,
+   "total": 1243
+  },
+  "train": {
+   "complete": 920,
+   "missing": 3451,
+   "partial": 1431,
+   "total": 5802
+  },
+  "validation": {
+   "complete": 160,
+   "missing": 737,
+   "partial": 346,
+   "total": 1243
+  }
+ },
+ "files": {
+  "edge_index.npy": {
+   "sha256": "cb812ddd68f29f4af299bdcc6f0462560bc9f50b8072ffcda3bd426e0375ad81",
+   "bytes": 1011872
+  },
+  "edge_rel.npy": {
+   "sha256": "e204e90641d84497e085a4be0fc973d7042cf6ccffe502f68cef150803b55974",
+   "bytes": 506000
+  },
+  "edge_feat.npy": {
+   "sha256": "9283b22cf17826286f555b21b61ba72c4f432d7831f4eaa8639a2489df71c5c8",
+   "bytes": 2782424
+  },
+  "node_measured.npy": {
+   "sha256": "089d35c8a68c6829f601046b36a4f784670db81da84da5d1d9444d43983227d8",
+   "bytes": 4824
+  },
+  "landmark_node_idx.npy": {
+   "sha256": "de5588a7ffc57f1ff96cdfd83498bae21e192f50f78fd919be5188c53478aca6",
+   "bytes": 7952
+  },
+  "nodes.tsv": {
+   "sha256": "793781f90839211a5a4e9d0c40c2fc6a9fff0c09d105b3b8a99c00ffd272c586",
+   "bytes": 78879
+  },
+  "drug_seeds.tsv": {
+   "sha256": "56b402c474f80a7e3e3631fb74fccb0a049d935f97427c79a01fb6ef7264bba3",
+   "bytes": 1218846
+  },
+  "group_status.tsv": {
+   "sha256": "e744423703832027719282f73c5ddf04a15cfa4ef199a4cd76221bc66df5bd9d",
+   "bytes": 597630
+  },
+  "edges.tsv": {
+   "sha256": "3da3bdeb0fef66a211d541bfe58a80439beadf30ef5909d25ff83d1aef9284e4",
+   "bytes": 2591434
+  }
+ },
+ "seconds": 157,
+ "commit": "88d89f6"
+}

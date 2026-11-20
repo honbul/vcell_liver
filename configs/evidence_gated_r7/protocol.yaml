@@ -1,0 +1,114 @@
+# Study R7 protocol: evidence-gated mechanism conditioning for unseen-drug transcriptional response prediction.
+# Written and committed before any R7 job read an expression value (X0 or delta). A rule change needs a dated entry under
+# `amendments` (reason, what had been seen). Plan: private package VCELL_NEXT3_R6_R8 (02_R7, R7-v1.0); not in git.
+track: evidence_gated_r7
+reuse:
+  r4_commit: 645610055df8c56fcefc90e3b133775ed741697e     # R4 tip, preserved; this branch starts there
+  r4_units: "R4 processed units (cell, drug_group), read-only: units.tsv, groups.tsv, unit_x0.npy, unit_delta_open.npy; unit_delta_test.npy opened only by the R7 final evaluation"
+  r4_split: "R4 global drug-group split 70/15/15 (seed 20261117), unchanged"
+  r4_evaluator: "R4 unit metrics / family-equal aggregation / paired drug-group bootstrap (copied unchanged into src/evidence_gated_r7/evaluate.py)"
+  exposure: "R4 already opened the test drugs once (job 25374). R7 test is a pre-registered follow-up evaluation of an exposed public benchmark, not a blind test"
+
+data:
+  platform: CMap LINCS 2020 Level 3, single small molecules, nominal 10 uM, 24 h, 978 measured landmarks (no inferred genes)
+  unit: (cell, drug_group); delta = equal mean over conditions of equal mean over plates of (X1 - plate DMSO X0) (R4 definition)
+  x0: same equal mean of the plate DMSO profiles (input; available for every unit)
+  roles: {train: fit, validation: selection and every development decision, test: once after freeze}
+  query_rule: "a validation / test drug's RNA in any cell is never used for training, teachers, statistics or selection of graph / nodes"
+  hcc: HUH7, JHH5, JHH7 reported as pre-specified sub-results of the test; never used for any setting choice (validation scoring uses the source panel only)
+
+knowledge:   # Phase 0, metadata only; frozen before any model run (kg_card.json hashes)
+  resources: [ChEMBL release dump (37, EBI FTP, checksum-verified), OmniPath interactions web service (datasets omnipath + collectri, human, license=academic), HGNC complete set 2026-09-08 (nomenclature only)]
+  not_used: [LINCS compoundinfo target / moa columns, DrugBank, STITCH, GO, Reactome, TRRUST, any response-derived similarity]
+  linking: structure only (full InChIKey = exact; first block only = connect, flagged); evidence over the matched ChEMBL parent family; never by name
+  drug_target_evidence:
+    mech: ChEMBL drug_mechanism (curated); sign from the action-type parent (negative -> -1, positive -> +1, other -> unknown, action_mask)
+    actB: binding activity, pchembl >= 6, relation '=', no validity comment, assay confidence >= 7, human target
+    actF: functional activity, same filters
+    potency_values: not used as model input in v1 (presence per evidence kind only)
+  missing_vs_negative: "absence of an annotation = unknown (no seed); never encoded as no effect or zero RNA change; no negative edges are trained"
+  graph: "HGNC-symbol nodes = drug targets T + landmarks L + intermediates I (t -> v -> l); OmniPath directed edges among them; channels signalling +/-/unsigned and transcriptional +/-/unsigned; complexes expanded to members (flagged)"
+  unmeasured_nodes: "non-landmark nodes carry missing-expression mask (value 0 with mask 1, never read as low expression)"
+  edge_features: [channel one-hot, log sources (bounded), log references (bounded), log curation effort (bounded), from_complex, sign_known]
+  m_available: "1 if the drug group has >= 1 target node in the graph, else 0 (mechanism correction exactly 0, chemistry fallback)"
+
+model:
+  chemistry_backbone:     # same in every arm; the only change from the R4 delta-MLP is listed and justified in DECISIONS.md D-0
+    delta_chem: "m_c + MLP([ECFP4 2048, standardised X0 978]) with R4 delta-MLP widths 512-512, ReLU, zero-initialised output layer"
+    m_c: train-drug cell mean of delta (training units only)
+    x0_standardisation: per-gene mean / SD over training units
+  mechanism_correction: "delta = delta_chem + m_available * r(X0, d, G, e); r's output layer zero-initialised; no extra scale"
+  conditioning_vector: "q = MLP([z_cell = Linear(X0_std) 64, d = Linear(ECFP) 64, drug evidence status 4]) -> 64"
+  gated_graph_module:     # rows 'gated' (B10, B11)
+    node_init: "h0_v = id_embedding(v) + W_x [x0_std_v * measured_v, measured_v, missing_v] + W_s seed_dv (9 seed features; zero for non-targets)"
+    blocks: 2 relation-typed message-passing blocks, hidden 32
+    gate: "alpha_buv = sigmoid(b_rel + <P q_b, K e_uv>) (edge evidence, cell state, drug, masks); used only to weight messages"
+    readout: "r_l = w^T ReLU(W [h2_l, q_b]) at the 978 landmark nodes (gene-axis order)"
+  fixed_graph_module:     # comparator / attribution 'gate removed': identical, alpha_uv = sigmoid(b_rel) only
+  concat_module:          # rows 'concat' (B00, B01): same information pooled, no message passing at training time
+    features: "[q_b, target pool = sum_v (id_embedding(v) + W_s seed_dv) over targets, fixed-graph diffusion profile -> Linear 64]"
+    diffusion_profile: "for channel groups {all, signed (+ minus -), transcriptional}: two steps of the row-normalised fixed adjacency applied to the drug seed indicator, read at the 978 landmarks (precomputed, no learned weights)"
+    head: "MLP(... -> 256 -> 978), zero-initialised output"
+  chem_only: backbone alone (no external knowledge); same budget
+  knowledge_missingness_augmentation:   # columns 'aug' (B01, B11); training drugs only, RNA target unchanged
+    p_drop_all: "fraction of training drug groups whose status is 'missing' (metadata), clipped to [0.10, 0.50]"
+    p_drop_source: 0.25    # remove one whole evidence kind (mech or activity) when the drug has both
+    p_drop_target_block: 0.25   # remove a random half of the drug's ChEMBL target entries (tid blocks; at least one kept)
+    note: "single edges are not dropped at random; rates are not tuned (one setting)"
+
+two_by_two:   # plan section 6; same knowledge given to every row
+  B00: {module: concat, augmentation: off}
+  B01: {module: concat, augmentation: on}
+  B10: {module: gated, augmentation: off}
+  B11: {module: gated, augmentation: on}     # proposed
+  also_in_pilot: [chem_only]
+
+training:
+  sampler: "cell-matched batches (cell uniform, up to 64 of its training units without replacement), as R4"
+  loss: mean over units of mean over genes (delta_hat - delta)^2 (no auxiliary losses)
+  optimiser: Adam, no weight decay
+  updates: 20000, validation every 500, checkpoint = lowest validation primary (source panel)
+  lr_grid: [1.0e-4, 3.0e-4, 1.0e-3]          # 4 core conditions + chem_only x 3 LR, seed 42 (pilot)
+  selection: "per arm, LR with the lowest validation primary (seed 42); selected arms get seeds 43, 44"
+  fixed_graph_arm: "run with the column (aug on/off) and LR of the selected gated arm, seeds 42-44"
+  symmetric_extension: "if the best checkpoint of most pilot runs is at the last evaluation, every arm is re-run with 40000 updates (not a modification)"
+
+baselines:
+  no_change: delta = 0
+  train_cell_mean: m_c
+  ecfp_x0_ridge: R4 recipe (cell-balanced weighted ridge, alpha grid 1..1e4 chosen on validation)
+  cellmean_ecfp_ridge: R4 recipe
+  xpert:
+    code: GSanShui/XPert d53ff497e465692c80fac7b899e3cc5cc8e7bfed (+ Zenodo 10.5281/zenodo.17182939 public files, CC-BY-4.0)
+    retrained: "on the R4 train split with the R4 validation split for early stopping; author weights not used (trained on L1000 incl. our test drugs)"
+    inputs: "official: UniMol atom features + released HG drug embedding (mapped by structure to the XPert drug index; unmapped -> generated UniMol / zero HG, flagged) + PPI gene vectors; control profile = unit X0; target = X0 + delta"
+    recipe: "config_l1000 (sdst, include_cell_idx) with an epoch cap fixed from a timing run (recorded); upstream selection rule (validation PCC loss)"
+    wrapper_check: "prediction must be identical when the treated profile handed to the model is replaced by noise (the forward pass must not read it)"
+    deviations: [flash_attn replaced by a torch SDPA shim (same math), epoch cap]
+    unavailable_rule: "if the comparator cannot be trained it is reported as external_benchmark_unavailable, never as beaten"
+
+diagnostics:   # training drugs only, source cells only
+  D0: annotation coverage by role / status, targets inside the 978 landmarks, graph size (metadata)
+  D1: "per source cell (12 cells with most training units): pairs of training units -> cosine of cell-centred delta vs (a) ECFP Tanimoto, (b) target-set Jaccard (both annotated), (c) shared-plate vs not; in low-Tanimoto pairs (< 0.3) whether target overlap still associates with response similarity. Informative only, no gate."
+
+evaluation:
+  primary: per-unit RMSE over 978 genes of delta -> mean over units per family -> equal mean over non-HCC families (R4 definition)
+  secondary: [centred Pearson, retrieval MRR, top-20 |delta| direction, RMS ratio, per-unit Pearson]
+  strata: "annotation status complete / partial / missing (natural), target-count tertiles among annotated, true-RMS tertiles (scoring only)"
+  annotation_stress: "test drugs with annotation: input annotation kept 100 %, 50 % (random half of tid blocks, seed fixed), 0 % (all removed -> fallback); same measured RNA"
+  bootstrap: {unit: drug_group, resamples: 2000, seed: 20261117, ci: 0.95, paired: true}
+  hcc: "HUH7, JHH5, JHH7 separately and equal mean; claims only if the HCC-mean contrast CI is below 0"
+
+decision_rules:
+  validation_signal: "B11 3-seed mean validation primary below chem_only by >= 0.001 AND below B01 AND below B10 AND below fixed_graph, with the drug-group bootstrap CI of (B11 - chem_only) on seed-averaged validation unit RMSE below 0"
+  info_value_claim_test: "(B11 - chem_only) test CI below 0 and point <= -0.001"
+  usage_value_claim_test: "additionally (B11 - B01) and (B11 - fixed_graph) test CIs below 0"
+  strong_baseline: "B11 claims are reported next to ecfp_x0_ridge and XPert; a claim against them needs the same CI rule"
+  fallback_harm: "in the natural 'missing' stratum, B11 - chem_only > +0.002 is reported as fallback harm"
+  shrinkage_check: "if the mechanism correction's RMS on validation is < 1 % of delta_chem's RMS, 'knowledge use' is not claimed even if the score moves"
+  attribution: "only if validation_signal holds: retrain with a degree- and channel-preserving rewired graph (3 seeds), evidence features removed / averaged (3 seeds), augmentation removed (from the 2x2), gate removed (fixed_graph)"
+  modifications_allowed: 2   # from plan section 7 table only, one change each, written to DECISIONS.md before the run
+  stop_rule: "after the allowed modifications without the validation signal the mechanism model is closed as not adopted"
+  no_hcc_selection: "no HCC number is computed before the freeze"
+
+amendments: []

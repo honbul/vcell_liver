@@ -1,0 +1,50 @@
+{
+ "run_id": "pilot_B11_lr1e-3_s42",
+ "kind": "gated",
+ "seconds": 1273.2,
+ "commit": "9853645",
+ "slurm_job": "25765",
+ "host": "G1",
+ "config": {
+  "arm": "gated",
+  "aug": 1,
+  "run_id": "pilot_B11_lr1e-3_s42",
+  "lr": 0.001,
+  "seed": 42,
+  "batch": 64,
+  "updates": 20000,
+  "eval_every": 500,
+  "graph": "real",
+  "evidence": "on",
+  "max_updates_smoke": 0,
+  "n_train_units": 56431,
+  "n_val_units": 11731,
+  "train_units_sha": "e0451ff35766adb730cd1c6f3b30395ed82d822868bede7773bd141be8b0baa0",
+  "val_units_sha": "d338efddb37725d08ea552c35be0604139131498343b4d2b329458a711bd615b",
+  "aug_rates": {
+   "all": 0.5,
+   "source": 0.25,
+   "block": 0.25
+  },
+  "n_params": 2687553
+ },
+ "best": {
+  "score": 0.5506790116642541,
+  "step": 19000,
+  "val": {
+   "rmse": 0.5506790116642541,
+   "pearson": 0.2827961678051857,
+   "centred_pearson": 0.11188339369009508,
+   "mrr": 0.2885217482136312,
+   "top20_direction": 0.7111497599784307,
+   "rms_pred": 0.22609176474468864,
+   "rms_true": 0.5782177930151029,
+   "n_units": 11602,
+   "n_families": 110,
+   "corr_rms": 0.046864062547683716,
+   "chem_rms": 0.14040885865688324,
+   "mean_gate": 0.11557872593402863
+  }
+ },
+ "gpu_max_mem_gb": 3.81
+}

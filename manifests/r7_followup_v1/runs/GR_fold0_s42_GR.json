@@ -1,0 +1,67 @@
+{
+ "run_id": "fold0_s42_GR",
+ "kind": "GR",
+ "seconds": 4088.6,
+ "commit": "a703314",
+ "slurm_job": "25878",
+ "slurm_array_task": "0",
+ "host": "G2",
+ "config": {
+  "arm": "GR",
+  "ctx": "fold0",
+  "run_id": "fold0_s42_GR",
+  "seed": 42,
+  "null_seed": 0,
+  "backbone_from": "fold0_s42_chem",
+  "lr": 0.0001,
+  "batch": 64,
+  "updates": 20000,
+  "eval_every": 500,
+  "aug": 1,
+  "max_updates_smoke": 0,
+  "n_train_units": 31732,
+  "n_sel_units": 5633,
+  "n_held_units": 19066,
+  "train_units_sha": "4cbb6a1171c2e630430c6a72586c4478f38ecd1a58f51b2d6505f6488f549465",
+  "sel_units_sha": "d16b38257c009957d0c6295f86f1d882f8478d4535b53f83821e906833191b57",
+  "held_units_sha": "369c7d206d5c791876450c2c8685d70a4895a8d629afb27accaf4db2155d0c1a",
+  "aug_rates": {
+   "all": 0.5,
+   "source": 0.25,
+   "block": 0.25
+  },
+  "n_params_total": 2687553,
+  "n_params_correction": 373359,
+  "n_params_trainable": 373359,
+  "cells_without_train_units": 0,
+  "null_mapping": "",
+  "null_mapping_sha256": "",
+  "samples_seen": 1280000
+ },
+ "best": {
+  "score": 0.5881278861632256,
+  "step": 2000,
+  "sel": {
+   "rmse": 0.5881278861632256,
+   "pearson": 0.2760399791050245,
+   "centred_pearson": 0.0667413023308049,
+   "mrr": 0.34475494201422335,
+   "top20_direction": 0.7022685122117128,
+   "rms_pred": 0.22903627973770907,
+   "rms_true": 0.6097666831019095,
+   "n_units": 5575,
+   "n_families": 107,
+   "corr_rms": 0.026792600750923157,
+   "chem_rms": 0.15687613189220428,
+   "mean_gate": 0.3112940192222595
+  }
+ },
+ "train_seconds": 4065.2,
+ "inference": {
+  "held_units": 19066,
+  "seconds": 23.0,
+  "sec_per_1000_units": 1.206
+ },
+ "gpu_max_mem_gb": 3.8,
+ "checkpoint_sha256": "afd95ea485d7cfeaaaec824c7e98dfc4178715b546ab0cc13513090bd8891022"
+}

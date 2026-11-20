@@ -1,0 +1,51 @@
+{
+ "run_id": "m1_fixed_s43",
+ "kind": "fixed",
+ "seconds": 1097.2,
+ "commit": "1786563",
+ "slurm_job": "25803",
+ "host": "G3",
+ "config": {
+  "arm": "fixed",
+  "aug": 1,
+  "run_id": "m1_fixed_s43",
+  "lr": 0.0001,
+  "seed": 43,
+  "batch": 64,
+  "updates": 20000,
+  "eval_every": 500,
+  "graph": "real",
+  "evidence": "on",
+  "backbone_from": "chem/sel_chem_lr1e-4_s43",
+  "max_updates_smoke": 0,
+  "n_train_units": 56431,
+  "n_val_units": 11731,
+  "train_units_sha": "e0451ff35766adb730cd1c6f3b30395ed82d822868bede7773bd141be8b0baa0",
+  "val_units_sha": "d338efddb37725d08ea552c35be0604139131498343b4d2b329458a711bd615b",
+  "aug_rates": {
+   "all": 0.5,
+   "source": 0.25,
+   "block": 0.25
+  },
+  "n_params": 2686937
+ },
+ "best": {
+  "score": 0.5454620303565841,
+  "step": 15000,
+  "val": {
+   "rmse": 0.5454620303565841,
+   "pearson": 0.2934847680242848,
+   "centred_pearson": 0.14832220788900985,
+   "mrr": 0.32062998891704564,
+   "top20_direction": 0.7133078371558611,
+   "rms_pred": 0.23754152702682554,
+   "rms_true": 0.5782177930151029,
+   "n_units": 11602,
+   "n_families": 110,
+   "corr_rms": 0.04066498577594757,
+   "chem_rms": 0.17062249779701233,
+   "mean_gate": 0.5023331642150879
+  }
+ },
+ "gpu_max_mem_gb": 3.78
+}
