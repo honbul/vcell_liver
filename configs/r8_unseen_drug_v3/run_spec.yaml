@@ -1,0 +1,93 @@
+# R8 unseen-drug selection v3 (P0-R8 + P1-R8) run specification. Source: private plan 2026-11-20 section 4 (cited, not copied).
+# Base: research/r8-observation-transfer-v2 @ b419b3eb5c42b0024284a36597e8065b17bf2acb (read-only v2 run tree on the server).
+# Written BEFORE any v3 outer score. The commit that freezes this file (status: frozen) is the freeze SHA; a later change needs a
+# dated amendment below and never touches the primary contrast, thresholds, eligibility minima or the decision table.
+track: r8_unseen_drug_v3
+status: draft
+question: >
+  When the outer query drug's source response is excluded from model fitting AND from constant selection, does the chemistry path
+  (ECFP ridge query anchor + chem/ctrl kernel residual transfer, ridge_C1chem) beat the simple fallback (fb_C0) in centred RMSE?
+exposure: >
+  All families and drugs are source data already analysed in R8 / follow-up v1 / v2 (v2 E2-B scored the same outer episodes with a
+  leaky selection). v3 numbers are a CORRECTION / development re-evaluation on exposed source data, not a blind or external test.
+old_result_kept_as: "v2 E2-B sru = '예측 시 참조 부재 실험' (inference-time reference removal; selection used the held drugs' other-family truth)"
+
+split:
+  outer_family: "partition outer0/1/2 = cells.tsv cv_fold k (source-train families; confirmation 'val' families off), as v1/v2"
+  outer_drug: "3 folds, crc32('r8v2_drug|' + drug_group) % 3 (v2 rule, unchanged); drug_group = canonical store group (union of pert_id, name, InChIKey, SMILES, ECFP4)"
+  alias_exceptions: >
+    configs/r8_unseen_drug_v3/alias_exceptions.tsv: distinct groups sharing the largest-fragment non-isomeric SMILES or an InChIKey
+    first block (union-find). Query sets stay exactly the v2 fold-j groups; the held-for-fit set is the alias closure of fold j
+    (an alias of a query drug is removed from every fit, support and selection set of that block).
+  inner_family: "INNER_OF[outer] = inner{k}: inner-val = crc32('r8f_inner|' + family) % 3 == 0 inside the outer-train families (v1 rule)"
+  inner_drug: >
+    allowed groups A = not closure(fold j); 3 inner drug folds crc32('r8v3_inner_drug|' + group) % 3 restricted to A. Inner fold i:
+    queries = A & fold i on inner-val cells; held-for-fit = closure(fold j) | closure(A & fold i); supports exclude that set.
+  never: "outer query groups (and their aliases) never appear in any inner query, inner support, f0 table, PCA, kernel-scale or ridge fit"
+fits_in_scope: >
+  per context (outer block, each inner fold): source f0 table (family-balanced, the context's 'train' families, held-for-fit groups
+  removed: n = 0 and no leave-family-out entry), f0 PCA basis (same groups), kernel block scales (context-train episodes, seed 1, cap 200,
+  held groups not eligible), ridge map (ECFP4 -> family-balanced f0 of the same groups). Control PCA bases use label-free control
+  profiles x0 only (not response-based). Covariance nuisances are not fitted (no arm uses them).
+episodes:
+  outer: {support_seeds: [1, 2, 3], query_cap: null}     # v2 held_episodes rule: E1 RNG on full-store eligible units, 20 % query part
+  inner: {support_seeds: [1], query_cap: 200}
+  min_query: 10
+  min_support: 16
+  min_families_per_block: 10          # per (outer family fold, drug fold); otherwise the block is recorded and not scored
+  k: 16                               # only K = 16 (no K = 8 / 32 in this cycle)
+arms:
+  fb_C0: "query anchor 0 (f0_q = 0, n0_q = 0); C0 common correction alpha(K, kappa_b) * mean(Y_S - f*_S)"
+  fb_C1chem: "fb_C0 + eta * KRR residual transfer, block-normalised chem+ctrl kernel (lambda, eta; eta = 0 allowed)"
+  ridge_C0: "query anchor = ECFP4 ridge prediction fitted on the context's allowed source f0 table; C0 common correction"
+  ridge_C1chem: "ridge_C0 + chem+ctrl KRR residual transfer"
+  not_run: "ref_C0 / ref_C1 (full same-drug reference; different information contract) are not part of this package"
+selection:   # every constant re-selected per (outer fold, drug fold) block on the pooled 3 inner drug folds (family-mean inner score)
+  order:
+    - "kappa_f, kappa_b jointly on the fb_C0 score (tie rule anchor_iid v2: smaller kappa_f, then larger kappa_b); kappa_f shared by all arms"
+    - "ridge alpha on the ridge_C0 score with kappa_b = 16 (v2 rule; ties larger alpha); ridge refitted per inner fold"
+    - "kappa_b per anchor on its C0 score (fb, ridge); C1chem arms keep their anchor's kappa_b (v2)"
+    - "kernel scales refitted with the selected kappa_f; lambda, eta per C1chem arm (eta = 0 allowed; tie lam_eta v2)"
+  then: "outer refit on outer-train families with the held-for-fit set removed (f0 table, PCA, scales, ridge with the selected alpha); score once"
+  fixed_not_reselected: none
+tie_rule: v2
+grids:
+  kappa_f: [0, 0.5, 1, 2, 4, 8, 16, 32]
+  kappa_b: [0, 2, 4, 8, 16, 32, 64, inf]
+  lambda: [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100, 300, 1000]
+  eta: [0.25, 0.5, 0.75, 1.0]
+  ridge_alpha: [1.0, 10.0, 100.0, 1000.0, 10000.0]
+
+statistics:
+  unit: "query unit (cell, drug group); delta RMSE over 978 genes; centred RMSE = RMSE of (d_q - mean_w d) with d = pred - truth, mean over the episode's queries"
+  aggregation: "episode (query mean) -> cell (mean over support seed x drug fold episodes) -> family (mean over cells) -> overall (mean over families)"
+  primary:
+    contrast: "ridge_C1chem - fb_C0, centred RMSE, K = 16, all scored blocks"
+    ci: >
+      two-way family x drug paired bootstrap: per draw one multinomial count per scored family and one per outer query drug group
+      (independent); family counts weight the family level, drug counts weight the queries inside each episode, and the episode
+      centring mean is recomputed with the drug weights; identical weights for all arms; episodes / cells / families with zero
+      total weight drop out of that draw for every arm. 2000 draws, seed 20261120, percentile 95 %.
+    reference_ci: "family-only cluster bootstrap (drug weights 1; fixed drug set; conditional) reported alongside, never used for the decision"
+    practical: "relative change (candidate - base) / base <= -0.5 % of the fb_C0 centred RMSE (point estimate)"
+    fold_direction: "per outer family fold point estimate; >= 2 of 3 folds < 0 required"
+  also_reported: ["ridge_C1chem - fb_C0 delta RMSE (same CI)", "4-arm means"]
+  secondary: ["ridge_C0 - fb_C0 (anchor contribution)", "ridge_C1chem - ridge_C0 (residual contribution)", "fb_C1chem - fb_C0 (descriptive)"]
+  secondary_rule: "same CI, unadjusted, labelled secondary; never promoted to the primary; chem+ctrl kernel gains are not called pure chemistry effects"
+decision:   # applied literally to the primary contrast
+  adopt: "relative <= -0.5 % AND two-way CI upper < 0 AND >= 2/3 outer folds < 0 AND 3/3 outer folds evaluable -> 채택 조건 충족 (미관측 약물 경로 유지, 개발 검증)"
+  overall_worse: "adopt conditions met but ridge_C1chem - fb_C0 delta RMSE point estimate > 0 -> 연구 가설 일부 지지, 운영 후보 교체 보류 (채택 보류)"
+  small: "CI upper < 0 but relative > -0.5 % (or fold rule not met) -> 작은 개선 / 방향 불일치, 채택 보류"
+  not_established: "CI contains 0 -> 미관측 약물 경로의 추가 이득 미확립 (채택 보류); model search for this path ends"
+  worse: "CI lower > 0 -> 열세 (fb_C0 유지)"
+  not_evaluable: "fewer than 3 outer folds with a scored block -> 채택 보류 (평가 fold 부족); no scored block -> 평가 불가"
+  c1: "C1 stays the default for known-drug new-cell-line transfer regardless of this package"
+p0_gate: "every overlap check in overlap_checks.tsv = 0 (except the v2 reference row) and eligibility table written before any outer score"
+
+compute:
+  job_prefix: v3r8_
+  submit: /mnt/S1/sdata/workbench/Virtual_Cell/gssong/v3_tools/v3_sbatch.sh (cpu partition, <= 4 CPUs per job, no arrays, GPU 0)
+  concurrent_jobs: "2 at plan time; raised to 8 v3r8_ jobs on 2026-11-20 (user request via coordinator); split = one job per (outer fold, drug fold) block, no design change"
+  memory_per_job: 24G
+  stop_rule: "if the pilot predicts > 24 h wall-clock for the package, stop and report"
+amendments: []
