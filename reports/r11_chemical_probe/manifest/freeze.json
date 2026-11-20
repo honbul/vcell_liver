@@ -1,0 +1,221 @@
+{
+  "E3_roles": [],
+  "assets_sha256": {
+    "development/A/grid.tsv": "ff5b5e566fcb33f334bb69b92eeb97dccf3e0504d7d5b55ce51f0ce3c0406607",
+    "development/A/selection.json": "2d003ab7cec44b318378a35ca9c18021092246001693d782dfa305403eb70fb6",
+    "development/B/grid.tsv": "3cd2fd46119d4db77c9fc732ef56be5d9a059043c75585d37caa6ffae10cbe2d",
+    "development/B/selection.json": "39d0d79a873d0ccf55f32e805ea4976cb7d4eaf4cd758f9020ae7386c50606ce",
+    "development/final_panel.tsv": "5de769f988db3c680b64480b50345a33354284ebb917d5ff48debf9c0b601c74",
+    "development/panels.json": "6a3871a64e6272f22f1925feeceead309e8734d7bf6526e9f74c7b276c2f2094",
+    "features/features.npz": "9c9b3672a731147912b5ec20e61a45aa2bde63d1622f1d481d74e721c4f8d6a1",
+    "features/receipt.json": "c1b3f7328cb83a22926ffaff4b05c83f4b865a5e9fc57eb1b2f7685205ac485b",
+    "features/test_similarity.tsv": "134aaca36d4a1d0432247fa4521cac954eed97d74af05f73e1380818fd4fd9eb",
+    "metadata/receipt.json": "a836527a1acf405a5e944a9ad044910956d355d533e105b81d06bb0f8e81bc9c",
+    "metadata/samples.tsv": "93008e50861de2139f8bb72eee844cf508038dbb135652f4240ddd1f2cf00169",
+    "source/receipt.json": "e35da2bba2f19d77e139b09b57e1074316265937bf3f8b529402cb2088754605"
+  },
+  "attribution_ci": 0.95,
+  "commit": "d2e26a4c020e4167290ab5d9be7f2e73e3bee927",
+  "config_sha256": "e3bf1c6a81612df94b5f2a646319a11848854486fc992d830744e82663d59c8a",
+  "exposure": "project_seen_source / fit-held-out / protocol-frozen follow-up",
+  "implementation_sha256": {
+    "src/moe_drug_v1/prepare.py": "e5d30e8be03b89e68bc313e6566e00f6aa1c8957bc0fe90a32f286f4f6ecb6f6",
+    "src/r11_chemical_probe/__init__.py": "bff1ed8ce82029b9d96d6b6b401f655ca0a8bef4807ccb2fa96aff647434b855",
+    "src/r11_chemical_probe/common.py": "6334b7012992654a0077130beafad4e15f82ae015575a59745cecde5f3f8d601",
+    "src/r11_chemical_probe/dataset.py": "771fc72a86fea178df2d8688588f52bc69439bd4013278aa33f9a3f65e0f54a0",
+    "src/r11_chemical_probe/diagnostics.py": "b610d53d193d48cbceaaa1b266070683c61bd09c8c8e19ac7ae7949b7252a16c",
+    "src/r11_chemical_probe/features.py": "fe8c97226398f78b812c28bd0acf1598ecd33b8283460a7735b1a45ea853c626",
+    "src/r11_chemical_probe/freeze.py": "c43e12a754ac8b53f0088824f4faf96824007144c6755dba086efdf41e2dcd04",
+    "src/r11_chemical_probe/metrics.py": "2a98b8306f5b0cb70c63170f14cf58f6421e9c15def7fc13932f88901ca58c9a",
+    "src/r11_chemical_probe/models.py": "25ef8f92a4e97b313ae1c670a3dbe068db9dc1d1317ed99971bcf27850b2f1fe",
+    "src/r11_chemical_probe/network.py": "b75848cd3bfe2803252d85b49050eb485cbfda3c1dcecdc7302bdbcefca33e49",
+    "src/r11_chemical_probe/prepare.py": "12724c91b2e9ad270fe439a4b30406d1d036276845efd5050a08bc3a1cc2a865",
+    "src/r11_chemical_probe/repeats.py": "d7998b41d20b79d03f8474c9bb94cd4450593fa7546478197201c1aa7cfde579",
+    "src/r11_chemical_probe/report.py": "0e92004c9a4537393d4910bc43cddc7d51f20320d11c9fe5b31d3d90bd1f4c76",
+    "src/r11_chemical_probe/run.py": "edaa469ef119505da3f8c5a9fe2937bd173da0ca895222577657238a58ee4c97",
+    "src/r6_followup_v1/metrics.py": "0c51a2dac0cdc9c27223d06e26edcda1d7d30b3b602478c5621bcad81a7e5d6e"
+  },
+  "metric": "within-pool compound-group balanced drug-contrast RMSE",
+  "official": [
+    [
+      "C",
+      "B*"
+    ]
+  ],
+  "official_ci": 0.95,
+  "panel_sha256": "5de769f988db3c680b64480b50345a33354284ebb917d5ff48debf9c0b601c74",
+  "roles": {
+    "A": {
+      "baseline": "B0",
+      "chosen": {
+        "B0": "fixed",
+        "B1_line": "fixed",
+        "B1_pool": "2",
+        "B2_linear": "1000",
+        "B2_mlp": "0.0003",
+        "C": "1000",
+        "C_permuted": "1000",
+        "E": "1000"
+      },
+      "context": {
+        "0": {
+          "positive": false,
+          "strata": []
+        },
+        "1": {
+          "positive": false,
+          "strata": []
+        },
+        "2": {
+          "positive": false,
+          "strata": []
+        }
+      },
+      "e3": {
+        "all_folds_chemical_direction": false,
+        "chemical_direction_folds": [],
+        "enter": false,
+        "residual_positive_folds": [],
+        "resource_rule": "two CPU fits per family on existing allocation; no new GPU allocation"
+      },
+      "epochs": {
+        "B2_mlp": 1
+      },
+      "grid_sha256": "ff5b5e566fcb33f334bb69b92eeb97dccf3e0504d7d5b55ce51f0ce3c0406607",
+      "offset_fallback": {
+        "0": {
+          "fit": {
+            "pool": 7486
+          },
+          "query": {
+            "pool": 3255
+          }
+        },
+        "1": {
+          "fit": {
+            "pool": 7201
+          },
+          "query": {
+            "pool": 3540
+          }
+        },
+        "2": {
+          "fit": {
+            "pool": 6795
+          },
+          "query": {
+            "pool": 3946
+          }
+        }
+      },
+      "role": "A",
+      "runtime": {
+        "backend": "CPU BLAS / deterministic Torch when used",
+        "host": "g4",
+        "packages": {
+          "numpy": "2.2.6",
+          "pandas": "2.2.3",
+          "pyarrow": "19.0.1",
+          "scikit-learn": "1.6.1",
+          "scipy": "1.15.3",
+          "torch": "2.8.0+cpu"
+        },
+        "python": "3.10.12",
+        "slurm": "27938"
+      },
+      "seconds": 83.17,
+      "stage": "development",
+      "structure_baseline": null
+    },
+    "B": {
+      "baseline": "B0",
+      "chosen": {
+        "B0": "fixed",
+        "B1_line": "fixed",
+        "B1_pool": "2",
+        "B2_linear": "1000",
+        "B2_mlp": "0.0003",
+        "C": "1000",
+        "C_permuted": "1000",
+        "E": "1000"
+      },
+      "context": {
+        "0": {
+          "positive": false,
+          "strata": []
+        },
+        "1": {
+          "positive": false,
+          "strata": []
+        },
+        "2": {
+          "positive": false,
+          "strata": []
+        }
+      },
+      "e3": {
+        "all_folds_chemical_direction": false,
+        "chemical_direction_folds": [],
+        "enter": false,
+        "residual_positive_folds": [],
+        "resource_rule": "two CPU fits per family on existing allocation; no new GPU allocation"
+      },
+      "epochs": {
+        "B2_mlp": 1
+      },
+      "grid_sha256": "3cd2fd46119d4db77c9fc732ef56be5d9a059043c75585d37caa6ffae10cbe2d",
+      "offset_fallback": {
+        "0": {
+          "fit": {
+            "pool": 7506
+          },
+          "query": {
+            "pool": 3261
+          }
+        },
+        "1": {
+          "fit": {
+            "pool": 7215
+          },
+          "query": {
+            "pool": 3552
+          }
+        },
+        "2": {
+          "fit": {
+            "pool": 6813
+          },
+          "query": {
+            "pool": 3954
+          }
+        }
+      },
+      "role": "B",
+      "runtime": {
+        "backend": "CPU BLAS / deterministic Torch when used",
+        "host": "g4",
+        "packages": {
+          "numpy": "2.2.6",
+          "pandas": "2.2.3",
+          "pyarrow": "19.0.1",
+          "scikit-learn": "1.6.1",
+          "scipy": "1.15.3",
+          "torch": "2.8.0+cpu"
+        },
+        "python": "3.10.12",
+        "slurm": "27939"
+      },
+      "seconds": 82.84,
+      "stage": "development",
+      "structure_baseline": null
+    }
+  },
+  "sample_manifest_sha256": "93008e50861de2139f8bb72eee844cf508038dbb135652f4240ddd1f2cf00169",
+  "scaffold_slice": "fixed model; all test group entities have nonempty source-unseen Bemis\u2013Murcko scaffolds",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "yaml_sha256": "d6ecaff8cd048e09c6f5e9d9dffed76cbb0f9f1ca09e73ce0a8eb5f95a883551"
+}

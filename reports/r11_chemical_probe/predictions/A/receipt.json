@@ -1,0 +1,85 @@
+{
+  "arms": [
+    "B0",
+    "B1_line",
+    "B1_pool",
+    "B2_linear",
+    "B2_mlp",
+    "E",
+    "C"
+  ],
+  "fallback": {
+    "fit": {
+      "pool": 10741
+    },
+    "query": {
+      "pool": 3347
+    }
+  },
+  "files": {
+    "B2_linear_model.npz": "ec48efa96fe519b3ddabbee5b720cce9886378f86e0d58dbf3eb5dca3aa87c8c",
+    "B2_mlp_seed42.pt": "9991d1958d85f986b09f9e25278345e9c3e2c9b78ceefb1530dd98fc56e3872e",
+    "B2_mlp_seed43.pt": "3052f571b6d0f36d17cd6249aed89ea987593948ad5791df162472d0efe99341",
+    "B2_mlp_seed44.pt": "a8e09693ace6168a3cd3d474306d6190c6470b2c32cace886ffec3671f94cbd4",
+    "C_model.npz": "3c5e076a9b2f134cf76e4bf442093c3ff0ebdb4792e317c20465acdeced591e1",
+    "E_model.npz": "88f1cc0d70f4805cc04de0221ad1f2c89353174724e1b94658e1a2a4230b13b8",
+    "rows.tsv": "d52a13b7ffaa1455a05ef9cb063cbb79e94be2e4fcd979b2db7bcde1268d02d6",
+    "vectors.npz": "871f38bcb368358ee443192a8a6894bf99136951a21013b49df68c79af317cd3"
+  },
+  "freeze_sha256": "6a647da2e191bd44de6bcabfabfde51038fa505fb41274a09800f8bd773c26fc",
+  "n_fit": 10741,
+  "n_query": 3347,
+  "network": {
+    "B2_mlp": [
+      {
+        "actual_epochs": 1,
+        "epoch": 1,
+        "lr": 0.0003,
+        "params": 751696,
+        "seed": 42,
+        "updates": 42,
+        "validation_score": null
+      },
+      {
+        "actual_epochs": 1,
+        "epoch": 1,
+        "lr": 0.0003,
+        "params": 751696,
+        "seed": 43,
+        "updates": 42,
+        "validation_score": null
+      },
+      {
+        "actual_epochs": 1,
+        "epoch": 1,
+        "lr": 0.0003,
+        "params": 751696,
+        "seed": 44,
+        "updates": 42,
+        "validation_score": null
+      }
+    ]
+  },
+  "role": "A",
+  "runtime": {
+    "backend": "CPU BLAS / deterministic Torch when used",
+    "host": "G1",
+    "packages": {
+      "numpy": "2.2.6",
+      "pandas": "2.2.3",
+      "pyarrow": "19.0.1",
+      "scikit-learn": "1.6.1",
+      "scipy": "1.15.3",
+      "torch": "2.8.0+cpu"
+    },
+    "python": "3.10.12",
+    "slurm": "27951"
+  },
+  "seconds": 37.3,
+  "timing": {
+    "B2_linear": 5.5921508483588696,
+    "B2_mlp": 10.934297401458025,
+    "C": 0.8592000380158424,
+    "E": 0.9085891433060169
+  }
+}
