@@ -61,7 +61,8 @@ def sciplex4(meta: str, out: str) -> dict:
         n_cells_pdata=int(len(p)), pdata_columns=p.columns.tolist(),
         n_umi_median_all=float(p["n.umi"].median()), libraries=sorted(p["sample"].unique().tolist()),
         plates=sorted(x.plate.unique().tolist()),
-        no_supplement_dose_series_plates=nosupp.groupby(["line", "hdac"]).plate.unique().apply(list).to_dict(),
+        no_supplement_dose_series_plates={f"{k[0]}|{k[1]}": sorted(v) for k, v in
+                                          nosupp.groupby(["line", "hdac"]).plate.unique().items()},
     )
 
 
