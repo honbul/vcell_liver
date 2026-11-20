@@ -161,11 +161,13 @@ def main():
 
     best = {s: dict(score=None, epoch=None, counter=0, frozen=False) for s in selectors}
 
-    def consider(sel, score, epoch, lower=True, emulate_patience=False):
+    def consider(sel, score, epoch, lower=True, emulate_patience=False, require_finite=False):
         b = best[sel]
         if b["frozen"]:
             return
         better = b["score"] is None or (score < b["score"] if lower else score > b["score"])
+        if require_finite and not np.isfinite(score):     # v2 fix (2026-11-20): a diverged epoch is never a new best for R/P
+            better = False
         if better:
             b.update(score=float(score), epoch=epoch, counter=0)
             torch.save({"epoch": epoch, "selector": sel, "score": float(score), "model_state_dict": model.state_dict()}, os.path.join(out, f"ckpt_{sel}.pt"))
@@ -209,15 +211,17 @@ def main():
         pc = p_src - p_src.mean(1, keepdims=True); tc = true_src - true_src.mean(1, keepdims=True)
         pear = (pc * tc).sum(1) / np.sqrt((pc ** 2).sum(1) * (tc ** 2).sum(1) + 1e-12)
         R = family_mean(rmse, fam_src); P = family_mean(pear, fam_src)
+        if not np.isfinite(p_src).all():                     # v2 fix: NaN-skipping group sums turned a diverged epoch into R = 0.0
+            R = P = float("nan")
         row = dict(epoch=epoch, lr=opt.param_groups[-1]["lr"], train_total=tl[0] / ns, train_loss1_rmse=np.sqrt(tl[1] / ns), train_loss2=tl[2] / ns,
                    train_loss3_rmse=np.sqrt(tl[3] / ns), train_loss4=tl[4] / ns, sel_U_src_loss4=u_src, sel_R_src_famrmse=R, sel_P_src_fampearson=P,
                    sel_U_src_unit_rmse=float(rmse.mean()))
         if "U" in selectors:
             consider("U", u_src, epoch, lower=True, emulate_patience=True)
         if "R" in selectors:
-            consider("R", R, epoch, lower=True)
+            consider("R", R, epoch, lower=True, require_finite=True)
         if "P" in selectors:
-            consider("P", P, epoch, lower=False)
+            consider("P", P, epoch, lower=False, require_finite=True)
         if dall is not None:
             u_all, _ = dev_pass(dall)
             row["sel_U_all_replay_loss4"] = u_all
