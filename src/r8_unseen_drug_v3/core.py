@@ -379,7 +379,7 @@ def block(a):
         chk(lv, "f0_table_families_outside_inner_train", len(ctx.f0_fams() - ctx.fams("train")))
         sc(lv, "f0_table+f0_pca+ridge", ctx.f0_fams(), fg, "yes", "groups with n_train >= 1 after removal (inner-train families)")
         sc(lv, "ctrl_pca+glob_pca", ctx.fams("train"), [], "no", "label-free control profiles x0 of inner-train cells (all units)")
-        sc(lv, "kernel_scale_episodes", ctx.scale_fams, ctx.scale_groups, "no (support features only)", "inner-train cells, seed 1, cap 200")
+        sc(lv, "kernel_scale_episodes", ctx.scale_fams, ctx.scale_groups, "indirect (f0 repr of non-held support groups)", "inner-train cells, seed 1, cap 200")
         sc(lv, "selection_episodes", {e.family for e in eps}, qg | sg, "yes", f"{len(eps)} episodes; queries {len(qg)} groups")
         inner_q |= qg
         inner_s |= sg
@@ -398,7 +398,7 @@ def block(a):
         ui = ictx[0].elig[ci]
         p = np.random.RandomState(880000 + 1000 + int(zlib.crc32(st0.cell_name[ci].encode()) % 100000)).permutation(len(ui))
         q = ui[p[:int(round(0.2 * len(ui)))]]
-        v2q |= set(int(x) for x in q[H[st0.u_group[q]]][:200])
+        v2q |= set(int(x) for x in st0.u_group[q[H[st0.u_group[q]]][:200]])
     chk("v2_contract_reference", "v2_inner_selection_query_groups_equal_to_outer_query_groups", len(v2q & set(np.where(H)[0].tolist())),
         "EXPECTED > 0: documents the v2 leak (not a v3 check)")
     log("inner built", len(ieps), f"{time.time() - t0:.0f}s")
@@ -422,7 +422,7 @@ def block(a):
     chk("outer", "kernel_scale_families_outside_outer_train", len(octx.scale_fams - octx.fams("train")))
     sc("outer", "f0_table+f0_pca+ridge", octx.f0_fams(), ofg, "yes", "groups with n_train >= 1 after removal (outer-train families)")
     sc("outer", "ctrl_pca+glob_pca", octx.fams("train"), [], "no", "label-free control profiles x0 of outer-train cells (all units)")
-    sc("outer", "kernel_scale_episodes", octx.scale_fams, octx.scale_groups, "no (support features only)", "outer-train cells, seed 1, cap 200")
+    sc("outer", "kernel_scale_episodes", octx.scale_fams, octx.scale_groups, "indirect (f0 repr of non-held support groups)", "outer-train cells, seed 1, cap 200")
     sc("outer", "scored_episodes_supports", {e.family for e in oeps}, os_, "input (support labels)", "target-family support responses, non-held groups")
     sc("outer", "scored_episodes_queries", {e.family for e in oeps}, oq, "scoring only", f"{len(oeps)} episodes")
     fam_ok = len({e.family for e in oeps if len(e.g_s) >= ep_["min_support"]})
@@ -480,9 +480,46 @@ def block(a):
     log("done", f"{time.time() - t0:.0f}s")
 
 
+def write_splits(out):
+    """Metadata only (cells.tsv, groups.tsv, alias table): outer / inner family and drug splits."""
+    d = os.environ["R8_PROC"]
+    cells = pd.read_csv(os.path.join(d, "cells.tsv"), sep="\t")
+    G = pd.read_csv(os.path.join(d, "groups.tsv"), sep="\t").drug_group.to_numpy()
+    al = Alias(G)
+    from src.r8_followup_v1.partitions import inner_val_family
+    fam = cells.drop_duplicates("family")
+    ofold = np.array([drug_fold(x, 3) for x in G])
+    ifold = np.array([inner_fold(x, 3) for x in G])
+    tab = pd.DataFrame(dict(drug_group=G, outer_drug_fold=ofold, inner_drug_fold_raw=ifold))
+    outer = dict(rule_family="outer{k}: val = cv_fold k (meta_role train); train = other meta-train families; meta-val families off",
+                 rule_drug="crc32('r8v2_drug|' + drug_group) % 3 (v2)", alias_table=ALIAS, alias_sha256=sha256(ALIAS), folds={})
+    inner = dict(rule_family="inner{k}: meta-train families with cv_fold != k; inner-val = crc32('r8f_inner|' + family) % 3 == 0",
+                 rule_drug="allowed A = not closure(outer fold j); inner fold i = A & crc32('r8v3_inner_drug|' + group) % 3 == i", blocks={})
+    for k in range(3):
+        tr = fam[(fam.meta_role == "train") & (fam.cv_fold != k)].family
+        outer["folds"][f"outer{k}"] = dict(val_families=sorted(fam[(fam.meta_role == "train") & (fam.cv_fold == k)].family),
+                                           train_families=sorted(tr))
+        iv = sorted(f for f in tr if inner_val_family(f))
+        inner["blocks"][f"inner{k}"] = dict(val_families=iv, train_families=sorted(set(tr) - set(iv)))
+    for j in range(3):
+        H = ofold == j
+        Hc = al.close(H)
+        outer[f"drug_fold_{j}"] = dict(n_query_groups=int(H.sum()), query_groups_sha=sha_list(G[H]), n_held_for_fit=int(Hc.sum()),
+                                       alias_added=sorted(G[Hc & ~H].tolist()))
+        A = ~Hc
+        tab[f"inner_fold_given_outer_d{j}"] = np.where(A, ifold, -1)
+        for i in range(3):
+            I_ = A & (ifold == i)
+            inner[f"outer_d{j}_inner{i}"] = dict(n_query_groups=int(I_.sum()), query_groups_sha=sha_list(G[I_]),
+                                                 n_held_for_fit=int((Hc | al.close(I_)).sum()), overlap_with_outer_held=int((I_ & Hc).sum()))
+    dump(outer, os.path.join(out, "outer_splits.json"))
+    dump(inner, os.path.join(out, "inner_splits.json"))
+    tab.to_csv(os.path.join(out, "drug_folds.tsv.gz"), sep="\t", index=False)
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["alias", "check", "pilot", "run"])
+    ap.add_argument("stage", choices=["alias", "splits", "check", "pilot", "run"])
     ap.add_argument("--run-id", required=True)
     ap.add_argument("--partition", default="")
     ap.add_argument("--drug-fold", default="")
@@ -491,6 +528,10 @@ if __name__ == "__main__":
         o = runs("alias", a.run_id)
         os.makedirs(o, exist_ok=False)
         build_alias(o)
+    elif a.stage == "splits":
+        o = runs("splits", a.run_id)
+        os.makedirs(o, exist_ok=False)
+        write_splits(o)
     else:
         for P_, j_ in ([(a.partition, a.drug_fold)] if a.drug_fold != "" else [(a.partition, x) for x in (0, 1, 2)]):
             a2 = argparse.Namespace(**vars(a))
