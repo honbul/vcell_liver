@@ -1,0 +1,83 @@
+{
+ "rule": "c' ~ Binomial(c, p) per panel gene; c_rest' ~ Binomial(c_rest, p); library' = sum(c') + c_rest'; p = 1 is the identity",
+ "normalisation": "log1p(1e4 * c' / library') at every p",
+ "keep_rates": [
+  1.0,
+  0.5,
+  0.25
+ ],
+ "thinning_seeds": [
+  0,
+  1,
+  2
+ ],
+ "n_cells_per_set": 64,
+ "evaluation_views": [
+  {
+   "p": 0.5,
+   "seed": 0,
+   "generator": "numpy PCG64([20261117, 500, 0])",
+   "sha256_panel": "e326bd38fcfdf20f7e6fde30be4cc25b95a7fa69356ebf30c1e3b323c82bbfc5",
+   "sha256_rest": "d13cc8be5a1b0d06a77cdfcde42e01807b420cec287f33dc5bb4c1d726349054",
+   "kept_fraction_panel": 0.500084320853994,
+   "kept_fraction_library": 0.5001096841333809,
+   "median_library": 941.0
+  },
+  {
+   "p": 0.5,
+   "seed": 1,
+   "generator": "numpy PCG64([20261117, 500, 1])",
+   "sha256_panel": "cc37e35af189f18e2e998ba73669fb491ff30e55b76a39bf262cc8d3e486b3cc",
+   "sha256_rest": "a77096b53b90f6bca92b0af3979eb9331e3e6f49e454a0b52b2c65e54717bb47",
+   "kept_fraction_panel": 0.5002129929010982,
+   "kept_fraction_library": 0.4999998590178234,
+   "median_library": 940.0
+  },
+  {
+   "p": 0.5,
+   "seed": 2,
+   "generator": "numpy PCG64([20261117, 500, 2])",
+   "sha256_panel": "c81f5cfbb3605882a1632651669e82234f256ffcec71ea936ceeb4cf3c63b4b2",
+   "sha256_rest": "ebcb66a3ef9a1c82232515e1bffc9cd5cb1e84a5168450b62a1676d98b06dec5",
+   "kept_fraction_panel": 0.5000708925609841,
+   "kept_fraction_library": 0.5000197375047215,
+   "median_library": 938.0
+  },
+  {
+   "p": 0.25,
+   "seed": 0,
+   "generator": "numpy PCG64([20261117, 250, 0])",
+   "sha256_panel": "12f2e7750219e52746aee6d311ad4930464d179e6418c6f8217c11bc4c5e1692",
+   "sha256_rest": "85673e6f1ba9a5a0fd325c76d662865f4a1e29880dfcea2afd97d9df8ca1f87a",
+   "kept_fraction_panel": 0.24997763527255748,
+   "kept_fraction_library": 0.2499756100834513,
+   "median_library": 471.0
+  },
+  {
+   "p": 0.25,
+   "seed": 1,
+   "generator": "numpy PCG64([20261117, 250, 1])",
+   "sha256_panel": "086d5a01744d917baad14c46ebd6bbe141ebb41cf87988e090639a3b638a0a05",
+   "sha256_rest": "d3c93b51e590747d847687655a3639dcb239dd563679cdb225d5b948c47a69c1",
+   "kept_fraction_panel": 0.2501679639889747,
+   "kept_fraction_library": 0.25012118827899,
+   "median_library": 471.0
+  },
+  {
+   "p": 0.25,
+   "seed": 2,
+   "generator": "numpy PCG64([20261117, 250, 2])",
+   "sha256_panel": "3c7c25f74e7138ff41bbc5f198945d06c913dfff8787070b222dade85b9f2ca7",
+   "sha256_rest": "2655b3ce92d827e545f9010046decc3c819ffffcc38084a40d535384ea128f54",
+   "kept_fraction_panel": 0.250185237943363,
+   "kept_fraction_library": 0.24998567621085926,
+   "median_library": 471.0
+  }
+ ],
+ "n_eval_cells": 14976,
+ "sha256_eval_full_panel": "64bd09e38a7617de6e0f6b8b51bae0115bde3c1b305d9044517e24acca2cb0f1",
+ "sha256_eval_full_rest": "47a5a4dcbb3488b9bcce0907c24cc1861221abafcc2fd06776ca004d4b88e577",
+ "training_views": "drawn on the fly on the GPU (torch.binomial) from fit_input cells; seeded by the run's training seed; never stored",
+ "target": "never thinned: the treated wells and the reference controls are full observation at every p",
+ "not_a_replicate": "a thinned view is the same cell observed less deeply, not a new cell or a new well"
+}

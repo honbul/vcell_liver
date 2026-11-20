@@ -1,0 +1,42 @@
+{
+ "what": "Fixed full-observation teachers of the response/latent consistency arms (B01 <- TEACH0, B11 <- TEACH1)",
+ "rule": "a teacher is fitted on exactly the fitting drugs of its student (asserted in train.py), on fit_input control cells at p = 1 only; it never sees an evaluation drug's treated cells, eval_input cells, or reference cells as input; its output is detached and never replaces the measured target",
+ "dev": {
+  "fit_drugs": "dev folds 0,1 (130 train drug groups)",
+  "evaluated_on": "dev fold 2 (79 train drug groups); used to pick the teacher learning rate and for the teacher gate",
+  "teachers": {
+   "TEACH0": "rev1_TEACH0_shrink10_lr3e-3_s42_e60",
+   "TEACH1": "rev1_TEACH1_shrink10_lr1e-3_s42_e60"
+  },
+  "gate": {
+   "p1_TEACH0": 0.0796,
+   "p1_TEACH1": 0.0802,
+   "linemean": 0.0895,
+   "Z0_p1": 0.0825,
+   "passed": true
+  },
+  "superseded_joint_head": {
+   "teachers": {
+    "TEACH0": "pilot_TEACH0_lr3e-4_s42_e60",
+    "TEACH1": "pilot_TEACH1_lr3e-4_s42_e60_r2"
+   },
+   "p1": 0.0919,
+   "passed": false
+  }
+ },
+ "final": {
+  "fit_drugs": "209 train drug groups",
+  "test_drug_treated_cells_seen": false,
+  "validation_drugs_seen": false,
+  "teachers": {
+   "final_TEACH0_s42": "teacher of final_B01_s42",
+   "final_TEACH0_s43": "teacher of final_B01_s43",
+   "final_TEACH0_s44": "teacher of final_B01_s44",
+   "final_TEACH1_s42": "teacher of final_B11_s42",
+   "final_TEACH1_s43": "teacher of final_B11_s43",
+   "final_TEACH1_s44": "teacher of final_B11_s44"
+  },
+  "checkpoint_hashes": "reports/depth_robust_r6/RUN_LEDGER.tsv (ckpt_sha256) after training"
+ },
+ "cost": "teacher training is counted in the total compute (one teacher run per student run)"
+}

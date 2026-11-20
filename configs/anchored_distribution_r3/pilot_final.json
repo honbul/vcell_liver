@@ -1,0 +1,64 @@
+{
+ "label": "user-approved post-gate generator pilot (exploratory); second look at a reused benchmark",
+ "setting": "final",
+ "sample_seeds": [
+  0,
+  1,
+  2
+ ],
+ "train_seeds": [
+  0,
+  1,
+  2
+ ],
+ "ddpm_common": {
+  "width": 256,
+  "blocks": 2,
+  "cond": "film",
+  "loss": "v",
+  "schedule": "cosine",
+  "steps": 20000,
+  "sampling_steps": 100,
+  "wells_per_batch": 256,
+  "cells_per_well": 8,
+  "ema": 0.999
+ },
+ "ddpm_resid": {
+  "target": "resid",
+  "scale": "resid_global",
+  "lr": 0.0003,
+  "selected_by": "lowest dev ED (restoration v2) among 4"
+ },
+ "ddpm_abs": {
+  "target": "abs",
+  "scale": "std",
+  "lr": 0.001,
+  "selected_by": "lowest dev native ED among 2"
+ },
+ "cellflow": {
+  "commit": "03bff12e71326742ad53a0909a4a8fee36958794",
+  "adapter": "src/anchored_distribution_r3/cellflow_adapter.py (CONFIG, unchanged from dev)",
+  "iters": 120000,
+  "iters_rule": "2x the dev count, fixed from throughput and budget only",
+  "train_seeds": [
+   0
+  ],
+  "note": "one training seed (about 1.5 GPU-hours each); single untuned configuration"
+ },
+ "improvement_cycle": "none (cycle 2 precondition not met; cycle 1 was spent on restoration v2)",
+ "attribution_contrasts": "not trained: on dev the residual DDPM was not better than Gaussian k=50 (+0.0028 [0.0006, 0.0054]); if an advantage over BOTH shifted control and Gaussian k=50 appears on test they are run post hoc and labelled so",
+ "mean_predictor": "shared m_psi (configs/anchored_distribution_r3/mean_model.json), fitted in the first freeze",
+ "restoration_variant": "anchored2",
+ "n_cap": 64,
+ "min_n": 32,
+ "snu423_line_index": 14,
+ "baseline_reference_tag": "final_v1 (scored before the pilot was designed)",
+ "primary_contrasts": [
+  "ddpm_resid:anchored2 - shifted:anchored2",
+  "ddpm_resid:anchored2 - gauss_lr50:anchored2",
+  "ddpm_abs:anchored2 - shifted:anchored2",
+  "cellflow:anchored2 - shifted:anchored2",
+  "ddpm_abs:native - control:native",
+  "cellflow:native - control:native"
+ ]
+}

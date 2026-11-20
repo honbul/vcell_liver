@@ -1,0 +1,254 @@
+{
+ "study": "R6 depth_robust_r6",
+ "frozen_on": "2026-11-17",
+ "code_commit": "5ca8b9d03768bfb790f828744e9e923421d109c0",
+ "statement": "Everything below was fixed on the development fold (train drug groups only) before any prediction for the 70 held-out test drug groups. A change after this commit is a new version with a new tag; nothing here is overwritten.",
+ "exposure": "pre-specified follow-up on a public benchmark this project has already analysed; not a blind test",
+ "setting": {
+  "fit": "209 train drug groups",
+  "evaluate": "70 test drug groups",
+  "validation_drugs": "unused by R6's own models"
+ },
+ "model_config": {
+  "path": "configs/depth_robust_r6/model_rev1_shrink10.json",
+  "sha256": "552bb8b9cc39302cf0abc692bc64b372d714d612a887a1c7e0653ee9e7c43049",
+  "note": "revision 1 head (additive, drug-specific shrinkage 10) for every arm; encoder d=128, 2 blocks, 256 tokens"
+ },
+ "aux_weights": {
+  "B01": {
+   "response": 0.5,
+   "latent": 0.5
+  },
+  "B11": {
+   "response": 0.5,
+   "latent": 0.5
+  },
+  "DEN": {
+   "reconstruction": 1.0
+  }
+ },
+ "final_runs": [
+  {
+   "run_id": "final_TEACH0_s42",
+   "arm": "TEACH0",
+   "lr": 0.003,
+   "seed": 42,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_TEACH0_s43",
+   "arm": "TEACH0",
+   "lr": 0.003,
+   "seed": 43,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_TEACH0_s44",
+   "arm": "TEACH0",
+   "lr": 0.003,
+   "seed": 44,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_TEACH1_s42",
+   "arm": "TEACH1",
+   "lr": 0.001,
+   "seed": 42,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_TEACH1_s43",
+   "arm": "TEACH1",
+   "lr": 0.001,
+   "seed": 43,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_TEACH1_s44",
+   "arm": "TEACH1",
+   "lr": 0.001,
+   "seed": 44,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_B00_s42",
+   "arm": "B00",
+   "lr": 0.003,
+   "seed": 42,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_B00_s43",
+   "arm": "B00",
+   "lr": 0.003,
+   "seed": 43,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_B00_s44",
+   "arm": "B00",
+   "lr": 0.003,
+   "seed": 44,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_B10_s42",
+   "arm": "B10",
+   "lr": 0.001,
+   "seed": 42,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_B10_s43",
+   "arm": "B10",
+   "lr": 0.001,
+   "seed": 43,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_B10_s44",
+   "arm": "B10",
+   "lr": 0.001,
+   "seed": 44,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_B01_s42",
+   "arm": "B01",
+   "lr": 0.003,
+   "seed": 42,
+   "epochs": 60,
+   "teacher": "final_TEACH0_s42"
+  },
+  {
+   "run_id": "final_B01_s43",
+   "arm": "B01",
+   "lr": 0.003,
+   "seed": 43,
+   "epochs": 60,
+   "teacher": "final_TEACH0_s43"
+  },
+  {
+   "run_id": "final_B01_s44",
+   "arm": "B01",
+   "lr": 0.003,
+   "seed": 44,
+   "epochs": 60,
+   "teacher": "final_TEACH0_s44"
+  },
+  {
+   "run_id": "final_B11_s42",
+   "arm": "B11",
+   "lr": 0.003,
+   "seed": 42,
+   "epochs": 60,
+   "teacher": "final_TEACH1_s42"
+  },
+  {
+   "run_id": "final_B11_s43",
+   "arm": "B11",
+   "lr": 0.003,
+   "seed": 43,
+   "epochs": 60,
+   "teacher": "final_TEACH1_s43"
+  },
+  {
+   "run_id": "final_B11_s44",
+   "arm": "B11",
+   "lr": 0.003,
+   "seed": 44,
+   "epochs": 60,
+   "teacher": "final_TEACH1_s44"
+  },
+  {
+   "run_id": "final_DEN_s42",
+   "arm": "DEN",
+   "lr": 0.001,
+   "seed": 42,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_DEN_s43",
+   "arm": "DEN",
+   "lr": 0.001,
+   "seed": 43,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_DEN_s44",
+   "arm": "DEN",
+   "lr": 0.001,
+   "seed": 44,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_NOSTATE_s42",
+   "arm": "NOSTATE",
+   "lr": 0.003,
+   "seed": 42,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_NOSTATE_s43",
+   "arm": "NOSTATE",
+   "lr": 0.003,
+   "seed": 43,
+   "epochs": 60
+  },
+  {
+   "run_id": "final_NOSTATE_s44",
+   "arm": "NOSTATE",
+   "lr": 0.003,
+   "seed": 44,
+   "epochs": 60
+  }
+ ],
+ "task_files": [
+  "experiments/depth_robust_r6/tasks/final_stage1.txt",
+  "experiments/depth_robust_r6/tasks/final_stage2.txt"
+ ],
+ "ridge": {
+  "run_id": "Z0_final_v1",
+  "alphas": [
+   1000,
+   100000
+  ],
+  "models": [
+   "nochange",
+   "linemean",
+   "Z0"
+  ],
+  "note": "penalties from Z0_dev_v2; drug penalty at the grid edge after the one allowed extension"
+ },
+ "public_reference": {
+  "run_id": "chemcpa_final_v1",
+  "model": "chemCPA 43e830eb, earlier study's frozen P0_lr0.3 seeds 42/43/44, not retrained, no thinning augmentation",
+  "counts_as_beaten_only_if": "reported with the caveat that it is not a same-training-condition comparison"
+ },
+ "evaluation": {
+  "spec": "configs/depth_robust_r6/aggregate_final.json",
+  "sha256": "3a92752b672eab93e4fbe9e05d40583c4ee14c94e97b11ceb56b9063fe14b108",
+  "primary": "p=0.25, N=64: per-condition delta RMSE over 2,000 genes -> mean within drug group -> unweighted mean over drug groups; averaged over 3 training seeds and 3 thinning seeds per condition",
+  "uncertainty": "paired bootstrap over drug groups (5,000 resamples, seed 0), 95% interval",
+  "better_rule": "interval excludes 0 AND relative difference >= 1%",
+  "guard": "p=1.0: an arm whose error is more than 1% above B00's is reported as not adopted",
+  "hcc": "SNU-423 (CVCL_0366) sub-table, pre-specified; one cell line, no patient-HCC claim",
+  "views": "p=1.0 (identity), p=0.5 and p=0.25 with thinning seeds 0,1,2 stored in the contract cache"
+ },
+ "decision_rules": [
+  "B11 better than B00 and Z0 by the rule, and not worse than DEN: claim added value of response-preserving training",
+  "only B10 better than B00: conclude an observation-feature gain and drop the teacher",
+  "B01 ~ B11 (difference not meeting the rule): do not claim the input change is necessary",
+  "no arm of the 2x2 differs from B00 by the rule: limited conclusion that the more complex state encoder/training is not needed for this depth / mean-response task",
+  "reconstruction better but delta worse: do not adopt"
+ ],
+ "attribution": {
+  "rule": "only for a module that is better than B00 by the rule in the final table",
+  "if_teacher_helps": "rerun B01 or B11 (the better one) with response-only and latent-only auxiliary weights, 3 seeds, same settings",
+  "if_obs_input_helps": "none beyond B10 vs B00 (the input is a single switch)",
+  "otherwise": "no attribution runs"
+ },
+ "revisions_used": 1,
+ "revision_2": "not used (DECISIONS D9)",
+ "dev_selection_table": "reports/depth_robust_r6/tables/pilot_runs.tsv"
+}

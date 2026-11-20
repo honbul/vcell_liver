@@ -1,0 +1,10 @@
+train --arm B01 --setting dev --lr 3e-4 --epochs 60 --seed 42 --teacher assets/runs/dev/pilot_TEACH0_lr3e-4_s42_e60 --run-id pilot_B01_lr3e-4_s42_e60
+train --arm B01 --setting dev --lr 1e-3 --epochs 60 --seed 42 --teacher assets/runs/dev/pilot_TEACH0_lr3e-4_s42_e60 --run-id pilot_B01_lr1e-3_s42_e60
+train --arm B01 --setting dev --lr 3e-3 --epochs 60 --seed 42 --teacher assets/runs/dev/pilot_TEACH0_lr3e-4_s42_e60 --run-id pilot_B01_lr3e-3_s42_e60
+train --arm B11 --setting dev --lr 3e-4 --epochs 60 --seed 42 --teacher assets/runs/dev/pilot_TEACH1_lr3e-4_s42_e60_r2 --run-id pilot_B11_lr3e-4_s42_e60
+train --arm B11 --setting dev --lr 1e-3 --epochs 60 --seed 42 --teacher assets/runs/dev/pilot_TEACH1_lr3e-4_s42_e60_r2 --run-id pilot_B11_lr1e-3_s42_e60
+train --arm B11 --setting dev --lr 3e-3 --epochs 60 --seed 42 --teacher assets/runs/dev/pilot_TEACH1_lr3e-4_s42_e60_r2 --run-id pilot_B11_lr3e-3_s42_e60
+train --arm B00 --setting dev --lr 3e-4 --epochs 60 --seed 42 --hp configs/depth_robust_r6/model_rev1_shrink1.json --run-id rev1_B00_shrink1_lr3e-4_s42_e60
+train --arm B00 --setting dev --lr 1e-3 --epochs 60 --seed 42 --hp configs/depth_robust_r6/model_rev1_shrink1.json --run-id rev1_B00_shrink1_lr1e-3_s42_e60
+train --arm B00 --setting dev --lr 3e-4 --epochs 60 --seed 42 --hp configs/depth_robust_r6/model_rev1_shrink10.json --run-id rev1_B00_shrink10_lr3e-4_s42_e60
+train --arm B00 --setting dev --lr 1e-3 --epochs 60 --seed 42 --hp configs/depth_robust_r6/model_rev1_shrink10.json --run-id rev1_B00_shrink10_lr1e-3_s42_e60

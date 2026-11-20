@@ -1,0 +1,13 @@
+{
+ "split_role": "source_oof",
+ "out": "reports/r6_followup_v1/anchor_pairloss.tsv",
+ "per_seed": true,
+ "arms": {
+  "SD": {"stage": "confirm", "pattern": "c_SD_f{fold}_s{seed}"},
+  "S": {"stage": "confirm", "pattern": "c_S_f{fold}_s{seed}"},
+  "F1A": {"stage": "branch_f1", "pattern": "f1_F1A_f{fold}_s{seed}"},
+  "F1": {"stage": "branch_f1", "pattern": "f1_F1_f{fold}_s{seed}"}
+ },
+ "pairs": [["F1", "SD"], ["F1", "poolmean"], ["F1", "F1A"], ["F1A", "poolmean"], ["F1A", "SD"], ["F1", "S"]],
+ "depth_pairs": [["F1", "SD"]]
+}

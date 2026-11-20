@@ -1,0 +1,79 @@
+{
+ "study": "R3 anchored_distribution_r3",
+ "task": "observed cell lines, fixed 0.5 uM dose, globally unseen drug structure groups: control cell population + drug structure -> treated cell population (unpaired populations; not the same cells before/after)",
+ "sources": {
+  "cells": {
+   "path": "$PRIOR_V2/v2/tahoe_cells.h5ad",
+   "read_only": true,
+   "n_cells": 1256568,
+   "n_genes": 2000,
+   "sha256_X": "496aacd02e56ec8664fdff4b84ddbe94b44f0b16a12e360ee05f2fe7b6a3accc",
+   "expression": "log1p(1e4 * count / library_size) per real cell, 2,000-gene panel",
+   "sample_rule": "blake2b(barcode) threshold, ~64 cells per (well, cell line); built by the prior study"
+  },
+  "condition_table": {
+   "path": "$PRIOR_V2/v2/data/{Y,valid,fp,dmso_plate_mean}.npy",
+   "read_only": true,
+   "sha256_Y": "ca65f5e0d00cea0416d12e42e18ebf210b92fb386c4779d61ea2e4b339d44c7b"
+  },
+  "manifests": "manifests/chemcpa_moe_v2/{splits,lines,plates,genes,drug_aliases}.tsv (unchanged)",
+  "raw_mirror": "not read by this study (the 128/256-cell extension was not justified by the stability diagnostic)",
+  "deleted_prior_assets": "$PRIOR_V2/v2/raw was deleted on 2026-11-16 (manifests/chemcpa_moe_v2/deleted_2026-11-16.json); not needed here"
+ },
+ "cache": {
+  "path": "$R3_ASSETS/cache/{X.npy,cells.npz,wells.tsv}",
+  "note": "same cells re-ordered by (well, cell line) then barcode hash; no cell created, duplicated or perturbed",
+  "n_cells": 1256568,
+  "n_genes": 2000,
+  "n_groups": 20383,
+  "sha256_X_reordered": "bacb12e8f4159b075a5377b9c2574257ab74261a58c6daf62d345aee0d2ced0d",
+  "sha256_barcodes_in_order": "5ad53a1e72369c0807889e478203f063bc1180d7cd5f709d17441862d2baec7e",
+  "groups_by_role": {
+   "train": 12083,
+   "val": 4100,
+   "test": 3700,
+   "ctrl": 500
+  },
+  "valid_treated_groups_by_role": {
+   "train": 11466,
+   "val": 3881,
+   "test": 3525
+  }
+ },
+ "units": {
+  "well": "(well sample, cell line) group of real cells",
+  "condition": "(cell line, drug structure group)",
+  "bootstrap_unit": "drug structure group (all its cell lines together)"
+ },
+ "split": {
+  "rule": "one role per drug structure group across all cell lines (prior study, seed 20261112): 209 train / 70 val / 70 test",
+  "development": "inside TRAIN drugs only: 3 folds by blake2b('r3-devfold|'+group SMILES); fit folds {0,1}, evaluate fold 2; 8 cell lines by metadata coverage (valid train conditions, then sampled cells, then id)",
+  "dev_lines_index": [
+   19,
+   41,
+   23,
+   6,
+   49,
+   26,
+   13,
+   2
+  ],
+  "validation_drugs": "not used by any step of this study",
+  "test_drugs": "scored once after freeze_manifest.json; treated statistics never enter generation, anchoring or restoration"
+ },
+ "inputs_allowed": [
+  "same-plate DMSO cells of the same cell line and their statistics (mean, variance, zero fraction)",
+  "ECFP4 2048-bit fingerprint of the drug structure group",
+  "cell line identity"
+ ],
+ "inputs_forbidden": [
+  "any treated-cell statistic of a validation/test drug (means, library size, zero fraction)"
+ ],
+ "n_rule": "n = min(observed, control, 64) cells per well for observed and generated alike; wells with n < 32 dropped",
+ "hcc_target": "SNU-423 (CVCL_0366), reported separately. HepG2/C3A (CVCL_1098) is a training/evaluation line and is not called adult HCC",
+ "caveats": [
+  "train and test conditions share plates and DMSO pools",
+  "single dose; 2,000-gene panel",
+  "public benchmark already analysed by this project; not a blind cohort"
+ ]
+}

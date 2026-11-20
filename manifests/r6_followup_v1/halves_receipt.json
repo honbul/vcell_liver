@@ -1,0 +1,9348 @@
+{
+ "control": {
+  "n_pools": 234,
+  "split": "reference-role cells, alternating barcode-hash rank",
+  "n_ref_half_A": {
+   "count": 234.0,
+   "mean": 1798.2606837606838,
+   "std": 1251.0711721061543,
+   "min": 64.0,
+   "25%": 996.0,
+   "50%": 1616.5,
+   "75%": 2245.75,
+   "max": 7467.0
+  },
+  "max_abs_diff_ref_full_vs_contract": 0.0
+ },
+ "treated": {
+  "n_wells": 12083,
+  "n_samples": 242,
+  "n_train_drugs": 209,
+  "n_shards_total": 3388,
+  "n_shards_read": 1325,
+  "n_cells": 18711386,
+  "cells_per_well": {
+   "count": 12083.0,
+   "mean": 1548.571215757676,
+   "std": 1275.8154423072851,
+   "min": 1.0,
+   "25%": 734.0,
+   "50%": 1319.0,
+   "75%": 2030.0,
+   "max": 12613.0
+  },
+  "cells_per_half": {
+   "count": 24166.0,
+   "mean": 774.285607878838,
+   "std": 638.2063871039056,
+   "min": 0.0,
+   "25%": 366.0,
+   "50%": 659.0,
+   "75%": 1015.0,
+   "max": 6429.0
+  },
+  "n_wells_without_cells": 0,
+  "half_rule": "A: blake2b(barcode) < 0.5; B: otherwise"
+ },
+ "cross_check_v2_truth": {
+  "n_conditions_compared": 9865,
+  "n_conditions_plate_weight_mismatch": 18,
+  "max_abs_diff": 0.5428838133811951,
+  "median_abs_max_diff": 3.2782554626464844e-07,
+  "frac_within_1e_4": 0.9993917891535732
+ },
+ "files": {
+  "ref_halves.npy": {
+   "bytes": 5616128,
+   "sha256": "a13c20cf78c646f9f936178df6734150876231431a4bbedef3715638e6631c37"
+  },
+  "treated_halves.npy": {
+   "bytes": 289992128,
+   "sha256": "9db38ba311f46c05e818408aa78bb4001fa24d0113717641e87861625d0c38c9"
+  },
+  "wells.tsv": {
+   "bytes": 1232389,
+   "sha256": "a43d8c043193beb226e7422999e662d426c46fb336fd1a5ab278eeba2f006b1b"
+  }
+ },
+ "shards": [
+  {
+   "shard": "train-00236-of-03388.parquet",
+   "bytes": 113086993,
+   "n_rows": 28225,
+   "n_kept": 5454,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00252-of-03388.parquet",
+   "bytes": 97297971,
+   "n_rows": 28225,
+   "n_kept": 14753,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00257-of-03388.parquet",
+   "bytes": 93676202,
+   "n_rows": 28225,
+   "n_kept": 14684,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00270-of-03388.parquet",
+   "bytes": 97874983,
+   "n_rows": 28225,
+   "n_kept": 15719,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00261-of-03388.parquet",
+   "bytes": 103770026,
+   "n_rows": 28225,
+   "n_kept": 15406,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00264-of-03388.parquet",
+   "bytes": 94331626,
+   "n_rows": 28225,
+   "n_kept": 15813,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00238-of-03388.parquet",
+   "bytes": 96121240,
+   "n_rows": 28225,
+   "n_kept": 16175,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00269-of-03388.parquet",
+   "bytes": 88981206,
+   "n_rows": 28225,
+   "n_kept": 15807,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00273-of-03388.parquet",
+   "bytes": 88055634,
+   "n_rows": 28225,
+   "n_kept": 15638,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00241-of-03388.parquet",
+   "bytes": 93250759,
+   "n_rows": 28225,
+   "n_kept": 15255,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00247-of-03388.parquet",
+   "bytes": 82847887,
+   "n_rows": 28225,
+   "n_kept": 15773,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00259-of-03388.parquet",
+   "bytes": 78528756,
+   "n_rows": 28225,
+   "n_kept": 16849,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00251-of-03388.parquet",
+   "bytes": 92047406,
+   "n_rows": 28225,
+   "n_kept": 14970,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00272-of-03388.parquet",
+   "bytes": 89290892,
+   "n_rows": 28225,
+   "n_kept": 15302,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00244-of-03388.parquet",
+   "bytes": 81375058,
+   "n_rows": 28225,
+   "n_kept": 15276,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00248-of-03388.parquet",
+   "bytes": 92827782,
+   "n_rows": 28225,
+   "n_kept": 15147,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00242-of-03388.parquet",
+   "bytes": 94481526,
+   "n_rows": 28225,
+   "n_kept": 15008,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00274-of-03388.parquet",
+   "bytes": 89301830,
+   "n_rows": 28225,
+   "n_kept": 17097,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00254-of-03388.parquet",
+   "bytes": 94446649,
+   "n_rows": 28225,
+   "n_kept": 14784,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00266-of-03388.parquet",
+   "bytes": 87999012,
+   "n_rows": 28225,
+   "n_kept": 15401,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00265-of-03388.parquet",
+   "bytes": 96543509,
+   "n_rows": 28225,
+   "n_kept": 17142,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00256-of-03388.parquet",
+   "bytes": 90926797,
+   "n_rows": 28225,
+   "n_kept": 17601,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00258-of-03388.parquet",
+   "bytes": 90634917,
+   "n_rows": 28225,
+   "n_kept": 15820,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00267-of-03388.parquet",
+   "bytes": 95815030,
+   "n_rows": 28225,
+   "n_kept": 16277,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00239-of-03388.parquet",
+   "bytes": 101629064,
+   "n_rows": 28225,
+   "n_kept": 14723,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00268-of-03388.parquet",
+   "bytes": 99966001,
+   "n_rows": 28225,
+   "n_kept": 16476,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00263-of-03388.parquet",
+   "bytes": 88596016,
+   "n_rows": 28225,
+   "n_kept": 15864,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00253-of-03388.parquet",
+   "bytes": 90520786,
+   "n_rows": 28225,
+   "n_kept": 18142,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00255-of-03388.parquet",
+   "bytes": 97616621,
+   "n_rows": 28225,
+   "n_kept": 15495,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00250-of-03388.parquet",
+   "bytes": 83227908,
+   "n_rows": 28225,
+   "n_kept": 17648,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00262-of-03388.parquet",
+   "bytes": 92747552,
+   "n_rows": 28225,
+   "n_kept": 16858,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00275-of-03388.parquet",
+   "bytes": 94775404,
+   "n_rows": 28225,
+   "n_kept": 15707,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00245-of-03388.parquet",
+   "bytes": 89480291,
+   "n_rows": 28225,
+   "n_kept": 15616,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00249-of-03388.parquet",
+   "bytes": 102639173,
+   "n_rows": 28225,
+   "n_kept": 16253,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00237-of-03388.parquet",
+   "bytes": 99121062,
+   "n_rows": 28225,
+   "n_kept": 16604,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00243-of-03388.parquet",
+   "bytes": 87725149,
+   "n_rows": 28225,
+   "n_kept": 18060,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00246-of-03388.parquet",
+   "bytes": 101306675,
+   "n_rows": 28225,
+   "n_kept": 16885,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00276-of-03388.parquet",
+   "bytes": 96583877,
+   "n_rows": 28225,
+   "n_kept": 15603,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00271-of-03388.parquet",
+   "bytes": 102524403,
+   "n_rows": 28225,
+   "n_kept": 17172,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00260-of-03388.parquet",
+   "bytes": 99104310,
+   "n_rows": 28225,
+   "n_kept": 16300,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00240-of-03388.parquet",
+   "bytes": 100351474,
+   "n_rows": 28225,
+   "n_kept": 18058,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00277-of-03388.parquet",
+   "bytes": 88748171,
+   "n_rows": 28225,
+   "n_kept": 15607,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00278-of-03388.parquet",
+   "bytes": 85570642,
+   "n_rows": 28225,
+   "n_kept": 17345,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00279-of-03388.parquet",
+   "bytes": 92485377,
+   "n_rows": 28225,
+   "n_kept": 14928,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00280-of-03388.parquet",
+   "bytes": 96932540,
+   "n_rows": 28225,
+   "n_kept": 16173,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00281-of-03388.parquet",
+   "bytes": 88472553,
+   "n_rows": 28225,
+   "n_kept": 17261,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00282-of-03388.parquet",
+   "bytes": 93964849,
+   "n_rows": 28225,
+   "n_kept": 15546,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00283-of-03388.parquet",
+   "bytes": 94419638,
+   "n_rows": 28225,
+   "n_kept": 15900,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00284-of-03388.parquet",
+   "bytes": 87400045,
+   "n_rows": 28225,
+   "n_kept": 16636,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00285-of-03388.parquet",
+   "bytes": 94074986,
+   "n_rows": 28225,
+   "n_kept": 15113,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00286-of-03388.parquet",
+   "bytes": 101093889,
+   "n_rows": 28225,
+   "n_kept": 15221,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00289-of-03388.parquet",
+   "bytes": 93383253,
+   "n_rows": 28225,
+   "n_kept": 15332,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00288-of-03388.parquet",
+   "bytes": 100889117,
+   "n_rows": 28225,
+   "n_kept": 14727,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00287-of-03388.parquet",
+   "bytes": 105233189,
+   "n_rows": 28225,
+   "n_kept": 18107,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00291-of-03388.parquet",
+   "bytes": 87769244,
+   "n_rows": 28225,
+   "n_kept": 15206,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00290-of-03388.parquet",
+   "bytes": 92717469,
+   "n_rows": 28225,
+   "n_kept": 18099,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00292-of-03388.parquet",
+   "bytes": 90264117,
+   "n_rows": 28225,
+   "n_kept": 15442,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00293-of-03388.parquet",
+   "bytes": 97569142,
+   "n_rows": 28225,
+   "n_kept": 16907,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00294-of-03388.parquet",
+   "bytes": 91513027,
+   "n_rows": 28225,
+   "n_kept": 15839,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00295-of-03388.parquet",
+   "bytes": 94774226,
+   "n_rows": 28225,
+   "n_kept": 15204,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00296-of-03388.parquet",
+   "bytes": 93641955,
+   "n_rows": 28225,
+   "n_kept": 17473,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00297-of-03388.parquet",
+   "bytes": 98244808,
+   "n_rows": 28225,
+   "n_kept": 15623,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00298-of-03388.parquet",
+   "bytes": 104786721,
+   "n_rows": 28225,
+   "n_kept": 14690,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00300-of-03388.parquet",
+   "bytes": 94791311,
+   "n_rows": 28225,
+   "n_kept": 14865,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00299-of-03388.parquet",
+   "bytes": 89344508,
+   "n_rows": 28225,
+   "n_kept": 18086,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00301-of-03388.parquet",
+   "bytes": 97555858,
+   "n_rows": 28225,
+   "n_kept": 14989,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00303-of-03388.parquet",
+   "bytes": 94927238,
+   "n_rows": 28225,
+   "n_kept": 14815,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00302-of-03388.parquet",
+   "bytes": 90949192,
+   "n_rows": 28225,
+   "n_kept": 18497,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00306-of-03388.parquet",
+   "bytes": 100986201,
+   "n_rows": 28225,
+   "n_kept": 14459,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00304-of-03388.parquet",
+   "bytes": 100935566,
+   "n_rows": 28225,
+   "n_kept": 14776,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00307-of-03388.parquet",
+   "bytes": 108178892,
+   "n_rows": 28225,
+   "n_kept": 14881,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00305-of-03388.parquet",
+   "bytes": 96182618,
+   "n_rows": 28225,
+   "n_kept": 18415,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00309-of-03388.parquet",
+   "bytes": 97829144,
+   "n_rows": 28225,
+   "n_kept": 14678,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00308-of-03388.parquet",
+   "bytes": 98834909,
+   "n_rows": 28225,
+   "n_kept": 17734,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00310-of-03388.parquet",
+   "bytes": 95927632,
+   "n_rows": 28225,
+   "n_kept": 16289,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00312-of-03388.parquet",
+   "bytes": 98005782,
+   "n_rows": 28225,
+   "n_kept": 14999,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00311-of-03388.parquet",
+   "bytes": 95610916,
+   "n_rows": 28225,
+   "n_kept": 17018,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00313-of-03388.parquet",
+   "bytes": 96366934,
+   "n_rows": 28225,
+   "n_kept": 15849,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00315-of-03388.parquet",
+   "bytes": 90466906,
+   "n_rows": 28225,
+   "n_kept": 14872,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00314-of-03388.parquet",
+   "bytes": 91000760,
+   "n_rows": 28225,
+   "n_kept": 17523,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00316-of-03388.parquet",
+   "bytes": 97380056,
+   "n_rows": 28225,
+   "n_kept": 15261,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00317-of-03388.parquet",
+   "bytes": 124598736,
+   "n_rows": 28225,
+   "n_kept": 17482,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00318-of-03388.parquet",
+   "bytes": 112578981,
+   "n_rows": 28225,
+   "n_kept": 15382,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00319-of-03388.parquet",
+   "bytes": 93191223,
+   "n_rows": 28225,
+   "n_kept": 15769,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00321-of-03388.parquet",
+   "bytes": 100162642,
+   "n_rows": 28225,
+   "n_kept": 15385,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00320-of-03388.parquet",
+   "bytes": 87104207,
+   "n_rows": 28225,
+   "n_kept": 16743,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00323-of-03388.parquet",
+   "bytes": 98429861,
+   "n_rows": 28225,
+   "n_kept": 15742,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00322-of-03388.parquet",
+   "bytes": 107443021,
+   "n_rows": 28225,
+   "n_kept": 16991,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00324-of-03388.parquet",
+   "bytes": 101241624,
+   "n_rows": 28225,
+   "n_kept": 15063,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00327-of-03388.parquet",
+   "bytes": 107954259,
+   "n_rows": 28225,
+   "n_kept": 15159,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00326-of-03388.parquet",
+   "bytes": 102733059,
+   "n_rows": 28225,
+   "n_kept": 14632,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00325-of-03388.parquet",
+   "bytes": 97571976,
+   "n_rows": 28225,
+   "n_kept": 18138,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00329-of-03388.parquet",
+   "bytes": 91327150,
+   "n_rows": 28225,
+   "n_kept": 15227,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00330-of-03388.parquet",
+   "bytes": 90745085,
+   "n_rows": 28225,
+   "n_kept": 15272,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00328-of-03388.parquet",
+   "bytes": 94533400,
+   "n_rows": 28225,
+   "n_kept": 17777,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00331-of-03388.parquet",
+   "bytes": 96503663,
+   "n_rows": 28225,
+   "n_kept": 18245,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00332-of-03388.parquet",
+   "bytes": 98761042,
+   "n_rows": 28225,
+   "n_kept": 14651,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00333-of-03388.parquet",
+   "bytes": 97497463,
+   "n_rows": 28225,
+   "n_kept": 15275,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00335-of-03388.parquet",
+   "bytes": 88353888,
+   "n_rows": 28225,
+   "n_kept": 15174,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00336-of-03388.parquet",
+   "bytes": 91969755,
+   "n_rows": 28225,
+   "n_kept": 15739,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00334-of-03388.parquet",
+   "bytes": 87954423,
+   "n_rows": 28225,
+   "n_kept": 18107,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00338-of-03388.parquet",
+   "bytes": 84873645,
+   "n_rows": 28225,
+   "n_kept": 15550,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00337-of-03388.parquet",
+   "bytes": 90665130,
+   "n_rows": 28225,
+   "n_kept": 16790,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00339-of-03388.parquet",
+   "bytes": 92076924,
+   "n_rows": 28225,
+   "n_kept": 15881,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00340-of-03388.parquet",
+   "bytes": 97817924,
+   "n_rows": 28225,
+   "n_kept": 15264,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00342-of-03388.parquet",
+   "bytes": 95227519,
+   "n_rows": 28225,
+   "n_kept": 15777,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00341-of-03388.parquet",
+   "bytes": 91416735,
+   "n_rows": 28225,
+   "n_kept": 17373,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00343-of-03388.parquet",
+   "bytes": 93168383,
+   "n_rows": 28225,
+   "n_kept": 16291,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00344-of-03388.parquet",
+   "bytes": 84935384,
+   "n_rows": 28225,
+   "n_kept": 15800,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00345-of-03388.parquet",
+   "bytes": 96407925,
+   "n_rows": 28225,
+   "n_kept": 15943,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00347-of-03388.parquet",
+   "bytes": 86929642,
+   "n_rows": 28225,
+   "n_kept": 16041,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00346-of-03388.parquet",
+   "bytes": 103352539,
+   "n_rows": 28225,
+   "n_kept": 16413,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00348-of-03388.parquet",
+   "bytes": 95134357,
+   "n_rows": 28225,
+   "n_kept": 15762,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00349-of-03388.parquet",
+   "bytes": 101074536,
+   "n_rows": 28225,
+   "n_kept": 15702,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00350-of-03388.parquet",
+   "bytes": 93721885,
+   "n_rows": 28225,
+   "n_kept": 16507,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00352-of-03388.parquet",
+   "bytes": 95399103,
+   "n_rows": 28225,
+   "n_kept": 15130,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00351-of-03388.parquet",
+   "bytes": 99204728,
+   "n_rows": 28225,
+   "n_kept": 15960,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00354-of-03388.parquet",
+   "bytes": 108091211,
+   "n_rows": 28225,
+   "n_kept": 15612,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00353-of-03388.parquet",
+   "bytes": 99207280,
+   "n_rows": 28225,
+   "n_kept": 17228,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00356-of-03388.parquet",
+   "bytes": 78031326,
+   "n_rows": 28225,
+   "n_kept": 16769,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00355-of-03388.parquet",
+   "bytes": 105856304,
+   "n_rows": 28225,
+   "n_kept": 16319,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00357-of-03388.parquet",
+   "bytes": 94484825,
+   "n_rows": 28225,
+   "n_kept": 15602,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00358-of-03388.parquet",
+   "bytes": 107182875,
+   "n_rows": 28225,
+   "n_kept": 14680,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00360-of-03388.parquet",
+   "bytes": 90062180,
+   "n_rows": 28225,
+   "n_kept": 15579,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00361-of-03388.parquet",
+   "bytes": 88633762,
+   "n_rows": 28225,
+   "n_kept": 15192,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00359-of-03388.parquet",
+   "bytes": 97323907,
+   "n_rows": 28225,
+   "n_kept": 18074,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00364-of-03388.parquet",
+   "bytes": 98590633,
+   "n_rows": 28225,
+   "n_kept": 14450,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00362-of-03388.parquet",
+   "bytes": 91917784,
+   "n_rows": 28225,
+   "n_kept": 17242,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00363-of-03388.parquet",
+   "bytes": 92112041,
+   "n_rows": 28225,
+   "n_kept": 15674,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00366-of-03388.parquet",
+   "bytes": 95483147,
+   "n_rows": 28225,
+   "n_kept": 14478,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00365-of-03388.parquet",
+   "bytes": 101299573,
+   "n_rows": 28225,
+   "n_kept": 18428,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00367-of-03388.parquet",
+   "bytes": 94815113,
+   "n_rows": 28225,
+   "n_kept": 14916,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00369-of-03388.parquet",
+   "bytes": 92662273,
+   "n_rows": 28225,
+   "n_kept": 15353,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00368-of-03388.parquet",
+   "bytes": 103438398,
+   "n_rows": 28225,
+   "n_kept": 18035,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00370-of-03388.parquet",
+   "bytes": 83908148,
+   "n_rows": 28225,
+   "n_kept": 15631,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00371-of-03388.parquet",
+   "bytes": 94355497,
+   "n_rows": 28225,
+   "n_kept": 16982,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00372-of-03388.parquet",
+   "bytes": 95820159,
+   "n_rows": 28225,
+   "n_kept": 16096,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00373-of-03388.parquet",
+   "bytes": 97563009,
+   "n_rows": 28225,
+   "n_kept": 15015,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00374-of-03388.parquet",
+   "bytes": 84758644,
+   "n_rows": 28225,
+   "n_kept": 16904,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00375-of-03388.parquet",
+   "bytes": 95519581,
+   "n_rows": 28225,
+   "n_kept": 16433,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00376-of-03388.parquet",
+   "bytes": 102029276,
+   "n_rows": 28225,
+   "n_kept": 15393,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00378-of-03388.parquet",
+   "bytes": 83070019,
+   "n_rows": 28225,
+   "n_kept": 14906,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00377-of-03388.parquet",
+   "bytes": 98992256,
+   "n_rows": 28225,
+   "n_kept": 17569,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00379-of-03388.parquet",
+   "bytes": 83426273,
+   "n_rows": 28225,
+   "n_kept": 15822,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00381-of-03388.parquet",
+   "bytes": 97989239,
+   "n_rows": 28225,
+   "n_kept": 16644,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00380-of-03388.parquet",
+   "bytes": 91714041,
+   "n_rows": 28225,
+   "n_kept": 15739,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00383-of-03388.parquet",
+   "bytes": 84501704,
+   "n_rows": 28225,
+   "n_kept": 15936,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00382-of-03388.parquet",
+   "bytes": 94011541,
+   "n_rows": 28225,
+   "n_kept": 14988,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00385-of-03388.parquet",
+   "bytes": 91746826,
+   "n_rows": 28225,
+   "n_kept": 15251,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00384-of-03388.parquet",
+   "bytes": 97558834,
+   "n_rows": 28225,
+   "n_kept": 18132,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00386-of-03388.parquet",
+   "bytes": 88190856,
+   "n_rows": 28225,
+   "n_kept": 15318,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00387-of-03388.parquet",
+   "bytes": 90931719,
+   "n_rows": 28225,
+   "n_kept": 17861,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00389-of-03388.parquet",
+   "bytes": 85257878,
+   "n_rows": 28225,
+   "n_kept": 15432,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00388-of-03388.parquet",
+   "bytes": 84392135,
+   "n_rows": 28225,
+   "n_kept": 15251,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00391-of-03388.parquet",
+   "bytes": 84315144,
+   "n_rows": 28225,
+   "n_kept": 15698,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00390-of-03388.parquet",
+   "bytes": 85756998,
+   "n_rows": 28225,
+   "n_kept": 17153,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00393-of-03388.parquet",
+   "bytes": 86067326,
+   "n_rows": 28225,
+   "n_kept": 15571,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00392-of-03388.parquet",
+   "bytes": 87994945,
+   "n_rows": 28225,
+   "n_kept": 15316,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00396-of-03388.parquet",
+   "bytes": 95236839,
+   "n_rows": 28225,
+   "n_kept": 16213,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00394-of-03388.parquet",
+   "bytes": 83829648,
+   "n_rows": 28225,
+   "n_kept": 17609,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00395-of-03388.parquet",
+   "bytes": 91509095,
+   "n_rows": 28225,
+   "n_kept": 14725,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00398-of-03388.parquet",
+   "bytes": 82135415,
+   "n_rows": 28225,
+   "n_kept": 15085,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00397-of-03388.parquet",
+   "bytes": 78824940,
+   "n_rows": 28225,
+   "n_kept": 17894,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00399-of-03388.parquet",
+   "bytes": 86258909,
+   "n_rows": 28225,
+   "n_kept": 15195,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00401-of-03388.parquet",
+   "bytes": 81498473,
+   "n_rows": 28225,
+   "n_kept": 15164,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00402-of-03388.parquet",
+   "bytes": 82621268,
+   "n_rows": 28225,
+   "n_kept": 15471,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00400-of-03388.parquet",
+   "bytes": 85797885,
+   "n_rows": 28225,
+   "n_kept": 18072,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00403-of-03388.parquet",
+   "bytes": 82964704,
+   "n_rows": 28225,
+   "n_kept": 16056,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00404-of-03388.parquet",
+   "bytes": 77078304,
+   "n_rows": 28225,
+   "n_kept": 17486,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00405-of-03388.parquet",
+   "bytes": 76641755,
+   "n_rows": 28225,
+   "n_kept": 15769,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00406-of-03388.parquet",
+   "bytes": 79585617,
+   "n_rows": 28225,
+   "n_kept": 15410,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00407-of-03388.parquet",
+   "bytes": 81282294,
+   "n_rows": 28225,
+   "n_kept": 16064,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00408-of-03388.parquet",
+   "bytes": 76351895,
+   "n_rows": 28225,
+   "n_kept": 16325,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00409-of-03388.parquet",
+   "bytes": 81779467,
+   "n_rows": 28225,
+   "n_kept": 16938,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00410-of-03388.parquet",
+   "bytes": 81176405,
+   "n_rows": 28225,
+   "n_kept": 15621,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00411-of-03388.parquet",
+   "bytes": 78981172,
+   "n_rows": 28225,
+   "n_kept": 15573,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00412-of-03388.parquet",
+   "bytes": 78818497,
+   "n_rows": 28225,
+   "n_kept": 16133,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00414-of-03388.parquet",
+   "bytes": 79489378,
+   "n_rows": 28225,
+   "n_kept": 15033,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00413-of-03388.parquet",
+   "bytes": 77542294,
+   "n_rows": 28225,
+   "n_kept": 17862,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00415-of-03388.parquet",
+   "bytes": 82843829,
+   "n_rows": 28225,
+   "n_kept": 15818,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00416-of-03388.parquet",
+   "bytes": 83577080,
+   "n_rows": 28225,
+   "n_kept": 15746,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00417-of-03388.parquet",
+   "bytes": 78621450,
+   "n_rows": 28225,
+   "n_kept": 17326,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00418-of-03388.parquet",
+   "bytes": 79350027,
+   "n_rows": 28225,
+   "n_kept": 15446,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00419-of-03388.parquet",
+   "bytes": 82878097,
+   "n_rows": 28225,
+   "n_kept": 15716,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00420-of-03388.parquet",
+   "bytes": 88974806,
+   "n_rows": 28225,
+   "n_kept": 16882,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00421-of-03388.parquet",
+   "bytes": 83305989,
+   "n_rows": 28225,
+   "n_kept": 16176,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00423-of-03388.parquet",
+   "bytes": 91092184,
+   "n_rows": 28225,
+   "n_kept": 15421,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00422-of-03388.parquet",
+   "bytes": 87954807,
+   "n_rows": 28225,
+   "n_kept": 14968,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00424-of-03388.parquet",
+   "bytes": 82397553,
+   "n_rows": 28225,
+   "n_kept": 18627,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00426-of-03388.parquet",
+   "bytes": 84452616,
+   "n_rows": 28225,
+   "n_kept": 15452,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00425-of-03388.parquet",
+   "bytes": 82882785,
+   "n_rows": 28225,
+   "n_kept": 15151,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00427-of-03388.parquet",
+   "bytes": 87747202,
+   "n_rows": 28225,
+   "n_kept": 15906,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00428-of-03388.parquet",
+   "bytes": 78808806,
+   "n_rows": 28225,
+   "n_kept": 17723,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00432-of-03388.parquet",
+   "bytes": 80631915,
+   "n_rows": 28225,
+   "n_kept": 17310,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00429-of-03388.parquet",
+   "bytes": 115793743,
+   "n_rows": 28225,
+   "n_kept": 14904,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00431-of-03388.parquet",
+   "bytes": 84330926,
+   "n_rows": 28225,
+   "n_kept": 15305,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00430-of-03388.parquet",
+   "bytes": 108145056,
+   "n_rows": 28225,
+   "n_kept": 15870,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00436-of-03388.parquet",
+   "bytes": 89429078,
+   "n_rows": 28225,
+   "n_kept": 15795,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00433-of-03388.parquet",
+   "bytes": 84068436,
+   "n_rows": 28225,
+   "n_kept": 16211,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00434-of-03388.parquet",
+   "bytes": 90575605,
+   "n_rows": 28225,
+   "n_kept": 15591,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00435-of-03388.parquet",
+   "bytes": 95317715,
+   "n_rows": 28225,
+   "n_kept": 16744,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00437-of-03388.parquet",
+   "bytes": 95204693,
+   "n_rows": 28225,
+   "n_kept": 15136,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00441-of-03388.parquet",
+   "bytes": 89272498,
+   "n_rows": 28225,
+   "n_kept": 15633,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00438-of-03388.parquet",
+   "bytes": 99715737,
+   "n_rows": 28225,
+   "n_kept": 15863,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00440-of-03388.parquet",
+   "bytes": 92868515,
+   "n_rows": 28225,
+   "n_kept": 15130,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00439-of-03388.parquet",
+   "bytes": 92960151,
+   "n_rows": 28225,
+   "n_kept": 17152,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00442-of-03388.parquet",
+   "bytes": 80159668,
+   "n_rows": 28225,
+   "n_kept": 17651,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00443-of-03388.parquet",
+   "bytes": 89144004,
+   "n_rows": 28225,
+   "n_kept": 15866,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00444-of-03388.parquet",
+   "bytes": 90314580,
+   "n_rows": 28225,
+   "n_kept": 15479,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00445-of-03388.parquet",
+   "bytes": 81380637,
+   "n_rows": 28225,
+   "n_kept": 16094,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00889-of-03388.parquet",
+   "bytes": 99634337,
+   "n_rows": 28225,
+   "n_kept": 13068,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00890-of-03388.parquet",
+   "bytes": 107622506,
+   "n_rows": 28225,
+   "n_kept": 17277,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00891-of-03388.parquet",
+   "bytes": 106341587,
+   "n_rows": 28225,
+   "n_kept": 17393,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00892-of-03388.parquet",
+   "bytes": 104823904,
+   "n_rows": 28225,
+   "n_kept": 16795,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00894-of-03388.parquet",
+   "bytes": 99405594,
+   "n_rows": 28225,
+   "n_kept": 16417,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00893-of-03388.parquet",
+   "bytes": 100512489,
+   "n_rows": 28225,
+   "n_kept": 17687,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00896-of-03388.parquet",
+   "bytes": 113017161,
+   "n_rows": 28225,
+   "n_kept": 15434,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00895-of-03388.parquet",
+   "bytes": 112728703,
+   "n_rows": 28225,
+   "n_kept": 19047,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00897-of-03388.parquet",
+   "bytes": 109565781,
+   "n_rows": 28225,
+   "n_kept": 18094,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00898-of-03388.parquet",
+   "bytes": 108746782,
+   "n_rows": 28225,
+   "n_kept": 16147,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00899-of-03388.parquet",
+   "bytes": 85606028,
+   "n_rows": 28225,
+   "n_kept": 17700,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00900-of-03388.parquet",
+   "bytes": 84481142,
+   "n_rows": 28225,
+   "n_kept": 16084,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00901-of-03388.parquet",
+   "bytes": 115597243,
+   "n_rows": 28225,
+   "n_kept": 18023,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00902-of-03388.parquet",
+   "bytes": 109077648,
+   "n_rows": 28225,
+   "n_kept": 16137,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00903-of-03388.parquet",
+   "bytes": 91276579,
+   "n_rows": 28225,
+   "n_kept": 18468,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00904-of-03388.parquet",
+   "bytes": 96342293,
+   "n_rows": 28225,
+   "n_kept": 16980,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00905-of-03388.parquet",
+   "bytes": 110523193,
+   "n_rows": 28225,
+   "n_kept": 17051,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00906-of-03388.parquet",
+   "bytes": 108000427,
+   "n_rows": 28225,
+   "n_kept": 16121,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00907-of-03388.parquet",
+   "bytes": 87615411,
+   "n_rows": 28225,
+   "n_kept": 17182,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00908-of-03388.parquet",
+   "bytes": 92911019,
+   "n_rows": 28225,
+   "n_kept": 17306,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00909-of-03388.parquet",
+   "bytes": 90853556,
+   "n_rows": 28225,
+   "n_kept": 17931,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00910-of-03388.parquet",
+   "bytes": 93410542,
+   "n_rows": 28225,
+   "n_kept": 17826,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00911-of-03388.parquet",
+   "bytes": 93280685,
+   "n_rows": 28225,
+   "n_kept": 16251,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00913-of-03388.parquet",
+   "bytes": 108608487,
+   "n_rows": 28225,
+   "n_kept": 16319,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00912-of-03388.parquet",
+   "bytes": 104641780,
+   "n_rows": 28225,
+   "n_kept": 18193,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00914-of-03388.parquet",
+   "bytes": 103046275,
+   "n_rows": 28225,
+   "n_kept": 17950,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00915-of-03388.parquet",
+   "bytes": 103048047,
+   "n_rows": 28225,
+   "n_kept": 16543,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00917-of-03388.parquet",
+   "bytes": 94125606,
+   "n_rows": 28225,
+   "n_kept": 14894,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00916-of-03388.parquet",
+   "bytes": 96447856,
+   "n_rows": 28225,
+   "n_kept": 18484,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00919-of-03388.parquet",
+   "bytes": 92927466,
+   "n_rows": 28225,
+   "n_kept": 15413,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00920-of-03388.parquet",
+   "bytes": 85342813,
+   "n_rows": 28225,
+   "n_kept": 18119,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00918-of-03388.parquet",
+   "bytes": 95397478,
+   "n_rows": 28225,
+   "n_kept": 19171,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00921-of-03388.parquet",
+   "bytes": 93743019,
+   "n_rows": 28225,
+   "n_kept": 16227,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00922-of-03388.parquet",
+   "bytes": 99026728,
+   "n_rows": 28225,
+   "n_kept": 17537,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00923-of-03388.parquet",
+   "bytes": 102624767,
+   "n_rows": 28225,
+   "n_kept": 17103,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00924-of-03388.parquet",
+   "bytes": 102134718,
+   "n_rows": 28225,
+   "n_kept": 17257,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00925-of-03388.parquet",
+   "bytes": 98167869,
+   "n_rows": 28225,
+   "n_kept": 16654,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00926-of-03388.parquet",
+   "bytes": 90940226,
+   "n_rows": 28225,
+   "n_kept": 18155,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00927-of-03388.parquet",
+   "bytes": 105732148,
+   "n_rows": 28225,
+   "n_kept": 17716,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00930-of-03388.parquet",
+   "bytes": 89668752,
+   "n_rows": 28225,
+   "n_kept": 16810,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00929-of-03388.parquet",
+   "bytes": 99509110,
+   "n_rows": 28225,
+   "n_kept": 17169,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00928-of-03388.parquet",
+   "bytes": 112255378,
+   "n_rows": 28225,
+   "n_kept": 16773,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00933-of-03388.parquet",
+   "bytes": 99442836,
+   "n_rows": 28225,
+   "n_kept": 17762,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00934-of-03388.parquet",
+   "bytes": 96079811,
+   "n_rows": 28225,
+   "n_kept": 15748,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00932-of-03388.parquet",
+   "bytes": 108874658,
+   "n_rows": 28225,
+   "n_kept": 16762,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00931-of-03388.parquet",
+   "bytes": 104176926,
+   "n_rows": 28225,
+   "n_kept": 18177,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00936-of-03388.parquet",
+   "bytes": 101091508,
+   "n_rows": 28225,
+   "n_kept": 14520,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00937-of-03388.parquet",
+   "bytes": 96659154,
+   "n_rows": 28225,
+   "n_kept": 18582,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00935-of-03388.parquet",
+   "bytes": 101811008,
+   "n_rows": 28225,
+   "n_kept": 18907,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00938-of-03388.parquet",
+   "bytes": 97018710,
+   "n_rows": 28225,
+   "n_kept": 16962,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00940-of-03388.parquet",
+   "bytes": 108422063,
+   "n_rows": 28225,
+   "n_kept": 15434,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00939-of-03388.parquet",
+   "bytes": 113150806,
+   "n_rows": 28225,
+   "n_kept": 18550,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00942-of-03388.parquet",
+   "bytes": 97867381,
+   "n_rows": 28225,
+   "n_kept": 16068,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00941-of-03388.parquet",
+   "bytes": 101137119,
+   "n_rows": 28225,
+   "n_kept": 18517,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00943-of-03388.parquet",
+   "bytes": 97794987,
+   "n_rows": 28225,
+   "n_kept": 17763,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00944-of-03388.parquet",
+   "bytes": 99646106,
+   "n_rows": 28225,
+   "n_kept": 16817,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00945-of-03388.parquet",
+   "bytes": 96111126,
+   "n_rows": 28225,
+   "n_kept": 17191,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00946-of-03388.parquet",
+   "bytes": 102251816,
+   "n_rows": 28225,
+   "n_kept": 16405,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00949-of-03388.parquet",
+   "bytes": 98775488,
+   "n_rows": 28225,
+   "n_kept": 17458,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00947-of-03388.parquet",
+   "bytes": 99657776,
+   "n_rows": 28225,
+   "n_kept": 17622,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00948-of-03388.parquet",
+   "bytes": 102411032,
+   "n_rows": 28225,
+   "n_kept": 17170,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00950-of-03388.parquet",
+   "bytes": 102529316,
+   "n_rows": 28225,
+   "n_kept": 17470,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00953-of-03388.parquet",
+   "bytes": 110913265,
+   "n_rows": 28225,
+   "n_kept": 17427,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00952-of-03388.parquet",
+   "bytes": 109939187,
+   "n_rows": 28225,
+   "n_kept": 16812,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00954-of-03388.parquet",
+   "bytes": 112391128,
+   "n_rows": 28225,
+   "n_kept": 16507,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00951-of-03388.parquet",
+   "bytes": 104508648,
+   "n_rows": 28225,
+   "n_kept": 17564,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00956-of-03388.parquet",
+   "bytes": 105819323,
+   "n_rows": 28225,
+   "n_kept": 17252,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00955-of-03388.parquet",
+   "bytes": 110137659,
+   "n_rows": 28225,
+   "n_kept": 17212,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00958-of-03388.parquet",
+   "bytes": 98245431,
+   "n_rows": 28225,
+   "n_kept": 17197,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00957-of-03388.parquet",
+   "bytes": 98387296,
+   "n_rows": 28225,
+   "n_kept": 17590,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00959-of-03388.parquet",
+   "bytes": 94252113,
+   "n_rows": 28225,
+   "n_kept": 17799,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00960-of-03388.parquet",
+   "bytes": 100670646,
+   "n_rows": 28225,
+   "n_kept": 17549,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00961-of-03388.parquet",
+   "bytes": 102101419,
+   "n_rows": 28225,
+   "n_kept": 16805,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00965-of-03388.parquet",
+   "bytes": 107892499,
+   "n_rows": 28225,
+   "n_kept": 16978,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00963-of-03388.parquet",
+   "bytes": 115052408,
+   "n_rows": 28225,
+   "n_kept": 16983,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00962-of-03388.parquet",
+   "bytes": 111478807,
+   "n_rows": 28225,
+   "n_kept": 17511,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00964-of-03388.parquet",
+   "bytes": 110168496,
+   "n_rows": 28225,
+   "n_kept": 17542,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00966-of-03388.parquet",
+   "bytes": 96215353,
+   "n_rows": 28225,
+   "n_kept": 17300,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00967-of-03388.parquet",
+   "bytes": 94068461,
+   "n_rows": 28225,
+   "n_kept": 16536,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00968-of-03388.parquet",
+   "bytes": 95437797,
+   "n_rows": 28225,
+   "n_kept": 18291,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00969-of-03388.parquet",
+   "bytes": 93666295,
+   "n_rows": 28225,
+   "n_kept": 15311,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00971-of-03388.parquet",
+   "bytes": 104702830,
+   "n_rows": 28225,
+   "n_kept": 15553,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00970-of-03388.parquet",
+   "bytes": 108896779,
+   "n_rows": 28225,
+   "n_kept": 18837,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00973-of-03388.parquet",
+   "bytes": 99756155,
+   "n_rows": 28225,
+   "n_kept": 15985,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00972-of-03388.parquet",
+   "bytes": 103683213,
+   "n_rows": 28225,
+   "n_kept": 18964,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00975-of-03388.parquet",
+   "bytes": 104733857,
+   "n_rows": 28225,
+   "n_kept": 16454,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00974-of-03388.parquet",
+   "bytes": 110576019,
+   "n_rows": 28225,
+   "n_kept": 18230,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00976-of-03388.parquet",
+   "bytes": 102493044,
+   "n_rows": 28225,
+   "n_kept": 18040,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00977-of-03388.parquet",
+   "bytes": 98050583,
+   "n_rows": 28225,
+   "n_kept": 16462,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00978-of-03388.parquet",
+   "bytes": 96550335,
+   "n_rows": 28225,
+   "n_kept": 17824,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00979-of-03388.parquet",
+   "bytes": 99024469,
+   "n_rows": 28225,
+   "n_kept": 16964,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00980-of-03388.parquet",
+   "bytes": 98740181,
+   "n_rows": 28225,
+   "n_kept": 18089,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00983-of-03388.parquet",
+   "bytes": 101483669,
+   "n_rows": 28225,
+   "n_kept": 16573,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00981-of-03388.parquet",
+   "bytes": 102032577,
+   "n_rows": 28225,
+   "n_kept": 15431,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00982-of-03388.parquet",
+   "bytes": 95455661,
+   "n_rows": 28225,
+   "n_kept": 18041,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00985-of-03388.parquet",
+   "bytes": 104249541,
+   "n_rows": 28225,
+   "n_kept": 16878,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00984-of-03388.parquet",
+   "bytes": 97238102,
+   "n_rows": 28225,
+   "n_kept": 17173,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00986-of-03388.parquet",
+   "bytes": 102135053,
+   "n_rows": 28225,
+   "n_kept": 17484,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00987-of-03388.parquet",
+   "bytes": 110023827,
+   "n_rows": 28225,
+   "n_kept": 17051,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00990-of-03388.parquet",
+   "bytes": 90733805,
+   "n_rows": 28225,
+   "n_kept": 17673,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00989-of-03388.parquet",
+   "bytes": 105239813,
+   "n_rows": 28225,
+   "n_kept": 16844,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00988-of-03388.parquet",
+   "bytes": 110266851,
+   "n_rows": 28225,
+   "n_kept": 17768,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00991-of-03388.parquet",
+   "bytes": 98953361,
+   "n_rows": 28225,
+   "n_kept": 17247,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00993-of-03388.parquet",
+   "bytes": 95959513,
+   "n_rows": 28225,
+   "n_kept": 17419,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00994-of-03388.parquet",
+   "bytes": 90303181,
+   "n_rows": 28225,
+   "n_kept": 16664,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00992-of-03388.parquet",
+   "bytes": 102642390,
+   "n_rows": 28225,
+   "n_kept": 17590,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00996-of-03388.parquet",
+   "bytes": 92473800,
+   "n_rows": 28225,
+   "n_kept": 15931,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00995-of-03388.parquet",
+   "bytes": 93558718,
+   "n_rows": 28225,
+   "n_kept": 18063,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00998-of-03388.parquet",
+   "bytes": 104970369,
+   "n_rows": 28225,
+   "n_kept": 16414,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00997-of-03388.parquet",
+   "bytes": 108417530,
+   "n_rows": 28225,
+   "n_kept": 18341,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01021-of-03388.parquet",
+   "bytes": 106569955,
+   "n_rows": 28225,
+   "n_kept": 14404,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01003-of-03388.parquet",
+   "bytes": 87361832,
+   "n_rows": 28225,
+   "n_kept": 16611,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-00999-of-03388.parquet",
+   "bytes": 106962041,
+   "n_rows": 28225,
+   "n_kept": 18184,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01004-of-03388.parquet",
+   "bytes": 99662785,
+   "n_rows": 28225,
+   "n_kept": 16340,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01002-of-03388.parquet",
+   "bytes": 104593339,
+   "n_rows": 28225,
+   "n_kept": 16816,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01006-of-03388.parquet",
+   "bytes": 108881716,
+   "n_rows": 28225,
+   "n_kept": 17446,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01001-of-03388.parquet",
+   "bytes": 111354960,
+   "n_rows": 28225,
+   "n_kept": 18531,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01009-of-03388.parquet",
+   "bytes": 95518071,
+   "n_rows": 28225,
+   "n_kept": 17238,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01005-of-03388.parquet",
+   "bytes": 109039704,
+   "n_rows": 28225,
+   "n_kept": 17332,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01007-of-03388.parquet",
+   "bytes": 104765975,
+   "n_rows": 28225,
+   "n_kept": 17592,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01008-of-03388.parquet",
+   "bytes": 100620880,
+   "n_rows": 28225,
+   "n_kept": 17548,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01010-of-03388.parquet",
+   "bytes": 103486851,
+   "n_rows": 28225,
+   "n_kept": 17405,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01011-of-03388.parquet",
+   "bytes": 106643885,
+   "n_rows": 28225,
+   "n_kept": 16457,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01012-of-03388.parquet",
+   "bytes": 113523742,
+   "n_rows": 28225,
+   "n_kept": 18328,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01014-of-03388.parquet",
+   "bytes": 108059756,
+   "n_rows": 28225,
+   "n_kept": 17371,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01017-of-03388.parquet",
+   "bytes": 96797527,
+   "n_rows": 28225,
+   "n_kept": 16565,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01018-of-03388.parquet",
+   "bytes": 97655609,
+   "n_rows": 28225,
+   "n_kept": 18440,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01015-of-03388.parquet",
+   "bytes": 104862196,
+   "n_rows": 28225,
+   "n_kept": 16879,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01013-of-03388.parquet",
+   "bytes": 114700674,
+   "n_rows": 28225,
+   "n_kept": 16848,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01019-of-03388.parquet",
+   "bytes": 97323047,
+   "n_rows": 28225,
+   "n_kept": 16053,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01016-of-03388.parquet",
+   "bytes": 99837367,
+   "n_rows": 28225,
+   "n_kept": 17316,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01000-of-03388.parquet",
+   "bytes": 104905596,
+   "n_rows": 28225,
+   "n_kept": 15782,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01023-of-03388.parquet",
+   "bytes": 99830746,
+   "n_rows": 28225,
+   "n_kept": 14914,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01020-of-03388.parquet",
+   "bytes": 107915075,
+   "n_rows": 28225,
+   "n_kept": 18680,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01025-of-03388.parquet",
+   "bytes": 97273026,
+   "n_rows": 28225,
+   "n_kept": 15954,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01022-of-03388.parquet",
+   "bytes": 101593954,
+   "n_rows": 28225,
+   "n_kept": 19336,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01031-of-03388.parquet",
+   "bytes": 100651927,
+   "n_rows": 28225,
+   "n_kept": 14763,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01026-of-03388.parquet",
+   "bytes": 106279914,
+   "n_rows": 28225,
+   "n_kept": 17597,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01024-of-03388.parquet",
+   "bytes": 99314786,
+   "n_rows": 28225,
+   "n_kept": 19407,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01029-of-03388.parquet",
+   "bytes": 114195519,
+   "n_rows": 28225,
+   "n_kept": 15297,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01028-of-03388.parquet",
+   "bytes": 119723442,
+   "n_rows": 28225,
+   "n_kept": 18573,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01027-of-03388.parquet",
+   "bytes": 102775712,
+   "n_rows": 28225,
+   "n_kept": 16510,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01033-of-03388.parquet",
+   "bytes": 107803841,
+   "n_rows": 28225,
+   "n_kept": 14850,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01030-of-03388.parquet",
+   "bytes": 104006032,
+   "n_rows": 28225,
+   "n_kept": 19679,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01035-of-03388.parquet",
+   "bytes": 98664483,
+   "n_rows": 28225,
+   "n_kept": 16001,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01032-of-03388.parquet",
+   "bytes": 112576917,
+   "n_rows": 28225,
+   "n_kept": 19464,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01034-of-03388.parquet",
+   "bytes": 104142859,
+   "n_rows": 28225,
+   "n_kept": 18537,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01037-of-03388.parquet",
+   "bytes": 89068132,
+   "n_rows": 28225,
+   "n_kept": 16150,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01036-of-03388.parquet",
+   "bytes": 83057521,
+   "n_rows": 28225,
+   "n_kept": 18149,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01038-of-03388.parquet",
+   "bytes": 93008440,
+   "n_rows": 28225,
+   "n_kept": 17497,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01039-of-03388.parquet",
+   "bytes": 98638769,
+   "n_rows": 28225,
+   "n_kept": 16567,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01041-of-03388.parquet",
+   "bytes": 98284371,
+   "n_rows": 28225,
+   "n_kept": 17149,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01042-of-03388.parquet",
+   "bytes": 95491218,
+   "n_rows": 28225,
+   "n_kept": 17514,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01043-of-03388.parquet",
+   "bytes": 106202755,
+   "n_rows": 28225,
+   "n_kept": 17680,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01040-of-03388.parquet",
+   "bytes": 99942952,
+   "n_rows": 28225,
+   "n_kept": 17607,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01044-of-03388.parquet",
+   "bytes": 109589163,
+   "n_rows": 28225,
+   "n_kept": 16680,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01045-of-03388.parquet",
+   "bytes": 110332036,
+   "n_rows": 28225,
+   "n_kept": 17977,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01046-of-03388.parquet",
+   "bytes": 109903881,
+   "n_rows": 28225,
+   "n_kept": 16776,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01047-of-03388.parquet",
+   "bytes": 110503356,
+   "n_rows": 28225,
+   "n_kept": 17189,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01048-of-03388.parquet",
+   "bytes": 110386828,
+   "n_rows": 28225,
+   "n_kept": 16754,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01050-of-03388.parquet",
+   "bytes": 93666894,
+   "n_rows": 28225,
+   "n_kept": 17274,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01049-of-03388.parquet",
+   "bytes": 100218107,
+   "n_rows": 28225,
+   "n_kept": 17203,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01051-of-03388.parquet",
+   "bytes": 111657465,
+   "n_rows": 28225,
+   "n_kept": 17474,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01053-of-03388.parquet",
+   "bytes": 112175583,
+   "n_rows": 28225,
+   "n_kept": 17111,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01052-of-03388.parquet",
+   "bytes": 116715143,
+   "n_rows": 28225,
+   "n_kept": 16799,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01054-of-03388.parquet",
+   "bytes": 109814860,
+   "n_rows": 28225,
+   "n_kept": 16933,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01055-of-03388.parquet",
+   "bytes": 101989382,
+   "n_rows": 28225,
+   "n_kept": 17743,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01056-of-03388.parquet",
+   "bytes": 97554879,
+   "n_rows": 28225,
+   "n_kept": 16770,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01057-of-03388.parquet",
+   "bytes": 101363652,
+   "n_rows": 28225,
+   "n_kept": 17718,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01058-of-03388.parquet",
+   "bytes": 103721517,
+   "n_rows": 28225,
+   "n_kept": 16516,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01060-of-03388.parquet",
+   "bytes": 108829793,
+   "n_rows": 28225,
+   "n_kept": 16937,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01062-of-03388.parquet",
+   "bytes": 101977285,
+   "n_rows": 28225,
+   "n_kept": 16260,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01059-of-03388.parquet",
+   "bytes": 107318737,
+   "n_rows": 28225,
+   "n_kept": 18101,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01061-of-03388.parquet",
+   "bytes": 102683640,
+   "n_rows": 28225,
+   "n_kept": 17527,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01063-of-03388.parquet",
+   "bytes": 98249836,
+   "n_rows": 28225,
+   "n_kept": 18729,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01064-of-03388.parquet",
+   "bytes": 98272002,
+   "n_rows": 28225,
+   "n_kept": 15881,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01065-of-03388.parquet",
+   "bytes": 92155211,
+   "n_rows": 28225,
+   "n_kept": 18059,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01066-of-03388.parquet",
+   "bytes": 90132615,
+   "n_rows": 28225,
+   "n_kept": 15514,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01069-of-03388.parquet",
+   "bytes": 91584818,
+   "n_rows": 28225,
+   "n_kept": 17237,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01070-of-03388.parquet",
+   "bytes": 97848866,
+   "n_rows": 28225,
+   "n_kept": 17147,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01067-of-03388.parquet",
+   "bytes": 94092563,
+   "n_rows": 28225,
+   "n_kept": 18149,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01068-of-03388.parquet",
+   "bytes": 94981343,
+   "n_rows": 28225,
+   "n_kept": 15974,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01072-of-03388.parquet",
+   "bytes": 104047900,
+   "n_rows": 28225,
+   "n_kept": 17465,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01073-of-03388.parquet",
+   "bytes": 105009068,
+   "n_rows": 28225,
+   "n_kept": 17214,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01071-of-03388.parquet",
+   "bytes": 99374521,
+   "n_rows": 28225,
+   "n_kept": 18000,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01074-of-03388.parquet",
+   "bytes": 106215569,
+   "n_rows": 28225,
+   "n_kept": 17417,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01076-of-03388.parquet",
+   "bytes": 106019023,
+   "n_rows": 28225,
+   "n_kept": 17528,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01075-of-03388.parquet",
+   "bytes": 105471352,
+   "n_rows": 28225,
+   "n_kept": 17232,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01079-of-03388.parquet",
+   "bytes": 108670843,
+   "n_rows": 28225,
+   "n_kept": 16776,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01077-of-03388.parquet",
+   "bytes": 105193743,
+   "n_rows": 28225,
+   "n_kept": 16588,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01078-of-03388.parquet",
+   "bytes": 108100142,
+   "n_rows": 28225,
+   "n_kept": 17681,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01080-of-03388.parquet",
+   "bytes": 99968417,
+   "n_rows": 28225,
+   "n_kept": 17954,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01081-of-03388.parquet",
+   "bytes": 98258216,
+   "n_rows": 28225,
+   "n_kept": 16663,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01082-of-03388.parquet",
+   "bytes": 97028778,
+   "n_rows": 28225,
+   "n_kept": 18011,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01083-of-03388.parquet",
+   "bytes": 95441317,
+   "n_rows": 28225,
+   "n_kept": 14911,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01084-of-03388.parquet",
+   "bytes": 100677116,
+   "n_rows": 28225,
+   "n_kept": 18646,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01088-of-03388.parquet",
+   "bytes": 96355792,
+   "n_rows": 28225,
+   "n_kept": 17138,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01086-of-03388.parquet",
+   "bytes": 91225486,
+   "n_rows": 28225,
+   "n_kept": 17828,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01085-of-03388.parquet",
+   "bytes": 97404672,
+   "n_rows": 28225,
+   "n_kept": 16429,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01087-of-03388.parquet",
+   "bytes": 94317886,
+   "n_rows": 28225,
+   "n_kept": 17379,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01093-of-03388.parquet",
+   "bytes": 88506772,
+   "n_rows": 28225,
+   "n_kept": 16799,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01089-of-03388.parquet",
+   "bytes": 100965743,
+   "n_rows": 28225,
+   "n_kept": 17088,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01091-of-03388.parquet",
+   "bytes": 101382566,
+   "n_rows": 28225,
+   "n_kept": 15457,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01092-of-03388.parquet",
+   "bytes": 84737416,
+   "n_rows": 28225,
+   "n_kept": 17365,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01090-of-03388.parquet",
+   "bytes": 106032749,
+   "n_rows": 28225,
+   "n_kept": 18248,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01094-of-03388.parquet",
+   "bytes": 89097205,
+   "n_rows": 28225,
+   "n_kept": 18062,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01095-of-03388.parquet",
+   "bytes": 98188813,
+   "n_rows": 28225,
+   "n_kept": 16931,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01099-of-03388.parquet",
+   "bytes": 96250639,
+   "n_rows": 28225,
+   "n_kept": 17442,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01096-of-03388.parquet",
+   "bytes": 102762772,
+   "n_rows": 28225,
+   "n_kept": 17345,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01100-of-03388.parquet",
+   "bytes": 93113676,
+   "n_rows": 28225,
+   "n_kept": 17066,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01097-of-03388.parquet",
+   "bytes": 103322022,
+   "n_rows": 28225,
+   "n_kept": 16961,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01098-of-03388.parquet",
+   "bytes": 102949598,
+   "n_rows": 28225,
+   "n_kept": 17865,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01104-of-03388.parquet",
+   "bytes": 89784755,
+   "n_rows": 28225,
+   "n_kept": 15607,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01101-of-03388.parquet",
+   "bytes": 105681032,
+   "n_rows": 28225,
+   "n_kept": 17601,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01103-of-03388.parquet",
+   "bytes": 90696454,
+   "n_rows": 28225,
+   "n_kept": 17826,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01102-of-03388.parquet",
+   "bytes": 111282325,
+   "n_rows": 28225,
+   "n_kept": 16452,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01108-of-03388.parquet",
+   "bytes": 109157519,
+   "n_rows": 28225,
+   "n_kept": 15020,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01106-of-03388.parquet",
+   "bytes": 107544955,
+   "n_rows": 28225,
+   "n_kept": 16533,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01107-of-03388.parquet",
+   "bytes": 114192256,
+   "n_rows": 28225,
+   "n_kept": 18717,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01110-of-03388.parquet",
+   "bytes": 104010982,
+   "n_rows": 28225,
+   "n_kept": 14690,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01105-of-03388.parquet",
+   "bytes": 113675232,
+   "n_rows": 28225,
+   "n_kept": 18289,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01111-of-03388.parquet",
+   "bytes": 95760251,
+   "n_rows": 28225,
+   "n_kept": 18488,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01109-of-03388.parquet",
+   "bytes": 106354708,
+   "n_rows": 28225,
+   "n_kept": 19751,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01112-of-03388.parquet",
+   "bytes": 96352397,
+   "n_rows": 28225,
+   "n_kept": 16989,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01114-of-03388.parquet",
+   "bytes": 108507057,
+   "n_rows": 28225,
+   "n_kept": 15497,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01113-of-03388.parquet",
+   "bytes": 112876699,
+   "n_rows": 28225,
+   "n_kept": 18291,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01116-of-03388.parquet",
+   "bytes": 104628719,
+   "n_rows": 28225,
+   "n_kept": 15801,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01115-of-03388.parquet",
+   "bytes": 107619451,
+   "n_rows": 28225,
+   "n_kept": 18704,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01117-of-03388.parquet",
+   "bytes": 106123791,
+   "n_rows": 28225,
+   "n_kept": 18431,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01118-of-03388.parquet",
+   "bytes": 101947806,
+   "n_rows": 28225,
+   "n_kept": 16303,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01119-of-03388.parquet",
+   "bytes": 109229029,
+   "n_rows": 28225,
+   "n_kept": 18138,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01120-of-03388.parquet",
+   "bytes": 105195462,
+   "n_rows": 28225,
+   "n_kept": 15952,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01121-of-03388.parquet",
+   "bytes": 121526789,
+   "n_rows": 28225,
+   "n_kept": 18740,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01122-of-03388.parquet",
+   "bytes": 116516781,
+   "n_rows": 28225,
+   "n_kept": 16215,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01124-of-03388.parquet",
+   "bytes": 126572248,
+   "n_rows": 28225,
+   "n_kept": 16072,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01126-of-03388.parquet",
+   "bytes": 133719988,
+   "n_rows": 28225,
+   "n_kept": 15061,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01123-of-03388.parquet",
+   "bytes": 133674713,
+   "n_rows": 28225,
+   "n_kept": 18327,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01125-of-03388.parquet",
+   "bytes": 140713825,
+   "n_rows": 28225,
+   "n_kept": 18689,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01128-of-03388.parquet",
+   "bytes": 110907665,
+   "n_rows": 28225,
+   "n_kept": 16146,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01129-of-03388.parquet",
+   "bytes": 114840307,
+   "n_rows": 28225,
+   "n_kept": 18784,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01133-of-03388.parquet",
+   "bytes": 89460165,
+   "n_rows": 28225,
+   "n_kept": 17258,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01130-of-03388.parquet",
+   "bytes": 111611239,
+   "n_rows": 28225,
+   "n_kept": 16284,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01134-of-03388.parquet",
+   "bytes": 98771367,
+   "n_rows": 28225,
+   "n_kept": 17098,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01127-of-03388.parquet",
+   "bytes": 114898856,
+   "n_rows": 28225,
+   "n_kept": 18756,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01132-of-03388.parquet",
+   "bytes": 109807836,
+   "n_rows": 28225,
+   "n_kept": 16385,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01139-of-03388.parquet",
+   "bytes": 88771565,
+   "n_rows": 28225,
+   "n_kept": 15357,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01136-of-03388.parquet",
+   "bytes": 102917063,
+   "n_rows": 28225,
+   "n_kept": 17704,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01137-of-03388.parquet",
+   "bytes": 101939564,
+   "n_rows": 28225,
+   "n_kept": 16671,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01131-of-03388.parquet",
+   "bytes": 112767387,
+   "n_rows": 28225,
+   "n_kept": 17579,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01138-of-03388.parquet",
+   "bytes": 92794850,
+   "n_rows": 28225,
+   "n_kept": 18363,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01135-of-03388.parquet",
+   "bytes": 101674538,
+   "n_rows": 28225,
+   "n_kept": 17802,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01140-of-03388.parquet",
+   "bytes": 94164091,
+   "n_rows": 28225,
+   "n_kept": 18227,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01141-of-03388.parquet",
+   "bytes": 97161398,
+   "n_rows": 28225,
+   "n_kept": 16680,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01143-of-03388.parquet",
+   "bytes": 98152674,
+   "n_rows": 28225,
+   "n_kept": 16397,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01142-of-03388.parquet",
+   "bytes": 99058351,
+   "n_rows": 28225,
+   "n_kept": 17279,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01144-of-03388.parquet",
+   "bytes": 88947690,
+   "n_rows": 28225,
+   "n_kept": 18076,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01145-of-03388.parquet",
+   "bytes": 101858618,
+   "n_rows": 28225,
+   "n_kept": 17630,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01147-of-03388.parquet",
+   "bytes": 96561207,
+   "n_rows": 28225,
+   "n_kept": 17986,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01150-of-03388.parquet",
+   "bytes": 91897146,
+   "n_rows": 28225,
+   "n_kept": 15827,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01148-of-03388.parquet",
+   "bytes": 93947693,
+   "n_rows": 28225,
+   "n_kept": 14737,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01146-of-03388.parquet",
+   "bytes": 108641392,
+   "n_rows": 28225,
+   "n_kept": 17087,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01149-of-03388.parquet",
+   "bytes": 94969738,
+   "n_rows": 28225,
+   "n_kept": 19022,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01151-of-03388.parquet",
+   "bytes": 84319110,
+   "n_rows": 28225,
+   "n_kept": 18428,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01152-of-03388.parquet",
+   "bytes": 93369714,
+   "n_rows": 28225,
+   "n_kept": 15703,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01154-of-03388.parquet",
+   "bytes": 100601447,
+   "n_rows": 28225,
+   "n_kept": 17336,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01156-of-03388.parquet",
+   "bytes": 100655516,
+   "n_rows": 28225,
+   "n_kept": 17412,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01153-of-03388.parquet",
+   "bytes": 99465383,
+   "n_rows": 28225,
+   "n_kept": 17527,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01157-of-03388.parquet",
+   "bytes": 102134578,
+   "n_rows": 28225,
+   "n_kept": 17287,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01155-of-03388.parquet",
+   "bytes": 97445775,
+   "n_rows": 28225,
+   "n_kept": 17588,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01158-of-03388.parquet",
+   "bytes": 91931182,
+   "n_rows": 28225,
+   "n_kept": 17313,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01159-of-03388.parquet",
+   "bytes": 88358358,
+   "n_rows": 28225,
+   "n_kept": 15989,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01162-of-03388.parquet",
+   "bytes": 81925527,
+   "n_rows": 28225,
+   "n_kept": 18212,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01163-of-03388.parquet",
+   "bytes": 82627830,
+   "n_rows": 28225,
+   "n_kept": 16100,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01161-of-03388.parquet",
+   "bytes": 101870905,
+   "n_rows": 28225,
+   "n_kept": 15426,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01160-of-03388.parquet",
+   "bytes": 104896648,
+   "n_rows": 28225,
+   "n_kept": 18515,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01164-of-03388.parquet",
+   "bytes": 82090871,
+   "n_rows": 28225,
+   "n_kept": 18016,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01165-of-03388.parquet",
+   "bytes": 90447902,
+   "n_rows": 28225,
+   "n_kept": 17630,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01166-of-03388.parquet",
+   "bytes": 93353128,
+   "n_rows": 28225,
+   "n_kept": 16708,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01167-of-03388.parquet",
+   "bytes": 99382964,
+   "n_rows": 28225,
+   "n_kept": 18345,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01168-of-03388.parquet",
+   "bytes": 100109584,
+   "n_rows": 28225,
+   "n_kept": 15386,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01171-of-03388.parquet",
+   "bytes": 98927249,
+   "n_rows": 28225,
+   "n_kept": 18111,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01170-of-03388.parquet",
+   "bytes": 98349445,
+   "n_rows": 28225,
+   "n_kept": 15241,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01169-of-03388.parquet",
+   "bytes": 100835240,
+   "n_rows": 28225,
+   "n_kept": 18657,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01172-of-03388.parquet",
+   "bytes": 94232492,
+   "n_rows": 28225,
+   "n_kept": 16701,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01173-of-03388.parquet",
+   "bytes": 84694876,
+   "n_rows": 28225,
+   "n_kept": 17409,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01175-of-03388.parquet",
+   "bytes": 101192130,
+   "n_rows": 28225,
+   "n_kept": 17792,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01174-of-03388.parquet",
+   "bytes": 94202249,
+   "n_rows": 28225,
+   "n_kept": 16213,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01176-of-03388.parquet",
+   "bytes": 97143480,
+   "n_rows": 28225,
+   "n_kept": 17030,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01177-of-03388.parquet",
+   "bytes": 91083117,
+   "n_rows": 28225,
+   "n_kept": 17685,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01179-of-03388.parquet",
+   "bytes": 100237806,
+   "n_rows": 28225,
+   "n_kept": 16421,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01178-of-03388.parquet",
+   "bytes": 97225783,
+   "n_rows": 28225,
+   "n_kept": 17995,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01183-of-03388.parquet",
+   "bytes": 94055332,
+   "n_rows": 28225,
+   "n_kept": 16135,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01181-of-03388.parquet",
+   "bytes": 122636882,
+   "n_rows": 28225,
+   "n_kept": 14966,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01182-of-03388.parquet",
+   "bytes": 98770687,
+   "n_rows": 28225,
+   "n_kept": 18635,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01180-of-03388.parquet",
+   "bytes": 124320163,
+   "n_rows": 28225,
+   "n_kept": 18277,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01662-of-03388.parquet",
+   "bytes": 100635989,
+   "n_rows": 28224,
+   "n_kept": 10548,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01184-of-03388.parquet",
+   "bytes": 86067255,
+   "n_rows": 28225,
+   "n_kept": 18331,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01185-of-03388.parquet",
+   "bytes": 94202596,
+   "n_rows": 28225,
+   "n_kept": 15948,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01682-of-03388.parquet",
+   "bytes": 97324110,
+   "n_rows": 28224,
+   "n_kept": 17570,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01663-of-03388.parquet",
+   "bytes": 96721770,
+   "n_rows": 28224,
+   "n_kept": 18092,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01670-of-03388.parquet",
+   "bytes": 99039263,
+   "n_rows": 28224,
+   "n_kept": 18006,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01664-of-03388.parquet",
+   "bytes": 102310040,
+   "n_rows": 28224,
+   "n_kept": 14261,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01189-of-03388.parquet",
+   "bytes": 96325559,
+   "n_rows": 28225,
+   "n_kept": 17714,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01190-of-03388.parquet",
+   "bytes": 97101504,
+   "n_rows": 28225,
+   "n_kept": 16726,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01187-of-03388.parquet",
+   "bytes": 100095708,
+   "n_rows": 28225,
+   "n_kept": 16964,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01665-of-03388.parquet",
+   "bytes": 111628848,
+   "n_rows": 28224,
+   "n_kept": 18904,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01667-of-03388.parquet",
+   "bytes": 90950841,
+   "n_rows": 28224,
+   "n_kept": 15412,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01188-of-03388.parquet",
+   "bytes": 95091179,
+   "n_rows": 28225,
+   "n_kept": 18029,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01669-of-03388.parquet",
+   "bytes": 96945040,
+   "n_rows": 28224,
+   "n_kept": 16184,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01668-of-03388.parquet",
+   "bytes": 81991432,
+   "n_rows": 28224,
+   "n_kept": 17318,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01671-of-03388.parquet",
+   "bytes": 98182455,
+   "n_rows": 28224,
+   "n_kept": 13961,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01672-of-03388.parquet",
+   "bytes": 90136019,
+   "n_rows": 28224,
+   "n_kept": 19090,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01674-of-03388.parquet",
+   "bytes": 85069379,
+   "n_rows": 28224,
+   "n_kept": 15431,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01675-of-03388.parquet",
+   "bytes": 81853430,
+   "n_rows": 28224,
+   "n_kept": 18386,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01676-of-03388.parquet",
+   "bytes": 93381188,
+   "n_rows": 28224,
+   "n_kept": 15158,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01678-of-03388.parquet",
+   "bytes": 93832464,
+   "n_rows": 28224,
+   "n_kept": 15296,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01673-of-03388.parquet",
+   "bytes": 87724801,
+   "n_rows": 28224,
+   "n_kept": 18527,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01666-of-03388.parquet",
+   "bytes": 107071784,
+   "n_rows": 28224,
+   "n_kept": 18550,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01677-of-03388.parquet",
+   "bytes": 92347257,
+   "n_rows": 28224,
+   "n_kept": 18077,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01679-of-03388.parquet",
+   "bytes": 85068749,
+   "n_rows": 28224,
+   "n_kept": 18627,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01680-of-03388.parquet",
+   "bytes": 87754504,
+   "n_rows": 28224,
+   "n_kept": 14865,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01683-of-03388.parquet",
+   "bytes": 95831734,
+   "n_rows": 28224,
+   "n_kept": 14312,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01186-of-03388.parquet",
+   "bytes": 99546726,
+   "n_rows": 28225,
+   "n_kept": 17793,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01681-of-03388.parquet",
+   "bytes": 102229949,
+   "n_rows": 28224,
+   "n_kept": 19316,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01685-of-03388.parquet",
+   "bytes": 91670382,
+   "n_rows": 28224,
+   "n_kept": 15349,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01684-of-03388.parquet",
+   "bytes": 88579373,
+   "n_rows": 28224,
+   "n_kept": 18192,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01687-of-03388.parquet",
+   "bytes": 87113450,
+   "n_rows": 28224,
+   "n_kept": 14488,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01700-of-03388.parquet",
+   "bytes": 91344567,
+   "n_rows": 28224,
+   "n_kept": 19551,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01689-of-03388.parquet",
+   "bytes": 89469049,
+   "n_rows": 28224,
+   "n_kept": 17056,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01688-of-03388.parquet",
+   "bytes": 91334926,
+   "n_rows": 28224,
+   "n_kept": 19479,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01690-of-03388.parquet",
+   "bytes": 99208366,
+   "n_rows": 28224,
+   "n_kept": 16486,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01692-of-03388.parquet",
+   "bytes": 98890321,
+   "n_rows": 28224,
+   "n_kept": 15069,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01691-of-03388.parquet",
+   "bytes": 97384442,
+   "n_rows": 28224,
+   "n_kept": 17453,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01694-of-03388.parquet",
+   "bytes": 91962218,
+   "n_rows": 28224,
+   "n_kept": 15002,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01697-of-03388.parquet",
+   "bytes": 94523141,
+   "n_rows": 28224,
+   "n_kept": 16128,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01696-of-03388.parquet",
+   "bytes": 89744855,
+   "n_rows": 28224,
+   "n_kept": 17541,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01699-of-03388.parquet",
+   "bytes": 92407457,
+   "n_rows": 28224,
+   "n_kept": 14637,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01695-of-03388.parquet",
+   "bytes": 95031244,
+   "n_rows": 28224,
+   "n_kept": 18761,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01693-of-03388.parquet",
+   "bytes": 90228376,
+   "n_rows": 28224,
+   "n_kept": 18966,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01698-of-03388.parquet",
+   "bytes": 87716046,
+   "n_rows": 28224,
+   "n_kept": 17407,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01702-of-03388.parquet",
+   "bytes": 84799215,
+   "n_rows": 28224,
+   "n_kept": 17599,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01701-of-03388.parquet",
+   "bytes": 90717087,
+   "n_rows": 28224,
+   "n_kept": 15862,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01704-of-03388.parquet",
+   "bytes": 92605937,
+   "n_rows": 28224,
+   "n_kept": 15421,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01686-of-03388.parquet",
+   "bytes": 85417133,
+   "n_rows": 28224,
+   "n_kept": 18558,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01703-of-03388.parquet",
+   "bytes": 82759189,
+   "n_rows": 28224,
+   "n_kept": 18066,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01705-of-03388.parquet",
+   "bytes": 91332889,
+   "n_rows": 28224,
+   "n_kept": 17211,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01706-of-03388.parquet",
+   "bytes": 93594164,
+   "n_rows": 28224,
+   "n_kept": 15375,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01708-of-03388.parquet",
+   "bytes": 89798465,
+   "n_rows": 28224,
+   "n_kept": 15092,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01707-of-03388.parquet",
+   "bytes": 89164973,
+   "n_rows": 28224,
+   "n_kept": 18828,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01709-of-03388.parquet",
+   "bytes": 89818203,
+   "n_rows": 28224,
+   "n_kept": 18715,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01711-of-03388.parquet",
+   "bytes": 98994707,
+   "n_rows": 28224,
+   "n_kept": 15775,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01710-of-03388.parquet",
+   "bytes": 87567391,
+   "n_rows": 28224,
+   "n_kept": 17782,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01713-of-03388.parquet",
+   "bytes": 97609584,
+   "n_rows": 28224,
+   "n_kept": 14860,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01718-of-03388.parquet",
+   "bytes": 96669186,
+   "n_rows": 28224,
+   "n_kept": 15814,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01719-of-03388.parquet",
+   "bytes": 93181464,
+   "n_rows": 28224,
+   "n_kept": 17832,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01716-of-03388.parquet",
+   "bytes": 88086167,
+   "n_rows": 28224,
+   "n_kept": 18339,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01722-of-03388.parquet",
+   "bytes": 83694411,
+   "n_rows": 28224,
+   "n_kept": 15190,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01720-of-03388.parquet",
+   "bytes": 92440816,
+   "n_rows": 28224,
+   "n_kept": 15961,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01724-of-03388.parquet",
+   "bytes": 86044821,
+   "n_rows": 28224,
+   "n_kept": 14070,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01714-of-03388.parquet",
+   "bytes": 87392176,
+   "n_rows": 28224,
+   "n_kept": 19017,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01715-of-03388.parquet",
+   "bytes": 88564421,
+   "n_rows": 28224,
+   "n_kept": 14841,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01723-of-03388.parquet",
+   "bytes": 80440783,
+   "n_rows": 28224,
+   "n_kept": 18928,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01712-of-03388.parquet",
+   "bytes": 97153175,
+   "n_rows": 28224,
+   "n_kept": 17521,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01717-of-03388.parquet",
+   "bytes": 87232344,
+   "n_rows": 28224,
+   "n_kept": 17997,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01721-of-03388.parquet",
+   "bytes": 80537869,
+   "n_rows": 28224,
+   "n_kept": 17892,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01727-of-03388.parquet",
+   "bytes": 98240105,
+   "n_rows": 28224,
+   "n_kept": 15459,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01728-of-03388.parquet",
+   "bytes": 93616443,
+   "n_rows": 28224,
+   "n_kept": 17282,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01725-of-03388.parquet",
+   "bytes": 98106986,
+   "n_rows": 28224,
+   "n_kept": 19764,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01726-of-03388.parquet",
+   "bytes": 97418035,
+   "n_rows": 28224,
+   "n_kept": 17385,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01729-of-03388.parquet",
+   "bytes": 99138889,
+   "n_rows": 28224,
+   "n_kept": 15264,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01733-of-03388.parquet",
+   "bytes": 90757658,
+   "n_rows": 28224,
+   "n_kept": 17782,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01734-of-03388.parquet",
+   "bytes": 99228854,
+   "n_rows": 28224,
+   "n_kept": 15276,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01731-of-03388.parquet",
+   "bytes": 94946976,
+   "n_rows": 28224,
+   "n_kept": 17441,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01732-of-03388.parquet",
+   "bytes": 95856665,
+   "n_rows": 28224,
+   "n_kept": 16827,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01730-of-03388.parquet",
+   "bytes": 92607949,
+   "n_rows": 28224,
+   "n_kept": 18041,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01736-of-03388.parquet",
+   "bytes": 96981197,
+   "n_rows": 28224,
+   "n_kept": 14081,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01735-of-03388.parquet",
+   "bytes": 93338316,
+   "n_rows": 28224,
+   "n_kept": 17836,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01739-of-03388.parquet",
+   "bytes": 101593879,
+   "n_rows": 28224,
+   "n_kept": 15541,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01740-of-03388.parquet",
+   "bytes": 98746913,
+   "n_rows": 28224,
+   "n_kept": 16833,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01742-of-03388.parquet",
+   "bytes": 90087472,
+   "n_rows": 28224,
+   "n_kept": 18523,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01741-of-03388.parquet",
+   "bytes": 99322760,
+   "n_rows": 28224,
+   "n_kept": 15491,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01737-of-03388.parquet",
+   "bytes": 97072113,
+   "n_rows": 28224,
+   "n_kept": 19749,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01738-of-03388.parquet",
+   "bytes": 95883216,
+   "n_rows": 28224,
+   "n_kept": 17896,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01743-of-03388.parquet",
+   "bytes": 91893096,
+   "n_rows": 28224,
+   "n_kept": 14843,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01746-of-03388.parquet",
+   "bytes": 90509526,
+   "n_rows": 28224,
+   "n_kept": 15252,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01744-of-03388.parquet",
+   "bytes": 101430627,
+   "n_rows": 28224,
+   "n_kept": 19107,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01752-of-03388.parquet",
+   "bytes": 83512345,
+   "n_rows": 28224,
+   "n_kept": 15397,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01748-of-03388.parquet",
+   "bytes": 91524795,
+   "n_rows": 28224,
+   "n_kept": 16222,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01745-of-03388.parquet",
+   "bytes": 96811574,
+   "n_rows": 28224,
+   "n_kept": 17744,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01747-of-03388.parquet",
+   "bytes": 81997319,
+   "n_rows": 28224,
+   "n_kept": 18072,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01750-of-03388.parquet",
+   "bytes": 91723539,
+   "n_rows": 28224,
+   "n_kept": 14228,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01749-of-03388.parquet",
+   "bytes": 90605915,
+   "n_rows": 28224,
+   "n_kept": 17586,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01756-of-03388.parquet",
+   "bytes": 91665240,
+   "n_rows": 28224,
+   "n_kept": 17637,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01755-of-03388.parquet",
+   "bytes": 95523519,
+   "n_rows": 28224,
+   "n_kept": 15161,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01757-of-03388.parquet",
+   "bytes": 94191658,
+   "n_rows": 28224,
+   "n_kept": 16370,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01754-of-03388.parquet",
+   "bytes": 92475493,
+   "n_rows": 28224,
+   "n_kept": 18625,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01751-of-03388.parquet",
+   "bytes": 81883262,
+   "n_rows": 28224,
+   "n_kept": 19198,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01759-of-03388.parquet",
+   "bytes": 90778772,
+   "n_rows": 28224,
+   "n_kept": 14942,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01758-of-03388.parquet",
+   "bytes": 85381898,
+   "n_rows": 28224,
+   "n_kept": 17447,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01753-of-03388.parquet",
+   "bytes": 95426515,
+   "n_rows": 28224,
+   "n_kept": 18872,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01761-of-03388.parquet",
+   "bytes": 90988192,
+   "n_rows": 28224,
+   "n_kept": 16065,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01760-of-03388.parquet",
+   "bytes": 91355864,
+   "n_rows": 28224,
+   "n_kept": 18843,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01779-of-03388.parquet",
+   "bytes": 82137274,
+   "n_rows": 28224,
+   "n_kept": 17773,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01764-of-03388.parquet",
+   "bytes": 104911588,
+   "n_rows": 28224,
+   "n_kept": 15387,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01765-of-03388.parquet",
+   "bytes": 96730597,
+   "n_rows": 28224,
+   "n_kept": 17873,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01769-of-03388.parquet",
+   "bytes": 102050184,
+   "n_rows": 28224,
+   "n_kept": 15182,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01763-of-03388.parquet",
+   "bytes": 98131149,
+   "n_rows": 28224,
+   "n_kept": 17399,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01771-of-03388.parquet",
+   "bytes": 94378544,
+   "n_rows": 28224,
+   "n_kept": 14937,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01768-of-03388.parquet",
+   "bytes": 95377135,
+   "n_rows": 28224,
+   "n_kept": 17394,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01766-of-03388.parquet",
+   "bytes": 99631635,
+   "n_rows": 28224,
+   "n_kept": 15289,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01780-of-03388.parquet",
+   "bytes": 91093710,
+   "n_rows": 28224,
+   "n_kept": 15457,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01770-of-03388.parquet",
+   "bytes": 97292823,
+   "n_rows": 28224,
+   "n_kept": 17924,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01767-of-03388.parquet",
+   "bytes": 99580217,
+   "n_rows": 28224,
+   "n_kept": 18971,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01776-of-03388.parquet",
+   "bytes": 92431806,
+   "n_rows": 28224,
+   "n_kept": 17012,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01783-of-03388.parquet",
+   "bytes": 90913422,
+   "n_rows": 28224,
+   "n_kept": 17178,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01772-of-03388.parquet",
+   "bytes": 72950661,
+   "n_rows": 28224,
+   "n_kept": 18771,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01778-of-03388.parquet",
+   "bytes": 88969577,
+   "n_rows": 28224,
+   "n_kept": 15183,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01773-of-03388.parquet",
+   "bytes": 84396442,
+   "n_rows": 28224,
+   "n_kept": 15589,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01762-of-03388.parquet",
+   "bytes": 102749435,
+   "n_rows": 28224,
+   "n_kept": 17396,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01777-of-03388.parquet",
+   "bytes": 88674444,
+   "n_rows": 28224,
+   "n_kept": 18371,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01775-of-03388.parquet",
+   "bytes": 98841828,
+   "n_rows": 28224,
+   "n_kept": 16420,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01781-of-03388.parquet",
+   "bytes": 95919621,
+   "n_rows": 28224,
+   "n_kept": 18034,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01785-of-03388.parquet",
+   "bytes": 89674481,
+   "n_rows": 28224,
+   "n_kept": 14863,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01774-of-03388.parquet",
+   "bytes": 98133716,
+   "n_rows": 28224,
+   "n_kept": 18541,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01784-of-03388.parquet",
+   "bytes": 88252396,
+   "n_rows": 28224,
+   "n_kept": 18522,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01782-of-03388.parquet",
+   "bytes": 96641855,
+   "n_rows": 28224,
+   "n_kept": 16604,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01786-of-03388.parquet",
+   "bytes": 85650877,
+   "n_rows": 28224,
+   "n_kept": 17782,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01787-of-03388.parquet",
+   "bytes": 94967958,
+   "n_rows": 28224,
+   "n_kept": 15351,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01789-of-03388.parquet",
+   "bytes": 98381857,
+   "n_rows": 28224,
+   "n_kept": 14756,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01788-of-03388.parquet",
+   "bytes": 96240919,
+   "n_rows": 28224,
+   "n_kept": 18468,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01791-of-03388.parquet",
+   "bytes": 99853042,
+   "n_rows": 28224,
+   "n_kept": 17803,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01792-of-03388.parquet",
+   "bytes": 106267198,
+   "n_rows": 28224,
+   "n_kept": 15769,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01794-of-03388.parquet",
+   "bytes": 102122045,
+   "n_rows": 28224,
+   "n_kept": 15039,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01797-of-03388.parquet",
+   "bytes": 99858389,
+   "n_rows": 28224,
+   "n_kept": 14725,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01790-of-03388.parquet",
+   "bytes": 103727423,
+   "n_rows": 28224,
+   "n_kept": 18360,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01795-of-03388.parquet",
+   "bytes": 99575376,
+   "n_rows": 28224,
+   "n_kept": 18530,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01793-of-03388.parquet",
+   "bytes": 100597472,
+   "n_rows": 28224,
+   "n_kept": 17633,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01798-of-03388.parquet",
+   "bytes": 96157265,
+   "n_rows": 28224,
+   "n_kept": 18167,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01799-of-03388.parquet",
+   "bytes": 97793219,
+   "n_rows": 28224,
+   "n_kept": 14910,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01796-of-03388.parquet",
+   "bytes": 95145508,
+   "n_rows": 28224,
+   "n_kept": 18226,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01800-of-03388.parquet",
+   "bytes": 89803734,
+   "n_rows": 28224,
+   "n_kept": 18648,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01801-of-03388.parquet",
+   "bytes": 91664439,
+   "n_rows": 28224,
+   "n_kept": 15713,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01802-of-03388.parquet",
+   "bytes": 100095656,
+   "n_rows": 28224,
+   "n_kept": 18320,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01803-of-03388.parquet",
+   "bytes": 95113540,
+   "n_rows": 28224,
+   "n_kept": 17787,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01804-of-03388.parquet",
+   "bytes": 105720658,
+   "n_rows": 28224,
+   "n_kept": 15276,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01805-of-03388.parquet",
+   "bytes": 99898977,
+   "n_rows": 28224,
+   "n_kept": 17785,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01807-of-03388.parquet",
+   "bytes": 87436056,
+   "n_rows": 28224,
+   "n_kept": 19799,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01806-of-03388.parquet",
+   "bytes": 99636044,
+   "n_rows": 28224,
+   "n_kept": 14269,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01812-of-03388.parquet",
+   "bytes": 81117784,
+   "n_rows": 28224,
+   "n_kept": 17861,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01808-of-03388.parquet",
+   "bytes": 87796576,
+   "n_rows": 28224,
+   "n_kept": 15238,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01811-of-03388.parquet",
+   "bytes": 95532307,
+   "n_rows": 28224,
+   "n_kept": 15516,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01813-of-03388.parquet",
+   "bytes": 91088668,
+   "n_rows": 28224,
+   "n_kept": 15486,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01809-of-03388.parquet",
+   "bytes": 104665954,
+   "n_rows": 28224,
+   "n_kept": 17830,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01810-of-03388.parquet",
+   "bytes": 101288668,
+   "n_rows": 28224,
+   "n_kept": 17834,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01817-of-03388.parquet",
+   "bytes": 88641947,
+   "n_rows": 28224,
+   "n_kept": 18241,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01814-of-03388.parquet",
+   "bytes": 96996699,
+   "n_rows": 28224,
+   "n_kept": 18107,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01815-of-03388.parquet",
+   "bytes": 98398123,
+   "n_rows": 28224,
+   "n_kept": 16217,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01816-of-03388.parquet",
+   "bytes": 92116414,
+   "n_rows": 28224,
+   "n_kept": 17947,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01820-of-03388.parquet",
+   "bytes": 96678688,
+   "n_rows": 28224,
+   "n_kept": 15390,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01822-of-03388.parquet",
+   "bytes": 91918116,
+   "n_rows": 28224,
+   "n_kept": 14366,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01818-of-03388.parquet",
+   "bytes": 97935450,
+   "n_rows": 28224,
+   "n_kept": 14625,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01834-of-03388.parquet",
+   "bytes": 96137798,
+   "n_rows": 28224,
+   "n_kept": 17339,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01821-of-03388.parquet",
+   "bytes": 89190883,
+   "n_rows": 28224,
+   "n_kept": 18248,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01847-of-03388.parquet",
+   "bytes": 96651376,
+   "n_rows": 28224,
+   "n_kept": 15437,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01849-of-03388.parquet",
+   "bytes": 97120220,
+   "n_rows": 28224,
+   "n_kept": 15689,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01833-of-03388.parquet",
+   "bytes": 100188228,
+   "n_rows": 28224,
+   "n_kept": 16549,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01832-of-03388.parquet",
+   "bytes": 98716086,
+   "n_rows": 28224,
+   "n_kept": 18155,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01831-of-03388.parquet",
+   "bytes": 88758204,
+   "n_rows": 28224,
+   "n_kept": 15734,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01838-of-03388.parquet",
+   "bytes": 93031416,
+   "n_rows": 28224,
+   "n_kept": 14636,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01843-of-03388.parquet",
+   "bytes": 85837048,
+   "n_rows": 28224,
+   "n_kept": 15351,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01850-of-03388.parquet",
+   "bytes": 87191920,
+   "n_rows": 28224,
+   "n_kept": 18576,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01830-of-03388.parquet",
+   "bytes": 76280696,
+   "n_rows": 28224,
+   "n_kept": 18736,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01845-of-03388.parquet",
+   "bytes": 89142393,
+   "n_rows": 28224,
+   "n_kept": 15413,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01826-of-03388.parquet",
+   "bytes": 88381420,
+   "n_rows": 28224,
+   "n_kept": 18168,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01825-of-03388.parquet",
+   "bytes": 91840366,
+   "n_rows": 28224,
+   "n_kept": 15024,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01829-of-03388.parquet",
+   "bytes": 96217013,
+   "n_rows": 28224,
+   "n_kept": 15321,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01840-of-03388.parquet",
+   "bytes": 87281764,
+   "n_rows": 28224,
+   "n_kept": 15243,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01819-of-03388.parquet",
+   "bytes": 95318468,
+   "n_rows": 28224,
+   "n_kept": 18115,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01842-of-03388.parquet",
+   "bytes": 95908783,
+   "n_rows": 28224,
+   "n_kept": 17801,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01836-of-03388.parquet",
+   "bytes": 98041890,
+   "n_rows": 28224,
+   "n_kept": 16144,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01827-of-03388.parquet",
+   "bytes": 100742225,
+   "n_rows": 28224,
+   "n_kept": 15519,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01835-of-03388.parquet",
+   "bytes": 91895352,
+   "n_rows": 28224,
+   "n_kept": 17337,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01844-of-03388.parquet",
+   "bytes": 76516336,
+   "n_rows": 28224,
+   "n_kept": 17793,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01828-of-03388.parquet",
+   "bytes": 98736677,
+   "n_rows": 28224,
+   "n_kept": 17603,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01846-of-03388.parquet",
+   "bytes": 89198886,
+   "n_rows": 28224,
+   "n_kept": 17803,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01848-of-03388.parquet",
+   "bytes": 95491397,
+   "n_rows": 28224,
+   "n_kept": 18375,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01824-of-03388.parquet",
+   "bytes": 95815363,
+   "n_rows": 28224,
+   "n_kept": 18736,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01839-of-03388.parquet",
+   "bytes": 86001577,
+   "n_rows": 28224,
+   "n_kept": 19139,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01823-of-03388.parquet",
+   "bytes": 99050716,
+   "n_rows": 28224,
+   "n_kept": 19390,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01852-of-03388.parquet",
+   "bytes": 96593858,
+   "n_rows": 28224,
+   "n_kept": 15823,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01841-of-03388.parquet",
+   "bytes": 99027815,
+   "n_rows": 28224,
+   "n_kept": 19260,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01837-of-03388.parquet",
+   "bytes": 91609205,
+   "n_rows": 28224,
+   "n_kept": 17119,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01851-of-03388.parquet",
+   "bytes": 85760178,
+   "n_rows": 28224,
+   "n_kept": 17493,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01853-of-03388.parquet",
+   "bytes": 93629715,
+   "n_rows": 28224,
+   "n_kept": 17526,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01854-of-03388.parquet",
+   "bytes": 94066927,
+   "n_rows": 28224,
+   "n_kept": 16562,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01856-of-03388.parquet",
+   "bytes": 91731549,
+   "n_rows": 28224,
+   "n_kept": 15107,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01855-of-03388.parquet",
+   "bytes": 83202282,
+   "n_rows": 28224,
+   "n_kept": 17499,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01858-of-03388.parquet",
+   "bytes": 95004191,
+   "n_rows": 28224,
+   "n_kept": 15649,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01857-of-03388.parquet",
+   "bytes": 92892490,
+   "n_rows": 28224,
+   "n_kept": 18505,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01862-of-03388.parquet",
+   "bytes": 76315792,
+   "n_rows": 28224,
+   "n_kept": 18047,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01861-of-03388.parquet",
+   "bytes": 82489246,
+   "n_rows": 28224,
+   "n_kept": 15678,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01860-of-03388.parquet",
+   "bytes": 86212298,
+   "n_rows": 28224,
+   "n_kept": 17968,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01859-of-03388.parquet",
+   "bytes": 89967371,
+   "n_rows": 28224,
+   "n_kept": 18388,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01863-of-03388.parquet",
+   "bytes": 94870070,
+   "n_rows": 28224,
+   "n_kept": 15642,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01865-of-03388.parquet",
+   "bytes": 99288679,
+   "n_rows": 28224,
+   "n_kept": 14293,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01864-of-03388.parquet",
+   "bytes": 95905381,
+   "n_rows": 28224,
+   "n_kept": 17820,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01869-of-03388.parquet",
+   "bytes": 100927330,
+   "n_rows": 28224,
+   "n_kept": 17538,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01872-of-03388.parquet",
+   "bytes": 93152345,
+   "n_rows": 28224,
+   "n_kept": 14425,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01868-of-03388.parquet",
+   "bytes": 102598430,
+   "n_rows": 28224,
+   "n_kept": 15652,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01870-of-03388.parquet",
+   "bytes": 99743152,
+   "n_rows": 28224,
+   "n_kept": 15276,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01866-of-03388.parquet",
+   "bytes": 97954787,
+   "n_rows": 28224,
+   "n_kept": 19861,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01867-of-03388.parquet",
+   "bytes": 96050912,
+   "n_rows": 28224,
+   "n_kept": 17313,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01871-of-03388.parquet",
+   "bytes": 88019225,
+   "n_rows": 28224,
+   "n_kept": 18906,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01876-of-03388.parquet",
+   "bytes": 93476158,
+   "n_rows": 28224,
+   "n_kept": 17239,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01877-of-03388.parquet",
+   "bytes": 105668234,
+   "n_rows": 28224,
+   "n_kept": 15424,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01875-of-03388.parquet",
+   "bytes": 97825241,
+   "n_rows": 28224,
+   "n_kept": 15732,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01880-of-03388.parquet",
+   "bytes": 93207423,
+   "n_rows": 28224,
+   "n_kept": 17853,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01881-of-03388.parquet",
+   "bytes": 89884540,
+   "n_rows": 28224,
+   "n_kept": 18363,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01882-of-03388.parquet",
+   "bytes": 96928765,
+   "n_rows": 28224,
+   "n_kept": 15285,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01879-of-03388.parquet",
+   "bytes": 108133101,
+   "n_rows": 28224,
+   "n_kept": 15384,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01874-of-03388.parquet",
+   "bytes": 104958278,
+   "n_rows": 28224,
+   "n_kept": 17653,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01884-of-03388.parquet",
+   "bytes": 95678280,
+   "n_rows": 28224,
+   "n_kept": 14249,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01873-of-03388.parquet",
+   "bytes": 106056654,
+   "n_rows": 28224,
+   "n_kept": 19310,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01878-of-03388.parquet",
+   "bytes": 105620998,
+   "n_rows": 28224,
+   "n_kept": 18371,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01883-of-03388.parquet",
+   "bytes": 91183527,
+   "n_rows": 28224,
+   "n_kept": 17892,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01885-of-03388.parquet",
+   "bytes": 99950486,
+   "n_rows": 28224,
+   "n_kept": 19548,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01887-of-03388.parquet",
+   "bytes": 104311307,
+   "n_rows": 28224,
+   "n_kept": 14691,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01892-of-03388.parquet",
+   "bytes": 80244454,
+   "n_rows": 28224,
+   "n_kept": 15643,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01896-of-03388.parquet",
+   "bytes": 77441049,
+   "n_rows": 28224,
+   "n_kept": 15522,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01900-of-03388.parquet",
+   "bytes": 71235450,
+   "n_rows": 28224,
+   "n_kept": 16341,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01893-of-03388.parquet",
+   "bytes": 76688785,
+   "n_rows": 28224,
+   "n_kept": 18880,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01901-of-03388.parquet",
+   "bytes": 71384268,
+   "n_rows": 28224,
+   "n_kept": 14988,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01888-of-03388.parquet",
+   "bytes": 101555763,
+   "n_rows": 28224,
+   "n_kept": 17793,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01898-of-03388.parquet",
+   "bytes": 75839495,
+   "n_rows": 28224,
+   "n_kept": 15558,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01895-of-03388.parquet",
+   "bytes": 76038336,
+   "n_rows": 28224,
+   "n_kept": 18378,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02273-of-03388.parquet",
+   "bytes": 113762326,
+   "n_rows": 28224,
+   "n_kept": 1234,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01897-of-03388.parquet",
+   "bytes": 75428386,
+   "n_rows": 28224,
+   "n_kept": 18653,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01894-of-03388.parquet",
+   "bytes": 78529455,
+   "n_rows": 28224,
+   "n_kept": 15240,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01886-of-03388.parquet",
+   "bytes": 96170952,
+   "n_rows": 28224,
+   "n_kept": 18116,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01889-of-03388.parquet",
+   "bytes": 104970986,
+   "n_rows": 28224,
+   "n_kept": 14806,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01899-of-03388.parquet",
+   "bytes": 74064834,
+   "n_rows": 28224,
+   "n_kept": 18664,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01890-of-03388.parquet",
+   "bytes": 101899137,
+   "n_rows": 28224,
+   "n_kept": 19285,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01903-of-03388.parquet",
+   "bytes": 75064825,
+   "n_rows": 28224,
+   "n_kept": 16069,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02290-of-03388.parquet",
+   "bytes": 85456379,
+   "n_rows": 28224,
+   "n_kept": 5323,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01912-of-03388.parquet",
+   "bytes": 83022272,
+   "n_rows": 28224,
+   "n_kept": 9563,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01902-of-03388.parquet",
+   "bytes": 72778700,
+   "n_rows": 28224,
+   "n_kept": 19174,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01904-of-03388.parquet",
+   "bytes": 73224101,
+   "n_rows": 28224,
+   "n_kept": 18419,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01905-of-03388.parquet",
+   "bytes": 74912459,
+   "n_rows": 28224,
+   "n_kept": 16469,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02277-of-03388.parquet",
+   "bytes": 107307941,
+   "n_rows": 28224,
+   "n_kept": 3062,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01906-of-03388.parquet",
+   "bytes": 70849078,
+   "n_rows": 28224,
+   "n_kept": 17783,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01909-of-03388.parquet",
+   "bytes": 75063515,
+   "n_rows": 28224,
+   "n_kept": 16038,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02279-of-03388.parquet",
+   "bytes": 104996773,
+   "n_rows": 28224,
+   "n_kept": 4119,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02275-of-03388.parquet",
+   "bytes": 110645368,
+   "n_rows": 28224,
+   "n_kept": 4457,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02274-of-03388.parquet",
+   "bytes": 102222108,
+   "n_rows": 28224,
+   "n_kept": 5945,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01910-of-03388.parquet",
+   "bytes": 72943104,
+   "n_rows": 28224,
+   "n_kept": 16334,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02282-of-03388.parquet",
+   "bytes": 101335485,
+   "n_rows": 28224,
+   "n_kept": 2979,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01907-of-03388.parquet",
+   "bytes": 75070005,
+   "n_rows": 28224,
+   "n_kept": 16829,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01911-of-03388.parquet",
+   "bytes": 68856850,
+   "n_rows": 28224,
+   "n_kept": 18250,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01908-of-03388.parquet",
+   "bytes": 73703216,
+   "n_rows": 28224,
+   "n_kept": 18147,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02284-of-03388.parquet",
+   "bytes": 91387352,
+   "n_rows": 28224,
+   "n_kept": 3955,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02276-of-03388.parquet",
+   "bytes": 99890950,
+   "n_rows": 28224,
+   "n_kept": 7476,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02280-of-03388.parquet",
+   "bytes": 103947276,
+   "n_rows": 28224,
+   "n_kept": 5906,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02283-of-03388.parquet",
+   "bytes": 83435080,
+   "n_rows": 28224,
+   "n_kept": 5963,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02281-of-03388.parquet",
+   "bytes": 102310480,
+   "n_rows": 28224,
+   "n_kept": 6797,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02278-of-03388.parquet",
+   "bytes": 102048435,
+   "n_rows": 28224,
+   "n_kept": 8628,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02286-of-03388.parquet",
+   "bytes": 96149969,
+   "n_rows": 28224,
+   "n_kept": 4662,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02287-of-03388.parquet",
+   "bytes": 95387294,
+   "n_rows": 28224,
+   "n_kept": 4792,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02285-of-03388.parquet",
+   "bytes": 90664070,
+   "n_rows": 28224,
+   "n_kept": 8356,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02289-of-03388.parquet",
+   "bytes": 98170619,
+   "n_rows": 28224,
+   "n_kept": 4130,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02288-of-03388.parquet",
+   "bytes": 95680737,
+   "n_rows": 28224,
+   "n_kept": 6300,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-01891-of-03388.parquet",
+   "bytes": 102231932,
+   "n_rows": 28224,
+   "n_kept": 17556,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02291-of-03388.parquet",
+   "bytes": 93910276,
+   "n_rows": 28224,
+   "n_kept": 4136,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02294-of-03388.parquet",
+   "bytes": 98009419,
+   "n_rows": 28224,
+   "n_kept": 3081,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02292-of-03388.parquet",
+   "bytes": 91958755,
+   "n_rows": 28224,
+   "n_kept": 8319,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02295-of-03388.parquet",
+   "bytes": 93846890,
+   "n_rows": 28224,
+   "n_kept": 6553,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02293-of-03388.parquet",
+   "bytes": 96741901,
+   "n_rows": 28224,
+   "n_kept": 6571,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02297-of-03388.parquet",
+   "bytes": 97867362,
+   "n_rows": 28224,
+   "n_kept": 5413,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02296-of-03388.parquet",
+   "bytes": 101892179,
+   "n_rows": 28224,
+   "n_kept": 4275,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02300-of-03388.parquet",
+   "bytes": 71313043,
+   "n_rows": 28224,
+   "n_kept": 4734,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02298-of-03388.parquet",
+   "bytes": 102892493,
+   "n_rows": 28224,
+   "n_kept": 4199,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02299-of-03388.parquet",
+   "bytes": 94769786,
+   "n_rows": 28224,
+   "n_kept": 8200,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02301-of-03388.parquet",
+   "bytes": 86083352,
+   "n_rows": 28224,
+   "n_kept": 6086,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02302-of-03388.parquet",
+   "bytes": 93853535,
+   "n_rows": 28224,
+   "n_kept": 2951,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02303-of-03388.parquet",
+   "bytes": 95909969,
+   "n_rows": 28224,
+   "n_kept": 6659,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02304-of-03388.parquet",
+   "bytes": 104572492,
+   "n_rows": 28224,
+   "n_kept": 4154,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02305-of-03388.parquet",
+   "bytes": 93710859,
+   "n_rows": 28224,
+   "n_kept": 7818,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02306-of-03388.parquet",
+   "bytes": 93503411,
+   "n_rows": 28224,
+   "n_kept": 3726,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02307-of-03388.parquet",
+   "bytes": 86920857,
+   "n_rows": 28224,
+   "n_kept": 5895,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02308-of-03388.parquet",
+   "bytes": 88688786,
+   "n_rows": 28224,
+   "n_kept": 6094,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02309-of-03388.parquet",
+   "bytes": 94984833,
+   "n_rows": 28224,
+   "n_kept": 3880,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02311-of-03388.parquet",
+   "bytes": 98208904,
+   "n_rows": 28224,
+   "n_kept": 4031,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02310-of-03388.parquet",
+   "bytes": 92741817,
+   "n_rows": 28224,
+   "n_kept": 6404,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02312-of-03388.parquet",
+   "bytes": 94719471,
+   "n_rows": 28224,
+   "n_kept": 7923,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02316-of-03388.parquet",
+   "bytes": 94350343,
+   "n_rows": 28224,
+   "n_kept": 2994,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02313-of-03388.parquet",
+   "bytes": 101584296,
+   "n_rows": 28224,
+   "n_kept": 4237,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02315-of-03388.parquet",
+   "bytes": 91641959,
+   "n_rows": 28224,
+   "n_kept": 6246,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02314-of-03388.parquet",
+   "bytes": 103331016,
+   "n_rows": 28224,
+   "n_kept": 5969,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02320-of-03388.parquet",
+   "bytes": 95547734,
+   "n_rows": 28224,
+   "n_kept": 5111,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02321-of-03388.parquet",
+   "bytes": 86632032,
+   "n_rows": 28224,
+   "n_kept": 6062,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02338-of-03388.parquet",
+   "bytes": 81004375,
+   "n_rows": 28224,
+   "n_kept": 4637,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02327-of-03388.parquet",
+   "bytes": 102438962,
+   "n_rows": 28224,
+   "n_kept": 3308,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02324-of-03388.parquet",
+   "bytes": 88760355,
+   "n_rows": 28224,
+   "n_kept": 6107,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02337-of-03388.parquet",
+   "bytes": 84222444,
+   "n_rows": 28224,
+   "n_kept": 4113,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02318-of-03388.parquet",
+   "bytes": 103024393,
+   "n_rows": 28224,
+   "n_kept": 4326,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02322-of-03388.parquet",
+   "bytes": 97712269,
+   "n_rows": 28224,
+   "n_kept": 6519,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02330-of-03388.parquet",
+   "bytes": 104533512,
+   "n_rows": 28224,
+   "n_kept": 3093,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02317-of-03388.parquet",
+   "bytes": 95165806,
+   "n_rows": 28224,
+   "n_kept": 6643,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02319-of-03388.parquet",
+   "bytes": 96676536,
+   "n_rows": 28224,
+   "n_kept": 6032,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02325-of-03388.parquet",
+   "bytes": 101220502,
+   "n_rows": 28224,
+   "n_kept": 4128,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02323-of-03388.parquet",
+   "bytes": 101904408,
+   "n_rows": 28224,
+   "n_kept": 3138,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02343-of-03388.parquet",
+   "bytes": 88093082,
+   "n_rows": 28224,
+   "n_kept": 5989,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02345-of-03388.parquet",
+   "bytes": 97180103,
+   "n_rows": 28224,
+   "n_kept": 3904,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02340-of-03388.parquet",
+   "bytes": 111966479,
+   "n_rows": 28224,
+   "n_kept": 4468,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02336-of-03388.parquet",
+   "bytes": 89431314,
+   "n_rows": 28224,
+   "n_kept": 4693,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02353-of-03388.parquet",
+   "bytes": 103258030,
+   "n_rows": 28224,
+   "n_kept": 3113,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02332-of-03388.parquet",
+   "bytes": 110396872,
+   "n_rows": 28224,
+   "n_kept": 3294,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02329-of-03388.parquet",
+   "bytes": 102440250,
+   "n_rows": 28224,
+   "n_kept": 6526,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02334-of-03388.parquet",
+   "bytes": 101075142,
+   "n_rows": 28224,
+   "n_kept": 4286,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02344-of-03388.parquet",
+   "bytes": 90179703,
+   "n_rows": 28224,
+   "n_kept": 6305,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02349-of-03388.parquet",
+   "bytes": 97584845,
+   "n_rows": 28224,
+   "n_kept": 3845,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02346-of-03388.parquet",
+   "bytes": 92920582,
+   "n_rows": 28224,
+   "n_kept": 5493,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02350-of-03388.parquet",
+   "bytes": 90799729,
+   "n_rows": 28224,
+   "n_kept": 4999,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02356-of-03388.parquet",
+   "bytes": 95049587,
+   "n_rows": 28224,
+   "n_kept": 4229,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02347-of-03388.parquet",
+   "bytes": 103638043,
+   "n_rows": 28224,
+   "n_kept": 4202,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02333-of-03388.parquet",
+   "bytes": 97431548,
+   "n_rows": 28224,
+   "n_kept": 6625,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02351-of-03388.parquet",
+   "bytes": 73212554,
+   "n_rows": 28224,
+   "n_kept": 4439,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02342-of-03388.parquet",
+   "bytes": 99703005,
+   "n_rows": 28224,
+   "n_kept": 3506,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02335-of-03388.parquet",
+   "bytes": 89914459,
+   "n_rows": 28224,
+   "n_kept": 8258,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02328-of-03388.parquet",
+   "bytes": 96846106,
+   "n_rows": 28224,
+   "n_kept": 6336,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02339-of-03388.parquet",
+   "bytes": 99236550,
+   "n_rows": 28224,
+   "n_kept": 5881,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02331-of-03388.parquet",
+   "bytes": 106127245,
+   "n_rows": 28224,
+   "n_kept": 7167,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02354-of-03388.parquet",
+   "bytes": 104406977,
+   "n_rows": 28224,
+   "n_kept": 7421,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02355-of-03388.parquet",
+   "bytes": 97618732,
+   "n_rows": 28224,
+   "n_kept": 5085,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02352-of-03388.parquet",
+   "bytes": 83926430,
+   "n_rows": 28224,
+   "n_kept": 7852,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02326-of-03388.parquet",
+   "bytes": 102282707,
+   "n_rows": 28224,
+   "n_kept": 9147,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02348-of-03388.parquet",
+   "bytes": 99883417,
+   "n_rows": 28224,
+   "n_kept": 8916,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02358-of-03388.parquet",
+   "bytes": 97299710,
+   "n_rows": 28224,
+   "n_kept": 4042,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02341-of-03388.parquet",
+   "bytes": 107924026,
+   "n_rows": 28224,
+   "n_kept": 8900,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02359-of-03388.parquet",
+   "bytes": 94469997,
+   "n_rows": 28224,
+   "n_kept": 6411,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02357-of-03388.parquet",
+   "bytes": 91613678,
+   "n_rows": 28224,
+   "n_kept": 6255,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02360-of-03388.parquet",
+   "bytes": 102491733,
+   "n_rows": 28224,
+   "n_kept": 4091,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02361-of-03388.parquet",
+   "bytes": 99549790,
+   "n_rows": 28224,
+   "n_kept": 7669,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02363-of-03388.parquet",
+   "bytes": 89632795,
+   "n_rows": 28224,
+   "n_kept": 3077,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02369-of-03388.parquet",
+   "bytes": 70826492,
+   "n_rows": 28224,
+   "n_kept": 3875,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02362-of-03388.parquet",
+   "bytes": 91295586,
+   "n_rows": 28224,
+   "n_kept": 6250,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02366-of-03388.parquet",
+   "bytes": 88770848,
+   "n_rows": 28224,
+   "n_kept": 7036,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02367-of-03388.parquet",
+   "bytes": 94124935,
+   "n_rows": 28224,
+   "n_kept": 4253,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02364-of-03388.parquet",
+   "bytes": 98471015,
+   "n_rows": 28224,
+   "n_kept": 6820,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02365-of-03388.parquet",
+   "bytes": 101913525,
+   "n_rows": 28224,
+   "n_kept": 4252,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02368-of-03388.parquet",
+   "bytes": 92553610,
+   "n_rows": 28224,
+   "n_kept": 6195,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02372-of-03388.parquet",
+   "bytes": 96366521,
+   "n_rows": 28224,
+   "n_kept": 5720,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02387-of-03388.parquet",
+   "bytes": 100932373,
+   "n_rows": 28224,
+   "n_kept": 3120,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02380-of-03388.parquet",
+   "bytes": 96385755,
+   "n_rows": 28224,
+   "n_kept": 4075,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02371-of-03388.parquet",
+   "bytes": 104726526,
+   "n_rows": 28224,
+   "n_kept": 4425,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02378-of-03388.parquet",
+   "bytes": 96921676,
+   "n_rows": 28224,
+   "n_kept": 3191,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02375-of-03388.parquet",
+   "bytes": 103678044,
+   "n_rows": 28224,
+   "n_kept": 3463,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02379-of-03388.parquet",
+   "bytes": 85205963,
+   "n_rows": 28224,
+   "n_kept": 5967,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02370-of-03388.parquet",
+   "bytes": 96902457,
+   "n_rows": 28224,
+   "n_kept": 6809,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02374-of-03388.parquet",
+   "bytes": 92003975,
+   "n_rows": 28224,
+   "n_kept": 8414,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02403-of-03388.parquet",
+   "bytes": 109886571,
+   "n_rows": 28224,
+   "n_kept": 3068,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02373-of-03388.parquet",
+   "bytes": 102417040,
+   "n_rows": 28224,
+   "n_kept": 4402,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02398-of-03388.parquet",
+   "bytes": 92869505,
+   "n_rows": 28224,
+   "n_kept": 3740,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02377-of-03388.parquet",
+   "bytes": 98331861,
+   "n_rows": 28224,
+   "n_kept": 6673,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02386-of-03388.parquet",
+   "bytes": 93548795,
+   "n_rows": 28224,
+   "n_kept": 6712,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02385-of-03388.parquet",
+   "bytes": 94348288,
+   "n_rows": 28224,
+   "n_kept": 4752,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02405-of-03388.parquet",
+   "bytes": 98176867,
+   "n_rows": 28224,
+   "n_kept": 4217,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02382-of-03388.parquet",
+   "bytes": 101785685,
+   "n_rows": 28224,
+   "n_kept": 4488,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02384-of-03388.parquet",
+   "bytes": 95436085,
+   "n_rows": 28224,
+   "n_kept": 4670,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02392-of-03388.parquet",
+   "bytes": 88310407,
+   "n_rows": 28224,
+   "n_kept": 7185,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02394-of-03388.parquet",
+   "bytes": 94482390,
+   "n_rows": 28224,
+   "n_kept": 3120,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02376-of-03388.parquet",
+   "bytes": 103902455,
+   "n_rows": 28224,
+   "n_kept": 6516,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02396-of-03388.parquet",
+   "bytes": 100302139,
+   "n_rows": 28224,
+   "n_kept": 4033,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02391-of-03388.parquet",
+   "bytes": 99488862,
+   "n_rows": 28224,
+   "n_kept": 4861,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02410-of-03388.parquet",
+   "bytes": 104268754,
+   "n_rows": 28224,
+   "n_kept": 3094,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02381-of-03388.parquet",
+   "bytes": 96839155,
+   "n_rows": 28224,
+   "n_kept": 5871,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02401-of-03388.parquet",
+   "bytes": 109706121,
+   "n_rows": 28224,
+   "n_kept": 3290,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02390-of-03388.parquet",
+   "bytes": 101447294,
+   "n_rows": 28224,
+   "n_kept": 5732,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02389-of-03388.parquet",
+   "bytes": 111761003,
+   "n_rows": 28224,
+   "n_kept": 4500,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02399-of-03388.parquet",
+   "bytes": 85982650,
+   "n_rows": 28224,
+   "n_kept": 5714,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02395-of-03388.parquet",
+   "bytes": 92398383,
+   "n_rows": 28224,
+   "n_kept": 6197,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02407-of-03388.parquet",
+   "bytes": 93937768,
+   "n_rows": 28224,
+   "n_kept": 4999,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02393-of-03388.parquet",
+   "bytes": 92662665,
+   "n_rows": 28224,
+   "n_kept": 6696,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02408-of-03388.parquet",
+   "bytes": 94068311,
+   "n_rows": 28224,
+   "n_kept": 4805,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02383-of-03388.parquet",
+   "bytes": 94086954,
+   "n_rows": 28224,
+   "n_kept": 8344,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02404-of-03388.parquet",
+   "bytes": 93509215,
+   "n_rows": 28224,
+   "n_kept": 6612,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02409-of-03388.parquet",
+   "bytes": 97279209,
+   "n_rows": 28224,
+   "n_kept": 6733,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02402-of-03388.parquet",
+   "bytes": 106068108,
+   "n_rows": 28224,
+   "n_kept": 6927,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02400-of-03388.parquet",
+   "bytes": 107605752,
+   "n_rows": 28224,
+   "n_kept": 7108,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02388-of-03388.parquet",
+   "bytes": 103003589,
+   "n_rows": 28224,
+   "n_kept": 6802,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02397-of-03388.parquet",
+   "bytes": 94098633,
+   "n_rows": 28224,
+   "n_kept": 8362,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02406-of-03388.parquet",
+   "bytes": 89254890,
+   "n_rows": 28224,
+   "n_kept": 7846,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02411-of-03388.parquet",
+   "bytes": 100749624,
+   "n_rows": 28224,
+   "n_kept": 7098,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02416-of-03388.parquet",
+   "bytes": 112176806,
+   "n_rows": 28224,
+   "n_kept": 3070,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02412-of-03388.parquet",
+   "bytes": 111802489,
+   "n_rows": 28224,
+   "n_kept": 4476,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02413-of-03388.parquet",
+   "bytes": 106257021,
+   "n_rows": 28224,
+   "n_kept": 5875,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02415-of-03388.parquet",
+   "bytes": 103266220,
+   "n_rows": 28224,
+   "n_kept": 8499,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02417-of-03388.parquet",
+   "bytes": 107687178,
+   "n_rows": 28224,
+   "n_kept": 7865,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02414-of-03388.parquet",
+   "bytes": 112314078,
+   "n_rows": 28224,
+   "n_kept": 4504,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02418-of-03388.parquet",
+   "bytes": 101943980,
+   "n_rows": 28224,
+   "n_kept": 4389,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02420-of-03388.parquet",
+   "bytes": 96036123,
+   "n_rows": 28224,
+   "n_kept": 6742,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02419-of-03388.parquet",
+   "bytes": 97502576,
+   "n_rows": 28224,
+   "n_kept": 5113,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02421-of-03388.parquet",
+   "bytes": 100895425,
+   "n_rows": 28224,
+   "n_kept": 3308,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02422-of-03388.parquet",
+   "bytes": 99302696,
+   "n_rows": 28224,
+   "n_kept": 6719,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02424-of-03388.parquet",
+   "bytes": 87761504,
+   "n_rows": 28224,
+   "n_kept": 8180,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02423-of-03388.parquet",
+   "bytes": 102283019,
+   "n_rows": 28224,
+   "n_kept": 4142,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02425-of-03388.parquet",
+   "bytes": 107355530,
+   "n_rows": 28224,
+   "n_kept": 3780,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02432-of-03388.parquet",
+   "bytes": 99831753,
+   "n_rows": 28224,
+   "n_kept": 4054,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02437-of-03388.parquet",
+   "bytes": 90000513,
+   "n_rows": 28224,
+   "n_kept": 3076,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02428-of-03388.parquet",
+   "bytes": 92057321,
+   "n_rows": 28224,
+   "n_kept": 4450,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02427-of-03388.parquet",
+   "bytes": 96778253,
+   "n_rows": 28224,
+   "n_kept": 5195,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02430-of-03388.parquet",
+   "bytes": 106307672,
+   "n_rows": 28224,
+   "n_kept": 3202,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02439-of-03388.parquet",
+   "bytes": 105018573,
+   "n_rows": 28224,
+   "n_kept": 3565,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02446-of-03388.parquet",
+   "bytes": 106170499,
+   "n_rows": 28224,
+   "n_kept": 3164,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02448-of-03388.parquet",
+   "bytes": 106161898,
+   "n_rows": 28224,
+   "n_kept": 4272,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02453-of-03388.parquet",
+   "bytes": 92082756,
+   "n_rows": 28224,
+   "n_kept": 3052,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02436-of-03388.parquet",
+   "bytes": 90824365,
+   "n_rows": 28224,
+   "n_kept": 6219,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02461-of-03388.parquet",
+   "bytes": 107243244,
+   "n_rows": 28224,
+   "n_kept": 4568,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02431-of-03388.parquet",
+   "bytes": 92316289,
+   "n_rows": 28224,
+   "n_kept": 6241,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02434-of-03388.parquet",
+   "bytes": 105530538,
+   "n_rows": 28224,
+   "n_kept": 3577,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02459-of-03388.parquet",
+   "bytes": 102227320,
+   "n_rows": 28224,
+   "n_kept": 4447,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02457-of-03388.parquet",
+   "bytes": 111926132,
+   "n_rows": 28224,
+   "n_kept": 4689,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02443-of-03388.parquet",
+   "bytes": 98014379,
+   "n_rows": 28224,
+   "n_kept": 4817,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02441-of-03388.parquet",
+   "bytes": 102620450,
+   "n_rows": 28224,
+   "n_kept": 4011,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02444-of-03388.parquet",
+   "bytes": 94801795,
+   "n_rows": 28224,
+   "n_kept": 4665,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02454-of-03388.parquet",
+   "bytes": 88593378,
+   "n_rows": 28224,
+   "n_kept": 6347,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02465-of-03388.parquet",
+   "bytes": 98016329,
+   "n_rows": 28224,
+   "n_kept": 6571,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02455-of-03388.parquet",
+   "bytes": 99198516,
+   "n_rows": 28224,
+   "n_kept": 4110,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02458-of-03388.parquet",
+   "bytes": 102335474,
+   "n_rows": 28224,
+   "n_kept": 6080,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02450-of-03388.parquet",
+   "bytes": 107091383,
+   "n_rows": 28224,
+   "n_kept": 4117,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02464-of-03388.parquet",
+   "bytes": 97204745,
+   "n_rows": 28224,
+   "n_kept": 3858,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02435-of-03388.parquet",
+   "bytes": 104463961,
+   "n_rows": 28224,
+   "n_kept": 6896,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02456-of-03388.parquet",
+   "bytes": 100760556,
+   "n_rows": 28224,
+   "n_kept": 6036,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02445-of-03388.parquet",
+   "bytes": 100295783,
+   "n_rows": 28224,
+   "n_kept": 6618,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02426-of-03388.parquet",
+   "bytes": 111256477,
+   "n_rows": 28224,
+   "n_kept": 7055,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02460-of-03388.parquet",
+   "bytes": 89053495,
+   "n_rows": 28224,
+   "n_kept": 7956,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02463-of-03388.parquet",
+   "bytes": 99344749,
+   "n_rows": 28224,
+   "n_kept": 6182,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02429-of-03388.parquet",
+   "bytes": 104331327,
+   "n_rows": 28224,
+   "n_kept": 7091,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02466-of-03388.parquet",
+   "bytes": 103081998,
+   "n_rows": 28224,
+   "n_kept": 2942,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02452-of-03388.parquet",
+   "bytes": 93984861,
+   "n_rows": 28224,
+   "n_kept": 6578,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02449-of-03388.parquet",
+   "bytes": 90933039,
+   "n_rows": 28224,
+   "n_kept": 7708,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02451-of-03388.parquet",
+   "bytes": 108743760,
+   "n_rows": 28224,
+   "n_kept": 6481,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02440-of-03388.parquet",
+   "bytes": 89012118,
+   "n_rows": 28224,
+   "n_kept": 5910,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02462-of-03388.parquet",
+   "bytes": 110630146,
+   "n_rows": 28224,
+   "n_kept": 6326,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02438-of-03388.parquet",
+   "bytes": 101294324,
+   "n_rows": 28224,
+   "n_kept": 6968,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02447-of-03388.parquet",
+   "bytes": 100873642,
+   "n_rows": 28224,
+   "n_kept": 6879,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02433-of-03388.parquet",
+   "bytes": 95844622,
+   "n_rows": 28224,
+   "n_kept": 8482,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02442-of-03388.parquet",
+   "bytes": 101983585,
+   "n_rows": 28224,
+   "n_kept": 8866,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02468-of-03388.parquet",
+   "bytes": 102321253,
+   "n_rows": 28224,
+   "n_kept": 4486,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02469-of-03388.parquet",
+   "bytes": 92578022,
+   "n_rows": 28224,
+   "n_kept": 5617,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02467-of-03388.parquet",
+   "bytes": 95965355,
+   "n_rows": 28224,
+   "n_kept": 6834,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02470-of-03388.parquet",
+   "bytes": 103306540,
+   "n_rows": 28224,
+   "n_kept": 4299,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02472-of-03388.parquet",
+   "bytes": 97848610,
+   "n_rows": 28224,
+   "n_kept": 6263,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02471-of-03388.parquet",
+   "bytes": 101574370,
+   "n_rows": 28224,
+   "n_kept": 8258,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02473-of-03388.parquet",
+   "bytes": 98997726,
+   "n_rows": 28224,
+   "n_kept": 2923,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02474-of-03388.parquet",
+   "bytes": 107248645,
+   "n_rows": 28224,
+   "n_kept": 6705,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02475-of-03388.parquet",
+   "bytes": 116497748,
+   "n_rows": 28224,
+   "n_kept": 4335,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02476-of-03388.parquet",
+   "bytes": 111028674,
+   "n_rows": 28224,
+   "n_kept": 5853,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02478-of-03388.parquet",
+   "bytes": 96950108,
+   "n_rows": 28224,
+   "n_kept": 8329,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02477-of-03388.parquet",
+   "bytes": 112994552,
+   "n_rows": 28224,
+   "n_kept": 4275,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02482-of-03388.parquet",
+   "bytes": 98301966,
+   "n_rows": 28224,
+   "n_kept": 2965,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02485-of-03388.parquet",
+   "bytes": 90701650,
+   "n_rows": 28224,
+   "n_kept": 8130,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02513-of-03388.parquet",
+   "bytes": 99917270,
+   "n_rows": 28224,
+   "n_kept": 3088,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02484-of-03388.parquet",
+   "bytes": 99633558,
+   "n_rows": 28224,
+   "n_kept": 4051,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02501-of-03388.parquet",
+   "bytes": 101652629,
+   "n_rows": 28224,
+   "n_kept": 4124,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02481-of-03388.parquet",
+   "bytes": 99601884,
+   "n_rows": 28224,
+   "n_kept": 6308,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02494-of-03388.parquet",
+   "bytes": 98509099,
+   "n_rows": 28224,
+   "n_kept": 2923,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02479-of-03388.parquet",
+   "bytes": 107745628,
+   "n_rows": 28224,
+   "n_kept": 3145,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02487-of-03388.parquet",
+   "bytes": 95509537,
+   "n_rows": 28224,
+   "n_kept": 4339,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02502-of-03388.parquet",
+   "bytes": 92031105,
+   "n_rows": 28224,
+   "n_kept": 5308,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02506-of-03388.parquet",
+   "bytes": 98916026,
+   "n_rows": 28224,
+   "n_kept": 3046,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02498-of-03388.parquet",
+   "bytes": 98431963,
+   "n_rows": 28224,
+   "n_kept": 3525,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02483-of-03388.parquet",
+   "bytes": 96581045,
+   "n_rows": 28224,
+   "n_kept": 6225,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02491-of-03388.parquet",
+   "bytes": 107024953,
+   "n_rows": 28224,
+   "n_kept": 4171,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02493-of-03388.parquet",
+   "bytes": 92411213,
+   "n_rows": 28224,
+   "n_kept": 6062,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02505-of-03388.parquet",
+   "bytes": 98036446,
+   "n_rows": 28224,
+   "n_kept": 6533,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02486-of-03388.parquet",
+   "bytes": 95907451,
+   "n_rows": 28224,
+   "n_kept": 4944,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02508-of-03388.parquet",
+   "bytes": 99766472,
+   "n_rows": 28224,
+   "n_kept": 3951,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02510-of-03388.parquet",
+   "bytes": 101243018,
+   "n_rows": 28224,
+   "n_kept": 3875,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02500-of-03388.parquet",
+   "bytes": 98205825,
+   "n_rows": 28224,
+   "n_kept": 6402,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02488-of-03388.parquet",
+   "bytes": 97987191,
+   "n_rows": 28224,
+   "n_kept": 6532,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02496-of-03388.parquet",
+   "bytes": 106792426,
+   "n_rows": 28224,
+   "n_kept": 4134,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02518-of-03388.parquet",
+   "bytes": 90515973,
+   "n_rows": 28224,
+   "n_kept": 6033,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02517-of-03388.parquet",
+   "bytes": 102182663,
+   "n_rows": 28224,
+   "n_kept": 4470,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02515-of-03388.parquet",
+   "bytes": 108346693,
+   "n_rows": 28224,
+   "n_kept": 4166,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02490-of-03388.parquet",
+   "bytes": 110148630,
+   "n_rows": 28224,
+   "n_kept": 5995,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02503-of-03388.parquet",
+   "bytes": 97188053,
+   "n_rows": 28224,
+   "n_kept": 5401,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02504-of-03388.parquet",
+   "bytes": 93918999,
+   "n_rows": 28224,
+   "n_kept": 6749,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02499-of-03388.parquet",
+   "bytes": 95137480,
+   "n_rows": 28224,
+   "n_kept": 6023,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02489-of-03388.parquet",
+   "bytes": 110322542,
+   "n_rows": 28224,
+   "n_kept": 4120,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02511-of-03388.parquet",
+   "bytes": 101573909,
+   "n_rows": 28224,
+   "n_kept": 5728,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02512-of-03388.parquet",
+   "bytes": 93939473,
+   "n_rows": 28224,
+   "n_kept": 6356,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02492-of-03388.parquet",
+   "bytes": 86346221,
+   "n_rows": 28224,
+   "n_kept": 7600,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02509-of-03388.parquet",
+   "bytes": 94394865,
+   "n_rows": 28224,
+   "n_kept": 8431,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02514-of-03388.parquet",
+   "bytes": 95568176,
+   "n_rows": 28224,
+   "n_kept": 6254,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02495-of-03388.parquet",
+   "bytes": 103318566,
+   "n_rows": 28224,
+   "n_kept": 6416,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02507-of-03388.parquet",
+   "bytes": 93091117,
+   "n_rows": 28224,
+   "n_kept": 6284,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02480-of-03388.parquet",
+   "bytes": 104627326,
+   "n_rows": 28224,
+   "n_kept": 7394,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02516-of-03388.parquet",
+   "bytes": 106615811,
+   "n_rows": 28224,
+   "n_kept": 7817,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02497-of-03388.parquet",
+   "bytes": 94740252,
+   "n_rows": 28224,
+   "n_kept": 8599,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02520-of-03388.parquet",
+   "bytes": 100855281,
+   "n_rows": 28224,
+   "n_kept": 3109,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02522-of-03388.parquet",
+   "bytes": 99904802,
+   "n_rows": 28224,
+   "n_kept": 4105,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02521-of-03388.parquet",
+   "bytes": 93733221,
+   "n_rows": 28224,
+   "n_kept": 6331,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02519-of-03388.parquet",
+   "bytes": 98435507,
+   "n_rows": 28224,
+   "n_kept": 6726,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02524-of-03388.parquet",
+   "bytes": 102483742,
+   "n_rows": 28224,
+   "n_kept": 3536,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02523-of-03388.parquet",
+   "bytes": 94318659,
+   "n_rows": 28224,
+   "n_kept": 8390,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02525-of-03388.parquet",
+   "bytes": 100903417,
+   "n_rows": 28224,
+   "n_kept": 6218,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02526-of-03388.parquet",
+   "bytes": 94593405,
+   "n_rows": 28224,
+   "n_kept": 6149,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02527-of-03388.parquet",
+   "bytes": 101009681,
+   "n_rows": 28224,
+   "n_kept": 2916,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02528-of-03388.parquet",
+   "bytes": 98789549,
+   "n_rows": 28224,
+   "n_kept": 6432,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02529-of-03388.parquet",
+   "bytes": 111029584,
+   "n_rows": 28224,
+   "n_kept": 4265,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02780-of-03388.parquet",
+   "bytes": 99154938,
+   "n_rows": 28224,
+   "n_kept": 0
+  },
+  {
+   "shard": "train-02547-of-03388.parquet",
+   "bytes": 79777661,
+   "n_rows": 28224,
+   "n_kept": 5501,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02531-of-03388.parquet",
+   "bytes": 114259626,
+   "n_rows": 28224,
+   "n_kept": 3201,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02560-of-03388.parquet",
+   "bytes": 103442707,
+   "n_rows": 28224,
+   "n_kept": 2968,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02548-of-03388.parquet",
+   "bytes": 88171667,
+   "n_rows": 28224,
+   "n_kept": 3697,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02533-of-03388.parquet",
+   "bytes": 106409247,
+   "n_rows": 28224,
+   "n_kept": 4620,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02530-of-03388.parquet",
+   "bytes": 109384256,
+   "n_rows": 28224,
+   "n_kept": 7858,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02540-of-03388.parquet",
+   "bytes": 100710179,
+   "n_rows": 28224,
+   "n_kept": 3603,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02550-of-03388.parquet",
+   "bytes": 99697491,
+   "n_rows": 28224,
+   "n_kept": 3749,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02543-of-03388.parquet",
+   "bytes": 93585481,
+   "n_rows": 28224,
+   "n_kept": 3926,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02546-of-03388.parquet",
+   "bytes": 95026967,
+   "n_rows": 28224,
+   "n_kept": 6222,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02544-of-03388.parquet",
+   "bytes": 88973212,
+   "n_rows": 28224,
+   "n_kept": 6056,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02553-of-03388.parquet",
+   "bytes": 101156500,
+   "n_rows": 28224,
+   "n_kept": 3087,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02536-of-03388.parquet",
+   "bytes": 109683039,
+   "n_rows": 28224,
+   "n_kept": 3244,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02542-of-03388.parquet",
+   "bytes": 89213738,
+   "n_rows": 28224,
+   "n_kept": 6107,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02555-of-03388.parquet",
+   "bytes": 99680199,
+   "n_rows": 28224,
+   "n_kept": 4110,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02557-of-03388.parquet",
+   "bytes": 103517249,
+   "n_rows": 28224,
+   "n_kept": 4173,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02534-of-03388.parquet",
+   "bytes": 105202665,
+   "n_rows": 28224,
+   "n_kept": 5192,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02545-of-03388.parquet",
+   "bytes": 95749886,
+   "n_rows": 28224,
+   "n_kept": 5217,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02538-of-03388.parquet",
+   "bytes": 104830788,
+   "n_rows": 28224,
+   "n_kept": 4201,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02558-of-03388.parquet",
+   "bytes": 105139771,
+   "n_rows": 28224,
+   "n_kept": 5538,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02554-of-03388.parquet",
+   "bytes": 95103631,
+   "n_rows": 28224,
+   "n_kept": 6388,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02537-of-03388.parquet",
+   "bytes": 99429809,
+   "n_rows": 28224,
+   "n_kept": 6555,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02551-of-03388.parquet",
+   "bytes": 99759998,
+   "n_rows": 28224,
+   "n_kept": 6342,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02541-of-03388.parquet",
+   "bytes": 100095830,
+   "n_rows": 28224,
+   "n_kept": 6326,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02535-of-03388.parquet",
+   "bytes": 104744058,
+   "n_rows": 28224,
+   "n_kept": 6676,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02539-of-03388.parquet",
+   "bytes": 92777769,
+   "n_rows": 28224,
+   "n_kept": 8073,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02968-of-03388.parquet",
+   "bytes": 114447591,
+   "n_rows": 28224,
+   "n_kept": 9474,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02552-of-03388.parquet",
+   "bytes": 99201376,
+   "n_rows": 28224,
+   "n_kept": 6492,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02556-of-03388.parquet",
+   "bytes": 90479921,
+   "n_rows": 28224,
+   "n_kept": 8140,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02559-of-03388.parquet",
+   "bytes": 100845668,
+   "n_rows": 28224,
+   "n_kept": 6582,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02549-of-03388.parquet",
+   "bytes": 91291491,
+   "n_rows": 28224,
+   "n_kept": 7874,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02532-of-03388.parquet",
+   "bytes": 108644223,
+   "n_rows": 28224,
+   "n_kept": 8111,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02975-of-03388.parquet",
+   "bytes": 97880704,
+   "n_rows": 28224,
+   "n_kept": 13498,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02972-of-03388.parquet",
+   "bytes": 112962667,
+   "n_rows": 28224,
+   "n_kept": 14340,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02970-of-03388.parquet",
+   "bytes": 106917628,
+   "n_rows": 28224,
+   "n_kept": 14336,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02977-of-03388.parquet",
+   "bytes": 100916057,
+   "n_rows": 28224,
+   "n_kept": 11755,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02969-of-03388.parquet",
+   "bytes": 87928177,
+   "n_rows": 28224,
+   "n_kept": 17086,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02979-of-03388.parquet",
+   "bytes": 107989349,
+   "n_rows": 28224,
+   "n_kept": 13630,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02973-of-03388.parquet",
+   "bytes": 104529323,
+   "n_rows": 28224,
+   "n_kept": 17052,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02974-of-03388.parquet",
+   "bytes": 113013207,
+   "n_rows": 28224,
+   "n_kept": 17223,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02971-of-03388.parquet",
+   "bytes": 92088548,
+   "n_rows": 28224,
+   "n_kept": 17806,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02976-of-03388.parquet",
+   "bytes": 93061664,
+   "n_rows": 28224,
+   "n_kept": 18968,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02980-of-03388.parquet",
+   "bytes": 91383640,
+   "n_rows": 28224,
+   "n_kept": 17963,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02978-of-03388.parquet",
+   "bytes": 87780960,
+   "n_rows": 28224,
+   "n_kept": 18802,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02981-of-03388.parquet",
+   "bytes": 113852214,
+   "n_rows": 28224,
+   "n_kept": 15116,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02982-of-03388.parquet",
+   "bytes": 95964483,
+   "n_rows": 28224,
+   "n_kept": 16901,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02983-of-03388.parquet",
+   "bytes": 114397239,
+   "n_rows": 28224,
+   "n_kept": 13834,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02984-of-03388.parquet",
+   "bytes": 97042218,
+   "n_rows": 28224,
+   "n_kept": 17037,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02985-of-03388.parquet",
+   "bytes": 118871612,
+   "n_rows": 28224,
+   "n_kept": 16084,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02986-of-03388.parquet",
+   "bytes": 128779877,
+   "n_rows": 28224,
+   "n_kept": 15331,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02988-of-03388.parquet",
+   "bytes": 123348880,
+   "n_rows": 28224,
+   "n_kept": 11838,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02989-of-03388.parquet",
+   "bytes": 100751818,
+   "n_rows": 28224,
+   "n_kept": 18259,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02987-of-03388.parquet",
+   "bytes": 128957553,
+   "n_rows": 28224,
+   "n_kept": 19245,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02996-of-03388.parquet",
+   "bytes": 97584652,
+   "n_rows": 28224,
+   "n_kept": 18751,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02991-of-03388.parquet",
+   "bytes": 108421208,
+   "n_rows": 28224,
+   "n_kept": 16853,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02995-of-03388.parquet",
+   "bytes": 111824042,
+   "n_rows": 28224,
+   "n_kept": 13735,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02993-of-03388.parquet",
+   "bytes": 117967067,
+   "n_rows": 28224,
+   "n_kept": 15973,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03024-of-03388.parquet",
+   "bytes": 98031794,
+   "n_rows": 28224,
+   "n_kept": 12655,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03009-of-03388.parquet",
+   "bytes": 92626279,
+   "n_rows": 28224,
+   "n_kept": 14847,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03013-of-03388.parquet",
+   "bytes": 124368785,
+   "n_rows": 28224,
+   "n_kept": 11864,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03017-of-03388.parquet",
+   "bytes": 114302834,
+   "n_rows": 28224,
+   "n_kept": 14022,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03000-of-03388.parquet",
+   "bytes": 111229353,
+   "n_rows": 28224,
+   "n_kept": 16888,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02997-of-03388.parquet",
+   "bytes": 133112039,
+   "n_rows": 28224,
+   "n_kept": 12839,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03028-of-03388.parquet",
+   "bytes": 107770290,
+   "n_rows": 28224,
+   "n_kept": 12081,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03007-of-03388.parquet",
+   "bytes": 106424387,
+   "n_rows": 28224,
+   "n_kept": 16788,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02992-of-03388.parquet",
+   "bytes": 130709524,
+   "n_rows": 28224,
+   "n_kept": 15274,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03016-of-03388.parquet",
+   "bytes": 92536823,
+   "n_rows": 28224,
+   "n_kept": 17225,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02990-of-03388.parquet",
+   "bytes": 131304533,
+   "n_rows": 28224,
+   "n_kept": 15007,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03006-of-03388.parquet",
+   "bytes": 124919847,
+   "n_rows": 28224,
+   "n_kept": 14377,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03019-of-03388.parquet",
+   "bytes": 111542222,
+   "n_rows": 28224,
+   "n_kept": 15502,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03005-of-03388.parquet",
+   "bytes": 95477749,
+   "n_rows": 28224,
+   "n_kept": 17421,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02994-of-03388.parquet",
+   "bytes": 125273800,
+   "n_rows": 28224,
+   "n_kept": 17807,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03011-of-03388.parquet",
+   "bytes": 111951488,
+   "n_rows": 28224,
+   "n_kept": 14115,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03020-of-03388.parquet",
+   "bytes": 91636489,
+   "n_rows": 28224,
+   "n_kept": 16543,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03026-of-03388.parquet",
+   "bytes": 116200076,
+   "n_rows": 28224,
+   "n_kept": 14213,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02999-of-03388.parquet",
+   "bytes": 135368108,
+   "n_rows": 28224,
+   "n_kept": 13744,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03010-of-03388.parquet",
+   "bytes": 95166319,
+   "n_rows": 28224,
+   "n_kept": 17881,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03002-of-03388.parquet",
+   "bytes": 156091126,
+   "n_rows": 28224,
+   "n_kept": 13815,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03025-of-03388.parquet",
+   "bytes": 88791544,
+   "n_rows": 28224,
+   "n_kept": 17548,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03027-of-03388.parquet",
+   "bytes": 102741851,
+   "n_rows": 28224,
+   "n_kept": 18577,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03018-of-03388.parquet",
+   "bytes": 98122501,
+   "n_rows": 28224,
+   "n_kept": 16698,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03022-of-03388.parquet",
+   "bytes": 118973378,
+   "n_rows": 28224,
+   "n_kept": 13617,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03008-of-03388.parquet",
+   "bytes": 120801064,
+   "n_rows": 28224,
+   "n_kept": 16297,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03001-of-03388.parquet",
+   "bytes": 130814186,
+   "n_rows": 28224,
+   "n_kept": 17459,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03023-of-03388.parquet",
+   "bytes": 114423735,
+   "n_rows": 28224,
+   "n_kept": 19341,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-02998-of-03388.parquet",
+   "bytes": 113200583,
+   "n_rows": 28224,
+   "n_kept": 18806,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03003-of-03388.parquet",
+   "bytes": 135126070,
+   "n_rows": 28224,
+   "n_kept": 17545,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03012-of-03388.parquet",
+   "bytes": 102473916,
+   "n_rows": 28224,
+   "n_kept": 18607,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03030-of-03388.parquet",
+   "bytes": 123804881,
+   "n_rows": 28224,
+   "n_kept": 12972,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03021-of-03388.parquet",
+   "bytes": 102568719,
+   "n_rows": 28224,
+   "n_kept": 17593,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03004-of-03388.parquet",
+   "bytes": 132161733,
+   "n_rows": 28224,
+   "n_kept": 14891,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03015-of-03388.parquet",
+   "bytes": 118714592,
+   "n_rows": 28224,
+   "n_kept": 15191,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03029-of-03388.parquet",
+   "bytes": 91373667,
+   "n_rows": 28224,
+   "n_kept": 19381,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03014-of-03388.parquet",
+   "bytes": 105415324,
+   "n_rows": 28224,
+   "n_kept": 18490,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03033-of-03388.parquet",
+   "bytes": 93937504,
+   "n_rows": 28224,
+   "n_kept": 17213,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03032-of-03388.parquet",
+   "bytes": 119743881,
+   "n_rows": 28224,
+   "n_kept": 15433,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03031-of-03388.parquet",
+   "bytes": 109006827,
+   "n_rows": 28224,
+   "n_kept": 17841,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03034-of-03388.parquet",
+   "bytes": 110022370,
+   "n_rows": 28224,
+   "n_kept": 13665,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03036-of-03388.parquet",
+   "bytes": 106299426,
+   "n_rows": 28224,
+   "n_kept": 16107,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03035-of-03388.parquet",
+   "bytes": 92051145,
+   "n_rows": 28224,
+   "n_kept": 17765,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03037-of-03388.parquet",
+   "bytes": 100062396,
+   "n_rows": 28224,
+   "n_kept": 14926,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03039-of-03388.parquet",
+   "bytes": 104618469,
+   "n_rows": 28224,
+   "n_kept": 13729,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03041-of-03388.parquet",
+   "bytes": 108569693,
+   "n_rows": 28224,
+   "n_kept": 12409,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03045-of-03388.parquet",
+   "bytes": 102251592,
+   "n_rows": 28224,
+   "n_kept": 14641,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03038-of-03388.parquet",
+   "bytes": 104077055,
+   "n_rows": 28224,
+   "n_kept": 17891,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03043-of-03388.parquet",
+   "bytes": 114300616,
+   "n_rows": 28224,
+   "n_kept": 13137,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03046-of-03388.parquet",
+   "bytes": 82080035,
+   "n_rows": 28224,
+   "n_kept": 17451,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03040-of-03388.parquet",
+   "bytes": 100250450,
+   "n_rows": 28224,
+   "n_kept": 18847,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03044-of-03388.parquet",
+   "bytes": 98510835,
+   "n_rows": 28224,
+   "n_kept": 18303,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03042-of-03388.parquet",
+   "bytes": 95577227,
+   "n_rows": 28224,
+   "n_kept": 18767,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03047-of-03388.parquet",
+   "bytes": 129485256,
+   "n_rows": 28224,
+   "n_kept": 14784,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03050-of-03388.parquet",
+   "bytes": 100700527,
+   "n_rows": 28224,
+   "n_kept": 17127,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03048-of-03388.parquet",
+   "bytes": 110853539,
+   "n_rows": 28224,
+   "n_kept": 17462,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03049-of-03388.parquet",
+   "bytes": 128501473,
+   "n_rows": 28224,
+   "n_kept": 14425,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03052-of-03388.parquet",
+   "bytes": 101797382,
+   "n_rows": 28224,
+   "n_kept": 16869,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03053-of-03388.parquet",
+   "bytes": 118938317,
+   "n_rows": 28224,
+   "n_kept": 14992,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03051-of-03388.parquet",
+   "bytes": 115249464,
+   "n_rows": 28224,
+   "n_kept": 15173,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03054-of-03388.parquet",
+   "bytes": 109474137,
+   "n_rows": 28224,
+   "n_kept": 16358,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03056-of-03388.parquet",
+   "bytes": 105303435,
+   "n_rows": 28224,
+   "n_kept": 13742,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03058-of-03388.parquet",
+   "bytes": 109854952,
+   "n_rows": 28224,
+   "n_kept": 12556,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03062-of-03388.parquet",
+   "bytes": 112489586,
+   "n_rows": 28224,
+   "n_kept": 14250,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03059-of-03388.parquet",
+   "bytes": 94442153,
+   "n_rows": 28224,
+   "n_kept": 18804,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03060-of-03388.parquet",
+   "bytes": 106450194,
+   "n_rows": 28224,
+   "n_kept": 15378,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03061-of-03388.parquet",
+   "bytes": 84612313,
+   "n_rows": 28224,
+   "n_kept": 16738,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03057-of-03388.parquet",
+   "bytes": 102007986,
+   "n_rows": 28224,
+   "n_kept": 17738,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03055-of-03388.parquet",
+   "bytes": 118264046,
+   "n_rows": 28224,
+   "n_kept": 17602,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03065-of-03388.parquet",
+   "bytes": 104926864,
+   "n_rows": 28224,
+   "n_kept": 16749,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03063-of-03388.parquet",
+   "bytes": 101298191,
+   "n_rows": 28224,
+   "n_kept": 17693,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03069-of-03388.parquet",
+   "bytes": 105134110,
+   "n_rows": 28224,
+   "n_kept": 13707,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03067-of-03388.parquet",
+   "bytes": 110095421,
+   "n_rows": 28224,
+   "n_kept": 14811,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03064-of-03388.parquet",
+   "bytes": 120918954,
+   "n_rows": 28224,
+   "n_kept": 14743,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03081-of-03388.parquet",
+   "bytes": 105002224,
+   "n_rows": 28224,
+   "n_kept": 15334,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03080-of-03388.parquet",
+   "bytes": 88124557,
+   "n_rows": 28224,
+   "n_kept": 16929,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03073-of-03388.parquet",
+   "bytes": 109416984,
+   "n_rows": 28224,
+   "n_kept": 14082,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03074-of-03388.parquet",
+   "bytes": 87044295,
+   "n_rows": 28224,
+   "n_kept": 17217,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03068-of-03388.parquet",
+   "bytes": 113324678,
+   "n_rows": 28224,
+   "n_kept": 17964,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03079-of-03388.parquet",
+   "bytes": 101918918,
+   "n_rows": 28224,
+   "n_kept": 15427,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03071-of-03388.parquet",
+   "bytes": 120361779,
+   "n_rows": 28224,
+   "n_kept": 12692,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03082-of-03388.parquet",
+   "bytes": 111261577,
+   "n_rows": 28224,
+   "n_kept": 15643,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03066-of-03388.parquet",
+   "bytes": 118876914,
+   "n_rows": 28224,
+   "n_kept": 16699,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03084-of-03388.parquet",
+   "bytes": 117538992,
+   "n_rows": 28224,
+   "n_kept": 12672,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03091-of-03388.parquet",
+   "bytes": 92455548,
+   "n_rows": 28224,
+   "n_kept": 15476,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03075-of-03388.parquet",
+   "bytes": 119462458,
+   "n_rows": 28224,
+   "n_kept": 15716,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03077-of-03388.parquet",
+   "bytes": 115730004,
+   "n_rows": 28224,
+   "n_kept": 15292,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03093-of-03388.parquet",
+   "bytes": 94264216,
+   "n_rows": 28224,
+   "n_kept": 13938,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03076-of-03388.parquet",
+   "bytes": 103732882,
+   "n_rows": 28224,
+   "n_kept": 16429,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03078-of-03388.parquet",
+   "bytes": 90066457,
+   "n_rows": 28224,
+   "n_kept": 16299,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03092-of-03388.parquet",
+   "bytes": 96419179,
+   "n_rows": 28224,
+   "n_kept": 17537,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03085-of-03388.parquet",
+   "bytes": 100021635,
+   "n_rows": 28224,
+   "n_kept": 18534,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03088-of-03388.parquet",
+   "bytes": 121324201,
+   "n_rows": 28224,
+   "n_kept": 14560,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03090-of-03388.parquet",
+   "bytes": 110984568,
+   "n_rows": 28224,
+   "n_kept": 15590,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03070-of-03388.parquet",
+   "bytes": 99757875,
+   "n_rows": 28224,
+   "n_kept": 18585,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03072-of-03388.parquet",
+   "bytes": 103305803,
+   "n_rows": 28224,
+   "n_kept": 18289,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03095-of-03388.parquet",
+   "bytes": 98460919,
+   "n_rows": 28224,
+   "n_kept": 14388,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03089-of-03388.parquet",
+   "bytes": 98673668,
+   "n_rows": 28224,
+   "n_kept": 17238,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03086-of-03388.parquet",
+   "bytes": 128822269,
+   "n_rows": 28224,
+   "n_kept": 14344,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03087-of-03388.parquet",
+   "bytes": 104382295,
+   "n_rows": 28224,
+   "n_kept": 17204,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03097-of-03388.parquet",
+   "bytes": 107667281,
+   "n_rows": 28224,
+   "n_kept": 13885,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03099-of-03388.parquet",
+   "bytes": 100304569,
+   "n_rows": 28224,
+   "n_kept": 12645,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03114-of-03388.parquet",
+   "bytes": 135366852,
+   "n_rows": 28224,
+   "n_kept": 11590,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03083-of-03388.parquet",
+   "bytes": 115223649,
+   "n_rows": 28224,
+   "n_kept": 17993,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03096-of-03388.parquet",
+   "bytes": 94071937,
+   "n_rows": 28224,
+   "n_kept": 17778,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03101-of-03388.parquet",
+   "bytes": 106038632,
+   "n_rows": 28224,
+   "n_kept": 12497,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03098-of-03388.parquet",
+   "bytes": 94956581,
+   "n_rows": 28224,
+   "n_kept": 18481,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03100-of-03388.parquet",
+   "bytes": 85544027,
+   "n_rows": 28224,
+   "n_kept": 19412,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03105-of-03388.parquet",
+   "bytes": 117036359,
+   "n_rows": 28224,
+   "n_kept": 14238,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03106-of-03388.parquet",
+   "bytes": 89171364,
+   "n_rows": 28224,
+   "n_kept": 16654,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03102-of-03388.parquet",
+   "bytes": 93426368,
+   "n_rows": 28224,
+   "n_kept": 18375,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03109-of-03388.parquet",
+   "bytes": 100582712,
+   "n_rows": 28224,
+   "n_kept": 15122,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03103-of-03388.parquet",
+   "bytes": 128217525,
+   "n_rows": 28224,
+   "n_kept": 14982,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03107-of-03388.parquet",
+   "bytes": 98642233,
+   "n_rows": 28224,
+   "n_kept": 14985,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03108-of-03388.parquet",
+   "bytes": 87921000,
+   "n_rows": 28224,
+   "n_kept": 17433,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03110-of-03388.parquet",
+   "bytes": 98711559,
+   "n_rows": 28224,
+   "n_kept": 16583,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03131-of-03388.parquet",
+   "bytes": 115123561,
+   "n_rows": 28224,
+   "n_kept": 13652,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03112-of-03388.parquet",
+   "bytes": 110929265,
+   "n_rows": 28224,
+   "n_kept": 14174,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03111-of-03388.parquet",
+   "bytes": 109491982,
+   "n_rows": 28224,
+   "n_kept": 16622,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03094-of-03388.parquet",
+   "bytes": 92172382,
+   "n_rows": 28224,
+   "n_kept": 17539,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03115-of-03388.parquet",
+   "bytes": 114053402,
+   "n_rows": 28224,
+   "n_kept": 18925,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03116-of-03388.parquet",
+   "bytes": 124692738,
+   "n_rows": 28224,
+   "n_kept": 14965,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03113-of-03388.parquet",
+   "bytes": 110815407,
+   "n_rows": 28224,
+   "n_kept": 18959,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03117-of-03388.parquet",
+   "bytes": 93080799,
+   "n_rows": 28224,
+   "n_kept": 16832,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03118-of-03388.parquet",
+   "bytes": 118220364,
+   "n_rows": 28224,
+   "n_kept": 14458,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03127-of-03388.parquet",
+   "bytes": 107485257,
+   "n_rows": 28224,
+   "n_kept": 12068,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03123-of-03388.parquet",
+   "bytes": 93837399,
+   "n_rows": 28224,
+   "n_kept": 14466,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03122-of-03388.parquet",
+   "bytes": 101553902,
+   "n_rows": 28224,
+   "n_kept": 16568,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03120-of-03388.parquet",
+   "bytes": 120911158,
+   "n_rows": 28224,
+   "n_kept": 15855,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03121-of-03388.parquet",
+   "bytes": 97039778,
+   "n_rows": 28224,
+   "n_kept": 15845,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03119-of-03388.parquet",
+   "bytes": 107309805,
+   "n_rows": 28224,
+   "n_kept": 17696,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03124-of-03388.parquet",
+   "bytes": 96266512,
+   "n_rows": 28224,
+   "n_kept": 17807,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03125-of-03388.parquet",
+   "bytes": 104953803,
+   "n_rows": 28224,
+   "n_kept": 13808,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03104-of-03388.parquet",
+   "bytes": 104714426,
+   "n_rows": 28224,
+   "n_kept": 17338,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03129-of-03388.parquet",
+   "bytes": 120068000,
+   "n_rows": 28224,
+   "n_kept": 14663,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03126-of-03388.parquet",
+   "bytes": 101017979,
+   "n_rows": 28224,
+   "n_kept": 18708,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03128-of-03388.parquet",
+   "bytes": 94192876,
+   "n_rows": 28224,
+   "n_kept": 18324,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03133-of-03388.parquet",
+   "bytes": 114031631,
+   "n_rows": 28224,
+   "n_kept": 16039,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03132-of-03388.parquet",
+   "bytes": 93539075,
+   "n_rows": 28224,
+   "n_kept": 16848,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03136-of-03388.parquet",
+   "bytes": 116200013,
+   "n_rows": 28224,
+   "n_kept": 13063,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03130-of-03388.parquet",
+   "bytes": 100311479,
+   "n_rows": 28224,
+   "n_kept": 18097,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03138-of-03388.parquet",
+   "bytes": 111933343,
+   "n_rows": 28224,
+   "n_kept": 13098,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03134-of-03388.parquet",
+   "bytes": 121448059,
+   "n_rows": 28224,
+   "n_kept": 15535,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03139-of-03388.parquet",
+   "bytes": 92976948,
+   "n_rows": 28224,
+   "n_kept": 18041,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03141-of-03388.parquet",
+   "bytes": 89653705,
+   "n_rows": 28224,
+   "n_kept": 17423,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03140-of-03388.parquet",
+   "bytes": 108804383,
+   "n_rows": 28224,
+   "n_kept": 15198,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03137-of-03388.parquet",
+   "bytes": 98910430,
+   "n_rows": 28224,
+   "n_kept": 18362,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03142-of-03388.parquet",
+   "bytes": 105145656,
+   "n_rows": 28224,
+   "n_kept": 14133,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03135-of-03388.parquet",
+   "bytes": 124632700,
+   "n_rows": 28224,
+   "n_kept": 18530,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03143-of-03388.parquet",
+   "bytes": 90541865,
+   "n_rows": 28224,
+   "n_kept": 16908,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03146-of-03388.parquet",
+   "bytes": 109444243,
+   "n_rows": 28224,
+   "n_kept": 14229,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03144-of-03388.parquet",
+   "bytes": 102331942,
+   "n_rows": 28224,
+   "n_kept": 14553,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03145-of-03388.parquet",
+   "bytes": 88068318,
+   "n_rows": 28224,
+   "n_kept": 17536,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03148-of-03388.parquet",
+   "bytes": 119180826,
+   "n_rows": 28224,
+   "n_kept": 15662,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03151-of-03388.parquet",
+   "bytes": 118031309,
+   "n_rows": 28224,
+   "n_kept": 13832,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03149-of-03388.parquet",
+   "bytes": 112765102,
+   "n_rows": 28224,
+   "n_kept": 15937,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03147-of-03388.parquet",
+   "bytes": 100730705,
+   "n_rows": 28224,
+   "n_kept": 17078,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03150-of-03388.parquet",
+   "bytes": 118706740,
+   "n_rows": 28224,
+   "n_kept": 17429,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03153-of-03388.parquet",
+   "bytes": 131555786,
+   "n_rows": 28224,
+   "n_kept": 13737,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03155-of-03388.parquet",
+   "bytes": 131837195,
+   "n_rows": 28224,
+   "n_kept": 14286,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03152-of-03388.parquet",
+   "bytes": 102319798,
+   "n_rows": 28224,
+   "n_kept": 18124,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03154-of-03388.parquet",
+   "bytes": 109555399,
+   "n_rows": 28224,
+   "n_kept": 18037,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03156-of-03388.parquet",
+   "bytes": 108212773,
+   "n_rows": 28224,
+   "n_kept": 16775,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03158-of-03388.parquet",
+   "bytes": 107161055,
+   "n_rows": 28224,
+   "n_kept": 15237,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03157-of-03388.parquet",
+   "bytes": 124039097,
+   "n_rows": 28224,
+   "n_kept": 16193,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03160-of-03388.parquet",
+   "bytes": 134204618,
+   "n_rows": 28224,
+   "n_kept": 11408,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03159-of-03388.parquet",
+   "bytes": 108448454,
+   "n_rows": 28224,
+   "n_kept": 19044,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03164-of-03388.parquet",
+   "bytes": 124420928,
+   "n_rows": 28224,
+   "n_kept": 15241,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03169-of-03388.parquet",
+   "bytes": 117314617,
+   "n_rows": 28224,
+   "n_kept": 12150,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03161-of-03388.parquet",
+   "bytes": 114099312,
+   "n_rows": 28224,
+   "n_kept": 18739,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03163-of-03388.parquet",
+   "bytes": 104269914,
+   "n_rows": 28224,
+   "n_kept": 16455,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03162-of-03388.parquet",
+   "bytes": 135033209,
+   "n_rows": 28224,
+   "n_kept": 15368,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03165-of-03388.parquet",
+   "bytes": 103931340,
+   "n_rows": 28224,
+   "n_kept": 16726,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03170-of-03388.parquet",
+   "bytes": 95827602,
+   "n_rows": 28224,
+   "n_kept": 18700,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03166-of-03388.parquet",
+   "bytes": 120684169,
+   "n_rows": 28224,
+   "n_kept": 17432,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03167-of-03388.parquet",
+   "bytes": 128481676,
+   "n_rows": 28224,
+   "n_kept": 13908,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03176-of-03388.parquet",
+   "bytes": 107185766,
+   "n_rows": 28224,
+   "n_kept": 15152,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03173-of-03388.parquet",
+   "bytes": 125655528,
+   "n_rows": 28224,
+   "n_kept": 14124,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03168-of-03388.parquet",
+   "bytes": 120369850,
+   "n_rows": 28224,
+   "n_kept": 18628,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03171-of-03388.parquet",
+   "bytes": 131942305,
+   "n_rows": 28224,
+   "n_kept": 14576,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03174-of-03388.parquet",
+   "bytes": 98442814,
+   "n_rows": 28224,
+   "n_kept": 17219,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03175-of-03388.parquet",
+   "bytes": 114072879,
+   "n_rows": 28224,
+   "n_kept": 15743,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03172-of-03388.parquet",
+   "bytes": 110365340,
+   "n_rows": 28224,
+   "n_kept": 17535,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03178-of-03388.parquet",
+   "bytes": 118489809,
+   "n_rows": 28224,
+   "n_kept": 14050,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03177-of-03388.parquet",
+   "bytes": 111152496,
+   "n_rows": 28224,
+   "n_kept": 17406,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03183-of-03388.parquet",
+   "bytes": 99636419,
+   "n_rows": 28224,
+   "n_kept": 16896,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03180-of-03388.parquet",
+   "bytes": 122536021,
+   "n_rows": 28224,
+   "n_kept": 13450,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03181-of-03388.parquet",
+   "bytes": 102157917,
+   "n_rows": 28224,
+   "n_kept": 17520,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03182-of-03388.parquet",
+   "bytes": 121312176,
+   "n_rows": 28224,
+   "n_kept": 15098,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03179-of-03388.parquet",
+   "bytes": 102583457,
+   "n_rows": 28224,
+   "n_kept": 18174,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03185-of-03388.parquet",
+   "bytes": 89989746,
+   "n_rows": 28224,
+   "n_kept": 17346,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03193-of-03388.parquet",
+   "bytes": 123291572,
+   "n_rows": 28224,
+   "n_kept": 11235,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03184-of-03388.parquet",
+   "bytes": 111714222,
+   "n_rows": 28224,
+   "n_kept": 14750,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03191-of-03388.parquet",
+   "bytes": 119192023,
+   "n_rows": 28224,
+   "n_kept": 14008,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03188-of-03388.parquet",
+   "bytes": 114890633,
+   "n_rows": 28224,
+   "n_kept": 14796,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03186-of-03388.parquet",
+   "bytes": 109146568,
+   "n_rows": 28224,
+   "n_kept": 14665,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03187-of-03388.parquet",
+   "bytes": 96882937,
+   "n_rows": 28224,
+   "n_kept": 17291,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03195-of-03388.parquet",
+   "bytes": 117700165,
+   "n_rows": 28224,
+   "n_kept": 15107,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03190-of-03388.parquet",
+   "bytes": 114594348,
+   "n_rows": 28224,
+   "n_kept": 17386,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03196-of-03388.parquet",
+   "bytes": 91454674,
+   "n_rows": 28224,
+   "n_kept": 17124,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03200-of-03388.parquet",
+   "bytes": 67955873,
+   "n_rows": 28224,
+   "n_kept": 15893,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03197-of-03388.parquet",
+   "bytes": 121466269,
+   "n_rows": 28224,
+   "n_kept": 13921,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03189-of-03388.parquet",
+   "bytes": 101888697,
+   "n_rows": 28224,
+   "n_kept": 16750,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03194-of-03388.parquet",
+   "bytes": 103776945,
+   "n_rows": 28224,
+   "n_kept": 19082,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03192-of-03388.parquet",
+   "bytes": 115084144,
+   "n_rows": 28224,
+   "n_kept": 19504,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03201-of-03388.parquet",
+   "bytes": 115903124,
+   "n_rows": 28224,
+   "n_kept": 14504,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03205-of-03388.parquet",
+   "bytes": 81953415,
+   "n_rows": 28224,
+   "n_kept": 15015,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03204-of-03388.parquet",
+   "bytes": 81712595,
+   "n_rows": 28224,
+   "n_kept": 16729,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03199-of-03388.parquet",
+   "bytes": 120273282,
+   "n_rows": 28224,
+   "n_kept": 16259,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03203-of-03388.parquet",
+   "bytes": 111437552,
+   "n_rows": 28224,
+   "n_kept": 14876,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03198-of-03388.parquet",
+   "bytes": 113792890,
+   "n_rows": 28224,
+   "n_kept": 17572,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03202-of-03388.parquet",
+   "bytes": 103422315,
+   "n_rows": 28224,
+   "n_kept": 17203,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03206-of-03388.parquet",
+   "bytes": 67302801,
+   "n_rows": 28224,
+   "n_kept": 17613,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03207-of-03388.parquet",
+   "bytes": 122651431,
+   "n_rows": 28224,
+   "n_kept": 13011,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03213-of-03388.parquet",
+   "bytes": 85451248,
+   "n_rows": 28224,
+   "n_kept": 14500,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03212-of-03388.parquet",
+   "bytes": 77336442,
+   "n_rows": 28224,
+   "n_kept": 15266,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03215-of-03388.parquet",
+   "bytes": 98283009,
+   "n_rows": 28224,
+   "n_kept": 14943,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03209-of-03388.parquet",
+   "bytes": 124850116,
+   "n_rows": 28224,
+   "n_kept": 13831,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03208-of-03388.parquet",
+   "bytes": 103009588,
+   "n_rows": 28224,
+   "n_kept": 18211,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03217-of-03388.parquet",
+   "bytes": 97741030,
+   "n_rows": 28224,
+   "n_kept": 14987,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03216-of-03388.parquet",
+   "bytes": 86685413,
+   "n_rows": 28224,
+   "n_kept": 16915,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03210-of-03388.parquet",
+   "bytes": 96774477,
+   "n_rows": 28224,
+   "n_kept": 17224,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03219-of-03388.parquet",
+   "bytes": 92245530,
+   "n_rows": 28224,
+   "n_kept": 14109,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03218-of-03388.parquet",
+   "bytes": 82109110,
+   "n_rows": 28224,
+   "n_kept": 17045,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03214-of-03388.parquet",
+   "bytes": 78592234,
+   "n_rows": 28224,
+   "n_kept": 16855,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03211-of-03388.parquet",
+   "bytes": 108671069,
+   "n_rows": 28224,
+   "n_kept": 17029,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03221-of-03388.parquet",
+   "bytes": 82667394,
+   "n_rows": 28224,
+   "n_kept": 13458,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03222-of-03388.parquet",
+   "bytes": 82737531,
+   "n_rows": 28224,
+   "n_kept": 17337,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03220-of-03388.parquet",
+   "bytes": 81747091,
+   "n_rows": 28224,
+   "n_kept": 19317,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03223-of-03388.parquet",
+   "bytes": 95917471,
+   "n_rows": 28224,
+   "n_kept": 14744,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03227-of-03388.parquet",
+   "bytes": 118871004,
+   "n_rows": 28224,
+   "n_kept": 11257,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03224-of-03388.parquet",
+   "bytes": 97271439,
+   "n_rows": 28224,
+   "n_kept": 17885,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03225-of-03388.parquet",
+   "bytes": 105782751,
+   "n_rows": 28224,
+   "n_kept": 13539,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03236-of-03388.parquet",
+   "bytes": 145780133,
+   "n_rows": 28224,
+   "n_kept": 11058,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03232-of-03388.parquet",
+   "bytes": 113622788,
+   "n_rows": 28224,
+   "n_kept": 16774,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03226-of-03388.parquet",
+   "bytes": 98471335,
+   "n_rows": 28224,
+   "n_kept": 19403,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03228-of-03388.parquet",
+   "bytes": 101472591,
+   "n_rows": 28224,
+   "n_kept": 18977,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03229-of-03388.parquet",
+   "bytes": 132475534,
+   "n_rows": 28224,
+   "n_kept": 14419,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03234-of-03388.parquet",
+   "bytes": 117495001,
+   "n_rows": 28224,
+   "n_kept": 14094,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03240-of-03388.parquet",
+   "bytes": 103622891,
+   "n_rows": 28224,
+   "n_kept": 10949,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03238-of-03388.parquet",
+   "bytes": 137086061,
+   "n_rows": 28224,
+   "n_kept": 14957,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03239-of-03388.parquet",
+   "bytes": 102181173,
+   "n_rows": 28224,
+   "n_kept": 17740,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03231-of-03388.parquet",
+   "bytes": 132097405,
+   "n_rows": 28224,
+   "n_kept": 15103,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03230-of-03388.parquet",
+   "bytes": 107569672,
+   "n_rows": 28224,
+   "n_kept": 17265,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03235-of-03388.parquet",
+   "bytes": 112994062,
+   "n_rows": 28224,
+   "n_kept": 19126,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03233-of-03388.parquet",
+   "bytes": 125771236,
+   "n_rows": 28224,
+   "n_kept": 17127,
+   "n_non_integer": 0
+  },
+  {
+   "shard": "train-03237-of-03388.parquet",
+   "bytes": 123794158,
+   "n_rows": 28224,
+   "n_kept": 18930,
+   "n_non_integer": 0
+  }
+ ],
+ "cache_dir": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r6_followup_v1/assets/cache/halves_v1",
+ "elapsed_s": 215.2,
+ "commit": "6416e69e7b0b0d0ea318c2ef9f804589e33e6297",
+ "exposure": "TRAIN drug wells only; validation and test wells were not read"
+}

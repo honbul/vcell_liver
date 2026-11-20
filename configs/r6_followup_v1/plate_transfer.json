@@ -1,0 +1,13 @@
+{
+ "out": "reports/r6_followup_v1/plate_transfer.tsv",
+ "seeds": [42, 43, 44],
+ "arms": {
+  "S": {"stage": "branch_f2", "pattern": "f2_S_plate{plate}_s{seed}"},
+  "SD": {"stage": "branch_f2", "pattern": "f2_SD_plate{plate}_s{seed}"},
+  "M": {"stage": "branch_f2", "pattern": "f2_M_plate{plate}_s{seed}"},
+  "R": {"stage": "branch_f2", "pattern": "f2_R_plate{plate}_s{seed}"},
+  "SD_inplate": {"kind": "inplate", "stage": "confirm", "pattern": "c_SD_f{fold}_s{seed}"}
+ },
+ "pairs": [["SD", "linemean_transfer"], ["S", "linemean_transfer"], ["M", "linemean_transfer"], ["R", "linemean_transfer"],
+           ["SD", "poolmean_inplate"], ["SD", "S"], ["SD", "M"], ["SD", "R"], ["SD", "SD_inplate"], ["poolmean_inplate", "linemean_transfer"]]
+}

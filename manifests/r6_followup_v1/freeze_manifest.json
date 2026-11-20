@@ -1,0 +1,213 @@
+{
+ "label": "existing-benchmark follow-up evaluation, record only, after the follow-up concluded negative",
+ "split_role": "existing_benchmark_followup_eval_record_only",
+ "decision": "reports/r6_followup_v1/DECISIONS.md D7",
+ "code_commit": "04f576903ff537b17b9818aa748547c0ba71c2c7",
+ "what_is_frozen": "S, M, F1A with the settings already used in Phase C (S, M) and branch F1 (F1A); no re-tuning, no new settings",
+ "settings_source": {
+  "S": "D3 (lr 1e-3, chosen on fold-2 inner dev)",
+  "M": "D3 (lr 3e-3)",
+  "F1A": "D4/D5 (SD architecture, lr 3e-3, anchor kappa 2 from D1, pair loss 0, h shrink 10)"
+ },
+ "refit_or_reuse": "REFIT: every arm is trained anew on all 209 TRAIN drugs (setting 'final'); the source-fold checkpoints are not reused because their fitting drugs are a subset",
+ "checkpoint_rule": "last epoch of a fixed 60-epoch run (no early stopping, no checkpoint choice), as in Phase C and F1",
+ "data_rule": "fitting uses TRAIN drugs only (y scale, anchors, views); the 70 VALIDATION drugs are unused; TEST responses are read only by final_eval.py, once",
+ "references": "cell-line mean and shrunk pool mean (kappa 2) fitted on the 209 TRAIN drugs; original R6 stored TEST predictions of B00 (3 seeds) and Z0, not retrained",
+ "metrics": "p in {1.0, 0.25}: total RMSE (drug macro), within-pool contrast RMSE, tie-corrected retrieval + legacy; paired drug-group bootstrap 2000",
+ "pairs": [
+  [
+   "S",
+   "B00"
+  ],
+  [
+   "M",
+   "S"
+  ],
+  [
+   "F1A",
+   "M"
+  ],
+  [
+   "S",
+   "poolmean"
+  ],
+  [
+   "M",
+   "poolmean"
+  ],
+  [
+   "F1A",
+   "poolmean"
+  ],
+  [
+   "B00",
+   "poolmean"
+  ],
+  [
+   "Z0",
+   "poolmean"
+  ],
+  [
+   "poolmean",
+   "linemean"
+  ]
+ ],
+ "subsets": [
+  "all",
+  "snu423 (CVCL_0366)"
+ ],
+ "rehearsal": "final_eval.py --rehearsal on source fold 2 reproduced the committed fold-2 values (job 26181); it opened no TEST response",
+ "after_scoring": "no setting is changed; any later change is a new version with new run ids and new table names",
+ "frozen_files": {
+  "src/r6_followup_v1/final_eval.py": "2a7b4c0cbaa7bf6cfcdc433ef40ddf5dfe78e32a876e433679bbc7a4e2628e6c",
+  "src/r6_followup_v1/train_fixed.py": "33320ba75883559f3e173f812b993f4b2086b07c1ad4443faebf6e6dc607cfd8",
+  "src/r6_followup_v1/common.py": "b82ee5d70a8e8ae23682a917a3296c374519f3c37867a4f31f7653bad4cfcbac",
+  "src/r6_followup_v1/scoring.py": "d88018e5c25dbc1823ede01bfe8101472bce67b3490c23b4625ca1ffc36fc2ac",
+  "src/r6_followup_v1/metrics.py": "0c51a2dac0cdc9c27223d06e26edcda1d7d30b3b602478c5621bcad81a7e5d6e",
+  "src/r6_followup_v1/baselines.py": "d937841f26ab9aa63ba05113600fa7ee2fa2ec92a9705e9402acfffb1bf63040",
+  "src/r6_followup_v1/views.py": "e083328ac215e87ab223bcf66a7ca6d51fa00c3625f71d4415d686676d6eb686",
+  "src/r6_followup_v1/phase_a.py": "eaeca6a058ac507086223754ed6321009c810ca6296fc4b43c8a3a9c503b9d4f",
+  "configs/r6_followup_v1/model.json": "5dfa78bf29e7c13bf10c9c930cb5a3a4b85604083e73d967efb02c56236bdacc",
+  "configs/r6_followup_v1/final_followup_eval.json": "2a3fa2307e5c463d8eb1e89cd152a7182f7ec92605ca585c88fcf1b9ff9d95f4",
+  "configs/r6_followup_v1/phase_a.json": "bc39ec39e7b90348c405425557c3273cc7e4283a73553da54ec3255965817afe",
+  "manifests/r6_followup_v1/kappa_selection.json": "9326a40f03576edcf905c6490f1cc9e043c559e20089b54b295798cacfe52a4f",
+  "experiments/r6_followup_v1/tasks/final_followup.txt": "2574830fbfedcc2366f73c9871a71735c3c3d9a7a69822fa4d5ed00023e3ebc3"
+ },
+ "final_runs": [
+  {
+   "run_id": "ff_S_s42",
+   "label": "S",
+   "arm": "S",
+   "lr": 0.001,
+   "seed": 42,
+   "anchor_kappa": null,
+   "pair_lambda": 0.0,
+   "drug_shrink": 10.0,
+   "epochs": 60,
+   "views": "fixed",
+   "view_cache": "views_s42.npz",
+   "view_cache_sha256_counts": "edb5a6547679fce3553cff021e11d9db673e29cb4a901df28e3290015b80007c",
+   "view_cache_sha256_cells": "d3a8d535d29d5c00176a2c87da23601ec1da5df4a9fa920062eb03a781fb4433"
+  },
+  {
+   "run_id": "ff_M_s42",
+   "label": "M",
+   "arm": "M",
+   "lr": 0.003,
+   "seed": 42,
+   "anchor_kappa": null,
+   "pair_lambda": 0.0,
+   "drug_shrink": 10.0,
+   "epochs": 60,
+   "views": "fixed",
+   "view_cache": "views_s42.npz",
+   "view_cache_sha256_counts": "edb5a6547679fce3553cff021e11d9db673e29cb4a901df28e3290015b80007c",
+   "view_cache_sha256_cells": "d3a8d535d29d5c00176a2c87da23601ec1da5df4a9fa920062eb03a781fb4433"
+  },
+  {
+   "run_id": "ff_F1A_s42",
+   "label": "F1A",
+   "arm": "SD",
+   "lr": 0.003,
+   "seed": 42,
+   "anchor_kappa": 2.0,
+   "pair_lambda": 0.0,
+   "drug_shrink": 10.0,
+   "epochs": 60,
+   "views": "fixed",
+   "view_cache": "views_s42.npz",
+   "view_cache_sha256_counts": "edb5a6547679fce3553cff021e11d9db673e29cb4a901df28e3290015b80007c",
+   "view_cache_sha256_cells": "d3a8d535d29d5c00176a2c87da23601ec1da5df4a9fa920062eb03a781fb4433"
+  },
+  {
+   "run_id": "ff_S_s43",
+   "label": "S",
+   "arm": "S",
+   "lr": 0.001,
+   "seed": 43,
+   "anchor_kappa": null,
+   "pair_lambda": 0.0,
+   "drug_shrink": 10.0,
+   "epochs": 60,
+   "views": "fixed",
+   "view_cache": "views_s43.npz",
+   "view_cache_sha256_counts": "272c1409039acde4932a69cde94ed8bb5111ebc5daea160f5ed41d770a6f1c7d",
+   "view_cache_sha256_cells": "024e2bdc25ddf872ac07e1fd7037f7b6f1274a28973ff2280a59343fbec5bd45"
+  },
+  {
+   "run_id": "ff_M_s43",
+   "label": "M",
+   "arm": "M",
+   "lr": 0.003,
+   "seed": 43,
+   "anchor_kappa": null,
+   "pair_lambda": 0.0,
+   "drug_shrink": 10.0,
+   "epochs": 60,
+   "views": "fixed",
+   "view_cache": "views_s43.npz",
+   "view_cache_sha256_counts": "272c1409039acde4932a69cde94ed8bb5111ebc5daea160f5ed41d770a6f1c7d",
+   "view_cache_sha256_cells": "024e2bdc25ddf872ac07e1fd7037f7b6f1274a28973ff2280a59343fbec5bd45"
+  },
+  {
+   "run_id": "ff_F1A_s43",
+   "label": "F1A",
+   "arm": "SD",
+   "lr": 0.003,
+   "seed": 43,
+   "anchor_kappa": 2.0,
+   "pair_lambda": 0.0,
+   "drug_shrink": 10.0,
+   "epochs": 60,
+   "views": "fixed",
+   "view_cache": "views_s43.npz",
+   "view_cache_sha256_counts": "272c1409039acde4932a69cde94ed8bb5111ebc5daea160f5ed41d770a6f1c7d",
+   "view_cache_sha256_cells": "024e2bdc25ddf872ac07e1fd7037f7b6f1274a28973ff2280a59343fbec5bd45"
+  },
+  {
+   "run_id": "ff_S_s44",
+   "label": "S",
+   "arm": "S",
+   "lr": 0.001,
+   "seed": 44,
+   "anchor_kappa": null,
+   "pair_lambda": 0.0,
+   "drug_shrink": 10.0,
+   "epochs": 60,
+   "views": "fixed",
+   "view_cache": "views_s44.npz",
+   "view_cache_sha256_counts": "7458b916da77c048f9fa836b1e40431adde2ea1163f0199ffd3abba0f23d54f2",
+   "view_cache_sha256_cells": "43f0e6ad776cec0ded06f451099b2288da090ab03c79e02f2789e18c34a0e5b4"
+  },
+  {
+   "run_id": "ff_M_s44",
+   "label": "M",
+   "arm": "M",
+   "lr": 0.003,
+   "seed": 44,
+   "anchor_kappa": null,
+   "pair_lambda": 0.0,
+   "drug_shrink": 10.0,
+   "epochs": 60,
+   "views": "fixed",
+   "view_cache": "views_s44.npz",
+   "view_cache_sha256_counts": "7458b916da77c048f9fa836b1e40431adde2ea1163f0199ffd3abba0f23d54f2",
+   "view_cache_sha256_cells": "43f0e6ad776cec0ded06f451099b2288da090ab03c79e02f2789e18c34a0e5b4"
+  },
+  {
+   "run_id": "ff_F1A_s44",
+   "label": "F1A",
+   "arm": "SD",
+   "lr": 0.003,
+   "seed": 44,
+   "anchor_kappa": 2.0,
+   "pair_lambda": 0.0,
+   "drug_shrink": 10.0,
+   "epochs": 60,
+   "views": "fixed",
+   "view_cache": "views_s44.npz",
+   "view_cache_sha256_counts": "7458b916da77c048f9fa836b1e40431adde2ea1163f0199ffd3abba0f23d54f2",
+   "view_cache_sha256_cells": "43f0e6ad776cec0ded06f451099b2288da090ab03c79e02f2789e18c34a0e5b4"
+  }
+ ]
+}

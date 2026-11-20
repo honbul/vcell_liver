@@ -1,0 +1,46 @@
+{
+ "package": "R6-R repeat-contrast audit (private plan 2026-11-19 section 3.2)",
+ "exposure_status": "follow-up on exposed data (source TRAIN-drug wells; the 21 cross-plate drugs were already summarised in v1 positive_control_replicate_wells.tsv). Not a blind test.",
+ "hypothesis": "Within-pool drug differences Delta_d - Delta_e measured on one plate are reproduced on another plate for the same cell line and drug pair (beyond a wrong drug pairing), i.e. the low v1 cross-plate centred cosine (about 0.010) was partly caused by pool-mean centring over different drug sets.",
+ "input_contract": {
+  "wells": "TRAIN-drug treated wells at 0.5 uM, v1 cache halves_v1 (read-only), usable rule and eligible sets fixed by repeat_eligibility.py from metadata only (manifests/r6_specificity_v2/*)",
+  "response_value": "treated full-well mean log1p(1e4 x / library) per well; duplicate usable wells of one (line, drug, plate) are cell-weighted. All primary contrasts are within one control pool, so the reference-control mean cancels exactly and is not used.",
+  "genes": "the 2000-gene R6 panel",
+  "not_used": "validation and test drug wells; any model prediction"
+ },
+ "unit_of_resampling": "drug structure group (all its lines, plate pairs and pairs move together); pair links get weight m_d * m_e (dyadic drug-block bootstrap); wrong-match values of a link are held fixed within a replicate",
+ "n_boot": 2000,
+ "boot_seed": 0,
+ "primary_set": "pair links with >= 1 disjoint wrong-match pair in the same stratum (strata with >= 4 common drugs)",
+ "primary_contrasts": {
+  "P1_cos": "drug-macro mean of [cos(c_P, c_Q) - wrong-match cos], wrong-match = mean over disjoint pairs (d',e') of the stratum (canonical orientation d'<e', both directions P->Q and Q->P); favourable if > 0",
+  "P2_rmse": "drug-macro mean of [RMSE(c_P, c_Q) - wrong-match RMSE], wrong-match RMSE = orientation-averaged RMSE between c_P(d,e) and c_Q(d',e') over disjoint pairs, both directions; favourable if < 0; also reported relative to the wrong-match level"
+ },
+ "multiplicity": "Holm over {P1_cos, P2_rmse} at alpha 0.05 with two-sided drug-block bootstrap p = 2 min(P(bs <= 0), P(bs >= 0)) (floor 1/B)",
+ "practical_threshold": "P2 relative |diff| >= 0.5% of the wrong-match RMSE (plan section 2.3 R6 proposal); P1 has no practical threshold (reported as is)",
+ "verdict_rule": {
+  "repeatable": "both P1 and P2 Holm-significant in the favourable direction, P2 beyond the practical threshold, and the favourable sign of both point estimates kept in every plate leave-one-out row",
+  "weak_or_uncertain": "at least one of P1/P2 Holm-significant favourable but the 'repeatable' condition not met",
+  "not_established": "neither P1 nor P2 Holm-significant favourable",
+  "unidentifiable": "fewer than 8 unique drugs or fewer than 2 plate pairs in the primary set (checked from metadata before any response is read)"
+ },
+ "r6e_entry": "R6-E runs if the R6-R verdict is 'repeatable' or 'weak_or_uncertain' AND a label-free fixed molecular representation with documented provenance is available on the server without large downloads; otherwise a not-run record",
+ "secondary_and_sensitivity": [
+  "all pair links (including 3-drug strata without disjoint wrong-match): matched cos and matched - zero RMSE",
+  "matched - zero RMSE on the primary set (zero = constant contrast prediction)",
+  "S1 common-anchor centring: a_S(d) = x_{d,S} - mean of the OTHER common drugs of the stratum on plate S; cos(a_P, a_Q), RMSE vs zero",
+  "S2 v1-style pool centring (mean of all usable TRAIN-drug wells of the pool, query included) and pool leave-query-out centring, single drug across plates, same eligible drug links",
+  "S3 plate leave-one-out (drop every link touching plate X), P1/P2 point and CI",
+  "S4 technical split: same-well barcode halves c^A vs c^B (ceiling of measurement noise) and the noise-matched cross-plate half A (P) vs half B (Q)",
+  "S5 compound identity: links whose wells are identical or salt-variant catalog compounds only",
+  "S6 same plate, different well (8 drugs): single-drug pool-LOO-centred well 1 vs well 2, and within-plate pair contrasts where two drugs both have 2 wells",
+  "S7 drug leave-one-out range of P1/P2 point estimates",
+  "per-drug and per-plate-pair tables; effective numbers of drugs and plate pairs (inverse Simpson of link shares)"
+ ],
+ "caveats_fixed_before_reading": [
+  "plates: 5 in total and 3 plate pairs carry the primary set, so no plate-population CI is given; plate leave-one-out is a technical sensitivity only",
+  "independent culture cannot be identified from metadata (no date / passage / batch column); a different plate is a different well and plate only",
+  "the drug unit is the structure group; the two plates often hold different catalog entries (salt forms, in a few groups other compounds) of the group",
+  "a negative or unstable result is not evidence that drugs have no biological effect"
+ ]
+}
