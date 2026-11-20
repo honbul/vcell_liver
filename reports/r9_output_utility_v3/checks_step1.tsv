@@ -1,0 +1,12 @@
+check	description	passed	detail
+C1a	n_fine+n_parent+n_abstain == n_known (all rows)	True	rows=6300
+C1b	fine_coverage+parent_fraction+abstain_fraction == 1 on n_known>0 rows	True	rows_with_known=6300; max|sum-1|=2.22e-16
+C2a	n_output == n_fine+n_parent; n_wrong_output == n_wrong_fine+n_wrong_parent	True	
+C2b	n_wrong_x <= n_x	True	
+C3a	per (version,condition,seed,model): sum n_known=27212, malignant=15723, unclassified=7088, total=50023	True	groups=252; n_known range 27212-27212
+C3b	2100 rows per version, 0 duplicate keys	True	{'corrected': 2100, 'original': 2100, 'replay': 2100}; dup=0
+C4	NA iff zero denominator (output_error/fine_error/parent_error/coverages)	True	no_output rows=131; no_known rows=0
+C5a	recomputed AUPRC fields == stored v2 per-donor-seed tables (NA pattern equal, max|diff|<=1e-5)	True	max|diff|=5e-07
+C5b	model-level donor-macro primary == a4_model_table_all_versions.tsv	True	rows=84; max|diff|=4.98e-07
+C6	fine/parent/abstain fractions & fine_error & has-output output_error == stored v2 tables	True	max|diff|=5e-07
+C7	recomputed T / tau == calibration_provenance.tsv	True	rows=84; max|diff|=4.87e-06
