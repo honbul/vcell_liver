@@ -1,0 +1,74 @@
+{
+ "run_id": "output_utility_v3",
+ "package": "P0-R9 output / abstention metric correction (private plan 2026-11-20 section 5)",
+ "base_commit": "0cfd516813f352fc7f7ae0e0f70a75719e241148",
+ "question": "Under the existing source-OOF temperature + 2% empirical source-error policy, on how many known external cells does the corrected-normalization model output an answer (fine / parent), and how often is an output wrong?",
+ "exposure_status": "GSE151530 HCC (25 donors) is a repeatedly used DEVELOPMENT DIAGNOSTIC (scored in phase2-v2 E00, R9 A4 v1, R9 v2 C1). Not blind, not an independent external validation of any policy.",
+ "new_training": "none. No model, checkpoint, transform, temperature, threshold, prior or label map is refit or changed. Re-aggregation of stored predictions only.",
+ "inputs": {
+  "external_obs": "assets/cache/gse151530_hcc_counts.h5ad (symlink to vcell_liver_r9_rare_state, obs only)",
+  "original_predictions": "assets/runs/a4_external_v1/<cond>__s<seed>.npz (v1 stored ext_logp__<model>, oof_logp__<model>, src_truth)",
+  "replay_corrected_predictions": "assets/runs/a4_external_norm_v2/<cond>__s<seed>.npz (ext_logp_replay__<model>, ext_logp_corrected__<model>) + .run.json",
+  "v2_oof_for_T2_failed_tasks": "assets/runs/a4_external_norm_v2_oof/<cond>__s<seed>.npz (sparse_B_N64_D4 s2, sparse_Fibroblast_N64_D4 s1)",
+  "stored_scores_for_unchanged_check": ["reports/r9_rare_state/a4_external_norm_v2/a4_per_donor_seed_{original,replay,corrected}.tsv", "reports/r9_rare_state/a4_external_norm_v2/a4_model_table_all_versions.tsv", "reports/r9_rare_state/a4_external_norm_v2/calibration_provenance.tsv", "reports/r9_rare_state/a4_per_donor_seed.tsv", "reports/r9_rare_state/a4_model_table.tsv"]
+ },
+ "conditions": ["nat", "sparse_B_N64_D4", "sparse_Endothelial_N64_D4", "sparse_Fibroblast_N64_D4"],
+ "condition_note": "sparse_<X> is the name of the SOURCE training condition (target X sparse in training). Coverage/error are over all 5 known external classes, not the target class only.",
+ "seeds": [0, 1, 2],
+ "models": ["LR_donor", "P1_donor", "GMM_K", "A00", "A10", "A01", "A11"],
+ "selected_model": "LR_donor (pre-designated in v1 C2, unchanged)",
+ "versions": {
+  "corrected": "PRIMARY: current model = v2 head + v2 calibration (T2-pass tasks: v1 source OOF; T2-fail tasks: v2 source OOF) + corrected external normalization",
+  "replay": "same heads/calibration as corrected, v1 (HVG-only) external normalization; kept for completeness",
+  "original": "stored v1 predictions + v1 calibration; kept for completeness"
+ },
+ "calibration_policy": "identical to scripts/r9/v2/c1_a4_eval.py (temperature grid exp(linspace(log .25, log 8, 61)) on source OOF NLL; tau_fine = lowest confidence with cumulative source OOF fine error <= 0.02; tau_parent likewise on non-fine cells at parent level). Not an external 2% guarantee. Recomputed T/tau must equal calibration_provenance.tsv.",
+ "output_levels": "fine if calibrated max prob >= tau_fine; else parent if max parent prob >= tau_parent; else abstain (unchanged).",
+ "known_cells": "external cells whose author Type maps to one of B, Endothelial, Fibroblast, Myeloid, T/NK (27,212). Malignant (15,723) and unclassified (7,088) are never put into accuracy; their fine/parent/abstain counts are reported separately.",
+ "row_fields": {
+  "key": "version, condition, seed, model, ext_donor",
+  "n_known": "known cells of the donor",
+  "n_fine/n_parent/n_abstain": "known cells at each output level",
+  "n_output": "n_fine + n_parent",
+  "n_wrong_fine": "fine outputs whose fine label != truth",
+  "n_wrong_parent": "parent outputs whose parent group != truth parent",
+  "n_wrong_output": "n_wrong_fine + n_wrong_parent",
+  "fine_coverage/parent_fraction/abstain_fraction": "count / n_known; NA if n_known = 0",
+  "output_coverage": "n_output / n_known; NA if n_known = 0",
+  "output_error": "n_wrong_output / n_output; NA if n_output = 0 (never 0 by default)",
+  "fine_error": "n_wrong_fine / n_fine; NA if n_fine = 0",
+  "parent_error": "n_wrong_parent / n_parent; NA if n_parent = 0",
+  "output_status": "no_known_cells if n_known = 0; no_output if n_known > 0 and n_output = 0; has_output otherwise",
+  "unmapped": "n_malignant, n_malignant_{fine,parent,abstain}, n_unclassified, n_unclassified_{fine,parent,abstain}",
+  "auprc": "auprc_<class> (>=10 positives), allmapped_auprc, target_auprc, primary recomputed with the v2 code for the unchanged check only"
+ },
+ "aggregation": {
+  "coverage_donor_macro": "per donor mean over the 3 seeds, then equal weight over the fixed 25 external donors (donors with n_known > 0; expected 25)",
+  "error_donor_macro": "per donor mean over seeds with n_output > 0, then equal weight over donors with >= 1 such seed; report n_valid_donors and n_valid_donor_seed_rows (out of 25 / 75)",
+  "pooled_output_error_aux": "sum n_wrong_output / sum n_output over all donor x seed rows of (version, condition, model). Auxiliary column; never mixed with donor-macro values",
+  "ci": "donor bootstrap 10,000 resamples (numpy default_rng seed 0), 95% percentile interval, over the donors entering that donor-macro mean. Donors are the unit; cells and seeds are not independent replicates",
+  "full_donor_table": "coverage_per_donor.tsv always lists all 25 donors for every version x condition x model, including no-output donors"
+ },
+ "primary_report": "Descriptive, no between-arm contrast: for LR_donor / corrected, per condition: donor-macro fine coverage, output coverage, abstain fraction and conditional output error with 95% donor-bootstrap CIs and valid donor/seed counts. Other heads and versions are auxiliary rows.",
+ "decision_mapping_plan_5_4": {
+  "applies_to": "LR_donor, corrected, each condition separately (the 4 conditions are not pooled)",
+  "rule_A_few_outputs": "donor-macro output_coverage point estimate < 0.50 -> plan 5.4 row 1 (majority of known cells unanswered: not adoptable for full automatic classification; limited high-confidence auxiliary use only as a separate later review). 0.50 restates the plan's 'most cells' wording (plan 0 item 2); it is NOT a minimum-coverage pass line and output_coverage >= 0.50 approves nothing.",
+  "rule_B_high_error": "donor-macro output_error 95% CI lower bound > 0.02 (the policy's own nominal source rate) -> plan 5.4 row 2 (policy practicality insufficient; no threshold re-selection on external results).",
+  "rule_C_some_ok": "output_coverage >= 0.50 AND output_error 95% CI upper bound <= 0.02 -> plan 5.4 row 3 (describe that condition only; no generalization to other rare types; still a development diagnostic).",
+  "otherwise": "error relative to 0.02 not established (CI contains 0.02) -> recorded as undetermined for row 2/3; row 1 still applied by rule A",
+  "no_output_rows": "if any donor x seed row is no_output, it is listed in no_output_summary.tsv and stated next to the decision",
+  "note": "Rules A and B can both apply. No new minimum coverage or maximum error pass line is created; operational requirements are a later user decision to be fixed before the next independent evaluation (plan 5.4)."
+ },
+ "checks": {
+  "C1_partition": "n_fine + n_parent + n_abstain == n_known on every row; fine_coverage + parent_fraction + abstain_fraction == 1 (|diff| <= 1e-12) on rows with n_known > 0",
+  "C2_count_identities": "n_output == n_fine + n_parent; n_wrong_output == n_wrong_fine + n_wrong_parent; n_wrong_x <= n_x",
+  "C3_totals": "per (version, condition, seed, model): sum n_known = 27212, sum n_malignant = 15723, sum n_unclassified = 7088, total 50023; 2100 rows per version, 0 duplicate keys",
+  "C4_na": "output_error NA iff n_output = 0; fine_error NA iff n_fine = 0; parent_error NA iff n_parent = 0; coverages NA iff n_known = 0; no NA replaced by 0",
+  "C5_auprc_unchanged": "recomputed auprc_<class>, allmapped_auprc, target_auprc, primary vs stored v2 per-donor-seed tables (all 3 versions): identical NA pattern and max |diff| <= 1e-5 (stored values are %.6g); model-level primary vs a4_model_table_all_versions.tsv; if any differs -> stop and isolate the cause (out of aggregation scope)",
+  "C6_fractions_vs_stored": "fine_coverage / parent_level_frac / abstain_frac vs stored v2 tables max |diff| <= 1e-5; stored output_error equals new output_error on has_output rows; on no_output rows stored output_error is expected to be 0 (the bug) and is counted",
+  "C7_calibration": "recomputed T, tau_fine, tau_parent equal calibration_provenance.tsv (|diff| <= 1e-5)",
+  "C8_regeneration": "summary tables are regenerated by a separate step that reads only output_counts_per_donor_seed*.tsv"
+ },
+ "nondeterminism": "No replay needed: all predictions are stored. The plan 5.5 one-case replay is not run unless a check fails and reconstruction is required.",
+ "resources": {"cpu_jobs": 1, "cpus_per_task": 4, "gpu": 0, "wrapper": "v3_tools/v3_sbatch.sh, job name prefix v3r9_"}
+}
