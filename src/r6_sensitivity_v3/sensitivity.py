@@ -198,7 +198,7 @@ def main() -> None:
     if a.wiring_test:
         out_dir = Path(os.environ["R6F_ASSETS"]) / "scratch" / "wiring_sensitivity_v3"
     out_dir.mkdir(parents=True, exist_ok=True)
-    B, seed = int(spec["n_boot"]), int(spec["boot_seed"])
+    B, seed = int(spec["resampling"]["n_boot"]), int(spec["resampling"]["boot_seed"])
     halves = Path(os.environ["R6F_ASSETS"]) / "cache" / "halves_v1"
     tm = np.load(halves / "treated_halves.npy", mmap_mode="r")
     if a.wiring_test:  # same random generator as the v2 wiring test; no response value is read
