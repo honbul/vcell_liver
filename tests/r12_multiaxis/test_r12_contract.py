@@ -117,3 +117,14 @@ def test_parameters_match_at_registered_output_width_and_seed_repeats():
     b = ResidualHead(**vars(options)).eval()
     x = (torch.ones(2, 32), torch.ones(2, 16))
     assert torch.equal(a(*x), b(*x))
+
+
+def test_scoring_joins_multiple_treated_wells_to_one_physical_control():
+    from src.r12_multiaxis.scoring import match_rows
+
+    left = pd.DataFrame({"plate_id": ["p1", "p1", "p2"], LINE: ["a", "a", "a"],
+                         KEY[0]: ["treated1", "treated2", "treated3"]})
+    right = pd.DataFrame({"plate_id": ["p2", "p1"], LINE: ["a", "a"],
+                          KEY[0]: ["control2", "control1"]})
+    pos = match_rows(left, right, ["plate_id", LINE])
+    assert right.iloc[pos][KEY[0]].tolist() == ["control1", "control1", "control2"]

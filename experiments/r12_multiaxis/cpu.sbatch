@@ -11,4 +11,8 @@ if [[ "$1" == stage ]]; then export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL
 printf 'job=%s host=%s start=%s\n' "$SLURM_JOB_ID" "$(hostname)" "$(date -Iseconds)"
 module="$1"
 shift
+if [[ ( "$module" == score || "$module" == secondary ) && "${!#}" == score ]]; then
+  set -- --target "$module" "$@"
+  module=scoring
+fi
 /usr/bin/time -v "${R12_PY:-../vcell_liver_r11_chemical_probe/assets/study-env/bin/python}" -m "src.r12_multiaxis.$module" --config configs/r12_multiaxis/config.yaml "$@"
