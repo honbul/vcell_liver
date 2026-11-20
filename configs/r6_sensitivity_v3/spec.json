@@ -1,0 +1,51 @@
+{
+ "package": "P0-R6 v3 sensitivity correction (private plan 2026-11-20 section 6.2)",
+ "base": "research/r6-specificity-observation-v2 @ 3499df9ffdcf7e6221a5bd1c00daf7af031ff806 (R6-R freeze e20bdde, scored by job 26743)",
+ "exposure_status": "correction of an analysis on already exposed data (source TRAIN-drug wells read by v2 job 26743). Not blind, not independent, not a new biological repeat.",
+ "question": "Do the v2 R6-R sensitivity results S5 (identical/salt-variant compounds) and S7 (drug leave-one-out), and their status labels, change when the wrong-match comparator set is rebuilt with the same filter / leave-out as the query links?",
+ "input_contract": {
+  "eligible_sets": "manifests/r6_specificity_v2/* unchanged (metadata only, frozen in v2 e20bdde)",
+  "responses": "v1 treated-well means halves_v1/treated_halves.npy (full-well slice), read-only symlink; cell-weighted per (line, drug, plate) exactly as v2",
+  "name_class": "v2 catalog-name class per (plate pair, drug): identical / salt_variant / other",
+  "not_used": "validation/test drug wells, any model prediction, any new data"
+ },
+ "comparator_definitions": {
+  "primary": "v2 unchanged: wrong-match = all disjoint pairs (d'<e') of the stratum, both directions",
+  "S5_v2_before": "query links with both drugs identical/salt; wrong-match = all disjoint pairs (other-class drugs included)",
+  "S5_v3_after": "query links with both drugs identical/salt; wrong-match = disjoint pairs whose BOTH drugs are identical/salt in that plate pair; links without such a pair are excluded and counted",
+  "S7_v2_before": "for each primary drug g: drop links whose query pair contains g; wrong-match unchanged (g may remain a candidate)",
+  "S7_v3_after": "for each primary drug g: drop links whose query pair contains g AND drop every wrong-match candidate pair containing g; links left without a candidate are excluded and counted",
+  "S5_S1_v2_before": "common-anchor centring, query drug identical/salt, anchor = all other common drugs of the stratum",
+  "S5_S1_v3_after": "query drug identical/salt AND anchor drugs restricted to identical/salt; at least 2 anchors (v2 rule), else excluded and counted",
+  "S3_plate_LOO": "recomputed only to re-derive the v2 verdict; comparator unaffected (dropping a plate drops whole strata)",
+  "not_rebuilt": "S6 same-plate rows (no wrong-match comparator; pool centring over the whole pool) are not recomputed"
+ },
+ "membership_file": "reports/r6_sensitivity_correction_v3/comparator_membership.tsv (metadata only, written and committed BEFORE the freeze)",
+ "resampling": {
+  "unit": "drug structure group, dyadic weights m_d*m_e, drug-macro (v2 Boot class imported unchanged)",
+  "n_boot": 2000,
+  "boot_seed": 0,
+  "bootstrap_drug_set": "union of drugs in eligible pair links, anchor links and same-plate wells (identical to v2, so the multiplicity matrix is the same and before/after rows are paired)",
+  "conditional_fixed_comparator": "v2 method: each link's wrong-match value fixed within a replicate. CIs are CONDITIONAL on the comparator set and are labelled so.",
+  "conditional_fixed_reference": "S1 anchor-centring rows: the anchor mean is fixed within a replicate; also conditional",
+  "rebuilt_comparator": "pre-specified secondary for primary P1/P2 and S5 v3 P1/P2 only: in replicate b, wrong-match of a link = weighted mean over its candidate (pair x direction) values with weight m_b[d']*m_b[e']; a link whose total candidate weight is 0 is dropped from that replicate (both matched and wrong); then the same drug-macro. Point estimate identical to the conditional one. Still conditional on plates, cell lines and the eligible link set; not a plate-population CI.",
+  "point_range": "S7 summary = median [min, max] of the leave-one-out point estimates (v2 format); per-drug rows also get conditional CIs"
+ },
+ "primary_contrast": "S5 v3 (after) P1_cos and P2_rmse with conditional CI (the v2 co-primary family, Holm over the two), compared with S5 v2 (before); S7 v3 range compared with S7 v2 range. These are sensitivity rows and are NOT used to change the R6-R verdict.",
+ "practical_threshold": "P2 relative |matched - wrong| >= 0.5% of wrong-match RMSE (v2 rule, unchanged)",
+ "row_status_labels": {
+  "CI rows": "'유리 방향, CI 0 제외' / '차이 미확립 (CI 0 포함)' / '불리 방향, CI 0 제외' (favourable: P1 > 0, P2 < 0)",
+  "S7 range rows": "'유리 방향 k/n' = number of leave-one-out point estimates in the favourable direction"
+ },
+ "decision_table": {
+  "R6-R verdict": "v2 frozen rule applied to the (unchanged) primary set with (a) the conditional bootstrap (must reproduce v2 'not_established') and (b) the rebuilt-comparator bootstrap; the v3 record is the more conservative of (a) and (b). S5/S7 never change the verdict.",
+  "S5 change": "report before -> after estimate, CI, status label, number of links/drugs and excluded links; 'S5 결론 변화' only if the status label of P1 or P2 changes",
+  "S7 change": "report before -> after median/min/max and favourable count; 'S7 결론 변화' only if the favourable count changes from n/n to < n/n or vice versa",
+  "package": "완료 when all rows are written and the v2 reproduction check passes; if the reproduction check fails, rows are kept but every before/after statement is 채택 보류 until the cause is separated",
+  "default_decision": "모델 확장 보류 (no new training, representation or set encoder). A favourable change is NOT promoted to independent biological repeatability and is NOT an automatic entry condition for R6-E."
+ },
+ "reproduction_tolerance": 2e-06,
+ "reproduction_check": "regenerate v2 primary P1/P2 (estimate, CI, p), S5 v2 d_cos/d_rmse, S7 v2 range, S5-S1 v2 cos_anchor, per-link values of the 2,362 primary links, and the v2 verdict from the raw treated-well means; compare with the committed v2 tables (6-decimal print)",
+ "data_wait_items": "items needing per-well arrays that do not exist are marked 자료 대기 and are not imputed (see reports/r6_sensitivity_correction_v3/not_run.md)",
+ "resources": {"cpu_jobs_concurrent": 1, "cpus_per_task": 2, "mem": "8G", "time_limit": "01:00:00", "gpu": 0, "expected_wall": "< 5 min (v2 audit 30 s)"}
+}
