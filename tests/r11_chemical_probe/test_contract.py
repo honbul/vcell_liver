@@ -108,3 +108,36 @@ def test_split_and_transform_are_train_only():
         dataset.check_split(fit, fit)
     with pytest.raises(ValueError, match="unavailable"):
         _ = query.delta
+
+
+def test_final_fit_reads_own_control_and_only_query_metadata(monkeypatch, tmp_path):
+    rows = row_table().iloc[:1].drop(columns="control_well_id").assign(split="train", eligible_cell_count=True)
+    wells = rows.assign(physical_well_id="control_A", control_role="A")
+    held = rows.assign(physical_well_id="q", split="test", compound_group_id=4, compound_entity_id="D")
+    folder = tmp_path / "features"
+    folder.mkdir()
+    np.savez(folder / "features.npz", E=np.array([[1, 0], [0, 1]]), C=np.array([[1, 2], [2, 3]]),
+             entity=np.array(["A", "D"]))
+    opened = []
+
+    def load(root, role, panel):
+        opened.append((root.name, role))
+        assert root.name == "source"
+        assert role in ("treated", "A")
+        vector = np.array([[1.0, 2.0]]) if role == "A" else np.array([[2.0, 3.0]])
+        return (wells if role == "A" else rows), sp.csr_matrix(vector)
+
+    def metadata(root, name):
+        opened.append((root.name, name))
+        assert root.name == "final" and name == "treated_rows.tsv"
+        return held
+
+    monkeypatch.setattr(dataset, "load_data", load)
+    monkeypatch.setattr(dataset, "checked_table", metadata)
+    fit, query = dataset.role_blocks(tmp_path, "source", "A", np.array([3, 4]), final=True)
+    assert opened == [("source", "A"), ("source", "treated"), ("final", "treated_rows.tsv")]
+    assert fit.rows.control_well_id.tolist() == ["control_A"]
+    assert query.rows.control_well_id.tolist() == ["control_A"]
+    np.testing.assert_array_equal(fit.delta, [[1.0, 1.0]])
+    with pytest.raises(ValueError, match="unavailable"):
+        _ = query.delta
