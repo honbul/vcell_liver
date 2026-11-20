@@ -133,6 +133,67 @@ def artifact_paths(assets, out):
     pd.DataFrame(paths).drop_duplicates().to_csv(out / "artifacts.tsv", sep="\t", index=False)
 
 
+def experiment_matrix(report, metrics, fits, jobs):
+    all_arms = set(metrics.loc[metrics.scope.eq("all"), "arm"])
+    fit_jobs = fits.loc[fits.variant.eq("primary")]
+    scored_id = ",".join(jobs.loc[jobs.output.str.startswith("score-"), "job"].astype(str))
+    records = []
+
+    def put(arm, category, variants, comparator, job_prefix=None):
+        if job_prefix is None:
+            exists = all(v in all_arms for v in variants)
+            ids = sorted(set(fit_jobs.loc[fit_jobs.arm.isin(variants), "job"].dropna()), key=str)
+            job = ",".join(map(str, ids)) if ids else scored_id
+        else:
+            ids = jobs.loc[jobs.output.str.startswith(job_prefix), "job"]
+            exists = len(ids) > 0
+            job = ",".join(ids.astype(str))
+        records.append(dict(id=arm, grade=category, evaluated=";".join(variants), comparator=comparator,
+                            state="실행 완료" if exists else "미완료", run_id=job,
+                            reason="" if exists else "required report arm or job receipt missing"))
+
+    for i in range(6):
+        put(f"B{i}", "필수 기준선", [f"B{i}"], "own-role refit")
+    for arm in ("S1", "S2", "S3"):
+        variants = [f"{arm}_{name}" for name in ("B2", "B3", "B4", "B5", "A4")
+                    if arm == "S1" or name != "B2"]
+        put(arm, "필수", variants, "same unadjusted base and B_abs")
+    contexts = {
+        "C1": (["C1"], "A1"), "C2": (["C2"], "A1"), "C3": (["C3", "C3_rank0"], "rank 0"),
+        "C4": (["C4", "C4_mean"], "same cells mean-only"),
+        "C5": ([f"C5_seed{i}" for i in range(42, 47)], "A1 correct context"),
+        "C6": ([f"C6_alt{i}" for i in range(1, 4)], "A1 correct context"),
+        "C7": (["C7", "C7_mean"], "same cells and gene universe"),
+        "C8": (["C8", "C8_mean"], "same cells and gene universe"),
+        "C9": (["C9", "C9_id", "A4"], "RNA only and line-ID"),
+    }
+    for arm, (variants, comparison) in contexts.items():
+        kind = "자산 조건부" if arm in {"C4", "C7", "C8", "C9"} else (
+            "필수 진단" if arm in {"C5", "C6"} else "필수")
+        put(arm, kind, variants, comparison)
+    for i in range(1, 7):
+        put(f"A{i}", "필수", [f"A{i}"], "A1" if i <= 3 else "A4")
+    put("L0", "필수 대조", ["A4", "A5"], "matched MSE")
+    for i in range(1, 7):
+        put(f"L{i}", "자산 조건부" if i == 4 else "필수", [f"L{i}"],
+            "L5" if i == 6 else "A4")
+    put("J1", "필수", ["A4", "A5", "L2", "J1_FiLM_L2"], "2×2 difference-in-differences")
+    put("J2", "제한 조합", ["J2_raw", "J2_calibrated"], "best single and B_contrast")
+    for arm, variants, match in [
+        ("E1", ["E1_32", "E1_128"], "ECFP rank32"),
+        ("E2", ["E2_32", "E2_128", "E1_128"], "CLS rank32 and ECFP rank128"),
+        ("E3", ["E3", "E2_32", "E1_32"], "same checkpoint CLS and ECFP"),
+        ("E4", ["E4_32", "E4_64"], "A4 full output"),
+    ]:
+        put(arm, "제한 확장", variants, match)
+    put("D1", "자산 조건부", ["D1", "D1_match"], "0.5 µM same optimizer updates")
+    put("V1", "필수 진단", ["plate", "plate-omit", "liver", "Tanimoto"], "same frozen predictions", "score-")
+    put("V2", "자산 조건부", ["scaffold selection"], "scaffold B_contrast", "scaffold-")
+    put("V3", "자산 조건부", ["strict well-separated liver lines"], "same-information baseline", "transfer-score-")
+    put("replay", "필수 연속성", ["R11 project-seen final"], "frozen continuity baselines", "replay-score-")
+    pd.DataFrame(records).to_csv(report / "experiment_matrix.tsv", sep="\t", index=False)
+
+
 def collect(cfg, args):
     assets = args.assets
     args.out.mkdir(parents=True, exist_ok=False)
@@ -205,6 +266,7 @@ def collect(cfg, args):
         lower=effect.lower, upper=effect.upper, confidence=effect.confidence,
     )])], ignore_index=True)
     interaction.to_csv(report / "loss_structure_interaction.tsv", sep="\t", index=False)
+    experiment_matrix(report, metrics, fits, round_jobs)
     artifact_paths(assets, report)
     write_json(report / "budget_usage.json", dict(
         accounting="Slurm log start to last-written log time; total does not include queue waits.",

@@ -124,6 +124,7 @@ def measure(rows, c, pred, observed, own, absolute):
     observed_center = c.points(observed, np.zeros_like(observed))[2]
     return dict(contrast=contrast, absolute=cond_rmse(own + pred, absolute), delta=delta, pds=r,
                 top1=top, retrieval_candidates=pool_n, zero_norm=zero.astype(float),
+                zero_variance=(np.ptp(pred, axis=1) <= 1e-12).astype(float),
                 predicted_contrast_rms=pred_center, observed_contrast_rms=observed_center)
 
 
