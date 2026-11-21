@@ -4,7 +4,6 @@ import argparse
 from pathlib import Path
 from collections import defaultdict
 
-import numpy as np
 import pandas as pd
 
 from src.r11_chemical_probe.common import read_json, sha256, write_json
@@ -73,7 +72,8 @@ def geo_frames(study):
     sig = sig.merge(metrics,on="sig_id",how="left",validate="one_to_one")
     sig["nsample"] = pd.to_numeric(sig.distil_nsample,errors="coerce")
     sig["qc"] = sig.nsample.ge(2) & pd.to_numeric(sig.distil_cc_q75,errors="coerce").ge(.2)
-    inst["physical_plate"] = inst["rna_plate"] if "rna_plate" in inst else inst["det_plate"]
+    kind = "rna" if "rna_plate" in inst else "det"
+    inst["physical_plate"],inst["physical_well"] = inst[kind+"_plate"],inst[kind+"_well"]
     return cells,inst,sig,dict(cells=cell_meta,inst=inst_path,sig=sig_path,quality=metric_file)
 
 
@@ -86,7 +86,7 @@ def cmap_frames(base):
     inst = pd.concat([chunk.loc[chunk.cell_iname.isin(cells.cell)&chunk.pert_type.eq("trt_cp")]
         for chunk in pd.read_csv(inst_path,sep="\t",dtype=str,keep_default_na=False,usecols=columns,chunksize=160000)])
     inst = inst.rename(columns={"sample_id":"inst_id"}).drop_duplicates("inst_id")
-    inst["physical_plate"] = inst.rna_plate
+    inst["physical_plate"],inst["physical_well"] = inst.rna_plate,inst.rna_well
     sig_path = origin/"siginfo_beta.txt"
     columns = ["sig_id","cell_iname","pert_id","pert_type","distil_ids","pert_dose","pert_dose_unit",
                "pert_time","pert_time_unit","nsample","cc_q75","qc_pass"]
@@ -150,11 +150,16 @@ def previous(base, cmap):
     return footprints,signature,paths
 
 
-def repeated(links):
-    if links.empty:
-        return 0
-    counts = links.groupby(["parent_key","hours","dose"]).physical_plate.nunique()
-    return counts.loc[counts.ge(2)].reset_index().parent_key.nunique()
+def repeated(links, distinct_position=False):
+    use = links.loc[~links.parent_key.str.startswith("UNMAPPED:") & links.physical_plate.ne("")]
+    if distinct_position:
+        use = use.loc[use.physical_well.ne("")]
+    groups = use.groupby(["parent_key","hours","dose"])
+    n = groups.physical_plate.nunique()
+    keep = n.ge(2)
+    if distinct_position:
+        keep &= groups.physical_well.nunique().ge(2)
+    return n.loc[keep].reset_index().parent_key.nunique()
 
 
 def counts(study, cells, inst, sig, identity, exposure, signatures):
@@ -173,9 +178,16 @@ def counts(study, cells, inst, sig, identity, exposure, signatures):
     links = links.merge(sig[keep],on="sig_id",validate="many_to_one")
     if study==CMAP:
         links = links.loc[links.qc_pass.eq("1")]
-    summaries = []
+    summaries, support = [], []
     for elem in cells.itertuples(index=False):
         available = sig.loc[sig.cell.eq(elem.cell)]
+        candidate = available.loc[available.qc & ~available.any_prior & available.parent.ne("")]
+        for (hour,dose), part in candidate.groupby(["hours","dose"],dropna=False):
+            wells = links.loc[links.sig_id.isin(part.sig_id)]
+            support.append(dict(study=study,cell=elem.cell,hours=hour,dose_uM=dose,
+                canonical_groups=part.parent.nunique(),signatures=len(part),linked_wells=wells.inst_id.nunique(),
+                linked_plates=wells.physical_plate.nunique(),distinct_plate_groups=repeated(wells),
+                distinct_plate_position_groups=repeated(wells,True)))
         for scope, selected in (
                 ("all",available),("6h_5-20uM",available.loc[available.hours.eq(6)&available.dose.between(5,20)]),
                 ("24h_5-20uM",available.loc[available.hours.eq(24)&available.dose.between(5,20)])):
@@ -193,8 +205,9 @@ def counts(study, cells, inst, sig, identity, exposure, signatures):
                qc_no_recorded_overlap_signatures=len(new),
                qc_no_recorded_overlap_groups=new.loc[new.parent.ne(""),"parent"].nunique(),
                qc_no_recorded_overlap_different_plate_groups=repeated(novel),
+               qc_no_recorded_overlap_different_plate_position_groups=repeated(novel,True),
                **{f"{source}_overlap_signatures":int(selected[source].sum()) for source in SOURCES}))
-    return summaries
+    return summaries,support
 
 
 def main(args):
@@ -203,7 +216,7 @@ def main(args):
     cmap = cmap_frames(args.base)
     footprint, signatures, paths = previous(args.base,cmap[1])
     hashes = {name:sha256(path) for name,path in paths.items()}
-    results = []
+    results, support = [], []
     prior = args.base/"vcell_liver_r15_lincs/v1/audit"
     for study in (*STUDIES,CMAP):
         cells,inst,sig,inputs = cmap if study==CMAP else geo_frames(study)
@@ -219,12 +232,15 @@ def main(args):
             mapping = table(inputs["chemistry"],usecols=["pert_id","parent"])
             mapping["parent"] = mapping.parent.where(~mapping.parent.str.startswith("UNRESOLVED:"),"")
         structure = mapping.set_index("pert_id",verify_integrity=True).parent
-        results.extend(counts(study,cells,inst,sig,structure,footprint,signatures))
+        current, new = counts(study,cells,inst,sig,structure,footprint,signatures)
+        results.extend(current)
+        support.extend(new)
         hashes.update({f"{study}_{name}":sha256(path) for name,path in inputs.items()})
         print(f"Inventoried {study}: {len(cells)} liver labels and {len(sig)} compound signatures",flush=True)
     pd.DataFrame(results).to_csv(out/"lincs.tsv",sep="\t",index=False)
+    pd.DataFrame(support).to_csv(out/"qc_no_recorded_overlap_conditions.tsv",sep="\t",index=False,na_rep="NA")
     write_json(out/"receipt.json",dict(code_sha256=sha256(__file__),metadata_sha256=hashes,
-                    files={"lincs.tsv":sha256(out/"lincs.tsv")},expression_read=False))
+                    files={p.name:sha256(p) for p in out.iterdir()},expression_read=False))
 
 
 if __name__=="__main__":
