@@ -2,6 +2,7 @@
 
 from functools import lru_cache
 from math import expm1, log, sqrt
+from zlib import crc32
 
 import numpy as np
 import pandas as pd
@@ -10,12 +11,14 @@ from torch import nn
 
 from src.goal_tracks.t2_predict import R12_EPOCHS, R12_LRS
 from src.goal_tracks.t2_upstream import SEED
-from src.r11_chemical_probe.dataset import GROUP, POOL
+from src.r11_chemical_probe.dataset import CONTROL, GROUP, LINE, POOL
+from src.r12_multiaxis.data import Design
 from src.r12_multiaxis.network import fit_network
 
 WEIGHTS = (.01, .1, 1.)
 HUBER_SCALES = (.5, 1., 2.)
 RANKS = (32, 64, 128)
+CONTROL_POLICIES = ("drug_constant", "drug_shuffle", "context_constant", "context_shuffle")
 
 
 class DirectionMagnitude(nn.Module):
@@ -48,6 +51,40 @@ def exact_pools(rows, measured_by_id):
     if not np.isfinite(numeric).all() or numeric.le(0).any():
         raise ValueError("L1 needs exact positive measured µM support on the common fit axis")
     return rows.assign(dose_uM=measured.astype(str))
+
+
+def shuffle_rows(values, rows, keys, scope):
+    frame = rows[keys].reset_index(drop=True)
+    unique = frame.drop_duplicates().sort_values(keys)
+    first = unique.index.to_numpy()
+    axis = pd.MultiIndex.from_frame(unique)
+    expanded = axis.get_indexer(pd.MultiIndex.from_frame(frame))
+    if (expanded < 0).any() or not np.array_equal(values[first][expanded], values):
+        raise ValueError("A shuffled feature changed within its physical unit or parent")
+    destination = np.arange(len(unique))
+    strata = unique.groupby(LINE, sort=True).indices if LINE in keys else {"all": destination}
+    for line, idx in strata.items():
+        rng = np.random.default_rng(np.random.SeedSequence([1501, scope, crc32(line.encode())]))
+        destination[idx] = rng.permutation(idx)
+    return values[first[destination[expanded]]]
+
+
+def feature_control(design, fit, policy):
+    if policy is None:
+        return design
+    if policy not in CONTROL_POLICIES or len(design.train) != 2 or len(design.query) != 2:
+        raise ValueError("The S/L feature control requires the fixed FiLM feature branches")
+    branch = 0 if policy.startswith("drug") else 1
+    keys = [GROUP] if branch == 0 else [CONTROL, LINE]
+
+    def replace(values, rows, scope):
+        result = list(values)
+        result[branch] = (np.zeros_like(result[branch]) if policy.endswith("constant")
+                          else shuffle_rows(result[branch], rows, keys, scope))
+        return tuple(result)
+
+    return Design(replace(design.train, fit.train.rows, 0), replace(design.query, fit.query.rows, 1),
+                  response_head=design.response_head)
 
 
 def matched_contrast(weight):
@@ -122,7 +159,7 @@ def huber(scale):
     return prepare
 
 
-def fit_variant(fit, strategy, value, lr, epochs, training_pools, *, device="cpu"):
+def fit_variant(fit, strategy, value, lr, epochs, training_pools, *, device="cpu", control=None):
     """Fit one predeclared S/L setting and capture gene arrays without target outcomes."""
     if (strategy not in {"S0", "S1", "S2", "S3", "L0", "L1", "L2", "L3"}
             or lr not in R12_LRS or not epochs or not set(epochs) <= set(R12_EPOCHS)
@@ -143,7 +180,7 @@ def fit_variant(fit, strategy, value, lr, epochs, training_pools, *, device="cpu
         loss_factory = huber(value)
     elif value is not None and rank is None:
         raise ValueError("Unexpected setting for a registered MSE control")
-    design = fit.inputs("pca", rank=rank)
+    design = feature_control(fit.inputs("pca", rank=rank), fit, control)
     arch = "concat" if strategy == "S1" else "film"
     _, runtime, curve, _ = fit_network(
         fit, design, arch, "L0", lr, SEED, device, max(epochs), patience=False,

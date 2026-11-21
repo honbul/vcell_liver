@@ -5,11 +5,14 @@ import pandas as pd
 import pytest
 import torch
 
-from src.r11_chemical_probe.dataset import ENTITY, GROUP, KEY, LINE
+from src.r11_chemical_probe.dataset import CONTROL, ENTITY, GROUP, KEY, LINE
+from src.r11_chemical_probe.metrics import Contrast
 from src.r12_multiaxis.data import Design
 from src.r12_multiaxis.network import ResidualHead, fit_network
-from src.r19_plan.sl_components import exact_pools, fit_variant, directional, huber, matched_contrast, separate_magnitude
-from src.r19_plan import sl_predict
+from src.r19_plan.sl_components import (
+    directional, exact_pools, feature_control, fit_variant, huber, matched_contrast, separate_magnitude,
+)
+from src.r19_plan import sl_predict, sl_workflow
 
 
 def design_rows():
@@ -71,7 +74,7 @@ def test_blind_checkpoint_alignment_and_default_training_equivalence():
 def test_variant_jointly_selects_kernel_and_neural_gains_before_refitting(monkeypatch):
     calls = []
 
-    def checkpoints(fit, strategy, value, lr, epochs, pools, *, device):
+    def checkpoints(fit, strategy, value, lr, epochs, pools, *, device, control):
         calls.append((fit, strategy, lr, epochs))
         amplitude = 8. if fit == "outer" else (2. if lr == .0003 else 4.)
         return {epoch: np.full((2, 2), amplitude) for epoch in epochs}, {}
@@ -86,3 +89,32 @@ def test_variant_jointly_selects_kernel_and_neural_gains_before_refitting(monkey
     assert calls[-1][0] == "outer" and calls[-1][2:] == (.001, (1,))
     np.testing.assert_array_equal(fitted.full, np.full((2, 2), 5.))
     np.testing.assert_array_equal(fitted.neural_only, np.full((2, 2), 2.))
+
+
+def test_feature_controls_keep_other_branch_and_never_copy_fit_values_to_query():
+    rows = design_rows().assign(**{CONTROL: ["a", "a", "b", "c"]})
+    block = SimpleNamespace(rows=rows)
+    fit = SimpleNamespace(train=block, query=block)
+    drug = np.array([[1.], [1.], [2.], [3.]])
+    control = 10. * drug
+    design = Design(train=(drug, control), query=(drug + 100, control + 1000))
+    result = feature_control(design, fit, "drug_shuffle")
+    np.testing.assert_array_equal(result.train[1], control)
+    np.testing.assert_array_equal(result.query[1], control + 1000)
+    assert result.train[0][0] == result.train[0][1] and result.query[0][0] == result.query[0][1]
+    assert set(result.query[0].ravel()) == {101., 102., 103.}
+    assert np.count_nonzero(feature_control(design, fit, "context_constant").train[1]) == 0
+
+
+def test_sl_scores_joint_randomization_and_tie_adjusted_pool_retrieval():
+    rows = design_rows()
+    data = rows.assign(parent=rows[GROUP], fold=0, rna_plate="P")
+    truth = np.array([[2., 2.], [2., 2.], [2., 0.], [0., 2.]])
+    zeros = np.zeros_like(truth)
+    contrast = Contrast(rows, minimum=2)
+    paired, support, strata = sl_workflow.compare(data, truth, {"B_R17": zeros, "S2": truth}, contrast, "full")
+    assert all(row["primary"] and row["joint_p_unadjusted"] <= .15 for row in paired)
+    assert paired[0]["difference"] < 0 < paired[1]["difference"]
+    assert support[0]["contrast_top1"] == 1. and support[0]["reference_contrast_top1"] == pytest.approx(1 / 3)
+    assert support[0]["chance_top5"] == 1. and support[0]["contrast_wells"] == 4
+    assert strata[0]["scope"] == "fold" and strata[0]["parents"] == 3
