@@ -13,7 +13,8 @@ study="$base/vcell_liver_r11_chemical_probe/assets"
 reports="$repo/reports"
 plan="$reports/r19_plan"
 matrix="$plan_root/matrix-index.91pT0e4H/index"
-export PYTHONPATH="$repo"
+dependencies="$base/vcell_liver_goal_tracks/v1"
+export PYTHONPATH="$repo:$dependencies/t2/dependencies:$dependencies/t2-public/deps"
 export OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4
 
 "$study/study-env/bin/python" -m src.r19_plan.snu423_donor_support \
