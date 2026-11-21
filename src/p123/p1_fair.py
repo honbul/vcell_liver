@@ -21,16 +21,15 @@ from src.r11_chemical_probe.metrics import Contrast
 from src.r11_chemical_probe.models import PoolMean
 from src.r12_multiaxis.data import Fit
 from src.r12_multiaxis.network import fit_network
-from src.r13_optimization.objectives import center, row_products
+from src.r13_optimization.objectives import center
 
-from .p1_position import load_context
+from .p1_position import MODEL_GAINS, POS_GAINS, energy_curves, load_context
 from .p123_io import write_prediction
 
 
 CPU_MODELS = ("ChemBERTa_R11", "Concat_R12", "FiLM_R12", "scGPT_C7", "UCE_C8")
 GPU_MODELS = ("XPert_morgan", "State-Morgan-well-adaptation", "PRnet-well-adaptation",
               "chemCPA_P0", "TranSiGen_Tahoe")
-GAIN = np.asarray((0, .125, .25, .5, .75, 1, 1.5, 2))
 SLICES = tuple(itertools.product((5.0, .5, .05), MIN_CELLS, range(3), "AB"))
 PROTOCOL_SHA = "d0680c422b41c63f895b8c1efc0fdedbcbc7965fdc1e35a40e6eb7bde6da8693"
 
@@ -99,25 +98,11 @@ def repredict(model, fit, selected, args, work):
     return fit_state(fit, root / "t2-public/upstream-state", folders[fit.source.dose])[0]
 
 
-def energy_path(rows, observed, pos, vc):
-    metric = Contrast(rows, MIN_GROUPS)
-    y, p, v = (center(metric, x) for x in (observed, pos, vc))
-    if len(metric.active) != len(rows):
-        raise ValueError("Fairness gain tuning expects supported evaluation pools")
-    pp = row_products(p, p).sum()
-    vv = row_products(v, v).sum()
-    yv = row_products(y, v).sum()
-    yp = row_products(y, p).sum()
-    pv = row_products(p, v).sum()
-    yy = row_products(y, y).sum()
-    a, b = GAIN[None, :], GAIN[:, None]
-    return (yy + a*a*pp + b*b*vv - 2*a*yp - 2*b*yv + 2*a*b*pv) / max(yy, 1e-15)
-
-
 def choose(paths):
     loss = np.mean(paths, axis=0)
-    vc, position = np.unravel_index(np.argmax(loss <= loss.min() + 1e-10), loss.shape)
-    return float(GAIN[position]), float(GAIN[vc]), loss.tolist()
+    position, vc = min(np.ndindex(loss.shape),
+                       key=lambda ix: (round(float(loss[ix]), 10), ix[1], ix[0]))
+    return float(POS_GAINS[position]), float(MODEL_GAINS[vc]), loss.tolist()
 
 
 def predict(args, model, dose, n, fold, role):
@@ -127,6 +112,8 @@ def predict(args, model, dose, n, fold, role):
     outer = Fit(source, source.fit_rows, source.query_rows, panel=source.panel)
     selected, frozen, base, historic_sha = historical(
         args.t2_root, model, source, outer, args.old_protocol, args.old_reports)
+    pos_receipt = args.positions / slice_name(dose, n, fold, role) / "receipt.json"
+    context = read_json(pos_receipt)
     sets = {"fair": []}
     if model in CPU_MODELS:
         sets["fair-refit"] = []
@@ -138,19 +125,21 @@ def predict(args, model, dose, n, fold, role):
             if set(fit.train.rows[GROUP]) & set(fit.query.rows[GROUP]):
                 raise ValueError("An inner held parent entered training")
             own_truth = source.observed(fit.query.rows, fit.panel) - fit.query.control
-            fit_position, _ = load_context(args.positions, source, fit, inner)
-            _, raw_query = load_context(args.positions, source, fit, inner, scaled=False)
+            raw_fit, raw_query = load_context(args.positions, source, fit, inner,
+                                               scaled=False, protocol=args.protocol)
+            fit_position = context["gain"] * raw_fit
             candidates = {"fair": repredict(model, fit, selected, args, temp / f"inner{inner}")}
             if model in CPU_MODELS:
                 candidates["fair-refit"] = repredict(model, remove_position(fit, fit_position),
                                                       selected, args, temp / f"inner-refit{inner}")
             for name, value in candidates.items():
-                sets[name].append(energy_path(fit.query.rows, own_truth, raw_query, value))
+                sets[name].append(energy_curves(fit.query.rows, own_truth, raw_query, value))
             print(f"calibration fold {inner} with {len(fit.train.rows)} fit and {len(fit.query.rows)} held wells×line",
                   flush=True)
 
-        fit_position, _ = load_context(args.positions, source, outer, -1)
-        _, raw_query = load_context(args.positions, source, outer, -1, scaled=False)
+        raw_fit, raw_query = load_context(args.positions, source, outer, -1,
+                                           scaled=False, protocol=args.protocol)
+        fit_position = context["gain"] * raw_fit
         components = {"fair": frozen}
         if model in CPU_MODELS:
             components["fair-refit"] = repredict(model, remove_position(outer, fit_position),
@@ -163,7 +152,8 @@ def predict(args, model, dose, n, fold, role):
             forecasts[name] = base + a * raw_query + b * center(metric, component)
             receipts[name] = dict(
                 positional_gain=a, model_gain=b, inner_sse_fraction=loss, model_settings=selected,
-                historical_t2_freeze_sha256=historic_sha, residual_refit=family == "fair-refit",
+                historical_t2_freeze_sha256=historic_sha, position_receipt_sha256=sha256(pos_receipt),
+                trainer_sha256=sha256(__file__), residual_refit=family == "fair-refit",
             )
         destination = args.out / model / slice_name(dose, n, fold, role)
         write_prediction(destination, source, outer, forecasts, receipts, args.protocol)
