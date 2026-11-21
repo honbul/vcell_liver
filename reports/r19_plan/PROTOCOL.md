@@ -20,6 +20,8 @@ DEV의 다음 실행은 측정 단위 provenance에 원래 표본 ID 및 파생 
 
 D1은 등록된 동일 개수의 물리 DMSO로 같은 내부 처리 행에서 두 정답을 구성한다. 두 정책은 같은 checkpoint 예측, 같은 anchor, 같은 gain 격자와 손실을 사용한다. 공유 조건의 정답에는 fit DMSO를, 독립 조건의 정답에는 select DMSO를 뺀다. 선택 계산에는 score DMSO의 물리 식별자만 제공하며 실제 DMSO 값은 제공하지 않는다. [동일 표본수의 plate별 지원](data/preflight/d1/plate_support.tsv)
 
+D1의 접근 명부는 R18 보호 입력과 겹침이 없다고 감사한 I 트랙 개발 처리 웰의 순서와 분할을 사용한다. 이전에 잠근 균등 DMSO 명부를 같은 물리 대조군 역할의 교집합으로 검증하고 Level 3의 표본 ID와 유전자 ID만 읽어 좌표를 고정한다. 각 회전마다 예측용 fit/select 대조군과 채점용 score 대조군을 별개로 기록한다. 측정 좌표의 변경, 역할 중복, 같은 plate에서의 역할별 표본수 차이가 있으면 중단한다. 이 명부를 만드는 단계는 발현 및 모델 예측을 읽지 않는다.
+
 D2는 독립 select 정답 하나를 기준으로 R17의 순차 선택과 DEV의 checkpoint×gain 공동 선택을 같은 유전자별 배열에서 비교한다. R17 순차 선택은 gain 1에서 먼저 checkpoint를 고르고 고정 격자의 gain을 고른다. DEV 공동 선택은 손실을 소수 9자리로 맞춰 비교한 뒤 동률이면 낮은 gain, 그 다음 고정 config ID의 사전순을 사용한다. 순차 선택은 R17의 동률 규칙을 유지한다. 두 정책은 각 parent의 웰 RMSE를 매크로 평균한 항과 전체 제곱오차 항을 결합한 원 R17 손실을 사용한다.
 
 합성 테스트는 동일 checkpoint 묶음에서 DMSO 역할을 바꿨을 때 gain이 달라지는 경우, 순차와 공동 선택이 다른 checkpoint를 고르는 경우, 동률과 허용된 물리 웰·parent·유전자 순서의 검사를 포함한다. 실제 D1·D2 효과를 재려면 새 checkpoint 묶음과 동결된 outer 예측이 필요하다.
