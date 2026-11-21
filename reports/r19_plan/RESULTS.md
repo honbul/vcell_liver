@@ -20,6 +20,7 @@
 | 8개 원천 보정의 JHH-5 이득이 실측 3.33333 µM에 이어지는가 | 이전과 처리 웰이 겹치지 않는 490군·495웰, 공유 RNA plate 5개 | 같은 입력의 State 대비 RMSE 개선 +0.13% [−0.25, +0.53], 적합 배율 대비 −1.88% [−2.19, −1.56] | 저용량 공동 기준 미통과. [JHH-5 저용량 비교](JHH_LOW_DOSE_TRANSFER_RESULTS.md) |
 | 10 µM 비간계열 실측을 더하면 JHH-5 1.11111 µM 예측이 좋아지는가 | 이전과 처리 웰이 겹치지 않는 467군·472웰, 각 원천의 두 용량을 같은 plate에서 측정 | 결합은 동일 입력의 State 대비 RMSE +2.029% 개선, 저용량 단독 배율 대비 −0.013% [−0.069, +0.028] | 단독 배율 대비 추가 이득 미확인. [두 용량 비교](JHH_DOSE_BRIDGE_RESULTS.md) |
 | JHH-5에서 적합한 저용량 배율이 JHH-7에서도 맞는 약물 반응을 예측하는가 | JHH-7 1 µM 101군, 이전과 겹치지 않는 처리 웰과 공유 평가 plate 한 개 | 같은 입력 State 대비 RMSE 6.10% 감소 [4.86, 7.50], B0 대비 2.68% [1.32, 4.28], 다른 약물 대비 3.59% [2.36, 4.93] | 등록한 단일 plate 기술 기준 통과. [JHH-7 저용량](JHH7_LOW_DOSE_RESULTS.md) |
+| JHH-7에서 약물 일치 이득이 웰 위치가 달라도 남는가 | 1 µM 80군, 같은 U2OS 원천 plate 내 위치 대조 | 같은 위치의 다른 약물보다 RMSE 3.14% 감소 [0.39, 5.89]. B0 대비 3.10% 증가 | 약물 일치 기여 확인, 두 비교 공동 기준 미통과. [위치 대조와 HUH7 지원](JHH7_POSITION_ATTRIBUTION_RESULTS.md) |
 
 [시간 전이](T4_RESULTS.md) · [기여 대조](T4_ATTRIBUTION_RESULTS.md) · [S/L B](SL_B_RESULTS.md) · [S/L A](SL_RESULTS.md) · [I5](I5_RESULTS.md) · [교차 assay 결과](T4_CROSS_ASSAY_RESULTS.md)
 
