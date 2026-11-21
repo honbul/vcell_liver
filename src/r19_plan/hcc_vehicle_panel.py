@@ -1,6 +1,7 @@
 """Lock Tahoe vehicle support and diagnose response-role differences on a fixed panel."""
 
 import argparse
+from ast import literal_eval
 from pathlib import Path
 
 import numpy as np
@@ -43,8 +44,12 @@ def old_rows(args, visible, name):
 def control_support(args, source_pin):
     r11 = read_json(args.reports / "r11_chemical_probe/manifest/receipt.json")
     raw = require_hash(args.metadata, r11["inputs"]["metadata/sample_metadata.parquet"]["sha256"])
-    all_controls = pq.read_table(raw, columns=["sample", "plate", "drug"]).to_pandas()
-    all_controls = all_controls.loc[all_controls.plate.isin(HIGH_PLATES) & all_controls.drug.str.contains("DMSO", case=False, na=False)]
+    metadata = pq.read_table(raw, columns=["sample", "plate", "drug", "drugname_drugconc"]).to_pandas()
+    metadata = metadata.loc[metadata.plate.isin(HIGH_PLATES)]
+    all_controls = metadata.loc[metadata.drug.eq("DMSO_TF")]
+    if not all(literal_eval(value) == [("DMSO_TF", 0., "uM")] for value in all_controls.drugname_drugconc):
+        raise ValueError("The exact vehicle label contains an active treatment")
+    solvate = metadata.loc[metadata.drug.str.contains("DMSO", case=False, na=False) & ~metadata.drug.eq("DMSO_TF")]
     stamp = read_json(require_hash(args.controls / "receipt.json", source_pin))
     rows = []
     for role in "AB":
@@ -59,7 +64,8 @@ def control_support(args, source_pin):
             or set(zip(all_controls.plate, all_controls['sample'])) != set(zip(roles.plate_id, roles[WELL]))):
         raise ValueError("Raw DMSO catalogue and the archived roles do not cover the same physical wells")
     summary = roles.groupby("plate_id").agg(wells=(WELL, "nunique"), roles=("control_role", "nunique")).reset_index()
-    return summary.assign(three_distinct_roles=summary.wells.ge(3))
+    total = solvate.groupby("plate").size()
+    return summary.assign(three_distinct_roles=summary.wells.ge(3), nonvehicle_dmso_label=summary.plate_id.map(total).fillna(0).astype(int))
 
 
 def line_sets(projection):
