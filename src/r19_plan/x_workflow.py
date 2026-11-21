@@ -79,17 +79,17 @@ def center_by_context(data, groups, counts, index, n_cells):
     return values - (center / n_cells)[index]
 
 
-def comparisons(rows, truth, forecasts, cells, *, centered):
+def comparisons(rows, truth, forecasts, cells, *, centered, pairs=COMPARISONS, primary_pair=("X2", "X1")):
     energy = squared_rows(truth)
     errors = {arm: squared_rows(truth, estimates) for arm, estimates in forecasts.items()}
     results, strata = [], []
     for target in ("ALL", *cells):
         mask = np.ones(len(rows), dtype=bool) if target == "ALL" else rows.cell_id.eq(target).to_numpy()
         selected = rows.loc[mask]
-        for arm, comparator in COMPARISONS:
+        for arm, comparator in pairs:
             summary = parent_summaries(selected, truth.shape[1], energy[mask], errors[arm][mask], errors[comparator][mask])
             estimates, bounds, draws = paired_effects(*summary)
-            practical = target == "ALL" and not centered and (arm, comparator) == ("X2", "X1")
+            practical = target == "ALL" and not centered and (arm, comparator) == primary_pair
             p, joint = parent_swap(*summary) if practical else ([np.nan, np.nan], np.nan)
             low_rel, high_rel, _ = relative_interval(summary[0])
             for metric, (a, b), (lo, hi), n, single in zip(METRICS, estimates, bounds, draws, p, strict=True):

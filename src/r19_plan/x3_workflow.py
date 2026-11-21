@@ -25,16 +25,17 @@ TARGET = "HEPG2"
 ARMS = ("B_cell", "X3_similarity", "X3_linear", "B_cell_parent_shuffle", "X3_similarity_parent_shuffle", "X3_linear_parent_shuffle")
 
 
-def donor_inputs(args):
+def donor_inputs(args, *, all_registered_targets=False):
     if args.out.exists():
         raise FileExistsError(args.out)
     ref, _, plan = read_plan(args.access, args.pin, args.slice, "predict")
     target, _, fold, fit_role, _, _ = slice_axes(args.slice, ref["cells"])
     expected = set(plan["query"].parent)
-    if target != TARGET:
+    if target != TARGET and not all_registered_targets:
         raise ValueError("X3 is registered only for HEPG2 with non-hepatic donors")
+    cells = [cell for cell in ref["cells"] if cell not in {TARGET, target}]
     lineage, treatments, controls = {}, [], []
-    for cell in (x for x in ref["cells"] if x != TARGET):
+    for cell in cells:
         source_key = f"{cell}-f{fold}-{fit_role}"
         _, _, source = read_plan(args.access, args.pin, source_key, "score")
         _, _, design = read_plan(args.access, args.pin, source_key, "predict")
@@ -56,7 +57,6 @@ def donor_inputs(args):
     mean = vehicle_means(vehicles, values[len(rows):], "rna_plate")
     delta = values[:len(rows)] - np.stack([mean[plate] for plate in rows.rna_plate])
     parents = sorted(expected)
-    cells = [x for x in ref["cells"] if x != TARGET]
     aggregate = tensorize(rows, delta, parents, cells)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(dir=args.out.parent, prefix=".x3-donors-") as tmp:
