@@ -70,6 +70,8 @@ SNU-423 203군의 고정 978유전자 평가에서 같은 scaffold를 적합에�
 
 같은 44개 세포주를 기준으로 재적합한 비교에서 scaffold 차단 결합 후보의 RMSE는 B0보다 0.67%, 새로 적합한 State보다 0.66% 높았다. 두 기준선 대비 R²도 낮았다. 일반 parent 분할에서는 두 지표의 이득 구간이 0을 포함했다. [고정 패널 재적합](HCC_FIXED_PANEL_REFIT_RESULTS.md)
 
+같은 고정 패널에서 43개 보조 세포주의 학습 반응을 공동 커널에 추가하자 scaffold 차단 SNU-423의 RMSE는 단독 ECFP보다 0.20%, State보다 1.21% 높아졌다. 같은 커널의 보조 반응 0 및 화합물 순열 대조에도 두 지표가 악화했다. [세포주 반응 공유](HCC_FIXED44_MULTITASK_RESULTS.md)
+
 같은 scaffold 차단 SNU-423의 구조 커널에 Cell Painting과 비간계열 PRISM을 결합했다. 공통 119군에서 ECFP 대비 RMSE는 +1.54%였고 R²는 +2.54%p였으며, 두 99% 구간이 0을 포함했다. 전체 203군과 공통 지원에서 승격 기준과 표현형 값 기여 기준을 모두 충족하지 못했다. [SNU-423 표현형 입력](HCC_PHENOTYPE_RESULTS.md)
 
 동일 assay 0.5→5 µM 전이에서는 0.5 µM에 정확한 entity가 있는 203군 중, 다른 plate 및 다른 위치 인덱스의 적격 donor가 있는 평가군이 3개였다. 원 pool 지원을 적용한 뒤 0군이어서 사전 기준에 따라 적합·채점을 시작하지 않았다. [저용량 전이 지원 감사](HCC_CROSS_DOSE_DONOR_SUPPORT.md)
