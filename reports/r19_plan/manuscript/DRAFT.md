@@ -44,6 +44,8 @@ Exact concentration and parent matching yielded five compounds and 21 physical w
 
 In the larger within-assay GSE296254 development set at concentrations of at least 10 µM, adding a frozen structure-and-dose prediction to a position and treatment-context anchor reduced RMSE by 0.77% (99% interval 0.37–1.19%, 281 parents and 1,634 wells). On 1,633 wells with a different-culture, different-plate and different-position repeat, the structure prediction reduced RMSE by 0.78%, and adding the position- and context-adjusted donor residual with a fixed weight of 0.25 reduced RMSE by 5.90% (4.65–7.13%). These results estimate how much response is reproducible within the HepaRG assay after position adjustment. [HepaRG residual repeats](../HEPARG_POSITION_REPEAT_RESULTS.md)
 
+In a registered development follow-up, 175 of the 281 GSE296254 parents had a same-drug nonhepatic LINCS measurement at 24 hours. Adding a fixed rank-eight map increased RMSE by 0.71% relative to the frozen position-context and structure prediction (99% interval 0.13–1.32% on 1,042 covered wells). The relative RMSE gain against a parent-permuted RNA input was 0.23% (−0.45 to 0.93%). Most source wells were at 10 µM, and the target cohort included all eligible concentrations of at least 10 µM. [HepaRG donor comparison](../HEPARG_DONOR_RESULTS.md)
+
 ## Methods
 
 ### Physical units and information available at inference
