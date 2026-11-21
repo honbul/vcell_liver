@@ -41,3 +41,18 @@ GSE92742의 실측 10 µM에서는 R18 보호 역할과 허용 예외의 측정,
 | PHH 24 h | 528 | 18 | 81 / 79 / 68 | 528 parent, 18 plate, 81 / 79 / 68웰 |
 
 PHH의 시간대별 donor 독립성은 별도 검증이 필요하다. GSE70138의 집계는 detection 좌표 기준이라 물리 RNA 검증을 끝낸 domain 수에는 넣지 않았다. 이 표는 대조군 수와 공통 assay 지원이다. 보정 효과와 leave-domain-out의 parent 분리 가능성은 별도 판정한다. CPU 작업 `30757`은 원 메타데이터와 해시로 잠근 행 명부만 사용했다. [LINCS 지원표](data/t2_control_support/lincs_domains.tsv) · [감사 영수증](data/t2_control_support/receipt.json) · [G1 작업](data/t2_control_support/job.tsv)
+
+같은 10 µM 명부의 HEPG2 6 h를 통째로 hold-out하고 그 domain의 1,793 parent를 모든 source에서 빼면, HEPG2 24 h 1군·3 plate, PHH 6 h 0군, PHH 24 h 219군·15 plate가 남았다. 고정 parent fold 하나씩을 모든 source에서 제외하는 설계에서는 PHH 6 h의 적합 지원이 31·29·24군, PHH 24 h는 354·340·362군이었다. R18의 모든 대조군 역할까지 빼면 HEPG2 24 h는 지원에서 빠지며 HEPG2 6 h held fold는 583·589·583군이다. 전체 domain 제외와 fold별 parent 제외의 적합 구성은 다르므로 두 설계를 같은 대조로 해석할 수 없다. [교차 지원 원표](data/t2_parent_support/leave_domain_out.tsv) · [감사 영수증](data/t2_parent_support/receipt.json) · [G1 작업](data/t2_parent_support/job.tsv)
+
+## T4. 동일 세포주·화합물·실측 용량의 6↔24 h 지원
+
+GSE92742 원 QC 메타데이터에서 R18 보호 측정과 별칭·donor를 제외하고, 같은 세포주와 정확한 실측 용량으로 6 h와 24 h를 연결했다. 각 plate에 세 역할을 배정할 수 있는 독립 DMSO가 최소 3웰 있어야 한다. 처리 식별자가 충돌한 RNA 좌표 54개는 그에 연결된 108개 레코드를 모두 제외했다. 첫 실행은 충돌을 검출하고 중단했고 같은 작업 ID의 재실행에서 제외 규칙을 적용했다.
+
+| GSE92742 | parent | 세포주·parent·용량 쌍 | 양쪽 시간에 각각 2개 이상 RNA plate가 있는 쌍 |
+|---|---:|---:|---:|
+| 전체 | 4,458 | 13,117 | 12,924 |
+| HEPG2 | 132 | 247 | 247 |
+| PHH | 67 | 104 | 104 |
+| HUH7 | 0 | 0 | 0 |
+
+HEPG2 parent는 hold-out fold별 36·42·54군이며 실측 10 µM 83군, 2.5 µM 50군이다. 두 시간에 사용된 서로소 RNA plate는 각각 41개와 12개다. PHH의 10 µM은 36군이며 시간별 donor 독립성은 미검증이다. T2의 10 µM 수는 기존 R15 캐시에서 센 것이므로 원 QC 릴리스로 계산한 T4와 모수가 다르다. GSE70138은 DET 좌표 기준만 확인되어 RNA 기반 지원에 포함하지 않았다. 이 감사는 실제 발현을 읽지 않고 지원만 검증했다. [시간 쌍 원표](data/t4_support/support.tsv) · [실측 용량별 표](data/t4_support/dose_support.tsv) · [감사 영수증](data/t4_support/receipt.json) · [G1 작업](data/t4_support/job.tsv)
