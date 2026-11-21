@@ -15,3 +15,11 @@
 R14의 공개된 기존 동결·채점 집계표만 회수해 커밋의 해시 및 점수 영수증의 파일별 해시와 비교한다. R17 CPU 재집계는 원본 예측·동결을 읽기 전용 링크로 참조하여 새 경로에 쓴다. 978 랜드마크 ID와 순서, 물리 DMSO CRC32 배정, paired 점수 및 모델 선택 기록을 해시로 대조한다.
 
 DEV의 다음 실행은 측정 단위 provenance에 원래 표본 ID 및 파생 서명의 구성 웰을 포함하고, 적합·선택·특징 사전학습 전에 `python -m src.r19_plan.contracts`로 차단 검사를 통과해야 한다. [기준선 명세](baseline_contract.yaml)와 [실험 상태](experiment_matrix.tsv)를 참조한다.
+
+## DEV D1·D2 선택 계산 사전 검증
+
+D1은 등록된 동일 개수의 물리 DMSO로 같은 내부 처리 행에서 두 정답을 구성한다. 두 정책은 같은 checkpoint 예측, 같은 anchor, 같은 gain 격자와 손실을 사용한다. 공유 조건의 정답에는 fit DMSO를, 독립 조건의 정답에는 select DMSO를 뺀다. 선택 계산에는 score DMSO의 물리 식별자만 제공하며 실제 DMSO 값은 제공하지 않는다. [동일 표본수의 plate별 지원](data/preflight/d1/plate_support.tsv)
+
+D2는 독립 select 정답 하나를 기준으로 R17의 순차 선택과 DEV의 checkpoint×gain 공동 선택을 같은 유전자별 배열에서 비교한다. R17 순차 선택은 gain 1에서 먼저 checkpoint를 고르고 고정 격자의 gain을 고른다. DEV 공동 선택은 손실을 소수 9자리로 맞춰 비교한 뒤 동률이면 낮은 gain, 그 다음 고정 config ID의 사전순을 사용한다. 순차 선택은 R17의 동률 규칙을 유지한다. 두 정책은 각 parent의 웰 RMSE를 매크로 평균한 항과 전체 제곱오차 항을 결합한 원 R17 손실을 사용한다.
+
+합성 테스트는 동일 checkpoint 묶음에서 DMSO 역할을 바꿨을 때 gain이 달라지는 경우, 순차와 공동 선택이 다른 checkpoint를 고르는 경우, 동률과 허용된 물리 웰·parent·유전자 순서의 검사를 포함한다. 실제 D1·D2 효과를 재려면 새 checkpoint 묶음과 동결된 outer 예측이 필요하다.
