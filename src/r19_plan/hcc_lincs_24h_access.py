@@ -71,8 +71,7 @@ def scoped_splits(target, controls, split_rows):
                 query=query.drop(columns="level3_row_index")), dict(query=query, score_controls=score_controls)
 
 
-def run(args):
-    targets, source, controls, splits = load_registry(args)
+def register(args, targets, source, controls, splits):
     matrix_receipt = read_json(args.cmap_pin)
     axis_hash = matrix_receipt["landmark_axis_sha256"]
     landmarks = parse_landmarks(pinned_bytes(args.landmarks, axis_hash))
@@ -121,4 +120,5 @@ if __name__ == "__main__":
     cli = argparse.ArgumentParser(description=__doc__)
     for field in ("audit", "audit-pin", "cmap-pin", "landmarks", "protocol", "out"):
         cli.add_argument("--"+field, type=Path, required=True)
-    run(cli.parse_args())
+    args = cli.parse_args()
+    register(args, *load_registry(args))
