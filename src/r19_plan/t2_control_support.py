@@ -7,6 +7,7 @@ from zlib import crc32
 import numpy as np
 import pandas as pd
 
+from src.goal_tracks.t1_score import STRATUM_LINES
 from src.r11_chemical_probe.common import read_json, sha256, write_json
 from src.r15_lincs.data import DOSE, TIME, asset, measures
 from src.r19_plan.contracts import coord_keys, id_keys
@@ -17,7 +18,7 @@ MIN_WELLS, MIN_PLATES = 12, 3
 FORMAL = "exclude_protected_score_and_donor"
 STRICT = "also_exclude_all_R18_control_roles"
 PHYSICAL = ["rna_plate", "rna_well"]
-LIVER = {"CVCL_1098": "SNU-423", "CVCL_0366": "HepG2-C3A"}
+LIVER = {STRATUM_LINES[name][0]: name for name in ("HepG2-C3A", "SNU-423")}
 
 
 def pinned_receipt(root, reference=None):
@@ -52,7 +53,7 @@ def tahoe_support(stage, reference):
                         raise ValueError("Tahoe target-fit wells do not match the locked evaluation pools")
                     wells, plates = use.physical_well_id.nunique(), use.plate_id.nunique()
                     support.append(dict(
-                        fold=fold, fit_role=role, cell_line=line, dose_uM=5., hours=24,
+                        fold=fold, fit_role=role, cell_line=line, cellosaurus_id=accession, dose_uM=5., hours=24,
                         treated_minimum_cells=minimum_cells, target_fit_wells=wells,
                         target_fit_plates=plates, control_cell_min=int(use.n_cells.astype(int).min()),
                         control_cell_max=int(use.n_cells.astype(int).max()),

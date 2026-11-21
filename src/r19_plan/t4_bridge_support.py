@@ -79,7 +79,8 @@ def run(args):
                 disjoint = paired.loc[paired.cross_time_plate_disjoint]
                 repeated = disjoint.loc[disjoint.both_times_2plates]
                 common6, common24 = (set(one.loc[one.hours.eq(time), "parent"]) for time in TIME_PAIR)
-                parts.append(dict(source=study, coordinate_axis=coordinate, source_cell=context, target=LIVER[accession],
+                parts.append(dict(source=study, coordinate_axis=coordinate, source_cell=context,
+                    target=LIVER[accession], target_cellosaurus_id=accession,
                     actual_dose_uM="5", target_hours=24, target_groups=design[GROUP].nunique(),
                     target_canonical_parents=len(target_groups),
                     source6_parents=len(common6), source24_parents=len(common24),

@@ -9,12 +9,17 @@ import numpy as np
 import pandas as pd
 
 from src.goal_tracks.t1_data import axes
+from src.goal_tracks.t1_score import STRATUM_LINES
 from src.r11_chemical_probe.common import read_json, sha256, write_json
 from src.r11_chemical_probe.dataset import GROUP, LINE
 from src.r13_optimization.lincs_transfer import structural_keys
 from src.r15_lincs.design import chemical_features
 from src.r15_lincs.forecast import LEGACY_CPU, LEGACY_GPU
 from src.r16_lincs.confirmation import embed
+from src.r19_plan.t2_control_support import tahoe_support
+
+
+PILOT_CELL_IDS = {"SNU-423": STRATUM_LINES["SNU-423"][0], "HUH7": "CVCL_0336"}
 
 
 def verify(path, expected):
@@ -105,11 +110,12 @@ def t2_history(base, reports, slots):
                     rows.append(dict(history="T2.5uM", arm=arm, minimum_cells=minimum, fold=fold, role=role,
                                      fit_parents=fit[GROUP].nunique(), select_parents=None,
                                      fit_cells="|".join(sorted(cell_support.index)),
-                                     snu423_fit_parents=int(cell_support.get("SNU-423", 0)),
-                                     huh7_fit_parents=int(cell_support.get("HUH7", 0)),
+                                     snu423_fit_parents=int(cell_support.get(PILOT_CELL_IDS["SNU-423"], 0)),
+                                     huh7_fit_parents=int(cell_support.get(PILOT_CELL_IDS["HUH7"], 0)),
                                      fit_hits=len(fit_hit), select_hits=None, fit_slots="|".join(fit_hit),
                                      select_slots=""))
-    return rows, score["freeze_sha256"]
+    controls, _ = tahoe_support(stage, freeze_path)
+    return rows, score["freeze_sha256"], controls
 
 
 def audit(args, slots, stage):
@@ -119,10 +125,12 @@ def audit(args, slots, stage):
         if not keys[slot]:
             raise ValueError(f"Unresolved structure for {slot}")
     r17, first = r17_history(args.base, args.reports, keys)
-    t2, second = t2_history(args.base, args.reports, keys)
+    t2, second, controls = t2_history(args.base, args.reports, keys)
     frame = pd.DataFrame(r17 + t2).astype({"minimum_cells": "Int64", "select_parents": "Int64", "select_hits": "Int64"})
     frame.to_csv(stage / "model_exposure.tsv", sep="\t", index=False, na_rep="NA")
-    return dict(r17_freeze_sha256=first, t2_freeze_sha256=second, model_slice_rows=len(frame))
+    pd.DataFrame(controls).to_csv(stage / "tahoe_fit_controls_corrected.tsv", sep="\t", index=False)
+    return dict(r17_freeze_sha256=first, t2_freeze_sha256=second, model_slice_rows=len(frame),
+                pilot_cellosaurus_ids=PILOT_CELL_IDS, tahoe_control_code_sha256=sha256(tahoe_support.__code__.co_filename))
 
 
 def features(args, slots, stage):
