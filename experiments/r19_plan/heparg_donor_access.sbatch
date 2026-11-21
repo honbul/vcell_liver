@@ -10,7 +10,8 @@ plan_root=$(dirname "$run")
 base=$(dirname "$plan_root")
 reports="$repo/reports"
 plan="$reports/r19_plan"
-export PYTHONPATH="$repo"
+dependencies="$base/vcell_liver_goal_tracks/v1"
+export PYTHONPATH="$repo:$dependencies/t2/dependencies:$dependencies/t2-public/deps"
 export OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4
 python="$base/vcell_liver_r11_chemical_probe/assets/study-env/bin/python"
 exec /usr/bin/time -v "$python" -m src.r19_plan.heparg_donor_access \
