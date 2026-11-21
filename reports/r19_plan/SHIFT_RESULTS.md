@@ -56,3 +56,5 @@ GSE92742 원 QC 메타데이터에서 R18 보호 측정과 별칭·donor를 제�
 | HUH7 | 0 | 0 | 0 |
 
 HEPG2 parent는 hold-out fold별 36·42·54군이며 실측 10 µM 83군, 2.5 µM 50군이다. 두 시간에 사용된 서로소 RNA plate는 각각 41개와 12개다. PHH의 10 µM은 36군이며 시간별 donor 독립성은 미검증이다. T2의 10 µM 수는 기존 R15 캐시에서 센 것이므로 원 QC 릴리스로 계산한 T4와 모수가 다르다. GSE70138은 DET 좌표 기준만 확인되어 RNA 기반 지원에 포함하지 않았다. 이 감사는 실제 발현을 읽지 않고 지원만 검증했다. [시간 쌍 원표](data/t4_support/support.tsv) · [실측 용량별 표](data/t4_support/dose_support.tsv) · [감사 영수증](data/t4_support/receipt.json) · [G1 작업](data/t4_support/jobs.tsv)
+
+이 지원을 고정해 별도로 실시한 HEPG2 T4에서 저랭크 시간 연산자는 단순 배율 대비 RMSE를 7.33% [99% 구간 5.06, 9.58] 줄였다. 독립 24 h 반복과의 차이는 두 지표 모두 0을 포함했다. [T4 동결 실험 결과](T4_RESULTS.md)
