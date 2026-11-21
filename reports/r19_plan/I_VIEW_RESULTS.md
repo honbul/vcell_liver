@@ -18,3 +18,9 @@ I2·I3·I4를 `PLANNED`로 전환했다. I3의 두 조합에서 내·외 fold를
 ## 단일 뷰·결합 대조군 지원
 
 CPU 작업 `30714`는 등록된 25개 커널 arm의 내·외부 적합과 query 축, 대칭성, I0 fallback 행을 두 모집단에서 확인했다. 전체 300조합이다. 등록 개발 모집단의 outer 평가에서 I3의 두 뷰 보유군은 113 / 128 / 110 parent이고, 구조 I0로 넘기는 군은 173 / 167 / 186 parent다. PRISM을 추가한 I3_all의 세 뷰 보유군은 109 / 124 / 105 parent이고, I0 fallback은 165 / 162 / 180 parent다. 이 점검은 공개 뷰 값과 개발 처리 웰의 잠금 메타데이터만 사용했다. 약물 반응 RMSE·R²는 실제 DEV 예측·동결·채점 단계에서 측정한다. [arm별 공통·부분·결측 지원](data/i_views/control_kernels/arm_support.tsv) · [검증 영수증](data/i_views/control_kernels/receipt.json)
+
+## I 트랙 반응 실험 준비
+
+CPU 작업 `30729`는 HEPG2 6 h 개발 웰 6,773개를 원 R15 처리 캐시 인덱스에 일대일로 맞추고, 9개 fold·역할 조합의 예측용과 채점용 명부 54개를 해시로 잠갔다. R18 예약 처리·별칭, score 역할의 물리 웰, B donor와 donor 정규화 대조군과의 겹침은 0개다. 과거 C3의 fit/select 맥락과 공유하는 역사적 대조군 128개는 별도 기록했다. 적합 집합에 같은 Murcko 골격이 없었던 평가 parent는 fold별 419 / 427 / 435개였다. 골격이 없는 비고리 parent 7 / 2 / 10개는 별도 층이다. [잠근 지원표](data/preflight/i_track/support.tsv) · [입력 영수증](data/preflight/i_track/receipt.json)
+
+R17 계열 FiLM과 25개 커널의 합성 시험을 G1 CPU 작업 `30731`에서 실제 코드로 실행했다. 합성 처리 30웰로 적합해 합성 평가 16웰 × 12유전자의 예측과 대조군을 생성하고 해시를 검증했다. I 트랙의 실제 약물 반응 효과와 반복 구간은 후속 연구 데이터 채점에서 결정한다. [작업 원장](data/i_views/jobs.tsv)
