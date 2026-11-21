@@ -3,7 +3,6 @@
 import argparse
 from collections import defaultdict
 from dataclasses import asdict, dataclass
-from functools import cached_property
 from itertools import product
 from pathlib import Path
 
@@ -68,7 +67,7 @@ def group_order(block):
     rows = block.rows
     groups, codes = np.unique(rows[GROUP], return_inverse=True)
     # Use one verified, deterministic representative per canonical parent.
-    first = rows.sort_values([GROUP, ENTITY], kind="stable").reset_index(names="row").drop_duplicates(GROUP)
+    first = rows.assign(row=np.arange(len(rows))).sort_values([GROUP, ENTITY], kind="stable").drop_duplicates(GROUP)
     if not np.array_equal(groups, first[GROUP]):
         raise ValueError("Canonical fingerprint indexing disagrees with parent ordering")
     return groups, codes, block.chemical["E"][first.row.to_numpy()].astype(np.float64)
@@ -99,7 +98,6 @@ class SignatureBank:
 
 class TahoeRegressor:
     def __init__(self, fit, positions, bank):
-        self.fit = fit
         self.bank = bank
         self.train, self.train_ix, xc = group_order(fit.train)
         self.query, self.query_ix, zc = group_order(fit.query)
@@ -107,14 +105,9 @@ class TahoeRegressor:
             raise ValueError("Held Tahoe treatment parent in the fit")
         within, cross = _tanimoto(xc, xc), _tanimoto(zc, xc)
         self.chem = (within, cross)
-        self.chem_kwargs = {"bank": bank.receipt_sha256}
         y = center(Contrast(fit.train.rows, MIN_GROUPS), fit.train.delta - positions[0])
         self.response = mean_units(y, self.train_ix, len(self.train), fit.weight)[0].astype(np.float64)
         self.cache = {}
-
-    @cached_property
-    def dimensions(self):
-        return self.fit.panel.size
 
     def profile_pair(self, prior):
         return self.bank.lookup(prior, self.train), self.bank.lookup(prior, self.query)
