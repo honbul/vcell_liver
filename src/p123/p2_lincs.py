@@ -53,7 +53,8 @@ class Identity:
 
 def identity(smiles, names, inchi="", cid=""):
     smiles = clean(smiles)
-    chemistry, _ = structural_keys(smiles)
+    parent_keys, _ = structural_keys(smiles)
+    chemistry = set(parent_keys)
     full = set()
     with rdBase.BlockLogs():
         if parent := canonical_parent(smiles) if smiles else None:
@@ -270,6 +271,7 @@ def build(args):
     all_values, all_meta, all_audit = [], [], []
     references = {}
     gene_axis = None
+    symbol_conflicts = []
     for study in STUDIES:
         assets = asset_paths(args.lincs / study, study)
         refs = read_table(assets["pert"]).loc[lambda x: x.pert_type.eq("trt_cp")]
@@ -277,8 +279,12 @@ def build(args):
         metadata, genes = study_metadata(assets)
         if gene_axis is None:
             gene_axis = genes
-        elif not gene_axis.equals(genes):
-            raise ValueError("Original LINCS landmark axes differ")
+        else:
+            if not gene_axis.index.equals(genes.index):
+                raise ValueError("Original LINCS landmark Entrez axes differ")
+            symbol_conflicts = [{"entrez": int(i), "phase1": gene_axis[i], "phase2": genes[i]}
+                                for i in genes.index[gene_axis.ne(genes)]]
+            gene_axis = genes
         known_ids = set()
         for cohort, target in targets.items():
             matched, audit = match_study(target, by_meta, study, cohort)
@@ -327,6 +333,7 @@ def build(args):
         print(cohort, counts[cohort], flush=True)
     write_json(args.out / "receipt.json", {
         "protocol_sha256": PROTOCOL_SHA256, "n_genes": len(gene_axis), "prior_counts": counts,
+        "landmark_symbol_conflicts": symbol_conflicts,
         "source_files": references, "target_inputs": {k: sha256(p) for k, p in target_path.items()},
         "code_sha256": sha256(__file__),
         "files": {p.name: sha256(p) for p in sorted(args.out.iterdir())},
