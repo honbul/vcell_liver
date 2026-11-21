@@ -1,0 +1,83 @@
+{
+  "protocol_commit": "f0a8752",
+  "protocol_sha256": "09774371b5965afbee825e37f955756e90b84700985605a01d1f6c6230c7f63c",
+  "g1_namespace": "vcell_liver_r14_cross_organ/execution-v1",
+  "workflow": "Each prediction job is followed by separate afterok freeze and score jobs.",
+  "chemistry": {
+    "job": 28345,
+    "manifest": "data/heparg_compound_folds.tsv",
+    "sha256": "03c816f20aad1535b7ca4090c552c208dd3a313850e06e5b83b7e709a9687d99"
+  },
+  "sciplex": {
+    "prediction": 28337,
+    "freeze": 28338,
+    "score": 28339,
+    "state": "completed",
+    "freeze_sha256": "5ec3f04d5732f8a8f49ef2a0059d1a934c0315ce26e83b3b562c579e5330cee3",
+    "output": "sciplex/scored"
+  },
+  "heparg": {
+    "preparation": [
+      28346,
+      28347
+    ],
+    "repeats": [
+      28350,
+      28351
+    ],
+    "concordance": 28352,
+    "prediction": 28378,
+    "freeze": 28379,
+    "score": 28380,
+    "state": "completed",
+    "freeze_sha256": "cbe6783a6be31cc4707e3b398d6ff5dcf2cb999779b34500e0a2cae5a59d849d",
+    "output": "HepaRG/score_v2.json"
+  },
+  "r14_donors": {
+    "sciplex": 28334,
+    "mixseq": 28348,
+    "gse306429": 28343,
+    "emeraldbay": 28344
+  },
+  "r14": {
+    "lane": "r14-v2",
+    "compound": {
+      "prediction": 28381,
+      "freeze": 28382,
+      "score": 28383,
+      "state": "scheduled"
+    },
+    "scaffold": {
+      "prediction": 28384,
+      "freeze": 28385,
+      "score": 28386,
+      "state": "scheduled"
+    },
+    "mixseq": {
+      "prediction": 28387,
+      "freeze": 28388,
+      "score": 28389,
+      "state": "scheduled"
+    },
+    "gse306429": {
+      "prediction": 28390,
+      "freeze": 28391,
+      "score": 28392,
+      "state": "scheduled"
+    },
+    "emeraldbay": {
+      "prediction": 28393,
+      "freeze": 28394,
+      "score": 28395,
+      "state": "scheduled"
+    },
+    "lung_held_out": {
+      "lane": "r14-organ-lung",
+      "prediction": 28402,
+      "freeze": 28403,
+      "score": 28404,
+      "state": "scheduled"
+    }
+  },
+  "superseded_note": "R14 28353\u201328367 were replaced before scoring to keep assay-specific observed-gene masks and scaffold exclusion consistent across tasks. HepaRG 28368\u201328370 were superseded by the corrected mechanism-neighbor weighting."
+}
