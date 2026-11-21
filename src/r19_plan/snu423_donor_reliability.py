@@ -55,7 +55,7 @@ def audit(args):
     parents = read_pinned(args.audit, "parent_support.tsv", receipt["files"]["parent_support.tsv"])
     parents = parents.loc[parents.measured_5_to_20uM.eq("True"), [GROUP, "parent", "fold"]]
     source = closest_donors(read_pinned(args.audit, "admitted_donors.tsv", receipt["files"]["admitted_donors.tsv"]))
-    if source.duplicated(["rna_plate", "rna_well"]).any() or source.hours.ne("24").any():
+    if source.duplicated(["rna_plate", "rna_well"]).any() or not pd.to_numeric(source.hours).eq(24).all():
         raise ValueError("The source donor well registry is invalid")
     table, groups = coverage(source, parents)
     rows = []
