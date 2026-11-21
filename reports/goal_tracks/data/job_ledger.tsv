@@ -1,0 +1,32 @@
+track	stage	job_id	dependency	output_relative_to_v1
+T1	cache Tahoe	28429		t1-cache
+T1	predict 5 uM	28454	28429	t1/first/d5/predictions
+T1	freeze 5 uM	28455	28454	t1/first/d5/freeze.json
+T1	score 5 uM	28456	28455	t1/first/d5/scored
+T1	predict 0.5 uM	28457	28429	t1/first/d0.5/predictions
+T1	freeze 0.5 uM	28458	28457	t1/first/d0.5/freeze.json
+T1	score 0.5 uM	28459	28458	t1/first/d0.5/scored
+T1	predict 0.05 uM	28460	28429	t1/first/d0.05/predictions
+T1	freeze 0.05 uM	28461	28460	t1/first/d0.05/freeze.json
+T1	score 0.05 uM	28462	28461	t1/first/d0.05/scored
+T2	extra dose DMSO cells	28426		t2/context/cells-v2
+T2	scGPT control contexts	28427	28426	t2/context/scgpt
+T2	UCE control contexts	28428	28426	t2/context/uce
+T2	PRnet environment	28431		t2-public/deps
+T2	predict PRnet	28432	28429,28431	t2-public/prnet
+T2	State environment	28443		t2-public/state-deps
+T2	State synthetic smoke	28444	28431,28443	t2-public/logs/state-smoke-28444.log
+T2	predict State Morgan	28471	28429,28426,28444	t2-public/state
+T2	predict XPert	28463	28429	t2
+T2	predict chemCPA	28464	28429	t2
+T2	predict TranSiGen	28465	28429	t2
+T2	predict ChemBERTa	28466	28429	t2
+T2	predict FiLM	28467	28429	t2
+T2	predict concat	28468	28429	t2
+T2	predict scGPT	28469	28429,28427	t2
+T2	predict UCE	28470	28429,28428	t2
+T3	plate design	28433		t3/design
+T3	held-plate categorical balance diagnostic	28442		t3/design-balanced/design
+T3	predict	28434	28433	t3/predict
+T3	freeze	28435	28434	t3/freeze.json
+T3	score	28436	28435	t3/score
