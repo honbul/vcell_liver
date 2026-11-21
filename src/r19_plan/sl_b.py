@@ -77,12 +77,14 @@ def inventory(args, ref, key):
     control_axis(donor_dmsos, donors, fit)
 
     parents = set(train.parent) | set(query.parent)
+    matched_exposure = all(pd.to_numeric(rows.hours, errors="raise").eq(6).all() and rows.dose.eq("10").all()
+                           for rows in (train, query, donors))
     if (len(parents) != ref["parents"] or set(train.parent) & set(query.parent)
             or "level3_row_index" in query or "level3_row_index" not in train
             or not train.cell_id.eq(TARGET).all() or not query.cell_id.eq(TARGET).all()
             or not all(set(rows.parent) == parents for _, rows in donors.groupby("cell_id"))
             or set(donors.cell_id) != DONORS
-            or any(not rows.hours.eq("6").all() or not rows.dose.eq("10").all() for rows in (train, query, donors))):
+            or not matched_exposure):
         raise ValueError("S/L B parent, target, donor, time or exact concentration support changed")
     check_unique(pd.concat((train, query, donors, fit_dmsos, select_dmsos, donor_dmsos), ignore_index=True))
     return query, (train, donors, fit_dmsos, select_dmsos, donor_dmsos)
