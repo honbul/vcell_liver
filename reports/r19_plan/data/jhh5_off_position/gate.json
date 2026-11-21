@@ -1,0 +1,71 @@
+{
+  "freeze_sha256": "aff8a3934e33b7d5a687d927a94a22c49ba040907e3e5c983ae9d6ed0d1e6d30",
+  "score_gates": {
+    "calibrated_shrink": {
+      "joint_pass": true,
+      "comparisons": [
+        {
+          "reference": "scalar",
+          "effect_gate": true,
+          "interval_gate": true,
+          "folds": 3,
+          "plate_omissions": 6,
+          "comparison_pass": true
+        },
+        {
+          "reference": "eight_token_State",
+          "effect_gate": true,
+          "interval_gate": true,
+          "folds": 3,
+          "plate_omissions": 6,
+          "comparison_pass": true
+        },
+        {
+          "reference": "wrong_calibrated_shrink",
+          "effect_gate": true,
+          "interval_gate": true,
+          "folds": 3,
+          "plate_omissions": 6,
+          "comparison_pass": true
+        },
+        {
+          "reference": "B0",
+          "effect_gate": true,
+          "interval_gate": true,
+          "folds": 3,
+          "plate_omissions": 5,
+          "comparison_pass": true
+        }
+      ]
+    },
+    "scalar": {
+      "joint_pass": true,
+      "comparisons": [
+        {
+          "reference": "eight_token_State",
+          "effect_gate": true,
+          "interval_gate": true,
+          "folds": 3,
+          "plate_omissions": 6,
+          "comparison_pass": true
+        },
+        {
+          "reference": "wrong_scalar",
+          "effect_gate": true,
+          "interval_gate": true,
+          "folds": 3,
+          "plate_omissions": 6,
+          "comparison_pass": true
+        },
+        {
+          "reference": "B0",
+          "effect_gate": true,
+          "interval_gate": true,
+          "folds": 3,
+          "plate_omissions": 5,
+          "comparison_pass": true
+        }
+      ]
+    }
+  }
+}
