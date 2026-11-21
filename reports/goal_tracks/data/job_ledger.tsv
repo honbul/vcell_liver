@@ -10,35 +10,35 @@ T1	predict 0.05 uM	28460	28429	t1/first/d0.05/predictions	completed
 T1	freeze 0.05 uM	28461	28460	t1/first/d0.05/freeze.json	completed
 T1	score 0.05 uM	28462	28461	t1/first/d0.05/scored	completed
 T2	extra dose DMSO cells	28426		t2/context-v2/cells-v2	completed
-T2	scGPT control contexts	28427	28426	t2/context-v2/scgpt	failed before embedding; replaced by 28681
+T2	scGPT control contexts	28427	28426	t2/context-v2/scgpt	failed before embedding, replaced by 28681
 T2	UCE control contexts	28428	28426	t2/context-v2/uce	completed
 T2	PRnet environment	28431		t2-public/deps	completed
 T2	predict PRnet	28432	28429,28431	t2-public/prnet	completed
 T2	State environment	28443		t2-public/state-deps	completed
 T2	State synthetic smoke	28444	28431,28443	t2-public/logs/state-smoke-28444.log	completed
-T2	predict State Morgan	28471	28429,28426,28444	t2-public/state	canceled after obsolete path error; replaced by 28705
-T2	predict XPert	28463	28429	t2/predictions/XPert_morgan	submitted
-T2	predict chemCPA	28464	28429	t2/predictions/chemCPA_P0	submitted
-T2	predict TranSiGen	28465	28429	t2/predictions/TranSiGen_Tahoe	submitted
+T2	predict State Morgan	28471	28429,28426,28444	t2-public/state	canceled after obsolete path error, replaced by 28705
+T2	predict XPert	28463	28429	t2/predictions/XPert_morgan	completed
+T2	predict chemCPA	28464	28429	t2/predictions/chemCPA_P0	completed
+T2	predict TranSiGen	28465	28429	t2/predictions/TranSiGen_Tahoe	completed
 T2	predict ChemBERTa	28466	28429	t2/predictions/ChemBERTa_R11	completed
 T2	predict FiLM	28467	28429	t2/predictions/FiLM_R12	completed
 T2	predict concat	28468	28429	t2/predictions/Concat_R12	completed
-T2	predict scGPT	28469	28429,28427	t2/predictions/scGPT_C7	canceled after 28427; replaced by 28682
-T2	predict UCE	28470	28429,28428	t2/predictions/UCE_C8	submitted
+T2	predict scGPT	28469	28429,28427	t2/predictions/scGPT_C7	canceled after 28427, replaced by 28682
+T2	predict UCE	28470	28429,28428	t2/predictions/UCE_C8	completed
 T3	plate design	28433		t3/design	completed
 T3	held-plate categorical balance diagnostic	28442		t3/design-balanced/design	completed
 T3	predict	28434	28433	t3/predict	completed
 T3	freeze	28435	28434	t3/freeze.json	completed
-T3	score	28436	28435	t3/scored	completed; self-comparison report correction 28646
+T3	score	28436	28435	t3/scored	completed, self-comparison report correction 28646
 T1	reserved 40 plate pairs	28540	28429	t1/reserved_40_pairs	completed
 T2	scGPT retry context	28681	28426	t2/context-v2/scgpt	completed
-T2	scGPT retry predict	28682	28681	t2/predictions/scGPT_C7	submitted
+T2	scGPT retry predict	28682	28681	t2/predictions/scGPT_C7	completed
 T2	State corrected context path	28705		t2-public/state-v2	completed except low-dose slices that required both control caches
 T2	State retry missing 0.05 uM slices	28743		t2-public/state-v2	completed
-T3	correct score self-reference	28646	28436	t3/scored-corrected	completed; predictions unchanged
-T2	freeze 5 uM	28747	T1 dose freeze and all registered comparators	t2/d5/freeze.json	submitted
-T2	score 5 uM	28748	28747	t2/d5/scored	submitted
-T2	freeze 0.5 uM	28749	T1 dose freeze and all registered comparators	t2/d0.5/freeze.json	submitted
-T2	score 0.5 uM	28750	28749	t2/d0.5/scored	submitted
-T2	freeze 0.05 uM	28751	T1 dose freeze and all registered comparators	t2/d0.05/freeze.json	submitted
-T2	score 0.05 uM	28752	28751	t2/d0.05/scored	submitted
+T3	correct score self-reference	28646	28436	t3/scored-corrected	completed, predictions unchanged
+T2	freeze 5 uM	28747	T1 dose freeze and all registered comparators	t2/d5/freeze.json	completed
+T2	score 5 uM	28748	28747	t2/d5/scored	completed
+T2	freeze 0.5 uM	28749	T1 dose freeze and all registered comparators	t2/d0.5/freeze.json	completed
+T2	score 0.5 uM	28750	28749	t2/d0.5/scored	completed
+T2	freeze 0.05 uM	28751	T1 dose freeze and all registered comparators	t2/d0.05/freeze.json	completed
+T2	score 0.05 uM	28752	28751	t2/d0.05/scored	completed
