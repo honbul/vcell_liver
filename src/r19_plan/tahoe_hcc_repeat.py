@@ -212,7 +212,9 @@ def common_difference(assembled):
                 results.append(dict(minimum_cells=minimum, coordinate=coordinate, line_id=line,
                     parents=rows.parent.nunique(), wells=rows.inst_id.nunique(), arm=arm, metric=metric,
                     different=p, same=q, difference=p-q, low99=lo, high99=hi))
-    return pd.DataFrame(results)
+    columns = ["minimum_cells", "coordinate", "line_id", "parents", "wells", "arm", "metric",
+               "different", "same", "difference", "low99", "high99"]
+    return pd.DataFrame(results, columns=columns)
 
 
 def evaluate(args):
