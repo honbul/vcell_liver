@@ -45,6 +45,10 @@ case "$stage" in
   internal)
     exec "$python" -m src.r15_lincs.score "$3" "${shared[@]}"
     ;;
+  external_descriptive)
+    exec "$python" -m src.r15_lincs.external_directions --protocol "$protocol" --out "$run" \
+      --tahoe "$prior" --t2-reference reports/goal_tracks/data/known_vc/d5/freeze.json
+    ;;
   external)
     action="$3"
     opts=()

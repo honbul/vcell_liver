@@ -109,7 +109,7 @@ def candidates(scenario):
 
 
 def chemical_grid(train, query, train_x, query_x, y, scenario, train_prior, query_prior, rules, snapshot=None):
-    _, response = parent_average(train, y)
+    response = parent_average(train, y)
     _, first = np.unique(train.parent, return_index=True)
     tx = train_x[first]
     _, qfirst, expand = np.unique(query.parent, return_index=True, return_inverse=True)
