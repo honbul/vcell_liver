@@ -34,13 +34,18 @@ def forbidden_signatures(path, protected):
     return members - {""}
 
 
-def instance_rows(path, known):
+def instance_rows(path, known, dose_keys=("10",)):
     kept = []
     for batch in pd.read_csv(path, sep="\t", dtype=str, keep_default_na=False, usecols=INST, chunksize=160_000):
         rows = batch.loc[batch.qc_pass.eq("1") & batch.cell_iname.isin(known)
                          & batch.pert_type.isin(("trt_cp", "ctl_vehicle"))]
         rows = add_units(rows)
-        rows = rows.loc[rows.hours.eq(24) & (rows.pert_type.eq("ctl_vehicle") | rows.dose.between(9.999, 10.001))]
+        nearby = rows.dose.isin([float(key) for key in dose_keys])
+        for key in dose_keys:
+            # A numeric prefilter is followed by exact decimal matching below.
+            concentration = float(key)
+            nearby |= rows.dose.between(concentration - .001, concentration + .001)
+        rows = rows.loc[rows.hours.eq(24) & (rows.pert_type.eq("ctl_vehicle") | nearby)]
         kept.append(rows)
     rows = prepare(pd.concat(kept, ignore_index=True).rename(columns={"sample_id": "inst_id", "cell_iname": "cell_id",
                                                                                  "cmap_name": "pert_iname"}))
@@ -50,7 +55,7 @@ def instance_rows(path, known):
     rows = rows.loc[~duplicates]
     treated = rows.loc[rows.pert_type.eq("trt_cp")]
     exact = cmap_measured(treated)
-    treated = treated.merge(exact.loc[exact.actual_dose_uM.eq("10")], on="inst_id", validate="one_to_one")
+    treated = treated.merge(exact.loc[exact.actual_dose_uM.isin(dose_keys)], on="inst_id", validate="one_to_one")
     controls = rows.loc[rows.pert_type.eq("ctl_vehicle") & (ids(rows.pert_id).eq("DMSO") | ids(rows.pert_iname).eq("DMSO"))]
     return treated, controls, invalid
 
