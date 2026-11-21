@@ -89,3 +89,5 @@ JHH-5의 후속 귀속 분석에서 원 실측 평균은 State 1토큰 적응보
 JHH-7 99군의 단일 plate에서도 원 실측 평균은 화학적으로 분리한 JHH-5 적합 State보다 RMSE 13.71% 감소 및 R² +31.38%p였다. 고정 편차 축소의 원 평균 대비 개선은 RMSE 0.260%, R² +0.301%p였고 사전 기술 재현 기준에 미달했다. [JHH-7 전이](JHH7_DONOR_TRANSFER_RESULTS.md)
 
 공통 지원의 원천 세포주 수를 16개에서 8개로 줄이면 두 JHH 세포주에서 평균 RMSE가 약 3% 높아졌다. 편차 축소한 8개 예측은 양쪽에서 무반응 기준을 앞섰으나 16개 보정보다 오차가 컸다. 8개 입수 조건의 독립 후보는 284 scaffold, 기존 16개 조건은 37 scaffold였다. [원천 수량과 오차](HCC_DONOR_PANEL_SIZE_RESULTS.md)
+
+같은 8개 원천을 받은 State 대비 편차 축소의 RMSE가 JHH-5에서 2.31%, JHH-7에서 10.20% 낮았다. JHH-5에서 직접 평균도 앞섰고, 단순 적합 배율 대비 RMSE 개선은 0.194%로 등록 공동 기준에 미달했다. [같은 8개를 받은 State](HCC_DONOR8_STATE_RESULTS.md)

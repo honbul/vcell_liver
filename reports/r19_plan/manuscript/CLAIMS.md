@@ -19,6 +19,7 @@
 | Gene-wise shrinkage of the nonhepatic donor consensus improved JHH-5 vector prediction | Registered development criteria passed | Without JHH-5 fit labels, relative RMSE improved by 0.645% and pooled R² by 0.953 points versus the direct donor mean. Gains were also observed against the target-fit origin scalar. All but four compounds had at least 16 donor cell lines. [JHH-5 shrinkage](../JHH5_DONOR_ATTRIBUTION_RESULTS.md) |
 | The donor mean transferred to a second adult HCC line | Single-plate technical support | In JHH-7, the mean reduced RMSE by 13.71% versus State trained only on 475 scaffold-purged JHH-5 parents. The 99 scored parents were in B1, and 95 appeared in the JHH-5 development cohort. The fixed shrinkage gain did not meet the technical threshold. [JHH-7 transfer](../JHH7_DONOR_TRANSFER_RESULTS.md) |
 | The 16-line donor response can be retained with fewer measured contexts | Noninferiority gate unmet | With matched supports and nested cell draws, the eight-line average increased RMSE relative to the 16-line average by about 3% in both JHH lines. Eight-line shrinkage improved over B0 on pooled comparisons and had higher errors than 16-line shrinkage. [Donor panel size](../HCC_DONOR_PANEL_SIZE_RESULTS.md) |
+| Eight-donor shrinkage improved on an equally informed State adaptation | Development support under matched inputs | RMSE decreased by 2.31% in JHH-5 and 10.20% in the single-plate JHH-7 comparison. The JHH-5 joint gate also required an improvement against the same-input scalar. Its RMSE gain was 0.194% with a 99% interval spanning zero. [Matched eight-donor transfer](../HCC_DONOR8_STATE_RESULTS.md) |
 | A temporal correction also helped within primary human hepatocytes | Limited to scalar versus zero response | On 67 held parents, a fit-only scalar improved over B0. A fixed rank-16 operator did not improve both endpoints over the scalar. The operators were fitted and scored within PHH. [PHH](../T4_PHH_RESULTS.md) |
 | A HEPG2-fitted temporal operator improves the prediction of PHH responses in the same assay | Gate unmet | On 67 held PHH parents, the operator increased RMSE by 4.54% versus a HEPG2-fitted scalar and by 6.18% versus a PHH-fitted scalar given identical PHH 6 h measurements. Both R² intervals favored the scalar. [Context transfer](../T4_CONTEXT_TRANSFER_RESULTS.md) |
 | The method outperforms existing virtual cells in adult HCC | Unverified | A matched external comparison with adult HCC and predeclared benchmarks is needed. R18 C1 was evaluated under R16 before reservation. R18 C3 is a small HUH7 technical support set. R18 itself currently has metadata, synthetic processing tests and structure inputs. [External confirmation scope](../R18_CONFIRMATION_PROTOCOL.md) |
@@ -38,7 +39,7 @@ Across the expanded metadata review, three independent-source HUH7 comparisons h
 
 The final manuscript requires separate evidence for the adult HCC claim, documented data and code access, and author-confirmed contributions and declarations. The development draft can be read alongside the outcome files. [Submission guidance](https://www.nature.com/srep/author-instructions/submission-guidelines)
 
-## Regenerate the figure
+## Regenerate the figures
 
 Use Python with Matplotlib and the repository's PyYAML dependency. The script checks the score table hashes against their receipts and uses the recorded relative RMSE and cosine values.
 
@@ -46,4 +47,8 @@ Use Python with Matplotlib and the repository's PyYAML dependency. The script ch
 python -m src.r19_plan.t4_evidence_figure \
   --data reports/r19_plan/data \
   --output reports/r19_plan/manuscript/figure1.pdf
+
+python -m src.r19_plan.hcc_evidence_figure \
+  --data reports/r19_plan/data \
+  --output reports/r19_plan/manuscript/figure2.pdf
 ```
