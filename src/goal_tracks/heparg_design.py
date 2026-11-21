@@ -106,7 +106,8 @@ def metadata_out_of_plate(design):
                 per_plate = fitting.drop_duplicates()
                 counts = per_plate.groupby(["position", field]).size().rename("count").reset_index()
                 location = counts.sort_values(["count", field], ascending=[False, True]).drop_duplicates("position").set_index("position")[field]
-                default = fitting[["plate", field]].drop_duplicates()[field].mode().iloc[0]
+                freq = fitting.groupby(["plate", field]).size().unstack(fill_value=0)
+                default = freq.div(freq.sum(axis=1), axis=0).mean(axis=0).idxmax()
             guess = held.position.map(location)
             coverage.extend(guess.notna())
             predicted.extend(guess.fillna(default))
