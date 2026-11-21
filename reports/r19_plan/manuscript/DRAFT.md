@@ -42,6 +42,8 @@ With only structure and fit-vehicle expression as inputs, nested source-only sca
 
 Exact concentration and parent matching yielded five compounds and 21 physical wells in GSE284321 and three compounds and nine wells in GSE296254. On their corresponding independent L1000 observations, the 6-to-24-hour prediction had parent-macro cosine of 0.247 and 0.220. On the identical 827-gene axis in the respective HepaRG datasets, cosine was 0.024 and −0.017. Direct 24-hour L1000 donors also had near-zero mean cosine in HepaRG. The two comparisons jointly change assay and cell context. Their small supports limit population inference. [Matched cross-assay comparison](../T4_CROSS_ASSAY_RESULTS.md) · [Figure 1](figure1.pdf)
 
+In the larger within-assay GSE296254 development set at concentrations of at least 10 µM, adding a frozen structure-and-dose prediction to a position and treatment-context anchor reduced RMSE by 0.77% (99% interval 0.37–1.19%, 281 parents and 1,634 wells). On 1,633 wells with a different-culture, different-plate and different-position repeat, the structure prediction reduced RMSE by 0.78%, and adding the position- and context-adjusted donor residual with a fixed weight of 0.25 reduced RMSE by 5.90% (4.65–7.13%). These results estimate how much response is reproducible within the HepaRG assay after position adjustment. [HepaRG residual repeats](../HEPARG_POSITION_REPEAT_RESULTS.md)
+
 ## Methods
 
 ### Physical units and information available at inference
