@@ -9,8 +9,9 @@
 | 같은 약물 외부 세포주 반응의 B 전이 | 493군, HEPG2 웰 2,324개 | R17 결합의 donor anchor 대비 ΔRMSE −0.01965 [−0.02245, −0.01687], ΔR² +3.27%p [2.71, 3.83] | 같은 L1000 B에서 기준선 위 잔차의 가치 확인 |
 | 구조와 손실을 바꾸면 더 나아지는가 | A 1,862군, B 493군 | A·B의 S2와 L1은 실용 기준 미달. S3는 연산 감소와 매우 작은 오차 감소 | 승격 후보 없음 |
 | 실측 보조 뷰를 추가하면 나아지는가 | 공통 345군과 fallback 전체 1,862군 | I5 kernel의 B_R17 대비 상대 RMSE 이득 0.200%와 0.046%. FiLM 증분 효과의 두 구간은 0 포함 | 승격 기준 미달 |
+| 같은 화합물·용량의 24 h 반응이 다른 assay에서도 일치하는가 | HepaRG 5군과 3군, 공통 랜드마크 827개 | 시간 모델의 평균 cosine이 LINCS 내부 0.247·0.220, HepaRG 0.024·−0.017 | 좁은 기술 비교에서 교차 assay 개선 근거 미확보 |
 
-[시간 전이](T4_RESULTS.md) · [기여 대조](T4_ATTRIBUTION_RESULTS.md) · [S/L B](SL_B_RESULTS.md) · [S/L A](SL_RESULTS.md) · [I5](I5_RESULTS.md)
+[시간 전이](T4_RESULTS.md) · [기여 대조](T4_ATTRIBUTION_RESULTS.md) · [S/L B](SL_B_RESULTS.md) · [S/L A](SL_RESULTS.md) · [I5](I5_RESULTS.md) · [교차 assay 결과](T4_CROSS_ASSAY_RESULTS.md)
 
 ## 비교의 공정성과 한계
 
@@ -21,3 +22,5 @@
 ## 확인 상태
 
 R14 동결 결과를 회수하고 R17 재현을 점검했다. R18 C1–C3는 지원과 노출, 접근 명부와 동결·채점 검증까지 준비했다. R18 처리값은 개방되지 않았으므로 원 판정은 미실행이다. 위 수치는 이미 노출된 DEV와 현재 허용된 측정을 중심으로 계산했다. 성인 간세포암에서 기존 VC를 능가한다는 목표에는 독립 확인 결과가 필요하다. [R14 및 R18 지원](progress_reconciliation.md) · [R18 사전 명세](R18_CONFIRMATION_PROTOCOL.md) · [실험별 상태와 판정](experiment_matrix.tsv) · [쉬운 요약](BEGINNER_SUMMARY.md) · [다음 판정](NEXT_DECISION.md)
+
+논문 작업용 초안은 위 결과의 방법·수치·적용 범위를 원표에 연결했다. [영문 초안](manuscript/DRAFT.md) · [주장별 근거](manuscript/CLAIMS.md) · [벡터 그림](manuscript/figure1.pdf)
