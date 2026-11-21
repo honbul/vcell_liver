@@ -224,7 +224,7 @@ def run(args):
                         collect(recorded,scope+"_"+suffix,r.loc[supported],observed[supported],values)
                 else:
                     collect(recorded,scope,rows.loc[keep],truth[keep],{a:p[keep] for a,p in arms.items()})
-        minimum = 100 if args.confirm else 1
+        minimum = (np.inf if args.cell.startswith("JHH") else 100) if args.confirm else 1
         for scope,records in recorded.items():
             points, paired = summarize(records,scope,scenario,requested,references,minimum)
             scores.extend(points)

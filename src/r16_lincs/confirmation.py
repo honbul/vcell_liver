@@ -46,7 +46,8 @@ class ConfirmBank(Bank):
             self.inputs = {(p,24):v for p,v in zip(names,values,strict=True)}
 
     def eligible(self):
-        rows = self.rows.loc[self.rows.quality]
+        technical = self.rows[LINE].eq(self.cell) & self.cell.startswith("JHH")
+        rows = self.rows.loc[self.rows.quality | technical]
         if self.scenario == "B":
             rows = rows.loc[rows.parent.map(lambda p:(p,24) in self.inputs)]
         return rows
