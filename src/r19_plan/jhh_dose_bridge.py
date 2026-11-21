@@ -70,7 +70,7 @@ def access(args):
     if not support["eligible"] or min((x["score_parents"] for x in splits), default=0) < 3:
         raise ValueError(f"The registered bridge support did not pass: {support}")
     details = dict(high_audit_sha256=sha256(args.high_pin), bridge_support={
-        **{k: support[k] for k in ("fold0", "fold1", "fold2", "fit_parent_min")},
+        **{k: int(support[k]) for k in ("fold0", "fold1", "fold2", "fit_parent_min")},
         "target_controls": len(target_controls), "shared_prior_target_controls": int(target_controls.inst_id.isin(high["controls"].inst_id).sum()),
         "shared_prior_target_parents": int(targets.loc[targets.parent.isin(old_targets.parent)].parent.nunique()),
         "shared_prior_target_plates": int(targets.loc[targets.rna_plate.isin(old_targets.rna_plate)].rna_plate.nunique()),
