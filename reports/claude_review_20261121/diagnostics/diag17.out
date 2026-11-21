@@ -1,0 +1,34 @@
+A f0-A: 2161 rows
+A f0-B: 2161 rows
+A f1-A: 2361 rows
+A f1-B: 2361 rows
+A f2-A: 2251 rows
+A f2-B: 2251 rows
+
+=== scenario A: gain preferred by each truth convention
+model                     same-role   opp-role   cos(est, control diff)
+R15                           1.000      0.750   +0.0665
+ChemBERTa_R11                 0.750      0.250   +0.4303
+FiLM_R12                      1.000      0.500   +0.5202
+Concat_R12                    1.000      0.500   +0.5246
+chemCPA_P0                    0.250      0.125   +0.2615
+TranSiGen_Tahoe               0.250      0.125   +0.2378
+XPert_morgan                  1.000      0.250   +0.4712
+PRnet-well-adaptation         0.000      0.000   +0.0515
+B f0-A: 2104 rows
+B f0-B: 2104 rows
+B f1-A: 2313 rows
+B f1-B: 2313 rows
+B f2-A: 2171 rows
+B f2-B: 2171 rows
+
+=== scenario B: gain preferred by each truth convention
+model                     same-role   opp-role   cos(est, control diff)
+R15                           1.000      0.750   +0.1309
+ChemBERTa_R11                 0.750      0.250   +0.4439
+FiLM_R12                      1.000      0.250   +0.5416
+Concat_R12                    1.000      0.250   +0.5419
+chemCPA_P0                    0.250      0.125   +0.2390
+TranSiGen_Tahoe               0.125      0.125   +0.2138
+XPert_morgan                  1.000      0.250   +0.4502
+PRnet-well-adaptation         0.000      0.000   +0.0493

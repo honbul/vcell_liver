@@ -33,3 +33,19 @@ HepG2는 간모세포종 유래다. 주 평가에서는 GSE92742 HEPG2 6 h, 5–
 - [LINCS 내부 모델별 지표](data/internal/scored/points.tsv) · [대응 99% 구간과 판정](data/internal/scored/paired.tsv) · [화합물 기여와 제외](data/internal/scored/top_group_exclusion.tsv)
 - [Tahoe 동일 축 기존 VC 10종 비교](data/external/scored/points.tsv) · [대응 99% 구간](data/external/scored/paired.tsv) · [방향·크기 진단](data/external/descriptive/direction_scale.tsv)
 - [노출·위치 감사](AUDIT.md) · [사전 명세](PROTOCOL.md) · [동결과 Slurm 기록](RUN_LEDGER.md)
+
+## R16 출력 배율 사후 보강
+
+R15는 위의 사전 기준을 통과했다. R16은 R15의 기존 VC 7종 외부 예측을 그대로 두고, 공유 anchor를 뺀 각 추정의 배율을 R15와 같은 격자로 안쪽 검증에서 골랐다. B_cell 기준선도 같은 방식으로 배율을 골랐다. 아래 차이는 R15−비교군이며 괄호는 99% 짝 재표집 구간이다. R15 사전 판정, 동결 해시와 기존 점수는 유지했다. [R16 사후 비교표](../r16_lincs/data/internal/fair/paired.tsv)
+
+| 시나리오 | 비교군 | ΔRMSE | ΔR², %p |
+|---|---|---:|---:|
+| 구조만 A | 전체 및 출판 VC 최선, PRnet×0 | −.00753 [−.00990, −.00541] | +2.35 [+1.69, +3.07] |
+| 구조만 A | 프로젝트 내부 기준 최선, ChemBERTa Ridge | −.02068 [−.02358, −.01794] | +4.67 [+3.69, +5.82] |
+| 동일 약물 전이 B | 전체 및 출판 VC 최선, PRnet×0 | −.01737 [−.01922, −.01562] | +3.63 [+3.18, +4.13] |
+| 동일 약물 전이 B | 프로젝트 내부 기준 최선, ChemBERTa Ridge | −.03142 [−.03388, −.02913] | +6.59 [+5.77, +7.68] |
+| 동일 약물 전이 B | B_cell×.5 | −.00471 [−.00725, −.00227] | +1.45 [+0.79, +2.21] |
+
+안쪽 검증은 FiLM·concat에 모든 fold/역할에서 ×1, PRnet에는 ×0을 골랐다. 따라서 최선 전체·출판 VC의 점수는 PRnet의 약물 추정을 제거한 공유 anchor에서 나왔다. 다른 외부 fold로 배율을 고른 탐색 diag16에서는 A의 FiLM×.5가 R15보다 RMSE가 낮았다. 순위는 배율을 얼마나 줄이느냐에 민감했다. [배율 선택표](../r16_lincs/data/internal/fair/selection.tsv) · [탐색 diag16](../claude_review_20261121/diagnostics/diag16.py)
+
+R16 구현 검증에서 R15의 FiLM·concat epoch 선택 호출이 유전자별 예측 대신 스칼라를 넘긴 결함을 발견했다. 원 외부 FiLM·concat 예측에는 그 epoch로 적합한 유전자별 값이 저장돼 있다. R16 사후 비교는 원 설정과 외부 예측을 고정하고 설정에 대응하는 안쪽 유전자별 예측을 재계산했다. 원 R15의 FiLM·concat 설정이 적절한 유전자 수준 검증으로 선정됐다고 해석할 수 없다. [구현 기록](../r16_lincs/IMPLEMENTATION.md)
