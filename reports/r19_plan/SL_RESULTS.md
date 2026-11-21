@@ -17,4 +17,4 @@ S1과 S0의 parameter 수는 각각 165,458개와 165,586개였으며 두 가지
 
 실측 용량을 기준으로 한 pool 대비 RMSE는 B_R17 0.782428, S2 0.782728, L1 0.782425였다. B_R17의 pool Top-1은 9.79%, chance는 2.31%였다. 신경망 가지의 화학 parent shuffle에도 공통 구조 커널이 남아 있으며 Top-1은 9.97%였다. 전체 결합에서 신경망의 화학 입력 기여를 이 검색 지표만으로 확인하지 못했다. 약물 특징을 제거하고 위치 anchor와 맥락 FiLM만 쓰는 `B_context`는 B_R17보다 RMSE가 0.004594 높고 R²가 1.304%p 낮았다. [대비·검색·크기 진단](data/sl_a/score/diagnostics.tsv)
 
-명세는 `fd6dd05`에 고정했다. CPU 예측 `30870` → 동결 `30871` → 별도 채점 `30872`는 모두 종료 코드 0이었다. CPU 할당 1.61시간, GPU 0개였다. 9개 예측 영수증, 동결과 채점 원표의 SHA-256을 대조했다. 이 결과는 A 개발 지원에 한정된다. B의 동일 약물 donor 실험과 독립 간세포암 확인은 별도 판정이다. [동결](data/sl_a/freeze.json) · [채점 영수증](data/sl_a/score/receipt.json) · [실행 자원](data/sl_a/resource_usage.tsv)
+명세는 `fd6dd05`에 고정했다. CPU 예측 `30870` → 동결 `30871` → 별도 채점 `30872`는 모두 종료 코드 0이었다. CPU 할당 1.61시간, GPU 0개였다. 9개 예측 영수증, 동결과 채점 원표의 SHA-256을 대조했다. 이 결과는 A 개발 지원에 한정된다. 동일 약물 donor를 제공한 B에서도 여섯 변경이 승격 기준에 미달했다. [동결](data/sl_a/freeze.json) · [채점 영수증](data/sl_a/score/receipt.json) · [실행 자원](data/sl_a/resource_usage.tsv) · [B 결과](SL_B_RESULTS.md)

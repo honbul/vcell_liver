@@ -38,7 +38,8 @@ def target_scope(args):
     if receipt["outputs"]["entities.tsv"] != sha256(args.entities):
         raise ValueError("Tahoe compound identity metadata changed after the structure audit")
     entities = pd.read_csv(args.entities, sep="	", dtype=str, keep_default_na=False)
-    query = target.merge(entities[[ENTITY, "smiles"]], on=ENTITY, validate="many_to_one")
+    query = target[[ENTITY, GROUP, "cell_line_id"]].merge(entities[[ENTITY, "smiles"]],
+                                                         on=ENTITY, validate="many_to_one")
     parents = {s: structural_keys(clean(s))[1] for s in set(query.smiles)}
     query["parent"] = query.smiles.map(parents)
     if len(query) != len(target) or query.parent.eq("").any():

@@ -15,16 +15,17 @@ X2	COMPLETED	NO_USEFUL_GAIN for basal RNA under the A contract. Upper 99 percent
 X3	COMPLETED	Nonhepatic matched B_cell improved RMSE by 6.01 percent versus parent shuffle. Basal weighting and linear correction did not meet the practical gate versus equal donors.
 X.loco_support	COMPLETED	Five independent GSE92742 cell contexts share 495 exact-dose parents with RNA plates and all three parent folds; metadata only.
 X2.basal_support	COMPLETED	Five exact-dose contexts share 493 parents and independently matched DepMap 25Q3 basal profiles with all 978 gene identifiers; metadata only.
-S0	PLANNED	A completed as the matched B_R17 full-gene FiLM reference; B pending.
-S1	PLANNED	A matched concat comparison had both 99 percent intervals crossing zero; B pending.
-S2	PLANNED	A direction–magnitude worsened both endpoints at 99 percent; B pending.
-S3	PLANNED	A fit-only rank 32 improved relative RMSE by 0.0193 percent and did not reach the practical gate; B pending.
-L0	PLANNED	A completed as the same parent-weighted MSE blend as S0; B pending.
-L1	PLANNED	A matched contrast loss had negligible effects and did not reach the practical gate; B pending.
+S0	COMPLETED	Refit full-gene FiLM baseline in A and B. B_R17 beats its B blend anchor on the common 493-parent support.
+S1	COMPLETED	Matched concat had both 99 percent intervals crossing zero in A and B.
+S2	COMPLETED	Direction–magnitude worsened both A endpoints at 99 percent and both B intervals included zero.
+S3	COMPLETED	Low-rank output improved relative RMSE by 0.0193 percent in A and 0.0260 percent in B. No practical gate passed.
+L0	COMPLETED	Parent-weighted MSE reference shared the S0 prediction in A and B.
+L1	COMPLETED	Matched contrast loss had negligible effects in A and B and failed the practical gate.
 L1.pool_support	COMPLETED	Exact measured-dose pairs cover 1818 held parents and 6558 physical wells; 284 well doses differ from the historical cache.
-SL.A	COMPLETED	Neither S2 nor L1 met the A-lane practical gate; all six variants exclude a 0.5 percent relative RMSE gain at 99 percent. B remains outstanding.
-L2	PLANNED	A direction loss did not improve either endpoint at 99 percent; B pending.
-L3	PLANNED	A Huber worsened pooled R2 at 99 percent; B pending.
+SL.A	COMPLETED	Neither S2 nor L1 met the A-lane practical gate; all six variants exclude a 0.5 percent relative RMSE gain at 99 percent.
+SL.B	COMPLETED	Matched four-donor comparison on 493 parents. None of six residual variants met the B-lane practical gate. The full R17 blend improved on the matched donor anchor.
+L2	COMPLETED	Direction loss did not improve either endpoint at 99 percent in A or B.
+L3	COMPLETED	Huber worsened pooled R2 in A. B RMSE improved by 0.016 percent with inconclusive R2 and no practical gain.
 I0	COMPLETED	Structure ridge plus shared FiLM scored on 1862 parents; prospective B_R17 retained.
 I1	COMPLETED	NO_USEFUL_GAIN; 1326 complete-view parents, both effects below zero at 99%.
 I2	COMPLETED	NO_USEFUL_GAIN; 361 complete-view parents, relative RMSE gain 99% upper 0.244%.
@@ -38,4 +39,5 @@ T2.Tahoe_5uM	BLOCKED	Only 5 of the required 12 target-fit physical wells in ever
 T3.Tahoe_5uM	BLOCKED	Combined correction depends on unavailable T2 fit-control support; the T1 scalar remains separate.
 T2.parent_support	COMPLETED	Audited exact-dose, same-assay leave-domain and globally held parent-fold support using metadata only.
 T4.source_support	COMPLETED	GSE92742 has 132 HEPG2 and 67 PHH exact-dose 6h/24h parents outside protected inputs; support audit only.
+T4.attribution	COMPLETED	The frozen temporal fit improved RMSE by 7.25 percent versus the fit mean, and by 16.11 percent versus within-dose donor swap on its matched 89-parent subset.
 T4.cross_platform	PLANNED	Same-panel cross-platform and cross-time contrasts need a shared exact-dose parent support audit. No platform effect estimated from mismatched support.
