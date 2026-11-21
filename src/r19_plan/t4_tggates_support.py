@@ -73,7 +73,7 @@ def run(args):
     result = []
     for name, frame in (("24h_treated", treated), ("24h_vehicle_group", controls), ("direct_molar", target),
                         ("dose_only_upper_bound", dose_ok), ("plus_unique_normalized_LINCS_name", same),
-                        ("plus_same_LINCS_PHHere_6h_24h_parent", exact)):
+                        ("plus_same_LINCS_PHH_6h_24h_parent", exact)):
         result.append(dict(level=name, compounds=frame.COMPOUND_NAME.nunique(), microarrays=frame.BARCODE.nunique(),
             study_experiments=frame.EXP_ID.nunique(), registered_physical_plate_role_support=False))
     args.out.mkdir(parents=True)
