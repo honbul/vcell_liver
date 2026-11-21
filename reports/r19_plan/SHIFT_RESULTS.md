@@ -60,3 +60,9 @@ GSE92742 원 QC 메타데이터에서 R18 보호 측정과 별칭·donor를 제�
 HEPG2 parent는 hold-out fold별 36·42·54군이며 실측 10 µM 83군, 2.5 µM 50군이다. 두 시간에 사용된 서로소 RNA plate는 각각 41개와 12개다. PHH의 10 µM은 36군이며 시간별 donor 독립성은 미검증이다. T2의 10 µM 수는 기존 R15 캐시에서 센 것이므로 원 QC 릴리스로 계산한 T4와 모수가 다르다. GSE70138은 DET 좌표 기준만 확인되어 RNA 기반 지원에 포함하지 않았다. 이 감사는 실제 발현을 읽지 않고 지원만 검증했다. [시간 쌍 원표](data/t4_support/support.tsv) · [실측 용량별 표](data/t4_support/dose_support.tsv) · [감사 영수증](data/t4_support/receipt.json) · [G1 작업](data/t4_support/jobs.tsv)
 
 이 지원을 고정해 별도로 실시한 HEPG2 T4에서 저랭크 시간 연산자는 단순 배율 대비 RMSE를 7.33% [99% 구간 5.06, 9.58] 줄였다. 독립 24 h 반복과의 차이는 두 지표 모두 0을 포함했다. [T4 동결 실험 결과](T4_RESULTS.md)
+
+## T4. 동일 농도의 Tahoe 교차 플랫폼 지원
+
+기존 Tahoe의 5 µM·24 h, 최소 20세포 및 pool별 3군 기준에서 HepG2-C3A와 SNU-423은 각각 203 canonical parent였다. 원 T4 QC·보호 제외 및 물리 대조군 계약을 적용한 GSE92742에서 HEPG2·SNU423·HUH7·PHH는 6 h와 24 h 모두 실측 정확히 5 µM인 적격 parent가 없었다. GSE70138은 물리 RNA 좌표를 검증하지 못했고 DET 기술 집계에서도 동일 조건의 적격군은 0이었다. 기존 유전자 대응 축에 공통 161개 landmark가 있어도 같은 화합물·농도의 세 축 비교에는 지원이 없다. 2.5 µM, 10 µM의 LINCS 시간 비교와 Tahoe 5 µM 차이를 플랫폼 효과의 크기로 해석하지 않는다.
+
+CPU 감사 `31149`는 두 표에 중복된 SMILES 열 이름 때문에 중단됐다. 구조 명부의 열만 사용하도록 수정한 뒤 `31150`이 완료됐다. QC가 고정된 이미 노출된 Tahoe metadata와 기존 LINCS 메타데이터만 사용했다. [동일 농도 지원 원표](data/t4_bridge/support.tsv) · [영수증](data/t4_bridge/receipt.json) · [작업 원장](data/dev_family/jobs.tsv)
