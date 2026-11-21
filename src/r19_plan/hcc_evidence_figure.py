@@ -13,6 +13,7 @@ from src.r11_chemical_probe.common import read_json, sha256
 
 
 COLORS = ("#156C80", "#B35421")
+LOW_DOSE_COLOR = "#62559C"
 CELLS = ("JHH5", "JHH7")
 
 
@@ -34,12 +35,13 @@ def gain(rows, **key_values):
     return 100*np.asarray([row[key] for key in ("relative_gain", "relative_low99", "relative_high99")], dtype=float)
 
 
-def forest(ax, data, labels, cell_labels):
+def forest(ax, data, labels, cell_labels, colors=COLORS):
     y = np.arange(len(labels))
-    for column, (series, color, name) in enumerate(zip(data, COLORS, cell_labels, strict=True)):
+    offsets = np.linspace(-.24, .24, len(data)) if len(data) == 3 else (-.15, .15)
+    for series, color, name, offset, marker in zip(data, colors, cell_labels, offsets, "os^"[:len(data)], strict=True):
         points, low, high = np.asarray(series).T
-        ax.errorbar(points, y+(.15 if column else -.15), xerr=(points-low, high-points), c=color, label=name,
-            ecolor=color, marker="s" if column else "o", linestyle="none", markersize=5, elinewidth=1.35, capsize=2.2)
+        ax.errorbar(points, y+offset, xerr=(points-low, high-points), c=color, label=name,
+            ecolor=color, marker=marker, linestyle="none", markersize=5, elinewidth=1.35, capsize=2.2)
     ax.set_yticks(y, labels)
     ax.set_ylim(len(labels)-.48,-.48)
     ax.axvline(0, color="#7C848A", lw=.9, ls=":")
@@ -70,11 +72,13 @@ def render(root, output):
     jhh7 = read_scores(root,"jhh7_donor_transfer")
     counts = read_scores(root,"hcc_donor_panel_size")
     matched = read_scores(root,"hcc_donor8_state")
+    low_dose = read_scores(root,"jhh_low_dose/transfer")
     common = ["No response","State adaptation","Different compound"]
     main = ("B0","State_24h_donor","other_parent_same_pool")
     known = [[gain(table,arm="donor_mean",reference=ref) for ref in main] for table in (jhh5,jhh7)]
     references = ("mean_8","scalar_8","State_8","B0")
     reduced = [[gain(matched,cell=cell,arm="shrink_8",reference=ref) for ref in references] for cell in CELLS]
+    reduced.append([gain(low_dose,cell="JHH5",arm="shrink_8",reference=ref) for ref in references])
     with plt.rc_context({"font.family":"DejaVu Sans","font.size":9,"pdf.fonttype":42,"axes.labelcolor":"#273442",
                          "text.color":"#273442","xtick.color":"#273442","ytick.color":"#273442"}):
         fig = plt.figure(figsize=(10.3,7.1),layout="constrained")
@@ -87,7 +91,8 @@ def render(root, output):
             ax.set_title(title,loc="left",fontweight="bold",pad=12)
         forest(axes["matched"],known,common,("JHH-5 (609)","JHH-7 (99)"))
         panels(axes["counts"],counts)
-        forest(axes["reduced"],reduced,("Donor mean","Fitted scalar","State adaptation","No response"),("JHH-5 (605)","JHH-7 (97)"))
+        forest(axes["reduced"], reduced, ("Donor mean", "Fitted scalar", "State adaptation", "No response"),
+               ("JHH-5, 10 µM (605)", "JHH-7, 10 µM (97)", "JHH-5, 3.33333 µM (490)"), (*COLORS, LOW_DOSE_COLOR))
         fig.savefig(output,format="pdf",metadata={"Title":"Matched nonhepatic donor transfer in adult HCC","CreationDate":None})
         plt.close(fig)
 

@@ -17,6 +17,7 @@
 | 구조와 손실을 바꾸면 더 나아지는가 | A 1,862군, B 493군 | A·B의 S2와 L1은 실용 기준 미달. S3는 연산 감소와 매우 작은 오차 감소 | 승격 후보 없음 |
 | 실측 보조 뷰를 추가하면 나아지는가 | 공통 345군과 fallback 전체 1,862군 | I5 kernel의 B_R17 대비 상대 RMSE 이득 0.200%와 0.046%. FiLM 증분 효과의 두 구간은 0 포함 | 승격 기준 미달 |
 | 같은 화합물·용량의 24 h 반응이 다른 assay에서도 일치하는가 | HepaRG 5군과 3군, 공통 랜드마크 827개 | 시간 모델의 평균 cosine이 LINCS 내부 0.247·0.220, HepaRG 0.024·−0.017 | 좁은 기술 비교에서 교차 assay 개선 근거 미확보 |
+| 8개 원천 보정의 JHH-5 이득이 실측 3.33333 µM에 이어지는가 | 이전과 처리 웰이 겹치지 않는 490군·495웰, 공유 RNA plate 5개 | 같은 입력의 State 대비 RMSE 개선 +0.13% [−0.25, +0.53], 적합 배율 대비 −1.88% [−2.19, −1.56] | 저용량 공동 기준 미통과. [JHH-5 저용량 비교](JHH_LOW_DOSE_TRANSFER_RESULTS.md) |
 
 [시간 전이](T4_RESULTS.md) · [기여 대조](T4_ATTRIBUTION_RESULTS.md) · [S/L B](SL_B_RESULTS.md) · [S/L A](SL_RESULTS.md) · [I5](I5_RESULTS.md) · [교차 assay 결과](T4_CROSS_ASSAY_RESULTS.md)
 
