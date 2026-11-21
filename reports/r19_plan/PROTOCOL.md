@@ -40,6 +40,8 @@ L1은 기존 개발 처리 명부를 대조하고 release·물리 RNA plate·세
 
 X의 선정 조합은 HEPG2·A375·HA1E·HT29·MCF7이다. 공통 495 parent가 fold별 166·165·164개로 나뉘며, 모든 parent가 각 세포 맥락에서 RNA plate 두 개 이상에 나타난다. 따라서 한 맥락을 빼고 네 맥락에서 적합하는 구조의 자료 지원이 있다. 별도 기저 RNA의 provenance와 모델의 전이 성능은 이 감사로 판정하지 않는다. [원 맥락 지원](data/x_l_support/x/contexts.tsv) · [선정 조합과 fold](data/x_l_support/x/loco_support.tsv)
 
+X2 기저 특징 후보는 G1에 보유한 DepMap 25Q3 RNA다. 세포주 이름·catalog와 단일 기본 non-stranded RNA profile ID로 매칭하고, 중복 없는 L1000 Entrez 열을 센다. 전 맥락에 기저 자료가 있는 기존 적격 조합 중 원 X 지원 규칙을 다시 적용한다. 이 단계는 RNA feature 값을 배열에 적재하거나 모델을 적합하지 않는다.
+
 L1 held fold를 합치면 두 parent 이상이 있는 138개 pool에 1,818 parent, 6,558개 물리 웰이 포함된다. 전체 6,773웰 중 실측 용량과 기존 캐시 용량이 다른 웰은 284개였다. 따로 측정한 실제 용량으로 짝을 구성하고, 같은 캐시 용량에 속하더라도 실측이 다른 웰은 서로 다른 pool에 둔다. [지원 원표](data/x_l_support/l1/support.tsv) · [실측 용량 영수증](data/x_l_support/l1/receipt.json)
 
 ## S·L 구성 검증

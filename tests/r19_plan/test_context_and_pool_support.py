@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.r19_plan import l1_pool_support, x_context_support
+from src.r19_plan import l1_pool_support, x_basal_support, x_context_support
 
 
 def test_context_search_requires_five_contexts_and_excludes_shared_physical_plates():
@@ -28,3 +28,20 @@ def test_l1_support_counts_canonical_parents_not_wells_or_neighboring_doses():
     assert [row["eligible_wells"] for row in summary] == [3, 0, 0]
     assert summary[0]["eligible_parents"] == 2
     assert summary[0]["known_dose_wells"] == 4
+
+
+def test_basal_identity_requires_one_profile_without_catalog_conflicts():
+    source = pd.DataFrame({"cell_id": ["C1", "C2", "C3"], "provider_catalog_id": ["HB1", "HB2", "-666"],
+                           "subtype": ["a", "b", "c"]})
+    models = pd.DataFrame([
+        ["M1", "C 1", "C1", "RR1", "HB-1", "A"], ["M2", "C2", "C2", "RR2", "HB-5", "B"],
+        ["M3", "C3", "C3", "RR3", "", "C"],
+    ], columns=x_basal_support.IDENTITY)
+    profiles = pd.DataFrame([
+        ["M1", "seq-1", "cond-1", "yes"], ["M2", "seq-2", "cond-2", "yes"],
+        ["M3", "seq-3", "cond-3", "yes"], ["M3", "seq-4", "cond-4", "yes"],
+    ], columns=x_basal_support.PROFILE)
+    result = x_basal_support.resolve_contexts(set(source.cell_id), source, models, profiles).set_index("cell")
+    assert result.eligible.tolist() == [True, False, False]
+    assert result.catalog_conflict.tolist() == [False, True, False]
+    assert result.loc["C1", "sequence_id"] == "seq-1"
