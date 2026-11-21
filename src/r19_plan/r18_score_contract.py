@@ -123,7 +123,8 @@ def forecast_manifest(forecasts, access, access_ref, protocol, d0_ref):
         for name, receipt in sorted(locked.items())
     }
     return dict(protocol_sha256=protocol_hash, access_sha256=sha256(access_ref),
-                score_code_sha256=sha256(__file__), d0_sha256=sha256(d0_ref),
+                freeze_code_sha256=sha256(__file__), score_code_sha256=sha256(Path(__file__).with_name("r18_score.py")),
+                d0_sha256=sha256(d0_ref),
                 landmark_sha256=landmark_hash, prediction_receipts=prediction_receipts)
 
 
