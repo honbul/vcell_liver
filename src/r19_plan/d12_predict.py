@@ -70,7 +70,10 @@ def checkpoint_predictions(args, bank, fit_rows, select_rows, labels, anchor, wo
         if fit.query.treated is not None:
             raise ValueError("D2 legacy checkpoint bank has access to a selection label during fit")
         # The callback returns actual same-path checkpoint arrays. It never scores or stops training.
-        return {(epoch,): value for epoch, value in upstream(model)(fit, work, EPOCHS[model], lambda p: p).items()}
+        values, _ = upstream(model)(fit, work, EPOCHS[model], lambda prediction: prediction)
+        if set(values) != set(EPOCHS[model]):
+            raise ValueError(f"The {model} adapter did not return the registered checkpoint grid")
+        return {(epoch,): value for epoch, value in values.items()}
     return {params: fit_known(args, bank, fit_rows, select_rows, labels, None, anchor, model, work, params)
             for params in parameters}
 

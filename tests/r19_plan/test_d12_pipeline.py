@@ -94,3 +94,21 @@ def test_score_refuses_wrong_freeze_hash_before_expression(tmp_path):
     with patch.object(d12_workflow, "score_truth", side_effect=AssertionError("score opened")):
         with pytest.raises(ValueError, match="freeze digest"):
             d12_workflow.run(args)
+
+
+def test_adapted_models_unwrap_checkpoint_arrays_and_ignore_resource_tuple(monkeypatch, tmp_path):
+    params = d12_predict.EPOCHS["chemCPA_P0"]
+    observations = np.ones((1, 2))
+    monkeypatch.setattr(d12_predict, "config", lambda _: {})
+    monkeypatch.setattr(d12_predict, "FitSource", lambda *_a, **_k: None)
+    monkeypatch.setattr(d12_predict, "Fit", lambda *_a, **_k: Namespace(query=Namespace(treated=None)))
+
+    def upstream(_name):
+        return lambda fit, work, epochs, cb: ({epoch: cb(observations * epoch) for epoch in epochs}, {})
+
+    monkeypatch.setattr(d12_predict, "upstream", upstream)
+    bank = Namespace(fit="A", landmarks=pd.DataFrame({"pr_gene_id": [1, 2]}))
+    args = Namespace(model="chemCPA_P0", assets=tmp_path, config=tmp_path)
+    predictions = d12_predict.checkpoint_predictions(args, bank, None, None, observations, observations, tmp_path)
+    assert set(predictions) == {(epoch,) for epoch in params}
+    np.testing.assert_array_equal(predictions[(params[-1],)], observations * params[-1])

@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 from src.r11_chemical_probe.common import read_json, sha256, write_json
-from src.r15_lincs.forecast import LEGACY
+from src.r15_lincs.forecast import LEGACY, LEGACY_CPU
 from src.r19_plan.d1_inputs import access_reference, physical_subset
 from src.r19_plan.d12_predict import POLICIES
 from src.r19_plan.dev_selection import checked_array
@@ -24,15 +24,20 @@ from src.r19_plan.r18_predict import vehicle_means
 PAIRS = {"D1_independent": "D1_shared", "D2_joint": "D2_legacy"}
 ARMS = set(POLICIES) | {"B_pos"}
 FILES = {"rows.tsv", "landmarks.tsv", "forecasts.npz", "selection.json"}
+CPU_PREDICTOR_V1 = "222615beced89f75ee7ca16f33122198b5eaa60166d06e9908a41ca8754597a6"
 
 
 def read_predictions(root, model, slice_id, query, genes, access_sha, protocol_sha):
     path = root / model / slice_id
     receipt = path / "receipt.json"
     ref = read_json(receipt)
+    allowed = {sha256(Path(__file__).with_name("d12_predict.py"))}
+    if model in LEGACY_CPU:
+        # The upstream GPU checkpoint adapter repair leaves these completed CPU fits intact.
+        allowed.add(CPU_PREDICTOR_V1)
     if (ref["slice"] != slice_id or ref["model"] != model or ref["protocol_sha256"] != protocol_sha
             or ref["inputs"]["access"] != access_sha or set(ref["arms"]) != ARMS or set(ref["files"]) != FILES
-            or ref["code_sha256"] != sha256(Path(__file__).with_name("d12_predict.py"))):
+            or ref["code_sha256"] not in allowed):
         raise ValueError("D1/D2 forecast receipt changed its registered slice, model, arm, or input")
     for name, digest in ref["files"].items():
         if sha256(path / name) != digest:
@@ -46,7 +51,7 @@ def read_predictions(root, model, slice_id, query, genes, access_sha, protocol_s
         arrays = {name: checked_array(data[name], (len(query), len(genes)), name) for name in ARMS}
     if not np.array_equal(arrays["D2_joint"], arrays["D1_independent"]):
         raise ValueError("D1/D2 equal-input joint choices must produce identical forecasts")
-    return sha256(receipt), arrays
+    return dict(receipt_sha256=sha256(receipt), predictor_sha256=ref["code_sha256"]), arrays
 
 
 def score_truth(args, original, balanced, raw_queries, genes):
