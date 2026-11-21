@@ -9,7 +9,7 @@ import pandas as pd
 from src.r11_chemical_probe.common import read_json, sha256, write_json
 from src.r11_chemical_probe.dataset import GROUP
 from src.r15_lincs.data import asset, table
-from src.r17_lincs.inventory import ROOT
+from src.r17_lincs.inventory import ROOT, liver_cells, normal
 from src.r19_plan.audit_r18 import geo_metadata, prepare
 from src.r19_plan.i_preflight import provenance, read_r18_domains, verify_domain
 from src.r19_plan.r18_matrix_index import GENE_IDS, SAMPLE_IDS, metadata_index
@@ -23,6 +23,23 @@ NONHEPATIC = ("A375", "A549", "HT29", "MCF7")
 TARGET = "CVCL_0366"
 
 
+def donor_cells(expanded):
+    if not expanded:
+        return NONHEPATIC, None
+    path = asset(ROOT, STUDY, "cell_info")
+    annotations = table(path)
+    if not annotations.cell_id.is_unique:
+        raise ValueError("The official cell catalog does not have a unique cell axis")
+    site = annotations.primary_site.str.strip().str.lower()
+    active = annotations.cell_type.eq("cell line") & annotations.cell_id.eq(annotations.base_cell_id)
+    hepatic = normal(liver_cells(path, cmap=False).cell)
+    selected = annotations.loc[active & ~site.isin(["", "-666", "unknown", "na", "n/a"])
+                               & ~normal(annotations.cell_id).isin(hepatic), "cell_id"]
+    if not set(NONHEPATIC).issubset(selected):
+        raise ValueError("The expanded cell catalog dropped a registered original context")
+    return tuple(sorted(selected)), sha256(path)
+
+
 def mapping(query, structure):
     pairs = query[[GROUP, "parent"]].drop_duplicates()
     ambiguous = pairs[GROUP].duplicated(keep=False) | pairs.parent.duplicated(keep=False)
@@ -34,7 +51,7 @@ def mapping(query, structure):
     return roster, len(blocked)
 
 
-def audit_inputs(args):
+def audit_inputs(args, contexts):
     guard = read_json(args.support_reference)
     if (not guard["metadata_only"] or guard["expression_read"]
             or sha256(args.r18_access/"receipt.json") != guard["reservation_access_sha256"]
@@ -53,8 +70,8 @@ def audit_inputs(args):
     if not set(PHYSICAL) <= set(inst):
         raise ValueError("GSE92742 is missing unambiguous RNA coordinates")
     inst = prepare(inst)
-    wanted = sig.cell_id.isin(NONHEPATIC) & sig.hours.eq(24) & sig.parent.isin(roster.parent.dropna())
-    active = inst.cell_id.isin(NONHEPATIC) & inst.pert_type.eq("trt_cp") & inst.hours.eq(24)
+    wanted = sig.cell_id.isin(contexts) & sig.hours.eq(24) & sig.parent.isin(roster.parent.dropna())
+    active = inst.cell_id.isin(contexts) & inst.pert_type.eq("trt_cp") & inst.hours.eq(24)
     dose = measured_dose(asset(ROOT, STUDY, "inst_info"), set(inst.loc[active, "inst_id"]))
     multi_context = inst.groupby("rna_plate").cell_id.nunique().loc[lambda n: n > 1].index
     rows, diagnostics = eligible_links(inst, sig.loc[wanted], protected, dose)
@@ -94,7 +111,7 @@ def strata(roster, rows):
 def pinned_axis(args, rows, inst, protected):
     if rows.empty:
         return {}
-    controls = control_registry(inst.loc[inst.cell_id.isin(NONHEPATIC)], rows, protected)
+    controls = control_registry(inst, rows, protected)
     columns = ["inst_id", "sig_id", "cell_id", "parent", "actual_dose_uM", "hours", *PHYSICAL]
     admitted = rows[columns].assign(study=STUDY).sort_values(["parent", "cell_id", "actual_dose_uM", *PHYSICAL])
     axis_receipt = read_json(args.matrix_reference)
@@ -116,7 +133,8 @@ def pinned_axis(args, rows, inst, protected):
 def run(args):
     if args.out.exists():
         raise FileExistsError(args.out)
-    roster, rows, inst, protected, source = audit_inputs(args)
+    contexts, cells_sha256 = donor_cells(args.expanded)
+    roster, rows, inst, protected, source = audit_inputs(args, contexts)
     summary = strata(roster, rows)
     outputs = {"support.tsv": summary, "parent_support.tsv": roster, **pinned_axis(args, rows, inst, protected)}
     args.out.parent.mkdir(parents=True, exist_ok=True)
@@ -125,7 +143,7 @@ def run(args):
         for name, value in outputs.items():
             value.to_csv(stage/name, sep="\t", index=False)
         write_json(stage/"receipt.json", dict(metadata_only=True, expression_read=False, study=STUDY,
-            nonhepatic=list(NONHEPATIC), source=source, allowed_datasets=[SAMPLE_IDS, GENE_IDS],
+            nonhepatic=list(contexts), cells_sha256=cells_sha256, source=source, allowed_datasets=[SAMPLE_IDS, GENE_IDS],
             protocol_sha256=sha256(args.protocol), code_sha256=sha256(__file__),
             protected_access_sha256=sha256(args.r18_access/"receipt.json"),
             protected_control_sha256=sha256(args.r18_lock/"receipt.json"),
@@ -141,4 +159,5 @@ if __name__ == "__main__":
                  "tahoe", "tahoe-reference", "entities", "gene-reference", "matrix-reference", "genes",
                  "structure-reference", "structure", "protocol", "out"):
         parser.add_argument(f"--{name}", type=Path, required=True)
+    parser.add_argument("--expanded", action="store_true")
     run(parser.parse_args())
