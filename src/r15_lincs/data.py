@@ -29,6 +29,13 @@ def table(path, **kwargs):
     return pd.read_csv(path, sep="\t", dtype=str, keep_default_na=False, **kwargs)
 
 
+def hepatic_lines(root, study):
+    meta = table(asset(root, study, "cell_info"))
+    hepatic = meta.primary_site.str.contains("liver|hepatic", case=False, regex=True)
+    core = meta.cell_id.str.upper().str.replace(r"[^A-Z0-9]", "", regex=True).isin(EXCLUDE_LINES)
+    return EXCLUDE_LINES | set(meta.loc[hepatic | core, "cell_id"].str.upper())
+
+
 def measures(value, unit, scales):
     codes = unit.str.lower().str.replace("µ", "u", regex=False).str.replace("μ", "u", regex=False)
     return pd.to_numeric(value, errors="coerce") * codes.map(scales)
