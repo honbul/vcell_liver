@@ -9,7 +9,7 @@ import pandas as pd
 from src.r11_chemical_probe.common import sha256, write_json
 from src.r15_lincs.data import STUDIES, asset, table
 from src.r16_lincs.audit import INST, SIG, add_units
-from src.r17_lincs.inventory import CMAP, ROOT, normal
+from src.r17_lincs.inventory import CMAP, ROOT, ids, in_footprint, normal, register_footprint
 from src.r19_plan.audit_r18 import attach_parent, geo_metadata, prepare
 from src.r19_plan.i_audit import structure
 from src.r19_plan.i_preflight import provenance, read_r18_domains
@@ -91,11 +91,27 @@ def signature_support(study, sig):
                    qc_signatures24=int(b.qc.sum()), shared_parent_any_dose=len(matched), qc_shared_parent_any_dose=len(qc))
 
 
+def plate_support(study, axis, before, inst, blocked):
+    physical = register_footprint(blocked)
+    blocked_sigs = set(ids(blocked.sig_id)) - {""}
+    controls = inst.loc[inst.pert_type.eq("ctl_vehicle") & inst.plate.ne("")
+                        & inst.well.str.fullmatch(r"[A-Z]+[0-9]{2}")
+                        & (ids(inst.pert_id).eq("DMSO") | ids(inst.pert_iname).eq("DMSO"))].copy()
+    controls["blocked"] = in_footprint(controls, physical)
+    controls = controls.groupby(["cell_id", "plate", "well"], as_index=False).blocked.any()
+    before = before.assign(blocked=in_footprint(before, physical) | ids(before.sig_id).isin(blocked_sigs))
+    for (cell, plate), rows in before.groupby(["cell_id", "plate"]):
+        dmsos = controls.loc[controls.cell_id.eq(cell) & controls.plate.eq(plate)]
+        yield dict(study=study, axis=axis, cell=cell, plate=plate, wells=len(rows),
+                   direct_treatment_or_signature_excluded=int(rows.blocked.sum()),
+                   controls_before=len(dmsos), controls_after=int((~dmsos.blocked).sum()))
+
+
 def run(args):
     protected_sources = read_r18_domains(args)[:4]
     blocked = pd.concat([provenance(f) for f in protected_sources], ignore_index=True)
     prior = args.base / "vcell_liver_r15_lincs/v1"
-    support, registry, hashes, release = [], [], {}, []
+    support, registry, hashes, release, plates = [], [], {}, [], []
     for study in STUDIES:
         inst, sig = geo_metadata(study, prior)
         axis = "RNA" if {"rna_plate", "rna_well"} <= set(inst) else "DET_ONLY_UNVERIFIED_RNA"
@@ -109,6 +125,8 @@ def run(args):
         for stage, exclusions in (("before_reservation", blocked.iloc[:0]), ("r18_excluded", blocked)):
             rows, _ = eligible_links(inst, sig, exclusions, dose)
             support.extend(stage_rows(study, axis, stage, rows))
+            if stage == "before_reservation":
+                plates.extend(plate_support(study, axis, rows, inst, blocked))
         paths = [info, asset(ROOT, study, "sig_info"), asset(ROOT, study, "sig_metrics"),
                  prior / "audit" / study / "identities.tsv"]
         hashes[study] = {str(path): sha256(path) for path in paths}
@@ -116,13 +134,18 @@ def run(args):
     hashes[CMAP] = {str(path): sha256(path) for path in paths}
     registry.extend(signature_support(CMAP, sig))
     values = cmap_measured(inst)
+    inst = inst.loc[inst.qc_well]
     for stage, exclusions in (("before_reservation", blocked.iloc[:0]), ("r18_excluded", blocked),
+                              ("geo_aliases_only_excluded", pd.concat(release, ignore_index=True)),
                               ("r18_and_geo_aliases_excluded", pd.concat((blocked, *release), ignore_index=True))):
-        rows, _ = eligible_links(inst.loc[inst.qc_well], sig, exclusions, values)
+        rows, _ = eligible_links(inst, sig, exclusions, values)
         support.extend(stage_rows(CMAP, "RNA", stage, rows))
+        if stage == "before_reservation":
+            plates.extend(plate_support(CMAP, "RNA", rows, inst, blocked))
     args.out.mkdir(exist_ok=False)
     pd.DataFrame(registry).to_csv(args.out / "signature_support.tsv", sep="\t", index=False)
     pd.DataFrame(support).to_csv(args.out / "physical_support.tsv", sep="\t", index=False)
+    pd.DataFrame(plates).to_csv(args.out / "plate_retention.tsv", sep="\t", index=False)
     matrices = {study: sorted(str(p) for p in (ROOT / study).glob("*Level3*.gctx")) for study in STUDIES}
     matrices[CMAP] = sorted(str(p) for p in cmap_root.glob("level3_beta*.gctx"))
     write_json(args.out / "receipt.json", dict(metadata_only=True, expression_read=False, matrix_opened=False,
