@@ -1,0 +1,9 @@
+# T4 시간 전이 DEV 명세
+
+GSE92742 HEPG2에서 6 h와 24 h의 화합물 canonical parent와 실제 µM이 동일하고, 시간 사이의 RNA plate가 겹치지 않으며 각 시간에 plate가 두 개 이상인 132군의 247개 조건을 쓴다. R18에 등록된 처리 웰·별칭·채점 웰과 B donor·vehicle을 제외한 공통 지원이다. R18 등록 메타데이터와 기존 Level 3 축만 확인한다. R18 값에 접근하지 않는다. 모든 비교는 실제 농도의 같은 24 h 웰과 같은 978 landmark를 쓴다.
+
+- 각 조건의 24 h 채점 plate는 `(CRC32("T4|parent|dose|plate"), plate)`가 가장 낮은 plate로 고정한다. 각 outer parent fold·24 h 채점 plate·vehicle 역할의 조합에서 다른 두 parent fold로 적합하며 24 h 채점 plate 전체를 적합·선택·직접 24 h donor에서 뺀다. 6 h 측정과 같은 조건의 다른 plate 24 h 측정은 B 정보로만 쓴다.
+- 기존 R15 CRC32 outer 3-fold와 R15-inner-{fold} 5-fold의 0번을 내부 선택에 쓴다. 각 plate의 세 DMSO 역할을 회전한다. 적합과 donor는 fit, 내부 실제 처리 반응은 select, 외부 실제 처리 반응은 score DMSO로 뺀다. 각 조건은 6 h 소스 반응을 웰 평균으로 낸다. 내부 선택과 외부 채점의 24 h 처리 웰은 평균내지 않고 원래 웰 단위로 평가한다. 연산자 적합은 조건별 정답 웰 평균을 쓰고 parent가 총 같은 가중치를 갖는다.
+- `B0`은 0 대비, `identity6`은 정확한 농도의 6 h 반응, `scalar6`은 소스 parent로 적합한 0–2 사이의 전역 최소제곱 배율, `operator6`은 부모 균등 가중 PCA ridge, `direct24`는 별도 24 h plate의 같은 조건 donor 웰 평균이다. `logdose6`은 해당 화합물의 가용한 6 h 용량에 log2 거리 1의 고정 Gaussian 커널을 적용한 평균이다. 정확한 용량을 모든 조건에 요구하므로 exact와 nearest는 동일하다. 직접 24 h donor는 반복 참조값으로 보고한다.
+- 저랭크 시간 연산자는 고정 rank `4,16,32`, ridge `0.1,1` 이내에서 내부 독립 select 웰의 R17 공동 손실로 고른다. rank가 내·외 적합 parent 수 및 수치 rank로 지원되지 않으면 제외한다. 최소 내부 적합 5군, 선택 8군이며 다른 기준을 만족하는 설정이 없으면 지원 부족으로 기록한다. 손실을 소수 9자리에서 비교하고 낮은 rank와 ridge 순으로 동률을 해소한 후 해당 설정으로 외부 적합군 전체를 다시 적합한다. 선택 창에서 채점 plate 자료를 읽지 않는다.
+- 별도의 Slurm 예측, 동결, 채점에서 순서와 해시를 검증한다. parent-macro RMSE·pooled R²를 짝 parent 10,000회 재표집의 99% 구간으로 비교한다. 전체 `operator6` 대 `identity6`와 `scalar6`가 주 비교다. 두 비교에서 RMSE 감소 하한 >0 및 R² 증가 하한 >0을 동시에 충족하면 시간 보정 개선으로 기록한다. 두 비교 모두 각 상대 RMSE 개선의 99% 상한 <0.5%이고 R² 개선의 99% 상한 <0.5%p이면 이 연산자 계열을 종료한다. 두 경우 외에는 `INCONCLUSIVE`로 둔다. 10·2.5 µM와 fold별 값은 기술 결과다. 정확히 같은 세포주·측정 플랫폼에서 시간 차이를 검증하며 다른 플랫폼이나 세포주의 오차를 이 차이에서 빼거나 그 원인으로 귀속하지 않는다.
