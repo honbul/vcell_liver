@@ -48,16 +48,31 @@ def coverage(source, parents):
     return table, groups
 
 
+def alternative_dose_support(source, parents):
+    scopes = {"nearest": closest_donors(source), "any_admitted_exact_dose": source,
+              "exact_5uM": source.loc[pd.to_numeric(source.actual_dose_uM).eq(5)]}
+    result = []
+    for scope, rows in scopes.items():
+        available = {key for key, wells in rows.groupby(CELL) if pair_masks(wells)["independent"].any()}
+        repeat_count = pd.Series([parent for parent, cell in sorted(available)], dtype=str).value_counts()
+        for fold in ("all", "0", "1", "2"):
+            group = parents if fold == "all" else parents.loc[parents.fold.eq(fold)]
+            counts = group.parent.map(repeat_count).fillna(0)
+            result.append(dict(scope=scope, fold=fold, parent_total=len(group), independent_parents=int(counts.gt(0).sum()),
+                               multi_context_parents=int(counts.ge(2).sum()), independent_contexts=int(counts.sum())))
+    return pd.DataFrame(result)
+
+
 def audit(args):
     receipt = checked_tables(args.audit, args.pin)
     if not receipt["metadata_only"] or receipt["expression_read"]:
         raise ValueError("Expected the locked donor metadata before expression extraction")
     parents = read_pinned(args.audit, "parent_support.tsv", receipt["files"]["parent_support.tsv"])
     parents = parents.loc[parents.measured_5_to_20uM.eq("True"), [GROUP, "parent", "fold"]]
-    source = closest_donors(read_pinned(args.audit, "admitted_donors.tsv", receipt["files"]["admitted_donors.tsv"]))
+    source = read_pinned(args.audit, "admitted_donors.tsv", receipt["files"]["admitted_donors.tsv"])
     if source.duplicated(["rna_plate", "rna_well"]).any() or not pd.to_numeric(source.hours).eq(24).all():
         raise ValueError("The source donor well registry is invalid")
-    table, groups = coverage(source, parents)
+    table, groups = coverage(closest_donors(source), parents)
     rows = []
     for fold in ("all", "0", "1", "2"):
         part = table if fold == "all" else table.loc[table.fold.eq(fold)]
@@ -74,6 +89,7 @@ def audit(args):
     args.out.mkdir(exist_ok=False)
     results.to_csv(args.out / "support.tsv", sep="\t", index=False)
     table.to_csv(args.out / "parent_support.tsv", sep="\t", index=False)
+    alternative_dose_support(source, parents).to_csv(args.out / "dose_support.tsv", sep="\t", index=False)
     write_json(args.out / "receipt.json", dict(protocol_sha256=sha256(args.protocol), source_sha256=sha256(args.pin),
         code_sha256=sha256(__file__), gate_pass=gate, metadata_only=True, expression_read=False,
         files={p.name: sha256(p) for p in args.out.iterdir()}))
