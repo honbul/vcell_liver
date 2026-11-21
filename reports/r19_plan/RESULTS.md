@@ -68,3 +68,5 @@ SNU-423 203군의 고정 978유전자 평가에서 같은 scaffold를 적합에�
 동일 assay 0.5→5 µM 전이에서는 0.5 µM에 정확한 entity가 있는 203군 중, 다른 plate 및 다른 위치 인덱스의 적격 donor가 있는 평가군이 3개였다. 원 pool 지원을 적용한 뒤 0군이어서 사전 기준에 따라 적합·채점을 시작하지 않았다. [저용량 전이 지원 감사](HCC_CROSS_DOSE_DONOR_SUPPORT.md)
 
 공개 GEO 10개 연구의 150개 표본을 추가 감사했다. SNU-423의 72 h 약물 7개 중 SNU-387에 같은 농도로 등록된 약물은 vorinostat 하나였다. 두 성인 세포주 모두 처리와 차량이 하나씩이라 독립 비교 판정에 필요한 지원은 없었다. [추가 공개 자료 감사](HCC_EXTERNAL_FOLLOWUP.md)
+
+보유 LINCS의 성인 HCC 여섯 세포주에서 실제 농도가 같은 6·24 h 반복을 대조했다. GSE92742 HUH7에는 예약 제외 전 94군이 있었고, 차단 이후에는 여섯 RNA plate 모두 가용 DMSO가 0웰이었다. CMap에는 GEO 중복을 제외한 HUH7 짝이 없었고 JHH-5·JHH-7의 6 h 서명도 없었다. [성인 HCC 시간 짝 감사](HCC_TIME_LINCS_RESULTS.md)
