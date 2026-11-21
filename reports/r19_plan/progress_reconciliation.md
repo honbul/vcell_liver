@@ -39,3 +39,7 @@ C1–C3에 등록할 처리 웰, DMSO 3역할 및 시나리오 B의 비간계열
 `g1:/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r19_plan/audit.YBfVmbuo/r18-registered`와 워크스페이스 `r19-audit-evidence-2026-11-21/`에 17개 감사 원표를 보존했다. 처리 웰·파생 서명·release 별칭 19,787행은 `r18_reserved_manifest.tsv`에, B가 입력으로 사용할 수 있는 비간계열 웰 19,454행은 `r18_B_donor_exceptions.tsv`에 등록했다. 이 숫자는 레지스트리 행 수이며 두 연구의 독립 표본 수는 위 지원표에 있다. guard를 실제 예약 레지스트리에 적용해 DEV에서 거부됨을 확인했다. [감사 해시 영수증](data/r18-support-receipt.json)
 
 착수 시 Slurm은 A30 11슬롯, A40 6슬롯, A100 7슬롯이 가용했고, 다른 사용자 대기 한 건은 만족 불가능한 의존성으로 정지돼 있었다. 기존 LINCS 원본, 구조 특징, 비교 모델 코드와 설정은 G1에서 확인했다. 이번 단계의 GPU 사용량은 0시간이다. [자원 내역](data/resource_usage.tsv) · [실험 상태표](experiment_matrix.tsv)
+
+## 다음 입력 잠금
+
+CPU 작업 30670에서 R18의 대상 7,295웰과 대조군 2,311웰을 기존 R17 역할·parent 분할에 대조했다. C3 24 h B의 HUH7 추가 설계는 공동 parent 분할에 따라 HEPG2와 HUH7을 내부 선택 풀에 등록했고, HUH7-only라면 비었던 fold까지 지원을 확인했다. CPU 작업 30671에서는 D1의 41개 plate별 세 역할에 가장 작은 역할의 DMSO 수를 적용해, 기존 529웰 중 486웰을 균등한 세 역할로 등록했다. D1의 공유/독립 선택 비교와 R18 적합·채점은 각각 별도 단계다. [R18 사전 명세](R18_CONFIRMATION_PROTOCOL.md) · [D1 제어군 지원](data/preflight/d1/plate_support.tsv) · [G1 작업 원장](data/preflight/g1_runs.tsv)
