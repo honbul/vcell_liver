@@ -41,3 +41,9 @@ L1은 기존 개발 처리 명부를 대조하고 release·물리 RNA plate·세
 X의 선정 조합은 HEPG2·A375·HA1E·HT29·MCF7이다. 공통 495 parent가 fold별 166·165·164개로 나뉘며, 모든 parent가 각 세포 맥락에서 RNA plate 두 개 이상에 나타난다. 따라서 한 맥락을 빼고 네 맥락에서 적합하는 구조의 자료 지원이 있다. 별도 기저 RNA의 provenance와 모델의 전이 성능은 이 감사로 판정하지 않는다. [원 맥락 지원](data/x_l_support/x/contexts.tsv) · [선정 조합과 fold](data/x_l_support/x/loco_support.tsv)
 
 L1 held fold를 합치면 두 parent 이상이 있는 138개 pool에 1,818 parent, 6,558개 물리 웰이 포함된다. 전체 6,773웰 중 실측 용량과 기존 캐시 용량이 다른 웰은 284개였다. 따로 측정한 실제 용량으로 짝을 구성하고, 같은 캐시 용량에 속하더라도 실측이 다른 웰은 서로 다른 pool에 둔다. [지원 원표](data/x_l_support/l1/support.tsv) · [실측 용량 영수증](data/x_l_support/l1/receipt.json)
+
+## S·L 구성 검증
+
+S0/L0는 기존 parent 가중 MSE FiLM을 공유한다. S1은 같은 폭의 concat이며 S2는 기존 방향 벡터에 별도의 비음수 크기 출력 하나를 더한다. S3는 적합 반응의 parent 가중 PCA만으로 rank `32, 64, 128` 중 지원되는 후보를 만든다. 모든 구성에서 실제 유전자별 체크포인트 예측 배열을 확보하며, 조회 처리값 없이 동작한다.
+
+L1은 MSE에 동일 물리 pool 내 parent별 평균 오차의 짝 제곱차를 추가한다. 환산한 실측 용량으로 훈련 batch를 구성하며, 두 parent 미만인 pool에서는 추가항이 0이다. L2는 적합 잔차 norm의 10분위수로 방향항을 안정화하고 가중한다. 두 추가항의 가중은 `.01, .1, 1`이다. L3는 fit 잔차 scale의 `.5, 1, 2`배에서 Huber 전환점을 둔다. 합성 검증에서 S0의 예측이 기본 코드와 정확히 일치하고, 다른 용량 및 같은 parent의 반복이 L1의 독립 약물 짝을 늘리지 않음을 확인했다.
