@@ -257,6 +257,10 @@ def score_metrics(query, observed, predictions, repeat, support, annotation, pos
         r["support"] = positions.get(arm, np.ones(len(query), dtype=bool))
         r["ridge"] = np.sqrt(np.mean((observed - predictions["dose_shared_ridge"]) ** 2, axis=1)) if "dose_shared_ridge" in predictions else np.nan
         r["context"] = np.sqrt(np.mean((observed - predictions["B_context"]) ** 2, axis=1)) if "B_context" in predictions else np.nan
+        if arm == "dose_shared_ridge":
+            r["ridge"] = r["row_rmse"]
+        if arm == "B_context":
+            r["context"] = r["row_rmse"]
         r["repeat"] = np.where(support, np.sqrt(np.mean((observed - repeat) ** 2, axis=1)), np.nan)
         result.append(r.assign(scope="all"))
         if arm in (*MODELS, "B0") and support.any():
@@ -364,7 +368,8 @@ def score_stage(args):
                 r = summarize(treated)
                 points.append({"dataset": dataset, "stratum": label, "arm": arm, "scope": scope,
                                "passes_b0": bool(arm in MODELS and scope == "all" and r["b0_lower95"] > 0),
-                               "passes_single_study_ridge": bool(arm in MODELS and scope == "all" and r["ridge_lower95"] > 0), **r})
+                               "passes_single_study_ridge": bool(arm in MODELS and arm != "dose_shared_ridge"
+                                                                 and scope == "all" and r["ridge_lower95"] > 0), **r})
     pd.DataFrame(points).to_csv(out / "metrics.tsv", index=False, sep="\t")
     write_json(out / "receipt.json", {
         "frozen_sha256": sha256(frozen_path), "protocol_sha256": PROTOCOL_SHA256,
