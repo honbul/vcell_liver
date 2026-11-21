@@ -120,7 +120,9 @@ def prep(args, contract):
             for kind, rows in (("fit", fit), ("held", held)):
                 rows.to_csv(visible / f"f{fold}-{kind}.tsv", sep="\t", index=False)
                 linked = align(rows, treated)
-                if not rows[KEY + [GROUP]].reset_index(drop=True).equals(treated.iloc[linked][KEY + [GROUP]].reset_index(drop=True)):
+                # The raw table allows blank group fields outside this subset, so pandas
+                # stores the same numeric identity as a float rather than an integer.
+                if not np.array_equal(rows[GROUP], treated.iloc[linked][GROUP]):
                     raise ValueError("Raw and P4 treatment identities disagree")
                 t = values[linked].toarray()
                 for role, (control_rows, control_values) in controls.items():
