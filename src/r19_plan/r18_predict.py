@@ -223,6 +223,15 @@ def validate_forecasts(arrays, shape, arms):
 def asset_fingerprint(args, bank):
     """Require pinned structure assets to cover the slice rather than dropping arms."""
     features = args.assets / "features"
+    receipt = read_json(args.asset_reference)
+    if (sha256(args.assets / "receipt.json") != sha256(args.asset_reference)
+            or receipt["r18_expression_read"] or receipt["fitting"]):
+        raise ValueError("The R18 comparator input is not the pinned structure-only package")
+    asset_files = {"features/chemberta.npz", "features/entities.tsv", "features/receipt.json", "metadata/genes.tsv"}
+    if set(receipt["files"]) != asset_files or any(
+        sha256(args.assets / name) != digest for name, digest in receipt["files"].items()
+    ):
+        raise ValueError("An R18 comparator structure or landmark artifact changed")
     paths = {"config": args.config, "entities": features / "entities.tsv"}
     entities = table(paths["entities"])
     matched = entities.loc[entities[ENTITY].isin(bank.parents)]
@@ -238,7 +247,7 @@ def asset_fingerprint(args, bank):
             raise ValueError("R18 XPert landmark gene mapping is incomplete")
     elif args.model == "PRnet-well-adaptation":
         paths["prnet_model"] = args.prnet / "models" / "PRnet.py"
-    return {name: sha256(path) for name, path in paths.items()}
+    return {name: sha256(path) for name, path in paths.items()} | {"structure_package": sha256(args.asset_reference)}
 
 
 def provenance(args, bank):
@@ -287,7 +296,7 @@ def merge(args, bank):
     stamp = provenance(args, bank)
     shape = (len(bank.outer), len(bank.landmarks))
     arrays, settings, part_hashes = {}, [], {}
-    position_gains = set()
+    position_gains, asset_versions = set(), set()
     for model in MODELS:
         part = args.parts / bank.slice / model
         receipt = read_json(part / "receipt.json")
@@ -303,6 +312,8 @@ def merge(args, bank):
             raise ValueError(f"R18 selection receipt differs from the registered slice: {part}")
         settings.append(selection)
         position_gains.update(selection.position_gain)
+        assets = receipt["assets"]
+        asset_versions.add((assets.get("structure_package"), assets.get("config")))
         with np.load(part / "forecast.npz", allow_pickle=False) as forecast:
             if len(set(forecast.files)) != len(forecast.files):
                 raise ValueError(f"R18 predictor part repeats an arm: {part}")
@@ -313,6 +324,8 @@ def merge(args, bank):
     validate_forecasts(arrays, shape, frozen_arms(bank.scenario))
     if len(position_gains) != 1:
         raise ValueError("R18 comparator parts disagree about the shared position gain")
+    if len(asset_versions) != 1:
+        raise ValueError("R18 comparator parts used different structure packages or fit configurations")
     path.parent.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(prefix=".r18-merge-", dir=path.parent) as tmp:
         stage = Path(tmp)
@@ -332,11 +345,13 @@ def main():
     parser.add_argument("--model", choices=MODELS)
     for name in ("bundle", "access-reference", "d0-reference", "protocol", "parts"):
         parser.add_argument(f"--{name}", type=Path, required=True)
-    for name in ("config", "assets", "prnet", "out"):
+    for name in ("config", "assets", "asset-reference", "prnet", "out"):
         parser.add_argument(f"--{name}", type=Path)
     args = parser.parse_args()
-    if args.action == "predict" and (args.model is None or args.config is None or args.assets is None):
-        parser.error("predict requires --model, --config, and --assets")
+    if args.action == "predict" and any(item is None for item in
+        (args.model, args.config, args.assets, args.asset_reference)
+    ):
+        parser.error("predict requires --model, --config, --assets, and --asset-reference")
     if args.action == "predict" and args.model == "PRnet-well-adaptation" and args.prnet is None:
         parser.error("PRnet requires --prnet")
     if args.action == "merge" and args.out is None:

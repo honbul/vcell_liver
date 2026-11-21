@@ -3,6 +3,7 @@
 import argparse
 from collections import defaultdict
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import numpy as np
 import pandas as pd
@@ -225,15 +226,18 @@ def score(args):
                   repeat_fraction=reach, contributions=contributions, robustness=leave_out,
                   vehicle_alignment=vehicle_rows, selection=pd.concat(selection, ignore_index=True),
                   history=score_history(args.reports, comparisons))
-    args.out.mkdir(parents=True, exist_ok=False)
-    for name, values in tables.items():
-        pd.DataFrame(values).to_csv(args.out / f"{name}.tsv", sep="\t", index=False, na_rep="NA")
-    (args.out / "decision.txt").write_text(label + "\n", encoding="utf-8")
-    write_json(args.out / "receipt.json", dict(
-        freeze_sha256=args.expected_sha256, evaluator_code_sha256=sha256(__file__),
-        index_sha256=input_indices, slices=len(current["prediction_receipts"]),
-        files={p.name: sha256(p) for p in sorted(args.out.iterdir())},
-    ))
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(dir=args.out.parent, prefix=".r18-score-") as tmp:
+        stage = Path(tmp)
+        for name, values in tables.items():
+            pd.DataFrame(values).to_csv(stage / f"{name}.tsv", sep="\t", index=False, na_rep="NA")
+        (stage / "decision.txt").write_text(label + "\n", encoding="utf-8")
+        write_json(stage / "receipt.json", dict(
+            freeze_sha256=args.expected_sha256, evaluator_code_sha256=sha256(__file__),
+            index_sha256=input_indices, slices=len(current["prediction_receipts"]),
+            files={p.name: sha256(p) for p in sorted(stage.iterdir())},
+        ))
+        stage.rename(args.out)
 
 
 def main():

@@ -6,6 +6,7 @@ from io import BytesIO
 import json
 from pathlib import Path
 import re
+from tempfile import TemporaryDirectory
 
 import h5py
 import numpy as np
@@ -193,18 +194,21 @@ def run(args):
         {name: tables[name] for name in EXPRESSION_TABLES},
         args.index, args.index_reference, receipt, args.landmarks,
     )
-    args.out.mkdir(parents=True)
-    for name, payload in files.items():
-        (args.out / name).write_bytes(payload)
-    (args.out / "landmarks.tsv").write_bytes(args.landmarks.read_bytes())
-    np.savez(args.out / "expression.npz", **arrays)
-    write_json(args.out / "receipt.json", dict(
-        slice=args.slice, access_sha256=sha256(args.access_reference),
-        materializer_sha256=sha256(__file__), index_sha256=index_hashes,
-        predict_plan_sha256=receipt["files"][args.slice]["predict"],
-        arrays={name: list(values.shape) for name, values in arrays.items()},
-        files={path.name: sha256(path) for path in args.out.iterdir()},
-    ))
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(dir=args.out.parent, prefix=".r18-input-") as tmp:
+        stage = Path(tmp)
+        for name, payload in files.items():
+            (stage / name).write_bytes(payload)
+        (stage / "landmarks.tsv").write_bytes(args.landmarks.read_bytes())
+        np.savez(stage / "expression.npz", **arrays)
+        write_json(stage / "receipt.json", dict(
+            slice=args.slice, access_sha256=sha256(args.access_reference),
+            materializer_sha256=sha256(__file__), index_sha256=index_hashes,
+            predict_plan_sha256=receipt["files"][args.slice]["predict"],
+            arrays={name: list(values.shape) for name, values in arrays.items()},
+            files={path.name: sha256(path) for path in stage.iterdir()},
+        ))
+        stage.rename(args.out)
 
 
 if __name__ == "__main__":
