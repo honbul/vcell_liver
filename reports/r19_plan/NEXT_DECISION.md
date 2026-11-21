@@ -6,6 +6,8 @@
 
 493군의 B DEV에서는 R17 결합이 동일 약물 donor anchor보다 RMSE가 0.01965 낮고 R²가 3.27%p 높았다. 구조·손실 변경 중 공통 실용 기준을 넘은 후보는 없었다. B에는 비간계열 donor 측정이 들어가고, A에는 구조 외 같은 약물의 반응이 없다. [B 비교](SL_B_RESULTS.md) · [A 비교](SL_RESULTS.md)
 
+정확한 화합물·농도가 겹치는 HepaRG 5군과 3군에서, 같은 6→24 h 연산자는 LINCS 내부 24 h에서 평균 cosine 0.247 및 0.220, HepaRG에서 0.024 및 −0.017이었다. 기존 보유자료에서 시간 보정만으로 교차 assay의 개선을 보인 근거는 확보되지 않았다. Open TG-GATEs의 24 h PHH 명부에도 조사한 몰농도·이름 조건에서 적격 일치군이 없었다. [교차 assay 기술 비교](T4_CROSS_ASSAY_RESULTS.md)
+
 ## 가족별 검정과 후보 진입
 
 기획서의 주 비교 T3−T1, X2−X1, S2−S0, L1−L0를 A/B 여덟 슬롯으로 유지했다. 기존 동결 예측과 짝 score에서 6개 슬롯을 검정했고, 실행하지 않은 T.A와 X.B는 Holm 계산에만 p=1을 넣었다. 각 가설은 두 지표의 단측 parent 교환 p 중 큰 값으로 계산했다. T.B만 Holm 기준 0.01을 통과했다(p=0.000800). 상대 RMSE·R² 개선의 99% 상한은 각각 0.0238%와 0.0454%p였으므로 그 분산 보정은 실용 기준에 미달했다. 41개 plate를 각각 뺀 기술 점추정도 두 지표에서 같은 방향이었다. [가족별 주 비교](data/dev_family/primary.tsv) · [T.B plate 민감도](data/t123/primary_stats/sensitivity.tsv)
