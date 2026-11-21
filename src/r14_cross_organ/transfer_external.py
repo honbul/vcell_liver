@@ -126,14 +126,21 @@ def external_freeze(args):
     receipt = read_json(saved / "receipt.json")
     for key in receipt["files"]:
         checked(saved, receipt, key)
-    write_json(args.work / f"freeze-external-{args.name}.json",
-               dict(protocol_sha256=PROTOCOL, prediction_receipt_sha256=sha256(saved / "receipt.json"),
-                    scorer_sha256=sha256(__file__)))
+    prediction_hash = sha256(saved / "receipt.json")
+    ref = {}
+    if args.retry:
+        original = args.work / f"freeze-external-{args.name}.json"
+        if read_json(original)["prediction_receipt_sha256"] != prediction_hash:
+            raise ValueError("Recovery requires the exact original frozen predictions")
+        ref["original_freeze_sha256"] = sha256(original)
+    write_json(args.work / f"freeze-external-{args.name}{args.retry}.json",
+               dict(protocol_sha256=PROTOCOL, prediction_receipt_sha256=prediction_hash,
+                    scorer_sha256=sha256(__file__), **ref))
 
 
 def external_score(args):
     saved = args.work / "external-predict" / args.name
-    frozen = args.work / f"freeze-external-{args.name}.json"
+    frozen = args.work / f"freeze-external-{args.name}{args.retry}.json"
     freeze = read_json(frozen)
     rec = read_json(saved / "receipt.json")
     if (freeze["protocol_sha256"], freeze["prediction_receipt_sha256"], freeze["scorer_sha256"]) != (
@@ -149,7 +156,7 @@ def external_score(args):
     cohort, actual, _ = target.select(eligible_source(target), panel)
     if not cohort[KEY].equals(rows[KEY]):
         raise ValueError("External prediction rows differ from the frozen target")
-    out = args.work / f"score-external-{args.name}"
+    out = args.work / f"score-external-{args.name}{args.retry}"
     out.mkdir(parents=True, exist_ok=False)
     raw, intervals = [], []
     for role, frame in rows.groupby(LINE):
@@ -165,7 +172,7 @@ def external_score(args):
         if use.any():
             valid = part.loc[use].reset_index(drop=True)
             metric = Contrast(valid, MIN)
-            den = groups @ np.bincount(codes[use], weights=metric.primary_weight, minlength=len(pairs))
+            bootstrap_mass = groups @ np.bincount(codes[use], weights=metric.primary_weight, minlength=len(pairs))
         for arm, name in rec["predictions"].items():
             y, p = actual[ix], np.load(saved / name, mmap_mode="r", allow_pickle=False)[ix]
             rmse = np.sqrt(row_products(y - p, y - p))
@@ -179,7 +186,7 @@ def external_score(args):
                 cosine = float(np.average(np.divide(row_products(c_y, c_p), den,
                                                      out=np.zeros_like(den), where=den > 1e-14),
                                           weights=metric.primary_weight))
-                centered_draws[arm] = draw_contrast(metric, p[use], y[use], groups, codes[use]) / den
+                centered_draws[arm] = draw_contrast(metric, p[use], y[use], groups, codes[use]) / bootstrap_mass
             raw.append(dict(line=role, arm=arm, rows=len(part), groups=part[GROUP].nunique(),
                             contrast_rows=int(use.sum()), contrast_groups=int(part.loc[use, GROUP].nunique()),
                             delta_rmse=float(np.average(rmse, weights=weights)),
@@ -200,6 +207,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=("predict", "freeze", "score"))
     parser.add_argument("--name", required=True, choices=EXTERNAL)
+    parser.add_argument("--retry", choices=("-retry",), default="")
     for key in ("work", "assets", "r11", "positions", "data", "protocol"):
         parser.add_argument(f"--{key}", required=True, type=Path)
     args = parser.parse_args()

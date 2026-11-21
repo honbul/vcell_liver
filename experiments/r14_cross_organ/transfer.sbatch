@@ -27,6 +27,7 @@ case "$1" in
     ;;
   external-predict|external-freeze|external-score)
     args+=(--positions "$base/vcell_liver_position_audit/coordinates-v1" --data "$PWD/data")
+    if [[ -n "${3:-}" ]]; then args+=("--retry=$3"); fi
     exec "$python" -m src.r14_cross_organ.transfer_external "${1#external-}" "${args[@]}" --name "$2"
     ;;
   *)
