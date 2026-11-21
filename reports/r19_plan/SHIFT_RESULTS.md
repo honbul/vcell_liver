@@ -26,3 +26,18 @@ T1은 source OOF 전체 효과의 에너지 내적으로 비음수 scalar를 적
 T2는 같은 assay·집계·유전자 좌표로 등록한 물리 fit 대조군에서만 분산을 추정한다. target fit 대조군은 최소 12웰과 3plate가 필요하다. Source 분할에서 정할 shrink·floor·clip을 적용해 양의 diagonal을 구한다. T3는 행과 유전자 축이 확인된 source OOF 예측에 해당 diagonal을 적용한 뒤 scalar를 다시 적합한다. 각 보정 함수는 target 처리 정답을 받지 않는다.
 
 T4 시차 연산자는 정확한 release·세포주·parent·실측 용량에서 맞춘 6 h와 24 h source pair를 이용한다. Canonical parent마다 총 가중치는 1이다. 적합 pair에서만 평균과 입력 SVD를 계산하고 rank `4, 16, 32`, ridge `0.1, 1`을 후보로 둔다. 독립 parent 수와 수치 rank가 모자란 후보는 지원 부족으로 남긴다. 시차 연산자는 identity, source scalar, 적격한 직접 24 h donor와 비교한다. 위 네 계산의 검증에는 합성 배열을 사용했다.
+
+## T2·T3. 5 µM Tahoe의 물리 fit 대조군과 LINCS 지원
+
+Tahoe 5 µM 평가 plate에 대응하는 fit DMSO는 HepG2/C3A와 SNU-423 각각 **5개 물리 웰, 5개 plate**였다. 세 fold, 두 역할 회전, 세포 수 기준 20/200의 24개 조합에서 같았다. 회전이나 같은 웰에 든 여러 세포주를 독립 실험으로 추가 계수하지 않았다. 최소 12개 웰을 충족하지 못해 이 외부 비교의 T2·T3는 `BLOCKED_CONTROL_SUPPORT`다. Tahoe의 물리 웰×세포주 CP10k 로그 pseudobulk와 LINCS Level 3의 물리 웰 log2 L1000도 집계·측정 단위가 다르다. ln(2) 변환은 로그 밑을 맞출 뿐이며 이 두 분산을 같은 좌표에서 측정했다는 근거가 없다. [Tahoe 역할별 지원](data/t2_control_support/tahoe_fit_controls.tsv)
+
+GSE92742의 실측 10 µM에서는 R18 보호 역할과 허용 예외의 측정, 별칭, donor 정규화 대조군을 배제한 뒤 아래의 same-assay 후보가 남았다.
+
+| GSE92742 세포·시간 | parent | 물리 RNA plate | fit DMSO A / B / C | R18의 모든 등록 대조군 역할도 제외한 경우 |
+|---|---:|---:|---:|---|
+| HEPG2 6 h | 1,793 | 41 | 189 / 178 / 162 | 1,755 parent, 35 plate, 145 / 135 / 121웰 |
+| HEPG2 24 h | 18 | 6 | 43 / 41 / 38 | 독립 세 역할을 유지한 plate 없음 |
+| PHH 6 h | 42 | 3 | 33 / 32 / 32 | 42 parent, 3 plate, 33 / 32 / 32웰 |
+| PHH 24 h | 528 | 18 | 81 / 79 / 68 | 528 parent, 18 plate, 81 / 79 / 68웰 |
+
+PHH의 시간대별 donor 독립성은 별도 검증이 필요하다. GSE70138의 집계는 detection 좌표 기준이라 물리 RNA 검증을 끝낸 domain 수에는 넣지 않았다. 이 표는 대조군 수와 공통 assay 지원이다. 보정 효과와 leave-domain-out의 parent 분리 가능성은 별도 판정한다. CPU 작업 `30757`은 원 메타데이터와 해시로 잠근 행 명부만 사용했다. [LINCS 지원표](data/t2_control_support/lincs_domains.tsv) · [감사 영수증](data/t2_control_support/receipt.json) · [G1 작업](data/t2_control_support/job.tsv)
