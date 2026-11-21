@@ -4,6 +4,7 @@ import argparse
 import hashlib
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from types import SimpleNamespace
 
 import pandas as pd
 from rdkit import rdBase
@@ -35,7 +36,7 @@ def identified_registry(path, matching):
     return unique
 
 
-def run(args):
+def inventory(args, additional_target_parents=()):
     paper = args.reports/"r19_plan"/"data"
     old = paper/"hcc_pilot_chemistry"/"audit"/"receipt.json"
     initial = read_json(old)
@@ -77,7 +78,7 @@ def run(args):
     verify_domain(treated, dmsos, *protected[:4])
     support = treated.groupby("parent").agg(cells=("cell_id","nunique"),plates=("rna_plate","nunique"),wells=("inst_id","size"))
     prior_adult = set(prior.loc[prior.role.eq("target") & prior.cell.isin(hepatic),"pert_id"])
-    exposed = set(aliases.loc[aliases.pert_id.isin(prior_adult),"parent"]) | set(old_targets.parent)
+    exposed = set(aliases.loc[aliases.pert_id.isin(prior_adult),"parent"]) | set(old_targets.parent) | set(additional_target_parents)
     recorded = rows.exclusions.map(lambda s: bool(set(s.split("|")) & PROTECTED_CHEMISTRY))
     denied = (set(protected[0].parent) | set(protected[1].parent)) - {""}
     frame = rows.assign(prior_adult=rows.parent.isin(exposed), reserved_chemistry=rows.parent.isin(denied) | recorded,
@@ -85,6 +86,12 @@ def run(args):
     for col in ("cells","plates","wells"):
         frame[col] = frame[col].fillna(0).astype(int)
     frame["scaffold_unit"] = frame.scaffold.where(frame.scaffold.ne(""), "acyclic:"+frame.parent)
+    return SimpleNamespace(frame=frame, treated=treated, dmsos=dmsos, files=files, pilot_pin=old, jhh_pin=pin)
+
+
+def run(args):
+    inventories = inventory(args)
+    frame = inventories.frame
     eligible_phase = frame.phase.isin(PHASES)
     scientific = ~frame.prior_adult & ~frame.reserved_chemistry & eligible_phase
     covered = frame.cells.ge(16) & frame.plates.ge(16)
@@ -116,9 +123,9 @@ def run(args):
                     distinct_scaffolds=eligible_at_count.scaffold_unit.nunique()))
             pd.DataFrame(grid).to_csv(out/"count_grid.tsv", sep="\t", index=False)
         write_json(out/"receipt.json",dict(metadata_only=True,expression_read=False,selected=len(chosen),measured=False,
-            protocol_sha256=sha256(args.protocol),code_sha256=sha256(__file__),previous_5uM_sha256=sha256(old),
-            previous_JHH_sha256=sha256(pin),reserve_access_sha256=sha256(args.r18_access/"receipt.json"),
-            source_sha256={name:sha256(path) for name,path in files.items()},
+            protocol_sha256=sha256(args.protocol),code_sha256=sha256(__file__),previous_5uM_sha256=sha256(inventories.pilot_pin),
+            previous_JHH_sha256=sha256(inventories.jhh_pin),reserve_access_sha256=sha256(args.r18_access/"receipt.json"),
+            source_sha256={name:sha256(path) for name,path in inventories.files.items()},
             files={file.name:sha256(file) for file in out.iterdir()}))
         out.rename(args.out)
 
