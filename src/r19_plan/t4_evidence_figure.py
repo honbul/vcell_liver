@@ -26,22 +26,24 @@ def temporal(ax, data):
         ("t4", "ALL", "identity6", "Direct 6 h, n=132"),
         ("t4", "ALL", "scalar6", "Scalar 6 h, n=132"),
         ("t4", "ALL", "direct24", "Direct 24 h replicate, n=132"),
+        ("t4_repeat/HEPG2", "ALL", "direct24_scalar", "Scaled 24 h replicate, n=132"),
         ("t4_attribution", "ALL", "mean24", "Fit mean 24 h, n=132"),
         ("t4_attribution", "same_dose", "same_dose_swap6", "Wrong-parent 6 h, n=89"),
     )
-    receipts = {k: table(data/k/"score", "paired.tsv") for k in ("t4", "t4_attribution")}
+    receipts = {study: table(data/study/"score", "paired.tsv") for study in {choice[0] for choice in choices}}
+    positions = range(len(choices)-1, -1, -1)
     ax.axvline(0, lw=1, color="#8C929A", ls="--", zorder=0)
-    for y, (study, scope, baseline, _) in zip(range(4, -1, -1), choices, strict=True):
-        rows = [r for r in receipts[study] if (r["scope"], r["metric"], r["arm"], r["reference"])
+    for y, (study, scope, baseline, _) in zip(positions, choices, strict=True):
+        rows = [r for r in receipts[study] if (r.get("scope", "ALL"), r["metric"], r["arm"], r["reference"])
                 == (scope, "rmse", "operator6", baseline)]
         if len(rows) != 1:
             raise ValueError(f"The figure requires one paired effect for {study} {scope} {baseline}")
         mean, lo, hi = (100*float(rows[0][k]) for k in ("relative_gain", "relative_low99", "relative_high99"))
         ax.errorbar(mean, y, xerr=[[mean-lo], [hi-mean]], fmt="o", ms=5, lw=1.4, capsize=2.5,
                     color="#1F597D" if study=="t4" else "#5A596B", zorder=2)
-    ax.set_yticks(range(4,-1,-1), [choice[-1] for choice in choices])
-    ax.set_ylim(-.55, 4.55)
-    ax.set_xlim(-4, 22)
+    ax.set_yticks(positions, [choice[-1] for choice in choices])
+    ax.set_ylim(-.55, len(choices)-.45)
+    ax.set_xlim(-9, 22)
     ax.set_xlabel("Parent-macro RMSE reduction (%)")
     ax.set_title("a  Temporal prediction in HEPG2 L1000", loc="left", weight="bold", pad=12)
 
