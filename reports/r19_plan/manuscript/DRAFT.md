@@ -72,6 +72,8 @@ We tested whether same-drug external RNA could help where close structural suppo
 
 An exact-entity repeat audit in Tahoe SNU-423 found two parents per dose with observations at different well-position indices on different plates. The 5 µM same-position set contained 50 parents. No target well could be evaluated with both kinds of repeat. These supports constrain what can be inferred about response reproducibility across well positions, even after removal of the shared response in a physical well. [Repeat support and technical comparison](../TAHOE_HCC_REPEAT_RESULTS.md)
 
+We also tested whether training on 0.05 and 0.5 µM alongside 5 µM improved the 5 µM SNU-423 prediction. The ECFP dose kernel reduced RMSE from 0.069958 to 0.069950 on the original 203 held parents (paired change −0.000008, 99% interval −0.000141 to 0.000071). The intervals for both endpoints included zero against the high-dose-only fit, shuffled low-dose labels and the best frozen virtual-cell comparator. The matched-input ChemBERTa cosine kernel had higher error. These results apply to the registered kernel and dose weighting. [Dose-sharing comparison](../HCC_DOSE_SHARING_RESULTS.md)
+
 ## Data availability
 
 Source expression data are published under GEO accessions [GSE92742](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE92742), [GSE284321](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE284321) and [GSE296254](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE296254). The [project evidence index](../RESULTS.md) links to the retained score summaries, support, and checksums. A publication repository and approved release scope require author confirmation.
