@@ -22,6 +22,7 @@
 | JHH-5에서 적합한 저용량 배율이 JHH-7에서도 맞는 약물 반응을 예측하는가 | JHH-7 1 µM 101군, 이전과 겹치지 않는 처리 웰과 공유 평가 plate 한 개 | 같은 입력 State 대비 RMSE 6.10% 감소 [4.86, 7.50], B0 대비 2.68% [1.32, 4.28], 다른 약물 대비 3.59% [2.36, 4.93] | 등록한 단일 plate 기술 기준 통과. [JHH-7 저용량](JHH7_LOW_DOSE_RESULTS.md) |
 | JHH-7에서 약물 일치 이득이 웰 위치가 달라도 남는가 | 1 µM 80군, 같은 U2OS 원천 plate 내 위치 대조 | 같은 위치의 다른 약물보다 RMSE 3.14% 감소 [0.39, 5.89]. B0 대비 3.10% 증가 | 약물 일치 기여 확인, 두 비교 공동 기준 미통과. [위치 대조와 HUH7 지원](JHH7_POSITION_ATTRIBUTION_RESULTS.md) |
 | JHH-5 10 µM에서 위치가 다른 같은 8개 원천을 써도 편차 보정이 나은가 | B1 노출 305군·309웰·6개 평가 plate | 배율을 맞춘 편차 축소의 단일 배율 대비 RMSE 0.751% 감소 [0.558, 0.974], 8토큰 State 대비 3.402% [2.487, 4.414] | 공동 DEV 기준 통과. B0 비교는 plate 구성에 민감. [위치 분리 다세포주 비교](JHH5_OFF_POSITION_RESULTS.md) |
+| 위치 분리 편차 보정이 JHH-7 10 µM로 전이되는가 | B1 노출 JHH-7 88군·1개 평가 plate, JHH-5 203군만 적합 | 단일 배율 대비 RMSE 1.278% 감소 [0.680, 2.005], 8토큰 State 대비 8.195% [5.984, 10.504] | 네 주 비교 기술 기준 통과. [JHH-7 위치 분리 전이](JHH7_OFF_POSITION_RESULTS.md) |
 
 [시간 전이](T4_RESULTS.md) · [기여 대조](T4_ATTRIBUTION_RESULTS.md) · [S/L B](SL_B_RESULTS.md) · [S/L A](SL_RESULTS.md) · [I5](I5_RESULTS.md) · [교차 assay 결과](T4_CROSS_ASSAY_RESULTS.md)
 
