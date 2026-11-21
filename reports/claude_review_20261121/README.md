@@ -29,3 +29,8 @@ Run location: `g1:/mnt/S1/sdata/workbench/Virtual_Cell/gssong/review_claude_2026
 - Sibling copy beating the trimmed position baseline at 99% on inner folds (`diag15`): the corresponding official gate in P1 failed.
 
 Read the inner-fold numbers as hypotheses that motivated the pre-registered tracks, not as evidence.
+
+## Request memos and manuscript draft
+
+- `requests/` holds the review-session memos that specified each Codex track (well-position review, follow-ups, R14, goal tracks T1–T3, P1–P3, P4, P5 and R15). They were written as private working notes; the header line in each saying they are not committed predates the decision on 2026-11-21 to publish them here. P5 was drafted but not run.
+- `MANUSCRIPT_DRAFT.md` is draft v0.1 of the paper. It reflects the state before P4 and R15; the open-items list at the end records the P4 outcome.
