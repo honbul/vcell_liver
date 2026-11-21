@@ -34,8 +34,8 @@ def temp_o_seq(args, dataset, hashes):
     if (not rows.physical_well_id.eq(rows.plate+"_"+rows.position).all()
             or not controls.physical_well_id.eq(controls.plate+"_"+controls.position).all()
             or pd.concat((rows, controls), ignore_index=True).duplicated(fields).any()
-            or not rows.mapped_library.astype(int).ge(100_000).all()
-            or not controls.mapped_library.astype(int).ge(100_000).all()):
+            or any(not pd.to_numeric(frame.mapped_library, errors="raise").ge(100_000).all()
+                   for frame in (rows, controls))):
         raise ValueError("HepaRG metadata do not identify disjoint QC physical treatment and control wells")
     raw_dose = rows.concentration.str.extract(r"^([-+\d.eE]+)\s*uM$", expand=False)
     if raw_dose.isna().any():
