@@ -30,3 +30,5 @@ C1에서 B0, B_pos, 배율을 적용한 전체·출판군·프로젝트별 최�
 ## 메타데이터 실행 확인
 
 CPU 작업 `30670`이 R19 감사 파일의 해시, 7,295개 고유 대상 물리 웰, 2,311개 대조군 물리 웰의 R17 CRC32 배정, B donor 차단, C3 HEPG2의 예약 측정 분리 및 outer·inner parent 분리를 검증했다. 모델·시나리오별 focus를 합친 12개 케이스, 3개 fold, 3개 역할 차례로 108개 조합의 지원이 있다. [fold별 명부 요약](data/preflight/r18/support.tsv) · [G1 원장](data/preflight/g1_runs.tsv)
+
+CPU 배열 `30679`는 CMap 2020, GSE70138, GSE92742에서 평가·적합·내부 선택의 고유 처리 웰 8,083개와 물리 DMSO 2,311개를 원 Level 3의 ID에 연결했다. 별도 B 입력은 donor 처리 19,454웰, donor DMSO 19,749웰이었고 957개 donor plate 전부에서 두 대조군 몫에 지원이 있었다. R15/R16과 같은 순서로 donor DMSO를 CRC32 정렬의 두 몫에 나눴다. 이 몫은 모델의 fit/select/score 역할과 분리된 비간계열 입력 구성용이다. 고정 978개 landmark는 세 자료의 원 ID에 모두 대응했다. 원 매트릭스에서 well·gene ID 메타데이터 두 경로만 열었고, G1에서 발현 배열이 아예 없는 테스트 파일로 동일 코드의 동작을 확인했다. [Level 3 지원표](data/preflight/r18/index/support.tsv) · [G1 작업 원장](data/preflight/g1_runs.tsv)
