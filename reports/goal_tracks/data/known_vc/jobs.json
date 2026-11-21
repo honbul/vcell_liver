@@ -3,7 +3,7 @@
   "protocol_commit": "18163c80b83de37fa3eee5b5e1a9258ad12c57b1",
   "protocol_sha256": "129af982566410cf860bd494cda4ea526105569a716c171221d332f67fc13dd2",
   "shared_Tahoe_cache_job": 28429,
-  "stage": "formal_doses_scored",
+  "stage": "all_doses_scored_and_verified",
   "prediction_arrays": {
     "XPert_morgan": {
       "job": 28463,
@@ -93,7 +93,10 @@
       "t2_freeze": 28751,
       "t2_score": 28752,
       "path": "t2/d0.05",
-      "last_unfulfilled_XPert_tasks": "24-35"
+      "last_unfulfilled_XPert_tasks": "24-35",
+      "freeze_sha256": "95c6e77756869aee1a993ef94b99b3080706962290e5d8ac92e88dda6b7e6aa8",
+      "score_receipt_sha256": "da5c4dcc94178c78abe82985db66d48d0b8f9decb26343fbf12b492a0138e749",
+      "state": "scored_and_verified"
     }
   },
   "recoveries": [
@@ -163,5 +166,19 @@
       "action": "Rebuilt the dependency graph following the corresponding retries. The comparator eligibility set stayed fixed."
     }
   ],
-  "dependency_refinement": "After verifying completion of all other prerequisites, each freeze's remaining afterok dependency was scoped to its required XPert array slices. The ten eligible comparator roots and the dose-specific T1 anchor remain required by the freeze verifier."
+  "dependency_refinement": "After verifying completion of all other prerequisites, each freeze's remaining afterok dependency was scoped to its required XPert array slices. The ten eligible comparator roots and the dose-specific T1 anchor remain required by the freeze verifier.",
+  "runtime": {
+    "python": "3.10.12",
+    "torch": "2.8.0+cu126",
+    "rdkit": "2025.3.5",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.6.1",
+    "descriptastorus": "2.8.0",
+    "tqdm": "4.70.1",
+    "h5py": "3.11.0",
+    "torch_geometric": "2.6.1",
+    "XPert_SDPA_shim_sha256": "703abc756232e6a1681e58afce923ccfa2a3f0be3ed31f04ae9be1742cba3852"
+  }
 }
