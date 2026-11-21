@@ -10,6 +10,8 @@
 | The within-LINCS temporal effect generalized across assay or cell types | Unresolved | Frozen directions had mean cosine from −0.017 to +0.024 across the two previously exposed exact-condition HepaRG sets, with only 3 and 5 parents. Both cellular context and assay changed. [HepaRG](../T4_CROSS_ASSAY_RESULTS.md) |
 | The method outperforms existing virtual cells in adult HCC | Unverified | A matched external comparison with adult HCC and predeclared benchmarks is needed. R18 C1 was evaluated under R16 before reservation. R18 C3 is a small HUH7 technical support set. R18 itself currently has metadata, synthetic processing tests and structure inputs. [External confirmation scope](../R18_CONFIRMATION_PROTOCOL.md) |
 
+The public human HCC studies examined in a targeted follow-up primarily support one- or two-compound comparisons. The audit separates registered sequencing entries from source specimens and records inconsistent sample assignments. [Public HCC support audit](../HCC_PUBLIC_SUPPORT.md)
+
 The final manuscript requires separate evidence for the adult HCC claim, documented data and code access, and author-confirmed contributions and declarations. The development draft can be read alongside the outcome files. [Submission guidance](https://www.nature.com/srep/author-instructions/submission-guidelines)
 
 ## Regenerate the figure
