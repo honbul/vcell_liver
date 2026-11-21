@@ -66,6 +66,8 @@ GEO 13개 시리즈의 263 표본과 BioStudies 원 명부를 대조해 성인 �
 
 SNU-423 203군의 고정 978유전자 평가에서 같은 scaffold를 적합에서 빼자 형제 복사가 같은 수 제거 대조보다 악화됐다. 차단 ECFP Ridge는 같은 조건의 ChemBERTa Ridge를 앞섰으나 B0 대비 RMSE +1.31%, pooled R² −2.01%p로 공동 기준에 미달했다. [Scaffold 차단 재적합](HCC_SCAFFOLD_REFIT_RESULTS.md)
 
+같은 SNU-423 평가에서 plate당 물리 DMSO는 두 웰이었다. 기존 P4에서 A·B 정답 차이는 plate 중심화한 반응 RMS의 2.85%였고, 웰 평균에 공통 세포주 패널을 사용하면 203군·275웰을 모두 유지하며 수치 정밀도 수준으로 줄었다. [DMSO와 세포주 패널](HCC_VEHICLE_PANEL_RESULTS.md)
+
 같은 scaffold 차단 SNU-423의 구조 커널에 Cell Painting과 비간계열 PRISM을 결합했다. 공통 119군에서 ECFP 대비 RMSE는 +1.54%였고 R²는 +2.54%p였으며, 두 99% 구간이 0을 포함했다. 전체 203군과 공통 지원에서 승격 기준과 표현형 값 기여 기준을 모두 충족하지 못했다. [SNU-423 표현형 입력](HCC_PHENOTYPE_RESULTS.md)
 
 동일 assay 0.5→5 µM 전이에서는 0.5 µM에 정확한 entity가 있는 203군 중, 다른 plate 및 다른 위치 인덱스의 적격 donor가 있는 평가군이 3개였다. 원 pool 지원을 적용한 뒤 0군이어서 사전 기준에 따라 적합·채점을 시작하지 않았다. [저용량 전이 지원 감사](HCC_CROSS_DOSE_DONOR_SUPPORT.md)
