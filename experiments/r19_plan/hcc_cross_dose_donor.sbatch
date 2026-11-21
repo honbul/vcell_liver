@@ -15,4 +15,14 @@ export PYTHONPATH="$repo:$goal/t2/dependencies:$goal/t2-public/deps"
 export OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4
 args=(--run "$run" --stage "$goal/t1-cache" --archive "$repo/reports"
       --protocol "$repo/reports/r19_plan/HCC_CROSS_DOSE_DONOR_PROTOCOL.md")
-/usr/bin/time -v "$python" -u -m src.r19_plan.hcc_cross_dose_donor "$phase" "${args[@]}"
+case "$phase" in
+  audit)
+    exec /usr/bin/time -v "$python" -u -m src.r19_plan.hcc_cross_dose_donor audit "${args[@]}"
+    ;;
+  diagnosis)
+    audit_root=$3
+    exec /usr/bin/time -v "$python" -u -m src.r19_plan.hcc_cross_dose_support_diagnosis "${args[@]}" \
+      --audit "$audit_root" --out "$run/diagnosis"
+    ;;
+esac
+exit 2
