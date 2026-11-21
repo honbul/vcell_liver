@@ -62,3 +62,5 @@ GEO 13개 시리즈의 263 표본과 BioStudies 원 명부를 대조해 성인 �
 SNU-423 203군의 고정 978유전자 평가에서 같은 scaffold를 적합에서 빼자 형제 복사가 같은 수 제거 대조보다 악화됐다. 차단 ECFP Ridge는 같은 조건의 ChemBERTa Ridge를 앞섰으나 B0 대비 RMSE +1.31%, pooled R² −2.01%p로 공동 기준에 미달했다. [Scaffold 차단 재적합](HCC_SCAFFOLD_REFIT_RESULTS.md)
 
 동일 assay 0.5→5 µM 전이에서는 0.5 µM에 정확한 entity가 있는 203군 중, 다른 plate 및 다른 위치 인덱스의 적격 donor가 있는 평가군이 3개였다. 원 pool 지원을 적용한 뒤 0군이어서 사전 기준에 따라 적합·채점을 시작하지 않았다. [저용량 전이 지원 감사](HCC_CROSS_DOSE_DONOR_SUPPORT.md)
+
+공개 GEO 10개 연구의 150개 표본을 추가 감사했다. SNU-423의 72 h 약물 7개 중 SNU-387에 같은 농도로 등록된 약물은 vorinostat 하나였다. 두 성인 세포주 모두 처리와 차량이 하나씩이라 독립 비교 판정에 필요한 지원은 없었다. [추가 공개 자료 감사](HCC_EXTERNAL_FOLLOWUP.md)

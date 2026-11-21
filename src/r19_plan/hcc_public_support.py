@@ -81,8 +81,8 @@ def write_table(path, rows):
         writer.writerows(rows)
 
 
-def sample_evidence(accession):
-    url = f"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={accession}&targ=self&form=text&view=full"
+def sample_evidence(accession, view="full"):
+    url = f"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={accession}&targ=self&form=text&view={view}"
     text, digest = metadata(url)
     fields = ("!Sample_source_name_ch1", "!Sample_characteristics_ch1", "!Sample_treatment_protocol_ch1",
               "!Sample_growth_protocol_ch1", "!Sample_library_strategy", "!Sample_data_processing")
@@ -96,16 +96,17 @@ def sample_evidence(accession):
     return accession, rows, dict(url=url, sha256=digest)
 
 
-def run(out, studies=GEO, individual=()):
+def run(out, studies=GEO, individual=(), *, geo_only=False, sample_view="full"):
     if out.exists():
         raise FileExistsError(out)
     with ThreadPoolExecutor(max_workers=3) as pool:
         resources = list(pool.map(geo_samples, studies))
-        samples = list(pool.map(sample_evidence, individual))
-    ebi, sdrf = ebi_samples()
+        samples = list(pool.map(lambda accession: sample_evidence(accession, sample_view), individual))
+    ebi, sdrf = (None, None) if geo_only else ebi_samples()
     out.mkdir(parents=True)
     write_table(out/"geo_sample_metadata.tsv", [row for _, rows, _ in resources for row in rows])
-    write_table(out/"ebi_source_counts.tsv", ebi)
+    if ebi is not None:
+        write_table(out/"ebi_source_counts.tsv", ebi)
     if samples:
         write_table(out/"individual_metadata.tsv", [row for _, rows, _ in samples for row in rows])
     write_json(out/"receipt.json", dict(metadata_only=True, expression_read=False, ebi=sdrf,
@@ -119,5 +120,7 @@ if __name__ == "__main__":
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--geo", nargs="+", default=GEO)
     parser.add_argument("--sample", nargs="+", default=())
+    parser.add_argument("--geo-only", action="store_true")
+    parser.add_argument("--sample-view", choices=("brief", "full"), default="full")
     args = parser.parse_args()
-    run(args.out, args.geo, args.sample)
+    run(args.out, args.geo, args.sample, geo_only=args.geo_only, sample_view=args.sample_view)

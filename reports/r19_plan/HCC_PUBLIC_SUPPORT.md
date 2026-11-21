@@ -4,7 +4,7 @@
 
 | 연구 | 어느 반응을 실측했나 | 확인된 표본 지원과 적용 범위 |
 |---|---|---|
-| GSE151412 | HUH7·Hep3B, 24 h RNA-seq. Sorafenib, GW3965, 두 약물 조합 및 DMSO | 총 70등록 표본. HUH7 DMSO·GW3965·sorafenib·조합이 각각 8·8·9·9, Hep3B는 각각 9다. 단일 약물은 두 개며 공개 표본 명부에서 독립 배양·물리 plate와 위치를 확인하지 못했다. 후보 중 두 성인 HCC 세포주에 같은 약물 대조가 있는 기술 확인이다. [GEO Series](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE151412) |
+| GSE151412 | HUH7·Hep3B, 24 h RNA-seq. Sorafenib, GW3965, 두 약물 조합 및 DMSO | 총 70등록 표본. HUH7 DMSO·GW3965·sorafenib·조합이 각각 8·8·9·9, Hep3B는 각각 9다. 단일 약물은 두 개며 공개 표본 명부에서 독립 배양·물리 plate와 위치를 확인하지 못했다. HUH7은 성인 HCC이며 Hep3B는 소아 HCC 유래다. [GEO Series](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE151412) · [Hep3B 등록번호](https://www.cellosaurus.org/CVCL_0326) |
 | E-MTAB-7847 | HUH7·THLE5B, 24 h RNA-seq. AD80 0.05 µM, sorafenib 5 µM 및 vehicle | HUH7은 조건별 독립 biological replicate 3개가 원논문에 명시됐다. THLE5B 조건마다 등록된 sequencing 항목 6개는 source 3개이며 별도 생물 반복으로 추가 계수하지 않는다. 성인 HCC 단일 약물 2개와 정상 대조 맥락의 기술 비교다. [원논문](https://aacrjournals.org/mct/article/18/9/1506/274247/Phenotype-Based-Screens-with-Conformation-Specific) · [공식 실험 설계](https://www.ebi.ac.uk/biostudies/files/E-MTAB-7847/E-MTAB-7847.sdrf.txt) |
 | GSE242333 | HUH7 모세포와 sorafenib 내성 파생주, regorafenib 5 µM 급성 24 h RNA-seq | 4조건에 독립 표본 3개씩. 내성주는 별도 세포 맥락이며 장기 적응 상태와 급성 약물 효과를 분리해야 한다. 단일 약물 기술 확인이다. [원논문](https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0301663) |
 | GSE242340 | HUH7, molidustat 25 µM 및 DMSO, 24/48 h 3′ RNA-seq | 시간·처리별 biological replicate 3개. 하나의 약물과 24/48 h에서 답할 수 있는 기술 질문이다. [원논문](https://link.springer.com/article/10.1007/s00018-024-05361-6) |
@@ -22,3 +22,5 @@
 기존 R18의 HUH7 C3는 기술 확인 규모이며, C1은 HEPG2와 이전 채점 노출을 포함한다. 별도의 성인 HCC 우위를 주장하려면 다양한 화합물을 여러 독립 HCC 맥락에서 동일 시간·농도로 측정한 자료가 필요하다. 최소 확인 명부에는 무작위화한 물리 위치, 독립 배양·plate, 동일 assay의 vehicle 역할, 공통 유전자와 기존 VC가 사용할 입력 수준을 함께 올려야 한다. [기존 HCC 지원 감사](../r17_lincs/INVENTORY.md) · [R18 입력 명세](R18_CONFIRMATION_PROTOCOL.md)
 
 후속 감사에서 24 h·5 µM으로 문서가 일치하는 세 약물을 분리했다. GSE151412는 GEO와 논문의 농도 표기가 달라 정확 용량 그룹에서 보류했다. [정확 조건 외부 명부](HCC_EXTERNAL_PREFLIGHT.md)
+
+별도 공개 GEO 10개 연구의 모든 표본 150개를 추가 대조했다. SNU-423과 SNU-387의 공통 72 h vorinostat은 각 맥락에서 처리·차량 1개씩이었다. [추가 외부 지원](HCC_EXTERNAL_FOLLOWUP.md)
