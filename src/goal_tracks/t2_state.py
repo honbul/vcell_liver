@@ -51,34 +51,39 @@ def build_network(network, size, drug_width, cell_set_len=TOKENS_PER_WELL):
     )
 
 
-def control_sets(fit, cell_folder):
+def control_sets(fit, cell_folders):
     role = fit.source.role
-    row_path, matrix_path = cell_folder / f"{role}_rows.tsv", cell_folder / f"{role}_cells.npz"
-    receipt = read_json(cell_folder / "receipt.json")
-    for file in (row_path, matrix_path):
-        if sha256(file) != receipt["files"][file.name]:
-            raise ValueError("State control cell sample differs from its receipt")
-    rows = pd.read_csv(row_path, sep="\t")
-    if not rows.role.eq(role).all():
-        raise ValueError("State saw the other DMSO role")
-    counts = sparse.load_npz(matrix_path)
-    panel = counts[:, fit.panel]
-    libraries = np.asarray(counts.sum(axis=1)).ravel()
-    positions = rows.groupby(KEY, sort=False).indices
-    needed = sorted(set(fit.train_units) | set(fit.query_units))
-    values = []
-    for unit in needed:
-        index = positions[unit]
-        if len(index) < TOKENS_PER_WELL:
-            raise ValueError(f"State control set too small for {unit}")
-        chunks = np.array_split(index, TOKENS_PER_WELL)
-        values.append(np.stack([
-            np.log1p(np.asarray(panel[chunk].sum(axis=0)).ravel() * (1e4 / libraries[chunk].sum()))
-            for chunk in chunks
-        ]))
-    lookup = {unit: i for i, unit in enumerate(needed)}
-    return (np.asarray(values, dtype=np.float32), [lookup[key] for key in fit.train_units],
-            [lookup[key] for key in fit.query_units])
+    wanted = set(fit.train_units) | set(fit.query_units)
+    lookup = {}
+    for cell_folder in cell_folders:
+        row_path, matrix_path = cell_folder / f"{role}_rows.tsv", cell_folder / f"{role}_cells.npz"
+        receipt = read_json(cell_folder / "receipt.json")
+        for file in (row_path, matrix_path):
+            if sha256(file) != receipt["files"][file.name]:
+                raise ValueError("State control cell sample differs from its receipt")
+        rows = pd.read_csv(row_path, sep="\t")
+        if not rows.role.eq(role).all():
+            raise ValueError("State saw the other DMSO role")
+        counts = sparse.load_npz(matrix_path)
+        panel = counts[:, fit.panel]
+        libraries = np.asarray(counts.sum(axis=1)).ravel()
+        positions = rows.groupby(KEY, sort=False).indices
+        for unit in sorted(wanted & positions.keys()):
+            if unit in lookup:
+                raise ValueError(f"State control set appears in both registered caches: {unit}")
+            index = positions[unit]
+            if len(index) < TOKENS_PER_WELL:
+                raise ValueError(f"State control set too small for {unit}")
+            lookup[unit] = np.stack([
+                np.log1p(np.asarray(panel[chunk].sum(axis=0)).ravel() * (1e4 / libraries[chunk].sum()))
+                for chunk in np.array_split(index, TOKENS_PER_WELL)
+            ])
+    if missing := wanted.difference(lookup):
+        raise ValueError(f"State lacks {len(missing)} control sets, including {sorted(missing)[:3]}")
+    units = sorted(wanted)
+    features = np.stack([lookup[unit] for unit in units]).astype(np.float32)
+    indices = {unit: i for i, unit in enumerate(units)}
+    return features, [indices[key] for key in fit.train_units], [indices[key] for key in fit.query_units]
 
 
 def forward(model, basal, chemical):
@@ -86,7 +91,7 @@ def forward(model, basal, chemical):
     return model(batch).reshape(basal.shape).mean(dim=1)
 
 
-def fit_model(fit, upstream, cell_folder):
+def fit_model(fit, upstream, cell_folders):
     network = load_network(upstream)
     torch.manual_seed(42)
     torch.set_num_threads(4)
@@ -95,7 +100,7 @@ def fit_model(fit, upstream, cell_folder):
     def tensor(value):
         return torch.as_tensor(value, dtype=torch.float32, device=device)
 
-    control, train_control_idx, query_control_idx = control_sets(fit, cell_folder)
+    control, train_control_idx, query_control_idx = control_sets(fit, cell_folders)
     control = tensor(control)
     train_control_idx, query_control_idx = [torch.as_tensor(x, device=device)
                                             for x in (train_control_idx, query_control_idx)]
@@ -125,7 +130,7 @@ def fit_model(fit, upstream, cell_folder):
         "upstream": UPSTREAM,
         "architecture_sha256": sha256(relative / "state_transition.py"),
         "decoder_import_patch_sha256": sha256(relative / "decoders.py"),
-        "control_cells_receipt_sha256": sha256(cell_folder / "receipt.json"),
+        "control_cells_receipt_sha256": {str(path): sha256(path / "receipt.json") for path in cell_folders},
         "input": "ECFP4 instead of categorical perturbations; 8 pooled same-role DMSO control tokens",
         "model": "Official State Transition GPT2 freshly fit to 2,000-gene well mean with MSE",
         "fit_epochs": 40,
@@ -157,8 +162,11 @@ def main():
     dose, minimum, role = DOSES[dose_index], MIN_CELLS[minimum_index], "AB"[role_index]
     source = DoseSource(config(args.config), args.assets, args.staged, dose, minimum, fold, role)
     fit = Fit(source, source.fit_rows, source.query_rows, panel=source.panel)
-    cell_folder = args.assets / "cells-v2" if dose == 0.5 else args.extra_cells
-    prediction, receipt = fit_model(fit, args.upstream, cell_folder)
+    original = args.assets / "cells-v2"
+    cell_folders = (original,) if dose == 0.5 else (args.extra_cells,)
+    if dose == 0.05:
+        cell_folders = (original, args.extra_cells)
+    prediction, receipt = fit_model(fit, args.upstream, cell_folders)
     write_task(args.out / slice_name(dose, minimum, fold, role), source, fit,
                {MODEL: prediction}, selection={MODEL: receipt})
 
