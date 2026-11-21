@@ -31,6 +31,7 @@ def target_roster(args, frozen):
         if sha256(receipt) != frozen["inputs"][dataset]:
             raise ValueError("Target cache does not match the T3 freeze")
         rows = read_pinned(folder, "rows.tsv", read_json(receipt)["files"]["rows.tsv"])
+        rows = rows.astype({"outer_fold": int, "dose_uM": float})
         active = rows.groupby(["outer_fold", "plate", "dose_rank"]).parent_key.transform("nunique").ge(3)
         rows = rows.loc[active & rows.dose_uM.ge(10) & rows.outer_fold.isin(range(3))]
         counts = rows.groupby(["dataset", "parent_key", "outer_fold"]).size().rename("wells").reset_index()
@@ -81,7 +82,8 @@ def donors(args, roster):
 def index_axis(args, rows, controls):
     receipt = read_json(args.p3_score)
     axis = read_pinned(args.p3_score.parent, "landmark_map.tsv", receipt["files"]["landmark_map.tsv"])
-    genes = axis.loc[axis.both_temposeq_assays.eq(True), ["entrez_id", "ensembl_id"]].reset_index(drop=True)
+    genes = axis.loc[axis.both_temposeq_assays.eq("True"), ["entrez_id", "ensembl_id"]].reset_index(drop=True)
+    genes["entrez_id"] = genes.entrez_id.astype(int)
     if len(genes) != 827 or not genes.entrez_id.is_unique or not genes.ensembl_id.is_unique:
         raise ValueError("One-to-one P3 landmark axis is missing or changed")
     audit = read_json(args.matrix_reference)
