@@ -42,4 +42,6 @@ C1–C3에 등록할 처리 웰, DMSO 3역할 및 시나리오 B의 비간계열
 
 ## 다음 입력 잠금
 
+현재 R18 실행 스냅샷은 G1의 `vcell_liver_r19_plan/confirm-ready.MnXUJ14q/repo`에 있다. 커밋 `1fe24ed`에서 실행 스크립트와 고정 명세를 묶고, 108개 조합의 양 역할 명부 해시, 세 원 자료의 축 메타데이터 영수증, 876 parent 구조 특징, 기존 비교표 5개와 R12 공통 적합 설정을 대조했다. 발현값을 읽기 전 단계이며 예약 발현 접근 승인 이후 스냅샷을 사용할 수 있다. [실행 준비 영수증](data/preflight/r18/readiness/receipt.json)
+
 CPU 작업 30670에서 R18의 대상 7,295웰과 대조군 2,311웰을 기존 R17 역할·parent 분할에 대조했다. C3 24 h B의 HUH7 추가 설계는 공동 parent 분할에 따라 HEPG2와 HUH7을 내부 선택 풀에 등록했고, HUH7-only라면 비었던 fold까지 지원을 확인했다. CPU 작업 30671에서는 D1의 41개 plate별 세 역할에 가장 작은 역할의 DMSO 수를 적용해, 기존 529웰 중 486웰을 균등한 세 역할로 등록했다. D1의 공유/독립 선택 비교와 R18 적합·채점은 각각 별도 단계다. [R18 사전 명세](R18_CONFIRMATION_PROTOCOL.md) · [D1 제어군 지원](data/preflight/d1/plate_support.tsv) · [G1 작업 원장](data/preflight/g1_runs.tsv)
