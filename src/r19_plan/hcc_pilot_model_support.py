@@ -57,7 +57,7 @@ def r17_history(base, reports, slots):
                     raise ValueError("R17 historical slice changed")
                 fit, select = set(selection["fit_groups"]), set(selection["selection_groups"])
                 held = set(read_tsv(verify(source / "rows.tsv", stamp["files"]["rows.tsv"]),
-                                    usecols=["parent"]).parent)
+                                    usecols=[GROUP])[GROUP])
                 if not fit or not select or not select < fit or fit & held:
                     raise ValueError("R17 historical parent separation is invalid")
                 fit_hit, select_hit = overlap(slots, fit), overlap(slots, select)
