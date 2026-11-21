@@ -24,3 +24,24 @@ CPU 작업 `30714`는 등록된 25개 커널 arm의 내·외부 적합과 query 
 CPU 작업 `30729`는 HEPG2 6 h 개발 웰 6,773개를 원 R15 처리 캐시 인덱스에 일대일로 맞추고, 9개 fold·역할 조합의 예측용과 채점용 명부 54개를 해시로 잠갔다. R18 예약 처리·별칭, score 역할의 물리 웰, B donor와 donor 정규화 대조군과의 겹침은 0개다. 과거 C3의 fit/select 맥락과 공유하는 역사적 대조군 128개는 별도 기록했다. 적합 집합에 같은 Murcko 골격이 없었던 평가 parent는 fold별 419 / 427 / 435개였다. 골격이 없는 비고리 parent 7 / 2 / 10개는 별도 층이다. [잠근 지원표](data/preflight/i_track/support.tsv) · [입력 영수증](data/preflight/i_track/receipt.json)
 
 R17 계열 FiLM과 25개 커널의 합성 시험을 G1 CPU 작업 `30731`에서 실제 코드로 실행했다. 합성 처리 30웰로 적합해 합성 평가 16웰 × 12유전자의 예측과 대조군을 생성하고 해시를 검증했다. I 트랙의 실제 약물 반응 효과와 반복 구간은 후속 연구 데이터 채점에서 결정한다. [작업 원장](data/i_views/jobs.tsv)
+
+## 실제 HEPG2 6 h 반응 평가 · 2026-11-22
+
+**I1–I4 모두 `NO_USEFUL_GAIN`이다.** 네 주 후보의 기준선 대비 상대 RMSE 개선 99% 구간 상한이 모두 사전 문턱 0.5%를 밑돌았다. 분석은 HEPG2 6 h의 기존 6,773개 물리 웰, 1,862개 화합물에서 수행했다. 웰이나 화합물 수에는 세 역할 회전을 중복 계상하지 않았다. HEPG2 6 h 개발자료의 짝 비교로 해석한다. [운영 판정 명세](I_OPERATIONAL_PROTOCOL.md) · [판정 원표](data/i_views/efficacy/decision_summary.tsv)
+
+| 후보 | 모든 해당 뷰가 있는 평가 parent | 상대 RMSE 개선 % [99%] | ΔR² %p [99%] | 두 지표 개선 fold | 운영 판정 |
+|---|---:|---:|---:|---:|---|
+| I1 ChEMBL | 1,326 | −0.101 [−0.163, −0.037] | −0.250 [−0.421, −0.095] | 0/3 | NO_USEFUL_GAIN |
+| I2 Cell Painting | 361 | +0.062 [−0.107, +0.244] | +0.211 [−0.260, +0.733] | 2/3 | NO_USEFUL_GAIN |
+| I3 ChEMBL + Cell Painting | 351 | +0.134 [−0.011, +0.284] | −0.076 [−0.523, +0.401] | 2/3 | NO_USEFUL_GAIN |
+| I4 비간계열 PRISM | 722 | +0.121 [+0.042, +0.199] | +0.062 [−0.183, +0.289] | 2/3 | NO_USEFUL_GAIN |
+| I3_all 세 뷰 | 338 | +0.129 [−0.040, +0.301] | +0.022 [−0.417, +0.497] | 2/3 | 보조 분석 |
+
+각 행은 동일한 화합물에서 전향적으로 재적합한 R17 계열 결합 `B_R17`과 비교한다. 양수는 후보에 유리하다. 각 후보 비교는 전체 100개와 fold별 20개를 모두 넘었으며, 가용성에서 나온 표본 편향과 실제 값의 효과는 같은 지원의 mask·shuffle 대조로 따로 평가했다. [동일 지원 채점표](data/i_views/efficacy/score/same_support.tsv) · [역할을 묶은 상대 효과와 fold별 점추정](data/i_views/efficacy/operational/operational.tsv)
+
+- I4는 PRISM을 보유한 722군에서 RMSE 개선 구간 전체가 0 위에 있었다. 99% 상한은 +0.199%였고 R² 구간은 0을 포함했다. 전체 1,862군의 구조 fallback을 포함했을 때는 RMSE +0.025%, ΔR² −0.023%p였다.
+- I3는 351군에서 구조 기준선 I0 대비 RMSE가 +0.133%로 개선됐고, 더 강한 B_R17 대비 R² 점추정은 −0.076%p였다. 전체에 적용했을 때 B_R17 대비 RMSE −0.086%, ΔR² −0.226%p였다.
+- I2·I3·I4와 I3_all은 동일 지원의 mask-only 및 parent-shuffle 대비 두 점추정이 모두 유리했다. 네 주 후보 중 셔플 대비 두 지표 개선에 이르지 못한 것은 I1이었다. 구조 기준선 I0에서 B_R17로 갈 때 전체 규모의 차이는 RMSE 0.024%, R² 0.086%p였다. [전체 fallback](data/i_views/efficacy/score/full_fallback.tsv) · [음성 대조](data/i_views/efficacy/score/controls.tsv)
+- 내부 선택은 등록한 규제값과 출력 gain의 격자에서 수행했다. I1은 9조합 중 7곳에서 gain 0.25, I4는 8곳에서 0.5를 선택했다. 가용성·골격별 채점, FiLM을 뺀 커널 진단, plate 하나씩 제외한 민감도도 보존했다. [선택 영수증](data/i_views/efficacy/forecast_metadata/) · [가용성·골격별](data/i_views/efficacy/score/strata.tsv) · [커널 단독](data/i_views/efficacy/score/kernel_only.tsv) · [plate 민감도](data/i_views/efficacy/score/plate_sensitivity.tsv)
+
+입력 추출 `30732` → 예측 `30733` → 전체 동결 `30734` → 별도 채점 `30735` → 운영 분석 `30753`이 모두 종료 코드 0으로 끝났다. 동결 SHA-256은 `605f86ec99f862987f72db05fe92455809d0d02be2c32ed80bee2062deb94bf7`이다. 9개 예측 영수증과 선택표, 채점 원표와 보조 분석의 모든 해시를 대조했다. CPU 할당 합계는 0.98 CPU시간, GPU 사용량은 0이었다. G1의 I 트랙 전체 신규 작업 공간은 약 2.71 GB였다. [동결 기록](data/i_views/efficacy/freeze.json) · [채점 영수증](data/i_views/efficacy/score/receipt.json) · [실행·자원 원장](data/i_views/efficacy/resource_usage.tsv)
