@@ -94,11 +94,11 @@ def forecast(args):
     observed = labels-position_gain*fit_pos-inner_cell
     query = validation.loc[mask]
     inner_truth, scoring_anchor = truth[mask], inner_anchor[mask]
-    raw, fit_pos, query_pos = get_position(bank, training, outer, args.role)
+    raw, outer_fit_pos, query_pos = get_position(bank, training, outer, args.role)
     final_cell = bank.transfer(outer)
     final_pos = position_gain*query_pos
     final_anchor = final_pos+final_cell
-    final_labels = raw-position_gain*fit_pos-bank.transfer(training)
+    final_labels = raw-position_gain*outer_fit_pos-bank.transfer(training)
     audit = dict(position_gain=position_gain, fit_groups=sorted(set(training.parent)))
     model = args.model
 
