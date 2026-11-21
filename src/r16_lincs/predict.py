@@ -23,7 +23,7 @@ GAIN_SUFFIX = "_gain"
 CELL_GAIN = "B_cell_gain"
 
 
-def inner_known(args, bank, inner, validation, observed, truth, anchor, model, work):
+def inner_known(args, bank, inner, validation, observed, truth, anchor, model, work, archived=None):
     if model in HEADS.values():
         predictions = fit_known(args, bank, inner, validation, observed, truth, anchor, model, work)
     else:
@@ -45,7 +45,8 @@ def inner_known(args, bank, inner, validation, observed, truth, anchor, model, w
             predictions = {(epoch,): value for epoch, value in values.items()}
     settings = {key: loss(validation, truth, anchor+value) for key, value in predictions.items()}
     best = pick(settings)
-    return best, predictions[best]
+    chosen = best if archived is None else archived
+    return chosen, predictions[chosen], best
 
 
 def gain_choice(rows, truth, residual, anchor):
@@ -104,24 +105,29 @@ def forecast(args):
 
     def known(name, work):
         # Restrict configuration selection to the confirmation target cell.
-        chosen, inner_prediction = inner_known(args, bank, inner, query, observed,
-                                               inner_truth, scoring_anchor, name, work)
+        archived = None
+        if not args.confirm:
+            archived, old_position_gain = historic(args, name)
+            if old_position_gain != position_gain:
+                raise ValueError(f"R15 position gain did not reproduce for {name}")
+        chosen, inner_prediction, reproduced = inner_known(args, bank, inner, query, observed,
+            inner_truth, scoring_anchor, name, work, archived)
+        if reproduced != chosen:
+            print(f"Preserving archived R15 settings {chosen} for {name}, reproduced winner {reproduced}",flush=True)
         if args.confirm:
             final_prediction = fit_known(args, bank, training, outer, final_labels, None,
                                          final_anchor, name, work, chosen)
         else:
-            if historic(args, name) != (chosen, position_gain):
-                raise ValueError(f"R15 inner selection did not reproduce for {name}: {chosen}")
             with np.load(frozen_path(args,name)/"forecast.npz", allow_pickle=False) as archive:
                 final_prediction = archive[name]-final_anchor
-        return chosen, inner_prediction, final_prediction
+        return chosen, inner_prediction, final_prediction, reproduced
 
     if model in LEGACY:
         with TemporaryDirectory(prefix=f"r16-{model}-") as work:
-            settings, val_pred, final_pred = known(model, Path(work))
+            settings, val_pred, final_pred, reproduced = known(model, Path(work))
         gain = gain_choice(query, inner_truth, val_pred, scoring_anchor)
         arrays = {model+GAIN_SUFFIX: final_anchor+gain*final_pred}
-        save(args, bank, outer, model, arrays, dict(audit, parameters=settings, gain=gain))
+        save(args, bank, outer, model, arrays, dict(audit, parameters=settings, gain=gain, reproduced_inner_settings=reproduced))
         return
 
     rule, r15_gain = choose_proposed(bank, inner, query, labels, inner_truth, fit_pos,
@@ -149,12 +155,12 @@ def forecast(args):
         return
 
     with TemporaryDirectory(prefix=f"r16-{model}-") as work:
-        settings, val_neural, final_neural = known(HEADS[model], Path(work))
+        settings, val_neural, final_neural, reproduced = known(HEADS[model], Path(work))
     a, b = pick({(a,b): loss(query, inner_truth, val_blend_anchor+a*val_kernel+b*val_neural)
                  for a,b in product(GAINS, repeat=2)})
     pred = scaled_anchor+a*final_kernel+b*final_neural
     save(args, bank, outer, model, {model: pred},
-         dict(audit, rule=rule, r15_gain=r15_gain, cell_gain=cell_gain, parameters=settings, a=a, b=b))
+         dict(audit, rule=rule, r15_gain=r15_gain, cell_gain=cell_gain, parameters=settings, reproduced_inner_settings=reproduced, a=a, b=b))
 
 
 def choose_r15_confirm(bank, inner, query, observed, truth, anchor):

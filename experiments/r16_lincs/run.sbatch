@@ -37,9 +37,17 @@ case "$stage" in
     case "$3" in
       proposed) models=(R15 blend_FiLM blend_concat) ;;
       legacy_cpu) models=(ChemBERTa_R11 FiLM_R12 Concat_R12) ;;
-      legacy_gpu) models=(chemCPA_P0 TranSiGen_Tahoe XPert_morgan PRnet-well-adaptation) ;;
+      legacy_gpu|legacy_gpu_missing) models=(chemCPA_P0 TranSiGen_Tahoe XPert_morgan PRnet-well-adaptation) ;;
       *) exit 2 ;;
     esac
+    if [[ "$3" = legacy_gpu_missing ]]; then
+        scenario="${roles[task%12/6]}"
+        fold="$((task%6/2))"
+        role="${roles[task%2]}"
+        if [[ -s "$out/predict/$scenario/f$fold-$role/${models[task/12]}/receipt.json" ]]; then
+            exit 0
+        fi
+    fi
     exec "$python" -m src.r16_lincs.predict "${shared[@]}" "${extra[@]}" --assets "$assets" \
       --config "$r12/configs/r12_multiaxis/config.yaml" --prnet "$t2/t2-public/upstream-prnet" \
       --model "${models[task/12]}" --scenario "${roles[task%12/6]}" \
