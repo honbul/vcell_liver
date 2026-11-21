@@ -58,7 +58,8 @@ case "$stage" in
   features)
     exec "$python" -m src.r16_lincs.confirmation --cache "$run/confirmation-cache" \
       --out "$run/confirmation-assets" --checkpoint "$prior/chemberta" \
-      --reference reports/r11_chemical_probe/manifest/feature_receipt.json
+      --reference reports/r11_chemical_probe/manifest/feature_receipt.json \
+      --gene-map "$base/vcell_liver_transigen_adaptation_b1/assets/processed/cmap2020_v1/genes.tsv"
     ;;
   *) exit 2 ;;
 esac
