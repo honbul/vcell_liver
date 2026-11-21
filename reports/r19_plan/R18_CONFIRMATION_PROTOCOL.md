@@ -32,3 +32,9 @@ C1에서 B0, B_pos, 배율을 적용한 전체·출판군·프로젝트별 최�
 CPU 작업 `30670`이 R19 감사 파일의 해시, 7,295개 고유 대상 물리 웰, 2,311개 대조군 물리 웰의 R17 CRC32 배정, B donor 차단, C3 HEPG2의 예약 측정 분리 및 outer·inner parent 분리를 검증했다. 모델·시나리오별 focus를 합친 12개 케이스, 3개 fold, 3개 역할 차례로 108개 조합의 지원이 있다. [fold별 명부 요약](data/preflight/r18/support.tsv) · [G1 원장](data/preflight/g1_runs.tsv)
 
 CPU 배열 `30679`는 CMap 2020, GSE70138, GSE92742에서 평가·적합·내부 선택의 고유 처리 웰 8,083개와 물리 DMSO 2,311개를 원 Level 3의 ID에 연결했다. 별도 B 입력은 donor 처리 19,454웰, donor DMSO 19,749웰이었고 957개 donor plate 전부에서 두 대조군 몫에 지원이 있었다. R15/R16과 같은 순서로 donor DMSO를 CRC32 정렬의 두 몫에 나눴다. 이 몫은 모델의 fit/select/score 역할과 분리된 비간계열 입력 구성용이다. 고정 978개 landmark는 세 자료의 원 ID에 모두 대응했다. 원 매트릭스에서 well·gene ID 메타데이터 두 경로만 열었고, G1에서 발현 배열이 아예 없는 테스트 파일로 동일 코드의 동작을 확인했다. [Level 3 지원표](data/preflight/r18/index/support.tsv) · [G1 작업 원장](data/preflight/g1_runs.tsv)
+
+## 예측·채점 추출 명부
+
+CPU 작업 `30684`는 108개 조합마다 예측용과 채점용 추출 명부를 별도 디렉터리로 생성했다. 예측 쪽에는 outer-fit 처리 라벨과 내분할 역할, 평가 행의 메타데이터 및 fit DMSO, 내부 선택 plate의 select DMSO를 지정했다. 시나리오 B에서만 등록된 비간계열 donor와 별도의 두 대조군 몫을 지정했다. 평가 행의 구조·well 메타데이터에는 발현 매트릭스 행 인덱스를 넣지 않았다. 평가 처리 행과 score DMSO의 Level 3 인덱스는 채점 명부에 있다.
+
+읽기 권한의 웰 집합을 조합별로 다시 비교하고 864개 명부의 SHA-256을 대조했다. G1의 합성 테스트는 scored parent의 outer-fit 유입과 score DMSO가 fit 역할에 재등장하는 경우를 거부했다. 이번 명부 검사는 메타데이터만 사용했다. 실제 predictor의 파일 환경과 배열 검증은 학습 실행 단계에서 이 명부의 해시에 연결한다. [추출 명부 지원표](data/preflight/r18/access/support.tsv) · [해시 영수증](data/preflight/r18/access/receipt.json)
