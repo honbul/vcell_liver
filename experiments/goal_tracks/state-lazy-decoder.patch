@@ -1,0 +1,20 @@
+diff --git a/src/state/tx/models/decoders.py b/src/state/tx/models/decoders.py
+--- a/src/state/tx/models/decoders.py
++++ b/src/state/tx/models/decoders.py
+@@ -7,7 +7,5 @@
+ 
+ from omegaconf import OmegaConf
+ 
+-from ...emb.finetune_decoder import Finetune
+-
+ logger = logging.getLogger(__name__)
+ 
+@@ -31,6 +29,8 @@ class FinetuneVCICountsDecoder(nn.Module):
+         # Initialize finetune helper and model from a single checkpoint
+         if config is None:
+             raise ValueError(
+                 "FinetuneVCICountsDecoder requires a VCI/SE config. Set kwargs.vci_config or env STATE_VCI_CONFIG."
+             )
++        from ...emb.finetune_decoder import Finetune
++
+         self.finetune = Finetune(cfg=OmegaConf.load(config), train_binary_decoder=train_binary_decoder)

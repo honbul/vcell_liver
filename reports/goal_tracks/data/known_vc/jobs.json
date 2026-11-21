@@ -1,0 +1,184 @@
+{
+  "remote_root": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_goal_tracks/v1",
+  "protocol_commit": "18163c80b83de37fa3eee5b5e1a9258ad12c57b1",
+  "protocol_sha256": "129af982566410cf860bd494cda4ea526105569a716c171221d332f67fc13dd2",
+  "shared_Tahoe_cache_job": 28429,
+  "stage": "all_doses_scored_and_verified",
+  "prediction_arrays": {
+    "XPert_morgan": {
+      "job": 28463,
+      "tasks": 36,
+      "final_throttle": 24
+    },
+    "chemCPA_P0": {
+      "job": 28464,
+      "tasks": 36
+    },
+    "TranSiGen_Tahoe": {
+      "job": 28465,
+      "tasks": 36
+    },
+    "ChemBERTa_R11": {
+      "job": 28466,
+      "tasks": 36
+    },
+    "FiLM_R12": {
+      "job": 28467,
+      "tasks": 36
+    },
+    "Concat_R12": {
+      "job": 28468,
+      "tasks": 36
+    },
+    "scGPT_C7": {
+      "job": 28682,
+      "tasks": 36
+    },
+    "UCE_C8": {
+      "job": 28470,
+      "tasks": 36
+    },
+    "PRnet-well-adaptation": {
+      "job": 28432,
+      "tasks": 36,
+      "path": "t2-public/prnet"
+    },
+    "State-Morgan-well-adaptation": {
+      "jobs": [
+        28705,
+        28743
+      ],
+      "task_ranges": [
+        "12-35",
+        "0-11"
+      ],
+      "path": "t2-public/state-v2",
+      "tasks": 36
+    }
+  },
+  "added_control_cache": {
+    "cells": 109569,
+    "well_line_units": 900,
+    "wells": 18,
+    "sample_job": 28426,
+    "sample_receipt_sha256": "1f2a22f73c309b7fc8391fb5dab8de60c9e876c8e121bfb72efad7b2c2b74f52",
+    "scgpt_job": 28681,
+    "scgpt_receipt_sha256": "2b78a2f5b82821d8af0c288482933c692c28cf282bb26f98e3eef80262f07638",
+    "uce_job": 28428,
+    "uce_receipt_sha256": "b697c35e8f017254d502a1dfa1d11753eff577ba4583a38540fa0305b4298635"
+  },
+  "final_score_chains": {
+    "5": {
+      "t1_freeze": 28455,
+      "t2_freeze": 28747,
+      "t2_score": 28748,
+      "path": "t2/d5",
+      "last_unfulfilled_XPert_tasks": "3-11",
+      "freeze_sha256": "7504e44895008e376e25afcb64f9d2cef8703ec770bf0fec72ea98de65c7b899",
+      "score_receipt_sha256": "dd4ca323cbd81aeb3a4e8ce42274d641af0ea7906bba074f1698c9f97b69981c",
+      "state": "scored_and_verified"
+    },
+    "0.5": {
+      "t1_freeze": 28458,
+      "t2_freeze": 28749,
+      "t2_score": 28750,
+      "path": "t2/d0.5",
+      "last_unfulfilled_XPert_tasks": "12-23",
+      "freeze_sha256": "d4bd56c3d5e38970cbc08d3f99b485280dc93a90c6a4c83bd91b0c5a5ba763fe",
+      "score_receipt_sha256": "9bbddd4111f4cb2bdc0b58683974bd24228cc8bdf06eb2e42aa83a38ce8e2b0f",
+      "state": "scored_and_verified"
+    },
+    "0.05": {
+      "t1_freeze": 28461,
+      "t2_freeze": 28751,
+      "t2_score": 28752,
+      "path": "t2/d0.05",
+      "last_unfulfilled_XPert_tasks": "24-35",
+      "freeze_sha256": "95c6e77756869aee1a993ef94b99b3080706962290e5d8ac92e88dda6b7e6aa8",
+      "score_receipt_sha256": "da5c4dcc94178c78abe82985db66d48d0b8f9decb26343fbf12b492a0138e749",
+      "state": "scored_and_verified"
+    }
+  },
+  "recoveries": [
+    {
+      "jobs": [
+        28418,
+        28419,
+        28420
+      ],
+      "reason": "Control sampler missing the inherited src.moe_drug_v1 import from its runtime.",
+      "action": "Canceled the pending encoder jobs and added the R12 code path."
+    },
+    {
+      "jobs": [
+        28421,
+        28422,
+        28423
+      ],
+      "reason": "Original R11 metadata gives limited coverage of additional-dose physical DMSO wells.",
+      "action": "Canceled the incomplete sample and its consumers. Restarted using the verified R12 additional-dose metadata in context-v2."
+    },
+    {
+      "jobs": [
+        28427,
+        28469
+      ],
+      "reason": "scGPT encoder startup lacked tqdm. No output was produced.",
+      "action": "Retried the encoder on the same sampled cells with the comparator runtime dependencies and replaced its downstream array."
+    },
+    {
+      "jobs": [
+        28471
+      ],
+      "reason": "State adapter pointed to the incompletely sampled context root.",
+      "action": "Switched to context-v2 and reran the State array."
+    },
+    {
+      "jobs": [
+        28705,
+        28743
+      ],
+      "reason": "The 0.05 µM cohort needs physical DMSO samples from both the earlier R12 cache and the additional-dose cache.",
+      "action": "Retained completed State 28705 mid- and high-dose fits. Retried low-dose array tasks with both verified caches. Freeze waits afterany:28705 and afterok:28743 and requires all 36 State receipts."
+    },
+    {
+      "jobs": [
+        28500,
+        28501,
+        28502,
+        28503,
+        28504,
+        28505,
+        28696,
+        28697,
+        28698,
+        28699,
+        28700,
+        28701,
+        28726,
+        28727,
+        28728,
+        28729,
+        28730,
+        28731
+      ],
+      "reason": "These freeze and score submissions had a failed prediction dependency before a T2 score opened.",
+      "action": "Rebuilt the dependency graph following the corresponding retries. The comparator eligibility set stayed fixed."
+    }
+  ],
+  "dependency_refinement": "After verifying completion of all other prerequisites, each freeze's remaining afterok dependency was scoped to its required XPert array slices. The ten eligible comparator roots and the dose-specific T1 anchor remain required by the freeze verifier.",
+  "runtime": {
+    "python": "3.10.12",
+    "torch": "2.8.0+cu126",
+    "rdkit": "2025.3.5",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.6.1",
+    "descriptastorus": "2.8.0",
+    "tqdm": "4.70.1",
+    "h5py": "3.11.0",
+    "torch_geometric": "2.6.1",
+    "XPert_SDPA_shim_sha256": "703abc756232e6a1681e58afce923ccfa2a3f0be3ed31f04ae9be1742cba3852"
+  }
+}

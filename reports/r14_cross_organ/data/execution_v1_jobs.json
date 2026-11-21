@@ -1,0 +1,130 @@
+{
+  "protocol_commit": "f0a8752",
+  "protocol_sha256": "09774371b5965afbee825e37f955756e90b84700985605a01d1f6c6230c7f63c",
+  "g1_namespace": "vcell_liver_r14_cross_organ/execution-v1",
+  "workflow": "Each prediction job is followed by separate afterok freeze and score jobs.",
+  "chemistry": {
+    "job": 28345,
+    "manifest": "data/heparg_compound_folds.tsv",
+    "sha256": "03c816f20aad1535b7ca4090c552c208dd3a313850e06e5b83b7e709a9687d99"
+  },
+  "sciplex": {
+    "prediction": 28337,
+    "freeze": 28338,
+    "score": 28339,
+    "state": "completed",
+    "freeze_sha256": "5ec3f04d5732f8a8f49ef2a0059d1a934c0315ce26e83b3b562c579e5330cee3",
+    "output": "sciplex/scored",
+    "score_receipt_sha256": "3a3b0f61cebc3f8480d7775a4f075192c0ce3d6f923637c4384a1fbcced1fe1c",
+    "freeze_path": "sciplex/freeze.json",
+    "score_receipt_path": "sciplex/scored/receipt.json"
+  },
+  "heparg": {
+    "preparation": [
+      28346,
+      28347
+    ],
+    "repeats": [
+      28350,
+      28351
+    ],
+    "concordance": 28352,
+    "prediction": 28378,
+    "freeze": 28379,
+    "score": 28380,
+    "state": "completed",
+    "freeze_sha256": "cbe6783a6be31cc4707e3b398d6ff5dcf2cb999779b34500e0a2cae5a59d849d",
+    "output": "HepaRG/score_v2.json",
+    "score_receipt_sha256": "1d1c54c7ed12c078129ad753070e60fd1a0a61226b22afdfa892f2be3edc947e",
+    "freeze_path": "HepaRG/freeze_v2.json",
+    "score_receipt_path": "HepaRG/score_v2.json"
+  },
+  "r14_donors": {
+    "sciplex": 28334,
+    "mixseq": 28348,
+    "gse306429": 28343,
+    "emeraldbay": 28344
+  },
+  "r14": {
+    "lane": "r14-v2",
+    "compound": {
+      "prediction": 28381,
+      "freeze": 28382,
+      "score": 28383,
+      "state": "completed",
+      "freeze_sha256": "b475408d96cb2219d0921ddef183f58447ee57eac4886a0acd2c65a7197c83e8",
+      "score_receipt_sha256": "206b76aabf828d334c422808e1376eba3f368376bf7f281fc78846897c37a553",
+      "freeze_path": "r14-v2/freeze-compound.json",
+      "score_receipt_path": "r14-v2/score-compound/receipt.json",
+      "decision": "criterion_not_met",
+      "groups": 201,
+      "independent_units": 201
+    },
+    "scaffold": {
+      "prediction": 28384,
+      "freeze": 28385,
+      "score": 28386,
+      "state": "completed",
+      "freeze_sha256": "578b1c2c4b37020988b4aa5b181a9a01d517b7381e2f79511bebd73916f261d3",
+      "score_receipt_sha256": "7f4f5f89104fa2baa25b2ad7a79d45f1c3ff78a51e3714a7d5fc816448b2965e",
+      "freeze_path": "r14-v2/freeze-scaffold.json",
+      "score_receipt_path": "r14-v2/score-scaffold/receipt.json",
+      "decision": "criterion_not_met",
+      "groups": 201,
+      "independent_units": 179
+    },
+    "mixseq": {
+      "prediction": 28387,
+      "freeze": 28388,
+      "score": 28389,
+      "state": "completed",
+      "freeze_sha256": "51c15d2ff136de52aae14210cade956b2283be2dda6b510d2aa827a37408fa5d",
+      "score_receipt_sha256": "af4276be39c3e717cc00071b3b578cd1562d89729287ab5555b6530f10f18171",
+      "freeze_path": "r14-v2/freeze-external-mixseq.json",
+      "score_receipt_path": "r14-v2/score-external-mixseq/receipt.json"
+    },
+    "gse306429": {
+      "prediction": 28390,
+      "freeze": 28416,
+      "score": 28417,
+      "state": "completed",
+      "freeze_sha256": "050826432e798b3ea87061b8aa929ab234ce56f96d5f1c299b8b4f55fcc3d483",
+      "score_receipt_sha256": "62cdb9e0d7cc9628c873d52290afd23cbc3220b4d56eef117545f8c1ab1e7d9c",
+      "freeze_path": "r14-v2/freeze-external-gse306429-retry.json",
+      "score_receipt_path": "r14-v2/score-external-gse306429-retry/receipt.json",
+      "original_freeze_and_failed_score": [
+        28391,
+        28392
+      ],
+      "recovery": "Fixed contrast bootstrap denominator shadowing. The original prediction receipt and bytes remain locked."
+    },
+    "emeraldbay": {
+      "prediction": 28393,
+      "freeze": 28414,
+      "score": 28415,
+      "state": "completed",
+      "freeze_sha256": "3b6a7f2124067f5789dfb6f3c9f7477f14234248ec8340d52bd056c5f2c7fa76",
+      "score_receipt_sha256": "f34d843646fc2d1bf69c0ed3fc06aa14f00d0a692a61299ad9a480ce499bf015",
+      "freeze_path": "r14-v2/freeze-external-emeraldbay-retry.json",
+      "score_receipt_path": "r14-v2/score-external-emeraldbay-retry/receipt.json",
+      "original_freeze_and_failed_score": [
+        28394,
+        28395
+      ],
+      "recovery": "Fixed contrast bootstrap denominator shadowing. The original prediction receipt and bytes remain locked."
+    },
+    "lung_held_out": {
+      "lane": "r14-organ-lung",
+      "prediction": 28402,
+      "freeze": 28403,
+      "score": 28404,
+      "state": "completed",
+      "freeze_sha256": "162a12c76b7f67b61c187e2c63ac40869803b8e92ce36b10261088c9deedb01c",
+      "score_receipt_sha256": "2a7b84bb0402ddbe86baeeca4f5d348ab00de36be708d269dc99145c6a61ce31",
+      "freeze_path": "r14-organ-lung/freeze.json",
+      "score_receipt_path": "r14-organ-lung/score/receipt.json",
+      "groups": 202
+    }
+  },
+  "superseded_note": "R14 28353\u201328367 were replaced before scoring to keep assay-specific observed-gene masks and scaffold exclusion consistent across tasks. HepaRG 28368\u201328370 were superseded by the corrected mechanism-neighbor weighting."
+}

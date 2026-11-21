@@ -1,0 +1,71 @@
+{
+  "dataset": "GSE306429",
+  "download": {
+    "path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r13_optimization/assets/external-gse306429/GSE306429_combined_pseudobulk.h5ad",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE306nnn/GSE306429/suppl/GSE306429_combined_pseudobulk.h5ad",
+    "sha256": "ca113616caae7619c12b9acb0ed47c8abcd0867c3932f02b6316a83db32d2644",
+    "bytes": 119871669
+  },
+  "other_input_sha256": {
+    "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r13_optimization/assets/external-gse306429/tahoe-drugs.tsv": "996903e20d004720a432327716f307fed3ff48ca5b5b8f72e4e3275dca8b6c92",
+    "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r11_chemical_probe/assets/metadata/genes.tsv": "08d72bafdfdf08289736d490e0533a4fcdaac76257a656ef10dcea34ad207e76",
+    "/mnt/S1/sdata/pubdata/LINCS/LINCS2020/compoundinfo_beta.txt": "a71fca6de41dcc46a5063858be7e04155f3c09832c8b3fb35814f03db8d9fdff",
+    "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r12_multiaxis/assets/partition/source_rows.tsv": "c0b03b446d78f6eb726482f359cac95b534cf6fc4ae471e76ad8cd3623b9733e",
+    "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r12_multiaxis/assets/staged/outer0/fit-rows.tsv": "817d7e2f35e3ed930cfcfa77ce2dd067921a95ead1ce2a63142bd7e6c880182c",
+    "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r12_multiaxis/assets/staged/outer1/fit-rows.tsv": "d467eb8b20c56828517edc66f627257f06e3224c38574d0c1e670f17aa61a742",
+    "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r12_multiaxis/assets/staged/outer2/fit-rows.tsv": "31f767eed17cab921cdfb10f5ce3c1c25bb590cb90013126eab5c04ac6e590ba",
+    "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vcell_liver_r12_multiaxis/assets/doses/source/treated_rows.tsv": "d678820e9bb0282a9c8edeef90e2fd57958ccba6152c9799494dfc8e866fc873"
+  },
+  "output_sha256": {
+    "treatment_rows": "5758b96f3bd38a048ef5a5422b64987609247160ff27dc31d39db5b4edc30f00",
+    "control_rows": "7d946b8126d2ac6fd0c5505eca339ee7db2f133c2cdee957d4552490db61c3b8",
+    "compound_identity": "637187935b6691eed446b74dcf950442b07ad6fe356d617bc6589c5132a2481b",
+    "held_in_groups": "42277eec05d5f9420b88a027a0e86f138c56500f369072194e361ff0d8667d5d",
+    "excluded_tahoe_compounds": "335f091139f08b37a2a0a1caadc9f60b7b64b31c47b666a6c9e37acca6b369dc",
+    "genes": "2b60a86e1926031ca6203edff5c7e204abba0cb3abf2f150b77645618b1cf487",
+    "dose_support": "cf77c48f6bf08346006b0dc4d284b94428cc6e9dc1fc3ea5b8d3fd37d46148a1"
+  },
+  "matrix_descriptors_only": {
+    "X": {
+      "shape": [
+        1737,
+        13290
+      ],
+      "dtype": "float32"
+    },
+    "layers/counts": {
+      "shape": [
+        1737,
+        13290
+      ],
+      "dtype": "float32"
+    }
+  },
+  "uns_keys": [],
+  "assay_lines": {
+    "A549": {
+      "cellosaurus_id": "CVCL_0023",
+      "tahoe_name": "A549",
+      "relation": "same_named_line"
+    },
+    "HepG2": {
+      "cellosaurus_id": "CVCL_0027",
+      "tahoe_name": "HepG2/C3A",
+      "relation": "parent_to_clone"
+    }
+  },
+  "mappable_genes": 11211,
+  "mappable_gene_rule": "Same exact unique symbol to unique Tahoe Ensembl ID; fit panel must intersect this map",
+  "control_rule": "Distinct physical replicate plates A/B with exact library- and plate-matched DMSO within each role",
+  "chemistry_rule": "Score only uniquely resolved compounds. Exclude all Tahoe training group IDs linked to any external compound name, including ambiguous candidate structures. Close the exclusion over parent, name, CID and matching LINCS aliases using actual Tahoe primary and auxiliary SMILES.",
+  "external_candidate_parents": 80,
+  "tahoe_distinct_group_name_smiles_checked": 220,
+  "tahoe_distinct_group_name_smiles_remaining": 206,
+  "source_group_exclusions": 10,
+  "source_groups_remaining": 193,
+  "assay_treatment_rows": 252,
+  "assay_exact_dose_rows": 4,
+  "paired_resolved_treatment_rows": 154,
+  "paired_resolved_compounds": 54,
+  "treated_expression_accessed": false
+}
