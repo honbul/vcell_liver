@@ -24,7 +24,7 @@ D1의 접근 명부는 R18 보호 입력과 겹침이 없다고 감사한 I 트�
 
 D2는 독립 select 정답 하나를 기준으로 R17의 순차 선택과 DEV의 checkpoint×gain 공동 선택을 같은 유전자별 배열에서 비교한다. R17 순차 선택은 gain 1에서 먼저 checkpoint를 고르고 고정 격자의 gain을 고른다. DEV 공동 선택은 손실을 소수 9자리로 맞춰 비교한 뒤 동률이면 낮은 gain, 그 다음 고정 config ID의 사전순을 사용한다. 순차 선택은 R17의 동률 규칙을 유지한다. 두 정책은 각 parent의 웰 RMSE를 매크로 평균한 항과 전체 제곱오차 항을 결합한 원 R17 손실을 사용한다.
 
-합성 테스트는 동일 checkpoint 묶음에서 DMSO 역할을 바꿨을 때 gain이 달라지는 경우, 순차와 공동 선택이 다른 checkpoint를 고르는 경우, 동률과 허용된 물리 웰·parent·유전자 순서의 검사를 포함한다. 실제 D1·D2 효과를 재려면 새 checkpoint 묶음과 동결된 outer 예측이 필요하다.
+합성 테스트는 동일 checkpoint 묶음에서 DMSO 역할을 바꿨을 때 gain이 달라지는 경우, 순차와 공동 선택이 다른 checkpoint를 고르는 경우, 동률과 허용된 물리 웰·parent·유전자 순서의 검사를 포함한다. 물리 DMSO 적재와 기대 동결 해시를 검사하는 별도 채점 경로를 합성 캐시로 검증했다. 실제 D1·D2 효과를 재려면 새 checkpoint 묶음과 동결된 outer 예측이 필요하다. [D1·D2 실행 명세](D12_PROTOCOL.md)
 
 ## DEV D3 물리 fit DMSO 보정 명세
 
