@@ -6,6 +6,8 @@
 
 후속 비교에서는 24 h 측정이 이미 있는 조건에서 같은 시간 반복을 배율로 보정했다. 이 비교군은 HEPG2와 PHH 모두에서 6 h 저랭크 모델보다 나았다. 원 T4의 독립 반복 비교는 배율 1의 직접 복사였다. [보정 반복](T4_REPEAT_RESULTS.md)
 
+같은 화합물의 6 h 실측과 같은 적합 조건을 준 별도 HEPG2 비교에서는 저랭크 모델이 State 1토큰 적응보다 RMSE를 7.44% [99% 구간 5.33, 9.54] 줄였고 pooled R²를 15.27%p [11.99, 18.32] 높였다. 성인 HCC에서 같은 조건의 LINCS 시간 쌍은 예약 제외 뒤 지원이 없었다. [State 비교](T4_STATE_RESULTS.md) · [성인 HCC 시간 쌍 감사](HCC_TIME_LINCS_RESULTS.md)
+
 493군의 B DEV에서는 R17 결합이 동일 약물 donor anchor보다 RMSE가 0.01965 낮고 R²가 3.27%p 높았다. 구조·손실 변경 중 공통 실용 기준을 넘은 후보는 없었다. B에는 비간계열 donor 측정이 들어가고, A에는 구조 외 같은 약물의 반응이 없다. [B 비교](SL_B_RESULTS.md) · [A 비교](SL_RESULTS.md)
 
 정확한 화합물·농도가 겹치는 HepaRG 5군과 3군에서, 같은 6→24 h 연산자는 LINCS 내부 24 h에서 평균 cosine 0.247 및 0.220, HepaRG에서 0.024 및 −0.017이었다. 기존 보유자료에서 시간 보정만으로 교차 assay의 개선을 보인 근거는 확보되지 않았다. Open TG-GATEs의 24 h PHH 명부에도 조사한 몰농도·이름 조건에서 적격 일치군이 없었다. [교차 assay 기술 비교](T4_CROSS_ASSAY_RESULTS.md)
