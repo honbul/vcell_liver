@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 
 from src.r15_lincs.design import fold_id
-from src.r19_plan.t4_workflow import average_conditions, logdose, lookup, scalar, validate_predict
+from src.r19_plan.t4_workflow import average_conditions, logdose, lookup, run_model, scalar, validate_predict
 
 
 def test_exact_dose_lookup_and_fixed_logdose_weighting():
@@ -48,3 +48,16 @@ def test_prediction_plan_rejects_same_plate_donor_and_held_source_parent():
         validate_predict(dict(t, direct24=t["direct24"].assign(rna_plate="held")), "f0-A-held")
     with pytest.raises(ValueError, match="independent parent"):
         validate_predict(dict(t, source6=t["source6"].assign(parent=query)), "f0-A-held")
+
+
+def test_phh_temporal_operator_uses_fixed_rank_without_select_outcomes():
+    source = pd.DataFrame({"parent": [f"fit-{i}" for i in range(21)], "actual_dose_uM": "10", "cell_id": "PHH"})
+    query = pd.DataFrame({"parent": ["held"], "actual_dose_uM": "10", "cell_id": "PHH"})
+    data = dict(source6=source, source24=source.assign(phase="inner_fit"), donor6=query, direct24=query, query=query)
+    rng = np.random.default_rng(113)
+    earlier, donor = rng.normal(size=(21, 22)), rng.normal(size=(1, 22))
+    effects = dict(source6=earlier, source24=earlier * .4, donor6=donor, direct24=donor * .4)
+    predictions, setting = run_model(data, effects, np.arange(22))
+    assert (setting["rank"], setting["ridge"], setting["select_loss"], setting["fit_parents"]) == (16, 1., None, 21)
+    np.testing.assert_allclose(predictions["scalar6"], donor * .4)
+    assert np.isfinite(predictions["operator6"]).all()
