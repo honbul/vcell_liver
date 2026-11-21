@@ -16,3 +16,13 @@
 R15-B의 예측 대비 RMS는 실측의 2.011배, 에너지 합산 cosine은 0.154였다. 배율을 줄이면 큰 과대 예측은 완화할 수 있다. 현재 벡터의 방향에서 더 얻을 수 있는 pooled R²에는 위 수치의 제한이 있다. 공통 양의 배율은 기존 cosine과 검색 순위를 그대로 유지한다. 수식에서 얻은 최고 배율 0.07641은 이미 채점된 표의 진단값이며, T1과 R18의 선택·예측에는 사용하지 않는다. 이 상한은 미래 모델이나 별도 방향 변환, parent-macro RMSE의 상한으로 해석할 수 없다. [방향·크기·상한 원표](data/t0/score-only/direction_decomposition.tsv)
 
 DEV의 전향적인 B_R17 및 새 T1–T4 비교는 이 예전 표에서 회수할 수 없다. 여기서는 예전 점수·집계만 사용했으며 실제 모델 재적합이나 처리 배열 읽기는 수행하지 않았다.
+
+최소 200세포의 별도 107군에서는 R15-B의 방향 고정 상한이 +2.469%, 같은 지원의 위치 기준선이 +2.099%였다. 이 층에서는 이상적인 배율이 위치 기준선보다 높은 점추정을 얻을 가능성이 남아 있다. 관측된 R15-B 원점은 R² −365.24%였고, 새 배율을 외부 정답 없이 선택해 검증하는 것은 별도 실험이다. [세포 수 감도 원표](data/t0/score-only/baseline_gaps.tsv)
+
+## T1–T4의 계산 계약
+
+T1은 source OOF 전체 효과의 에너지 내적으로 비음수 scalar를 적합한다. 상한은 2이고 예측 에너지가 0이면 gain은 0이다. 부모와 domain을 함께 제외한 source cross-fit은 허용된 적합 행의 ID만 처리 정답 공급 함수에 넘긴다. 이 목적함수는 큰 오차를 포함한 pooled R² 좌표의 보정이며 parent-macro RMSE는 별도 평가한다.
+
+T2는 같은 assay·집계·유전자 좌표로 등록한 물리 fit 대조군에서만 분산을 추정한다. target fit 대조군은 최소 12웰과 3plate가 필요하다. Source 분할에서 정할 shrink·floor·clip을 적용해 양의 diagonal을 구한다. T3는 행과 유전자 축이 확인된 source OOF 예측에 해당 diagonal을 적용한 뒤 scalar를 다시 적합한다. 각 보정 함수는 target 처리 정답을 받지 않는다.
+
+T4 시차 연산자는 정확한 release·세포주·parent·실측 용량에서 맞춘 6 h와 24 h source pair를 이용한다. Canonical parent마다 총 가중치는 1이다. 적합 pair에서만 평균과 입력 SVD를 계산하고 rank `4, 16, 32`, ridge `0.1, 1`을 후보로 둔다. 독립 parent 수와 수치 rank가 모자란 후보는 지원 부족으로 남긴다. 시차 연산자는 identity, source scalar, 적격한 직접 24 h donor와 비교한다. 위 네 계산의 검증에는 합성 배열을 사용했다.
