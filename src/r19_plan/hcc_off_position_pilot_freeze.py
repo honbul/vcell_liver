@@ -86,9 +86,13 @@ def access(args, old, ref, genes, cols, frozen, pilot, stamp):
         table = Path(temporary)
         details, support = {}, []
         for role in "ABC":
-            plans = [load_plan(old, "predict", key, entry["predict"]) for key, entry in ref["slices"].items() if axes(key)[1] == role]
-            train = pd.concat([p["fit.tsv"] for p in plans], ignore_index=True).drop_duplicates()
-            full_controls = pd.concat([p["fit_controls.tsv"] for p in plans], ignore_index=True).drop_duplicates()
+            splits = [(key, entry) for key, entry in ref["slices"].items() if axes(key)[1] == role]
+            # The complete, already-scored development cohort can be used for prospective fitting.
+            # The union of its earlier scaffold-purged fitting slices can omit some parents.
+            train = pd.concat([read_pinned(old.access / "score-plan" / key, "query.tsv", entry["score"]["query.tsv"])
+                               for key, entry in splits], ignore_index=True).drop_duplicates()
+            full_controls = pd.concat([load_plan(old, "predict", key, entry["predict"])["fit_controls.tsv"]
+                                       for key, entry in splits], ignore_index=True).drop_duplicates()
             if train.parent.nunique() != frozen["support"]["parents"] or not train.cell_id.eq("JHH5").all():
                 raise ValueError("The historical fitting union does not reproduce its frozen scope")
             fit = train.loc[~train.parent.isin(slots.parent) & ~train.scaffold.isin(slots.scaffold_unit)]
