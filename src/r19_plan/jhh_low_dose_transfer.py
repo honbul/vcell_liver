@@ -152,7 +152,7 @@ def predict(args, ref, genes, cols, stamp):
         staged.rename(dest)
 
 
-def finish(args, ref, genes, cols, stamp):
+def finish(args, ref, genes, cols, stamp, arms=ARMS, score_pairs=paired, panel_count=len(SEEDS)):
     scoring = args.phase == "score"
     path = args.run / "freeze.json"
     if scoring and (sha256(path) != args.digest or (args.run / "score").exists()):
@@ -177,8 +177,9 @@ def finish(args, ref, genes, cols, stamp):
             data = directory / (key + ".npz")
             if sha256(data) != digest:
                 raise ValueError("A low-dose predicted array changed")
+            shape = (len(query), panel_count, len(genes)) if panel_count else (len(query), len(genes))
             with np.load(data, allow_pickle=False) as archive:
-                arrays = {arm: checked_array(archive[arm], (len(query), len(SEEDS), len(genes)), arm) for arm in ARMS}
+                arrays = {arm: checked_array(archive[arm], shape, arm) for arm in arms}
             if scoring:
                 predictions[key] = arrays
     rows = checked_rows(pd.concat([q.assign(role=axes(key)[1]) for key, q in queries.items()], ignore_index=True), None)
@@ -201,13 +202,13 @@ def finish(args, ref, genes, cols, stamp):
             raise ValueError("Score wells do not have the registered query order")
         targets.append(effect(target, tables["score_controls.tsv"], ref, genes, cols, axes(key)[3]))
     y = np.concatenate(targets)
-    outcomes = {arm: np.concatenate([values[arm] for values in predictions.values()]) for arm in ARMS}
+    outcomes = {arm: np.concatenate([values[arm] for values in predictions.values()]) for arm in arms}
     outcomes["B0"] = np.zeros_like(y)
     folds = [(f"fold_{n}", rows.fold.eq(n)) for n in range(3)]
     plates = [(plate, rows.rna_plate.ne(plate)) for plate in sorted(rows.rna_plate.unique())]
-    tables = {"paired": paired(rows, y, outcomes, CELL, "all"), "fits": fits}
+    tables = {"paired": score_pairs(rows, y, outcomes, CELL, "all"), "fits": fits}
     for key, conditions in (("folds", folds), ("leave_plate", plates)):
-        tables[key] = [record for label, keep in conditions for record in paired(rows.loc[keep].reset_index(drop=True),
+        tables[key] = [record for label, keep in conditions for record in score_pairs(rows.loc[keep].reset_index(drop=True),
                 y[keep], {arm: values[keep] for arm, values in outcomes.items()}, CELL, label)]
     with TemporaryDirectory(dir=args.run, prefix=".score-") as temporary:
         staged = Path(temporary)

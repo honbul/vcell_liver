@@ -56,13 +56,14 @@ def state_forecast(network, triplet, query):
     device = torch.device("cuda")
     torch.manual_seed(42)
     torch.set_num_threads(4)
-    model = build_network(network, y.shape[1], 1, cell_set_len=1).to(device)
+    tokens = x.shape[1] if x.ndim == 3 else 1
+    model = build_network(network, y.shape[1], 1, cell_set_len=tokens).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=.0003, weight_decay=.001)
 
     def tensor(values):
         return torch.as_tensor(values, device=device, dtype=torch.float32)
 
-    base = tensor(x)[:, None, :]
+    base = tensor(x).reshape(len(x), tokens, y.shape[1])
     target = tensor(y)
     code = torch.ones((len(x), 1), device=device)
     weight = 1. / rows.groupby("parent").parent.transform("size").to_numpy()
@@ -78,7 +79,7 @@ def state_forecast(network, triplet, query):
             optimizer.step()
     with torch.inference_mode():
         model.eval()
-        data = tensor(query)[:, None, :]
+        data = tensor(query).reshape(len(query), tokens, y.shape[1])
         return forward(model, data, torch.ones((len(query), 1), device=device)).cpu().numpy()
 
 

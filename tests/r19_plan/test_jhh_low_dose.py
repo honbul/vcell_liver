@@ -1,9 +1,11 @@
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 from src.r16_lincs.audit import INST
 from src.r19_plan.hcc_lincs_24h_support import instance_rows
+from src.r19_plan.jhh_dose_bridge import paired_source_fit
 from src.r19_plan.jhh_low_dose_support import summaries
 
 
@@ -41,3 +43,11 @@ def test_donor_support_does_not_pool_doses_for_the_same_parent():
 
     assert counts[4] == 1
     assert counts[8] == 0
+
+
+def test_dose_bridge_uses_separate_nonnegative_bounded_gains():
+    source = np.tile(np.eye(2)[None, :, :], (3, 1, 1))
+    fit = np.tile([.25, .75], (3, 1))
+    clipped = np.tile([-1., 3.], (3, 1))
+    np.testing.assert_allclose(paired_source_fit(source, fit), [.25, .75])
+    np.testing.assert_allclose(paired_source_fit(source, clipped), [0., 2.], atol=1e-8)

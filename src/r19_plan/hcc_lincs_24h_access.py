@@ -71,7 +71,7 @@ def scoped_splits(target, controls, split_rows):
                 query=query.drop(columns="level3_row_index")), dict(query=query, score_controls=score_controls)
 
 
-def register(args, targets, source, controls, splits):
+def register(args, targets, source, controls, splits, audit_details=None):
     matrix_receipt = read_json(args.cmap_pin)
     axis_hash = matrix_receipt["landmark_axis_sha256"]
     landmarks = parse_landmarks(pinned_bytes(args.landmarks, axis_hash))
@@ -112,7 +112,7 @@ def register(args, targets, source, controls, splits):
             target_parents=targets.parent.nunique(), target_wells=len(targets), target_plates=targets.rna_plate.nunique(),
             donor_cells=source.cell_id.nunique(), donor_plates=source.rna_plate.nunique(), donor_wells=len(source),
             matrices=matrices, slices=slices, donors=donors,
-            files={path.name: sha256(path) for path in stage.glob("*.tsv")}))
+            files={path.name: sha256(path) for path in stage.glob("*.tsv")}, **(audit_details or {})))
         stage.rename(args.out)
 
 
