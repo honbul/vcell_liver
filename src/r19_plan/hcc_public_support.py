@@ -81,16 +81,35 @@ def write_table(path, rows):
         writer.writerows(rows)
 
 
-def run(out):
+def sample_evidence(accession):
+    url = f"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={accession}&targ=self&form=text&view=full"
+    text, digest = metadata(url)
+    fields = ("!Sample_source_name_ch1", "!Sample_characteristics_ch1", "!Sample_treatment_protocol_ch1",
+              "!Sample_growth_protocol_ch1", "!Sample_library_strategy", "!Sample_data_processing")
+    if f"^SAMPLE = {accession}" not in text.splitlines():
+        raise ValueError(f"{accession} did not return the exact individual record")
+    rows = []
+    for line in text.splitlines():
+        if line.startswith(fields):
+            key, value = line.split(" = ", 1)
+            rows.append(dict(sample=accession, field=key.removeprefix("!Sample_"), description=value))
+    return accession, rows, dict(url=url, sha256=digest)
+
+
+def run(out, studies=GEO, individual=()):
     if out.exists():
         raise FileExistsError(out)
     with ThreadPoolExecutor(max_workers=3) as pool:
-        resources = list(pool.map(geo_samples, GEO))
+        resources = list(pool.map(geo_samples, studies))
+        samples = list(pool.map(sample_evidence, individual))
     ebi, sdrf = ebi_samples()
     out.mkdir(parents=True)
     write_table(out/"geo_sample_metadata.tsv", [row for _, rows, _ in resources for row in rows])
     write_table(out/"ebi_source_counts.tsv", ebi)
+    if samples:
+        write_table(out/"individual_metadata.tsv", [row for _, rows, _ in samples for row in rows])
     write_json(out/"receipt.json", dict(metadata_only=True, expression_read=False, ebi=sdrf,
+        individual={sample: evidence for sample, _, evidence in samples},
         checked_at=datetime.now(timezone.utc).isoformat(), geo={study: body for study, _, body in resources},
         code_sha256=sha256(__file__), files={p.name: sha256(p) for p in out.iterdir()}))
 
@@ -98,4 +117,7 @@ def run(out):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True)
-    run(parser.parse_args().out)
+    parser.add_argument("--geo", nargs="+", default=GEO)
+    parser.add_argument("--sample", nargs="+", default=())
+    args = parser.parse_args()
+    run(args.out, args.geo, args.sample)

@@ -20,3 +20,5 @@
 - **DILImap**의 300개 약물은 24 h 일차 간세포 반응이다. 공개 GEO의 count export와 별도 접근 정책이 적용되는 원고용 자료 범위를 구분해야 한다. 성인 HCC 처리 정답과는 세포 맥락이 다르다. [공식 GEO 등록](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM9248305) · [원논문과 접근 조건](https://pmc.ncbi.nlm.nih.gov/articles/PMC12615732/)
 
 기존 R18의 HUH7 C3는 기술 확인 규모이며, C1은 HEPG2와 이전 채점 노출을 포함한다. 별도의 성인 HCC 우위를 주장하려면 다양한 화합물을 여러 독립 HCC 맥락에서 동일 시간·농도로 측정한 자료가 필요하다. 최소 확인 명부에는 무작위화한 물리 위치, 독립 배양·plate, 동일 assay의 vehicle 역할, 공통 유전자와 기존 VC가 사용할 입력 수준을 함께 올려야 한다. [기존 HCC 지원 감사](../r17_lincs/INVENTORY.md) · [R18 입력 명세](R18_CONFIRMATION_PROTOCOL.md)
+
+후속 감사에서 24 h·5 µM으로 문서가 일치하는 세 약물을 분리했다. GSE151412는 GEO와 논문의 농도 표기가 달라 정확 용량 그룹에서 보류했다. [정확 조건 외부 명부](HCC_EXTERNAL_PREFLIGHT.md)

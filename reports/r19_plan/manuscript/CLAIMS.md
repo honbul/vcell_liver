@@ -21,6 +21,8 @@
 
 The public human HCC studies examined in a targeted follow-up primarily support one- or two-compound comparisons. The audit separates registered sequencing entries from source specimens and records inconsistent sample assignments. [Public HCC support audit](../HCC_PUBLIC_SUPPORT.md)
 
+Across the expanded metadata review, three independent-source HUH7 comparisons had documented 5 µM and 24 h exposures. Two GEO series had dose discrepancies with the original article. The design metadata remained insufficient for a common independent-coordinate benchmark. [External HCC preflight](../HCC_EXTERNAL_PREFLIGHT.md)
+
 The final manuscript requires separate evidence for the adult HCC claim, documented data and code access, and author-confirmed contributions and declarations. The development draft can be read alongside the outcome files. [Submission guidance](https://www.nature.com/srep/author-instructions/submission-guidelines)
 
 ## Regenerate the figure
