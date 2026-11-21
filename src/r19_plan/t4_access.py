@@ -1,4 +1,4 @@
-"""Lock exact dose/time pairs and parent-and-plate held HEPG2 comparisons."""
+"""Lock exact dose/time pairs and parent-and-plate held LINCS comparisons."""
 
 import argparse
 from pathlib import Path
@@ -20,6 +20,9 @@ from src.r19_plan.x_access import PHYSICAL, control_registry
 
 STUDY = "GSE92742"
 CELL = "HEPG2"
+COHORTS = {CELL: (132, 247), "PHH": (67, 104)}
+PHH_RANK = 16
+PHH_RIDGE = 1.
 CONDITION = ["parent", "actual_dose_uM"]
 PREDICT = ("source6", "source24", "donor6", "direct24", "fit_controls", "select_controls", "query")
 SCORE = ("query", "controls")
@@ -41,7 +44,7 @@ def assigned_pairs(rows):
     return paired[[*CONDITION, "fold", "target_plate"]]
 
 
-def scope(rows, pairs, controls, fold, plate, role):
+def scope(rows, pairs, controls, fold, plate, role, *, fixed_operator=False):
     role_index = "ABC".index(role)
     select_role, score_role = "ABC"[(role_index+1)%3], "ABC"[(role_index+2)%3]
     later, earlier = [rows.loc[rows.hours.eq(hour)] for hour in (24, 6)]
@@ -49,16 +52,18 @@ def scope(rows, pairs, controls, fold, plate, role):
     wanted = pairs.loc[pairs.fold.ne(fold)]
     source24 = condition_filter(later.loc[later.rna_plate.ne(plate)], wanted).copy()
     source6 = condition_filter(earlier, source24)
-    nested = source24.parent.map(lambda p: fold_id(p, f"R15-inner-{fold}", 5) == 0)
+    nested = source24.parent.map(lambda p: not fixed_operator and fold_id(p, f"R15-inner-{fold}", 5) == 0)
     source24["phase"] = nested.map({True: "select", False: "inner_fit"})
     query = condition_filter(later.loc[later.rna_plate.eq(plate)], held)
     direct = condition_filter(later.loc[later.rna_plate.ne(plate)], held)
     donors = earlier.loc[earlier.parent.isin(held.parent)]
+    inner_count, select_count = source24.loc[~nested].parent.nunique(), source24.loc[nested].parent.nunique()
+    sufficient = inner_count > PHH_RANK if fixed_operator else inner_count > 4 and select_count >= 8
     if (not len(held) or len(query[CONDITION].drop_duplicates()) != len(held)
             or len(direct[CONDITION].drop_duplicates()) != len(held)
             or len(condition_filter(donors, held)[CONDITION].drop_duplicates()) != len(held)
             or set(source6.parent) & set(query.parent) or set(source24.parent) & set(query.parent)
-            or source24.loc[~nested].parent.nunique() <= 4 or source24.loc[nested].parent.nunique() < 8):
+            or not sufficient):
         raise ValueError("A T4 query has no independent plate donor or sufficient disjoint parent training support")
 
     def role_controls(wells, label):
@@ -78,13 +83,14 @@ def scope(rows, pairs, controls, fold, plate, role):
              "score": dict(query=query, controls=score)},
             dict(fold=fold, plate=plate, role=role, parents=query.parent.nunique(), conditions=len(held),
                  query_wells=len(query), train_parents=source24.parent.nunique(),
-                 inner_parents=source24.loc[~nested].parent.nunique(), select_parents=source24.loc[nested].parent.nunique(),
+                 inner_parents=inner_count, select_parents=select_count,
                  direct_wells=len(direct), dmsos_fit=len(fit), dmsos_select=len(select), dmsos_score=len(score)))
 
 
 def run(args):
     if args.out.exists():
         raise FileExistsError(args.out)
+    cell = args.cell
     support = read_json(args.support_reference)
     if (not support["metadata_only"] or support["expression_read"]
             or support["reservation_access_sha256"] != sha256(args.r18_access / "receipt.json")
@@ -97,16 +103,17 @@ def run(args):
     candidates = inst.pert_type.eq("trt_cp") & inst.hours.isin((6, 24))
     dose = measured_dose(asset(ROOT, STUDY, "inst_info"), set(inst.loc[candidates, "inst_id"]))
     rows, _ = eligible_links(inst, sig, footprint, dose)
-    rows = rows.loc[rows.cell_id.eq(CELL)]
+    rows = rows.loc[rows.cell_id.eq(cell)]
     paired = assigned_pairs(rows)
-    if (paired.parent.nunique(), len(paired)) != (132, 247):
-        raise ValueError("T4 did not reproduce the audited HEPG2 time pairs")
+    parents, conditions = COHORTS[cell]
+    if (paired.parent.nunique(), len(paired)) != (parents, conditions):
+        raise ValueError(f"T4 did not reproduce the audited {cell} time pairs")
     paired_parents = set(paired.parent)
     retained = rows.loc[rows.parent.isin(paired_parents) & rows.hours.eq(6)]
     retained = pd.concat((retained, condition_filter(rows.loc[rows.hours.eq(24)], paired)), ignore_index=True)
     fields = ["inst_id", "sig_id", "parent", "cell_id", "hours", "actual_dose_uM", *PHYSICAL, "det_plate", "det_well"]
     retained = retained[fields].assign(study=STUDY).sort_values(["parent", "actual_dose_uM", "hours", *PHYSICAL])
-    controls = control_registry(inst.loc[inst.cell_id.eq(CELL)], retained, footprint)
+    controls = control_registry(inst.loc[inst.cell_id.eq(cell)], retained, footprint)
     verify_domain(retained, controls, *protected)
     matrix = read_json(args.matrix_reference)
     if not matrix["metadata_only"] or matrix["expression_read"] or matrix["study"] != STUDY:
@@ -126,7 +133,7 @@ def run(args):
         files, points = {}, []
         for fold, plate in sorted(set(paired[["fold", "target_plate"]].itertuples(index=False, name=None))):
             for role in "ABC":
-                data, point = scope(treatments, paired, controls, fold, plate, role)
+                data, point = scope(treatments, paired, controls, fold, plate, role, fixed_operator=cell == "PHH")
                 key = f"f{fold}-{role}-{plate}"
                 files[key] = {phase: write_plan(stage / (phase+"-plan") / key,
                                                {name+".tsv": rows for name, rows in tables.items()})
@@ -135,10 +142,11 @@ def run(args):
         pd.DataFrame(points).to_csv(stage / "support.tsv", sep="\t", index=False)
         genes.to_csv(stage / "landmarks.tsv", sep="\t", index=False)
         axis.to_csv(stage / "gene_indices.tsv", sep="\t", index=False)
+        extension = {"cell": cell, "fixed_rank": PHH_RANK, "fixed_ridge": PHH_RIDGE} if cell == "PHH" else {}
         write_json(stage / "receipt.json", dict(metadata_only=True, expression_read=False,
-            parents=132, conditions=247, matrix=record, permitted_datasets=[SAMPLE_IDS, GENE_IDS],
+            parents=parents, conditions=conditions, matrix=record, permitted_datasets=[SAMPLE_IDS, GENE_IDS],
             support_sha256=sha256(args.support_reference), code_sha256=sha256(__file__), slices=files,
-            files={f.name: sha256(f) for f in sorted(stage.glob("*.tsv"))}))
+            files={f.name: sha256(f) for f in sorted(stage.glob("*.tsv"))}, **extension))
         stage.rename(args.out)
     return sha256(args.out / "receipt.json")
 
@@ -148,4 +156,5 @@ if __name__ == "__main__":
     for name in ("base", "reports", "r18-registered", "r18-lock", "r18-access", "r18-index", "support-reference",
                  "matrix-reference", "landmarks", "out"):
         parser.add_argument(f"--{name}", type=Path, required=True)
+    parser.add_argument("--cell", choices=COHORTS, default=CELL)
     print(run(parser.parse_args()))

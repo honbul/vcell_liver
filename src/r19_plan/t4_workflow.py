@@ -1,4 +1,4 @@
-"""Predict, freeze and score the registered matched LINCS HEPG2 time experiment."""
+"""Predict, freeze and score registered matched LINCS time experiments."""
 
 import argparse
 from itertools import product
@@ -17,11 +17,12 @@ from src.r19_plan.i_score import METRICS, checked_rows, paired_effects, parent_s
 from src.r19_plan.i_stage import parse_tsv, pinned_bytes
 from src.r19_plan.r18_input_bundle import extract_matrix
 from src.r19_plan.r18_predict import vehicle_means
-from src.r19_plan.t4_access import CELL, CONDITION, PREDICT, SCORE, condition_index
+from src.r19_plan.t4_access import CELL, COHORTS, CONDITION, PHH_RANK, PHH_RIDGE, PREDICT, SCORE, condition_index
 from src.r19_plan.time_operator import RANKS, RIDGES, fit_time_operator
 from src.r19_plan.x_inputs import check_unique, control_axis, matrix_axes
 
 ARMS = ("B0", "identity6", "scalar6", "operator6", "direct24", "logdose6")
+PHH_PROTOCOL_SHA256 = "590b915275e15b44f6ccef203a784685a4003d6f6144976bd71528cf2e960c16"
 PAIRS = (
     ("identity6", "B0"), ("scalar6", "B0"), ("operator6", "B0"), ("direct24", "B0"),
     ("logdose6", "identity6"), ("operator6", "identity6"), ("operator6", "scalar6"),
@@ -31,8 +32,11 @@ PAIRS = (
 
 def reference(args):
     data = read_json(args.pin)
+    cell = data.get("cell", CELL)
     if (sha256(args.access / "receipt.json") != sha256(args.pin) or not data["metadata_only"]
-            or data["expression_read"] or data["parents"] != 132 or data["conditions"] != 247):
+            or data["expression_read"] or (data["parents"], data["conditions"]) != COHORTS.get(cell)
+            or (cell == "PHH" and ((data.get("fixed_rank"), data.get("fixed_ridge")) != (PHH_RANK, PHH_RIDGE)
+                                  or sha256(args.protocol) != PHH_PROTOCOL_SHA256))):
         raise ValueError("T4 requires its independently pinned metadata-only access receipt")
     return data
 
@@ -52,7 +56,7 @@ def axes(key):
     return int(fold.removeprefix("f")), role, "ABC"[(role_index+1)%3], "ABC"[(role_index+2)%3], plate
 
 
-def validate_predict(tables, key):
+def validate_predict(tables, key, cell=CELL):
     fold, role, select_role, _, plate = axes(key)
     source = [tables[name] for name in ("source6", "source24")]
     donors = [tables[name] for name in ("donor6", "direct24")]
@@ -61,21 +65,23 @@ def validate_predict(tables, key):
     donor = pd.concat(donors, ignore_index=True)
     selection = tables["source24"].loc[tables["source24"].phase.eq("select")]
     parent_fold = lambda rows: rows.parent.map(lambda p: fold_id(p, "R15-outer", 3))
-    nested = source[1].parent.map(lambda p: fold_id(p, f"R15-inner-{fold}", 5) == 0)
+    nested = source[1].parent.map(lambda p: cell != "PHH" and fold_id(p, f"R15-inner-{fold}", 5) == 0)
     if ("level3_row_index" in query or not query.rna_plate.eq(plate).all() or not query.hours.eq("24").all()
             or not all(rows.hours.eq(hours).all() for rows, hours in zip((*source, *donors), ("6", "24", "6", "24")))
             or not parent_fold(query).eq(fold).all() or parent_fold(training).eq(fold).any()
             or set(donor.parent) != set(query.parent) or not nested.eq(source[1].phase.eq("select")).all()
-            or not source[1].phase.isin(["select", "inner_fit"]).all() or selection.empty
+            or not source[1].phase.isin(["select", "inner_fit"]).all()
+            or (cell == "PHH" and (not select.empty or source[1].parent.nunique() <= PHH_RANK))
             or any(rows.rna_plate.eq(plate).any() for rows in (*source, *donors, fit, select))):
         raise ValueError("T4 prediction violates the independent parent, time or physical plate role")
     active = pd.concat((training, donor), ignore_index=True)
     combined = pd.concat((active, query, fit, select), ignore_index=True)
-    if not combined.cell_id.eq(CELL).all():
-        raise ValueError("Only the registered HEPG2 context is allowed for T4")
+    if not combined.cell_id.eq(cell).all():
+        raise ValueError("Only the registered context is allowed for T4")
     check_unique(combined)
     control_axis(fit, active, role)
-    control_axis(select, selection, select_role)
+    if cell != "PHH":
+        control_axis(select, selection, select_role)
 
 
 def deltas(rows, values, control_rows, controls):
@@ -99,7 +105,7 @@ def lookup(candidate, rows):
 
 def pairs(source6, target, outcome):
     condition, later = average_conditions(target, outcome)
-    rows = condition.to_frame(index=False).assign(study="GSE92742", cell_id=CELL)
+    rows = condition.to_frame(index=False).assign(study="GSE92742", cell_id=target.cell_id.iloc[0])
     rows["dose_uM"] = rows.actual_dose_uM
     return rows, lookup(source6, rows), later
 
@@ -125,18 +131,12 @@ def logdose(candidate, rows):
     return np.stack(result)
 
 
-def run_model(data, effects, genes):
-    source6 = average_conditions(data["source6"], effects["source6"])
-    donor = average_conditions(data["donor6"], effects["donor6"])
-    direct = average_conditions(data["direct24"], effects["direct24"])
-    outer, query = data["source24"], data["query"]
+def selected_settings(data, effects, genes, fit, source6, held):
+    outer = data["source24"]
     select_mask = outer.phase.eq("select").to_numpy()
     select = outer.loc[select_mask]
     inner = pairs(source6, outer.loc[~select_mask], effects["source24"][~select_mask])
-    fit = pairs(source6, outer, effects["source24"])
-    query6 = lookup(donor, query)
     select6 = lookup(source6, select)
-    held = set(query.parent)
     options = []
     for rank, ridge in product(RANKS, RIDGES):
         if rank >= min(inner[0].parent.nunique(), fit[0].parent.nunique()):
@@ -154,13 +154,25 @@ def run_model(data, effects, genes):
     if not options:
         raise ValueError("No rank is supported by the T4 source and selection pairs")
     _, rank, ridge, objective = min(options)
-    model = fit_time_operator(*fit, genes, rank=rank, ridge=ridge, held_parents=held)
+    return dict(rank=rank, ridge=ridge, select_loss=objective, inner_parents=inner[0].parent.nunique(),
+                select_parents=select.parent.nunique())
+
+
+def run_model(data, effects, genes):
+    source6 = average_conditions(data["source6"], effects["source6"])
+    donor = average_conditions(data["donor6"], effects["donor6"])
+    direct = average_conditions(data["direct24"], effects["direct24"])
+    outer, query = data["source24"], data["query"]
+    fit = pairs(source6, outer, effects["source24"])
+    query6 = lookup(donor, query)
+    held = set(query.parent)
+    settings = (dict(rank=PHH_RANK, ridge=PHH_RIDGE, select_loss=None, inner_parents=0, select_parents=0)
+                if query.cell_id.eq("PHH").all() else selected_settings(data, effects, genes, fit, source6, held))
+    model = fit_time_operator(*fit, genes, rank=settings["rank"], ridge=settings["ridge"], held_parents=held)
     gain = scalar(*fit)
     forecasts = dict(B0=np.zeros_like(query6), identity6=query6, scalar6=gain*query6,
                      operator6=model.predict(query6, genes), direct24=lookup(direct, query), logdose6=logdose(donor, query))
-    return forecasts, dict(rank=rank, ridge=ridge, select_loss=objective, scalar_gain=gain,
-                           fit_parents=model.fit_parent_count, inner_parents=inner[0].parent.nunique(),
-                           select_parents=select.parent.nunique())
+    return forecasts, dict(settings, scalar_gain=gain, fit_parents=model.fit_parent_count)
 
 
 def lineage(args):
@@ -173,7 +185,8 @@ def predict(args):
         raise FileExistsError(args.out)
     ref = reference(args)
     data = plans(args, ref, args.slice, "predict", PREDICT)
-    validate_predict(data, args.slice)
+    cell = ref.get("cell", CELL)
+    validate_predict(data, args.slice, cell)
     genes_frame, cols = matrix_axes(args.access, ref)
     genes = genes_frame.pr_gene_id.to_numpy()
     names = [n for n in PREDICT if n != "query"]
@@ -181,9 +194,10 @@ def predict(args):
     raw = extract_matrix(ref["matrix"], admitted, cols, genes)
     values = dict(zip(names, np.split(raw, np.cumsum([len(data[n]) for n in names[:-1]])), strict=True))
     effects = {n: deltas(data[n], values[n], data["fit_controls"], values["fit_controls"]) for n in names[:4]}
-    mask = data["source24"].phase.eq("select").to_numpy()
-    effects["select24"] = deltas(data["source24"].loc[mask], values["source24"][mask],
-                                 data["select_controls"], values["select_controls"])
+    if cell != "PHH":
+        mask = data["source24"].phase.eq("select").to_numpy()
+        effects["select24"] = deltas(data["source24"].loc[mask], values["source24"][mask],
+                                     data["select_controls"], values["select_controls"])
     forecasts, selection = run_model(data, effects, genes)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(dir=args.out.parent, prefix=".t4-predict-") as tmp:
@@ -216,6 +230,8 @@ def paired_results(rows, truth, forecasts):
     parts.update({f"{dose}_uM": rows.actual_dose_uM.eq(dose).to_numpy() for dose in ("10", "2.5")})
     results = []
     for scope, mask in parts.items():
+        if not mask.any():
+            continue
         for arm, baseline in PAIRS:
             values = parent_summaries(rows.loc[mask], truth.shape[1], energy[mask], errors[arm][mask], errors[baseline][mask])
             points, ci, draws = paired_effects(*values)
