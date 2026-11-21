@@ -44,9 +44,9 @@ PHH의 시간대별 donor 독립성은 별도 검증이 필요하다. GSE70138�
 
 같은 10 µM 명부의 HEPG2 6 h를 통째로 hold-out하고 그 domain의 1,793 parent를 모든 source에서 빼면, HEPG2 24 h 1군·3 plate, PHH 6 h 0군, PHH 24 h 219군·15 plate가 남았다. 고정 parent fold 하나씩을 모든 source에서 제외하는 설계에서는 PHH 6 h의 적합 지원이 31·29·24군, PHH 24 h는 354·340·362군이었다. R18의 모든 대조군 역할까지 빼면 HEPG2 24 h는 지원에서 빠지며 HEPG2 6 h held fold는 583·589·583군이다. 전체 domain 제외와 fold별 parent 제외의 적합 구성은 다르므로 두 설계를 같은 대조로 해석할 수 없다. [교차 지원 원표](data/t2_parent_support/leave_domain_out.tsv) · [감사 영수증](data/t2_parent_support/receipt.json) · [G1 작업](data/t2_parent_support/job.tsv)
 
-## T4. 동일 세포주·화합물·실측 용량의 6↔24 h 지원
-
 동일 GSE92742 assay의 10 µM·6 h HEPG2 전이에서는 비간계열로 적합한 전역 배율이 원 donor 평균 대비 RMSE를 1.47% [99% 구간 1.15, 1.81] 줄였다. 유전자별 분산 보정의 추가 이득 99% 상한은 RMSE 0.024%, R² 0.045%p였고 사전 실용 기준에 따라 이 분산비 규약을 종료했다. [T1–T3 동결 실험 결과](T123_RESULTS.md)
+
+## T4. 동일 세포주·화합물·실측 용량의 6↔24 h 지원
 
 GSE92742 원 QC 메타데이터에서 R18 보호 측정과 별칭·donor를 제외하고, 같은 세포주와 정확한 실측 용량으로 6 h와 24 h를 연결했다. 각 plate에 세 역할을 배정할 수 있는 독립 DMSO가 최소 3웰 있어야 한다. 처리 식별자가 충돌한 RNA 좌표 54개는 그에 연결된 108개 레코드를 모두 제외했다. 첫 실행은 충돌을 검출하고 중단했고 같은 작업 ID의 재실행에서 제외 규칙을 적용했다.
 

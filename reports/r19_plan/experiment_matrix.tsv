@@ -4,11 +4,11 @@ D1	COMPLETED	All six nonzero-gain comparator families reduced gain in every rota
 D2	COMPLETED	Joint selection improved both endpoints for FiLM, Concat and XPert and worsened both for TranSiGen; frozen 7-model comparison completed.
 D1.access	COMPLETED	Pinned 486 Level 3 physical DMSOs and the existing 6773 DEV wells across nine slices; no expression read by the audit.
 D3	COMPLETED	Fit-view augmentation improved relative RMSE by 0.0204 percent below the practical gate. Fit-only shrinkage chose zero in 7 of 9 slices and did not improve both metrics.
-T0	PLANNED	Frozen outputs and existing contrast implementation are present.
-T1	PLANNED	Source-OOF scalar for RMSE/R² is estimable; direction-only shared scalar sweep is invariant.
-T2	PLANNED	Local LINCS fit controls available; prove ≥12 independent fit wells, ≥3 plates and comparable aggregation per target.
-T3	PLANNED	Depends on T2 support; compare to T1 with source-held tuning.
-T4	PLANNED	Existing LINCS has 6h/24h; verify cell-parent-dose matched source pairs after reservation.
+T0	COMPLETED	Historical frozen Tahoe replay and uncalibrated same-assay four-donor HEPG2 reference scored.
+T1	COMPLETED	Nonhepatic source-OOF scalar reduced HEPG2 RMSE by 1.47 percent versus the unscaled same-assay donor.
+T2	COMPLETED	Same-assay gene variance ratio worsened both endpoints versus T0. Tahoe control-support blocker remains.
+T3	COMPLETED	Same-assay composition passed the direction test against T1. Both 99 percent upper bounds were below the practical gate and the variance recipe was stopped.
+T4	COMPLETED	Same-assay 6h-to-24h low-rank operator passed both main comparisons. RMSE improved 7.33 percent versus the source scalar on 132 parents.
 X0	COMPLETED	Five-context held-cell and held-parent comparison; fit DMSO PCA improved interaction modestly versus ID with negative absolute interaction R2.
 X1	COMPLETED	Matched-width cell ID and OOV mean scored on 493 parents, five contexts and three independent DMSO rotations.
 X2	COMPLETED	NO_USEFUL_GAIN for basal RNA under the A contract. Upper 99 percent relative RMSE gain 0.0517 percent; HEPG2 interaction worsened on both metrics.
@@ -38,3 +38,4 @@ T2.Tahoe_5uM	BLOCKED	Only 5 of the required 12 target-fit physical wells in ever
 T3.Tahoe_5uM	BLOCKED	Combined correction depends on unavailable T2 fit-control support; the T1 scalar remains separate.
 T2.parent_support	COMPLETED	Audited exact-dose, same-assay leave-domain and globally held parent-fold support using metadata only.
 T4.source_support	COMPLETED	GSE92742 has 132 HEPG2 and 67 PHH exact-dose 6h/24h parents outside protected inputs; support audit only.
+T4.cross_platform	PLANNED	Same-panel cross-platform and cross-time contrasts need a shared exact-dose parent support audit. No platform effect estimated from mismatched support.
