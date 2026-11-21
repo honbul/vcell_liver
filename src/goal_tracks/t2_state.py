@@ -11,7 +11,7 @@ import torch
 from scipy import sparse
 
 from src.goal_tracks.t1_data import DOSES, MIN_CELLS, DoseSource, slice_name, validate_protocol
-from src.goal_tracks.t1_io import write_task
+from src.goal_tracks.t1_io import load_task, write_task
 from src.r11_chemical_probe.common import config, read_json, sha256
 from src.r11_chemical_probe.dataset import KEY
 from src.r12_multiaxis.data import Fit
@@ -160,6 +160,13 @@ def main():
     index, fold = divmod(index, 3)
     dose_index, minimum_index = divmod(index, 2)
     dose, minimum, role = DOSES[dose_index], MIN_CELLS[minimum_index], "AB"[role_index]
+    destination = args.out / slice_name(dose, minimum, fold, role)
+    if (destination / "receipt.json").exists():
+        existing, _, _, _ = load_task(destination, args.staged, args.protocol, dose, minimum, fold, role)
+        if existing["models"] != [MODEL]:
+            raise ValueError("Existing task does not belong to State")
+        print(f"Verified existing State prediction: {destination.name}")
+        return
     source = DoseSource(config(args.config), args.assets, args.staged, dose, minimum, fold, role)
     fit = Fit(source, source.fit_rows, source.query_rows, panel=source.panel)
     original = args.assets / "cells-v2"
@@ -167,7 +174,7 @@ def main():
     if dose == 0.05:
         cell_folders = (original, args.extra_cells)
     prediction, receipt = fit_model(fit, args.upstream, cell_folders)
-    write_task(args.out / slice_name(dose, minimum, fold, role), source, fit,
+    write_task(destination, source, fit,
                {MODEL: prediction}, selection={MODEL: receipt})
 
 
