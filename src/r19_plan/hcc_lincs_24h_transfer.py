@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 
 from src.r11_chemical_probe.common import read_json, sha256, write_json
+from src.r19_plan.hcc_lincs_24h_access import CONTEXT
 from src.r19_plan.i_preflight import read_pinned
 from src.r19_plan.i_score import checked_array, checked_rows, parent_summaries, squared_rows
 from src.r19_plan.i_stage import parse_landmarks, pinned_bytes
@@ -16,7 +17,7 @@ from src.r19_plan.r18_input_bundle import extract_matrix, indices
 from src.r19_plan.t4_position import OP, SC, ST, compare, contrast, retrieval
 from src.r19_plan.t4_scaffold_transfer import cluster_effects
 from src.r19_plan.t4_state import state_forecast
-from src.r19_plan.t4_workflow import axes, deltas, scalar
+from src.r19_plan.t4_workflow import axes, scalar
 from src.r19_plan.time_operator import fit_time_operator
 from src.r19_plan.x_inputs import check_unique, control_axis
 
@@ -49,7 +50,9 @@ def effect(rows, controls, ref, genes, cols, role):
     control_axis(controls, rows, role)
     treated = extract_matrix(ref["matrices"]["treated"], rows, cols["treated"], genes)
     vehicles = extract_matrix(ref["matrices"]["controls"], controls, cols["controls"], genes)
-    return deltas(rows, treated, controls, vehicles).astype("float64")
+    means = {key: vehicles[ix].mean(axis=0, dtype="float64") for key, ix in controls.groupby(CONTEXT).indices.items()}
+    baseline = np.stack([means[key] for key in rows[CONTEXT].itertuples(index=False, name=None)])
+    return treated - baseline
 
 
 def group_means(values, rows, fields):

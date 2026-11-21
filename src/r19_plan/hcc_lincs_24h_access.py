@@ -15,6 +15,7 @@ from src.r19_plan.x_inputs import check_unique, control_axis
 
 
 CELL, VIEW = "JHH5", "nonhepatic"
+CONTEXT = ["study", "cell_id", "rna_plate"]
 
 
 def load_registry(args):
@@ -35,7 +36,8 @@ def load_registry(args):
     allowed = donor_support.index[donor_support.plates.ge(2) & donor_support.cells.ge(2)]
     targets = targets.loc[targets.parent.isin(allowed)].copy()
     source = source.loc[source.parent.isin(targets.parent)]
-    controls = scope["controls.tsv"].loc[lambda rows: rows.rna_plate.isin(set(source.rna_plate) | set(targets.rna_plate))]
+    used_contexts = pd.concat((targets[CONTEXT], source[CONTEXT])).drop_duplicates()
+    controls = scope["controls.tsv"].merge(used_contexts, on=CONTEXT, validate="many_to_one")
     if (set(targets.rna_plate) & set(source.rna_plate) or targets.parent.nunique() != int(support["parents"])
             or len(targets) != int(support["wells"])):
         raise ValueError("Eligible JHH-5 cohort has a different plate separation or physical support")
@@ -44,8 +46,8 @@ def load_registry(args):
 
 
 def assigned_controls(controls):
-    ordered = controls.assign(crc=controls.inst_id.map(lambda s: crc32(s.encode()))).sort_values(["rna_plate", "crc", "inst_id"])
-    role = ordered.groupby("rna_plate").cumcount().mod(3).map(dict(enumerate("ABC")))
+    ordered = controls.assign(crc=controls.inst_id.map(lambda s: crc32(s.encode()))).sort_values([*CONTEXT, "crc", "inst_id"])
+    role = ordered.groupby(CONTEXT).cumcount().mod(3).map(dict(enumerate("ABC")))
     return ordered.drop(columns="crc").assign(role=role)
 
 
@@ -96,8 +98,9 @@ def run(args):
             support.append(dict(slice=label, fit_wells=len(predict["fit"]), fit_parents=predict["fit"].parent.nunique(),
                 query_wells=len(predict["query"]), fit_controls=len(predict["fit_controls"]), score_controls=len(score["score_controls"])))
         donors = {}
+        donor_contexts = source[CONTEXT].drop_duplicates()
         for role in "ABC":
-            source_controls = controls.loc[controls.role.eq(role) & controls.rna_plate.isin(source.rna_plate)]
+            source_controls = controls.loc[controls.role.eq(role)].merge(donor_contexts, on=CONTEXT, validate="many_to_one")
             control_axis(source_controls, source, role)
             donors[role] = write_plan(stage / "donor-plan" / role, {"source.tsv": source, "controls.tsv": source_controls})
         landmarks.to_csv(stage / "landmarks.tsv", sep="\t", index=False)
