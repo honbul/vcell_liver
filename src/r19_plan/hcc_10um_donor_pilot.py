@@ -108,6 +108,13 @@ def run(args):
         chosen[["proposed_slot","parent","isomeric_parent","brd_id","drug","phase","cells","plates","wells","scaffold_unit"]].to_csv(
             out/"draft_slots.tsv",sep="\t",index=False)
         pd.DataFrame(counts).to_csv(out/"support.tsv",sep="\t",index=False)
+        if args.count_grid:
+            grid = []
+            for count in (2, 4, 8, 16):
+                eligible_at_count = frame.loc[scientific & frame.cells.ge(count) & frame.plates.ge(count)]
+                grid.append(dict(minimum_cells=count, minimum_plates=count, parents=len(eligible_at_count),
+                    distinct_scaffolds=eligible_at_count.scaffold_unit.nunique()))
+            pd.DataFrame(grid).to_csv(out/"count_grid.tsv", sep="\t", index=False)
         write_json(out/"receipt.json",dict(metadata_only=True,expression_read=False,selected=len(chosen),measured=False,
             protocol_sha256=sha256(args.protocol),code_sha256=sha256(__file__),previous_5uM_sha256=sha256(old),
             previous_JHH_sha256=sha256(pin),reserve_access_sha256=sha256(args.r18_access/"receipt.json"),
@@ -120,4 +127,5 @@ if __name__=="__main__":
     cli = argparse.ArgumentParser(description=__doc__)
     for field in ("base","reports","old","jhh-audit","r18-registered","r18-lock","r18-access","r18-index","protocol","out"):
         cli.add_argument("--"+field,type=Path,required=True)
+    cli.add_argument("--count-grid", action="store_true")
     run(cli.parse_args())

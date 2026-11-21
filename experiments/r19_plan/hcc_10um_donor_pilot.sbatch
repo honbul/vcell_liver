@@ -6,6 +6,7 @@
 set -euo pipefail
 
 run=$1
+shift
 root=$(dirname "$run")
 base=$(dirname "$root")
 repo="$run/repo"
@@ -17,4 +18,4 @@ exec /usr/bin/time -v "$python" -m src.r19_plan.hcc_10um_donor_pilot --base "$ba
   --old "$root/hcc-pilot-chem.cQGX4JCR/audit" --jhh-audit "$root/hcc-lincs24.weD7cHPm/audit" \
   --r18-registered "$root/audit.YBfVmbuo/r18-registered" --r18-lock "$root/preflight.kwjS2aLo/r18-input-lock" \
   --r18-access "$root/access-plan.h0O8ex4z/allowlists" --r18-index "$root/matrix-index.91pT0e4H/index" \
-  --protocol "$repo/reports/r19_plan/HCC_10UM_DONOR_PILOT_PROTOCOL.md" --out "$run/audit"
+  --protocol "$repo/reports/r19_plan/HCC_10UM_DONOR_PILOT_PROTOCOL.md" --out "$run/audit" "$@"
