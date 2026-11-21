@@ -9,6 +9,7 @@ from src.r11_chemical_probe.dataset import ENTITY, GROUP, KEY, LINE
 from src.r12_multiaxis.data import Design
 from src.r12_multiaxis.network import ResidualHead, fit_network
 from src.r19_plan.sl_components import exact_pools, fit_variant, directional, huber, matched_contrast, separate_magnitude
+from src.r19_plan import sl_predict
 
 
 def design_rows():
@@ -65,3 +66,23 @@ def test_blind_checkpoint_alignment_and_default_training_equivalence():
     fit.query.treated = np.ones((2, 2))
     with pytest.raises(ValueError, match="fit-only"):
         fit_variant(fit, "S0", None, .001, (1,), rows)
+
+
+def test_variant_jointly_selects_kernel_and_neural_gains_before_refitting(monkeypatch):
+    calls = []
+
+    def checkpoints(fit, strategy, value, lr, epochs, pools, *, device):
+        calls.append((fit, strategy, lr, epochs))
+        amplitude = 8. if fit == "outer" else (2. if lr == .0003 else 4.)
+        return {epoch: np.full((2, 2), amplitude) for epoch in epochs}, {}
+
+    monkeypatch.setattr(sl_predict, "fit_variant", checkpoints)
+    rows = pd.DataFrame({"parent": ["p", "q"]})
+    zeros = np.zeros((2, 2))
+    fitted = sl_predict.choose_variant(SimpleNamespace(device="cpu"), "S2", ("inner", None), ("outer", None),
+                                       rows, np.full((2, 2), 2.), (zeros, zeros),
+                                       (np.ones((2, 2)), np.full((2, 2), 3.)))
+    assert fitted.selection["neural_gain"] == .25 and fitted.selection["kernel_gain"] == 1.
+    assert calls[-1][0] == "outer" and calls[-1][2:] == (.001, (1,))
+    np.testing.assert_array_equal(fitted.full, np.full((2, 2), 5.))
+    np.testing.assert_array_equal(fitted.neural_only, np.full((2, 2), 2.))

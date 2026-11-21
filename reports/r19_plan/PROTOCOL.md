@@ -42,10 +42,14 @@ X의 선정 조합은 HEPG2·A375·HA1E·HT29·MCF7이다. 공통 495 parent가 
 
 X2 기저 특징 후보는 G1에 보유한 DepMap 25Q3 RNA다. 세포주 이름·catalog와 단일 기본 non-stranded RNA profile ID로 매칭하고, 중복 없는 L1000 Entrez 열을 센다. 전 맥락에 기저 자료가 있는 기존 적격 조합 중 원 X 지원 규칙을 다시 적용한다. 이 단계는 RNA feature 값을 배열에 적재하거나 모델을 적합하지 않는다.
 
+HA1E는 DepMap 모델 ID가 있으나 요구한 기본 RNA profile은 확인되지 않았다. A549로 바꾼 HEPG2·A375·A549·HT29·MCF7은 다섯 profile과 978개 landmark를 모두 가진다. 공통 실측 10 µM parent는 493군이고 fold별 170·168·155군이다. HEPG2는 동일 catalog `HB-8065`로 연결되며 LINCS의 질환 표기와 DepMap 25Q3의 `Hepatoblastoma` 표기가 다르다. 이 세포주만으로 성인 HCC 전이를 검증했다고 해석하기 어렵다. [세포주·profile 원표](data/x_l_support/x-basal/context_profiles.tsv) · [선정 근거](data/x_l_support/x-basal/receipt.json)
+
 L1 held fold를 합치면 두 parent 이상이 있는 138개 pool에 1,818 parent, 6,558개 물리 웰이 포함된다. 전체 6,773웰 중 실측 용량과 기존 캐시 용량이 다른 웰은 284개였다. 따로 측정한 실제 용량으로 짝을 구성하고, 같은 캐시 용량에 속하더라도 실측이 다른 웰은 서로 다른 pool에 둔다. [지원 원표](data/x_l_support/l1/support.tsv) · [실측 용량 영수증](data/x_l_support/l1/receipt.json)
 
 ## S·L 구성 검증
 
 S0/L0는 기존 parent 가중 MSE FiLM을 공유한다. S1은 같은 폭의 concat이며 S2는 기존 방향 벡터에 별도의 비음수 크기 출력 하나를 더한다. S3는 적합 반응의 parent 가중 PCA만으로 rank `32, 64, 128` 중 지원되는 후보를 만든다. 모든 구성에서 실제 유전자별 체크포인트 예측 배열을 확보하며, 조회 처리값 없이 동작한다.
+
+S/L A 구현은 동일한 위치 anchor와 화학 커널 규칙을 사용한다. 각 후보에서 독립 select 대비로 checkpoint와 커널·신경망 gain을 함께 고른다. S0/L0는 같은 재적합 B_R17 조합을 가리킨다. 커널을 뺀 진단 예측과 별도로 fit-only `B_mean`과 `B_resmean`도 산출한다. S/L의 실제 예측이 제출되기 전에는 조합 파라미터 효과를 보고하지 않는다.
 
 L1은 MSE에 동일 물리 pool 내 parent별 평균 오차의 짝 제곱차를 추가한다. 환산한 실측 용량으로 훈련 batch를 구성하며, 두 parent 미만인 pool에서는 추가항이 0이다. L2는 적합 잔차 norm의 10분위수로 방향항을 안정화하고 가중한다. 두 추가항의 가중은 `.01, .1, 1`이다. L3는 fit 잔차 scale의 `.5, 1, 2`배에서 Huber 전환점을 둔다. 합성 검증에서 S0의 예측이 기본 코드와 정확히 일치하고, 다른 용량 및 같은 parent의 반복이 L1의 독립 약물 짝을 늘리지 않음을 확인했다.
