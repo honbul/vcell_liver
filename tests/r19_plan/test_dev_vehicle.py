@@ -58,6 +58,31 @@ def test_augmentation_keeps_each_well_weight_and_expected_residual(fit_controls)
     np.testing.assert_array_equal(augmented.weights, second.weights)
 
 
+def test_augmented_training_view_reuses_position_pool_offset_and_query(fit_controls):
+    from types import SimpleNamespace
+
+    import pandas as pd
+
+    from src.r12_multiaxis.data import Design
+    from src.r19_plan.d3_predict import augment_design
+
+    control, roles = fit_controls
+    rows = pd.DataFrame({"rna_plate": ["p1", "p2"], "rna_well": ["A01", "A01"]})
+    treated = np.array([[102., 235., -48.], [-50., 308., 125.]])
+    chrom = np.array([[1., 2., 3.], [4., 5., 6.]])
+    mean = np.stack([control.values[:3].mean(axis=0), control.values[3:].mean(axis=0)])
+    delta = treated - mean - chrom
+    residual = delta - 2.
+    fit = SimpleNamespace(train=SimpleNamespace(rows=rows, delta=delta), residual=residual,
+                          weight=np.array([.4, .6]), panel=control.genes, project=lambda _: (None, lambda x: x))
+    design = Design((np.array([[1.], [2.]]), mean), (np.ones((1, 1)), np.zeros((1, 3))))
+    duplicate, inputs = augment_design(fit, design, treated, chrom, control, roles)
+    assert len(duplicate.train.rows) == 4 and inputs.query is design.query
+    np.testing.assert_allclose(duplicate.weight.reshape(2, 2).sum(axis=1), fit.weight)
+    np.testing.assert_allclose((duplicate.residual * duplicate.weight[:, None]).reshape(2, 2, 3).sum(axis=1)
+                               / fit.weight[:, None], residual, atol=1e-6)
+
+
 def test_nuisance_is_within_plate_and_leaves_anchor_and_orthogonal_signal_intact(fit_controls):
     from src.r19_plan.dev_vehicle import learn_nuisance_basis, shrink_neural_residual
 
