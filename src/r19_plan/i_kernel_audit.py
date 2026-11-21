@@ -13,6 +13,8 @@ from src.r15_lincs.design import chemical_features, fold_id
 from src.r15_lincs.estimators import _tanimoto
 from src.r19_plan.i_audit import CAP_BYTES, write_receipt
 from src.r19_plan.i_kernel import FitProfile, masked_gram
+from src.r19_plan.i_kernel_arms import (ANNOTATION, annotation_matrix, curated_annotation_rows,
+                                       fit_optional_profiles, iter_kernel_arms)
 from src.r19_plan.r18_preflight import checked_tables
 
 ASSAY_KEY = ["target_chembl_id", "target_organism", "assay_type", "standard_type", "standard_units"]
@@ -69,12 +71,34 @@ def kernel_checks(structure, mapped, names, query):
                 query_structure_only=int((query & fallback).sum()))
 
 
+def arm_checks(structure, mapped, fitting, query):
+    for arm in iter_kernel_arms(structure, mapped, fitting, query):
+        if (arm.train_gram.shape != (fitting.sum(), fitting.sum())
+                or arm.query_gram.shape != (query.sum(), fitting.sum())
+                or not np.allclose(arm.gram, arm.gram.T)):
+            raise ValueError(f"The kernel arm has a changed query, fit or symmetry axis: {arm.name}")
+        count = arm.query_view_count
+        absent = count == 0
+        diagnostic = arm.name.endswith(("_mask_only", "_morphology_only"))
+        routed = absent if arm.views and not diagnostic else np.zeros_like(absent)
+        trial = np.zeros((len(count), 1))
+        if not diagnostic:
+            trial = arm.apply_structure_fallback(trial, np.ones_like(trial))
+        if not np.array_equal(trial[:, 0], routed):
+            raise ValueError(f"Wrong I0 fallback support: {arm.name}")
+        yield dict(arm=arm.name, views="+".join(arm.views), fit_parents=int(fitting.sum()),
+                   query_parents=len(count), query_view_missing=int(absent.sum()) if arm.views else 0,
+                   query_view_partial=int(((count > 0) & (count < len(arm.views))).sum()),
+                   query_view_complete=int((count == len(arm.views)).sum()), i0_routed=int(routed.sum()))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--coverage", type=Path)
     parser.add_argument("--views", nargs="+", choices=("I1", "I2", "I4"))
+    parser.add_argument("--all-arms", action="store_true")
     args = parser.parse_args()
     root = args.root
     coverage_dir = args.coverage or root / "coverage"
@@ -94,7 +118,9 @@ def main():
         checked_tables(root / name, root / name / "receipt.json")
     available_rows = table(coverage_dir / "parent_availability.tsv").sort_values("parent")
     quantitative = quantitative_rows(root / "I1/bioassays.tsv.gz") if "I1" in eligible else None
-    result, transforms = [], []
+    annotations = (curated_annotation_rows(root / "I1/bioassays.tsv.gz")
+                   if "I1" in eligible and args.all_arms else None)
+    result, transforms, arms = [], [], []
     for scope, rows in [("assay_excluded", available_rows), ("exclude_shared_R18_parent", available_rows.loc[
             available_rows.r18_identity_overlap.eq("False")])]:
         parents = pd.Index(rows.parent)
@@ -125,6 +151,12 @@ def main():
                 for names in blocks:
                     result.append(dict(scope=scope, outer=outer, phase=phase,
                                        **kernel_checks(structure, mapped, names, query)))
+                if args.all_arms:
+                    if annotations is not None:
+                        indicators = annotation_matrix(annotations, parents, fitting)
+                        mapped.update(fit_optional_profiles({ANNOTATION: indicators}, fitting))
+                    arms.extend(dict(scope=scope, outer=outer, phase=phase, **row)
+                                for row in arm_checks(structure, mapped, fitting, query))
 
     if sum(path.stat().st_size for path in root.rglob("*") if path.is_file()) >= CAP_BYTES:
         raise ValueError("I-track storage exceeds the approved cap")
@@ -132,11 +164,13 @@ def main():
     out.mkdir(exist_ok=False)
     pd.DataFrame(result).to_csv(out / "kernel_support.tsv", sep="\t", index=False)
     pd.DataFrame(transforms).to_csv(out / "transform_support.tsv", sep="\t", index=False)
+    if args.all_arms:
+        pd.DataFrame(arms).to_csv(out / "arm_support.tsv", sep="\t", index=False)
     write_receipt(out, dict(coverage_sha256=sha256(coverage_dir / "receipt.json"),
         eligible_views=eligible, preprocessing="training-only standardized PCA up to 64 components",
         quantitative="target/resolved-assay grouped pChEMBL, confidence >=7, vocabulary support >=2 fit parents",
         structure="existing Morgan Tanimoto", PSD="row-scaled sum of PSD component kernels",
-        RNA_scored=False, RNA_read=False, predictor_fit=False))
+        RNA_scored=False, RNA_read=False, predictor_fit=False, all_arms_checked=len(arms)))
 
 
 if __name__ == "__main__":
