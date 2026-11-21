@@ -18,3 +18,11 @@ GSE114184의 논문은 PLC/PRF/5에서 12 h 단독 약물 두 개와 결합·DMS
 성인 비교에는 등록상 SNU-423, SNU-387, HUH7, PLC/PRF/5를 사용한다. 기존 GSE151412 메모는 Hep3B를 성인 HCC로 표기했으나 해당 세포주는 8세 소아 HCC 유래다. HuH-6와 HepG2/C3A는 간모세포종 맥락이다. 임상 상태와 조직 분류는 assay 자격과 별도로 기록했다. [Hep3B](https://www.cellosaurus.org/CVCL_0326) · [HuH-6](https://www.cellosaurus.org/CVCL_4381) · [SNU-387](https://www.cellosaurus.org/CVCL_0250) · [PLC/PRF/5](https://www.cellosaurus.org/CVCL_0485)
 
 앞선 GEO 263개 표본과 GSM이 겹치지 않았고, 선택한 열 개 accession은 점검한 로컬 GEO·R14 경로와 기존 저장소 기록에 없었다. 이 조회로 공식 체크포인트의 사전학습 노출이나 원시 표본의 중복을 확인할 수는 없다. 새 분석은 GEO의 metadata-only 요청으로 전 표본 등록과 대표 GSM 18개의 조건을 검증한 것이다. 발현 행렬·예약 자료를 수집하거나 채점하지 않았다. [대표 GSM](data/hcc_external_followup/individual_metadata.tsv) · [별도 표본 검산](data/hcc_external_followup/targeted_sample_receipt.json) · [기존 정확 조건 감사](HCC_EXTERNAL_PREFLIGHT.md)
+
+## DRIVE 원 조건 명부 추가 대조
+
+공개 DRIVE의 931개 처리–대조 조건 중 원 조직 분류가 간 계열이거나 등록 세포주 목록과 일치한 22개 조건을 찾았다. 13개 원 GEO가 포함된다. Zenodo의 ZIP64 중앙 디렉터리와 `all_sample_meta.rds` 항목만 byte range로 읽었고, 42,163-byte 명부의 SHA-256을 기록했다. 데이터 배포 기록의 라이선스는 CC BY 4.0이다. 전체 아카이브와 전사체는 수집하지 않았다. [DRIVE 논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC13380495/) · [배포 기록](https://zenodo.org/records/19816802) · [선택 명부](data/hcc_drive_support/conditions.tsv) · [수집 영수증](data/hcc_drive_support/receipt.json)
+
+- MHCC-97H의 **GK921 2 µM·24 h**는 원 GEO와 논문이 일치하며 처리 3·DMSO 3개가 등록됐다. 원 실험의 배양 블록과 웰 좌표는 확인하지 못했고 같은 조건의 여러 약물은 없다. [GSE283279](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE283279) · [개별 표본](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8659099) · [원논문](https://doi.org/10.1016/j.jhep.2024.12.038)
+- HCCLM3의 quercetin 50·100 µM는 농도별 3표본과 공통 대조 3표본이다. GEO의 RNA 표본에서 노출 시간이 확인되지 않았다. 원논문의 72시간 생존율 측정을 RNA 표본 시간으로 대입하지 않았다. [GSE282022](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE282022) · [원논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC12365044/)
+- 기존 HUH7 내성 파생주 GSE113005도 DRIVE에 수록됐다. 이 명부에서는 새 JHH-5 규약의 10 µM·24 h 또는 기존 독립 5 µM·24 h 규약을 충족하는 성인 HCC의 여러 화합물 코호트를 확인하지 못했다. [DRIVE 조건 원표](data/hcc_drive_support/conditions.tsv) · [JHH-5 규약](HCC_LINCS_24H_TRANSFER_PROTOCOL.md)
