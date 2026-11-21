@@ -225,11 +225,13 @@ def cpa_descriptors(entity_file):
     generator = RDKit2D()
     table_rows = table(entity_file)
     feats = {}
-    for entity, smiles in table_rows[[ENTITY, "smiles"]].itertuples(index=False, name=None):
+    smiles_rows = list(table_rows[[ENTITY, "smiles"]].itertuples(index=False, name=None))
+    for entity, smiles in [*smiles_rows, ("__DMSO__", "CS(C)=O")]:
         result = generator.process(smiles)
-        if not result or not result[0] or not np.isfinite(result[1:]).all():
+        if not result or not result[0]:
             raise ValueError(f"Invalid RDKit2D representation for {entity}")
-        feats[entity] = np.asarray(result[1:], dtype=np.float32)
+        raw = np.asarray(result[1:], dtype=np.float64)
+        feats[entity] = np.where(np.isfinite(raw), raw, 0.0)
     return feats, len(next(iter(feats.values())))
 
 
@@ -243,9 +245,9 @@ def chemcpa(fit, work, epochs, validation):
     hparams_file = CPA / "configs/chemcpa_moe_v2/hparams_official.json"
     hparams = json.loads(hparams_file.read_text())
     desc, raw_width = cpa_descriptors(fit.source.r11 / "features/entities.tsv")
-    entities = sorted(set(fit.train.rows[ENTITY]) | set(fit.query.rows[ENTITY]))
+    entities = [*sorted(set(fit.train.rows[ENTITY]) | set(fit.query.rows[ENTITY])), "__DMSO__"]
     inds = {e: i for i, e in enumerate(entities)}
-    fit_positions = np.array([inds[e] for e in sorted(fit.train.rows[ENTITY].unique())])
+    fit_positions = np.array([inds[e] for e in [*sorted(fit.train.rows[ENTITY].unique()), "__DMSO__"]])
     all_x = np.stack([desc[e] for e in entities])
     all_sd = all_x[fit_positions].std(axis=0, ddof=1)
     keep = all_sd > 0.01
@@ -267,25 +269,31 @@ def chemcpa(fit, work, epochs, validation):
     drugs = tuple(tensor([inds[e] for e in block.rows[ENTITY]], torch.long)
                   for block in (fit.train, fit.query))
     controls = tuple(tensor(block.control) for block in (fit.train, fit.query))
-    train_target = tensor(fit.train.treated)
+    fit_dmso = tensor(fit.fit_control)
+    fit_dmso_line = nn.functional.one_hot(tensor([line_id[l] for _, l in fit.fit_units], torch.long),
+                                         len(line_id)).float()
+    train_target = torch.cat((tensor(fit.train.treated), fit_dmso))
+    train_line = torch.cat((cov[0], fit_dmso_line))
+    train_drug = torch.cat((drugs[0], drugs[0].new_full((len(fit_dmso),), inds["__DMSO__"])))
     dose = float(fit.source.dose)
+    train_dose = tensor(np.r_[np.full(len(fit.train.rows), dose), np.zeros(len(fit_dmso))])
     global_step = 0
 
-    def forward(x, d, c, return_latent=False):
-        return model.predict(x, drugs_idx=d, dosages=torch.full_like(d, dose, dtype=torch.float32),
+    def forward(x, d, c, dval, return_latent=False):
+        return model.predict(x, drugs_idx=d, dosages=dval,
                              covariates=[c], return_latent_basal=return_latent)
 
     def train(j, epoch):
         nonlocal global_step
         model.train()
         model.zero_grad(set_to_none=True)
-        out, _, (basal, _, _) = forward(train_target[j], drugs[0][j], cov[0][j], True)
+        out, _, (basal, _, _) = forward(train_target[j], train_drug[j], train_line[j], train_dose[j], True)
         mean, var = out.chunk(2, dim=1)
         drug_adv = model.adversary_drugs(basal)
         line_adv = model.adversary_covariates[0](basal)
         drug_loss = model.loss_adversary_drugs(drug_adv, nn.functional.one_hot(
-            drugs[0][j], len(entities)).float())
-        line_loss = nn.functional.cross_entropy(line_adv, cov[0][j].argmax(1))
+            train_drug[j], len(entities)).float())
+        line_loss = nn.functional.cross_entropy(line_adv, train_line[j].argmax(1))
         if global_step % hparams["adversary_steps"] == 0:
             penalty = sum(torch.autograd.grad(v.sum(), basal, create_graph=True)[0].square().mean()
                           for v in (drug_adv, line_adv))
@@ -306,16 +314,17 @@ def chemcpa(fit, work, epochs, validation):
         out = []
         for j in batches(len(fit.query.rows), 512):
             ctl = controls[1][j]
-            rec, _ = forward(ctl, drugs[1][j], cov[1][j])
+            d = drugs[1][j]
+            rec, _ = forward(ctl, d, cov[1][j], torch.full_like(d, dose, dtype=torch.float32))
             out.append(rec[:, :len(fit.panel)] - ctl)
         return torch.cat(out).cpu().numpy()
 
-    return run_path(train, predict, epochs, len(fit.train.rows), 256, validation=validation, schedulers=scheds), dict(
+    return run_path(train, predict, epochs, len(train_target), 256, validation=validation, schedulers=scheds), dict(
         upstream_commit=pin, hparams_sha256=sha256(hparams_file), batch=256,
         architecture="unmodified chemCPA ComPert P0 with amortized dose decoder",
-        objective="upstream Lightning Gaussian NLL + drug and line adversarial steps, reconstructed on treated means",
+        objective="upstream Lightning Gaussian NLL + drug and line adversarial steps, reconstructed on treated and fit-role DMSO means",
         inputs="Tahoe well pseudobulk and upstream RDKit2D descriptors; fit-only variance and scaling",
-        rdkit2d_raw_columns=raw_width, rdkit2d_fit_columns=int(keep.sum()))
+        rdkit2d_raw_columns=raw_width, rdkit2d_fit_columns=int(keep.sum()), fit_DMSO_units=len(fit_dmso))
 
 
 def upstream(name):
