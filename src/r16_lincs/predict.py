@@ -7,7 +7,7 @@ from tempfile import TemporaryDirectory
 
 import numpy as np
 
-from src.goal_tracks.t2_predict import run_chemberta
+from src.goal_tracks.t2_predict import R12_EPOCHS, R12_LRS, run_chemberta
 from src.goal_tracks.t2_prnet import fit_model as fit_prnet
 from src.goal_tracks.t2_upstream import EPOCHS, SEED, upstream
 from src.r11_chemical_probe.common import config, read_json
@@ -25,7 +25,11 @@ CELL_GAIN = "B_cell_gain"
 
 def inner_known(args, bank, inner, validation, observed, truth, anchor, model, work, archived=None):
     if model in HEADS.values():
-        predictions = fit_known(args, bank, inner, validation, observed, truth, anchor, model, work)
+        # The historic validation helper returns the scalar centered error from its
+        # epoch curve. Request actual checkpoint arrays through its inference path.
+        choices = [archived] if archived is not None else product(R12_LRS,R12_EPOCHS)
+        predictions = {key: fit_known(args,bank,inner,validation,observed,None,anchor,model,work,key)
+                       for key in choices}
     else:
         import torch
 
@@ -43,6 +47,8 @@ def inner_known(args, bank, inner, validation, observed, truth, anchor, model, w
         else:
             values, _ = upstream(model)(fit, work, EPOCHS[model], lambda p: p)
             predictions = {(epoch,): value for epoch, value in values.items()}
+    if any(np.shape(value)!=truth.shape or not np.isfinite(value).all() for value in predictions.values()):
+        raise ValueError(f"{model} validation did not return finite, gene-aligned predictions")
     settings = {key: loss(validation, truth, anchor+value) for key, value in predictions.items()}
     best = pick(settings)
     chosen = best if archived is None else archived

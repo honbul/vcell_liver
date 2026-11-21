@@ -18,13 +18,13 @@ export CUBLAS_WORKSPACE_CONFIG=:4096:8
 
 protocol="reports/r16_lincs/PROTOCOL.md"
 r15_protocol="reports/r15_lincs/PROTOCOL.md"
-out="$run/internal"
+out="$run/internal${R16_OUTPUT_SUFFIX:-}"
 cache="$prior/cache"
 assets="$prior/model-inputs"
 extra=()
 if [[ "${4:-}" != "" ]]; then
     protocol="reports/r16_lincs/CONFIRMATION.md"
-    out="$run/confirm/$4"
+    out="$run/confirm${R16_OUTPUT_SUFFIX:-}/$4"
     cache="$run/confirmation-cache"
     assets="$run/confirmation-assets"
     extra=(--confirm --cell "$4")
