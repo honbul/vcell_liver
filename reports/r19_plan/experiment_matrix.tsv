@@ -61,6 +61,8 @@ DEV.HCC.pilot_scoring.synthetic	COMPLETED	Separate freeze and score CLI runs mat
 DEV.HCC.pilot_chemistry	COMPLETED	Metadata-only screening found 484 eligible parents and assigned 96 draft IDs to 576 treatment coordinates. Nine assigned parents reach Tanimoto 0.70. Materials remain to be verified.
 DEV.HCC.pilot_model_support	COMPLETED	Zero exact response-fit parent overlap in 192 historical R17 A and T2 model slices. All 96 draft parents have ECFP4 and ChemBERTa. Pretraining row-level provenance and actual assay inputs remain unresolved.
 DEV.HCC.scaffold_refit	COMPLETED	Removing evaluation scaffold components worsened sibling copy relative to size-matched removal. On 203 held parents, purged ECFP beat matched ChemBERTa but missed the B0 joint gate on the fixed 978-gene axis.
+DEV.HCC.cross_dose_donor_support	COMPLETED	All 203 held parents had a matching 0.5 uM entity and 201 had an eligible different-plate donor. Three remained with a different position, and zero survived score-pool support.
+DEV.HCC.cross_dose_donor_fit	BLOCKED	No held score pool had three matched parents with a different-position low-dose input. Fit support was 0, 3 and 0 parents compared with the required 30 per fold. No expression extraction or scoring ran.
 J1	NOT_APPLICABLE	No pair of changes meets the preregistered promotion gate in a common information contract.
 E1	BLOCKED	Need a verified biological-repeat and batch design for the DE endpoint and separate conditional execution scope.
 E2	BLOCKED	No eligible independent single-cell distribution target established in the current DEV support.
