@@ -44,6 +44,8 @@ X2 기저 특징 후보는 G1에 보유한 DepMap 25Q3 RNA다. 세포주 이름�
 
 HA1E는 DepMap 모델 ID가 있으나 요구한 기본 RNA profile은 확인되지 않았다. A549로 바꾼 HEPG2·A375·A549·HT29·MCF7은 다섯 profile과 978개 landmark를 모두 가진다. 공통 실측 10 µM parent는 493군이고 fold별 170·168·155군이다. HEPG2는 동일 catalog `HB-8065`로 연결되며 LINCS의 질환 표기와 DepMap 25Q3의 `Hepatoblastoma` 표기가 다르다. 이 세포주만으로 성인 HCC 전이를 검증했다고 해석하기 어렵다. [세포주·profile 원표](data/x_l_support/x-basal/context_profiles.tsv) · [선정 근거](data/x_l_support/x-basal/receipt.json)
 
+X1은 16축에 적합 중 관측한 세포의 one-hot을 놓고, 미관측 세포에는 fit 세포를 균등 평균한 벡터를 준다. X2는 적합 세포당 하나의 독립 DepMap profile로 표준화와 PCA를 학습한다. 수치적으로 지원되는 축만 16축까지 채우며, 조회 세포는 같은 변환에 통과시킨다. 합성 검증에서 조회 profile을 바꿔도 적합 변환이 같음을 확인했다.
+
 L1 held fold를 합치면 두 parent 이상이 있는 138개 pool에 1,818 parent, 6,558개 물리 웰이 포함된다. 전체 6,773웰 중 실측 용량과 기존 캐시 용량이 다른 웰은 284개였다. 따로 측정한 실제 용량으로 짝을 구성하고, 같은 캐시 용량에 속하더라도 실측이 다른 웰은 서로 다른 pool에 둔다. [지원 원표](data/x_l_support/l1/support.tsv) · [실측 용량 영수증](data/x_l_support/l1/receipt.json)
 
 ## S·L 구성 검증
