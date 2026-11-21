@@ -50,8 +50,11 @@ def aggregate_keys(frame, name, smiles, broad=None, inchis=None, cid=None, extra
 
 def read_tahoe(path):
     meta = pd.read_parquet(path)
-    exact = "canonical_smiles" if "canonical_smiles" in meta else "smiles"
-    return aggregate_keys(meta, "drug", exact, cid="pubchem_cid" if "pubchem_cid" in meta else None)
+    structures = {"canonical_smiles", "canonical-smiles"} & set(meta.columns)
+    if len(structures) != 1:
+        raise ValueError(f"Expected a single drug structure column in {path}")
+    cid = next((column for column in ("pubchem_cid", "pubchem-cid") if column in meta), None)
+    return aggregate_keys(meta, "drug", structures.pop(), cid=cid)
 
 
 def exposures(args):
@@ -64,7 +67,8 @@ def exposures(args):
         df = table(path)
         df = df.loc[df.pert_type.eq("trt_cp")]
         inputs[study] = path
-        sets[study] = aggregate_keys(df, "pert_iname", "canonical_smiles", "pert_id", "inchi_key", "pubchem_cid")
+        cid = "pubchem_cid" if "pubchem_cid" in df else None
+        sets[study] = aggregate_keys(df, "pert_iname", "canonical_smiles", "pert_id", "inchi_key", cid)
     inputs["CMap2020"] = args.lincs/"LINCS2020/compoundinfo_beta.txt"
     sets["CMap2020"] = aggregate_keys(table(inputs["CMap2020"]), "cmap_name", "canonical_smiles", "pert_id",
                                      "inchi_key", extra="compound_aliases")
