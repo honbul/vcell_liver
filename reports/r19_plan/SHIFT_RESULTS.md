@@ -66,3 +66,5 @@ HEPG2 parent는 hold-out fold별 36·42·54군이며 실측 10 µM 83군, 2.5 µ
 기존 Tahoe의 5 µM·24 h, 최소 20세포 및 pool별 3군 기준에서 HepG2-C3A와 SNU-423은 각각 203 canonical parent였다. 원 T4 QC·보호 제외 및 물리 대조군 계약을 적용한 GSE92742에서 HEPG2·SNU423·HUH7·PHH는 6 h와 24 h 모두 실측 정확히 5 µM인 적격 parent가 없었다. GSE70138은 물리 RNA 좌표를 검증하지 못했고 DET 기술 집계에서도 동일 조건의 적격군은 0이었다. 기존 유전자 대응 축에 공통 161개 landmark가 있어도 같은 화합물·농도의 세 축 비교에는 지원이 없다. 2.5 µM, 10 µM의 LINCS 시간 비교와 Tahoe 5 µM 차이를 플랫폼 효과의 크기로 해석하지 않는다.
 
 CPU 감사 `31149`는 두 표에 중복된 SMILES 열 이름 때문에 중단됐다. 구조 명부의 열만 사용하도록 수정한 뒤 `31150`이 완료됐다. QC가 고정된 이미 노출된 Tahoe metadata와 기존 LINCS 메타데이터만 사용했다. [동일 농도 지원 원표](data/t4_bridge/support.tsv) · [영수증](data/t4_bridge/receipt.json) · [작업 원장](data/dev_family/jobs.tsv)
+
+**세포주명 정정.** 이 문서의 Tahoe DMSO 원표와 T4 교차 플랫폼 원표를 만든 코드에서 SNU-423과 HepG2/C3A의 표시 이름이 뒤바뀌었다. 등록번호와 물리 행은 올바르게 선택됐다. 새 DMSO 재검산 표는 등록번호와 이름을 함께 제공한다. 두 세포주는 각각 5웰로 동일해 최소 지원 판정에는 영향이 없다. 교차 플랫폼 원표 16행도 이름을 바로잡아 정렬했을 때 전체 수치가 동일했다. [정정한 DMSO 표](data/hcc_pilot_model_support/audit/tahoe_fit_controls_corrected.tsv) · [SNU-423 등록번호](https://www.cellosaurus.org/CVCL_0366) · [HepG2/C3A 등록번호](https://www.cellosaurus.org/CVCL_1098)
