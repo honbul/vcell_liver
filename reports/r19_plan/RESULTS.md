@@ -83,3 +83,5 @@ SNU-423 203군의 고정 978유전자 평가에서 같은 scaffold를 적합에�
 보유 LINCS의 성인 HCC 여섯 세포주에서 실제 농도가 같은 6·24 h 반복을 대조했다. GSE92742 HUH7에는 예약 제외 전 94군이 있었고, 차단 이후에는 여섯 RNA plate 모두 가용 DMSO가 0웰이었다. CMap에는 GEO 중복을 제외한 HUH7 짝이 없었고 JHH-5·JHH-7의 6 h 서명도 없었다. [성인 HCC 시간 짝 감사](HCC_TIME_LINCS_RESULTS.md)
 
 성인 HCC JHH-5의 실측 10 µM·24 h 609군에서 평가 plate와 scaffold를 학습에서 뺐다. 동일 약물의 비간계열 실측을 받은 rank-16 잔차는 평균 보정 배율 대비 RMSE +2.07%, R² −4.97%p였고 공동 기준에 미달했다. 단순 원점 배율과 직접 실측 평균이 각각 RMSE와 R²에서 가장 좋은 점추정이었다. 모든 JHH-5 평가 자료는 B1 개발 명부에 포함돼 있었다. [지원](HCC_LINCS_24H_SUPPORT.md) · [JHH-5 결과](HCC_LINCS_24H_TRANSFER_RESULTS.md)
+
+JHH-5의 후속 귀속 분석에서 원 실측 평균은 State 1토큰 적응보다 RMSE 4.04%를 줄였고, 같은 plate의 다른 약물 입력보다 7.60%를 줄였다. 원천 세포주 간 편차가 큰 유전자를 축소한 새 후보는 JHH-5 라벨 없이 원 평균 대비 상대 RMSE 0.645%와 R² +0.953%p 개선으로 등록 기준을 통과했다. [귀속과 새 후보](JHH5_DONOR_ATTRIBUTION_RESULTS.md)
