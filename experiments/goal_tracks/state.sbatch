@@ -18,6 +18,6 @@ if [[ "${1:-}" == smoke ]]; then
 else
   args+=(--assets "$r12/assets" --config "$r12/configs/r12_multiaxis/config.yaml"
          --protocol reports/goal_tracks/PROTOCOL.md --staged "$v1/t1-cache"
-         --out "$public/state" --extra-cells "$v1/t2/context/cells-v2" --task "$SLURM_ARRAY_TASK_ID")
+         --out "$public/state-v2" --extra-cells "$v1/t2/context-v2/cells-v2" --task "$SLURM_ARRAY_TASK_ID")
 fi
 exec "$r11/study-env/bin/python" -m src.goal_tracks.t2_state "${args[@]}"
