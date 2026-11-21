@@ -37,3 +37,7 @@ D3c는 fit DMSO를 각각의 plate 안에서 중심화한 뒤 각 plate의 공�
 X는 GSE92742의 실측 10 µM·6 h에서 R18 보호 측정과 donor를 제외한다. RNA plate가 여러 세포 맥락에 공유된 경우 해당 plate의 모든 행을 뺀다. HEPG2와의 공통 parent가 전체 100군·fold마다 20군 이상이고 독립 RNA plate가 최소 3개인 다른 세포주를 지원 순으로 최대 12개까지 놓고 탐색한다. HEPG2와 4개 다른 맥락의 공통 지원에 같은 기준을 적용한다. 적격 조합에서는 공통 parent가 가장 많은 조합을 택하고, 동률이면 가장 작은 fold의 지원이 큰 순과 세포주 ID 순을 쓴다. 채점은 수행하지 않는다.
 
 L1은 기존 개발 처리 명부를 대조하고 release·물리 RNA plate·세포주·시간·실측 용량이 일치하는 서로 다른 parent가 한 pool에 몇 개 있는지 센다. 서로 다른 parent 두 개를 최소 짝 지원으로 두고 3개와 5개 지원도 함께 기록한다. 각 inner fit·select·outer fit·score를 별도로 집계하며, 실측 용량은 반올림 없이 기준 µM으로 변환한다.
+
+X의 선정 조합은 HEPG2·A375·HA1E·HT29·MCF7이다. 공통 495 parent가 fold별 166·165·164개로 나뉘며, 모든 parent가 각 세포 맥락에서 RNA plate 두 개 이상에 나타난다. 따라서 한 맥락을 빼고 네 맥락에서 적합하는 구조의 자료 지원이 있다. 별도 기저 RNA의 provenance와 모델의 전이 성능은 이 감사로 판정하지 않는다. [원 맥락 지원](data/x_l_support/x/contexts.tsv) · [선정 조합과 fold](data/x_l_support/x/loco_support.tsv)
+
+L1 held fold를 합치면 두 parent 이상이 있는 138개 pool에 1,818 parent, 6,558개 물리 웰이 포함된다. 전체 6,773웰 중 실측 용량과 기존 캐시 용량이 다른 웰은 284개였다. 따로 측정한 실제 용량으로 짝을 구성하고, 같은 캐시 용량에 속하더라도 실측이 다른 웰은 서로 다른 pool에 둔다. [지원 원표](data/x_l_support/l1/support.tsv) · [실측 용량 영수증](data/x_l_support/l1/receipt.json)
