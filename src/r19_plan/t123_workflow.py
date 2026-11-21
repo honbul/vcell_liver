@@ -46,7 +46,7 @@ def inputs(args, ref):
         raise ValueError("T1–T3 require the pinned 493-parent HEPG2 target")
     cells = sorted(set(ref["cells"]) - {target})
     source, query, fit = (plan[n] for n in ("labels", "query", "fit_controls"))
-    donors = []
+    donors, donor_vehicles = [], []
     for cell in cells:
         key = f"{cell}-f{fold}-{role}"
         _, _, donor_plan = read_plan(args.access, args.pin, key, "score")
@@ -56,19 +56,25 @@ def inputs(args, ref):
                 or not rows.drop(columns="level3_row_index").equals(donor_query["query"])):
             raise ValueError("T1–T3 B donors differ from the registered nonhepatic held metadata")
         donors.append(rows)
+        controls = donor_query["fit_controls"]
+        controls = controls.loc[controls.cell_id.eq(cell) & controls.rna_plate.isin(rows.rna_plate)]
+        control_axis(controls, rows, role)
+        donor_vehicles.append(controls)
     donor = pd.concat(donors, ignore_index=True)
+    fit_with_donors = pd.concat([fit, *donor_vehicles], ignore_index=True).drop_duplicates()
     _, _, rotated = read_plan(args.access, args.pin, f"{TARGET}-f{fold}-{next_role}", "predict")
     select = rotated["fit_controls"].loc[rotated["fit_controls"].cell_id.isin(cells)]
     control_axis(select, source, next_role)
-    check_unique(pd.concat((source, query, donor, fit, select), ignore_index=True))
+    check_unique(pd.concat((source, query, donor, fit_with_donors, select), ignore_index=True))
     genes_frame, cols = matrix_axes(args.access, ref)
     genes = tuple(genes_frame.pr_gene_id)
-    tables = (source, donor, fit, select)
+    tables = (source, donor, fit_with_donors, select)
     raw = extract_matrix(ref["matrix"], pd.concat(tables, ignore_index=True), cols, np.asarray(genes))
-    earlier, held, controls, select_controls = np.split(raw, np.cumsum([len(t) for t in tables[:-1]]))
+    earlier, held, all_controls, select_controls = np.split(raw, np.cumsum([len(t) for t in tables[:-1]]))
+    controls = all_controls[:len(fit)]
     return cells, query, source, donor, fit, genes, (
         responses(source, earlier, fit, controls), responses(source, earlier, select, select_controls),
-        responses(donor, held, fit, controls), controls,
+        responses(donor, held, fit_with_donors, all_controls), controls,
     )
 
 
