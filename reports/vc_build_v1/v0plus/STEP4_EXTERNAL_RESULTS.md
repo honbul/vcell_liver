@@ -135,3 +135,5 @@ GSE194249의 성인 췌관선암 PDO 38개·58약물로 2D·3D 공유 커널과 
 LICOB 코호트의 RNA 예측을 함께 써서 약물별 공통 이동만 적용하자 약물 내 Spearman .0975를 유지하면서 NDCG@5가 .6277→.6386이었다. 독립 단일 시료에 적용할 2D 학습 보정의 NDCG@5는 .6274였고 두 외부의 공동 기준에 미달했다. [약물 공통 보정의 동결 평가](RANK_CONTEXT_CALIBRATION_RESULTS.md)
 
 Wong과 Yang의 HCC 오가노이드 RNA로 추정한 고정 절편은 LICOB 자체 예측에서 얻은 절편과 약물 간 Pearson −.556이었다. 새 공통 축에서 LICOB NDCG@5는 .6264→.6271로 구간이 0을 포함했다. 약물별 혼합은 LICOB에서 0/53약물에서 선택됐으며 두 외부의 공동 기준에 미달했다. [독립 HCC PDO 보정과 발현 척도 감사](INDEPENDENT_PDO_CALIBRATION_RESULTS.md)
+
+같은 세포의 RNA-seq·Affymetrix로 선택한 경로 내 유전자 쌍은 보류 측정에서 순서가 94.5% 일치했다. 이를 추가한 LICOB의 약물 내 Spearman 차이는 +.0201, NDCG@5 차이는 −.0069로 두 구간이 0을 포함했다. LIMORE의 약물 내 Pearson은 .3780→.3434였고, 두 외부의 공동 기준에 미달했다. [유전자 순서 재현성과 동결 성적](PAIRED_ORDINAL_RESULTS.md)

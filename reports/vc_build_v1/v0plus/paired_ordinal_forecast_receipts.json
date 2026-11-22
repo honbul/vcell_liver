@@ -1,0 +1,2108 @@
+{
+  "forecasts": {
+    "CTRPv2-0": {
+      "artifact": "CTRPv2-0.parquet",
+      "frozen_utc": "2026-11-22T22:25:38.623079+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 0,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "CTRPv2",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 31,
+              "solver_residual": 0.0006147490930743515
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.539961576461792,
+              "fit_tie_fraction": 0.007006309148264984,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.5264467597007751,
+                "paired_lineages": 207,
+                "sign_agreement": 0.7672801932367149
+              },
+              "held_tie_fraction": 0.005400826446280991,
+              "iterations": 31,
+              "pairs_sha256": "c95112a514dcae63edf1d3d82ad0f5482995f9d57e209fda9d1d8d384e6395a1",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6785277724266052,
+              "solver_residual": 0.0006227504345588386,
+              "unique_genes": 1371
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.4807080626487732,
+              "fit_tie_fraction": 0.011665615141955837,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.47468307614326477,
+                "paired_lineages": 207,
+                "sign_agreement": 0.7427584541062802
+              },
+              "held_tie_fraction": 0.008421487603305786,
+              "iterations": 31,
+              "pairs_sha256": "37ae606d859cfc9292f248aa08f613dfe67f79dcb060ee6112fa98c3935a33b4",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6132218837738037,
+              "solver_residual": 0.000696493370924145,
+              "unique_genes": 1311
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.8542985320091248,
+              "fit_tie_fraction": 0.00013249211356466877,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.8288913369178772,
+                "paired_lineages": 207,
+                "sign_agreement": 0.9437246376811594
+              },
+              "held_tie_fraction": 8.264462809917356e-06,
+              "iterations": 31,
+              "pairs_sha256": "78791a4608f18761a82d102e11c240cf5a0e0e71025320fb2834d1002805e048",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6147168874740601,
+              "solver_residual": 0.0007609991007484496,
+              "unique_genes": 1091
+            }
+          },
+          "balanced_pairs": 12085,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 487,
+          "fit_tissues": {
+            "Bladder/Urinary Tract": 12,
+            "Bone": 7,
+            "Bowel": 32,
+            "Breast": 33,
+            "CNS/Brain": 30,
+            "Esophagus/Stomach": 37,
+            "Head and Neck": 21,
+            "Kidney": 11,
+            "Liver": 17,
+            "Lung": 91,
+            "Lymphoid": 54,
+            "Myeloid": 28,
+            "Ovary/Fallopian Tube": 19,
+            "Pancreas": 23,
+            "Peripheral Nervous System": 8,
+            "Pleura": 7,
+            "Prostate": 5,
+            "Skin": 28,
+            "Soft Tissue": 5,
+            "Thyroid": 6,
+            "Uterus": 13
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "861cc51125f9d079d3aad500c7945aff26feef2bb51770e78ee508f79daff8c0"
+      },
+      "rows": 64710,
+      "schema_version": 1,
+      "sha256": "bc20b89ddbe209518a1be496445c36e76882f6224ef4a16c99d41ceef23eae48"
+    },
+    "CTRPv2-1": {
+      "artifact": "CTRPv2-1.parquet",
+      "frozen_utc": "2026-11-22T22:25:38.820215+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 1,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "CTRPv2",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 31,
+              "solver_residual": 0.0006276475614868104
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5259568095207214,
+              "fit_tie_fraction": 0.008689381933438985,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.5254500508308411,
+                "paired_lineages": 195,
+                "sign_agreement": 0.7654461538461539
+              },
+              "held_tie_fraction": 0.006383333333333334,
+              "iterations": 31,
+              "pairs_sha256": "f9c9253076cf79949fd58f44fe558a0b4c86f01e2c4051b209f8e20075b567ed",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6696640849113464,
+              "solver_residual": 0.0005773634184151888,
+              "unique_genes": 1377
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.49778786301612854,
+              "fit_tie_fraction": 0.01047068145800317,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.5035422444343567,
+                "paired_lineages": 195,
+                "sign_agreement": 0.7635333333333333
+              },
+              "held_tie_fraction": 0.008179166666666666,
+              "iterations": 31,
+              "pairs_sha256": "d59214eb85647e4c894a426715d630b46a23f52bfc62f1c35fecf2c056c89737",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6062291264533997,
+              "solver_residual": 0.000722887518350035,
+              "unique_genes": 1313
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.853854238986969,
+              "fit_tie_fraction": 0.0001584786053882726,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.8327100872993469,
+                "paired_lineages": 195,
+                "sign_agreement": 0.9442717948717949
+              },
+              "held_tie_fraction": 2.5e-05,
+              "iterations": 31,
+              "pairs_sha256": "ebfa2e444508ffced2cc59e83d51e523bd36fa6932e1e59395444ef78275f841",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6037799119949341,
+              "solver_residual": 0.0007522513624280691,
+              "unique_genes": 1081
+            }
+          },
+          "balanced_pairs": 12080,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 494,
+          "fit_tissues": {
+            "Biliary Tract": 6,
+            "Bladder/Urinary Tract": 16,
+            "Bone": 10,
+            "Bowel": 36,
+            "Breast": 26,
+            "CNS/Brain": 25,
+            "Esophagus/Stomach": 27,
+            "Head and Neck": 22,
+            "Kidney": 15,
+            "Liver": 14,
+            "Lung": 98,
+            "Lymphoid": 59,
+            "Myeloid": 19,
+            "Ovary/Fallopian Tube": 24,
+            "Pancreas": 23,
+            "Peripheral Nervous System": 11,
+            "Pleura": 8,
+            "Skin": 26,
+            "Soft Tissue": 6,
+            "Thyroid": 5,
+            "Uterus": 18
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "221e9984a2fe4cde601bc82b2964065e13d1862ffdf44c1fdbf7b7fffec73b3e"
+      },
+      "rows": 63297,
+      "schema_version": 1,
+      "sha256": "13ce183770b9b9da2cf87c7ab27a6e2ff86740613286951d858a4ff794de5ec0"
+    },
+    "CTRPv2-2": {
+      "artifact": "CTRPv2-2.parquet",
+      "frozen_utc": "2026-11-22T22:26:03.157829+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 2,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "CTRPv2",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 31,
+              "solver_residual": 0.0006563898641616106
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5341184139251709,
+              "fit_tie_fraction": 0.005511885895404121,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.5329857468605042,
+                "paired_lineages": 210,
+                "sign_agreement": 0.7716095238095239
+              },
+              "held_tie_fraction": 0.003967611336032389,
+              "iterations": 31,
+              "pairs_sha256": "b5385ba1fca28e6ec3b274ff6e2d233218169f9d17daf7dec8df7727d12b09fc",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6711943745613098,
+              "solver_residual": 0.0005978456465527415,
+              "unique_genes": 1359
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.4493311047554016,
+              "fit_tie_fraction": 0.017524564183835183,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.4529743790626526,
+                "paired_lineages": 210,
+                "sign_agreement": 0.7296
+              },
+              "held_tie_fraction": 0.014024291497975709,
+              "iterations": 32,
+              "pairs_sha256": "ac38c3debebaecff75e3c13d88a166be0e6a398890d2e5642ab5f56c18e93551",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6063640713691711,
+              "solver_residual": 0.000603123742621392,
+              "unique_genes": 1316
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.8488162159919739,
+              "fit_tie_fraction": 0.00011727416798732171,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.836079478263855,
+                "paired_lineages": 210,
+                "sign_agreement": 0.9454904761904762
+              },
+              "held_tie_fraction": 8.097165991902834e-06,
+              "iterations": 31,
+              "pairs_sha256": "8c48870836cd357166622cbdd05a3b42e102ed36626eca2d0476a48255c89602",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6048066020011902,
+              "solver_residual": 0.0007435903535224497,
+              "unique_genes": 1094
+            }
+          },
+          "balanced_pairs": 12068,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 491,
+          "fit_tissues": {
+            "Bladder/Urinary Tract": 12,
+            "Bone": 11,
+            "Bowel": 26,
+            "Breast": 31,
+            "CNS/Brain": 25,
+            "Esophagus/Stomach": 42,
+            "Head and Neck": 15,
+            "Kidney": 12,
+            "Liver": 13,
+            "Lung": 85,
+            "Lymphoid": 59,
+            "Myeloid": 25,
+            "Ovary/Fallopian Tube": 33,
+            "Pancreas": 28,
+            "Peripheral Nervous System": 7,
+            "Pleura": 5,
+            "Prostate": 5,
+            "Skin": 32,
+            "Soft Tissue": 5,
+            "Thyroid": 5,
+            "Uterus": 15
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "845458d78374099e91d9868b699bd94b7d6290fb59451a92a4b50a0579ded11a"
+      },
+      "rows": 65115,
+      "schema_version": 1,
+      "sha256": "5a65f182908d547f4cd200d2b15d6b9e6b9cfdf777054e1f7700897e1b0cfeab"
+    },
+    "GDSC2-0": {
+      "artifact": "GDSC2-0.parquet",
+      "frozen_utc": "2026-11-22T22:26:07.070471+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 0,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "GDSC2",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 33,
+              "solver_residual": 0.013518841937184334
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5362168550491333,
+              "fit_tie_fraction": 0.004357264957264957,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.532771110534668,
+                "paired_lineages": 172,
+                "sign_agreement": 0.7693837209302326
+              },
+              "held_tie_fraction": 0.005585470085470085,
+              "iterations": 33,
+              "pairs_sha256": "18aca849f383a0ba7ed3ecad9cfc3eb245b99b39238f7304d367dc5d5c497712",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6696599125862122,
+              "solver_residual": 0.012788430787622929,
+              "unique_genes": 1406
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.48307812213897705,
+              "fit_tie_fraction": 0.010206837606837606,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.4817040264606476,
+                "paired_lineages": 172,
+                "sign_agreement": 0.7543430232558139
+              },
+              "held_tie_fraction": 0.011948717948717949,
+              "iterations": 34,
+              "pairs_sha256": "c249ef7b8b8c32b50d70482fbfcc0f8ea772a8a0fa9f4510729efc5e29a74449",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6026447415351868,
+              "solver_residual": 0.00924336165189743,
+              "unique_genes": 1334
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.8514347076416016,
+              "fit_tie_fraction": 2.905982905982906e-05,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.8291058540344238,
+                "paired_lineages": 172,
+                "sign_agreement": 0.9434302325581395
+              },
+              "held_tie_fraction": 0.00014102564102564101,
+              "iterations": 35,
+              "pairs_sha256": "4523bebec6e3be538871c88842cda528f24d008e2861a5de8bd18b5ac9dfbc9e",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6028611063957214,
+              "solver_residual": 0.009562640450894833,
+              "unique_genes": 1091
+            }
+          },
+          "balanced_pairs": 12244,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 499,
+          "fit_tissues": {
+            "Bladder/Urinary Tract": 12,
+            "Bone": 7,
+            "Bowel": 31,
+            "Breast": 28,
+            "CNS/Brain": 32,
+            "Esophagus/Stomach": 36,
+            "Fibroblast": 6,
+            "Head and Neck": 22,
+            "Kidney": 13,
+            "Liver": 17,
+            "Lung": 89,
+            "Lymphoid": 64,
+            "Myeloid": 33,
+            "Ovary/Fallopian Tube": 19,
+            "Pancreas": 23,
+            "Peripheral Nervous System": 8,
+            "Pleura": 7,
+            "Prostate": 5,
+            "Skin": 28,
+            "Thyroid": 5,
+            "Uterus": 14
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "6dd730d55589ad4c6bdda54c824cde63acdef350170a5c523db185c44b1ce2b5"
+      },
+      "rows": 50391,
+      "schema_version": 1,
+      "sha256": "4f18ae8d3b6fad1ec2fe545020d010fc7bd82be8eb9c3db04d841c21455ea19d"
+    },
+    "GDSC2-1": {
+      "artifact": "GDSC2-1.parquet",
+      "frozen_utc": "2026-11-22T22:26:04.889366+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 1,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "GDSC2",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 32,
+              "solver_residual": 0.014658966101706028
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5350593328475952,
+              "fit_tie_fraction": 0.006045996592844974,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.5351680517196655,
+                "paired_lineages": 174,
+                "sign_agreement": 0.7741666666666667
+              },
+              "held_tie_fraction": 0.0075619834710743804,
+              "iterations": 33,
+              "pairs_sha256": "1ef71bcd611eb1660a059350d48c3d74d5be9cba2252cecffe6c1d638f1e3c68",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6658926010131836,
+              "solver_residual": 0.012130825780332088,
+              "unique_genes": 1382
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.490634948015213,
+              "fit_tie_fraction": 0.00833901192504259,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.5002105236053467,
+                "paired_lineages": 174,
+                "sign_agreement": 0.7562413793103449
+              },
+              "held_tie_fraction": 0.010004132231404958,
+              "iterations": 32,
+              "pairs_sha256": "1bd39d3433a2678bf4f154fec40c22ff621be14c55475264862f295628b45197",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6034429669380188,
+              "solver_residual": 0.014743148349225521,
+              "unique_genes": 1352
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.8520994186401367,
+              "fit_tie_fraction": 2.555366269165247e-05,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.8300756216049194,
+                "paired_lineages": 174,
+                "sign_agreement": 0.9433793103448276
+              },
+              "held_tie_fraction": 7.851239669421488e-05,
+              "iterations": 35,
+              "pairs_sha256": "a0cf8fe1c580f80f2506117070ceb726aab30c5729019ea3c0f2675d0cf9e13a",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6003326773643494,
+              "solver_residual": 0.009531430900096893,
+              "unique_genes": 1067
+            }
+          },
+          "balanced_pairs": 12174,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 502,
+          "fit_tissues": {
+            "Biliary Tract": 6,
+            "Bladder/Urinary Tract": 16,
+            "Bone": 10,
+            "Bowel": 33,
+            "Breast": 21,
+            "CNS/Brain": 27,
+            "Esophagus/Stomach": 27,
+            "Head and Neck": 21,
+            "Kidney": 18,
+            "Liver": 15,
+            "Lung": 95,
+            "Lymphoid": 68,
+            "Myeloid": 24,
+            "Ovary/Fallopian Tube": 23,
+            "Pancreas": 23,
+            "Peripheral Nervous System": 12,
+            "Pleura": 8,
+            "Skin": 26,
+            "Soft Tissue": 5,
+            "Thyroid": 5,
+            "Uterus": 19
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "e84633296c0fbccc94f4ef657bebef1c4b50df753efb49c6a80fd2d4fb7ace87"
+      },
+      "rows": 52191,
+      "schema_version": 1,
+      "sha256": "63c1009cea54d3faf7c49b08859186b27e097526765270c421ae503fed1b8c7a"
+    },
+    "GDSC2-2": {
+      "artifact": "GDSC2-2.parquet",
+      "frozen_utc": "2026-11-22T22:26:03.144276+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 2,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "GDSC2",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 33,
+              "solver_residual": 0.013468354940414429
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5223749876022339,
+              "fit_tie_fraction": 0.005355442176870748,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.5274498462677002,
+                "paired_lineages": 169,
+                "sign_agreement": 0.7641360946745562
+              },
+              "held_tie_fraction": 0.007248945147679325,
+              "iterations": 33,
+              "pairs_sha256": "513a80f84316f450c2b27aa4d474f615eafd1b282189385a17fc7bb20448a3c7",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.669748067855835,
+              "solver_residual": 0.011294306255877018,
+              "unique_genes": 1350
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.507067859172821,
+              "fit_tie_fraction": 0.006637755102040816,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.5188685655593872,
+                "paired_lineages": 169,
+                "sign_agreement": 0.7710295857988165
+              },
+              "held_tie_fraction": 0.009080168776371309,
+              "iterations": 32,
+              "pairs_sha256": "dabcf2b6e48dee64712a58d1db38fbafd28b37ead550e1e7dcd59a8b54318281",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6011866331100464,
+              "solver_residual": 0.014906545169651508,
+              "unique_genes": 1285
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.8472375273704529,
+              "fit_tie_fraction": 3.061224489795918e-05,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.8432309627532959,
+                "paired_lineages": 169,
+                "sign_agreement": 0.947
+              },
+              "held_tie_fraction": 0.0001940928270042194,
+              "iterations": 34,
+              "pairs_sha256": "55c138a6dfd48cdea650c654b46e3309d6d7e5da2938efc459acc72f01cb7568",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6034245491027832,
+              "solver_residual": 0.00923894066363573,
+              "unique_genes": 1085
+            }
+          },
+          "balanced_pairs": 12204,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 497,
+          "fit_tissues": {
+            "Bladder/Urinary Tract": 12,
+            "Bone": 11,
+            "Bowel": 26,
+            "Breast": 25,
+            "CNS/Brain": 25,
+            "Esophagus/Stomach": 41,
+            "Head and Neck": 15,
+            "Kidney": 15,
+            "Liver": 14,
+            "Lung": 88,
+            "Lymphoid": 64,
+            "Myeloid": 29,
+            "Ovary/Fallopian Tube": 32,
+            "Pancreas": 28,
+            "Peripheral Nervous System": 8,
+            "Pleura": 5,
+            "Prostate": 5,
+            "Skin": 32,
+            "Soft Tissue": 5,
+            "Uterus": 17
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "0a76bd7947bf44cf83607283b09e111bf9d302ad8f0686f0787220dea2709007"
+      },
+      "rows": 50697,
+      "schema_version": 1,
+      "sha256": "410fec67e4f9f726413b1df67b67ca398c7faa1752a4ab1757bfa83e3ff32e70"
+    },
+    "LICOB": {
+      "artifact": "LICOB.parquet",
+      "frozen_utc": "2026-11-22T22:25:38.914613+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 0,
+        "inputs_sha256": "1f37cdff695ad7c9cbac06430a86b77d5ef5dfca5f9fa03d4557954b464102a0",
+        "mode": "LICOB",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 45,
+              "solver_residual": 0.0010423613712191582
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5409819483757019,
+              "fit_tie_fraction": 0.0037120315581854043,
+              "held_assay": {},
+              "held_tie_fraction": 0.0,
+              "iterations": 46,
+              "pairs_sha256": "b86fbfba7693cccbab2b934a4a64bbc23e6918e96e2bf4c0586b5a2426d1ae5e",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6765993237495422,
+              "solver_residual": 0.0007147130672819912,
+              "unique_genes": 1331
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.5098485350608826,
+              "fit_tie_fraction": 0.0031400394477317556,
+              "held_assay": {},
+              "held_tie_fraction": 0.0,
+              "iterations": 45,
+              "pairs_sha256": "8d7d556581340f7b2435994d42bb2a8e7e5ef9fafc91934d0300a42b39f76757",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.610759973526001,
+              "solver_residual": 0.0009954649722203612,
+              "unique_genes": 1247
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.8501709699630737,
+              "fit_tie_fraction": 9.960552268244577e-05,
+              "held_assay": {},
+              "held_tie_fraction": 0.0,
+              "iterations": 45,
+              "pairs_sha256": "0381b5ee1d425caa86e68408de2a7423749816a2bd3e71f633f8651fc9905b9b",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.61053466796875,
+              "solver_residual": 0.0010848884703591466,
+              "unique_genes": 1054
+            }
+          },
+          "balanced_pairs": 12522,
+          "candidate_pairs": 30295,
+          "fit_paired_lineages": 800,
+          "fit_tissues": {
+            "Biliary Tract": 6,
+            "Bladder/Urinary Tract": 20,
+            "Bone": 14,
+            "Bowel": 48,
+            "Breast": 46,
+            "CNS/Brain": 42,
+            "Esophagus/Stomach": 54,
+            "Fibroblast": 6,
+            "Head and Neck": 30,
+            "Kidney": 23,
+            "Liver": 23,
+            "Lung": 149,
+            "Lymphoid": 102,
+            "Myeloid": 44,
+            "Ovary/Fallopian Tube": 39,
+            "Pancreas": 37,
+            "Peripheral Nervous System": 15,
+            "Pleura": 10,
+            "Prostate": 6,
+            "Skin": 45,
+            "Soft Tissue": 8,
+            "Thyroid": 8,
+            "Uterus": 25
+          },
+          "gene_sha256": "a41b6c080e71b8e6bc4b4443d5d24d96caacdcb18df10d1dfd41ae8508ba259f",
+          "genes": 13483
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "dbdb5597ee9d5b73846777e16c486e0b6f46054cfbea0e480c2a347cab6b6b65"
+      },
+      "rows": 29627,
+      "schema_version": 1,
+      "sha256": "b6f3717111d86f24789154b14db9722b6c394ecacfd39c1dd77b9f58700f707b"
+    },
+    "LIMORE": {
+      "artifact": "LIMORE.parquet",
+      "frozen_utc": "2026-11-22T22:25:39.498810+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 0,
+        "inputs_sha256": "663eb5717b30c6f03ea43c04c4bb076bd233ea0c05405450e17f0c9e85f7fa86",
+        "mode": "LIMORE",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 45,
+              "solver_residual": 0.0009521066094748676
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5161721706390381,
+              "fit_tie_fraction": 0.009821499013806707,
+              "held_assay": {},
+              "held_tie_fraction": 0.02206,
+              "iterations": 44,
+              "pairs_sha256": "76aaf71559f7cdc44c86567a0f950a7bf8c50495ccd96704cbdc70bbb30530ac",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6758725643157959,
+              "solver_residual": 0.0008828880381770432,
+              "unique_genes": 1357
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.4863286018371582,
+              "fit_tie_fraction": 0.010857988165680474,
+              "held_assay": {},
+              "held_tie_fraction": 0.02876,
+              "iterations": 43,
+              "pairs_sha256": "733d0f3dce9134539da35af9342fa76f8b41f294e01f49aa59f5e21060ea1654",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6100649237632751,
+              "solver_residual": 0.0009723088005557656,
+              "unique_genes": 1328
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.8476178050041199,
+              "fit_tie_fraction": 0.00010157790927021696,
+              "held_assay": {},
+              "held_tie_fraction": 0.00034,
+              "iterations": 44,
+              "pairs_sha256": "fe2b747f751197a594bd8f621e19bedb6a6e81014e244e6293146f3fcc749797",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6098795533180237,
+              "solver_residual": 0.0009202149230986834,
+              "unique_genes": 1093
+            }
+          },
+          "balanced_pairs": 12312,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 800,
+          "fit_tissues": {
+            "Biliary Tract": 6,
+            "Bladder/Urinary Tract": 20,
+            "Bone": 14,
+            "Bowel": 48,
+            "Breast": 46,
+            "CNS/Brain": 42,
+            "Esophagus/Stomach": 54,
+            "Fibroblast": 6,
+            "Head and Neck": 30,
+            "Kidney": 23,
+            "Liver": 23,
+            "Lung": 149,
+            "Lymphoid": 102,
+            "Myeloid": 44,
+            "Ovary/Fallopian Tube": 39,
+            "Pancreas": 37,
+            "Peripheral Nervous System": 15,
+            "Pleura": 10,
+            "Prostate": 6,
+            "Skin": 45,
+            "Soft Tissue": 8,
+            "Thyroid": 8,
+            "Uterus": 25
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "bedb6f0a56120f5922dd50064c34a2e6b71a7eca3e1d192c2afd44542c3b1fd1"
+      },
+      "rows": 44200,
+      "schema_version": 1,
+      "sha256": "35dab666be2be53ec6ddeb717d5f71935dce6f04e2741c809d99e151c93b03f4"
+    },
+    "PRISM20Q2-0": {
+      "artifact": "PRISM20Q2-0.parquet",
+      "frozen_utc": "2026-11-22T22:25:59.506143+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 0,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "PRISM20Q2",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 34,
+              "solver_residual": 0.0008342372020706534
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5404776334762573,
+              "fit_tie_fraction": 0.005648,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.5286035537719727,
+                "paired_lineages": 193,
+                "sign_agreement": 0.7743056994818653
+              },
+              "held_tie_fraction": 0.004576131687242798,
+              "iterations": 35,
+              "pairs_sha256": "5df683d3b6efb6923a459d0c1154da85171627696ef89ea9014da64e637b3daf",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6713544726371765,
+              "solver_residual": 0.0007225088193081319,
+              "unique_genes": 1367
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.46034789085388184,
+              "fit_tie_fraction": 0.0133888,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.44733789563179016,
+                "paired_lineages": 193,
+                "sign_agreement": 0.7250932642487047
+              },
+              "held_tie_fraction": 0.011732510288065844,
+              "iterations": 35,
+              "pairs_sha256": "377ccac8e1f5878fadecd7a054b93e8d160879ac1fe79f7c6b0603b10d3eac8e",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6095216274261475,
+              "solver_residual": 0.0007753580575808883,
+              "unique_genes": 1341
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.8524036407470703,
+              "fit_tie_fraction": 0.000112,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.827103853225708,
+                "paired_lineages": 193,
+                "sign_agreement": 0.9438341968911917
+              },
+              "held_tie_fraction": 3.292181069958848e-05,
+              "iterations": 36,
+              "pairs_sha256": "2ed432fc140dcd6df3da4e33925155cd852c63442c68d8eba87f775d8bfa1949",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6061533093452454,
+              "solver_residual": 0.0005776802427135408,
+              "unique_genes": 1101
+            }
+          },
+          "balanced_pairs": 12270,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 516,
+          "fit_tissues": {
+            "Bladder/Urinary Tract": 10,
+            "Bone": 7,
+            "Bowel": 33,
+            "Breast": 34,
+            "CNS/Brain": 32,
+            "Esophagus/Stomach": 36,
+            "Fibroblast": 6,
+            "Head and Neck": 22,
+            "Kidney": 13,
+            "Liver": 17,
+            "Lung": 97,
+            "Lymphoid": 65,
+            "Myeloid": 34,
+            "Ovary/Fallopian Tube": 16,
+            "Pancreas": 23,
+            "Peripheral Nervous System": 8,
+            "Pleura": 7,
+            "Prostate": 5,
+            "Skin": 28,
+            "Soft Tissue": 5,
+            "Thyroid": 6,
+            "Uterus": 12
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "99e9d18cef3b8d02e77022fac502fca18c0c86bde2ae7242e1da5896e5be3f8a"
+      },
+      "rows": 21186,
+      "schema_version": 1,
+      "sha256": "f0363d69a96657ae9675a4e1e342e52ae414a1aad5d74e312cb460e4f9f5a9e8"
+    },
+    "PRISM20Q2-1": {
+      "artifact": "PRISM20Q2-1.parquet",
+      "frozen_utc": "2026-11-22T22:26:13.786236+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 1,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "PRISM20Q2",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 36,
+              "solver_residual": 0.0006652913871221244
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5240220427513123,
+              "fit_tie_fraction": 0.007864951768488747,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.5244162678718567,
+                "paired_lineages": 180,
+                "sign_agreement": 0.7648555555555555
+              },
+              "held_tie_fraction": 0.0067125,
+              "iterations": 35,
+              "pairs_sha256": "f313296300b4a9f260643210e5deeeb946f118d77dc6c82e3d65401d8e8f76aa",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6667861938476562,
+              "solver_residual": 0.0007497425540350378,
+              "unique_genes": 1365
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.47769486904144287,
+              "fit_tie_fraction": 0.014546623794212218,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.4804706871509552,
+                "paired_lineages": 180,
+                "sign_agreement": 0.7448777777777777
+              },
+              "held_tie_fraction": 0.013770833333333333,
+              "iterations": 35,
+              "pairs_sha256": "771a87cc436c574f4523db7002ca8876f6b6f74a678bdb983b95c9506d2581ff",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6016659140586853,
+              "solver_residual": 0.0006421651341952384,
+              "unique_genes": 1325
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.8528562188148499,
+              "fit_tie_fraction": 0.0001045016077170418,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.8308916091918945,
+                "paired_lineages": 180,
+                "sign_agreement": 0.9430277777777778
+              },
+              "held_tie_fraction": 2.9166666666666666e-05,
+              "iterations": 36,
+              "pairs_sha256": "46d7c20ad2e3723a6da3a9d4bd095178b03fad99de1adb29fdfd5c0d5454672f",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.602583646774292,
+              "solver_residual": 0.0006680367514491081,
+              "unique_genes": 1068
+            }
+          },
+          "balanced_pairs": 12357,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 518,
+          "fit_tissues": {
+            "Biliary Tract": 6,
+            "Bladder/Urinary Tract": 14,
+            "Bone": 10,
+            "Bowel": 36,
+            "Breast": 26,
+            "CNS/Brain": 27,
+            "Esophagus/Stomach": 28,
+            "Head and Neck": 22,
+            "Kidney": 18,
+            "Liver": 15,
+            "Lung": 102,
+            "Lymphoid": 70,
+            "Myeloid": 25,
+            "Ovary/Fallopian Tube": 25,
+            "Pancreas": 23,
+            "Peripheral Nervous System": 13,
+            "Pleura": 7,
+            "Skin": 25,
+            "Soft Tissue": 6,
+            "Thyroid": 5,
+            "Uterus": 15
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "e1b1ec2427966be983da6eae40b645d531cb3292cab6ddad1596abaceab70eff"
+      },
+      "rows": 20700,
+      "schema_version": 1,
+      "sha256": "15dcc24f30f61cfc4fcfb491b5e842d4bb28a0b84f15ff0e91032b85b9488a5a"
+    },
+    "PRISM20Q2-2": {
+      "artifact": "PRISM20Q2-2.parquet",
+      "frozen_utc": "2026-11-22T22:26:24.809612+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 2,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "PRISM20Q2",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 36,
+              "solver_residual": 0.0005744636873714626
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5287790298461914,
+              "fit_tie_fraction": 0.008312399355877617,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.5218807458877563,
+                "paired_lineages": 186,
+                "sign_agreement": 0.7644677419354838
+              },
+              "held_tie_fraction": 0.00736480686695279,
+              "iterations": 34,
+              "pairs_sha256": "9e7172b8017b179ca6739910b1cd948fadae23f69d7f92c6881368f304d86c78",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6708742380142212,
+              "solver_residual": 0.0007773713441565633,
+              "unique_genes": 1371
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.5048139691352844,
+              "fit_tie_fraction": 0.006497584541062802,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.4997851252555847,
+                "paired_lineages": 186,
+                "sign_agreement": 0.7625215053763441
+              },
+              "held_tie_fraction": 0.0059785407725321885,
+              "iterations": 35,
+              "pairs_sha256": "a2ae2b20c89e3cac1a4bf887de4d5d5eae4d74e38f728dade7a5d3c37a408735",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6076350212097168,
+              "solver_residual": 0.0008675004937686026,
+              "unique_genes": 1311
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.8474810719490051,
+              "fit_tie_fraction": 0.00010305958132045089,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.8399214744567871,
+                "paired_lineages": 186,
+                "sign_agreement": 0.9470268817204301
+              },
+              "held_tie_fraction": 3.433476394849785e-05,
+              "iterations": 36,
+              "pairs_sha256": "6a312b3adf805da114f4a93f2096d7b12fe6582cfbd511f5ecba7f87a5d0e6ee",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.606022298336029,
+              "solver_residual": 0.000574793666601181,
+              "unique_genes": 1098
+            }
+          },
+          "balanced_pairs": 12238,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 504,
+          "fit_tissues": {
+            "Bladder/Urinary Tract": 12,
+            "Bone": 11,
+            "Bowel": 27,
+            "Breast": 32,
+            "CNS/Brain": 25,
+            "Esophagus/Stomach": 42,
+            "Head and Neck": 16,
+            "Kidney": 15,
+            "Liver": 14,
+            "Lung": 89,
+            "Lymphoid": 65,
+            "Myeloid": 29,
+            "Ovary/Fallopian Tube": 31,
+            "Pancreas": 28,
+            "Peripheral Nervous System": 9,
+            "Prostate": 5,
+            "Skin": 31,
+            "Soft Tissue": 5,
+            "Thyroid": 5,
+            "Uterus": 13
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "60cd691f920169f7120846fefb460748b385ab4699905556bc006d415485c10a"
+      },
+      "rows": 20565,
+      "schema_version": 1,
+      "sha256": "fdcd5b5cc2e3bebf5940dfc1b2270d20cbbf28ba180d4ce0cc06a18a51e12d53"
+    },
+    "pooled-0": {
+      "artifact": "pooled-0.parquet",
+      "frozen_utc": "2026-11-22T22:25:39.615863+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 0,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "pooled",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 37,
+              "solver_residual": 0.0007152766920626163
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5361227989196777,
+              "fit_tie_fraction": 0.0063397341211225994,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.526680052280426,
+                "paired_lineages": 256,
+                "sign_agreement": 0.77057421875
+              },
+              "held_tie_fraction": 0.006053412462908012,
+              "iterations": 35,
+              "pairs_sha256": "675d12cfb3875d7b4ce89d494035302129fe89aed5ba6d5734ea369580a4bb00",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6727069020271301,
+              "solver_residual": 0.000885749061126262,
+              "unique_genes": 1399
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.5024098753929138,
+              "fit_tie_fraction": 0.009825701624815362,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.4935634732246399,
+                "paired_lineages": 256,
+                "sign_agreement": 0.76069140625
+              },
+              "held_tie_fraction": 0.009910979228486647,
+              "iterations": 36,
+              "pairs_sha256": "4e67a2ea7095f8c3521baa374961a2af63f7b5244f6bf3a17c08aa4e4ded493f",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6078811287879944,
+              "solver_residual": 0.0006814943626523018,
+              "unique_genes": 1322
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.8525010943412781,
+              "fit_tie_fraction": 0.00010192023633677991,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.8283162713050842,
+                "paired_lineages": 256,
+                "sign_agreement": 0.944234375
+              },
+              "held_tie_fraction": 0.00011275964391691395,
+              "iterations": 36,
+              "pairs_sha256": "e7ec4a39eeff40b9a6bf09c8c95028fc71c0464a6c0a4094f630e7c1bb020e17",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6064373850822449,
+              "solver_residual": 0.0007810110691934824,
+              "unique_genes": 1096
+            }
+          },
+          "balanced_pairs": 12308,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 529,
+          "fit_tissues": {
+            "Bladder/Urinary Tract": 12,
+            "Bone": 7,
+            "Bowel": 33,
+            "Breast": 34,
+            "CNS/Brain": 32,
+            "Esophagus/Stomach": 37,
+            "Fibroblast": 6,
+            "Head and Neck": 22,
+            "Kidney": 13,
+            "Liver": 17,
+            "Lung": 100,
+            "Lymphoid": 66,
+            "Myeloid": 34,
+            "Ovary/Fallopian Tube": 19,
+            "Pancreas": 23,
+            "Peripheral Nervous System": 8,
+            "Pleura": 7,
+            "Prostate": 5,
+            "Skin": 29,
+            "Soft Tissue": 5,
+            "Thyroid": 6,
+            "Uterus": 14
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "06cdfc23ddbb7a316d20937fd9b53ed4442ddfb46d26506c54ad0f8a15491cb4"
+      },
+      "rows": 196920,
+      "schema_version": 1,
+      "sha256": "047850c0022204c42c635d9274e108ff10ea648494772ee96e7c7c5e75678a9a"
+    },
+    "pooled-1": {
+      "artifact": "pooled-1.parquet",
+      "frozen_utc": "2026-11-22T22:25:44.444640+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 1,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "pooled",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 36,
+              "solver_residual": 0.0008458633674308658
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5250117182731628,
+              "fit_tie_fraction": 0.008181952662721894,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.525723397731781,
+                "paired_lineages": 240,
+                "sign_agreement": 0.768025
+              },
+              "held_tie_fraction": 0.008210059171597632,
+              "iterations": 36,
+              "pairs_sha256": "7a1e418dc0573edc0afaff347c55b9d96723256cc2c85657379f2fc33d4684e3",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6683341264724731,
+              "solver_residual": 0.0006357281818054616,
+              "unique_genes": 1397
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.48078763484954834,
+              "fit_tie_fraction": 0.015446745562130177,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.48704126477241516,
+                "paired_lineages": 240,
+                "sign_agreement": 0.7478375
+              },
+              "held_tie_fraction": 0.015520710059171598,
+              "iterations": 36,
+              "pairs_sha256": "fe967e369f3b87ad5fa3852d37799a50f1bc2aa8e1e0a2d4ec275d38b1ebc9f9",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.602097749710083,
+              "solver_residual": 0.0006697410717606544,
+              "unique_genes": 1324
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.852466344833374,
+              "fit_tie_fraction": 0.00010207100591715977,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.8316889405250549,
+                "paired_lineages": 240,
+                "sign_agreement": 0.943225
+              },
+              "held_tie_fraction": 5.9171597633136094e-05,
+              "iterations": 36,
+              "pairs_sha256": "a07006844e3d2dddb4b189daebd36fa754ee3b560ceade53140aca4ef8a1f213",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6030539870262146,
+              "solver_residual": 0.0008002357790246606,
+              "unique_genes": 1066
+            }
+          },
+          "balanced_pairs": 12226,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 531,
+          "fit_tissues": {
+            "Biliary Tract": 6,
+            "Bladder/Urinary Tract": 16,
+            "Bone": 10,
+            "Bowel": 36,
+            "Breast": 26,
+            "CNS/Brain": 27,
+            "Esophagus/Stomach": 28,
+            "Head and Neck": 22,
+            "Kidney": 18,
+            "Liver": 15,
+            "Lung": 105,
+            "Lymphoid": 71,
+            "Myeloid": 25,
+            "Ovary/Fallopian Tube": 25,
+            "Pancreas": 23,
+            "Peripheral Nervous System": 13,
+            "Pleura": 8,
+            "Skin": 27,
+            "Soft Tissue": 6,
+            "Thyroid": 5,
+            "Uterus": 19
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "c545a96539a210e2155308349973cb80b9a827808c11656839d1fb75cebc6f9d"
+      },
+      "rows": 196884,
+      "schema_version": 1,
+      "sha256": "d700d46243bd307a59f1eba7d2f350323caff897c19f756f96f209b93660316a"
+    },
+    "pooled-2": {
+      "artifact": "pooled-2.parquet",
+      "frozen_utc": "2026-11-22T22:25:39.750425+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "fold": 2,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "pooled",
+        "ordinal_audit": {
+          "arms": {
+            "ordinal_matched_rank": {
+              "iterations": 36,
+              "solver_residual": 0.000678319251164794
+            },
+            "ordinal_seq_only": {
+              "fit_correlation_mean": 0.5291406512260437,
+              "fit_tie_fraction": 0.006099259259259259,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.5313581824302673,
+                "paired_lineages": 252,
+                "sign_agreement": 0.7684563492063492
+              },
+              "held_tie_fraction": 0.006345132743362832,
+              "iterations": 36,
+              "pairs_sha256": "a4d13f2ac5acf1a9d3251aa942aeec66339379e862f244e8e3a946124bc244a7",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6700504422187805,
+              "solver_residual": 0.000571427633985877,
+              "unique_genes": 1375
+            },
+            "ordinal_shuffled": {
+              "fit_correlation_mean": 0.48547226190567017,
+              "fit_tie_fraction": 0.010253333333333333,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.48982709646224976,
+                "paired_lineages": 252,
+                "sign_agreement": 0.7514285714285714
+              },
+              "held_tie_fraction": 0.010415929203539823,
+              "iterations": 36,
+              "pairs_sha256": "b3f2b2b38cf84a7977360894ab7b2713583c6a3d034a9099b0afaf54aecba54f",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6029536128044128,
+              "solver_residual": 0.0006819573463872075,
+              "unique_genes": 1295
+            },
+            "paired_ordinal": {
+              "fit_correlation_mean": 0.8472775220870972,
+              "fit_tie_fraction": 0.00011259259259259259,
+              "held_assay": {
+                "fit_independent_within_tissue_correlation": 0.8404363989830017,
+                "paired_lineages": 252,
+                "sign_agreement": 0.9463015873015873
+              },
+              "held_tie_fraction": 0.00011799410029498526,
+              "iterations": 36,
+              "pairs_sha256": "614a2ff13df473655cce9a51f0450172d08fe89622c0ce3627faf611fec7ba55",
+              "selected_pairs": 1000,
+              "seq_variance_mean": 0.6039572954177856,
+              "solver_residual": 0.0007530770380981266,
+              "unique_genes": 1091
+            }
+          },
+          "balanced_pairs": 12234,
+          "candidate_pairs": 31370,
+          "fit_paired_lineages": 526,
+          "fit_tissues": {
+            "Bladder/Urinary Tract": 12,
+            "Bone": 11,
+            "Bowel": 27,
+            "Breast": 32,
+            "CNS/Brain": 25,
+            "Esophagus/Stomach": 43,
+            "Head and Neck": 16,
+            "Kidney": 15,
+            "Liver": 14,
+            "Lung": 93,
+            "Lymphoid": 67,
+            "Myeloid": 29,
+            "Ovary/Fallopian Tube": 34,
+            "Pancreas": 28,
+            "Peripheral Nervous System": 9,
+            "Pleura": 5,
+            "Prostate": 5,
+            "Skin": 34,
+            "Soft Tissue": 5,
+            "Thyroid": 5,
+            "Uterus": 17
+          },
+          "gene_sha256": "e42ed6c63bb57d3f8b29aaf43135834f4e21a9e600e0b23ba7d38d1c7f9aeece",
+          "genes": 15737
+        },
+        "paired_rna_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "bf9db70f3ae74c717d05e39f34a480a42bf5f436531ee68592bfe43109bc96a6"
+      },
+      "rows": 196938,
+      "schema_version": 1,
+      "sha256": "90b5ae2fd37e4091597aaccbf3ca3b2b14331f14c90644f36d974e06a2914870"
+    }
+  },
+  "scores": {
+    "external_score.json": "3e8451de6c613cd8685ba9d5f6b6662be03accf5f5898719e95183fc3a669f06",
+    "source_score.json": "3e438151d6a7ae6c96c53bb8e88e089ee87aa6fa80c20b7db008c61571c97604"
+  },
+  "source_molecular": {
+    "ordinal_seq_only": {
+      "component_fit_within_tissue_correlation_mean": 0.531436820824941,
+      "component_held_across_platform_agreement_mean": 0.7685589098410919,
+      "component_held_within_tissue_correlation_mean": 0.5282444804906845,
+      "component_seq_variance_mean": 0.6703994323809942
+    },
+    "ordinal_shuffled": {
+      "component_fit_within_tissue_correlation_mean": 0.4850112050771713,
+      "component_held_across_platform_agreement_mean": 0.7508296500738323,
+      "component_held_within_tissue_correlation_mean": 0.4858340298136075,
+      "component_seq_variance_mean": 0.6054037064313889
+    },
+    "paired_ordinal": {
+      "component_fit_within_tissue_correlation_mean": 0.8510605444510778,
+      "component_held_across_platform_agreement_mean": 0.9445788558614487,
+      "component_held_within_tissue_correlation_mean": 0.8332043240467707,
+      "component_seq_variance_mean": 0.6048441380262375
+    }
+  }
+}
