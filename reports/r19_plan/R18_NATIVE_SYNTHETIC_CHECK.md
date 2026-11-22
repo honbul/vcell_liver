@@ -4,4 +4,4 @@ R18의 실제 예측 진입점에 만든 입력을 넣어 R17 모델을 직접 �
 
 CPU 경로와 chemCPA, TranSiGen, XPert, PRnet의 GPU 경로가 두 경우 모두 완료됐다. 병합 파일에서 등록된 예측 arm 전체, 행·유전자 축, 유한 배열과 입력 해시를 검증했다. 빌드부터 검증까지 Slurm 작업 14개가 모두 종료 코드 0이었으며, GPU 작업은 동시에 최대 두 개를 실행했다. 관련 로컬 테스트는 136개가 통과했다. [작업 원장](data/preflight/r18/native/jobs.tsv) · [실행 내역](data/preflight/r18/native/resource_usage.tsv) · [검증 영수증](data/preflight/r18/native/verified.json)
 
-실행 커밋은 `13275dc`, G1 실행 ID는 `r18-native-smoke.J9gcv3pc`이다. 이 검증의 범위는 두 합성 입력의 실제 적합·병합·예측 검사까지다. R18 예약 발현은 미개봉 상태이며, 실제 108개 조합의 예측 동결과 별도 채점은 미실행이다.
+실행 커밋은 `13275dc`, G1 실행 ID는 `r18-native-smoke.J9gcv3pc`이다. 이 검증의 범위는 두 합성 입력의 실제 적합·병합·예측 검사까지다. 당시 예약 발현에 접근하지 않았다. 이후 승인된 108개 조합의 실행은 별도 원장에 기록한다. [R18 승인 실행](R18_EXECUTION.md)
