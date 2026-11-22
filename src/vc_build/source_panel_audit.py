@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import os
 from pathlib import Path
 import re
 
@@ -99,6 +100,61 @@ def write_extension(path, fit, extensions, chemistry, provenance):
         })
 
 
+def correct_core(output, bundle, fit, screened, provenance):
+    affected = fit[fit.native_drug_label.str.contains(MIXTURE)]
+    if affected.empty:
+        raise ValueError("Expected the withdrawn combination measurements in the original core")
+    affected_keys = affected[["source_id", "compound_id"]].drop_duplicates()
+    registered = pd.MultiIndex.from_frame(affected_keys)
+    matches = fit.merge(affected_keys, on=["source_id", "compound_id"], validate="many_to_one")
+    if len(matches) != len(affected):
+        raise ValueError("All records of an affected source and parent must be corrected consistently")
+    columns = ["source_protocol", "source_compound_label", "isomeric_smiles", "connectivity_group",
+               "scaffold_group", "drug_target_source_labels"]
+    keys = ["source_id", "compound_id"]
+    metadata = affected[[*keys, *columns]].drop_duplicates().set_index(keys, verify_integrity=True)
+    cells = fit[["cell_id", "lineage_group", "source_cell_label", "tissue_origin", "lineage_role"]]
+    cells = cells.drop_duplicates().set_index("cell_id", verify_integrity=True)
+    combined = pd.concat(screened, ignore_index=True)
+    replacement = combined[combined.set_index(keys).index.isin(registered)].drop(columns="source_protocol")
+    replacement = replacement.join(metadata, on=keys, validate="many_to_one")
+    replacement = replacement.join(cells, on="cell_id", validate="many_to_one")
+    replacement["row_id"] = (replacement.source_id + "|" + replacement.cell_id + "|" +
+                             replacement.compound_id + "|" + replacement.endpoint_id)
+    remaining = fit[~fit.row_id.isin(affected.row_id)]
+    clean = pd.concat([remaining, replacement[fit.columns]], ignore_index=True)
+    if (set(replacement.set_index(keys).index) != set(registered) or clean.row_id.duplicated().any()
+            or clean.native_drug_label.str.contains(MIXTURE).any()):
+        raise ValueError("Incomplete correction to verified single-agent responses")
+    changes = []
+    for (source, drug), rows in affected.groupby(keys, sort=True):
+        pure = replacement[replacement.source_id.eq(source) & replacement.compound_id.eq(drug)]
+        changes.append({
+            "source": source, "compound_id": drug, "compound_label": rows.source_compound_label.iloc[0],
+            "removed_native_ids": sorted(rows.native_compound_id.unique()), "withdrawn_rows": len(rows),
+            "withdrawn_adult_hcc_rows": int(rows.lineage_role.eq("adult_hcc").sum()),
+            "single_agent_native_ids": sorted(pure.native_compound_id.unique()), "replacement_rows": len(pure),
+            "replacement_adult_hcc_rows": int(pure.lineage_role.eq("adult_hcc").sum()),
+        })
+    with new_output(output) as tmp:
+        train = tmp / "train"
+        train.mkdir()
+        os.link(bundle / "train/rna.parquet", train / "rna.parquet")
+        sorted_rows = clean.rename(columns={"row_id": "record_id", "lineage_group": "cell_group"})
+        sorted_rows.sort_values("record_id", ignore_index=True).to_parquet(train / "rows.parquet", index=False)
+        publish_json(tmp / "receipt.json", {
+            "dataset": "vc_build_v1_training_single_agent_correction",
+            "original_bundle_sha256": provenance["original_bundle_sha256"],
+            "source_sha256": provenance["source_sha256"], "affected_source_compounds": changes,
+            "training_rows": len(clean), "training_cells": int(clean.cell_id.nunique()),
+            "training_lineages": int(clean.lineage_group.nunique()), "training_drugs": int(clean.compound_id.nunique()),
+            "unchanged_rows": len(remaining), "artifacts": {
+                str(file.relative_to(tmp)): {"sha256": sha256(file), "bytes": file.stat().st_size}
+                for file in sorted(train.iterdir())
+            },
+        })
+
+
 def audit(args):
     fit, _, original = training_inputs(args.bundle)
     source_names = ("depmap_models", "ctrp_cells", "ctrp_compounds", "ctrp_experiments", "ctrp_curves",
@@ -118,7 +174,7 @@ def audit(args):
     eligible, catalog_counts = compound_panel(inputs)
     hcc = set(fit.loc[fit.lineage_role.eq("adult_hcc"), "cell_id"])
     known = set(fit.compound_id)
-    report, support, hcc_support, extensions = {}, {}, {}, []
+    report, support, hcc_support, extensions, screened = {}, {}, {}, [], []
     for method, source, assay, time in (
         (ctrp_rows, "CTRPv2", "CellTiterGlo_72h", 72), (prism_rows, "PRISM20Q2", "PRISM_barcoded_viability", 120),
     ):
@@ -127,6 +183,7 @@ def audit(args):
                       native_ids=set(allowed.native_compound_id))
         collapsed, _ = response_rows(rows, source, assay, time, "original public screen",
                                      ["dose_min_uM", "dose_max_uM"])
+        screened.append(collapsed)
         prior = fit[fit.source_id.eq(source)]
         actual = collapsed.set_index(["cell_id", "compound_id"]).endpoint_value
         same = prior.set_index(["cell_id", "compound_id"]).endpoint_value
@@ -167,6 +224,8 @@ def audit(args):
     }
     if args.extension is not None:
         write_extension(args.extension, fit, extensions, eligible, receipt)
+    if args.corrected_core is not None:
+        correct_core(args.corrected_core, args.bundle, fit, screened, receipt)
     publish_json(args.out, receipt)
 
 
@@ -175,6 +234,7 @@ def main():
     parser.add_argument("--bundle", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--extension", type=Path)
+    parser.add_argument("--corrected-core", type=Path)
     audit(parser.parse_args())
 
 
