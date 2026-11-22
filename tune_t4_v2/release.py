@@ -88,7 +88,7 @@ def predict(args):
         from src.goal_tracks.t2_state import load_network
 
         state_network = load_network(args.state_upstream)
-    variants = {}
+    variants, artifacts = {}, {}
     for conf in config["slices"]:
         key = conf["slice"]
         query = source.plans[key]["query"].copy()
@@ -134,6 +134,7 @@ def predict(args):
                          "holdout_scaffold_overlap": len(trained.train_scaffolds & set(query.parent.map(scaffold))),
                          "head": trained.policy, "wells": len(query),
                          "rows_sha256": ctx.ref["slices"][key]["predict"]["query.tsv"]}
+        artifacts[key] = tuple(arms)
         print(key, len(query), trained.policy, flush=True)
     write_json(args.out / "receipt.json", {"cell": args.cell, "group": args.group, "slices": variants,
                                           "settings_sha256": sha256(args.settings), "pan_sha256": sha256(prior_path),
