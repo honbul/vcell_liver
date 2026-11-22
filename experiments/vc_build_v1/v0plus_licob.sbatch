@@ -49,7 +49,7 @@ case "$mode" in
     ;;
   score)
     args=(--cohort "$run/cohort" --forecast "$run/forecast.parquet"
-          --supplement "$supplement" --out "$run/score.json")
+          --supplement "$supplement" --patient-audit "$run/patient-audit.json" --out "$run/score.json")
     ;;
   *) exit 2 ;;
 esac

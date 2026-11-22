@@ -148,6 +148,28 @@ def prefix_concordance(path, author):
     }
 
 
+def sample_metadata(supplement):
+    diagnoses, groups = {}, []
+    for model, age, _, _, _, histology in supplement["S1. Clinical information"].iter_rows(
+        min_row=5, max_col=6, values_only=True,
+    ):
+        if histology == "HCC":
+            if model in diagnoses:
+                raise ValueError(f"Duplicate LICOB clinical model {model}")
+            diagnoses[model] = age
+        elif isinstance(model, str) and model.endswith("were from the same patient sample"):
+            groups.append(re.findall(r"[A-Z]+\d+", model))
+    if len(groups) != 5 or sorted(map(len, groups)) != [2, 2, 2, 3, 4]:
+        raise ValueError("The S1 same-patient footnotes changed")
+    ids = [model for group in groups for model in group]
+    if len(ids) != len(set(ids)):
+        raise ValueError("Conflicting same-patient footnotes")
+    donor = {model: group[0] for group in groups for model in group}
+    table = pd.DataFrame.from_dict(diagnoses, orient="index", columns=["age"])
+    adult = pd.to_numeric(table.age, errors="coerce").ge(18)
+    return table.assign(adult_age_confirmed=adult, donor_id=[donor.get(model, model) for model in table.index])
+
+
 def register(args):
     for field, digest in ASSET_HASHES.items():
         check_hash(getattr(args, field), digest)
@@ -164,11 +186,9 @@ def register(args):
     if concordance["shared_samples"] != len(rna.columns) or concordance["median_gene_pearson"] < .90:
         raise ValueError("Author RNA failed cross-check against the NODE prefix")
 
-    diagnoses = {row[0]: row[1] for row in supplement["S1. Clinical information"].iter_rows(
-        min_row=4, max_col=6, values_only=True,
-    ) if row[5] == "HCC"}
-    profile_ids = sorted(set(diagnoses) & set(rna.columns) & set(response_rows))
-    adult_ids = [name for name in profile_ids if isinstance(diagnoses[name], (int, float)) and diagnoses[name] >= 18]
+    diagnoses = sample_metadata(supplement)
+    profile_ids = sorted(set(diagnoses.index) & set(rna.columns) & set(response_rows))
+    adult_ids = diagnoses.loc[profile_ids].query("adult_age_confirmed").index
     if len(adult_ids) < 5 or len(chemical.dropna(subset=["isomeric_smiles"])) < 5:
         raise ValueError("Insufficient registered adult organoid or compound support")
     if any(not re.fullmatch(r"HCCO\d+", name) for name in profile_ids):
@@ -188,11 +208,11 @@ def register(args):
         "cas_sha256": {cas: digest for cas, digest in CAS_EVIDENCE.values()},
         "node_prefix_rna_identity": concordance, "author_profiles": len(rna.columns),
         "source_rna_common_genes": len(genes), "all_biobank_hcc_models": len(diagnoses),
-        "hcc_with_s6": len(set(diagnoses) & set(response_rows)),
+        "hcc_with_s6": len(set(diagnoses.index) & set(response_rows)),
         "paired_adult_hcc": len(adult_ids), "paired_all_hcc": len(profile_ids),
         "screened_compounds": len(chemical), "source_supported_compounds": int(query.compound_id.nunique()),
         "registered_forecast_rows_per_method": len(query),
-        "rna_missing_hcc_with_s6": sorted(set(diagnoses) & set(response_rows) - set(profile_ids)),
+        "rna_missing_hcc_with_s6": sorted(set(diagnoses.index) & set(response_rows) - set(profile_ids)),
         "outside_training_compounds": chemical.loc[chemical.isomeric_smiles.isna(), "response_label"].tolist(),
     })
 
@@ -259,6 +279,27 @@ def merge(args):
     })
 
 
+def cohort_metadata(cohort, supplement_path):
+    check_hash(supplement_path, ASSET_HASHES["supplement"])
+    supplement = load_workbook(supplement_path, read_only=True, data_only=True)
+    models = (pd.read_parquet(cohort / "query.parquet", columns=["cell_id", "adult_age_confirmed"])
+              .drop_duplicates().set_index("cell_id", verify_integrity=True).sort_index())
+    patients = sample_metadata(supplement).loc[models.index, ["adult_age_confirmed", "donor_id"]]
+    corrections = patients.index[patients.adult_age_confirmed.ne(models.adult_age_confirmed)].tolist()
+    return {
+        "registration_sha256": sha256(cohort / "receipt.json"), "supplement_sha256": ASSET_HASHES["supplement"],
+        "adult_models": int(patients.adult_age_confirmed.sum()), "hcc_models": len(patients),
+        "adult_donors": int(patients.loc[patients.adult_age_confirmed, "donor_id"].nunique()),
+        "age_classification_corrections": corrections,
+        "models": patients.rename_axis("cell_id").reset_index().to_dict("records"),
+    }
+
+
+def audit_patients(args):
+    checked_registration(args.cohort)
+    publish_json(args.out, cohort_metadata(args.cohort, args.supplement))
+
+
 def score(args):
     if args.out.exists():
         raise FileExistsError(args.out)
@@ -269,6 +310,9 @@ def score(args):
             or provenance["settings_sha256"] != SETTINGS_HASH or set(provenance["components_sha256"]) != set(ARMS)):
         raise ValueError("LICOB score requires the joint registered freeze")
     check_hash(args.supplement, ASSET_HASHES["supplement"])
+    patient_receipt = json.loads(args.patient_audit.read_text())
+    if patient_receipt != cohort_metadata(args.cohort, args.supplement):
+        raise ValueError("LICOB age and patient map differs from the published S1 audit")
     query = pd.read_parquet(args.cohort / "query.parquet")
     sheet = load_workbook(args.supplement, read_only=True, data_only=True)["S6. AUC"]
     rows = list(sheet.values)
@@ -280,13 +324,21 @@ def score(args):
             raise ValueError("An audited LICOB response is missing or has the wrong identity")
         measured.append(-float(value))
     joined = join_observations(prediction, query.assign(endpoint_value=measured)).merge(
-        query[["row_id", "adult_age_confirmed"]], on="row_id", validate="many_to_one",
+        pd.DataFrame(patient_receipt["models"]), on="cell_id", validate="many_to_one",
     )
+    adult = (joined[joined.adult_age_confirmed].groupby(
+        ["donor_id", "track", "fold", "compound_id", "method"], as_index=False,
+    )[["endpoint_value", "predicted_value"]].mean().assign(
+        cell_id=lambda table: table.donor_id, lineage_group=lambda table: table.donor_id,
+        row_id=lambda table: COHORT + "|donor|" + table.donor_id + "|" + table.compound_id,
+    ))
+    outcomes = {}
+    if int(adult.lineage_group.nunique()) != patient_receipt["adult_donors"]:
+        raise ValueError("A preregistered adult donor was lost at scoring")
     methods = ("v0plus_inductive", BLEND)
     comparisons = [(candidate, baseline) for candidate in methods
                    for baseline in ("drug_mean", "drug_ridge", "cellhit")]
-    outcomes = {}
-    for name, block in (("adult", joined[joined.adult_age_confirmed]), ("all_hcc", joined)):
+    for name, block in (("adult", adult), ("all_hcc_model_level", joined)):
         table, drugs, _ = axis_metrics(block, comparisons if name == "adult" else ())
         if name == "adult":
             table["crossed_patient_drug_ci95"] = [
@@ -299,7 +351,6 @@ def score(args):
             "per_drug": drugs.astype(object).where(pd.notna(drugs), None).to_dict("records"),
         }
     strata = {}
-    adult = joined[joined.adult_age_confirmed]
     for name, parents in compound_strata(query).items():
         subset = adult[adult.compound_id.isin(parents)]
         if not subset.empty:
@@ -318,6 +369,7 @@ def score(args):
         )
     publish_json(args.out, {
         "cohort": COHORT, "forecast_sha256": receipt["sha256"], "endpoint": "Negative published S6 AUC",
+        "patient_audit_sha256": sha256(args.patient_audit),
         "strata": strata, "outcomes": outcomes,
         "gates": {"by_baseline": gates, "comparative_superiority": gates["drug_ridge"] and gates["cellhit"]},
         "compound_labels": query.drop_duplicates("compound_id").set_index("compound_id").response_label.to_dict(),
@@ -329,9 +381,10 @@ def main():
     commands = parser.add_subparsers(dest="action", required=True)
     modes = {
         "register": (*ASSET_HASHES, "cas", "bundle", "out"),
+        "audit-patients": ("cohort", "supplement", "out"),
         "predict": ("cohort", "bundle", "settings", "priors", "hallmark", "targets", "upstream", "auxiliary", "out"),
         "merge": ("cohort", "parts", "out"),
-        "score": ("cohort", "forecast", "supplement", "out"),
+        "score": ("cohort", "forecast", "supplement", "patient_audit", "out"),
     }
     for mode, arguments in modes.items():
         command = commands.add_parser(mode)
@@ -341,7 +394,8 @@ def main():
             command.add_argument("--arm", choices=ARMS, required=True)
             command.add_argument("--gpu", action="store_true")
     args = parser.parse_args()
-    {"register": register, "predict": predict, "merge": merge, "score": score}[args.action](args)
+    {"register": register, "audit-patients": audit_patients, "predict": predict,
+     "merge": merge, "score": score}[args.action](args)
 
 
 if __name__ == "__main__":
