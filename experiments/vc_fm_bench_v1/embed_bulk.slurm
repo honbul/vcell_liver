@@ -8,10 +8,10 @@ root=/mnt/S1/sdata/workbench/Virtual_Cell/gssong/nextgen_5track
 public=/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver/checkpoints
 source=${root%/nextgen_5track}/vc_build_v1/function
 code=$root/code/vc_fm_bench_v1
-store=$root/fm_store_v1/bulk-v1
+store=$root/fm_store_v1/bulk-v2
 inputs=("$source/cross-v1/train/rna.parquet" "$source/cross-v1/test_inputs/rna.parquet")
 if [[ ${SLURM_JOB_NAME:-} == fm-v1-limore ]]; then
-    store=$root/fm_store_v1/limore-v1
+    store=$root/fm_store_v1/limore-v2
     inputs=("$root/prepared/limore-rna-v1/rna.parquet")
 fi
 cd "$code"

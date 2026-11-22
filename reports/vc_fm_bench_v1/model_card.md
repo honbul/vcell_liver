@@ -14,6 +14,7 @@ Research use on public human liver pharmacogenomics and FDA label data. The froz
 | Pathway and TF activities | Fit-standardized ranks projected onto PROGENy top 100 weighted targets, Hallmark memberships and DoRothEA confidence A–C signed targets | Curated priors reflect literature and gene expression measurements. Signed projections run without fitting pathway effects to drug labels. |
 | scGPT whole-human | Author vocabulary and checkpoint. Nonzero input genes, per-profile 51-bin expression, deterministic ID-seeded subsampling to 1199 features, final CLS with unit norm | Human CELLxGENE pretraining catalog can overlap public atlas source studies. CCLE/TCGA membership of these inputs is unverified. For bulk inputs, CLS is an extrapolation to profile-level measurements. |
 | Geneformer V2-104M | Author 104M vocabulary, gene median and alias dictionaries; duplicate Ensembl-mapped features summed, median-normalized nonzero rank, penultimate CLS; 4094 gene limit | Corpus composition is heterogeneous. Exact CCLE/TCGA/GEO study membership for these RNA profiles is unverified. The CLcancer model is excluded. |
+| STRING human v12 | Clustered HGNC aliases; combined score ≥700; rank-96 embedding of the normalized symmetric graph | Uses public molecular associations and includes literature-derived evidence. |
 | ESM-2 t12 35M | Reviewed Homo sapiens UniProt canonical protein sequence, mean of non-special residue states. Long sequences are tiled and pooled by represented residue count. | UR50D-like protein pretraining can include homologs or exact sequences. This benchmark is conditional on public protein sequences and audits supervised labels separately. |
 
 ChemBERTa-2 and scGPT checkpoint distribution cards leave separate weights-license fields unspecified. Their weights are fetched from author-linked resources for the research evaluation. Record-level exposure to CCLE, ChEMBL and TCGA is unknown unless listed in the pinned release source. Model access, encoder execution and external score are checked separately.
@@ -38,6 +39,7 @@ python -m vc_fm_bench.prepare --help
 python -m vc_fm_bench.tasks --help
 python -m vc_fm_bench.benchmark predict --help
 python -m vc_fm_bench.benchmark score --help
+python -m vc_fm_bench.report --help
 ```
 
 The query TSV uses `id` and `smiles` for molecules or `id` and `sequence` for proteins. Transcriptomes are index-keyed rows with unique gene symbols or Ensembl IDs appropriate to the selected checkpoint and the declared expression scale. The published preparation and Slurm scripts preserve immutable output directories and hash evidence. All four head families use only training or training-validation response.

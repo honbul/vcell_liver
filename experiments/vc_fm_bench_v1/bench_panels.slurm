@@ -31,9 +31,9 @@ for name in "$@"; do
         options+=(--weights "$root/raw/pathways/signed_weights.tsv")
         options+=(--hallmark /mnt/S1/sdata/pubdata/Virtual_Cell/MSigDB/h.all.v2026.1.Hs.symbols.gmt)
         if [[ $name == limore-drug-cold-* ]]; then
-            options+=(--cell "$store/limore-v1" --rna "$root/prepared/limore-rna-v1/rna.parquet")
+            options+=(--cell "$store/limore-v2" --rna "$root/prepared/limore-rna-v1/rna.parquet")
         else
-            options+=(--cell "$store/bulk-v1" --rna "$source/cross-v1/train/rna.parquet" \
+            options+=(--cell "$store/bulk-v2" --rna "$source/cross-v1/train/rna.parquet" \
                 "$source/cross-v1/test_inputs/rna.parquet")
         fi
     fi

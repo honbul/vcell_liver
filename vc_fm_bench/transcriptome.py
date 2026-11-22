@@ -182,7 +182,7 @@ def main():
     data = pd.concat(tables)
     if not data.index.is_unique or not data.columns.is_unique:
         raise ValueError("Duplicate RNA profile IDs or feature names")
-    keys = data.index.astype(str).to_numpy()
+    keys = data.index.to_numpy(dtype=str)
     raw = data.to_numpy(dtype=np.float32)
     if not np.isfinite(raw).all() or (raw < 0).any():
         raise ValueError("RNA input requires finite nonnegative abundance")
