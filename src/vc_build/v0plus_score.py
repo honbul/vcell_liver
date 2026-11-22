@@ -134,6 +134,8 @@ def score_external(args):
     pairs = [("v0plus_inductive", other) for other in ("drug_mean", baseline, public)]
     pairs += [("v0plus_transductive", "v0plus_inductive")]
     pairs.append((baseline, "drug_mean"))
+    if "ridge_molecular_average" in set(merged.method):
+        pairs.extend(("ridge_molecular_average", comparator) for comparator in ("drug_ridge", "drug_mean"))
     full, per_drug, _ = axis_metrics(merged, pairs)
     full["crossed_patient_drug_ci95"] = [
         {"candidate": a, "baseline": b, "intervals": crossed_patient_drug_ci(merged, a, b)}
@@ -152,7 +154,8 @@ def score_external(args):
                 slice_summary["paired_contrasts"] = [comparison for comparison in slice_summary["paired_contrasts"]
                                                       if comparison["metric"] == "spearman"]
             slices[name] = {"compounds": len(drugs), "compound_ids": drugs, **slice_summary}
-    core = per_drug[per_drug.method.isin(["v0plus_inductive", "v0plus_transductive", baseline, public, "drug_mean"])]
+    core = per_drug[per_drug.method.isin(["v0plus_inductive", "v0plus_transductive", baseline, public,
+                                         "drug_mean", "ridge_molecular_average"])]
     publish_json(args.out, {
         "forecast_sha256": freeze["sha256"], "label_sha256": provenance["registered_observations_sha256"],
         "cohort": provenance["cohort"], "models": int(merged.cell_id.nunique()),

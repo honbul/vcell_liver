@@ -153,6 +153,14 @@ def merge_forecasts(args):
                 raise ValueError(f"Changed model checkpoint {location}")
             trained[name] = info | {"path": str(location.resolve())}
     table = pd.concat(frames, ignore_index=True)
+    if args.ridge_blend:
+        ridge = table[table.method.eq("drug_ridge")].copy()
+        molecular = table[table.method.eq("v0plus_inductive")].set_index("row_id")
+        mate = molecular.loc[ridge.row_id]
+        if len(ridge) != len(molecular) or not np.array_equal(ridge.base_value, mate.base_value):
+            raise ValueError("The fixed blend requires the same drug anchor and registered roster")
+        ridge["predicted_value"] = (ridge.predicted_value.to_numpy() + mate.predicted_value.to_numpy()) / 2
+        table = pd.concat([table, ridge.assign(method="ridge_molecular_average")], ignore_index=True)
     support = table.groupby("method").row_id.agg(["nunique", "size"])
     if support["size"].nunique() != 1 or (support["nunique"] != support["size"]).any():
         raise ValueError("Missing or repeated registered forecast identifiers across methods")
@@ -160,6 +168,7 @@ def merge_forecasts(args):
         "settings_sha256": settings_hash, "cohort": args.cohort, "query_receipt_sha256": cohort_hashes[0],
         "registered_observations_sha256": cohort_hashes[1], "component_freezes_sha256": hashes,
         "research_model_packages": trained,
+        "fixed_ridge_molecular_average": args.ridge_blend,
     })
 
 
@@ -182,6 +191,7 @@ def main():
     for key in ("settings", "source", "out"):
         merge.add_argument("--" + key, type=Path, required=True)
     merge.add_argument("--cohort", required=True)
+    merge.add_argument("--ridge-blend", action="store_true")
     args = parser.parse_args()
     if args.command == "lock":
         lock_settings(args.cv_root, args.out)

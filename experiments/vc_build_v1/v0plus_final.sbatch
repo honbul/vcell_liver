@@ -42,7 +42,7 @@ case "$mode" in
     exec "$python" -m vc_build.v0plus_release predict "${args[@]}" "${device[@]}" "$@"
     ;;
   merge)
-    exec "$python" -m vc_build.v0plus_release merge --settings "$run/settings.json" --cohort "$cohort" --source "$run/predict" --out "$run/final.parquet"
+    exec "$python" -m vc_build.v0plus_release merge --settings "$run/settings.json" --cohort "$cohort" --source "$run/predict" --out "$run/final.parquet" "$@"
     ;;
   score)
     exec "$python" -m vc_build.v0plus_score --settings "$run/settings.json" --cohort-bundle "$query" --direction higher --forecast "$run/final.parquet" --out "$run/LIMORE50_score.json"
