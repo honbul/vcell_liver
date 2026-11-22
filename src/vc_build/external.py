@@ -42,7 +42,7 @@ def _prepare_expression(train_rna, query_rna, train_cells, query_cells):
     scaled = StandardScaler()
     x = scaled.fit_transform(train[:, nonconstant])
     y = scaled.transform(query[:, nonconstant])
-    pca = PCA(n_components=min(24, x.shape[0] - 1, x.shape[1]), svd_solver="full")
+    pca = PCA(n_components=min(24, x.shape[0] - 1, x.shape[1]), svd_solver="randomized", random_state=14822)
     return (
         pd.DataFrame(pca.fit_transform(x), index=train_cells),
         pd.DataFrame(pca.transform(y), index=query_cells),
@@ -53,12 +53,15 @@ def _prepare_expression(train_rna, query_rna, train_cells, query_cells):
 def _target_features(rows, rna, targets):
     matrix = np.empty((len(rows), 3), dtype=float)
     symbols = set(rna.columns)
+    matched = {drug: sorted(symbols.intersection(genes)) for drug, genes in targets.items()}
+    selected = sorted({gene for genes in matched.values() for gene in genes})
+    rank_by_cell = rna.loc[rows.cell_id.unique()].rank(axis=1, pct=True)[selected]
     for index, (cell, drug) in enumerate(rows[["cell_id", "compound_id"]].itertuples(index=False, name=None)):
-        found = sorted(symbols.intersection(targets.get(drug, ())))
+        found = matched.get(drug)
         if not found:
             matrix[index] = [0., 0., 0.]
             continue
-        measured = rna.loc[cell].rank(pct=True).loc[found].to_numpy()
+        measured = rank_by_cell.loc[cell, found].to_numpy()
         matrix[index] = [1., np.mean(measured), np.max(measured)]
     return matrix
 
@@ -97,7 +100,7 @@ def _validate(train, query):
         raise ValueError("External panel has duplicate observations")
     if not set(query.compound_id) <= set(train.compound_id):
         raise ValueError("The defined known-panel evaluation must have training support for every drug")
-    if "tissue_origin" in query and not (query.tissue_origin == "adult_hcc").all():
+    if "lineage_role" in query and not (query.lineage_role == "adult_hcc").all():
         raise ValueError("External evaluation includes nonadult HCC identities")
 
 
