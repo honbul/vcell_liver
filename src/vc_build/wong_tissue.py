@@ -84,18 +84,18 @@ def read_forecasts(args):
 
 def matched_views(joined):
     candidate, baseline = "tissue", "organoid"
-    example = []
+    contrasts = []
     for method in METHODS:
         pair = pd.concat([frame[frame.method.eq(method)].assign(method=view) for view, frame in joined.items()])
         metrics, _, _ = axis_metrics(pair, ((candidate, baseline),))
         drug = crossed_patient_drug_ci(pair, candidate, baseline)
         rank = {item["metric"]: item["ci95"] for item in metrics["paired_contrasts"]}
         entry = {"model": method, "drug_ci95": drug, "rank_ci95": rank}
-        example.append(entry)
-    main = next(item for item in example if item["model"] == PRIMARY)
+        contrasts.append(entry)
+    main = next(item for item in contrasts if item["model"] == PRIMARY)
     gate = all(main["drug_ci95"][name][0] > -.020 for name in ("spearman", "pearson")) and all(
         main["rank_ci95"][name][0] > -.020 for name in ("spearman", "ndcg_at_5"))
-    return {"contrasts": example, "primary_noninferior": gate}
+    return {"contrasts": contrasts, "primary_noninferior": gate}
 
 
 def score(args):

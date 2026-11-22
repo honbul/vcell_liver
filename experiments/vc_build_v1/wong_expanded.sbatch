@@ -13,6 +13,7 @@ runtime="$storage/vcell_liver/vcell_r12_runtime_cu126"
 export PYTHONPATH="$repository/src:$root/v0plus-model-deps:$root/function/prepare-deps:$runtime"
 export OPENBLAS_NUM_THREADS=5 MKL_NUM_THREADS=5 OMP_NUM_THREADS=5
 runs="$root/v0plus-runs"
+module=vc_build.wong_expanded
 case "$stage" in
   register)
     args=(--original "$root/function/cross-v1" --core "$runs/source-core-92aa482/core"
@@ -36,6 +37,18 @@ case "$stage" in
           --targets "$root/external-code-v3/drug_targets.json" --auxiliary "$runs/depmap-25q3-bb8a47b"
           --out "$run/parts/$arm.parquet")
     ;;
+  tissue-register|joint-score)
+    module=vc_build.wong_tissue
+    pdo=$5
+    args=(--workbook "$root/licob-v0plus/Wong_HCC_PDO_Supplementary_v1.xlsx")
+    if [[ "$stage" == tissue-register ]]; then
+      stage=register
+      args+=(--pdo "$pdo/inputs" --out "$run/inputs")
+    else
+      stage=score
+      args+=(--pdo "$pdo" --tissue "$run" --out "$run/score.json")
+    fi
+    ;;
   merge)
     args=(--inputs "$run/inputs" --parts "$run/parts" --out "$run/final.parquet")
     ;;
@@ -45,4 +58,4 @@ case "$stage" in
     ;;
   *) exit 2 ;;
 esac
-exec "$python" -m vc_build.wong_expanded "$stage" "${args[@]}"
+exec "$python" -m "$module" "$stage" "${args[@]}"
