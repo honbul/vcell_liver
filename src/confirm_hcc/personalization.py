@@ -31,6 +31,27 @@ def derangements(n, seed=74821):
                 break
 
 
+def canonical_mean(frame):
+    """Equal-profile predictions are mathematically identical, including across a BLAS tile."""
+    blocks = frame.groupby(["method", "compound_id"]).predicted_value
+    span = (blocks.max() - blocks.min()).groupby(level=0).max()
+    if span.max() > 2e-7:
+        raise ValueError("Equal RNA inputs produced meaningfully different profiles")
+    return frame.assign(predicted_value=blocks.transform("mean").to_numpy()), span.to_dict()
+
+
+def reseal_mean(args):
+    original, seal = verify_forecast(args.intervention)
+    context = seal["provenance"]
+    if context["settings_sha256"] != sha256(args.contract) or set(original.track) != {"mean_rna", "rna_shuffle"}:
+        raise ValueError("Unexpected intervention registry")
+    fixed, spread = canonical_mean(original[original.track.eq("mean_rna")])
+    resolved = pd.concat([fixed, original[original.track.eq("rna_shuffle")]], ignore_index=True)
+    freeze_table(resolved, args.out, provenance=context | {
+        "previous_intervention_sha256": seal["sha256"], "fixed_mean_input_float_spread": spread,
+    })
+
+
 def apply(args):
     _, fit_rna, query, rna = inputs()
     raw, seal = verify_forecast(args.forecast)
@@ -58,7 +79,9 @@ def apply(args):
         if len(table) < 0.85 * len(fit_rna):
             raise ValueError("Insufficient source-only transcriptome embedding support")
         average_banks[feature] = pd.DataFrame(np.tile(table.mean().to_numpy(), (len(rna), 1)), index=rna.index)
-    outputs = [as_forecast(query, predict(average_rna, average_banks), fold=0, track="mean_rna")]
+    mean_forecast = as_forecast(query, predict(average_rna, average_banks), fold=0, track="mean_rna")
+    mean_forecast, spread = canonical_mean(mean_forecast)
+    outputs = [mean_forecast]
     assignment = query[["cell_id", "compound_id"]].set_index(["cell_id", "compound_id"])
     reference = pd.DataFrame(reference, index=assignment.index)
     max_replay = {}
@@ -82,6 +105,7 @@ def apply(args):
         "parent_forecast_sha256": seal["sha256"], "train_sha256": TRAIN_SHA, "labels_sha256": OBSERVATIONS,
         "repeats": REPEATS, "settings_sha256": sha256(args.contract), "exact_expanded_swap_replay": max_replay,
         "ordered_query_derangements": signatures, "source_fm_hashes": fit_hash, "query_fm_hashes": query_hash,
+        "fixed_mean_input_float_spread": spread,
     })
 
 
@@ -182,17 +206,19 @@ def score(args):
     publish_json(args.out / "personalization_receipt.json", {
         "intervention_sha256": seal["sha256"], "source_forecast_sha256": reg["sha256"], "observations_sha256": OBSERVATIONS,
         "repeats": REPEATS, "replayed_perturbation_max_abs_diff": prov["exact_expanded_swap_replay"],
+        "mean_rna_precanonicalization_spread": prov["fixed_mean_input_float_spread"],
+        "previous_intervention_sha256": prov.get("previous_intervention_sha256"),
         "files": {f.name: sha256(f) for f in args.out.iterdir()},
     })
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("stage", choices=("freeze", "score"))
+    parser.add_argument("stage", choices=("freeze", "reseal-mean", "score"))
     for field in ("root", "out", "contract", "forecast", "intervention", "official"):
-        parser.add_argument("--" + field, type=Path, required=field in ("out", "contract", "forecast"))
+        parser.add_argument("--" + field, type=Path, required=field in ("out", "contract"))
     args = parser.parse_args()
-    {"freeze": apply, "score": score}[args.stage](args)
+    {"freeze": apply, "reseal-mean": reseal_mean, "score": score}[args.stage](args)
 
 
 if __name__ == "__main__":

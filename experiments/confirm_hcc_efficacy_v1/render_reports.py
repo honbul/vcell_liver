@@ -98,6 +98,16 @@ def render(root):
     }[decision["scope"]]
     reason = ("LIMORE 두 축에서 단순 대조군 대비 paired 하한이 모두 양수였고 내부 OOF 및 상호작용 기준을 통과했다."
               if pass_2d else "고정한 동시 승격 기준을 통과한 모델은 없었다. 세포 내 약물 순위와 약물 내 감수성 수치는 모델별로 해석한다.")
+    paired_2d = {(r["model_id"], r["baseline"], r["metric"]): r
+                 for r in read(root, "LIMORE_PAIRED_95CI.tsv")}
+    axis_leaders = []
+    for metric, scope in (("within_drug_spearman", "약물 내 감수성"), ("ndcg_at_5", "세포 내 약물 순위")):
+        best = max(ledger, key=lambda r: float(r[metric]))
+        model = best["model_id"]
+        value = paired_2d.get((model, "additive", metric))
+        cis = interval(value) if value else "동일 모델"
+        axis_leaders.append([scope, NAMES[model], number(best[metric]), cis])
+    axes_purpose = table(["평가 축", "해당 축의 최고 점 추정 모델", "점 추정", "가산 대비 차이 [95%]"], axis_leaders)
     audit_receipt = js(root, "personalization_receipt.json")
     max_swap = max(max(d.values()) for d in audit_receipt["replayed_perturbation_max_abs_diff"].values())
     proc = js(root, "package_replay_receipt.json")
@@ -217,7 +227,7 @@ GDSC2·CTRPv2·PRISM20Q2의 1,014모델·991계통·68약물을 적합하고 독
 
 ## RNA 대조
 
-학습 1,014개 RNA의 유전자별 평균을 모든 평가 계통에 대입했다. RNA 유래 scGPT·Geneformer 벡터도 각각 학습 평균으로 치환했다. 셔플 100회에서는 고정점 없는 배정으로 RNA 및 동반 벡터를 같은 계통에서 가져왔다. 완전한 50×68 행렬의 프로필별 예측을 재배열한 뒤 3회 실제 재추론으로 확인했다. 최대 오차는 {max_swap:.3g}였다.
+학습 1,014개 RNA의 유전자별 평균을 모든 평가 계통에 대입했다. RNA 유래 scGPT·Geneformer 벡터도 각각 학습 평균으로 치환했다. 셔플 100회에서는 고정점 없는 배정으로 RNA 및 동반 벡터를 같은 계통에서 가져왔다. 완전한 50×68 행렬의 프로필별 예측을 재배열한 뒤 3회 실제 재추론으로 확인했다. 최대 오차는 {max_swap:.3g}였다. 동일 평균 RNA에서 약물별 배치 반올림 차이(최대 {max(audit_receipt['mean_rna_precanonicalization_spread'].values()):.2g})를 제거해 상수 예측에 임의 순위가 생기지 않게 했다.
 
 {audit_tbl}
 
@@ -229,12 +239,16 @@ GDSC2·CTRPv2·PRISM20Q2의 1,014모델·991계통·68약물을 적합하고 독
 
 {oof_tbl}
 
-지정한 단일 연구 기준은 **{NAMES[selected]}**이며 사용 범위는 {fit_scope}이다. {reason} 후보의 두 축이 엇갈리는 경우 위의 두 개별 지표를 함께 인용한다. [결정 영수증](reference_decision.json) · [OOF 소스별 원표](SOURCE_OOF_BY_FOLD.tsv) · [OOF 분할 지원](SOURCE_OOF_SUPPORT.tsv)
+지정한 단일 연구 기준은 **{NAMES[selected]}**이며 사용 범위는 {fit_scope}이다. {reason}
+
+{axes_purpose}
+
+[결정 영수증](reference_decision.json) · [OOF 소스별 원표](SOURCE_OOF_BY_FOLD.tsv) · [OOF 분할 지원](SOURCE_OOF_SUPPORT.tsv)
 """)
     write(root, "FEWSHOT_3D_CONFIRM.md", f"""
 # 3D 환자 단위 소수 라벨 현지 보정
 
-세 공개 코호트 모두 앞서 평가 이력이 있어 고정 계약 하에 후향 분석했다. LICOB는 검증된 iLICOB 기저 RNA와 S6 정규화 AUC, Wong은 S7 AUC, Yang은 S6 AUC와 기저 RNA를 사용했다. 감수성이 높을수록 큰 방향으로 통일했고 각 환자의 지역별 PDO를 먼저 평균했다. Yang은 P1과 P2 제외 후 74명이다. [LICOB 원논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC10949980/) · [Wong 원논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC12205652/) · [Yang 원논문](https://pubmed.ncbi.nlm.nih.gov/38593780/)
+세 공개 코호트 모두 앞서 평가 이력이 있어 고정 계약 하에 후향 분석했다. LICOB는 검증된 iLICOB 기저 RNA와 S6 정규화 AUC, Wong은 S7 성장억제 AUC, Yang은 S6 AUC와 기저 RNA를 사용했다. 감수성이 높을수록 큰 방향으로 통일했고 각 환자의 지역별 PDO를 먼저 평균했다. Yang은 P1과 P2 제외 후 74명이다. [LICOB 원논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC10949980/) · [Wong 원논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC12205652/) · [Yang 원논문](https://pubmed.ncbi.nlm.nih.gov/38593780/)
 
 {support_tbl}
 
@@ -248,7 +262,7 @@ Yang의 Ivosidenib 및 Apatinib은 정정 68개 출처 패널 밖에 있다. 세
 
 {pdo_table}
 
-Yang 정확 매칭 3약물에서 Precision@3은 회수한 약물 집합 전체이므로 1이다. Top-1도 함께 제시했다. Wong K=8의 평가 표본은 회차당 두 환자다. 약물 내 ρ와 r은 표본 두 점일 때 ±1 또는 동률이어서 해당 수치는 기술적으로 해석한다. 상수 예측의 약물 내 상관은 관례적 0이다.
+Yang 정확 매칭 3약물에서 Precision@3은 회수한 약물 집합 전체이므로 1이다. Top-1도 함께 제시했다. Wong K=8의 평가 표본은 회차당 두 환자다. 약물 내 ρ와 r은 표본 두 점일 때 ±1 또는 동률이어서 해당 수치는 기술적으로 해석한다. 상수 예측의 약물 내 상관은 관례적 0이다. 잔차 RMSE는 코호트의 측정 단위와 보정 여부의 영향을 받는다. 무보정 2D의 비교는 순위와 상관이 중심이다.
 
 ## 같은 라벨 예산에서의 차이
 

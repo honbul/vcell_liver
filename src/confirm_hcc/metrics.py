@@ -88,7 +88,7 @@ def metrics(y, p, *, precision_k=5, min_lineages=5, residuals=True):
             "residual_pearson": association(yy, pp, axis=-1),
             "residual_rmse": np.sqrt(np.mean(np.square(yy - pp), axis=-1)),
         })
-    return result
+    return {key: float(value) for key, value in result.items()} if y.ndim == 2 else result
 
 
 def bootstrap(y, forecasts, *, repeats=2400, seed=11942):
