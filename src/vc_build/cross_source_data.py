@@ -230,10 +230,12 @@ def gdsc_rows(path, lookup, match):
     return rows
 
 
-def ctrp_rows(sources, lookup, limore_panel):
+def ctrp_rows(sources, lookup, limore_panel, *, native_ids=None):
     compounds = read_raw(sources["ctrp_compounds"]["path"],
                          ["master_cpd_id", "cpd_name", "cpd_smiles", "top_test_conc_umol"], sep="\t")
     mapping = source_structures(compounds, "master_cpd_id", "cpd_name", "cpd_smiles", limore_panel)
+    if native_ids is not None:
+        mapping = mapping[mapping.native_compound_id.isin(native_ids)]
     dose = compounds[["master_cpd_id", "top_test_conc_umol"]].rename(columns={
         "master_cpd_id": "native_compound_id", "top_test_conc_umol": "dose_max_uM"})
     mapping = mapping.merge(dose, on="native_compound_id", validate="1:1")
@@ -254,10 +256,12 @@ def ctrp_rows(sources, lookup, limore_panel):
     return rows
 
 
-def prism_rows(sources, lookup, limore_panel):
+def prism_rows(sources, lookup, limore_panel, *, native_ids=None):
     raw = read_raw(sources["prism_curves"]["path"],
                    ["broad_id", "depmap_id", "ccle_name", "screen_id", "auc", "passed_str_profiling", "name", "smiles"])
     mapping = source_structures(raw, "broad_id", "name", "smiles", limore_panel).drop(columns="native_drug_label")
+    if native_ids is not None:
+        mapping = mapping[mapping.native_compound_id.isin(native_ids)]
     rows = raw[raw.passed_str_profiling.str.upper().eq("TRUE")].rename(columns={
         "broad_id": "native_compound_id", "depmap_id": "source_key", "ccle_name": "name",
         "name": "native_drug_label", "screen_id": "source_run", "auc": "endpoint_value",

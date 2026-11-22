@@ -3,36 +3,100 @@
 import argparse
 import json
 from pathlib import Path
+import re
 
 import numpy as np
 import pandas as pd
-from rdkit import RDLogger
+from rdkit import Chem, RDLogger
 
 from .cross_source_data import (
     MODEL_COLS, ctrp_rows, prism_rows, read_raw, response_rows, roster_maps, roster_table,
 )
-from .function_data import canonical_chemistry
+from .function_data import canonical_chemistry, new_output
 from .io import publish_json, sha256
 from .v0plus_cv import training_inputs
 
 
+MIXTURE = re.compile(r"mol/mol|\b(?:combination|mixture)\b|\b\d+:\d+\b|\s\+\s", re.I)
+SOURCE_COLUMNS = {
+    "CTRPv2": ("ctrp_compounds", "master_cpd_id", "cpd_name", "cpd_smiles", "gene_symbol_of_protein_target", "\t"),
+    "PRISM20Q2": ("prism_curves", "broad_id", "name", "smiles", "target", ","),
+}
+
+
+def unambiguous_parent(smiles):
+    if not smiles:
+        return None
+    try:
+        molecule = Chem.MolFromSmiles(smiles)
+        if molecule is None:
+            return None
+        fragments = Chem.GetMolFrags(molecule, asMols=True)
+        organic = {Chem.MolToSmiles(frag) for frag in fragments if frag.GetNumHeavyAtoms() >= 8
+                   and any(atom.GetAtomicNum() == 6 for atom in frag.GetAtoms())}
+        if len(organic) > 1:
+            return None
+        return canonical_chemistry(smiles)
+    except (ValueError, RuntimeError):
+        return None
+
+
 def compound_panel(sources):
-    ctrp = read_raw(sources["ctrp_compounds"]["path"], ["cpd_smiles"], sep="\t").cpd_smiles
-    prism = read_raw(sources["prism_curves"]["path"], ["smiles"]).smiles
-    parents = set()
+    records = []
+    counts = {}
     RDLogger.DisableLog("rdApp.warning")
     RDLogger.DisableLog("rdApp.error")
     try:
-        for smiles in set(ctrp) | set(prism):
-            if smiles:
-                try:
-                    parents.add(canonical_chemistry(smiles)[1])
-                except (ValueError, RuntimeError):
-                    continue
+        for source, (name, native, label, compound, target, delim) in SOURCE_COLUMNS.items():
+            table = read_raw(sources[name]["path"], [native, label, compound, target], sep=delim).drop_duplicates()
+            lookup = {smiles: unambiguous_parent(smiles) for smiles in table[compound].unique()}
+            candidate = table[compound].map(lookup).mask(table[label].str.contains(MIXTURE)).dropna()
+            keys = table[[native, label, target]].join(candidate.rename("parent"), how="inner")
+            definitions = pd.DataFrame(keys.parent.tolist(), index=keys.index, columns=[
+                "isomeric_smiles", "compound_id", "connectivity_group", "scaffold_group",
+            ])
+            merged = keys.drop(columns="parent").join(definitions)
+            known = merged.groupby(native).compound_id.nunique()
+            filtered_ids = set(table.loc[~table.index.isin(candidate.index), native])
+            valid = set(known[known.eq(1)].index) - filtered_ids
+            selected = merged[merged[native].isin(valid)].rename(columns={
+                native: "native_compound_id", label: "source_compound_label", target: "drug_target_source_labels",
+            }).assign(source_id=source)
+            records.append(selected)
+            counts[source] = {"catalogue_native_ids": int(table[native].nunique()),
+                              "qualified_single_agent_native_ids": len(valid)}
     finally:
         RDLogger.EnableLog("rdApp.warning")
         RDLogger.EnableLog("rdApp.error")
-    return pd.DataFrame({"compound_id": sorted(parents)})
+    return pd.concat(records, ignore_index=True), counts
+
+
+def write_extension(path, fit, extensions, chemistry, provenance):
+    names = ["cell_id", "lineage_group", "source_cell_label", "tissue_origin", "lineage_role"]
+    cells = fit[names].drop_duplicates().set_index("cell_id", verify_integrity=True)
+    rows = pd.concat(extensions, ignore_index=True).join(cells, on="cell_id", validate="many_to_one")
+    join = ["source_id", "native_compound_id", "compound_id"]
+    native = chemistry.sort_values(["source_compound_label", "isomeric_smiles"]).drop_duplicates(join)
+    rows = rows.merge(native, on=join, validate="many_to_one")
+    if len(rows) != sum(map(len, extensions)) or set(rows.compound_id) & set(fit.compound_id):
+        raise ValueError("A new source row lost its exact compound identity or overlaps the original panel")
+    rows["row_id"] = rows.source_id + "|" + rows.cell_id + "|" + rows.compound_id + "|" + rows.endpoint_id
+    if not rows.row_id.is_unique or rows.lineage_group.isna().any():
+        raise ValueError("Additional response rows require a unique identity in the original cell roster")
+    # Use one canonical descriptor representation per parent in joint models.
+    structures = native.sort_values("isomeric_smiles").drop_duplicates("compound_id").set_index("compound_id")
+    rows["isomeric_smiles"] = rows.compound_id.map(structures.isomeric_smiles)
+    with new_output(path) as tmp:
+        destination = tmp / "additional_rows.parquet"
+        rows.sort_values("row_id", ignore_index=True).to_parquet(destination, index=False)
+        native_path = tmp / "chemistry.parquet"
+        chemistry[chemistry.compound_id.isin(rows.compound_id)].to_parquet(native_path, index=False)
+        publish_json(tmp / "receipt.json", provenance | {
+            "additional_rows": len(rows), "additional_compounds": int(rows.compound_id.nunique()),
+            "cell_models": int(rows.cell_id.nunique()), "lineages": int(rows.lineage_group.nunique()),
+            "augmented_training_rows": len(fit) + len(rows),
+            "artifacts": {p.name: sha256(p) for p in (destination, native_path)},
+        })
 
 
 def audit(args):
@@ -51,14 +115,16 @@ def audit(args):
                          "PRISM20Q2", "ccle_name", "depmap_id")
     roster = roster_maps(pd.concat([ctrp, prism], ignore_index=True), models)
     roster = roster[roster.cell_id.isin(fit.cell_id)]
-    eligible = compound_panel(inputs)
+    eligible, catalog_counts = compound_panel(inputs)
     hcc = set(fit.loc[fit.lineage_role.eq("adult_hcc"), "cell_id"])
     known = set(fit.compound_id)
-    report, support, hcc_support = {}, {}, {}
+    report, support, hcc_support, extensions = {}, {}, {}, []
     for method, source, assay, time in (
         (ctrp_rows, "CTRPv2", "CellTiterGlo_72h", 72), (prism_rows, "PRISM20Q2", "PRISM_barcoded_viability", 120),
     ):
-        rows = method(inputs, roster[roster.source_id.eq(source)], eligible)
+        allowed = eligible[eligible.source_id.eq(source)]
+        rows = method(inputs, roster[roster.source_id.eq(source)], allowed,
+                      native_ids=set(allowed.native_compound_id))
         collapsed, _ = response_rows(rows, source, assay, time, "original public screen",
                                      ["dose_min_uM", "dose_max_uM"])
         prior = fit[fit.source_id.eq(source)]
@@ -71,10 +137,11 @@ def audit(args):
         difference = (reproduced[present] - same[present]).abs()
         mismatched = difference.gt(1e-8)
         extra = collapsed[~collapsed.compound_id.isin(known)]
+        extensions.append(extra)
         hcc_extra = extra[extra.cell_id.isin(hcc)]
         support[source] = set(extra.compound_id)
         hcc_support[source] = set(hcc_extra.compound_id)
-        report[source] = {
+        report[source] = catalog_counts[source] | {
             "prior_rows": len(prior), "prior_drugs": int(prior.compound_id.nunique()),
             "prior_rows_missing_after_recensus": int((~present).sum()),
             "prior_rows_difference_over_1e_8": int(mismatched.sum()),
@@ -89,7 +156,7 @@ def audit(args):
             "cells_with_additional_hcc_rows": int(hcc_extra.cell_id.nunique()),
         }
     meta = read_raw(inputs["gdsc2"]["path"], ["DRUG_ID"])
-    publish_json(args.out, {
+    receipt = {
         "original_bundle_sha256": sha256(args.bundle / "receipt.json"),
         "source_sha256": {name: inputs[name]["sha256"] for name in source_names},
         "retained_core_cells": int(fit.cell_id.nunique()), "retained_adult_hcc": len(hcc),
@@ -97,13 +164,17 @@ def audit(args):
         "new_parents_with_hcc_in_both_sources": len(set.intersection(*hcc_support.values())),
         "sources": report, "gdsc2_screened_native_ids": int(meta.DRUG_ID.nunique()),
         "gdsc2_original_exact_parent_compounds": int(fit.loc[fit.source_id.eq("GDSC2"), "compound_id"].nunique()),
-    })
+    }
+    if args.extension is not None:
+        write_extension(args.extension, fit, extensions, eligible, receipt)
+    publish_json(args.out, receipt)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--extension", type=Path)
     audit(parser.parse_args())
 
 
