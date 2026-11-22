@@ -22,7 +22,7 @@ The shared study runtime uses openpyxl 3.1.5 and et-xmlfile 2.0.0 to parse the f
 
 ## Observed external performance
 
-Each independent split scores 1,114 adult HCC observations from 11 lineages with matched basal RNA, including 249 estimates of CSS reconstructed from measured dose matrices. The LCO graph model's pooled Spearman was 0.544 for ZIP, 0.522 for Bliss, 0.628 for CSS and 0.614 for added inhibition. LightGBM had higher joint efficacy–synergy AUPRC on LCO, 0.336 compared with 0.266. MatchMaker had higher LPO Spearman on all four endpoints. On held LDO scaffolds, cross-attention reached joint AUPRC 0.0259 against observed prevalence 0.01975 and returned zero measured joint positives among its first 20 positions. The LCO organoid screen remains an unmeasured hypothesis list. [Complete external scorecard](RESULTS.md)
+Each independent split scores 1,114 adult HCC observations from 11 lineages with matched basal RNA, including 249 estimates of CSS reconstructed from measured dose matrices. The LCO cross-attention model's pooled Spearman was 0.544 for ZIP, 0.522 for Bliss, 0.628 for CSS and 0.614 for added inhibition. LightGBM had higher joint efficacy–synergy AUPRC on LCO, 0.336 compared with 0.266. MatchMaker had higher LPO Spearman on all four endpoints. On held LDO scaffolds, cross-attention reached joint AUPRC 0.0259 against observed prevalence 0.01975 and returned zero measured joint positives among its first 20 positions. The LCO organoid screen remains an unmeasured hypothesis list. [Complete external scorecard](RESULTS.md)
 
 ## Sources
 
