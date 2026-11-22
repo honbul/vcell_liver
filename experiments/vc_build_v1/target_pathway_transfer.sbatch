@@ -18,6 +18,7 @@ case "$stage" in
   predict)
     args=(--core "$root/v0plus-runs/source-core-92aa482/core" --limore "$limore"
           --archive "$measured/LIMORE/final.parquet" --genomics "$measured/genomics"
+          --kernel-source "$run/registered_kernel.py"
           --priors "$root/v0plus-public-priors"
           --hallmark /mnt/S1/sdata/pubdata/Virtual_Cell/MSigDB/2026.1.Hs/h.all.v2026.1.Hs.symbols.gmt
           --targets "$root/external-code-v3/drug_targets.json"
