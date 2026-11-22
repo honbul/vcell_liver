@@ -167,6 +167,9 @@ def forecast(fit, query, rna, edges, targets, auxiliary):
     grams, _ = cell_kernels(train, held, edges, auxiliary, device=device)
     cell_kernel, cross = grams["full"]
     weights, response = training_grid(rows, train.index, drugs, device=device)
+    # Carry spectral projections and the loss in double precision on wider endpoint scales.
+    cell_kernel, cross, drug_kernel = (value.double() for value in (cell_kernel, cross, drug_kernel))
+    weights, response = weights.double(), response.double()
     repeated, support = training_repeats(rows, train.index, drugs)
     cell, query_basis = factors(cell_kernel, cross)
     drug = factors(drug_kernel, None)
