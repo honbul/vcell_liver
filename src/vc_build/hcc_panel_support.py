@@ -29,7 +29,7 @@ def coverage(panel, previously_scored, base, augmented, with_gdsc, donors):
     later = (exact & with_gdsc) - augmented - previously_scored
     data = {
         "registered_catalogue_drugs": len(panel), "exact_structures": len(exact),
-        "previously_scored_drugs": len(previously_scored), "full_hcc_minimum_model_count": donors,
+        "previously_scored_drugs": len(previously_scored), "registered_hcc_model_count": donors,
         "match_with_updated_core": len(exact & base),
         "extra_unscored_supported_by_1129_panel": sorted(new),
         "extra_unscored_supported_by_gdsc_candidate": sorted(later),
