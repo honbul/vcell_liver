@@ -10,6 +10,7 @@ Research use on public human liver pharmacogenomics and FDA label data. The froz
 | ChemBERTa-2 77M-MLM | Pinned DeepChem model, mean of token states excluding special and padding tokens | Paper reports PubChem structures. DILI drugs and assay compounds can be present as structures. Record-level training membership has not been established. Gated access is disabled in the offline extractor. |
 | MoLFormer XL | IBM author code at `7b12d946c181a37f6012b9dc3b002275de070314`, same weight hash as the newer artifact. Masked pretrained pooled state with deterministic evaluation | Paper reports PubChem and ZINC. Target catalog structures may have been seen. The older author release matches Transformers 4.57. |
 | Uni-Mol no-H | Pinned author checkpoint. RDKit ETKDGv3 with seed 42, UFF relaxation, CLS state. Failed 3D configurations remain explicit. | Molecular 3D pretraining exposure may include registered chemistry. Known scaffold independence applies to supervised assay labels. |
+| CLAMP molecule encoder | Official ICML 2023 checkpoint, 768 features. Chiral feature-Morgan counts and RDKit path counts are folded to a common 8,192-bin space and transformed with log1p. The published layer-normalized molecule network reads those features offline. | PubChem bioassay-aligned pretraining can include chemical identity and pharmacology associations. Assay-level and label overlap with the benchmark are unverified. [Original paper and pretraining data](https://proceedings.mlr.press/v202/seidl23a.html) |
 | Rank-HVG | Within-profile fractional ranks; 512 high-variance features selected in fit-only data | Basal gene axes fixed from the source bundle; selection recomputed inside inner and outer training roles. |
 | Pathway and TF activities | Fit-standardized ranks projected onto PROGENy top 100 weighted targets, Hallmark memberships and DoRothEA confidence A–C signed targets | Curated priors reflect literature and gene expression measurements. Signed projections run without fitting pathway effects to drug labels. |
 | scGPT whole-human | Author vocabulary and checkpoint. Nonzero input genes, per-profile 51-bin expression, deterministic ID-seeded subsampling to 1199 features, final CLS with unit norm | Human CELLxGENE pretraining catalog can overlap public atlas source studies. CCLE/TCGA membership of these inputs is unverified. For bulk inputs, CLS is an extrapolation to profile-level measurements. |
@@ -17,7 +18,7 @@ Research use on public human liver pharmacogenomics and FDA label data. The froz
 | STRING human v12 | Clustered HGNC aliases; combined score ≥700; rank-96 embedding of the normalized symmetric graph | Uses public molecular associations and includes literature-derived evidence. |
 | ESM-2 t12 35M | Reviewed Homo sapiens UniProt canonical protein sequence, mean of non-special residue states. Long sequences are tiled and pooled by represented residue count. | UR50D-like protein pretraining can include homologs or exact sequences. This benchmark is conditional on public protein sequences and audits supervised labels separately. |
 
-ChemBERTa-2 and scGPT checkpoint distribution cards leave separate weights-license fields unspecified. Their weights are fetched from author-linked resources for the research evaluation. Record-level exposure to CCLE, ChEMBL and TCGA is unknown unless listed in the pinned release source. Model access, encoder execution and external score are checked separately.
+ChemBERTa-2 and scGPT checkpoint distribution cards leave separate weights-license fields unspecified. Their weights are fetched from author-linked resources for the research evaluation. The CLAMP weight terms permit this evaluation with attribution to the original authors. Record-level exposure to CCLE, ChEMBL and TCGA is unknown unless listed in the pinned release source. [CLAMP weight terms](https://huggingface.co/scikit-fingerprints/clamp/blob/4b919da99ef1cc25755506ddf2197732154d5afe/LICENSE)
 
 ## Benchmark scope
 
@@ -34,6 +35,7 @@ Run from a checkout with a Python environment matching the experiment runtime.
 
 ```bash
 python -m vc_fm_bench.embed --help
+python -m vc_fm_bench.conformers --help
 python -m vc_fm_bench.transcriptome --help
 python -m vc_fm_bench.prepare --help
 python -m vc_fm_bench.tasks --help

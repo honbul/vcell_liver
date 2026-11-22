@@ -1,5 +1,6 @@
 """Fit matched heads, freeze predictions and score in a separate invocation."""
 import argparse
+import fcntl
 import hashlib
 import json
 from pathlib import Path
@@ -242,6 +243,7 @@ def predict(args):
         write_json(out / "receipt.json", {
             "predictions": file_record(path), "panel": file_record(args.panel / "receipt.json"),
             "task": contract["task"], "selection": selected,
+            "seed": args.seed,
             "columns": sorted(set(predictions) - set(query)),
             "feature_rows_original": original_query_rows, "predictions_rows": len(query),
             "train_rows": len(train), "validation_rows": len(valid),
@@ -296,6 +298,30 @@ def score(args):
         })
 
 
+def run_exclusively(args):
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    claim = args.output.with_name(f".{args.output.name}.lock")
+    with claim.open("a+") as lock:
+        # A queued family batch can finish a panel before a longer batch
+        # reaches that panel. Run one fit or score per artifact directory.
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        if not args.output.exists():
+            (predict if args.command == "predict" else score)(args)
+            return
+        receipt = json.loads((args.output / "receipt.json").read_text())
+        if args.command == "predict":
+            verify_record(args.panel / "receipt.json", receipt["panel"])
+            verify_record(args.output / "predictions.parquet", receipt["predictions"])
+            registered = set(receipt["features"]["chemistry"])
+            if registered != set(args.chem_models) or receipt.get("seed", 20261122) != args.seed:
+                raise ValueError("Existing predictions use a different representation set or seed")
+        else:
+            verify_record(args.predictions / "receipt.json", receipt["frozen_prediction_receipt"])
+            labels = args.external or (args.panel / "outcomes.parquet")
+            verify_record(labels, receipt["labels"])
+            verify_record(args.output / "metrics.json", receipt["metrics"])
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
@@ -314,11 +340,7 @@ def main():
         evaluation.add_argument(f"--{flag}", type=Path, required=True)
     evaluation.add_argument("--external", type=Path)
     evaluation.add_argument("--prepared", type=Path)
-    args = parser.parse_args()
-    if args.command == "predict":
-        predict(args)
-    else:
-        score(args)
+    run_exclusively(parser.parse_args())
 
 
 if __name__ == "__main__":
