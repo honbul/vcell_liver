@@ -183,7 +183,10 @@ def agreements(frame, candidate, reference, comparison=None):
 def repeat_agreement(left, right, rna_ids):
     matched = left.merge(right, on="model_id", suffixes=("_left", "_right"), validate="one_to_one")
     repeated = np.isclose(matched.tc_left, matched.tc_right, rtol=0, atol=1e-8)
-    mass = (matched.control_left.eq(matched.control_right) & matched.treatment_left.eq(matched.treatment_right))
+    weight_columns = ["control_left", "control_right", "treatment_left", "treatment_right"]
+    mass = (matched[weight_columns].notna().all(axis=1)
+            & matched.control_left.eq(matched.control_right)
+            & matched.treatment_left.eq(matched.treatment_right))
     result = {}
     for name, mask in (("all", np.ones(len(matched), dtype=bool)), ("with_rna", matched.model_id.isin(rna_ids)),
                        ("nonidentical", ~repeated)):

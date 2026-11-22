@@ -78,3 +78,23 @@ def test_bulk_counts_gene_lengths_use_mapped_symbols_and_keep_missing(tmp_path):
     lengths.write_text("gene\tlength_bp\nA\t0\nB\t4000\n")
     with pytest.raises(ValueError, match="finite positive"):
         read_expression(counts, "bulk_counts", mapping, lengths)
+
+
+def test_pdx_repeat_distinguishes_reported_arm_weights_from_missing_values():
+    from vc_build.shuen_pdx import repeat_agreement
+
+    columns = ["model_id", "tc", "control", "treatment"]
+    left = pd.DataFrame([
+        ("A", 0.2, 1.0, 0.2),
+        ("B", 0.3, None, None),
+        ("C", 0.4, None, None),
+    ], columns=columns)
+    right = pd.DataFrame([
+        ("A", 0.2, 1.0, 0.2),
+        ("B", 0.3, None, None),
+        ("C", 0.5, None, None),
+    ], columns=columns)
+    results = repeat_agreement(left, right, {"A", "B"})
+    assert results["all"]["identical_tc"] == 2
+    assert results["all"]["identical_reported_arm_weights"] == 1
+    assert results["nonidentical"]["models"] == 1
