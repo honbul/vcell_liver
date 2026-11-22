@@ -15,6 +15,7 @@ from .limore_corrected import OBSERVATIONS
 from .yang_hcc_external import require_hash
 
 REGISTRY = "bd27132354dcf5537b717227099147514851ec0218d0c96920ec4c8a00a96a4c"
+LIMORE_ROWS = "f6a9ae3e30ca5200b02b7a69b415dd8ef643e909c7a3585686cee4dca690fbe3"
 WONG_BOOK = "724e0276c474c8afbdacb734c291f53e0399a77a4e473b5ae57751dd637841e7"
 EXPECTED = {"LIMORE": 50, "LICOB": 38, "Wong": 10}
 REPEATS = 2000
@@ -103,7 +104,7 @@ def comparisons(matrices, labels):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for key in ("inputs", "limore", "licob", "wong", "out"):
+    for key in ("inputs", "limore", "limore-rows", "licob", "wong", "out"):
         parser.add_argument(f"--{key}", type=Path, required=True)
     args = parser.parse_args()
     if args.out.exists():
@@ -111,6 +112,7 @@ def main():
     if registered(args.inputs) != REGISTRY:
         raise ValueError("Unregistered HCC study panel")
     require_hash(args.limore, OBSERVATIONS)
+    require_hash(args.limore_rows, LIMORE_ROWS)
     require_hash(args.wong, WONG_BOOK)
     licob = pd.read_parquet(args.inputs / "LICOB.parquet")
     wong = pd.read_parquet(args.inputs / "Wong.parquet")
@@ -119,9 +121,13 @@ def main():
     ).source_compound_label.sort_index()
     if len(names) != 21 or set(names.index) != set(licob.compound_id):
         raise ValueError("Unexpected registered 21-parent panel")
-    limore = pd.read_parquet(
-        args.limore, columns=["cell_id", "lineage_group", "compound_id", "endpoint_value"],
-    )
+    limore_rows = pd.read_parquet(
+        args.limore_rows, columns=["record_id", "cell_id", "cell_group", "compound_id"],
+    ).rename(columns={"cell_group": "lineage_group"})
+    limore_values = pd.read_parquet(args.limore, columns=["record_id", "endpoint_value"])
+    limore = limore_rows.merge(limore_values, on="record_id", how="outer", validate="one_to_one")
+    if len(limore) != 3400 or limore.isna().any(axis=None):
+        raise ValueError("LIMORE labels disagree with registered 50-line support")
     frames = {
         "LIMORE": limore,
         "LICOB": recipient_outcomes("LICOB", licob, args.licob),
@@ -130,7 +136,7 @@ def main():
     matrices = {name: matrix(frame, names.index, name) for name, frame in frames.items()}
     publish_json(args.out, comparisons(matrices, names.tolist()) | {
         "cohort_groups": EXPECTED, "bootstrap_draws": REPEATS, "panel": names.to_dict(),
-        "input_hashes": {"registry": REGISTRY, "LIMORE": OBSERVATIONS,
+        "input_hashes": {"registry": REGISTRY, "LIMORE": OBSERVATIONS, "LIMORE_rows": LIMORE_ROWS,
                          "LICOB": sha256(args.licob), "Wong": WONG_BOOK},
     })
 
