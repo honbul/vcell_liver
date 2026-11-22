@@ -1,0 +1,57 @@
+{
+  "allowed_formats": [
+    "bulk_tpm",
+    "bulk_counts",
+    "bulk_log2_tpm_plus_1"
+  ],
+  "clinical_response": false,
+  "cohort": "YANG2024_HCC",
+  "data_revision": "single-agent-corrected-70",
+  "default_model": "v0plus_inductive",
+  "drug_registry_sha256": "14b0aabd9b4c779a1fd5d53767bf81e92c4c33daf1f13593b08365b50954614f",
+  "endpoint": "screen_aligned_sensitivity_score_higher_is_more_sensitive",
+  "external_compounds": 5,
+  "external_gate_passed": false,
+  "external_score_sha256": "61acdfb63552ef0c14fcfb0a9002c26fa76caeae9357c1d651b90b127b329fc0",
+  "inductive_query": true,
+  "models": {
+    "drug_mean": {
+      "multiplier": 1.0,
+      "path": "drug_mean.joblib",
+      "sha256": "b5e20fc6fb5769ed097b88ff68d2755aedf50d8453308ab91d615cba7c53fbbf"
+    },
+    "drug_ridge": {
+      "multiplier": 1.0,
+      "path": "drug_ridge.joblib",
+      "sha256": "e139a8fad8ff291776e7307b68baa23e8d0ca1f4d1676d399b8bcf8047dc5b3d"
+    },
+    "v0plus_inductive": {
+      "multiplier": 0.5,
+      "path": "v0plus_inductive.joblib",
+      "sha256": "b0dec1b0db8c9ad8fa067b9ac2b9efe40dfea1ddcd475cf8bd368ae5c12d9ec2"
+    }
+  },
+  "prediction_freeze_sha256": "00c685ec949ed8c8abe4c135b390c56c2f24b9be8d193ed19074f00129094d79",
+  "refit_components_sha256": {
+    "linear": "9b0e4c14435f1731d670b18adaa3b44dd618312370a5e72ee3ab3ec2c74d7744",
+    "molecular": "b28899e4591d7f15e2034f1b9c8c93f466ab4834c50db2943cfbcaca336e306b"
+  },
+  "refit_max_abs_errors": {
+    "drug_mean": 0.0,
+    "drug_ridge": 0.0,
+    "v0plus_inductive": 0.0
+  },
+  "registered_compounds": 70,
+  "schema_version": 1,
+  "settings_sha256": "9fb42665b3d5bce1757bab31f341c256bc2f9bcf5434e6239c48c47dd3be3474",
+  "source_input_sha256": "a9574193e4489a9805ac197de6b9f7dfaa28e5de682e33fb219b2888640f5124",
+  "source_panels": {
+    "CTRPv2": 31090,
+    "GDSC2": 24839,
+    "PRISM20Q2": 10749
+  },
+  "source_rows": 66678,
+  "supported_axis": "exact parent and pretreatment bulk RNA-seq from research cultures",
+  "three_dimensional_validation": "Yang tested five of the 70 supported compounds",
+  "version": "V0+"
+}
