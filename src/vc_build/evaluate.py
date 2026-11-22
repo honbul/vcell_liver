@@ -203,7 +203,7 @@ def score(joined, *, endpoint_direction, rank_only=False, comparisons=()):
     if not cells.empty:
         for track, group in cells.groupby("track", sort=True):
             for candidate, baseline in comparisons:
-                for metric in ("mae", "ndcg_at_5", "spearman"):
+                for metric in ("mae", "ndcg_at_5", "top5_overlap", "spearman"):
                     result = paired_gain(group, candidate, baseline, metric)
                     if result is not None:
                         contrasts.append(dict(track=track, candidate=candidate, baseline=baseline, metric=metric, **result))

@@ -1,5 +1,7 @@
 # V0 model card
 
+This card describes the stage-0 checkpoint. The public, wet-lab-free follow-up uses the [V0+ protocol](V0PLUS_PROTOCOL.md).
+
 ## Registered use
 
 Offline research prototype for prioritizing candidates in the LIMORE registered panel given bulk adult HCC cell-line baseline RNA. The same request returns the raw 72-hour Activity Area prediction and an empirical development interval. Larger values indicate greater measured assay activity. Report the original source curve summary and dose-window protocol. The release supports the published 88-compound registry and explicitly declines unsupported concentrations, assay/time, chemistry, input coverage or culture format. Hepatoblastoma and uncertain-age lines are excluded from the training cohort. Basal RNA is the public cell-model profile.

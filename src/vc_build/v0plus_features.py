@@ -45,6 +45,7 @@ class ExpressionFeatures:
     center: np.ndarray
     scale: np.ndarray
     rank: bool
+    raw_median: np.ndarray
 
     @classmethod
     def fit(cls, frame, edges, targets, *, n_variable, rank):
@@ -65,8 +66,9 @@ class ExpressionFeatures:
         weights /= np.sqrt(np.square(weights).sum(axis=0))
         projected = np.column_stack((values[:, indices], values @ weights))
         columns = [genes[i] for i in indices] + network.columns.tolist()
+        raw_median = np.median(frame[genes].to_numpy(dtype=np.float32), axis=0)
         return cls(genes, columns, indices, weights, projected.mean(axis=0),
-                   np.maximum(projected.std(axis=0), 1e-5), rank)
+                   np.maximum(projected.std(axis=0), 1e-5), rank, raw_median)
 
     def transform(self, frame):
         missing = set(self.genes) - set(frame.columns)
