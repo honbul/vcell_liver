@@ -19,3 +19,5 @@ PYTHONPATH=src python -m vc_build.v0plus_cli predict \
 재현 환경은 Python 3.10.12, PyTorch 2.8.0, scikit-learn 1.6.1, NumPy 2.2.6, pandas 2.2.3, SciPy 1.15.3, RDKit 2025.03.5, joblib 1.6.0이다. `33290`·`33291`에서 재적합한 세 방법 각각의 1,115개 Yang RNA 예측은 최초 동결본과 수치가 정확히 일치했다. `33292`가 파일별 SHA-256과 70약물 등록부를 묶었다. 패키지 생성과 CLI 재현은 당시의 외부 채점표와 예측을 참조하며 원래 AUC를 추가로 읽지 않았다. [배포 영수증](v0plus_corrected_release_receipt.json)
 
 독립 CPU 작업 `33294`가 실제 RNA 세 샘플에서 각 모델의 210개 예측을 생성했다. 모델별 15개 기존 동결 예측과의 최대 절대 차이는 V0+ `2.21e-5`, Ridge `2.24e-8`, 약물 평균 `2.22e-16`이었다. 발현이 모두 0인 입력의 70개 조합과 미등록 약물 네 요청은 보류 상태로 반환했다. 최초 `33293`은 Ridge CPU 배치에 전체 재적합용 `1e-9`를 적용해 중단했다. 작은 배치의 float32 차이를 반영해 CPU Ridge의 허용치만 `1e-6`으로 분리하고 같은 체크포인트로 검증을 완료했다. [CPU 재현 영수증](v0plus_corrected_replay_receipt.json)
+
+후속 CPU 실행 `33315`에서는 기존 LIMORE 50계통·68약물의 3,400개 조합을 세 모델이 모두 예측했다. 동결·별도 채점한 V0+의 약물 내 Spearman은 .137, 세포 내 Spearman은 .549, NDCG@5는 .748이었다. Ridge는 각각 .242, .515, .731이었다. 이는 이미 살펴본 코호트의 사후 기술 평가다. [LIMORE 정정 및 배포판 성적](LIMORE_CORRECTED_RESULTS.md)
