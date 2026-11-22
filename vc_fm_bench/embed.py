@@ -14,7 +14,7 @@ os.environ["TRANSFORMERS_OFFLINE"] = "1"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 os.environ.setdefault("USE_TF", "0")
 
-MODELS = ("ecfp4", "chemberta2", "molformer", "unimol", "esm2")
+MODELS = ("ecfp4", "chemberta2", "molformer", "unimol", "esm2", "clamp")
 
 
 def read_queries(path, value_column):
@@ -113,7 +113,7 @@ def protein_embeddings(checkpoint, sequences, device, batch_size):
     return (series / np.asarray(list(map(len, sequences)))[:, None]).astype(np.float32)
 
 
-def unimol_embeddings(checkpoint, queries, device, batch_size):
+def unimol_embeddings(checkpoint, queries, device, batch_size, conformers=None):
     # Author package constructs an ETKDG conformer and uses a zero-coordinate
     # fallback on conformer errors. Precompute conformers here to exclude failures.
     from rdkit import Chem
@@ -121,6 +121,9 @@ def unimol_embeddings(checkpoint, queries, device, batch_size):
     os.environ["UNIMOL_WEIGHT_DIR"] = str(checkpoint)
     from unimol_tools import UniMolRepr
 
+    if conformers is not None:
+        keys, atoms, coordinates, errors = conformers
+        return keys, unimol_vectors(UniMolRepr, atoms, coordinates, device, batch_size), errors
     inputs, keys, errors = [], [], {}
     for key, smiles in queries:
         mol = Chem.MolFromSmiles(smiles)
@@ -137,12 +140,17 @@ def unimol_embeddings(checkpoint, queries, device, batch_size):
                        mol.GetConformer().GetPositions()))
     if not inputs:
         raise ValueError("No valid 3D conformers")
-    model = UniMolRepr(
+    atoms, coordinates = zip(*inputs)
+    return keys, unimol_vectors(UniMolRepr, list(atoms), list(coordinates), device, batch_size), errors
+
+
+def unimol_vectors(factory, atoms, coordinates, device, batch_size):
+    model = factory(
         data_type="molecule", remove_hs=True, use_cuda=device.startswith("cuda"),
         batch_size=batch_size, model_name="unimolv1",
     )
-    result = model.get_repr({"atoms": [a for a, _ in inputs], "coordinates": [c for _, c in inputs]})
-    return keys, np.asarray(result["cls_repr"], dtype=np.float32), errors
+    result = model.get_repr({"atoms": atoms, "coordinates": coordinates})
+    return np.asarray(result["cls_repr"], dtype=np.float32)
 
 
 def main():
@@ -152,6 +160,7 @@ def main():
     parser.add_argument("--checkpoint", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", choices=("cuda", "cpu"), default="cuda")
+    parser.add_argument("--unimol-conformers", type=Path)
     parser.add_argument("--batch-size", type=int, default=32)
     args = parser.parse_args()
     gpu = args.device == "cuda" and args.model != "ecfp4"
@@ -175,12 +184,21 @@ def main():
     if args.model == "ecfp4":
         vectors = ecfp4(values)
     elif args.model == "unimol":
+        conformers = None
+        if args.unimol_conformers:
+            from .conformers import checked_conformers
+
+            conformers = checked_conformers(args.unimol_conformers, args.input, queries)
         keys, vectors, invalid_conformers = unimol_embeddings(
-            args.checkpoint, queries, args.device, args.batch_size,
+            args.checkpoint, queries, args.device, args.batch_size, conformers,
         )
         errors.update(invalid_conformers)
     elif args.model == "esm2":
         vectors = protein_embeddings(args.checkpoint, values, args.device, args.batch_size)
+    elif args.model == "clamp":
+        from .clamp import embeddings
+
+        vectors = embeddings(args.checkpoint, values, args.device, args.batch_size)
     else:
         vectors = transformer_embeddings(
             args.model, args.checkpoint, values, args.device, args.batch_size,
@@ -217,6 +235,7 @@ def main():
             "vram_peak_allocated_bytes": torch.cuda.max_memory_allocated() if gpu else 0,
             "vram_peak_reserved_bytes": torch.cuda.max_memory_reserved() if gpu else 0,
             "failures": errors,
+            "conformer_receipt": file_record(args.unimol_conformers / "receipt.json") if args.unimol_conformers else None,
         })
 
 

@@ -302,7 +302,7 @@ def main():
     fit = commands.add_parser("predict")
     for flag in ("panel", "chem", "output"):
         fit.add_argument(f"--{flag}", type=Path, required=True)
-    fit.add_argument("--chem-models", nargs="+", default=["ecfp4", "chemberta2", "molformer", "unimol"])
+    fit.add_argument("--chem-models", nargs="+", default=["ecfp4", "chemberta2", "molformer", "unimol", "clamp"])
     fit.add_argument("--cell", type=Path)
     fit.add_argument("--cell-models", nargs="*", default=["scgpt", "geneformer"])
     fit.add_argument("--rna", type=Path, nargs="+")
