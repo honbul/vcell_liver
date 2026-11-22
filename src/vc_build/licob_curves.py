@@ -42,6 +42,7 @@ def grid_values(dose, viability, *, minimum, second, maximum):
 
 def extract(args):
     table, digest, quality = extract_curves(args, grid_values, DOSES)
+    table = table.astype({column: "float64" for column in DOSES})
     if digest != DOSE_REGISTRATION or not np.isfinite(table[DOSES].to_numpy()).all():
         raise ValueError("Dose grid must be complete and match the fixed registration")
     with new_output(args.run / args.assay) as output:
