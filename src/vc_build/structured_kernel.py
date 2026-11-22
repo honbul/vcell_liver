@@ -40,6 +40,15 @@ class Standardization:
 
 
 @dataclass
+class RankProjection:
+    center: np.ndarray
+    axes: np.ndarray
+
+    def apply(self, ranks):
+        return ranks - ((ranks - self.center) @ self.axes.T) @ self.axes
+
+
+@dataclass
 class CellKernelBasis:
     genes: pd.Index
     reference: tuple
@@ -51,6 +60,7 @@ class CellKernelBasis:
     pathway_weights: sparse.csr_matrix
     auxiliary_models: tuple
     indices: np.ndarray
+    projection: RankProjection | None = None
 
     def cpu(self):
         return replace(self, reference=tuple(x.cpu() for x in self.reference),
@@ -60,6 +70,8 @@ class CellKernelBasis:
         x, p, u = self.reference
         device = x.device
         raw = ranked_expression(query[self.genes])
+        if self.projection is not None:
+            raw = self.projection.apply(raw)
         q = self.sequence.apply(raw, device)
         s = self.pathway.apply(raw @ self.pathway_weights, device)
         proxy = auxiliary_features(self.auxiliary_models, auxiliary_inputs(q, s, self.indices))
@@ -79,10 +91,14 @@ def auxiliary_features(models, values):
     return np.concatenate([model.predict(values).reshape(len(values), -1) for model in models], axis=1)
 
 
-def fit_cell_kernels(fit, signatures, auxiliary, *, device):
+def fit_cell_kernels(fit, signatures, auxiliary, *, device, projection_axes=None):
     """Fit the reusable expression basis and return the training Gram matrices."""
     genes = fit.columns
     raw = ranked_expression(fit)
+    projection = None
+    if projection_axes is not None:
+        projection = RankProjection(raw.mean(axis=0), projection_axes)
+        raw = projection.apply(raw)
     sequence = Standardization.fit(raw, 0.05)
     x = sequence.apply(raw, device)
     rna_linear = dot_kernel(x, x)
@@ -131,7 +147,7 @@ def fit_cell_kernels(fit, signatures, auxiliary, *, device):
     aux = Standardization.fit(proxy, 0.005)
     u = aux.apply(proxy, device)
     basis = CellKernelBasis(genes, (x, p, u), energy, scale, sequence, pathway, aux,
-                            weights, tuple(models), selected)
+                            weights, tuple(models), selected, projection)
     enriched = 0.7 * rna + 0.2 * dot_kernel(p, p) + 0.1 * dot_kernel(u, u)
     return basis, {"rna": rna, "full": enriched}
 
