@@ -45,6 +45,7 @@ EXACT = "pdo_joint_exact_parent"
 ARMS = (COMMON, PRIMARY, POOLED, SHUFFLED, EXACT)
 PDO_MASS = 100.
 PDO_DOMAIN_VARIANCE = 1.
+LITERATURE_LABELS = {"GEM": "S1714", "PTX": "S1150", "OXA": "S1224", "IRI": "S2217", "5-FU": "S1209"}
 
 
 def formula_counts(formula):
@@ -111,7 +112,10 @@ def register(args):
     catalog = chemistry(args.data, assets)
     eligible = catalog[catalog.status.eq("eligible")].set_index("catalogue")
     meta = pd.read_excel(args.data / "data1.xlsx", header=1)
-    auc = pd.read_excel(args.data / "data8.xlsx", header=1).set_index("Drug list", verify_integrity=True)
+    auc = pd.read_excel(args.data / "data8.xlsx", header=1)
+    # Data 8 abbreviates the five chemotherapies identified by product code in Data 7.
+    auc = auc.assign(catalogue=auc["Drug list"].replace(LITERATURE_LABELS))
+    auc = auc.drop(columns="Drug list").set_index("catalogue", verify_integrity=True)
     expr = pd.read_csv(args.data / "rna.txt.gz", sep="\t").set_index("GeneSymbol", verify_integrity=True).T
     with gzip.open(args.data / "series.soft.gz", "rt") as handle:
         titles = {line.split(" = ", 1)[1].strip() for line in handle if line.startswith("!Sample_title = ")}
