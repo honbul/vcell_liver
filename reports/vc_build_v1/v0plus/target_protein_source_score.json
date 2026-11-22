@@ -1,0 +1,2632 @@
+{
+  "forecast_sha256": {
+    "CTRPv2-0": "de99621628b3b3e6065b019dc7c20a4bc84f02c279ad9a381cf67f9eed3bc0da",
+    "CTRPv2-1": "fa5c80c4fdf1199e6ca640ab1526289fbb10634f6e42b40467b1b1ff90f6e909",
+    "CTRPv2-2": "5fda37d7ef766c208206b369c30bc401c441a7eb73f4e97cf00dd7df30e90357",
+    "GDSC2-0": "9588e35432997b149a3f67f48ac41d5fabb40fc0894f4a2b98085969e15a91de",
+    "GDSC2-1": "3fd87b83d9c6065cadeeb6933e68fc5ed57168bc6fda3f68e9f14eb13bc37667",
+    "GDSC2-2": "b757c2fc7bd6a52a4585d61915eadab88cd4b06f8103dbd3a44e45167f1ba6f2",
+    "PRISM20Q2-0": "a29872cb6852910a379f7362c83cbb84915ec1aee22006f0b0766606236f3769",
+    "PRISM20Q2-1": "569d4ea7d616660c4e498f8dd79591ff3f959b6bcf45a5a1992e8d7921c719ed",
+    "PRISM20Q2-2": "1608215963d19ca844df9aa61f4e4bc50e9f3e3f69b43d95ba5647c401aaa77d",
+    "pooled-0": "0d68b4f6ad38d6957885b8e660719298debfa9239a5f1b7f32097ca6c2832357",
+    "pooled-1": "a02a8c97456770dbf7090b3eb2505bb7330937f9d27741069b4032fa2e97cde2",
+    "pooled-2": "ec2980c93b2f08ebeb73887637aa6a07a928f1a922744dec77b5088f5028640c"
+  },
+  "modes": {
+    "CTRPv2": {
+      "CTRPv2/CTRPv2_native_AUC": {
+        "across_cell_ci95": {
+          "drug_ridge": {
+            "pearson": [
+              0.009353080821062591,
+              0.04278434364363382
+            ],
+            "spearman": [
+              0.0023443928892975035,
+              0.0380949362424936
+            ]
+          },
+          "structured": {
+            "pearson": [
+              -0.005184893797126514,
+              0.008511985750831298
+            ],
+            "spearman": [
+              -0.008262485042001121,
+              0.005376185462341415
+            ]
+          },
+          "target_cis": {
+            "pearson": [
+              -0.0018953356381299852,
+              0.002978117142534059
+            ],
+            "spearman": [
+              -0.001928409624185013,
+              0.0035122919028870653
+            ]
+          },
+          "target_protein_shuffled": {
+            "pearson": [
+              -0.0006170771115716148,
+              0.005775836306678776
+            ],
+            "spearman": [
+              -0.000975862790390557,
+              0.006343343869208691
+            ]
+          }
+        },
+        "gates": {
+          "structured": false,
+          "target_cis": false,
+          "target_protein_shuffled": false
+        },
+        "groups": 718,
+        "metrics": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.006472265266793983,
+                0.002918478972661451
+              ],
+              "drugs": 35,
+              "gain": -0.0016411844349483243,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0058913706729303945,
+                0.00804834052967062
+              ],
+              "drugs": 35,
+              "gain": 0.001250322722474923,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0009468807481531198,
+                0.0026990953356619096
+              ],
+              "drugs": 35,
+              "gain": 0.0006391009505972415,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.001225374509040843,
+                0.0026083638325612732
+              ],
+              "drugs": 35,
+              "gain": 0.0005560479551754419,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.000392369891696092,
+                0.006645722147202165
+              ],
+              "drugs": 35,
+              "gain": 0.0023432618249925223,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.00013652700460538045,
+                0.00535579712253682
+              ],
+              "drugs": 35,
+              "gain": 0.0020582920759700477,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                0.007014551012479264,
+                0.0349207973899269
+              ],
+              "drugs": 35,
+              "gain": 0.020484276578398075,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                0.01146728759329074,
+                0.04123483748518247
+              ],
+              "drugs": 35,
+              "gain": 0.025408099026672848,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "drug_mean",
+              "n_drugs": 105,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "drug_ridge",
+              "n_drugs": 105,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.4031819965017838,
+              "within_drug_spearman": 0.3585457953523491
+            },
+            {
+              "method": "structured",
+              "n_drugs": 105,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.4273397728059818,
+              "within_drug_spearman": 0.38067125636569543
+            },
+            {
+              "method": "target_cis",
+              "n_drugs": 105,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.42803404757328123,
+              "within_drug_spearman": 0.3783909709801499
+            },
+            {
+              "method": "target_protein_additive",
+              "n_drugs": 105,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.42900654560937285,
+              "within_drug_spearman": 0.3791709072746866
+            },
+            {
+              "method": "target_protein_interaction",
+              "n_drugs": 105,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.4285900955284567,
+              "within_drug_spearman": 0.37903007193074717
+            },
+            {
+              "method": "target_protein_shuffled",
+              "n_drugs": 105,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.42653180345248665,
+              "within_drug_spearman": 0.37668681010575467
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0013435599329639143,
+                0.0038402322502420544
+              ],
+              "gain": 0.0011882953504744886,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.002370990237098536,
+                0.008507670850767313
+              ],
+              "gain": 0.002789400278939591,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                0.0005481066879454516,
+                0.004882730916311325
+              ],
+              "gain": 0.002652485057328069,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0015152269923191797,
+                0.001035911266992848
+              ],
+              "gain": -0.0002353751680183036,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0044630404463041895,
+                0.0022315202231520948
+              ],
+              "gain": -0.001115760111576214,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                5.010070477252382e-05,
+                0.001216829986695722
+              ],
+              "gain": 0.000630057441761811,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0015607790577470497,
+                0.0013682086351959443
+              ],
+              "gain": -8.224413799495789e-05,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0033472803347283087,
+                0.004184100418409888
+              ],
+              "gain": 0.0002789400278934151,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.000484782122036212,
+                0.0010739768853579748
+              ],
+              "gain": 0.00030926896386918035,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0016948560011039004,
+                0.0053718962447803185
+              ],
+              "gain": 0.001888813137203016,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0009762900976290123,
+                0.015620641562064677
+              ],
+              "gain": 0.007391910739190766,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.001342777784402699,
+                0.005834482725870624
+              ],
+              "gain": 0.002231938229332986,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 729,
+              "common_rows": 21458,
+              "covered_rows": 21458,
+              "lineages": 718,
+              "macro_ndcg_at_5": 0.7968287068539767,
+              "macro_spearman": 0.5008920574953256,
+              "macro_top5_overlap": 0.4934065934065935,
+              "method": "drug_mean",
+              "registered_rows": 21458,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 729,
+              "common_rows": 21458,
+              "covered_rows": 21458,
+              "lineages": 718,
+              "macro_ndcg_at_5": 0.8020384155145593,
+              "macro_spearman": 0.5760166869173196,
+              "macro_top5_overlap": 0.4989010989010989,
+              "method": "drug_ridge",
+              "registered_rows": 21458,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 729,
+              "common_rows": 21458,
+              "covered_rows": 21458,
+              "lineages": 718,
+              "macro_ndcg_at_5": 0.8028538081355416,
+              "macro_spearman": 0.575644985315381,
+              "macro_top5_overlap": 0.5038461538461538,
+              "method": "structured",
+              "registered_rows": 21458,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 729,
+              "common_rows": 21458,
+              "covered_rows": 21458,
+              "lineages": 718,
+              "macro_ndcg_at_5": 0.8041726400589599,
+              "macro_spearman": 0.5776802249282055,
+              "macro_top5_overlap": 0.5074175824175824,
+              "method": "target_cis",
+              "registered_rows": 21458,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 729,
+              "common_rows": 21458,
+              "covered_rows": 21458,
+              "lineages": 718,
+              "macro_ndcg_at_5": 0.8040642951306748,
+              "macro_spearman": 0.578813702172323,
+              "macro_top5_overlap": 0.506043956043956,
+              "method": "target_protein_additive",
+              "registered_rows": 21458,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 729,
+              "common_rows": 21458,
+              "covered_rows": 21458,
+              "lineages": 718,
+              "macro_ndcg_at_5": 0.8039299806756854,
+              "macro_spearman": 0.5783065262926732,
+              "macro_top5_overlap": 0.5063186813186813,
+              "method": "target_protein_interaction",
+              "registered_rows": 21458,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 729,
+              "common_rows": 21458,
+              "covered_rows": 21458,
+              "lineages": 718,
+              "macro_ndcg_at_5": 0.8038990411092892,
+              "macro_spearman": 0.5779823847065717,
+              "macro_top5_overlap": 0.506043956043956,
+              "method": "target_protein_shuffled",
+              "registered_rows": 21458,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            }
+          ]
+        },
+        "observations": 21458
+      }
+    },
+    "GDSC2": {
+      "GDSC2/GDSC2_native_AUC": {
+        "across_cell_ci95": {
+          "drug_ridge": {
+            "pearson": [
+              0.005004195017546905,
+              0.03462287416695112
+            ],
+            "spearman": [
+              -0.0055464772965855905,
+              0.028961392113828557
+            ]
+          },
+          "structured": {
+            "pearson": [
+              0.001724500896757786,
+              0.01502541393001017
+            ],
+            "spearman": [
+              -0.0025785537575923425,
+              0.01068689801010348
+            ]
+          },
+          "target_cis": {
+            "pearson": [
+              -0.002296990329391646,
+              0.0011270935734995831
+            ],
+            "spearman": [
+              -0.0022201087389371035,
+              0.0016729699681772004
+            ]
+          },
+          "target_protein_shuffled": {
+            "pearson": [
+              -0.0030900659467767706,
+              0.0019194060045152044
+            ],
+            "spearman": [
+              -0.0035502055099968094,
+              0.0022234292686791487
+            ]
+          }
+        },
+        "gates": {
+          "structured": false,
+          "target_cis": false,
+          "target_protein_shuffled": false
+        },
+        "groups": 713,
+        "metrics": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0019113995895000697,
+                0.009074071044893944
+              ],
+              "drugs": 29,
+              "gain": 0.0031588122741768665,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                0.0011204115680633444,
+                0.014352939538320647
+              ],
+              "drugs": 29,
+              "gain": 0.007445697156318357,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0014882732597173351,
+                0.0012144038068302918
+              ],
+              "drugs": 29,
+              "gain": -0.00021971359068089142,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0015473411024673068,
+                0.0004265222128747087
+              ],
+              "drugs": 29,
+              "gain": -0.0004724466097548544,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0023756225637835524,
+                0.0013782581311350057
+              ],
+              "drugs": 29,
+              "gain": -0.0005210598121792631,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0019545009723253488,
+                0.00117417155113527
+              ],
+              "drugs": 29,
+              "gain": -0.0003956090837629403,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0028946186370027442,
+                0.024547257029708724
+              ],
+              "drugs": 29,
+              "gain": 0.010205258638559951,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                0.005771309264467096,
+                0.03249145152100834
+              ],
+              "drugs": 29,
+              "gain": 0.018654459791609675,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "drug_mean",
+              "n_drugs": 87,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "drug_ridge",
+              "n_drugs": 87,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4357895531664304,
+              "within_drug_spearman": 0.3610582787996226
+            },
+            {
+              "method": "structured",
+              "n_drugs": 87,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4469983158017218,
+              "within_drug_spearman": 0.36810472516400583
+            },
+            {
+              "method": "target_cis",
+              "n_drugs": 87,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4549164595677949,
+              "within_drug_spearman": 0.3714832510288634
+            },
+            {
+              "method": "target_protein_additive",
+              "n_drugs": 87,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4548965110862118,
+              "within_drug_spearman": 0.37138332721445494
+            },
+            {
+              "method": "target_protein_interaction",
+              "n_drugs": 87,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.45444401295804016,
+              "within_drug_spearman": 0.3712635374381826
+            },
+            {
+              "method": "target_protein_shuffled",
+              "n_drugs": 87,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4548396220418031,
+              "within_drug_spearman": 0.3717845972503619
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                0.002265489393104689,
+                0.00788332352208775
+              ],
+              "gain": 0.005013481126958874,
+              "lineages": 713,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                0.001963534361851037,
+                0.01234221598877966
+              ],
+              "gain": 0.007012622720897532,
+              "lineages": 713,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                0.001312251838401303,
+                0.0057652771751124906
+              ],
+              "gain": 0.0035642666000625933,
+              "lineages": 713,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0013593053303956547,
+                0.0018572390735277417
+              ],
+              "gain": 0.00028600860098437764,
+              "lineages": 713,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.002244039270687338,
+                0.003927068723702853
+              ],
+              "gain": 0.0008415147265078415,
+              "lineages": 713,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0007220913865877046,
+                0.0011229650319807196
+              ],
+              "gain": 0.00020390726684277327,
+              "lineages": 713,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0017877439676019097,
+                0.0019909654629715
+              ],
+              "gain": 0.00015113175525571787,
+              "lineages": 713,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0016830294530154055,
+                0.005890603085554225
+              ],
+              "gain": 0.002244039270687337,
+              "lineages": 713,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0010177177193236963,
+                0.001395791504502575
+              ],
+              "gain": 0.0001897164992328837,
+              "lineages": 713,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.01983993552710667,
+                -0.009378349835458965
+              ],
+              "gain": -0.014804002747006773,
+              "lineages": 713,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.023281907433380378,
+                -0.005890603085554558
+              ],
+              "gain": -0.014866760168303628,
+              "lineages": 713,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.014908845570964674,
+                -0.006530187291971241
+              ],
+              "gain": -0.010687406057706794,
+              "lineages": 713,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 713,
+              "common_rows": 17031,
+              "covered_rows": 17031,
+              "lineages": 713,
+              "macro_ndcg_at_5": 0.658172126382414,
+              "macro_spearman": 0.36381190162323834,
+              "macro_top5_overlap": 0.3615708274894811,
+              "method": "drug_mean",
+              "registered_rows": 17031,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 713,
+              "common_rows": 17031,
+              "covered_rows": 17031,
+              "lineages": 713,
+              "macro_ndcg_at_5": 0.7248916937470251,
+              "macro_spearman": 0.4632133616429075,
+              "macro_top5_overlap": 0.44235624123422157,
+              "method": "drug_ridge",
+              "registered_rows": 17031,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 713,
+              "common_rows": 17031,
+              "covered_rows": 17031,
+              "lineages": 713,
+              "macro_ndcg_at_5": 0.7050742098730595,
+              "macro_spearman": 0.44896168898513816,
+              "macro_top5_overlap": 0.4204768583450211,
+              "method": "structured",
+              "registered_rows": 17031,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 713,
+              "common_rows": 17031,
+              "covered_rows": 17031,
+              "lineages": 713,
+              "macro_ndcg_at_5": 0.7098016823990335,
+              "macro_spearman": 0.452322048318358,
+              "macro_top5_overlap": 0.42664796633941093,
+              "method": "target_cis",
+              "registered_rows": 17031,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 713,
+              "common_rows": 17031,
+              "covered_rows": 17031,
+              "lineages": 713,
+              "macro_ndcg_at_5": 0.7104151796706405,
+              "macro_spearman": 0.45294718657715133,
+              "macro_top5_overlap": 0.42805049088359043,
+              "method": "target_protein_additive",
+              "registered_rows": 17031,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 713,
+              "common_rows": 17031,
+              "covered_rows": 17031,
+              "lineages": 713,
+              "macro_ndcg_at_5": 0.7100876910000186,
+              "macro_spearman": 0.45252595558520076,
+              "macro_top5_overlap": 0.4274894810659186,
+              "method": "target_protein_interaction",
+              "registered_rows": 17031,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 713,
+              "common_rows": 17031,
+              "covered_rows": 17031,
+              "lineages": 713,
+              "macro_ndcg_at_5": 0.7099365592447623,
+              "macro_spearman": 0.45233623908596793,
+              "macro_top5_overlap": 0.4252454417952314,
+              "method": "target_protein_shuffled",
+              "registered_rows": 17031,
+              "track": "GDSC2/GDSC2_native_AUC"
+            }
+          ]
+        },
+        "observations": 17031
+      }
+    },
+    "PRISM20Q2": {
+      "PRISM20Q2/PRISM20Q2_native_AUC": {
+        "across_cell_ci95": {
+          "drug_ridge": {
+            "pearson": [
+              -0.012166208310088166,
+              0.031030138285237173
+            ],
+            "spearman": [
+              -0.002302501854878477,
+              0.04834182369193846
+            ]
+          },
+          "structured": {
+            "pearson": [
+              -0.0038065926745141344,
+              0.020759793956154148
+            ],
+            "spearman": [
+              -0.01185886575679989,
+              0.015722943270138318
+            ]
+          },
+          "target_cis": {
+            "pearson": [
+              -0.003133289510063912,
+              0.003895808581394827
+            ],
+            "spearman": [
+              -0.0048928751692560585,
+              0.00480177510256718
+            ]
+          },
+          "target_protein_shuffled": {
+            "pearson": [
+              -0.005684783189317505,
+              0.0072916323525178605
+            ],
+            "spearman": [
+              -0.007633078954402392,
+              0.009457753579014228
+            ]
+          }
+        },
+        "gates": {
+          "structured": false,
+          "target_cis": false,
+          "target_protein_shuffled": false
+        },
+        "groups": 702,
+        "metrics": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.009279731143234254,
+                0.014719171499152436
+              ],
+              "drugs": 13,
+              "gain": 0.0019555206382581227,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.00033081803885778925,
+                0.020871957015776568
+              ],
+              "drugs": 13,
+              "gain": 0.009215130319390885,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0016523861158334729,
+                0.002131909446884561
+              ],
+              "drugs": 13,
+              "gain": -0.00013916782944267605,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0014902326227667025,
+                0.0029315443516835698
+              ],
+              "drugs": 13,
+              "gain": 0.0002808647275989061,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.002591330949984617,
+                0.0041598450808159595
+              ],
+              "drugs": 13,
+              "gain": 0.000466436573871911,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0024094910332508206,
+                0.002820898712089171
+              ],
+              "drugs": 13,
+              "gain": -3.0185147338866144e-05,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                0.013518115537483076,
+                0.03131036012298042
+              ],
+              "drugs": 13,
+              "gain": 0.021809132607523443,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -3.163479856706295e-05,
+                0.016986515210314444
+              ],
+              "drugs": 13,
+              "gain": 0.008208412080044525,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "drug_mean",
+              "n_drugs": 39,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "drug_ridge",
+              "n_drugs": 39,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.1360560506338555,
+              "within_drug_spearman": 0.13257578951076715
+            },
+            {
+              "method": "structured",
+              "n_drugs": 39,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.13504933239450911,
+              "within_drug_spearman": 0.15242940148003242
+            },
+            {
+              "method": "target_cis",
+              "n_drugs": 39,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.1439835979863011,
+              "within_drug_spearman": 0.15452408994773328
+            },
+            {
+              "method": "target_protein_additive",
+              "n_drugs": 39,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.14443737883344587,
+              "within_drug_spearman": 0.15413351912396792
+            },
+            {
+              "method": "target_protein_interaction",
+              "n_drugs": 39,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.1442644627139,
+              "within_drug_spearman": 0.15438492211829058
+            },
+            {
+              "method": "target_protein_shuffled",
+              "n_drugs": 39,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.14429464786123886,
+              "within_drug_spearman": 0.1539184855444187
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.002683844216355427,
+                0.0015521960851155123
+              ],
+              "gain": -0.0005446661042145529,
+              "lineages": 701,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0028530670470756636,
+                0.0027104136947220274
+              ],
+              "gain": 0.0,
+              "lineages": 701,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.004051211288889275,
+                0.003740351866921086
+              ],
+              "gain": -0.0002874493836229064,
+              "lineages": 701,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0019400311345938114,
+                0.00017367704031634758
+              ],
+              "gain": -0.0008406468519134291,
+              "lineages": 701,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.002567760342368053,
+                0.0002853067047073887
+              ],
+              "gain": -0.001141226818830332,
+              "lineages": 701,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0005171019559848528,
+                0.003690109679062057
+              ],
+              "gain": 0.0014848911361933226,
+              "lineages": 701,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0033692803154243304,
+                -0.0004777479812766097
+              ],
+              "gain": -0.0018857280904975848,
+              "lineages": 701,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.004564907275320998,
+                -0.0008559201141226103
+              ],
+              "gain": -0.002567760342368053,
+              "lineages": 701,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0032921450500618316,
+                0.0026717705266968684
+              ],
+              "gain": -0.00027171782401602673,
+              "lineages": 701,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0007844287986907866,
+                0.005719143807698727
+              ],
+              "gain": 0.0023982597272489414,
+              "lineages": 701,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.010556348074180603,
+                -0.00028530670470749975
+              ],
+              "gain": -0.0054208273894437164,
+              "lineages": 701,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.00014599554340480035,
+                0.014972147654608666
+              ],
+              "gain": 0.007268732169392278,
+              "lineages": 701,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 716,
+              "common_rows": 6939,
+              "covered_rows": 6939,
+              "lineages": 702,
+              "macro_ndcg_at_5": 0.8473125950947386,
+              "macro_spearman": 0.599609552823411,
+              "macro_top5_overlap": 0.7174825174825175,
+              "method": "drug_mean",
+              "registered_rows": 6939,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 716,
+              "common_rows": 6939,
+              "covered_rows": 6939,
+              "lineages": 702,
+              "macro_ndcg_at_5": 0.8380171754870532,
+              "macro_spearman": 0.5938602375747244,
+              "macro_top5_overlap": 0.7247552447552448,
+              "method": "drug_ridge",
+              "registered_rows": 6939,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 716,
+              "common_rows": 6939,
+              "covered_rows": 6939,
+              "lineages": 702,
+              "macro_ndcg_at_5": 0.8410841166779416,
+              "macro_spearman": 0.6006855290458625,
+              "macro_top5_overlap": 0.7197202797202796,
+              "method": "structured",
+              "registered_rows": 6939,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 716,
+              "common_rows": 6939,
+              "covered_rows": 6939,
+              "lineages": 702,
+              "macro_ndcg_at_5": 0.8414160514352277,
+              "macro_spearman": 0.5990445665839489,
+              "macro_top5_overlap": 0.7208391608391608,
+              "method": "target_cis",
+              "registered_rows": 6939,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 716,
+              "common_rows": 6939,
+              "covered_rows": 6939,
+              "lineages": 702,
+              "macro_ndcg_at_5": 0.8407557536990142,
+              "macro_spearman": 0.6015218395451999,
+              "macro_top5_overlap": 0.7194405594405594,
+              "method": "target_protein_additive",
+              "registered_rows": 6939,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 716,
+              "common_rows": 6939,
+              "covered_rows": 6939,
+              "lineages": 702,
+              "macro_ndcg_at_5": 0.8405832253870656,
+              "macro_spearman": 0.6004213477447338,
+              "macro_top5_overlap": 0.7197202797202796,
+              "method": "target_protein_interaction",
+              "registered_rows": 6939,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 716,
+              "common_rows": 6939,
+              "covered_rows": 6939,
+              "lineages": 702,
+              "macro_ndcg_at_5": 0.842431044739854,
+              "macro_spearman": 0.6007844201066322,
+              "macro_top5_overlap": 0.7222377622377623,
+              "method": "target_protein_shuffled",
+              "registered_rows": 6939,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            }
+          ]
+        },
+        "observations": 6939
+      }
+    },
+    "pooled": {
+      "CTRPv2/CTRPv2_native_AUC": {
+        "across_cell_ci95": {
+          "drug_ridge": {
+            "pearson": [
+              0.0005388997903513967,
+              0.02201179184912024
+            ],
+            "spearman": [
+              -0.005525948682321282,
+              0.01975943827440105
+            ]
+          },
+          "structured": {
+            "pearson": [
+              -0.0005390205105630022,
+              0.00870046898611199
+            ],
+            "spearman": [
+              -0.004551524058818709,
+              0.004904620213437273
+            ]
+          },
+          "target_cis": {
+            "pearson": [
+              -0.0020234902570830577,
+              0.0004118750453626414
+            ],
+            "spearman": [
+              -0.003382523835955037,
+              0.0002471878006165411
+            ]
+          },
+          "target_protein_shuffled": {
+            "pearson": [
+              -0.0015742199943303888,
+              0.0017588243871669439
+            ],
+            "spearman": [
+              -0.0031213292903228633,
+              0.0013637197087166242
+            ]
+          }
+        },
+        "gates": {
+          "structured": false,
+          "target_cis": false,
+          "target_protein_shuffled": false
+        },
+        "groups": 720,
+        "metrics": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0030062250237973204,
+                0.0030139485494393207
+              ],
+              "drugs": 49,
+              "gain": -1.649851608755309e-05,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                0.00020353837433568763,
+                0.008425023466063252
+              ],
+              "drugs": 49,
+              "gain": 0.003882689283612712,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0029821444811812714,
+                -0.000336836447417393
+              ],
+              "drugs": 49,
+              "gain": -0.0015430156086268538,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.001615418679412704,
+                5.2276195288021545e-05
+              ],
+              "drugs": 49,
+              "gain": -0.0007445854299564533,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0024248196278834435,
+                0.0003993304069043543
+              ],
+              "drugs": 49,
+              "gain": -0.00098765843377216,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0010282646318107579,
+                0.0011746382933998016
+              ],
+              "drugs": 49,
+              "gain": -8.689670634295075e-05,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0003065104191050441,
+                0.014758173081764485
+              ],
+              "drugs": 49,
+              "gain": 0.007084371210813958,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                0.003996638866866565,
+                0.017821183345515933
+              ],
+              "drugs": 49,
+              "gain": 0.010820321599967339,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "drug_mean",
+              "n_drugs": 147,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "drug_ridge",
+              "n_drugs": 147,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.4980354158449162,
+              "within_drug_spearman": 0.45137312058370477
+            },
+            {
+              "method": "structured",
+              "n_drugs": 147,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.5049730481612708,
+              "within_drug_spearman": 0.4584739903106062
+            },
+            {
+              "method": "target_cis",
+              "n_drugs": 147,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.50960032287484,
+              "within_drug_spearman": 0.4600005074031456
+            },
+            {
+              "method": "target_protein_additive",
+              "n_drugs": 147,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.5090390218235382,
+              "within_drug_spearman": 0.4585156842412613
+            },
+            {
+              "method": "target_protein_interaction",
+              "n_drugs": 147,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.5088557374448834,
+              "within_drug_spearman": 0.4584574917945186
+            },
+            {
+              "method": "target_protein_shuffled",
+              "n_drugs": 147,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.5089426341512265,
+              "within_drug_spearman": 0.4594451502282909
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0020955011197038077,
+                0.0010170491069159682
+              ],
+              "gain": -0.0005336176255685832,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.004741980474198273,
+                0.002789400278939924
+              ],
+              "gain": -0.001115760111576214,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0004453162312072767,
+                0.0023128389726555705
+              ],
+              "gain": 0.0009128276318752793,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0011994691143413561,
+                0.0001431682955484878
+              ],
+              "gain": -0.0005011329170849788,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.002510460251045954,
+                0.001394700139469962
+              ],
+              "gain": -0.0005578800557881625,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.00028229786329301285,
+                0.0007593573890574052
+              ],
+              "gain": 0.00023581223388746686,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0009495385902175496,
+                0.0005716917575014944
+              ],
+              "gain": -0.00016255698842826405,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.003765690376569042,
+                0.0015341701534170582
+              ],
+              "gain": -0.0011157601115761029,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.00013919312425303976,
+                0.0013266333518098556
+              ],
+              "gain": 0.0005456867842319468,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.00792615141101662,
+                -0.003367467840171978
+              ],
+              "gain": -0.005613843534548191,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.019668758716876997,
+                -0.005718270571827497
+              ],
+              "gain": -0.012552301255230769,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                0.0027751437970349735,
+                0.007860073616025821
+              ],
+              "gain": 0.005332121034359094,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 731,
+              "common_rows": 31050,
+              "covered_rows": 31050,
+              "lineages": 720,
+              "macro_ndcg_at_5": 0.8677147510705021,
+              "macro_spearman": 0.6756558068364076,
+              "macro_top5_overlap": 0.5637362637362637,
+              "method": "drug_mean",
+              "registered_rows": 31050,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 731,
+              "common_rows": 31050,
+              "covered_rows": 31050,
+              "lineages": 720,
+              "macro_ndcg_at_5": 0.8902973016675098,
+              "macro_spearman": 0.726686079846875,
+              "macro_top5_overlap": 0.5920329670329669,
+              "method": "drug_ridge",
+              "registered_rows": 31050,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 731,
+              "common_rows": 31050,
+              "covered_rows": 31050,
+              "lineages": 720,
+              "macro_ndcg_at_5": 0.885191248844669,
+              "macro_spearman": 0.7310233144227752,
+              "macro_top5_overlap": 0.5804945054945055,
+              "method": "structured",
+              "registered_rows": 31050,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 731,
+              "common_rows": 31050,
+              "covered_rows": 31050,
+              "lineages": 720,
+              "macro_ndcg_at_5": 0.8851688825186679,
+              "macro_spearman": 0.7317332481875424,
+              "macro_top5_overlap": 0.5799450549450549,
+              "method": "target_cis",
+              "registered_rows": 31050,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 731,
+              "common_rows": 31050,
+              "covered_rows": 31050,
+              "lineages": 720,
+              "macro_ndcg_at_5": 0.8847884785441035,
+              "macro_spearman": 0.7321378701443342,
+              "macro_top5_overlap": 0.5799450549450549,
+              "method": "target_protein_additive",
+              "registered_rows": 31050,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 731,
+              "common_rows": 31050,
+              "covered_rows": 31050,
+              "lineages": 720,
+              "macro_ndcg_at_5": 0.8846737152824585,
+              "macro_spearman": 0.7319666951732584,
+              "macro_top5_overlap": 0.5793956043956044,
+              "method": "target_protein_interaction",
+              "registered_rows": 31050,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 731,
+              "common_rows": 31050,
+              "covered_rows": 31050,
+              "lineages": 720,
+              "macro_ndcg_at_5": 0.8848251613964785,
+              "macro_spearman": 0.7314108582789329,
+              "macro_top5_overlap": 0.5804945054945054,
+              "method": "target_protein_shuffled",
+              "registered_rows": 31050,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            }
+          ]
+        },
+        "observations": 31050
+      },
+      "GDSC2/GDSC2_native_AUC": {
+        "across_cell_ci95": {
+          "drug_ridge": {
+            "pearson": [
+              -0.024587439027403554,
+              0.009055644659976483
+            ],
+            "spearman": [
+              -0.033158516548266445,
+              0.006464675958812582
+            ]
+          },
+          "structured": {
+            "pearson": [
+              0.0021504687824303844,
+              0.012059876004770282
+            ],
+            "spearman": [
+              -0.0022086399601300025,
+              0.007430140164293559
+            ]
+          },
+          "target_cis": {
+            "pearson": [
+              -0.001668418133808732,
+              0.0006276852778219047
+            ],
+            "spearman": [
+              -0.002363587386090079,
+              0.0006392373617540936
+            ]
+          },
+          "target_protein_shuffled": {
+            "pearson": [
+              -0.0011428890797383026,
+              0.0018984624932217185
+            ],
+            "spearman": [
+              -0.002294012364265487,
+              0.001385481129170978
+            ]
+          }
+        },
+        "gates": {
+          "structured": false,
+          "target_cis": false,
+          "target_protein_shuffled": false
+        },
+        "groups": 714,
+        "metrics": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0010156211689458124,
+                0.006721534948167296
+              ],
+              "drugs": 42,
+              "gain": 0.002550534280041168,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                0.0021794535791121506,
+                0.011610140377261876
+              ],
+              "drugs": 42,
+              "gain": 0.006701540376136978,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.00162871395216745,
+                -7.163993707227698e-05
+              ],
+              "drugs": 42,
+              "gain": -0.0008252442036047621,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0012787249592408258,
+                0.00011855636102817554
+              ],
+              "drugs": 42,
+              "gain": -0.0005374147376498882,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0010164682833728735,
+                -1.826418991493315e-05
+              ],
+              "drugs": 42,
+              "gain": -0.00048330044594014525,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0006855564237677043,
+                0.0011066375372977872
+              ],
+              "drugs": 42,
+              "gain": 0.0002484421906260351,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0343364363935247,
+                0.007442845504701191
+              ],
+              "drugs": 42,
+              "gain": -0.011305897408725698,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.025612687245294936,
+                0.009709897011410503
+              ],
+              "drugs": 42,
+              "gain": -0.005832956544324769,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "drug_mean",
+              "n_drugs": 126,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "drug_ridge",
+              "n_drugs": 126,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4809678755948804,
+              "within_drug_spearman": 0.4144346840299327
+            },
+            {
+              "method": "structured",
+              "n_drugs": 126,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.46843337867441853,
+              "within_drug_spearman": 0.40057825234116595
+            },
+            {
+              "method": "target_cis",
+              "n_drugs": 126,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4756723337882055,
+              "within_drug_spearman": 0.40395403082481185
+            },
+            {
+              "method": "target_protein_additive",
+              "n_drugs": 126,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4754162642939707,
+              "within_drug_spearman": 0.40315938025498815
+            },
+            {
+              "method": "target_protein_interaction",
+              "n_drugs": 126,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4751349190505556,
+              "within_drug_spearman": 0.40312878662120705
+            },
+            {
+              "method": "target_protein_shuffled",
+              "n_drugs": 126,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4748864768599295,
+              "within_drug_spearman": 0.4036120870671473
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                0.0006755581887803259,
+                0.004234873496275055
+              ],
+              "gain": 0.002437879177995206,
+              "lineages": 714,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                2.220446049250313e-16,
+                0.010924369747900009
+              ],
+              "gain": 0.0056022408963584125,
+              "lineages": 714,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0013855843738887984,
+                0.0013867086865823693
+              ],
+              "gain": -1.1903844434835165e-05,
+              "lineages": 714,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -7.715224443630984e-05,
+                0.0017647342481370315
+              ],
+              "gain": 0.0008389519142285584,
+              "lineages": 714,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.001680672268907557,
+                0.005042016806722782
+              ],
+              "gain": 0.001680672268907779,
+              "lineages": 714,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.001010967184191694,
+                0.0001677426123779333
+              ],
+              "gain": -0.0004323642610195577,
+              "lineages": 714,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0006192463815752086,
+                0.002157977480500717
+              ],
+              "gain": 0.0007645034810996876,
+              "lineages": 714,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0022408963585435204,
+                0.006722689075630561
+              ],
+              "gain": 0.0022408963585437425,
+              "lineages": 714,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0013371597130704572,
+                0.000219020437904488
+              ],
+              "gain": -0.0005256607584823714,
+              "lineages": 714,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.008284096337814245,
+                -0.0008855420395646363
+              ],
+              "gain": -0.004523693440672383,
+              "lineages": 714,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.01036414565826405,
+                0.007002801120448154
+              ],
+              "gain": -0.001680672268907113,
+              "lineages": 714,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.01703407739691348,
+                -0.004661009468402077
+              ],
+              "gain": -0.009713210642173009,
+              "lineages": 714,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 714,
+              "common_rows": 24839,
+              "covered_rows": 24839,
+              "lineages": 714,
+              "macro_ndcg_at_5": 0.8566164247941644,
+              "macro_spearman": 0.6448152411222102,
+              "macro_top5_overlap": 0.5173669467787114,
+              "method": "drug_mean",
+              "registered_rows": 24839,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 714,
+              "common_rows": 24839,
+              "covered_rows": 24839,
+              "lineages": 714,
+              "macro_ndcg_at_5": 0.8853614235012035,
+              "macro_spearman": 0.7165488569156141,
+              "macro_top5_overlap": 0.5666666666666667,
+              "method": "drug_ridge",
+              "registered_rows": 24839,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 714,
+              "common_rows": 24839,
+              "covered_rows": 24839,
+              "lineages": 714,
+              "macro_ndcg_at_5": 0.8783998508825351,
+              "macro_spearman": 0.7068475501178767,
+              "macro_top5_overlap": 0.5593837535014006,
+              "method": "structured",
+              "registered_rows": 24839,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 714,
+              "common_rows": 24839,
+              "covered_rows": 24839,
+              "lineages": 714,
+              "macro_ndcg_at_5": 0.8799987781463026,
+              "macro_spearman": 0.7072680105344609,
+              "macro_top5_overlap": 0.5633053221288515,
+              "method": "target_cis",
+              "registered_rows": 24839,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 714,
+              "common_rows": 24839,
+              "covered_rows": 24839,
+              "lineages": 714,
+              "macro_ndcg_at_5": 0.8802604749081481,
+              "macro_spearman": 0.7069290711818821,
+              "macro_top5_overlap": 0.5633053221288515,
+              "method": "target_protein_additive",
+              "registered_rows": 24839,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 714,
+              "common_rows": 24839,
+              "covered_rows": 24839,
+              "lineages": 714,
+              "macro_ndcg_at_5": 0.880837730060531,
+              "macro_spearman": 0.7068356462734413,
+              "macro_top5_overlap": 0.5649859943977591,
+              "method": "target_protein_interaction",
+              "registered_rows": 24839,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 714,
+              "common_rows": 24839,
+              "covered_rows": 24839,
+              "lineages": 714,
+              "macro_ndcg_at_5": 0.8800732265794313,
+              "macro_spearman": 0.7073613070319243,
+              "macro_top5_overlap": 0.5627450980392156,
+              "method": "target_protein_shuffled",
+              "registered_rows": 24839,
+              "track": "GDSC2/GDSC2_native_AUC"
+            }
+          ]
+        },
+        "observations": 24839
+      },
+      "PRISM20Q2/PRISM20Q2_native_AUC": {
+        "across_cell_ci95": {
+          "drug_ridge": {
+            "pearson": [
+              -0.011428776839812787,
+              0.034116000326683715
+            ],
+            "spearman": [
+              -0.003358979718922061,
+              0.04782074066827609
+            ]
+          },
+          "structured": {
+            "pearson": [
+              -0.002522468833574072,
+              0.017502494708979778
+            ],
+            "spearman": [
+              -0.009623632882682786,
+              0.013578724320815456
+            ]
+          },
+          "target_cis": {
+            "pearson": [
+              -0.005740140082108526,
+              0.002245873371395209
+            ],
+            "spearman": [
+              -0.006498021335277145,
+              0.0024310624370118875
+            ]
+          },
+          "target_protein_shuffled": {
+            "pearson": [
+              -0.006822206972791598,
+              0.002494521527857194
+            ],
+            "spearman": [
+              -0.008097905829829761,
+              0.003916913057787311
+            ]
+          }
+        },
+        "gates": {
+          "structured": false,
+          "target_cis": false,
+          "target_protein_shuffled": false
+        },
+        "groups": 703,
+        "metrics": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0062743757539206945,
+                0.011578987520053288
+              ],
+              "drugs": 18,
+              "gain": 0.0021798889920613884,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.00012367613714222049,
+                0.017502764435059937
+              ],
+              "drugs": 18,
+              "gain": 0.008045196125639116,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0042779576912437825,
+                6.404432486546278e-05
+              ],
+              "drugs": 18,
+              "gain": -0.002001235362522313,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0036184898794860247,
+                0.0004930434068503813
+              ],
+              "drugs": 18,
+              "gain": -0.001487648021122248,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.005418819409245289,
+                0.0015376942063481543
+              ],
+              "drugs": 18,
+              "gain": -0.0018613919289991727,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.005282802323394584,
+                0.00076903748421101
+              ],
+              "drugs": 18,
+              "gain": -0.0021317990107947936,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                0.006270645108965457,
+                0.037673160671248936
+              ],
+              "drugs": 18,
+              "gain": 0.02150848281300723,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0017337147680828982,
+                0.02481882079680073
+              ],
+              "drugs": 18,
+              "gain": 0.011500954713896389,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "drug_mean",
+              "n_drugs": 54,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "drug_ridge",
+              "n_drugs": 54,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.23390283355486982,
+              "within_drug_spearman": 0.22851404900380423
+            },
+            {
+              "method": "structured",
+              "n_drugs": 54,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.2373585921431271,
+              "within_drug_spearman": 0.24784264282475005
+            },
+            {
+              "method": "target_cis",
+              "n_drugs": 54,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.24689143628988847,
+              "within_drug_spearman": 0.2520237671793338
+            },
+            {
+              "method": "target_protein_additive",
+              "n_drugs": 54,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.24597325274091122,
+              "within_drug_spearman": 0.2505669588203233
+            },
+            {
+              "method": "target_protein_interaction",
+              "n_drugs": 54,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.24540378826876624,
+              "within_drug_spearman": 0.25002253181681144
+            },
+            {
+              "method": "target_protein_shuffled",
+              "n_drugs": 54,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.247535587279561,
+              "within_drug_spearman": 0.2518839237458106
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.002435401763864939,
+                0.0011329004947252118
+              ],
+              "gain": -0.0006395169266413259,
+              "lineages": 702,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0038461538461538325,
+                0.005270655270655178
+              ],
+              "gain": 0.0008547008547008517,
+              "lineages": 702,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0014002317079383209,
+                0.004007063108071105
+              ],
+              "gain": 0.0013418972732565093,
+              "lineages": 702,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0011889459188073102,
+                0.0012125288206264156
+              ],
+              "gain": 2.783865283328968e-05,
+              "lineages": 702,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0034188034188034093,
+                0.0035612535612534746
+              ],
+              "gain": 0.00014245014245006793,
+              "lineages": 702,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_cis",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0012332224744729947,
+                0.0018264595336294441
+              ],
+              "gain": 0.00028042450654675033,
+              "lineages": 702,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.0019614556404857347,
+                0.0007877057110052187
+              ],
+              "gain": -0.0005673012743779848,
+              "lineages": 702,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.004131054131054415,
+                0.00299145299145287
+              ],
+              "gain": -0.0005698005698007158,
+              "lineages": 702,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "target_protein_shuffled",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.002566332869299992,
+                0.0014377534993010534
+              ],
+              "gain": -0.00047101409897121194,
+              "lineages": 702,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.002955341424838201,
+                0.0028098761298582554
+              ],
+              "gain": -0.0001773013537786916,
+              "lineages": 702,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.010398860398860735,
+                0.004558404558403842
+              ],
+              "gain": -0.002849002849003246,
+              "lineages": 702,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "target_protein_interaction",
+              "ci95": [
+                -0.006760090832998861,
+                0.0031628319654951457
+              ],
+              "gain": -0.0018393361296890065,
+              "lineages": 702,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 717,
+              "common_rows": 9749,
+              "covered_rows": 9749,
+              "lineages": 703,
+              "macro_ndcg_at_5": 0.89754523813075,
+              "macro_spearman": 0.7388176615216179,
+              "macro_top5_overlap": 0.6966480446927373,
+              "method": "drug_mean",
+              "registered_rows": 9749,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 717,
+              "common_rows": 9749,
+              "covered_rows": 9749,
+              "lineages": 703,
+              "macro_ndcg_at_5": 0.9039290916647094,
+              "macro_spearman": 0.7487264218838071,
+              "macro_top5_overlap": 0.7175977653631285,
+              "method": "drug_ridge",
+              "registered_rows": 9749,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 717,
+              "common_rows": 9749,
+              "covered_rows": 9749,
+              "lineages": 703,
+              "macro_ndcg_at_5": 0.9042773088353687,
+              "macro_spearman": 0.745562235178329,
+              "macro_top5_overlap": 0.7136871508379887,
+              "method": "structured",
+              "registered_rows": 9749,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 717,
+              "common_rows": 9749,
+              "covered_rows": 9749,
+              "lineages": 703,
+              "macro_ndcg_at_5": 0.9036251566502325,
+              "macro_spearman": 0.7466283835689047,
+              "macro_top5_overlap": 0.7142458100558658,
+              "method": "target_cis",
+              "registered_rows": 9749,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 717,
+              "common_rows": 9749,
+              "covered_rows": 9749,
+              "lineages": 703,
+              "macro_ndcg_at_5": 0.9039213987929423,
+              "macro_spearman": 0.746690449242985,
+              "macro_top5_overlap": 0.7156424581005586,
+              "method": "target_protein_additive",
+              "registered_rows": 9749,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 717,
+              "common_rows": 9749,
+              "covered_rows": 9749,
+              "lineages": 703,
+              "macro_ndcg_at_5": 0.9036523041344948,
+              "macro_spearman": 0.7469433560888026,
+              "macro_top5_overlap": 0.7145251396648045,
+              "method": "target_protein_interaction",
+              "registered_rows": 9749,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 717,
+              "common_rows": 9749,
+              "covered_rows": 9749,
+              "lineages": 703,
+              "macro_ndcg_at_5": 0.9042378743298192,
+              "macro_spearman": 0.7474281681010311,
+              "macro_top5_overlap": 0.7150837988826815,
+              "method": "target_protein_shuffled",
+              "registered_rows": 9749,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            }
+          ]
+        },
+        "observations": 9749
+      }
+    }
+  },
+  "pass": false,
+  "screen_gates_passed": 0
+}
