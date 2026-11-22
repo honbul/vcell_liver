@@ -1,0 +1,1674 @@
+{
+  "forecasts": {
+    "CTRPv2-0": {
+      "artifact": "CTRPv2-0.parquet",
+      "frozen_utc": "2026-11-22T21:47:14.881738+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.8739324808120728,
+          "paired_fit_cells": 493,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.0829133689403534,
+            "mean_rank_variance": 0.013534320518374443,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.08088772743940353,
+              "mean_rank_variance": 0.01351774949580431,
+              "overlap": 12784,
+              "sha256": "5fc738c3b4ba5a176616470a0750cdeeea64d2ac6cc0a62e5f4761f63e1b3792"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08086160570383072,
+              "mean_rank_variance": 0.013552446849644184,
+              "overlap": 12772,
+              "sha256": "c1ed1967cca65fb4b9f648ab7ec79ca2c9fcb1c1f9fc91edcacfc872e2e37a0e"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08071404695510864,
+              "mean_rank_variance": 0.013527239672839642,
+              "overlap": 12773,
+              "sha256": "5c489e3b04c8d78858513da08e757e2e27abc2e740b2fd111c7b912b1700f2a7"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8891913890838623,
+          "stable_median_fit_agreement": 0.9060949683189392,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.1160360798239708,
+            "mean_rank_variance": 0.015639154240489006,
+            "overlap": 9000,
+            "sha256": "74a0e4533d9ebc680f2fee528f6317dabb6e988a07e4fdc819712408678c4318"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.11395399272441864,
+            "mean_rank_variance": 0.015367642045021057,
+            "overlap": 6700,
+            "sha256": "20ba9d2b5e1267bba9ea854d8fd3288bada2621454b1c9919b1fad283e2fb1b6"
+          }
+        },
+        "fold": 0,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "CTRPv2",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "6f44cf12f4af999ab475bb98170c138188cb8897e601600545ca753100f236b4"
+      },
+      "rows": 71900,
+      "schema_version": 1,
+      "sha256": "861cc51125f9d079d3aad500c7945aff26feef2bb51770e78ee508f79daff8c0"
+    },
+    "CTRPv2-1": {
+      "artifact": "CTRPv2-1.parquet",
+      "frozen_utc": "2026-11-22T21:47:14.696745+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.8670438528060913,
+          "paired_fit_cells": 502,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.08296189457178116,
+            "mean_rank_variance": 0.013605374842882156,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.08071786165237427,
+              "mean_rank_variance": 0.013583101332187653,
+              "overlap": 12778,
+              "sha256": "8295a68a0c2378b9fc1ac572a3ef312cded661d30bcdc546476d33bf03ea7080"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08087487518787384,
+              "mean_rank_variance": 0.013589028269052505,
+              "overlap": 12783,
+              "sha256": "3ed1987ceb19f53f79bf859842c6dfbf7f17ab80035c96ea88d6f2b54cef1bb6"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08082827925682068,
+              "mean_rank_variance": 0.013587821274995804,
+              "overlap": 12781,
+              "sha256": "254025ab8663d55aa1669f28f1db84b444afa7abfcf06161d011d390be5d933b"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8835048079490662,
+          "stable_median_fit_agreement": 0.9011458158493042,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.11263585090637207,
+            "mean_rank_variance": 0.01577794924378395,
+            "overlap": 9000,
+            "sha256": "079153c4a27823b19c30ea4a704b638f4435d839ec9b8df1e2ddfdffb39cf18d"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.11104003340005875,
+            "mean_rank_variance": 0.01555281225591898,
+            "overlap": 6674,
+            "sha256": "775d32c445b4d349fb983cc7e97c7b9ccd639fe10ecef6ef68b5b304e4af6506"
+          }
+        },
+        "fold": 1,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "CTRPv2",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "a0ac520264c3afe0d08f047ec524f2d758291133bdc8f50211b257fab5287c4a"
+      },
+      "rows": 70330,
+      "schema_version": 1,
+      "sha256": "221e9984a2fe4cde601bc82b2964065e13d1862ffdf44c1fdbf7b7fffec73b3e"
+    },
+    "CTRPv2-2": {
+      "artifact": "CTRPv2-2.parquet",
+      "frozen_utc": "2026-11-22T21:47:48.235935+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.8667725920677185,
+          "paired_fit_cells": 499,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.0829421728849411,
+            "mean_rank_variance": 0.013592599891126156,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.08088108897209167,
+              "mean_rank_variance": 0.013585834763944149,
+              "overlap": 12791,
+              "sha256": "e37abb5b18f0bf1e2f4a2f2e3cab0db0bdeef416272ac4012de586d098c3351f"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.0806502252817154,
+              "mean_rank_variance": 0.013573805801570415,
+              "overlap": 12759,
+              "sha256": "1e2fcc8d7550d1c4c73f70855863205e592e0e5c43a4996189e0f09d7e9f80f9"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08067353814840317,
+              "mean_rank_variance": 0.013575498946011066,
+              "overlap": 12756,
+              "sha256": "7bc76e6894faaac6f108f51d7aa754bba6ee7961a1568776e6701456f7538b04"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8823204636573792,
+          "stable_median_fit_agreement": 0.9003241062164307,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.11247920244932175,
+            "mean_rank_variance": 0.0157648753374815,
+            "overlap": 9000,
+            "sha256": "838f6e8154e1dabf25c64c8fc49a99837778ca67234e04d4102723fd105a4673"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.11037814617156982,
+            "mean_rank_variance": 0.015476481057703495,
+            "overlap": 6650,
+            "sha256": "d8a10210bbf8b7f7c5ae5f8de108b8d18dfe1c6045735ebe948253d918fc7b15"
+          }
+        },
+        "fold": 2,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "CTRPv2",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "732d17229cc92775a5ec9736b4176a1d689c3162bf89cb0ae31cbc29fff12b9d"
+      },
+      "rows": 72350,
+      "schema_version": 1,
+      "sha256": "845458d78374099e91d9868b699bd94b7d6290fb59451a92a4b50a0579ded11a"
+    },
+    "GDSC2-0": {
+      "artifact": "GDSC2-0.parquet",
+      "frozen_utc": "2026-11-22T21:47:47.990451+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.8713024854660034,
+          "paired_fit_cells": 507,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.0830172449350357,
+            "mean_rank_variance": 0.013346984051167965,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.08088397234678268,
+              "mean_rank_variance": 0.013340592384338379,
+              "overlap": 12806,
+              "sha256": "2173678b346bb5360240323169e40d99dc487ce9580fdc9b996bcc2ec92ca515"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08097732812166214,
+              "mean_rank_variance": 0.013358199037611485,
+              "overlap": 12779,
+              "sha256": "0627c50b97b1e43d90799fbabe5873495ac6a4913b86a84e526315c09fa4b370"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08097381144762039,
+              "mean_rank_variance": 0.01333843544125557,
+              "overlap": 12750,
+              "sha256": "617d7383450b60be1643e21821e0aec70458d631b769652e87345db52ba216b4"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8866726160049438,
+          "stable_median_fit_agreement": 0.9039117097854614,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.11512311547994614,
+            "mean_rank_variance": 0.015453475527465343,
+            "overlap": 9000,
+            "sha256": "3fa3340f8b098f1b1e210c62189fa40d769500d01b582277fc4894a9f064053f"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.11278931051492691,
+            "mean_rank_variance": 0.01522261742502451,
+            "overlap": 6672,
+            "sha256": "a764e8cc94f19195473e094e2e37efe3ddff941ab359a04df124d588e5c04a60"
+          }
+        },
+        "fold": 0,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "GDSC2",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "4e116499395ed6988e8b202a3bc8c348b71d9d99e6e181a01ff38afc95a469ee"
+      },
+      "rows": 55990,
+      "schema_version": 1,
+      "sha256": "6dd730d55589ad4c6bdda54c824cde63acdef350170a5c523db185c44b1ce2b5"
+    },
+    "GDSC2-1": {
+      "artifact": "GDSC2-1.parquet",
+      "frozen_utc": "2026-11-22T21:47:48.003232+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.8674209117889404,
+          "paired_fit_cells": 512,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.08313629031181335,
+            "mean_rank_variance": 0.013286447152495384,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.08120080828666687,
+              "mean_rank_variance": 0.013317023403942585,
+              "overlap": 12773,
+              "sha256": "9adf56f36bc18efac5a69085a428794371f5ced62901e79a363e417d66ffe20a"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08088251948356628,
+              "mean_rank_variance": 0.013297764584422112,
+              "overlap": 12786,
+              "sha256": "b1e82351cff1975dfa7974a83d3c18ec4af1ba9553d6d30921692baec18cd279"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08103924244642258,
+              "mean_rank_variance": 0.013301688246428967,
+              "overlap": 12781,
+              "sha256": "bb92204da82cac85dd67756410eab005d41d8f2346e7403ce6f46ad55fddc888"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8832179307937622,
+          "stable_median_fit_agreement": 0.9011498689651489,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.1140948086977005,
+            "mean_rank_variance": 0.015424825251102448,
+            "overlap": 9000,
+            "sha256": "7975f04f393de69e5ec0ce06ec41d1c752df0fbdee26bd261578aa0c0781ae13"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.11171863973140717,
+            "mean_rank_variance": 0.01516262162476778,
+            "overlap": 6686,
+            "sha256": "79b5c9c3ed7d2d561256580061f34f9f0110e79c6dc3acdf1d3fc67c4992106f"
+          }
+        },
+        "fold": 1,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "GDSC2",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "cb7cc54ea12df6dca91a570d78090ae896f6e5664bd85c75eb744531e8eb3352"
+      },
+      "rows": 57990,
+      "schema_version": 1,
+      "sha256": "e84633296c0fbccc94f4ef657bebef1c4b50df753efb49c6a80fd2d4fb7ace87"
+    },
+    "GDSC2-2": {
+      "artifact": "GDSC2-2.parquet",
+      "frozen_utc": "2026-11-22T21:47:51.027428+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.8655226230621338,
+          "paired_fit_cells": 505,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.08313602954149246,
+            "mean_rank_variance": 0.013262340798974037,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.08113505691289902,
+              "mean_rank_variance": 0.013258648104965687,
+              "overlap": 12804,
+              "sha256": "669024883d95e0f17a7153f81ddf248d4d746bfbe548a1ed193f0933ced028a0"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08090129494667053,
+              "mean_rank_variance": 0.013261759653687477,
+              "overlap": 12769,
+              "sha256": "2292a38767678df58df3dc2ebf693e755d9172e8a16a7d4e1751c8c310ea558c"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08094668388366699,
+              "mean_rank_variance": 0.013243936002254486,
+              "overlap": 12778,
+              "sha256": "53391b420bd52b772ca24a881f3a8a67e9f36db19a877fbf3fd128e487c01d22"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8821154832839966,
+          "stable_median_fit_agreement": 0.899579644203186,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.11278529465198517,
+            "mean_rank_variance": 0.015414761379361153,
+            "overlap": 9000,
+            "sha256": "32336d744c0aac1ae5bcf38149be2cd1a0fba5eaab597077acdb981231f2623b"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.11068312078714371,
+            "mean_rank_variance": 0.015164688229560852,
+            "overlap": 6678,
+            "sha256": "c329ded65d2b82149b80b3636b9ec9c0654a36ed078f17e709a11cdaa14a80d4"
+          }
+        },
+        "fold": 2,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "GDSC2",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "de075887926f50b859456876f744f678c0a8fa3fcedb467eee18cb5c0c953bf9"
+      },
+      "rows": 56330,
+      "schema_version": 1,
+      "sha256": "0a76bd7947bf44cf83607283b09e111bf9d302ad8f0686f0787220dea2709007"
+    },
+    "LICOB": {
+      "artifact": "LICOB.parquet",
+      "frozen_utc": "2026-11-22T21:47:16.404282+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 14421,
+          "median_fit_agreement": 0.868646502494812,
+          "paired_fit_cells": 814,
+          "pancreas_axis": {
+            "genes": 13245,
+            "mean_rank": 0.02806360460817814,
+            "mean_rank_variance": 0.017244424670934677,
+            "overlap": 13245,
+            "sha256": "9c2ce81e806bd4afd4a3b1833a4f8c1ab9c54cd3c94388c5ef9df7829208236a"
+          },
+          "pancreas_random": [
+            {
+              "genes": 13245,
+              "mean_rank": 0.0266262236982584,
+              "mean_rank_variance": 0.01726171188056469,
+              "overlap": 12460,
+              "sha256": "96cded86624d288e89439f9c827e92d5323b51492a1d898430e0439cb219d8ba"
+            },
+            {
+              "genes": 13245,
+              "mean_rank": 0.026626521721482277,
+              "mean_rank_variance": 0.017269426956772804,
+              "overlap": 12433,
+              "sha256": "7487906341b18c8f3761ef3ebbf37afd1d08bde09ccc7f16f4b7e8a2143b8fce"
+            },
+            {
+              "genes": 13245,
+              "mean_rank": 0.02662705071270466,
+              "mean_rank_variance": 0.017272287979722023,
+              "overlap": 12442,
+              "sha256": "fedd192e97090b0cee75f179edd19d84916d4352524f05c9e7f4c72fe9698cb4"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8854706287384033,
+          "stable_median_fit_agreement": 0.9020945429801941,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.03510383144021034,
+            "mean_rank_variance": 0.021044522523880005,
+            "overlap": 9000,
+            "sha256": "9da51218f67d2cfe24df40be8e77c1d21ca29d8a851d3877e889d804044e3264"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.03414754942059517,
+            "mean_rank_variance": 0.020771697163581848,
+            "overlap": 6738,
+            "sha256": "55a31452c721632780e020579a93f2b7de0d090a26bbae071b635937e0a1cdbc"
+          }
+        },
+        "fold": 0,
+        "inputs_sha256": "1f37cdff695ad7c9cbac06430a86b77d5ef5dfca5f9fa03d4557954b464102a0",
+        "mode": "LICOB",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "fc5ab2b2902c2ee0fdca5b4027544208f6630fe2ec7b7304615ab36389c1dde7"
+      },
+      "rows": 31906,
+      "schema_version": 1,
+      "sha256": "dbdb5597ee9d5b73846777e16c486e0b6f46054cfbea0e480c2a347cab6b6b65"
+    },
+    "LIMORE": {
+      "artifact": "LIMORE.parquet",
+      "frozen_utc": "2026-11-22T21:47:18.149386+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.868646502494812,
+          "paired_fit_cells": 814,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.08286133408546448,
+            "mean_rank_variance": 0.013665227219462395,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.0806802362203598,
+              "mean_rank_variance": 0.013656139373779297,
+              "overlap": 12762,
+              "sha256": "a87586b561c8c8761af4e75d1f43a1c96543056f2d5656a487797262086a2566"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08082296699285507,
+              "mean_rank_variance": 0.013676154427230358,
+              "overlap": 12786,
+              "sha256": "2b1f3a5e67b5dd5e3489089dcc0b7bf094146100d325d488022ed72fc115e79b"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08066123723983765,
+              "mean_rank_variance": 0.013661213219165802,
+              "overlap": 12814,
+              "sha256": "aa955386c345ee4dd138935ac5b4885c837a009bc845d971c30eb6b91d5797e9"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8838653564453125,
+          "stable_median_fit_agreement": 0.9020945429801941,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.11308269947767258,
+            "mean_rank_variance": 0.015855584293603897,
+            "overlap": 9000,
+            "sha256": "9da51218f67d2cfe24df40be8e77c1d21ca29d8a851d3877e889d804044e3264"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.1105986088514328,
+            "mean_rank_variance": 0.015604744665324688,
+            "overlap": 6702,
+            "sha256": "9dfef54c11871ce0c64efec26ebe8fde7f4ecfc5fb12892f9dd12e870e4966bb"
+          }
+        },
+        "fold": 0,
+        "inputs_sha256": "663eb5717b30c6f03ea43c04c4bb076bd233ea0c05405450e17f0c9e85f7fa86",
+        "mode": "LIMORE",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "fe7f9e656801d63fd1263ec3e94093cad86b049130aa038d4f2e8fdd059b02bb"
+      },
+      "rows": 47600,
+      "schema_version": 1,
+      "sha256": "bedb6f0a56120f5922dd50064c34a2e6b71a7eca3e1d192c2afd44542c3b1fd1"
+    },
+    "PRISM20Q2-0": {
+      "artifact": "PRISM20Q2-0.parquet",
+      "frozen_utc": "2026-11-22T21:47:47.993401+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.8733961582183838,
+          "paired_fit_cells": 523,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.08291901648044586,
+            "mean_rank_variance": 0.01356956735253334,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.08086126297712326,
+              "mean_rank_variance": 0.013601395301520824,
+              "overlap": 12767,
+              "sha256": "d57cd14644193c758ad750fb4113e9887908106bbde612c1c81a1f588a9d9664"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08089739829301834,
+              "mean_rank_variance": 0.013577421195805073,
+              "overlap": 12747,
+              "sha256": "00256db39e22d266aa9bdccb9a3a15ac0c066b0351c4df43a61c902900b94fef"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08061859011650085,
+              "mean_rank_variance": 0.013588041067123413,
+              "overlap": 12769,
+              "sha256": "c1ae194d54da206634779a00c5d728df16e26b2e84ccfd4fd64ff4ca9704974a"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8871987462043762,
+          "stable_median_fit_agreement": 0.9056429266929626,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.11508235335350037,
+            "mean_rank_variance": 0.01568770594894886,
+            "overlap": 9000,
+            "sha256": "a6d8a570641ce8686806bddecc4fbda9e657a5a1d8bde15eff8bf2288623bb21"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.11295058578252792,
+            "mean_rank_variance": 0.015447594225406647,
+            "overlap": 6644,
+            "sha256": "e2481d9accd5b34bb78290d7a0efa42e5839acc1450b9afc3fcc52aaf53b4886"
+          }
+        },
+        "fold": 0,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "PRISM20Q2",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "6cbcf48118827ff82ed71a6745fed04464789d51c627f3c0cc1102886e7dfc3b"
+      },
+      "rows": 23540,
+      "schema_version": 1,
+      "sha256": "99e9d18cef3b8d02e77022fac502fca18c0c86bde2ae7242e1da5896e5be3f8a"
+    },
+    "PRISM20Q2-1": {
+      "artifact": "PRISM20Q2-1.parquet",
+      "frozen_utc": "2026-11-22T21:48:17.042538+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.8687630891799927,
+          "paired_fit_cells": 526,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.08293598145246506,
+            "mean_rank_variance": 0.013726785778999329,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.08084647357463837,
+              "mean_rank_variance": 0.013735740445554256,
+              "overlap": 12784,
+              "sha256": "c2069a721e1db2d8dad2b1aad1b56f41e5ff67c9e22dde3dd4a034cf4ed1ef41"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08080901950597763,
+              "mean_rank_variance": 0.013725299388170242,
+              "overlap": 12748,
+              "sha256": "2cab835abedb304e4f9a3eb4e5dd6cb148eb476d7d7a8bb386e02c704c73775f"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08086258918046951,
+              "mean_rank_variance": 0.013747429475188255,
+              "overlap": 12784,
+              "sha256": "b89f0f81cc076212976b9329dbe34b03d3f1ff88e5ce5effced6301c6c461255"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8840234875679016,
+          "stable_median_fit_agreement": 0.9018527865409851,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.11303184926509857,
+            "mean_rank_variance": 0.01590437814593315,
+            "overlap": 9000,
+            "sha256": "a38e71cc850b10a3fb70df7f67468b620b93fab85fef1e9b3d732ed46b62bccf"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.111003078520298,
+            "mean_rank_variance": 0.015632061287760735,
+            "overlap": 6660,
+            "sha256": "f348ca4a373280d0320c92170f21fe82034c85e4d647f9a542c4eb5ac0d87783"
+          }
+        },
+        "fold": 1,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "PRISM20Q2",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "f97d127a2fa85244abb4547e96bebad4c2f5eaf5120710864ff88af652ea5fa7"
+      },
+      "rows": 23000,
+      "schema_version": 1,
+      "sha256": "e1b1ec2427966be983da6eae40b645d531cb3292cab6ddad1596abaceab70eff"
+    },
+    "PRISM20Q2-2": {
+      "artifact": "PRISM20Q2-2.parquet",
+      "frozen_utc": "2026-11-22T21:48:11.906922+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.8662422299385071,
+          "paired_fit_cells": 511,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.08299484103918076,
+            "mean_rank_variance": 0.013627070002257824,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.08109568804502487,
+              "mean_rank_variance": 0.013617323711514473,
+              "overlap": 12792,
+              "sha256": "aaaae68df14318422c0275f1f22b0473b0ae4e7881d71c1b77e535b5cba8683f"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08119173347949982,
+              "mean_rank_variance": 0.013622600585222244,
+              "overlap": 12764,
+              "sha256": "bca3e256e2c7fb6cf7a01d476c8fcbdbd46c96c62441fdd112b0185e03e8061e"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.0807478129863739,
+              "mean_rank_variance": 0.013623208738863468,
+              "overlap": 12773,
+              "sha256": "0d89a508984db873e5440ce5fed10e3421595b45dda6127f47ebb756e63fc693"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8815581202507019,
+          "stable_median_fit_agreement": 0.8999648690223694,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.11190588772296906,
+            "mean_rank_variance": 0.015802910551428795,
+            "overlap": 9000,
+            "sha256": "10a94671b18cd3f75a1decc9db03e70174babbb28d150b6c4add451582e708ce"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.10971836000680923,
+            "mean_rank_variance": 0.015545494854450226,
+            "overlap": 6675,
+            "sha256": "026c36062d19f76fb7b7089ef7874874fb15132867d952153678fde8a85f3dbb"
+          }
+        },
+        "fold": 2,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "PRISM20Q2",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "59342df8aab4454a2413c0b595e0ba72c5f22a5ff96c33945576e31a467f9112"
+      },
+      "rows": 22850,
+      "schema_version": 1,
+      "sha256": "60cd691f920169f7120846fefb460748b385ab4699905556bc006d415485c10a"
+    },
+    "pooled-0": {
+      "artifact": "pooled-0.parquet",
+      "frozen_utc": "2026-11-22T21:47:16.675301+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.8728763461112976,
+          "paired_fit_cells": 537,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.08279700577259064,
+            "mean_rank_variance": 0.013645797036588192,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.08069422841072083,
+              "mean_rank_variance": 0.013651625253260136,
+              "overlap": 12755,
+              "sha256": "dda5d13a4d06033bcd568ecc593b64ee15c3896a7dedcb77fffdadff311b4872"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08067096024751663,
+              "mean_rank_variance": 0.01361058745533228,
+              "overlap": 12754,
+              "sha256": "70c8626da0fc1aed07f347cb8c7f2657f4e222397832f634d80f1eeff12acca6"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08059634268283844,
+              "mean_rank_variance": 0.01365751400589943,
+              "overlap": 12756,
+              "sha256": "5a419cd25a5b49db86cb7a109594d6d9de4d21453e514e3d73f857aead703f27"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8886017799377441,
+          "stable_median_fit_agreement": 0.9053905010223389,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.11490806937217712,
+            "mean_rank_variance": 0.015778936445713043,
+            "overlap": 9000,
+            "sha256": "026953817dad4338629333036a5430608ef554e8268d0ac2935460681a7cd793"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.11270468682050705,
+            "mean_rank_variance": 0.015516136772930622,
+            "overlap": 6696,
+            "sha256": "e1098dcf6b033ab6e0c01f2da5e0286651f6f6f8da8acc3969b9d1b154e3c9da"
+          }
+        },
+        "fold": 0,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "pooled",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "2808c91f98c26ceb09578ce037fe01509ea5aa3dc37deb32c396cb74118121a1"
+      },
+      "rows": 218800,
+      "schema_version": 1,
+      "sha256": "06cdfc23ddbb7a316d20937fd9b53ed4442ddfb46d26506c54ad0f8a15491cb4"
+    },
+    "pooled-1": {
+      "artifact": "pooled-1.parquet",
+      "frozen_utc": "2026-11-22T21:47:16.201406+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.8674848675727844,
+          "paired_fit_cells": 542,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.08287518471479416,
+            "mean_rank_variance": 0.013692084699869156,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.08077000826597214,
+              "mean_rank_variance": 0.013690298423171043,
+              "overlap": 12792,
+              "sha256": "0fd4679f6ddef9b8fdb229b3b3cb4edefff8d107aee5a8fcfc877392c12e6571"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08094046264886856,
+              "mean_rank_variance": 0.013687086291611195,
+              "overlap": 12779,
+              "sha256": "e58ab11f7b773a7ddf1c6a3cdbbdbcbfac5c10fcb78ce566d32b4c37e21f776e"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08088170737028122,
+              "mean_rank_variance": 0.013671946711838245,
+              "overlap": 12789,
+              "sha256": "c60d59fe9004c06b34370be8ceb2999bb35ba32636520546b56d1953256c4983"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8830952048301697,
+          "stable_median_fit_agreement": 0.9011499881744385,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.11288665235042572,
+            "mean_rank_variance": 0.015879521146416664,
+            "overlap": 9000,
+            "sha256": "afdf62cec8b8f9e9c6ac0b647f8a5268a50536228770eeda34bf167f7b332a64"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.11071942001581192,
+            "mean_rank_variance": 0.015595057047903538,
+            "overlap": 6673,
+            "sha256": "1eb1fe75ffd7426106c7afd3b3842dad80359d324ae41d8ce52f1f4b84e81c11"
+          }
+        },
+        "fold": 1,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "pooled",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "fc530198a3f3009a58769d76ce1aec82fb0289226ea7140f0c9106bcb3881992"
+      },
+      "rows": 218760,
+      "schema_version": 1,
+      "sha256": "c545a96539a210e2155308349973cb80b9a827808c11656839d1fb75cebc6f9d"
+    },
+    "pooled-2": {
+      "artifact": "pooled-2.parquet",
+      "frozen_utc": "2026-11-22T21:47:16.523248+00:00",
+      "provenance": {
+        "array_receipt_sha256": "0a3c330a336d7fc0b70443c4066b37578ea21a0a0c6287838e4f2a42ce3c0250",
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "full_genes": 17871,
+          "median_fit_agreement": 0.8662667870521545,
+          "paired_fit_cells": 535,
+          "pancreas_axis": {
+            "genes": 14134,
+            "mean_rank": 0.08291193097829819,
+            "mean_rank_variance": 0.01363818533718586,
+            "overlap": 14134,
+            "sha256": "51b3896202bbd1666b20911d1198b42c57ae2756387a0233a1afd33038be2942"
+          },
+          "pancreas_random": [
+            {
+              "genes": 14134,
+              "mean_rank": 0.08090640604496002,
+              "mean_rank_variance": 0.013648701831698418,
+              "overlap": 12780,
+              "sha256": "9f860e5e4156aa6588c3cb60a5291a8285372017e5182a4ea771fb07cc88dd1c"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08088719099760056,
+              "mean_rank_variance": 0.013624310493469238,
+              "overlap": 12764,
+              "sha256": "5e12c73814641381956ebfe45070f64cf3565776a9bc420b7bfe65e64c0982e3"
+            },
+            {
+              "genes": 14134,
+              "mean_rank": 0.08076425641775131,
+              "mean_rank_variance": 0.01362986396998167,
+              "overlap": 12792,
+              "sha256": "89967a01ebae5a1d39f0337a59544ee797a6497408deb519a7dec251bfcc07b8"
+            }
+          ],
+          "stable_candidate_genes": 13483,
+          "stable_control_median_fit_agreement": 0.8811532258987427,
+          "stable_median_fit_agreement": 0.9000298976898193,
+          "stable_panel": {
+            "genes": 9000,
+            "mean_rank": 0.11237625032663345,
+            "mean_rank_variance": 0.015822580084204674,
+            "overlap": 9000,
+            "sha256": "633323548fd1b2e33d5c4f860f7f55e62280b89d72d292540f9ce0b4db989389"
+          },
+          "stable_random": {
+            "genes": 9000,
+            "mean_rank": 0.11012407392263412,
+            "mean_rank_variance": 0.015570526011288166,
+            "overlap": 6624,
+            "sha256": "c7a5cb22058e513d919451247e19eae714fe82763f87b2ed75ca315f1a12b7c3"
+          }
+        },
+        "fold": 2,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "pooled",
+        "pdo_receipt_sha256": "63049d5a2f0d08da415685a6e41f9afe8cb042e43fc7682256f2b7395b7ee110",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "ad302ced26a793dec85c37fe5fc00217b1a9c9e85b9b67657a9a9483a4a3e5ab"
+      },
+      "rows": 218820,
+      "schema_version": 1,
+      "sha256": "bf9db70f3ae74c717d05e39f34a480a42bf5f436531ee68592bfe43109bc96a6"
+    }
+  },
+  "scores": {
+    "external_score.json": "0f40b2729536052b9f3b0d45eed04f48d9cee045af1a71a2a9edaab4e727941a",
+    "source_score.json": "807d762639135f5cbf77fbe32cca3d200bb1f2acbe5797cb101d513697bb275c"
+  }
+}
