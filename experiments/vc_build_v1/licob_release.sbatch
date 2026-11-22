@@ -14,7 +14,10 @@ export PYTHONPATH="$repository/src:$root/v0plus-model-deps:$root/function/prepar
 export OPENBLAS_NUM_THREADS=5 MKL_NUM_THREADS=5 OMP_NUM_THREADS=5
 runs="$root/v0plus-runs"
 registered="$runs/licob-cold-5bf53fc"
-args=(--inputs "$registered/inputs" --reference "$registered/parts/fold-3.parquet" --results "$registered/external.json")
+args=(--inputs "$registered/inputs")
+if [[ "$stage" != rna-only ]]; then
+  args+=(--reference "$registered/parts/fold-3.parquet" --results "$registered/external.json")
+fi
 case "$stage" in
   pack)
     args+=(--priors "$root/v0plus-public-priors" --targets "$root/external-code-v3/drug_targets.json"
@@ -26,6 +29,12 @@ case "$stage" in
     export CUDA_VISIBLE_DEVICES=""
     args+=(--package "$run/V0plus" --legacy "$runs/structured-release-6d2c8c6/V0plus"
            --tcga "$runs/rna-format-4ca2dff" --out "$run/replay")
+    ;;
+  rna-only)
+    export CUDA_VISIBLE_DEVICES=""
+    args+=(--package "${5:?}" --public-rna "$root/hcc-drugdis-fc66d2991e499a03b92778347a8a251d0bd9eb7c/LICOB.parquet"
+           --supplement "$root/licob-v0plus/NIHMS1969891-supplement-Supplementary_Tables_S1-S13.xlsx"
+           --out "$run/rna-only")
     ;;
   *) exit 2 ;;
 esac

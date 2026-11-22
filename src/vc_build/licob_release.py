@@ -1,6 +1,7 @@
 """Package and replay the fixed 76-drug organoid research panel without outcomes."""
 
 import argparse
+from contextlib import closing
 from dataclasses import replace
 import json
 from pathlib import Path
@@ -9,17 +10,20 @@ import resource
 import joblib
 import numpy as np
 import pandas as pd
+from openpyxl import load_workbook
 
 from .expanded_panel_cv import expanded_targets
 from .function_data import new_output
 from .io import publish_json, sha256, verify_forecast
 from .licob_cold import ARMS, PRIMARY, checked, fit_panel
 from .licob_dose_sources import COLD
+from .licob_full_axis import RNA_HASH
 from .limore_corrected import shared_support
 from .pdo_transfer_cv import device_cuda
 from .structured_release import PAIR, run_cli
 from .v0plus_cli import BULK_FORMATS, RANK_FORMAT
 from .v0plus_cv import molecular_inputs
+from .v0plus_licob import ASSET_HASHES, sample_metadata
 from .yang_hcc_external import require_hash
 
 REVISION = "public-organoid-76"
@@ -201,17 +205,55 @@ def replay(args):
         })
 
 
+def rna_only(args):
+    if checked(args.inputs, ("query",)) != COLD:
+        raise ValueError("Unexpected registered outcome-linked panel")
+    require_hash(args.public_rna, RNA_HASH)
+    require_hash(args.supplement, ASSET_HASHES["supplement"])
+    with closing(load_workbook(args.supplement, read_only=True, data_only=True)) as book:
+        registry = sample_metadata(book)
+        row_ids = {
+            name: {row[0] for row in book[name].iter_rows(min_col=1, max_col=1, values_only=True)}
+            for name in ("S6. AUC", "S7. IC50", "S8. Emax")
+        }
+    rna = pd.read_parquet(args.public_rna)
+    panel = pd.read_parquet(args.inputs / "query.parquet", columns=["cell_id"])
+    matched = registry.index.intersection(rna.index)
+    additional = matched.difference(panel.cell_id)
+    if len(matched) != 44 or additional.tolist() != ["HCCO42"] or not registry.loc[additional, "adult_age_confirmed"].all():
+        raise ValueError("Unexpected LICOB metadata-only HCC complement")
+    if any(additional[0] in samples for samples in row_ids.values()):
+        raise ValueError("The extra HCC model has a registered response row")
+    card_path = args.package / "release.json"
+    card = json.loads(card_path.read_text())
+    if (card["data_revision"], card["prediction_freeze_sha256"]) != (REVISION, FORECAST):
+        raise ValueError("Unexpected package for the RNA-only profile")
+    with new_output(args.out) as work:
+        path = work / "expression.tsv"
+        rna.loc[additional].rename_axis("sample_id").to_csv(path, sep="\t")
+        result, info = run_cli(args.package, path, work / "forecast.tsv", scale=RANK_FORMAT)
+        if len(result) != PANEL_SIZE or not result.status.eq("predicted").all() or not np.isfinite(result.sensitivity_score).all():
+            raise ValueError("Additional public RNA did not cover the offline panel")
+        publish_json(work / "receipt.json", {
+            "study_hcc_with_public_rna": len(matched), "hcc_models_with_scored_response": panel.cell_id.nunique(),
+            "rna_only_model": additional[0], "response_presence_by_sheet": {key: False for key in row_ids},
+            "public_rna_sha256": RNA_HASH, "supplement_sha256": ASSET_HASHES["supplement"],
+            "model_release_sha256": sha256(card_path), "replay": info,
+        })
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     stages = parser.add_subparsers(dest="stage", required=True)
-    fields = {"pack": ("priors", "hallmark", "targets", "auxiliary"),
-              "replay": ("package", "legacy", "tcga")}
+    fields = {"pack": ("reference", "results", "priors", "hallmark", "targets", "auxiliary"),
+              "replay": ("reference", "results", "package", "legacy", "tcga"),
+              "rna-only": ("public-rna", "supplement", "package")}
     for stage, paths in fields.items():
         command = stages.add_parser(stage)
-        for name in ("inputs", "reference", "results", *paths, "out"):
+        for name in ("inputs", *paths, "out"):
             command.add_argument(f"--{name}", type=Path, required=True)
     args = parser.parse_args()
-    {"pack": pack, "replay": replay}[args.stage](args)
+    {"pack": pack, "replay": replay, "rna-only": rna_only}[args.stage](args)
 
 
 if __name__ == "__main__":
