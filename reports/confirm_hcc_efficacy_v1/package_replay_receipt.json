@@ -1,0 +1,72 @@
+{
+  "batch_output_sha256": "4b4858a4c88a5497d0a545ef112aeaf42fbc769259721a2b6d549e76f0f66e71",
+  "checkpoint_sha256": "2cb27350315805f3f1872b6a8a172bff53da98ec4892b461fa8fbd0beca19136",
+  "cpu": "Intel(R) Xeon(R) Gold 5218R CPU @ 2.10GHz",
+  "cpu_latency_seconds": {
+    "cli_batch_53_profiles_input_checks": 14.856790643185377,
+    "cold_cli_single_68_drugs_all": [
+      13.863327767699957,
+      14.39630664139986,
+      13.968447782099247
+    ],
+    "cold_cli_single_68_drugs_median": 13.968447782099247,
+    "warm_kernel_single_68_drugs_median": 0.010872339829802513,
+    "warm_kernel_single_68_drugs_p95": 0.011021602153778075
+  },
+  "cpu_threads": 4,
+  "data_revision": "single-agent-structured-68-confirm-20261123",
+  "device": "cpu",
+  "drug_count": 68,
+  "drug_manifest_sha256": "dc7f8db94ff9db8a3417b16ad364632aecb49f28026e921953b86c58cfce290a",
+  "external_replay_profiles": 50,
+  "external_replay_rows": 3400,
+  "frozen_cpu_replay_max_abs_diff": 2.220446049250313e-16,
+  "frozen_prediction_sha256": "c00b68388f256761953fff1d523baea55b2f6b2ef99e4751d27d880283154f28",
+  "gene_count": 17871,
+  "gene_manifest_sha256": "8cab6ef475a77b3f79f97af5a8c4d5d2562989d5faf4fc5eff6871adf1d4068f",
+  "input_validation": {
+    "all_zero_rejections": 68,
+    "negative": {
+      "input_rejected": "RNA measurements must be nonnegative finite numbers or missing",
+      "seconds": 6.029533535242081
+    },
+    "outside_training_panel": {
+      "counts": {
+        "compound_outside_training_panel": 1
+      },
+      "file_sha256": "23299cf90eda3d9d8f31e0cc16990c56fbc4adaed5fd1feba5d83e8a0b7b60fd",
+      "min_gene_coverage": 1.0,
+      "min_selected_coverage": 1.0,
+      "profiles": 1,
+      "seconds": 13.082569558173418
+    },
+    "rna_min_fraction": 0.85,
+    "selected_gene_coverage_rejections": 68,
+    "whole_gene_coverage_rejections": 68
+  },
+  "max_abs_diff_tolerance": 5e-06,
+  "model_id": "structured",
+  "package_release_sha256": "32b5105d75fa63e8efcf21aac1e4ec770b1edfa3cd1bf4c82a8b784c852e6c16",
+  "python": "3.10.12",
+  "runtime_versions": {
+    "catboost": "1.2.8",
+    "joblib": "1.6.0",
+    "lightgbm": "4.6.0",
+    "numpy": "2.2.6",
+    "openpyxl": "3.1.5",
+    "pandas": "2.2.3",
+    "pyarrow": "19.0.1",
+    "rdkit": "2025.3.5",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.15.3",
+    "torch": "2.8.0+cu126",
+    "xgboost": "2.1.4"
+  },
+  "selected_gene_count": 768,
+  "single_batch_cli_max_abs_diff": 1.862645149230957e-07,
+  "single_batch_kernel_all_profiles_max_abs_diff": 2.0116567611694336e-07,
+  "tpm_log2_equivalence_max_abs_diff": 1.862645149230957e-07,
+  "train_rna_sha256": "ced61eceb5aac91defcd592819d01a67ef5d6ed89c3ac76cada348f8d319588e",
+  "train_sha256": "1edd32ef38be60a742efe0dcc376e15910623c1da8cc27d923291bee8a4a38cc",
+  "training_rows": 65678
+}

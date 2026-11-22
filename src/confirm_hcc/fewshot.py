@@ -196,7 +196,7 @@ def evaluate(args):
                     raise ValueError("Nonfinite or fit and test donors overlap")
                 per_model[model] = p
                 info = metrics(q, p, precision_k=k_precision, min_lineages=2)
-                top1 = mean(within_cell(q, p, 5, 1)[1])
+                top1 = float(mean(within_cell(q, p, 5, 1)[1]))
                 raw.append({"model_id": model, "repeat": repeat, **info, "precision_at_1": top1})
             splits.append(y.index.get_indexer(held))
             arrays.append(per_model)

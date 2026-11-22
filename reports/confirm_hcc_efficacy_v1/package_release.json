@@ -1,0 +1,56 @@
+{
+  "allowed_formats": [
+    "bulk_tpm",
+    "bulk_counts",
+    "bulk_log2_tpm_plus_1"
+  ],
+  "clinical_dose_validation": false,
+  "clinical_response": false,
+  "data_revision": "single-agent-structured-68-confirm-20261123",
+  "default_model": "structured",
+  "drug_registry_sha256": "dc7f8db94ff9db8a3417b16ad364632aecb49f28026e921953b86c58cfce290a",
+  "endpoint": "screen_aligned_sensitivity_score_higher_is_more_sensitive",
+  "external_score_sha256": "70fa18e0940ef82eefcccc78c76aa8fdecc2d136590af20e04f516a554958408",
+  "gene_registry_sha256": "8cab6ef475a77b3f79f97af5a8c4d5d2562989d5faf4fc5eff6871adf1d4068f",
+  "inductive_query": true,
+  "models": {
+    "structured": {
+      "multiplier": 1.0,
+      "path": "structured.joblib",
+      "sha256": "2cb27350315805f3f1872b6a8a172bff53da98ec4892b461fa8fbd0beca19136"
+    }
+  },
+  "prediction_freeze_sha256": "c00b68388f256761953fff1d523baea55b2f6b2ef99e4751d27d880283154f28",
+  "preprocessing": {
+    "complete_axis_min": 0.85,
+    "expression_units": "log2(TPM+1) or input converted before sample-rank transform",
+    "imputation": "source median",
+    "selected_axis_min": 0.85
+  },
+  "python": "3.10.12",
+  "registered_compounds": 68,
+  "runtime_versions": {
+    "catboost": "1.2.8",
+    "joblib": "1.6.0",
+    "lightgbm": "4.6.0",
+    "numpy": "2.2.6",
+    "openpyxl": "3.1.5",
+    "pandas": "2.2.3",
+    "pyarrow": "19.0.1",
+    "rdkit": "2025.3.5",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.15.3",
+    "torch": "2.8.0+cu126",
+    "xgboost": "2.1.4"
+  },
+  "schema_version": 1,
+  "source_cell_models": 1014,
+  "source_lineages": 991,
+  "source_rows": 65678,
+  "source_train_rna_sha256": "ced61eceb5aac91defcd592819d01a67ef5d6ed89c3ac76cada348f8d319588e",
+  "source_train_rows_sha256": "1edd32ef38be60a742efe0dcc376e15910623c1da8cc27d923291bee8a4a38cc",
+  "supported_axis": "research culture pretreatment bulk RNA, 68 exact parents",
+  "task2_designated_reference_model": "structured",
+  "task2_designation_scope": "limited within-drug research reference",
+  "version": "V0+"
+}

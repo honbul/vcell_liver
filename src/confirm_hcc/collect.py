@@ -41,6 +41,14 @@ def main():
             fit = verified(p / "predict/calibration_parameters.tsv", forecast["provenance"]["parameters_sha256"])
             parameters.append(pd.read_csv(fit, sep="\t"))
             current = pd.read_csv(p / "score/metrics.tsv", sep="\t")
+            if "precision_at_1" not in current:
+                # The early aggregate omitted an object-typed scalar. Its sealed episode values are complete.
+                episodes = pd.read_csv(p / "score/episodes.tsv", sep="\t")
+                cohort_keys = ["track", "model_id"]
+                top1 = episodes.groupby(cohort_keys).precision_at_1
+                if not top1.count().eq(REPEATS).all() or episodes.duplicated([*cohort_keys, "repeat"]).any():
+                    raise ValueError("Incomplete or duplicated Precision@1 episode support")
+                current = current.merge(top1.mean().reset_index(), on=cohort_keys, validate="one_to_one")
             for panel, part in current.groupby("track"):
                 expected = {B, C, *D} | (set(A) if "/exact68/" in panel else set())
                 if set(part.model_id) != expected or len(part) != len(expected):
