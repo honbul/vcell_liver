@@ -1,0 +1,1978 @@
+{
+  "forecast_sha256": {
+    "CTRPv2-0": "3a9c3e067aa2c554b1586f6aeaf342008f325e82e6a47c3ec5de7f221f09db27",
+    "CTRPv2-1": "d6735182b8a78f010352d618d72c63d309a0b7557002a35c008528c0fd64949f",
+    "CTRPv2-2": "85d53ec2538db7e80c32b7959e708d63c557e681b4833b83aabfd52e1b1112fd",
+    "GDSC2-0": "dece480f79ba9f421656f10ef4e97d19db7f72c95fb8ccd33376b5056a21e7b7",
+    "GDSC2-1": "3553c65e5279ba5bbbe82f2e57bbdc144ccef4338aeb2ce4c68bbd27f2a830de",
+    "GDSC2-2": "a72eae81764bcf4fb67289e307b0a7e397794f71de6121556db1141d7e4ee204",
+    "PRISM20Q2-0": "303f57dfc6e4cbe79099ba2f585447b81a8f06e830c9d82ab61ebb9e885e7cb7",
+    "PRISM20Q2-1": "c6e5efde6d37ef02c976f27150a115a6e8b373991a2bd26d4c807341399e9031",
+    "PRISM20Q2-2": "983de585adae1a1073372a3e4b6a943e74f54314ddf767cc2fea21b5ba3b7cd7",
+    "pooled-0": "fd46bd8475f615c2d8d0b968fb8be482eeb3ae8aecb879b34a7a1f1349eb3b5f",
+    "pooled-1": "3d588e631626fc71b3b311e9256aa240c1706997b8c039549b531ddb3da6d99c",
+    "pooled-2": "f7da86a51cb03136ebe4295aa87b68d24a418be895f3217c4055767b57c6d4fd"
+  },
+  "modes": {
+    "CTRPv2": {
+      "CTRPv2/CTRPv2_native_AUC": {
+        "across_cell_ci95": {
+          "drug_ridge": {
+            "pearson": [
+              -0.001045464040670512,
+              0.03219290919193326
+            ],
+            "spearman": [
+              -0.0041008151655866285,
+              0.03024774443860726
+            ]
+          },
+          "protein_cis_rna": {
+            "pearson": [
+              -0.013204898108196646,
+              -0.0018719225159597934
+            ],
+            "spearman": [
+              -0.011902337427547142,
+              0.00047940217965425087
+            ]
+          },
+          "structured": {
+            "pearson": [
+              -0.013197094810009692,
+              -0.0033431050244150575
+            ],
+            "spearman": [
+              -0.013460227264042732,
+              -0.0022953729263083763
+            ]
+          }
+        },
+        "gates": {
+          "protein_cis_rna": false,
+          "structured": false
+        },
+        "groups": 718,
+        "metrics": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.012489488792762106,
+                -0.003257474207897243
+              ],
+              "drugs": 35,
+              "gain": -0.007580362814978911,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.013521849843434804,
+                -0.003332178658146413
+              ],
+              "drugs": 35,
+              "gain": -0.007946872709670878,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.009554352433456346,
+                -0.002407215037460548
+              ],
+              "drugs": 35,
+              "gain": -0.005696683620648731,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.011489088108135185,
+                -0.003551120805053471
+              ],
+              "drugs": 35,
+              "gain": -0.007101397586884257,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                0.002274045982437489,
+                0.027498330239587063
+              ],
+              "drugs": 35,
+              "gain": 0.014545098198367487,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                0.0026794166050360495,
+                0.031886606153971354
+              ],
+              "drugs": 35,
+              "gain": 0.01621090359452704,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "drug_mean",
+              "n_drugs": 105,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "drug_ridge",
+              "n_drugs": 105,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.4031819965017838,
+              "within_drug_spearman": 0.3585457953523491
+            },
+            {
+              "method": "protein_cis_rna",
+              "n_drugs": 105,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.42649429768319513,
+              "within_drug_spearman": 0.3787875771713654
+            },
+            {
+              "method": "protein_proxy_rna",
+              "n_drugs": 105,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.41939290009631086,
+              "within_drug_spearman": 0.3730908935507166
+            },
+            {
+              "method": "structured",
+              "n_drugs": 105,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.4273397728059818,
+              "within_drug_spearman": 0.38067125636569543
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0022855709172998977,
+                0.0011339574085746957
+              ],
+              "gain": -0.000592591657325725,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0030683403068342274,
+                0.00502092050209252
+              ],
+              "gain": 0.0008368200836820217,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0008333055497453278,
+                0.001605791709352153
+              ],
+              "gain": 0.0003496872884577451,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0025549411805360633,
+                0.0007264862146496105
+              ],
+              "gain": -0.0008985843151374517,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0039051603905161394,
+                0.00446304044630458
+              ],
+              "gain": 0.00027894002789408123,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0010753945460680314,
+                0.001425536810007644
+              ],
+              "gain": 0.00016985827797333375,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0034860954527101058,
+                0.0035954889642837193
+              ],
+              "gain": 0.00010792612940280222,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.003068340306833897,
+                0.01338912133891174
+              ],
+              "gain": 0.005439330543933196,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.003665698517713706,
+                0.003485183388573846
+              ],
+              "gain": -7.085953953733792e-05,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 729,
+              "common_rows": 21458,
+              "covered_rows": 21458,
+              "lineages": 718,
+              "macro_ndcg_at_5": 0.7968287068539767,
+              "macro_spearman": 0.5008920574953256,
+              "macro_top5_overlap": 0.4934065934065935,
+              "method": "drug_mean",
+              "registered_rows": 21458,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 729,
+              "common_rows": 21458,
+              "covered_rows": 21458,
+              "lineages": 718,
+              "macro_ndcg_at_5": 0.8020384155145593,
+              "macro_spearman": 0.5760166869173196,
+              "macro_top5_overlap": 0.4989010989010989,
+              "method": "drug_ridge",
+              "registered_rows": 21458,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 729,
+              "common_rows": 21458,
+              "covered_rows": 21458,
+              "lineages": 718,
+              "macro_ndcg_at_5": 0.8031818583854934,
+              "macro_spearman": 0.5757981823313386,
+              "macro_top5_overlap": 0.5043956043956044,
+              "method": "protein_cis_rna",
+              "registered_rows": 21458,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 729,
+              "common_rows": 21458,
+              "covered_rows": 21458,
+              "lineages": 718,
+              "macro_ndcg_at_5": 0.8022887404078926,
+              "macro_spearman": 0.5759792444289101,
+              "macro_top5_overlap": 0.5046703296703297,
+              "method": "protein_proxy_rna",
+              "registered_rows": 21458,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 729,
+              "common_rows": 21458,
+              "covered_rows": 21458,
+              "lineages": 718,
+              "macro_ndcg_at_5": 0.8028538081355416,
+              "macro_spearman": 0.575644985315381,
+              "macro_top5_overlap": 0.5038461538461538,
+              "method": "structured",
+              "registered_rows": 21458,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            }
+          ]
+        },
+        "observations": 21458
+      }
+    },
+    "GDSC2": {
+      "GDSC2/GDSC2_native_AUC": {
+        "across_cell_ci95": {
+          "drug_ridge": {
+            "pearson": [
+              -0.0009243312641522577,
+              0.026034451010042654
+            ],
+            "spearman": [
+              -0.004228800151001036,
+              0.027836855575265343
+            ]
+          },
+          "protein_cis_rna": {
+            "pearson": [
+              -0.0020382034701254747,
+              0.00807546273223068
+            ],
+            "spearman": [
+              -0.0027301647410458317,
+              0.011703018786041635
+            ]
+          },
+          "structured": {
+            "pearson": [
+              -0.0024412545056177724,
+              0.004115708492529462
+            ],
+            "spearman": [
+              -0.0006944793321966758,
+              0.008910334000916278
+            ]
+          }
+        },
+        "gates": {
+          "protein_cis_rna": false,
+          "structured": false
+        },
+        "groups": 713,
+        "metrics": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                0.0004983617356321216,
+                0.007588222867430221
+              ],
+              "drugs": 29,
+              "gain": 0.004067233134519927,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.002112720603133332,
+                0.003233357836344325
+              ],
+              "drugs": 29,
+              "gain": 0.0007213050447502181,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.000758728601190238,
+                0.009626940019128238
+              ],
+              "drugs": 29,
+              "gain": 0.004311809046220478,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.0010233640819913503,
+                0.006355880226306248
+              ],
+              "drugs": 29,
+              "gain": 0.002835646535208262,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.0019570406106345904,
+                0.024287306084271005
+              ],
+              "drugs": 29,
+              "gain": 0.01111367949890301,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.00048687691610731237,
+                0.024384744761487498
+              ],
+              "drugs": 29,
+              "gain": 0.011930067680041541,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "drug_mean",
+              "n_drugs": 87,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "drug_ridge",
+              "n_drugs": 87,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4357895531664304,
+              "within_drug_spearman": 0.3610582787996226
+            },
+            {
+              "method": "protein_cis_rna",
+              "n_drugs": 87,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4448839743112637,
+              "within_drug_spearman": 0.36786014925230515
+            },
+            {
+              "method": "protein_proxy_rna",
+              "n_drugs": 87,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.447719620846472,
+              "within_drug_spearman": 0.3721719582985256
+            },
+            {
+              "method": "structured",
+              "n_drugs": 87,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4469983158017218,
+              "within_drug_spearman": 0.36810472516400583
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                0.00035151200663704763,
+                0.0047985439689757275
+              ],
+              "gain": 0.002577532010022976,
+              "lineages": 713,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.003085553997194901,
+                0.005329593267882127
+              ],
+              "gain": 0.0011220196353433631,
+              "lineages": 713,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                0.0016481646182193374,
+                0.004524525712218672
+              ],
+              "gain": 0.0030808044255487554,
+              "lineages": 713,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0008297145761764906,
+                0.003972780435378707
+              ],
+              "gain": 0.0016286954242470397,
+              "lineages": 713,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.003085553997194791,
+                0.006451612903225823
+              ],
+              "gain": 0.001683029453015461,
+              "lineages": 713,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                0.0013887841257900796,
+                0.004764972196553379
+              ],
+              "gain": 0.0030660918461620223,
+              "lineages": 713,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.022160891046724633,
+                -0.012248462564670883
+              ],
+              "gain": -0.01723995186394267,
+              "lineages": 713,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.029172510518934054,
+                -0.012335203366058553
+              ],
+              "gain": -0.020757363253857797,
+              "lineages": 713,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.015085699126967559,
+                -0.007239653019100257
+              ],
+              "gain": -0.011170868232220632,
+              "lineages": 713,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 713,
+              "common_rows": 17031,
+              "covered_rows": 17031,
+              "lineages": 713,
+              "macro_ndcg_at_5": 0.658172126382414,
+              "macro_spearman": 0.36381190162323834,
+              "macro_top5_overlap": 0.3615708274894811,
+              "method": "drug_mean",
+              "registered_rows": 17031,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 713,
+              "common_rows": 17031,
+              "covered_rows": 17031,
+              "lineages": 713,
+              "macro_ndcg_at_5": 0.7248916937470251,
+              "macro_spearman": 0.4632133616429075,
+              "macro_top5_overlap": 0.44235624123422157,
+              "method": "drug_ridge",
+              "registered_rows": 17031,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 713,
+              "common_rows": 17031,
+              "covered_rows": 17031,
+              "lineages": 713,
+              "macro_ndcg_at_5": 0.7060230464588357,
+              "macro_spearman": 0.44897640156452406,
+              "macro_top5_overlap": 0.41991584852734926,
+              "method": "protein_cis_rna",
+              "registered_rows": 17031,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 713,
+              "common_rows": 17031,
+              "covered_rows": 17031,
+              "lineages": 713,
+              "macro_ndcg_at_5": 0.7076517418830828,
+              "macro_spearman": 0.45204249341068653,
+              "macro_top5_overlap": 0.42159887798036466,
+              "method": "protein_proxy_rna",
+              "registered_rows": 17031,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 713,
+              "common_rows": 17031,
+              "covered_rows": 17031,
+              "lineages": 713,
+              "macro_ndcg_at_5": 0.7050742098730595,
+              "macro_spearman": 0.44896168898513816,
+              "macro_top5_overlap": 0.4204768583450211,
+              "method": "structured",
+              "registered_rows": 17031,
+              "track": "GDSC2/GDSC2_native_AUC"
+            }
+          ]
+        },
+        "observations": 17031
+      }
+    },
+    "PRISM20Q2": {
+      "PRISM20Q2/PRISM20Q2_native_AUC": {
+        "across_cell_ci95": {
+          "drug_ridge": {
+            "pearson": [
+              -0.018682424222356053,
+              0.024182945326275438
+            ],
+            "spearman": [
+              -0.002720948473856711,
+              0.04775082883185738
+            ]
+          },
+          "protein_cis_rna": {
+            "pearson": [
+              -0.011213605636275032,
+              0.0028811063595093433
+            ],
+            "spearman": [
+              -0.012651383967751218,
+              0.006215945194697276
+            ]
+          },
+          "structured": {
+            "pearson": [
+              -0.0037836537432039486,
+              0.008408211519309873
+            ],
+            "spearman": [
+              -0.0061166245045719434,
+              0.008436618217239858
+            ]
+          }
+        },
+        "gates": {
+          "protein_cis_rna": false,
+          "structured": false
+        },
+        "groups": 702,
+        "metrics": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.00115653311090654,
+                0.0038171322161239985
+              ],
+              "drugs": 13,
+              "gain": 0.001272751265453075,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.0011119242635472626,
+                0.006221605983385067
+              ],
+              "drugs": 13,
+              "gain": 0.0022475545919420355,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.007717728504607467,
+                0.0014421578487790253
+              ],
+              "drugs": 13,
+              "gain": -0.00276707784385307,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.00803785553120134,
+                0.0001575959453759029
+              ],
+              "drugs": 13,
+              "gain": -0.0038569901442527072,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                0.01132321504022799,
+                0.030969537136141586
+              ],
+              "drugs": 13,
+              "gain": 0.021126363234718396,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.007650669397932873,
+                0.010340374166311495
+              ],
+              "drugs": 13,
+              "gain": 0.0012408363525956755,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "drug_mean",
+              "n_drugs": 39,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "drug_ridge",
+              "n_drugs": 39,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.1360560506338555,
+              "within_drug_spearman": 0.13257578951076715
+            },
+            {
+              "method": "protein_cis_rna",
+              "n_drugs": 39,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.14115387713070385,
+              "within_drug_spearman": 0.15646923058933862
+            },
+            {
+              "method": "protein_proxy_rna",
+              "n_drugs": 39,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.13729688698645118,
+              "within_drug_spearman": 0.15370215274548554
+            },
+            {
+              "method": "structured",
+              "n_drugs": 39,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.13504933239450911,
+              "within_drug_spearman": 0.15242940148003242
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.002749062836901184,
+                0.000418475423572043
+              ],
+              "gain": -0.0011429752454434894,
+              "lineages": 701,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                0.00028530670470749975,
+                0.004564907275320995
+              ],
+              "gain": 0.002282453637660442,
+              "lineages": 701,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.003996332474488859,
+                0.0003155024116038909
+              ],
+              "gain": -0.001897287191289787,
+              "lineages": 701,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0035903188030035503,
+                -0.0005358662941915974
+              ],
+              "gain": -0.0020120113298344178,
+              "lineages": 701,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0019971469329530533,
+                0.0014265335235377208
+              ],
+              "gain": -0.0002853067047077218,
+              "lineages": 701,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.00517540242496867,
+                -0.0005527579595657073
+              ],
+              "gain": -0.0028880750195013905,
+              "lineages": 701,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0013380484109472679,
+                0.005027924226099229
+              ],
+              "gain": 0.001799950586020005,
+              "lineages": 701,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.008131241084166074,
+                0.0018544935805985346
+              ],
+              "gain": -0.0031383737517832744,
+              "lineages": 701,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0015096588226242902,
+                0.01272079901507871
+              ],
+              "gain": 0.005658894361725397,
+              "lineages": 701,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 716,
+              "common_rows": 6939,
+              "covered_rows": 6939,
+              "lineages": 702,
+              "macro_ndcg_at_5": 0.8473125950947386,
+              "macro_spearman": 0.599609552823411,
+              "macro_top5_overlap": 0.7174825174825175,
+              "method": "drug_mean",
+              "registered_rows": 6939,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 716,
+              "common_rows": 6939,
+              "covered_rows": 6939,
+              "lineages": 702,
+              "macro_ndcg_at_5": 0.8380171754870532,
+              "macro_spearman": 0.5938602375747244,
+              "macro_top5_overlap": 0.7247552447552448,
+              "method": "drug_ridge",
+              "registered_rows": 6939,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 716,
+              "common_rows": 6939,
+              "covered_rows": 6939,
+              "lineages": 702,
+              "macro_ndcg_at_5": 0.8419306932125639,
+              "macro_spearman": 0.6016809021713536,
+              "macro_top5_overlap": 0.722237762237762,
+              "method": "protein_cis_rna",
+              "registered_rows": 6939,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 716,
+              "common_rows": 6939,
+              "covered_rows": 6939,
+              "lineages": 702,
+              "macro_ndcg_at_5": 0.8398993427950836,
+              "macro_spearman": 0.5987246065379529,
+              "macro_top5_overlap": 0.7219580419580418,
+              "method": "protein_proxy_rna",
+              "registered_rows": 6939,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 716,
+              "common_rows": 6939,
+              "covered_rows": 6939,
+              "lineages": 702,
+              "macro_ndcg_at_5": 0.8410841166779416,
+              "macro_spearman": 0.6006855290458625,
+              "macro_top5_overlap": 0.7197202797202796,
+              "method": "structured",
+              "registered_rows": 6939,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            }
+          ]
+        },
+        "observations": 6939
+      }
+    },
+    "pooled": {
+      "CTRPv2/CTRPv2_native_AUC": {
+        "across_cell_ci95": {
+          "drug_ridge": {
+            "pearson": [
+              -0.00685356680769374,
+              0.015498490187133394
+            ],
+            "spearman": [
+              -0.00942766334415671,
+              0.015940400674897354
+            ]
+          },
+          "protein_cis_rna": {
+            "pearson": [
+              -0.007437388178349263,
+              0.00011379547631588518
+            ],
+            "spearman": [
+              -0.009855539389384445,
+              0.0006254943610920327
+            ]
+          },
+          "structured": {
+            "pearson": [
+              -0.0056090794332371895,
+              -0.0003874580123991442
+            ],
+            "spearman": [
+              -0.008365776392930579,
+              -0.00025684004998094743
+            ]
+          }
+        },
+        "gates": {
+          "protein_cis_rna": false,
+          "structured": false
+        },
+        "groups": 720,
+        "metrics": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.00591559188192473,
+                -0.002507719870671088
+              ],
+              "drugs": 49,
+              "gain": -0.00419933994779722,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.0038803977033494354,
+                -0.0019247287346744512
+              ],
+              "drugs": 49,
+              "gain": -0.0028873386248258453,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.006567128664926086,
+                -0.0023005278695098657
+              ],
+              "drugs": 49,
+              "gain": -0.004473309102844464,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.004621192673301976,
+                -0.00249892049564098
+              ],
+              "drugs": 49,
+              "gain": -0.003568802047634974,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.0046286489011752195,
+                0.010546519419243276
+              ],
+              "drugs": 49,
+              "gain": 0.0029015297791042892,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.003928178200305598,
+                0.011714245978861998
+              ],
+              "drugs": 49,
+              "gain": 0.004050293691528782,
+              "metric": "pearson",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "drug_mean",
+              "n_drugs": 147,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "drug_ridge",
+              "n_drugs": 147,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.4980354158449162,
+              "within_drug_spearman": 0.45137312058370477
+            },
+            {
+              "method": "protein_cis_rna",
+              "n_drugs": 147,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.5056545115840799,
+              "within_drug_spearman": 0.4587479594656534
+            },
+            {
+              "method": "protein_proxy_rna",
+              "n_drugs": 147,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.5020857095364449,
+              "within_drug_spearman": 0.454274650362809
+            },
+            {
+              "method": "structured",
+              "n_drugs": 147,
+              "track": "CTRPv2/CTRPv2_native_AUC",
+              "within_drug_pearson": 0.5049730481612708,
+              "within_drug_spearman": 0.4584739903106062
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                0.0004987075120951728,
+                0.0023258517852925544
+              ],
+              "gain": 0.0013728258913655589,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.001394700139469851,
+                0.004184100418410108
+              ],
+              "gain": 0.001255230125523199,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0015818154283971902,
+                0.0002419013413365703
+              ],
+              "gain": -0.0006209329990826129,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                0.0003690034403053294,
+                0.0023746958629051267
+              ],
+              "gain": 0.0013493873063133988,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0005578800557881625,
+                0.005578800557880292
+              ],
+              "gain": 0.002370990237098969,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0016768240290183783,
+                -0.00015687401881018788
+              ],
+              "gain": -0.000919933427252495,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.005923089724249842,
+                -0.0014464751350709815
+              ],
+              "gain": -0.0037074000176140487,
+              "lineages": 717,
+              "metric": "ndcg_at_5",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.017297768479777584,
+                -0.003068340306834114
+              ],
+              "gain": -0.010181311018131356,
+              "lineages": 717,
+              "metric": "top5_overlap",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                0.001401615306253573,
+                0.006084410521774062
+              ],
+              "gain": 0.003798360403401202,
+              "lineages": 717,
+              "metric": "spearman",
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 731,
+              "common_rows": 31050,
+              "covered_rows": 31050,
+              "lineages": 720,
+              "macro_ndcg_at_5": 0.8677147510705021,
+              "macro_spearman": 0.6756558068364076,
+              "macro_top5_overlap": 0.5637362637362637,
+              "method": "drug_mean",
+              "registered_rows": 31050,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 731,
+              "common_rows": 31050,
+              "covered_rows": 31050,
+              "lineages": 720,
+              "macro_ndcg_at_5": 0.8902973016675098,
+              "macro_spearman": 0.726686079846875,
+              "macro_top5_overlap": 0.5920329670329669,
+              "method": "drug_ridge",
+              "registered_rows": 31050,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 731,
+              "common_rows": 31050,
+              "covered_rows": 31050,
+              "lineages": 720,
+              "macro_ndcg_at_5": 0.8851912845607884,
+              "macro_spearman": 0.7313311218460015,
+              "macro_top5_overlap": 0.5793956043956043,
+              "method": "protein_cis_rna",
+              "registered_rows": 31050,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 731,
+              "common_rows": 31050,
+              "covered_rows": 31050,
+              "lineages": 720,
+              "macro_ndcg_at_5": 0.8865621445226094,
+              "macro_spearman": 0.7303851395890182,
+              "macro_top5_overlap": 0.5815934065934065,
+              "method": "protein_proxy_rna",
+              "registered_rows": 31050,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            },
+            {
+              "cells": 731,
+              "common_rows": 31050,
+              "covered_rows": 31050,
+              "lineages": 720,
+              "macro_ndcg_at_5": 0.885191248844669,
+              "macro_spearman": 0.7310233144227752,
+              "macro_top5_overlap": 0.5804945054945055,
+              "method": "structured",
+              "registered_rows": 31050,
+              "track": "CTRPv2/CTRPv2_native_AUC"
+            }
+          ]
+        },
+        "observations": 31050
+      },
+      "GDSC2/GDSC2_native_AUC": {
+        "across_cell_ci95": {
+          "drug_ridge": {
+            "pearson": [
+              -0.028802362875670964,
+              0.004475717962196217
+            ],
+            "spearman": [
+              -0.028411893432846183,
+              0.010938043625378185
+            ]
+          },
+          "protein_cis_rna": {
+            "pearson": [
+              -0.0014012169629903594,
+              0.007853880169988645
+            ],
+            "spearman": [
+              0.00114736569180162,
+              0.013824813761168559
+            ]
+          },
+          "structured": {
+            "pearson": [
+              -0.0005827274074825713,
+              0.006564693465464957
+            ],
+            "spearman": [
+              0.0022759105419924933,
+              0.011989300953347394
+            ]
+          }
+        },
+        "gates": {
+          "protein_cis_rna": false,
+          "structured": false
+        },
+        "groups": 714,
+        "metrics": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                0.0031154629899340217,
+                0.011770525198783736
+              ],
+              "drugs": 42,
+              "gain": 0.006855360247409403,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.000438445070418311,
+                0.006984558566928562
+              ],
+              "drugs": 42,
+              "gain": 0.002649581071069344,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                0.002999154475815515,
+                0.013006305501713715
+              ],
+              "drugs": 42,
+              "gain": 0.007440117437796182,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.0007856417977963716,
+                0.007984512530809769
+              ],
+              "drugs": 42,
+              "gain": 0.0028496953769166214,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.026998765378349956,
+                0.009512603153296145
+              ],
+              "drugs": 42,
+              "gain": -0.007001071441357463,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.028029261394289108,
+                0.004380470931551267
+              ],
+              "drugs": 42,
+              "gain": -0.009884915849392401,
+              "metric": "pearson",
+              "track": "GDSC2/GDSC2_native_AUC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "drug_mean",
+              "n_drugs": 126,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "drug_ridge",
+              "n_drugs": 126,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4809678755948804,
+              "within_drug_spearman": 0.4144346840299327
+            },
+            {
+              "method": "protein_cis_rna",
+              "n_drugs": 126,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.46823326436857127,
+              "within_drug_spearman": 0.39999349515077914
+            },
+            {
+              "method": "protein_proxy_rna",
+              "n_drugs": 126,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.4710829597454879,
+              "within_drug_spearman": 0.40743361258857547
+            },
+            {
+              "method": "structured",
+              "n_drugs": 126,
+              "track": "GDSC2/GDSC2_native_AUC",
+              "within_drug_pearson": 0.46843337867441853,
+              "within_drug_spearman": 0.40057825234116595
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                0.0003758022998337052,
+                0.004519343215804975
+              ],
+              "gain": 0.0023194227531416756,
+              "lineages": 714,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0028011204481791533,
+                0.00616246498599482
+              ],
+              "gain": 0.0016806722689078901,
+              "lineages": 714,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                0.0007038065199289039,
+                0.010739235871967958
+              ],
+              "gain": 0.004264478361956203,
+              "lineages": 714,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.00011226926117357812,
+                0.0035146638570384887
+              ],
+              "gain": 0.001669003217760756,
+              "lineages": 714,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0008403361344537785,
+                0.009243697478992119
+              ],
+              "gain": 0.004201680672269448,
+              "lineages": 714,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -7.480735716818007e-05,
+                0.0019796996107487117
+              ],
+              "gain": 0.0009920316037743682,
+              "lineages": 714,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.008202023255102966,
+                -0.0011143770667383281
+              ],
+              "gain": -0.004642149865525913,
+              "lineages": 714,
+              "metric": "ndcg_at_5",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.014285714285714684,
+                0.0028011204481788177
+              ],
+              "gain": -0.005602240896357635,
+              "lineages": 714,
+              "metric": "top5_overlap",
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0082445830887227,
+                -0.0025761205666657125
+              ],
+              "gain": -0.005436828435781971,
+              "lineages": 714,
+              "metric": "spearman",
+              "track": "GDSC2/GDSC2_native_AUC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 714,
+              "common_rows": 24839,
+              "covered_rows": 24839,
+              "lineages": 714,
+              "macro_ndcg_at_5": 0.8566164247941644,
+              "macro_spearman": 0.6448152411222102,
+              "macro_top5_overlap": 0.5173669467787114,
+              "method": "drug_mean",
+              "registered_rows": 24839,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 714,
+              "common_rows": 24839,
+              "covered_rows": 24839,
+              "lineages": 714,
+              "macro_ndcg_at_5": 0.8853614235012035,
+              "macro_spearman": 0.7165488569156141,
+              "macro_top5_overlap": 0.5666666666666667,
+              "method": "drug_ridge",
+              "registered_rows": 24839,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 714,
+              "common_rows": 24839,
+              "covered_rows": 24839,
+              "lineages": 714,
+              "macro_ndcg_at_5": 0.8790502704179156,
+              "macro_spearman": 0.7101199968760584,
+              "macro_top5_overlap": 0.5568627450980392,
+              "method": "protein_cis_rna",
+              "registered_rows": 24839,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 714,
+              "common_rows": 24839,
+              "covered_rows": 24839,
+              "lineages": 714,
+              "macro_ndcg_at_5": 0.8807192736356771,
+              "macro_spearman": 0.7111120284798328,
+              "macro_top5_overlap": 0.5610644257703081,
+              "method": "protein_proxy_rna",
+              "registered_rows": 24839,
+              "track": "GDSC2/GDSC2_native_AUC"
+            },
+            {
+              "cells": 714,
+              "common_rows": 24839,
+              "covered_rows": 24839,
+              "lineages": 714,
+              "macro_ndcg_at_5": 0.8783998508825351,
+              "macro_spearman": 0.7068475501178767,
+              "macro_top5_overlap": 0.5593837535014006,
+              "method": "structured",
+              "registered_rows": 24839,
+              "track": "GDSC2/GDSC2_native_AUC"
+            }
+          ]
+        },
+        "observations": 24839
+      },
+      "PRISM20Q2/PRISM20Q2_native_AUC": {
+        "across_cell_ci95": {
+          "drug_ridge": {
+            "pearson": [
+              -0.014876559657697233,
+              0.030947386168935696
+            ],
+            "spearman": [
+              -0.0059574072992623715,
+              0.04817946287220591
+            ]
+          },
+          "protein_cis_rna": {
+            "pearson": [
+              -0.006759184991295782,
+              0.008635742436192518
+            ],
+            "spearman": [
+              -0.009578585762770517,
+              0.00812620202530522
+            ]
+          },
+          "structured": {
+            "pearson": [
+              -0.0010240929586266597,
+              0.010383928284775775
+            ],
+            "spearman": [
+              -0.004395295872134393,
+              0.008628577890607838
+            ]
+          }
+        },
+        "gates": {
+          "protein_cis_rna": false,
+          "structured": false
+        },
+        "groups": 703,
+        "metrics": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.0005498723936435986,
+                0.004930639048470067
+              ],
+              "drugs": 18,
+              "gain": 0.0020578545386438067,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                0.0021134061385527977,
+                0.007194003496076636
+              ],
+              "drugs": 18,
+              "gain": 0.004681345150640248,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.004208405900785707,
+                0.0034418909872677224
+              ],
+              "drugs": 18,
+              "gain": -0.0005122827227972174,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.0034404261857381418,
+                0.005494001033111514
+              ],
+              "drugs": 18,
+              "gain": 0.0010771640982589527,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                0.0036832810748360584,
+                0.039473927621452895
+              ],
+              "drugs": 18,
+              "gain": 0.021386448359589645,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "drug_bootstrap_ci95": [
+                -0.008005250674369746,
+                0.024515933001159756
+              ],
+              "drugs": 18,
+              "gain": 0.00813710373889752,
+              "metric": "pearson",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "drug_mean",
+              "n_drugs": 54,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "drug_ridge",
+              "n_drugs": 54,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.23390283355486982,
+              "within_drug_spearman": 0.22851404900380423
+            },
+            {
+              "method": "protein_cis_rna",
+              "n_drugs": 54,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.24096277319550835,
+              "within_drug_spearman": 0.25041278008619106
+            },
+            {
+              "method": "protein_proxy_rna",
+              "n_drugs": 54,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.2420399372937673,
+              "within_drug_spearman": 0.24990049736339384
+            },
+            {
+              "method": "structured",
+              "n_drugs": 54,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC",
+              "within_drug_pearson": 0.2373585921431271,
+              "within_drug_spearman": 0.24784264282475005
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0024884946638925208,
+                -0.00021997111203330674
+              ],
+              "gain": -0.001319466246674672,
+              "lineages": 702,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.003133903133903493,
+                0.00199430199430195
+              ],
+              "gain": -0.0005698005698007158,
+              "lineages": 702,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "structured",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0030615427791459288,
+                -6.713689801839672e-05
+              ],
+              "gain": -0.0015274782073176896,
+              "lineages": 702,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0019099791424108282,
+                0.00035433471647842996
+              ],
+              "gain": -0.0007637387354942904,
+              "lineages": 702,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.003988603988604347,
+                0.0019943019943016197
+              ],
+              "gain": -0.0009971509971511416,
+              "lineages": 702,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "protein_cis_rna",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.003235962713465215,
+                -6.990228205861191e-05
+              ],
+              "gain": -0.0016317393384054357,
+              "lineages": 702,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.0037068627438042703,
+                0.002149854078126562
+              ],
+              "gain": -0.0008572506738120378,
+              "lineages": 702,
+              "metric": "ndcg_at_5",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.01168091168091201,
+                0.0029950142450146646
+              ],
+              "gain": -0.004273504273504813,
+              "lineages": 702,
+              "metric": "top5_overlap",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "baseline": "drug_ridge",
+              "candidate": "protein_proxy_rna",
+              "ci95": [
+                -0.009338318444759842,
+                0.00022726960836228397
+              ],
+              "gain": -0.004708711610263205,
+              "lineages": 702,
+              "metric": "spearman",
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 717,
+              "common_rows": 9749,
+              "covered_rows": 9749,
+              "lineages": 703,
+              "macro_ndcg_at_5": 0.89754523813075,
+              "macro_spearman": 0.7388176615216179,
+              "macro_top5_overlap": 0.6966480446927373,
+              "method": "drug_mean",
+              "registered_rows": 9749,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 717,
+              "common_rows": 9749,
+              "covered_rows": 9749,
+              "lineages": 703,
+              "macro_ndcg_at_5": 0.9039290916647094,
+              "macro_spearman": 0.7487264218838071,
+              "macro_top5_overlap": 0.7175977653631285,
+              "method": "drug_ridge",
+              "registered_rows": 9749,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 717,
+              "common_rows": 9749,
+              "covered_rows": 9749,
+              "lineages": 703,
+              "macro_ndcg_at_5": 0.9037659342748009,
+              "macro_spearman": 0.7456971007497282,
+              "macro_top5_overlap": 0.7142458100558658,
+              "method": "protein_cis_rna",
+              "registered_rows": 9749,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 717,
+              "common_rows": 9749,
+              "covered_rows": 9749,
+              "lineages": 703,
+              "macro_ndcg_at_5": 0.9029891377693423,
+              "macro_spearman": 0.7440672747536458,
+              "macro_top5_overlap": 0.7131284916201116,
+              "method": "protein_proxy_rna",
+              "registered_rows": 9749,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            },
+            {
+              "cells": 717,
+              "common_rows": 9749,
+              "covered_rows": 9749,
+              "lineages": 703,
+              "macro_ndcg_at_5": 0.9042773088353687,
+              "macro_spearman": 0.745562235178329,
+              "macro_top5_overlap": 0.7136871508379887,
+              "method": "structured",
+              "registered_rows": 9749,
+              "track": "PRISM20Q2/PRISM20Q2_native_AUC"
+            }
+          ]
+        },
+        "observations": 9749
+      }
+    }
+  },
+  "pass": false,
+  "screen_gates_passed": 0
+}

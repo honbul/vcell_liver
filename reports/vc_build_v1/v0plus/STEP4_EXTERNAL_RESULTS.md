@@ -109,3 +109,5 @@ Kim 18 PDO의 약물×환자 잔차는 반복 간 PCC .864–.906이었다. Zhan
 공통 21약물의 코호트 평균 순위에서 LIMORE↔LICOB Spearman은 .784, LICOB↔Wong은 .442였다. 코호트 평균의 일치와 LICOB에서 낮은 약물 내 개인화 성적이 함께 관측됐다. [코호트 평균 약물 순서 감사](HCC_COMPOUND_MARGIN_RESULTS.md)
 
 RNA 이웃을 구조 커널의 적합 단계에 넣어 두 단계 그래프 확산을 평가했다. LICOB 공여자 내 Spearman은 .339→.350으로 올랐고 상위 5개 지표의 비열등 기준에 미달했다. LIMORE 약물 내 Pearson은 .380→.353으로 낮아졌으며 두 외부의 공동 기준은 미통과였다. [RNA 그래프 확산 평가](RNA_DIFFUSION_RESULTS.md)
+
+공개 ProCan 단백질체로 학습한 RNA 추정은 LICOB의 실측 단백질 순위를 같은 유전자 RNA보다 덜 잘 보존했다(2,323단백질의 공여자 간 Spearman 중앙값 .246 대 .404). 실측 단백질을 투입한 LICOB 기술 비교는 약물 내 Spearman .045→.122였으나 짝지은 95% 구간은 0을 포함했다. RNA 추정의 두 외부 공동 기준에 미달했다. [단백질체 감독과 LICOB 실측 비교](PROTEIN_PROXY_RESULTS.md)
