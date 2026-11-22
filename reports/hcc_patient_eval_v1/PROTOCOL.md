@@ -11,7 +11,7 @@ All patient and training matrices are read from their registered source paths. T
 | ABSOLUTE purity | GDC public file `4f277128-f793-4354-a13d-30cc7fe9f6b5` |
 | PROGENy | `saezlab/progeny:data/model_human_full.rda` revision `c10e270121fb01b5cec6c078013f8991d66efba5`, exported to TSV |
 | Fixed signatures | MSigDB Hoshida S1/S2/S3 and Hallmark E2F and G2M, plus the original ESTIMATE R package immune and stromal scores |
-| Adult-HCC reference RNA, compounds and fitted weights | The released V0 and additive ridge in G1 `vc_build_v1/function/function-registered.ekrmqfpZ/full`; adult LIMORE RNA and registry in `vc_build_v1/function/limore-v1` |
+| Adult-HCC reference RNA, compounds and fitted weights | The released V0 and additive ridge in G1 `vc_build_v1/function/function-registered.ekrmqfpZ/full`, with adult LIMORE RNA and registry in `vc_build_v1/function/limore-v1` |
 | Additional cell-line reference RNA | The read-only `vc_build_v1/function/cross-v1/train` DepMap-derived matrix, with DepMap 25Q3 `Model.csv` adult HCC roster and GDSC2 source records |
 | LIMORE genotype comparison | `/mnt/S1/sdata/pubdata/LIMORE/Cancer_functional_genes_of_81_cell_lines.txt` plus published Activity Area rows |
 
