@@ -22,6 +22,14 @@ def stable_seed(key, seed):
     return int.from_bytes(sha256(f"scrna:{seed}:{key}".encode()).digest()[:8], "big")
 
 
+def load_embedding(file):
+    with np.load(file, allow_pickle=False) as stream:
+        matrix = pd.DataFrame(stream["vectors"], index=stream["id"])
+    if not matrix.index.is_unique or not np.isfinite(matrix.to_numpy()).all():
+        raise ValueError(f"Ambiguous embeddings in {file}")
+    return matrix
+
+
 def sparse_h5_rows(node, indices, n_genes):
     bounds = node["indptr"]
     at = bounds[indices]

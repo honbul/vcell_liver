@@ -13,8 +13,7 @@ from sklearn.cluster import KMeans
 from umap import UMAP
 
 from .cohorts import file_record
-from .predict import load_embedding
-from .singlecell_inputs import files_receipt
+from .singlecell_inputs import files_receipt, load_embedding
 from .source_panels import frozen
 
 

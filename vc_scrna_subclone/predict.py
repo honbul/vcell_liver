@@ -12,7 +12,7 @@ from scipy.stats import rankdata
 import torch
 
 from .cohorts import file_record
-from .singlecell_inputs import COHORTS, files_receipt
+from .singlecell_inputs import COHORTS, files_receipt, load_embedding
 from .source_panels import DRUG_NAMES, frozen
 from .transfer_models import Result, neural, ordinary, rank_skill
 
@@ -34,14 +34,6 @@ def available_profiles(path, row_metadata, genes_file):
     if cells.shape != (len(row_metadata), len(axis)) or not axis.is_unique or not row_metadata.id.is_unique:
         raise ValueError(f"Unaligned registered single-cell profile {path}")
     return Profiles(pd.Index(row_metadata.id), axis, cells)
-
-
-def load_embedding(file):
-    with np.load(file, allow_pickle=False) as stream:
-        matrix = pd.DataFrame(stream["vectors"], index=stream["id"])
-        if not matrix.index.is_unique or not np.isfinite(matrix.to_numpy()).all():
-            raise ValueError(f"Ambiguous embeddings in {file}")
-        return matrix
 
 
 def high_variance(bulk, ids, genes):
