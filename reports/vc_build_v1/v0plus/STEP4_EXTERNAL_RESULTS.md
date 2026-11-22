@@ -123,3 +123,5 @@ RNA 이웃을 구조 커널의 적합 단계에 넣어 두 단계 그래프 확�
 공개 Sanger 3D 오가노이드 CRISPR의 표적별 의존성을 RNA에서 예측했다. 대장암과 식도암을 각각 보류하면 2D Chronos에 3D 정보를 결합하는 효과의 구간이 두 조직에서 0을 포함했다. 사전 게이트에 따라 LIMORE와 LICOB 약물 반응을 재채점하는 단계는 적용하지 않았다. [3D 의존성 선행 검증](ORGANOID_DEPENDENCY_RESULTS.md)
 
 동일 CCLE 계통의 Affymetrix와 RNA-seq로 학습한 잠재 특징을 비교했다. 공통 RNA 축 대비 약물 내 Spearman 변화는 LIMORE −.00319, LICOB +.00879였으며 두 차이의 구간이 0을 포함했다. LICOB의 공통 축 대비 NDCG@5는 −.01036이었다. 세 보류 스크린과 두 외부 모두 사전 공동 승격 기준에 미달했다. [교차 플랫폼 RNA 짝 평가](PAIRED_EXPRESSION_RESULTS.md)
+
+별개 구조의 1,115약물 반응으로 기저 RNA 특징을 보강했다. 외부 약물 내 Spearman 변화는 LIMORE +.00293, LICOB +.01079로 두 차이 구간에 0이 포함됐다. 같은 RNA만 쓴 대조 대비도 개선을 확정하지 못했다. 보류 스크린과 두 외부에서 사전 공동 기준에 미달했다. [패널 밖 감수성 감독](OFFPANEL_RESPONSE_RESULTS.md)
