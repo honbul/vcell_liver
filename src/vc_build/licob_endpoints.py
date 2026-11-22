@@ -150,7 +150,7 @@ def freeze(args):
                              "extracts": receipts, "panels": panels})
 
 
-def read_outcomes(workbook, query, dose):
+def read_outcomes(workbook, query, dose, selected=tuple(SHEETS)):
     doses = dose.set_index("compound_id")
     results = {}
     with closing(load_workbook(workbook, read_only=True, data_only=True)) as book:
@@ -161,6 +161,8 @@ def read_outcomes(workbook, query, dose):
             header = list(map(alias_token, next(rows)))
             if anchor is None:
                 anchor = header
+            if endpoint not in selected:
+                continue
             records = [row for row in rows if row[0] is not None]
             by_model = {str(row[0]).strip(): row for row in records}
             if len(by_model) != len(records):
