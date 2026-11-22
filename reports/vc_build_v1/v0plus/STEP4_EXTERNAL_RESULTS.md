@@ -133,3 +133,5 @@ GSE194249의 성인 췌관선암 PDO 38개·58약물로 2D·3D 공유 커널과 
 췌장 PDO 공통 유전자 목록에서 순위 계산 범위만 바꾸면 LICOB NDCG@5가 .6277→.6396이었다. 같은 경우 약물 내 Spearman은 .0975→.0748이었다. 재현성으로 고른 9,000유전자 혼합은 보류 스크린과 두 외부 모두 공동 기준에 미달했다. [유전자 폭·구성·순위 범위 평가](RNA_GENE_PANEL_RESULTS.md)
 
 LICOB 코호트의 RNA 예측을 함께 써서 약물별 공통 이동만 적용하자 약물 내 Spearman .0975를 유지하면서 NDCG@5가 .6277→.6386이었다. 독립 단일 시료에 적용할 2D 학습 보정의 NDCG@5는 .6274였고 두 외부의 공동 기준에 미달했다. [약물 공통 보정의 동결 평가](RANK_CONTEXT_CALIBRATION_RESULTS.md)
+
+Wong과 Yang의 HCC 오가노이드 RNA로 추정한 고정 절편은 LICOB 자체 예측에서 얻은 절편과 약물 간 Pearson −.556이었다. 새 공통 축에서 LICOB NDCG@5는 .6264→.6271로 구간이 0을 포함했다. 약물별 혼합은 LICOB에서 0/53약물에서 선택됐으며 두 외부의 공동 기준에 미달했다. [독립 HCC PDO 보정과 발현 척도 감사](INDEPENDENT_PDO_CALIBRATION_RESULTS.md)
