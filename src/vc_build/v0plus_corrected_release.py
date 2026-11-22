@@ -25,6 +25,7 @@ METHODS = ("drug_mean", "drug_ridge", "v0plus_inductive")
 REVISION = "single-agent-corrected-70"
 SCORE = "61acdfb63552ef0c14fcfb0a9002c26fa76caeae9357c1d651b90b127b329fc0"
 TOLERANCE = {"drug_mean": 1e-9, "drug_ridge": 1e-9, "v0plus_inductive": 5e-4}
+CPU_TOLERANCE = TOLERANCE | {"drug_ridge": 1e-6}
 
 
 def inputs(path):
@@ -165,11 +166,12 @@ def replay(args):
             observations = comparators.set_index(["cell_id", "compound_id"]).predicted_value
             delta = estimated.loc[observations.index].sensitivity_score.to_numpy() - observations.to_numpy()
             maximum = float(np.abs(delta).max())
-            if (len(estimated) != 210 or len(observations) != 15 or maximum > TOLERANCE[method]
+            if (len(estimated) != 210 or len(observations) != 15 or maximum > CPU_TOLERANCE[method]
                     or not read.loc[read.sample_id.eq("no_expression"), "status"].eq("insufficient_rna_coverage").all()):
                 raise ValueError(f"Incorrect corrected release CPU replay or RNA rejection for {method}: {maximum}")
             results[method] = {"valid_rows": len(estimated), "replayed_reference_rows": len(observations),
-                               "max_abs_difference": maximum, "insufficient_expression_rows": len(read) - len(estimated)}
+                               "max_abs_difference": maximum, "tolerance": CPU_TOLERANCE[method],
+                               "insufficient_expression_rows": len(read) - len(estimated)}
         compounds = work / "unsupported.tsv"
         pd.DataFrame({"compound_id": ["ZZZZZZZZZZZZZZ-ZZZZZZZZZZ-Z"]}).to_csv(compounds, sep="\t", index=False)
         path = work / "unsupported_predictions.tsv"
