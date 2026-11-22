@@ -157,7 +157,29 @@ def adaptation_targets(train, teacher):
     return data.assign(source_id=data.source, endpoint_id="native_pdo_AUC"), shift, mean_teacher
 
 
-def domain_kernel_terms(rna, fit_cells, query_cells, edges, targets, device):
+def align_query_coral(train, query):
+    """Align measured query profiles in fit-only principal axes with covariance shrinkage."""
+    import torch
+
+    if min(len(train), len(query)) < 3:
+        raise ValueError("CORAL requires multiple measured profiles per domain")
+    _, _, right = torch.linalg.svd(train - train.mean(dim=0), full_matrices=False)
+    basis = right[:min(20, len(train) - 1)].T
+    fit_pc, query_pc = train @ basis, query @ basis
+
+    def covariance_power(scores, power):
+        centered = scores - scores.mean(dim=0)
+        covariance = centered.T @ centered / (len(scores) - 1)
+        identity = torch.eye(covariance.shape[0], device=scores.device, dtype=scores.dtype)
+        covariance = .5 * covariance + .5 * covariance.diagonal().mean() * identity
+        values, vectors = torch.linalg.eigh(covariance)
+        return (vectors * values.clamp_min(1e-6).pow(power)) @ vectors.T
+
+    mapped = (query_pc - query_pc.mean(dim=0)) @ covariance_power(query_pc, -.5) @ covariance_power(fit_pc, .5)
+    return query + (mapped + fit_pc.mean(dim=0) - query_pc) @ basis.T
+
+
+def domain_kernel_terms(rna, fit_cells, query_cells, edges, targets, device, *, query_coral=False):
     import torch
 
     from .structured_kernel import dot_kernel, radial
@@ -166,6 +188,8 @@ def domain_kernel_terms(rna, fit_cells, query_cells, edges, targets, device):
     expression = ExpressionFeatures.fit(fit, edges, targets, n_variable=512, rank=True)
     train, query = (torch.as_tensor(expression.transform(rna.loc[ids]).to_numpy(np.float32), device=device)
                     for ids in (fit_cells, query_cells))
+    if query_coral:
+        query = align_query_coral(train, query)
     linear, cross = dot_kernel(train, train), dot_kernel(query, train)
     scale = linear.diagonal().mean().item()
     if scale <= 1e-6:

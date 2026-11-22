@@ -87,7 +87,7 @@ def load_fold(path, fold):
     return tables
 
 
-def predictor(fit, held, rna, edge, target, device, selected):
+def predictor(fit, held, rna, edge, target, device, selected, *, query_coral=False):
     import torch
 
     from .structured_kernel import drug_kernels, solve_residuals
@@ -98,7 +98,7 @@ def predictor(fit, held, rna, edge, target, device, selected):
         raise ValueError("Held organoid responses cannot enter prediction")
     fit_cells, held_cells = (pd.Index(sorted(frame.cell_id.unique())) for frame in (fit, held))
     drugs, kernels = drug_kernels(fit, target, device=device)
-    terms = domain_kernel_terms(rna, fit_cells, held_cells, edge, target, device)
+    terms = domain_kernel_terms(rna, fit_cells, held_cells, edge, target, device, query_coral=query_coral)
     mean = fit.groupby(["lineage_group", "compound_id"])[["endpoint_value", "2d_teacher"]].mean()
     averages = mean.groupby("compound_id").mean().reindex(drugs)
     stds = mean.groupby("compound_id").std(ddof=0).reindex(drugs)
