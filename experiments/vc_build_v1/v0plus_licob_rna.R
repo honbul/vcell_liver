@@ -1,0 +1,10 @@
+args <- commandArgs(trailingOnly = TRUE)
+stopifnot(length(args) == 2L, !file.exists(args[2]))
+private <- new.env(parent = emptyenv())
+loaded <- load(args[1], envir = private)
+stopifnot(identical(loaded, "data_ilicob_org"))
+rna <- private$data_ilicob_org[[4]][[1]]
+stopifnot(identical(dim(rna), c(26078L, 50L)), all(is.finite(as.matrix(rna))))
+temporary <- paste0(args[2], ".tmp")
+write.table(rna, temporary, quote = FALSE, sep = "\t", col.names = NA)
+stopifnot(file.rename(temporary, args[2]))
