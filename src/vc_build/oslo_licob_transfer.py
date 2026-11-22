@@ -17,7 +17,7 @@ from .licob_curves import DOSE_REGISTRATION
 from .licob_dose_sources import COLD, registration
 from .licob_endpoints import PRIOR, paired_donors, read_outcomes, source_curves, summarize
 from .limore_corrected import shared_support
-from .oslo_library_transfer import forecasts
+from .oslo_library_transfer import METHODS as OSLO_METHODS, forecasts
 from .oslo_public_curves import CURVE, OSLO_REGISTRATION
 from .v0plus_cv import molecular_inputs
 from .v0plus_licob import ASSET_HASHES
@@ -129,7 +129,7 @@ def augment(table, roster, annotated, source, x, edges, scales, endpoint):
     extra = pd.concat([roster[KEY].assign(method=name, predicted_value=y) for name, y in full.items()], ignore_index=True)
     predictions = pd.concat([existing, extra], ignore_index=True).assign(track=endpoint, fold=0)
     shared_support(predictions, roster, (*controls, *ADDED))
-    return predictions, details
+    return predictions, details, estimates
 
 
 def fit(args):
@@ -158,12 +158,21 @@ def fit(args):
             raise ValueError(f"Unexpected number of Oslo-supported drugs for {endpoint}")
         train = train[train.compound_id.isin(chosen)]
         annotated = query[query.compound_id.isin(chosen)]
-        scale = source_scales(args, freeze, chosen, endpoint)
-        part, diagnostics = augment(prior, query if endpoint == "auc" else annotated, annotated,
-                                    train, x, edges, scale, endpoint)
+        comparable = chosen & set(prior.compound_id)
+        if len(comparable) != (13 if endpoint == "auc" else 2):
+            raise ValueError(f"Unexpected comparative 2D support for {endpoint}")
+        scale = source_scales(args, freeze, comparable, endpoint)
+        roster = query if endpoint == "auc" else annotated[annotated.compound_id.isin(comparable)]
+        part, diagnostics, estimates = augment(prior, roster, annotated, train, x, edges, scale, endpoint)
         packs.append(part)
+        if endpoint == "emax":
+            solo = annotated[~annotated.compound_id.isin(comparable)]
+            extra = estimates[estimates.row_id.isin(solo.row_id)]
+            shared_support(extra, solo, OSLO_METHODS)
+            packs.append(extra.assign(track="emax_oslo_only", fold=0))
         names = query.drop_duplicates("compound_id").set_index("compound_id").source_compound_label
-        info[endpoint] = {"fit_rows": len(train), "compounds": names.reindex(sorted(chosen)).to_dict(),
+        info[endpoint] = {"fit_rows": len(train), "compounds": names.reindex(sorted(comparable)).to_dict(),
+            "oslo_only": names.reindex(sorted(chosen - comparable)).to_dict(),
             "oslo_donors_per_compound": count.reindex(sorted(chosen)).to_dict(),
             "aligned_2d_spread": scale.to_dict(), "adaptation": diagnostics}
     freeze_table(pd.concat(packs, ignore_index=True), args.out / "forecast.parquet", provenance={
@@ -210,6 +219,11 @@ def score(args):
         else:
             summary, per_drug, _ = axis_metrics(donors, ())
             cases["emax_support"] = {"within_drug": summary["across_cell_scores"], "per_drug": per_drug.to_dict("records")}
+            solo = query[query.compound_id.isin(panel["oslo_only"])]
+            extra = rows[rows.track.eq("emax_oslo_only")]
+            shared_support(extra, solo, OSLO_METHODS)
+            extra_summary, individual, _ = axis_metrics(paired_donors(extra, labels["emax"]), ())
+            cases["emax_oslo_only"] = {"within_drug": extra_summary["across_cell_scores"], "per_drug": individual.to_dict("records")}
     publish_json(args.out / "score.json", {"freeze_sha256": freeze["sha256"],
                  "label_sha256": ASSET_HASHES["supplement"], "results": cases})
 
