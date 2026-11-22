@@ -127,7 +127,8 @@ def affine_macs(model):
 
 
 def fit_network(fit, design, arch, loss, lr, seed, device, limit, patience=True, vic=0.0,
-                replacement=None, pack_count=None):
+                replacement=None, pack_count=None, *, head_transform=None, loss_factory=None,
+                training_pools=None, inference_epochs=()):
     start = time.monotonic()
     torch.manual_seed(seed)
     torch.use_deterministic_algorithms(True)
@@ -143,6 +144,8 @@ def fit_network(fit, design, arch, loss, lr, seed, device, limit, patience=True,
         model = ResidualHead(dims, n_genes, arch, cfg["dropout"], design.response_head)
     if loss == "L6":
         model.projector = nn.Linear(128, 16)
+    if head_transform is not None:
+        model = head_transform(model)
     model.to(device)
     optim = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=cfg["weight_decay"])
 
@@ -154,12 +157,22 @@ def fit_network(fit, design, arch, loss, lr, seed, device, limit, patience=True,
     target = tensor(fit.residual / fit.scale)
     offset = tensor(fit.offset)
     weight = tensor(fit.weight)
-    schedule = [(tensor(idx, torch.long), tensor(pool, torch.long), tensor(w), n)
-                for idx, pool, w, n in packs(fit.train.rows, cfg["batch_rows"], pack_count)]
+    rows = fit.train.rows
+    if training_pools is None:
+        training_pools = rows
+    if not training_pools[[*KEY, GROUP]].equals(rows[[*KEY, GROUP]]):
+        raise ValueError("A custom training pool changed the order or group of a fit well")
+    schedule = [(tensor(idx, torch.long), tensor(pool, torch.long), tensor(w), n,
+                 loss_factory(training_pools.iloc[idx]) if loss_factory is not None else None)
+                for idx, pool, w, n in packs(training_pools, cfg["batch_rows"], pack_count)]
     w_total = float(fit.weight.sum())
     factor = len(schedule) / w_total
     gene_weight = tensor(fit.noise_weights) if loss == "L4" else None
     two_views = loss in {"L5", "L6"}
+    if (loss_factory is not None and two_views) or (
+            inference_epochs and (patience or fit.query.treated is not None or min(inference_epochs) < 1
+                                  or max(inference_epochs) > limit)):
+        raise ValueError("Custom objectives and blind checkpoints require the registered single-view inference path")
     views = None if design.views is None else tuple(tensor(v) for v in design.views)
     view_units = None if design.unit_views is None else tuple(tensor(v) for v in design.unit_views)
     if two_views:
@@ -188,7 +201,7 @@ def fit_network(fit, design, arch, loss, lr, seed, device, limit, patience=True,
         grad_task = None
         grad_aux = None
         for j, index in enumerate(rng.permutation(len(schedule))):
-            idx, p, w_center, n = schedule[index]
+            idx, p, w_center, n, custom = schedule[index]
             optim.zero_grad(set_to_none=True)
             if two_views:
                 c1, c2 = ((v[idx] for v in views) if views is not None else
@@ -196,9 +209,11 @@ def fit_network(fit, design, arch, loss, lr, seed, device, limit, patience=True,
                 e1 = model(x[0][idx], c1) - target[idx]
                 e2 = model(x[0][idx], c2) - target[idx]
                 value = 0.5 * (e1.square().mean(dim=1) + e2.square().mean(dim=1))
-            else:
+            elif custom is None:
                 error = model(*(a[idx] for a in x)) - target[idx]
                 value = row_loss(error, loss, p, w_center, n, gene_weight)
+            else:
+                value = custom(model(*(a[idx] for a in x)), target[idx])
             task = factor * (weight[idx] * value).sum()
             total = task
             tasks.append(task.detach())
@@ -233,6 +248,10 @@ def fit_network(fit, design, arch, loss, lr, seed, device, limit, patience=True,
                     if stats[key] < best[key][0] - 1e-9:
                         best[key] = (stats[key], epoch, pred.cpu().numpy().copy(),
                                      {k: v.detach().cpu().clone() for k, v in model.state_dict().items()})
+        elif epoch in inference_epochs:
+            model.eval()
+            with torch.inference_mode():
+                stats["prediction"] = (offset + fit.scale * model(*q)).cpu().numpy()
         curves.append(stats)
         if patience and epoch >= cfg["min_epochs"] and epoch - max(b[1] for b in best.values()) >= cfg["patience"]:
             break

@@ -1,0 +1,5 @@
+stage	job_id	tasks	dependency	state	allocated_gpus
+metadata	31006	1	NA	COMPLETED	0
+predict	31007	84	31006_complete	COMPLETED	0
+freeze	31008	1	afterok:31007	COMPLETED	0
+score	31009	1	afterok:31008	COMPLETED	0

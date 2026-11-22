@@ -1,0 +1,53 @@
+version: dev-baselines-v1
+status: registered_not_executed
+lane: DEV-ARCH
+confirmation_contract: unchanged_r17_for_confirm_r18
+common:
+  fold_unit: canonical_parent
+  grouped_scores: [parent_macro_rmse, pooled_r2]
+  target_control: disjoint_fit_select_score_physical_wells
+  split: existing_development_outer_3_and_fixed_nested_inner
+  estimation: inner_fit_only_then_refit_on_outer_fit_after_selection
+  gain_grid: [0, 0.125, 0.25, 0.5, 0.75, 1]
+  selection:
+    loss: matched_task_primary_inner_select_loss
+    comparator_support: identical_rows_gene_axis_and_normalization
+    tie: lowest_gain_then_lexical_config_id
+    joint_checkpoint_lr_gain_for_neural_arms: true
+  restrictions:
+    - require_r18_reserved_manifest_guard_before_fit_select_or_feature_pretraining
+    - exclude_score_controls_and_target_treated_labels_from_fit_or_selection
+    - do_not_mix_A_B_M_G
+baselines:
+  B_mean:
+    contracts: [A, B]
+    prediction: gain_times_fit_only_parent_balanced_mean_delta
+    fit: mean_physical_well_delta_within_each_fit_parent_then_mean_across_parents
+    inputs: fit_labels_only_no_query_drug_features_or_source_response
+  B_resmean:
+    contracts: [A, B]
+    prediction: shared_anchor_plus_gain_times_fit_only_parent_balanced_mean_residual
+    fit: mean_within_parent_then_across_parents_of_fit_delta_minus_oof_fit_anchor
+    anchor_A: B_pos
+    anchor_B: B_blend_anchor
+    inputs: allowed_anchor_and_fit_labels_only
+  B_context:
+    contracts: [A, B]
+    prediction: shared_anchor_plus_gain_times_context_only_residual
+    anchor_A: B_pos
+    anchor_B: B_blend_anchor
+    fit: FiLM_residual_capacity_matched_to_paired_candidate
+    inputs: fit_control_or_permitted_pretreatment_context_and_shared_anchor
+    excluded_from_residual: [structure, compound_id, MoA, source_treated_response]
+    capacity_match: keep_backbone_parameter_shapes_and_budget_replace_drug_branch_input_with_fixed_constant
+    report: actual_trainable_parameter_count_compute_and_anchor_only_comparison
+  B_blend_anchor:
+    contracts: [B]
+    prediction: B_pos_plus_g_times_B_cell
+    fit: same_position_and_nonhepatic_source_pool_as_paired_R17_blend
+    gain: use_the_same_selected_B_cell_gain_as_paired_blend
+    residual: zero
+invariance_decisions:
+  positive_shared_scalar_cosine_and_retrieval: NOT_APPLICABLE_INVARIANT
+  pool_common_source_mean_subtraction_gamma_for_centered_contrast: NOT_APPLICABLE_INVARIANT
+  rmse_r2_and_absolute_delta: applicable

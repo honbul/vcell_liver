@@ -1,0 +1,14 @@
+# 대규모 약물 전사체 자료의 성인 HCC 지원
+
+**기존 10 µM·24 h 성인 HCC 비교를 독립 확인할 코호트를 확보하지 못했다.** PANACEA와 LINCS 다중오믹스의 공개 세포주 명부에는 성인 HCC가 없다. MIX-Seq에서 확인한 10 µM·24 h 성인 HCC 설계 지원은 JHH-5와 Li-7의 BRD-3379, SNU-761의 everolimus다. 서로 다른 두 약물이며 해당 24 h 측정은 R14가 이미 사용한 자료다. [지원 원표](data/hcc_screen_atlas/support.tsv) · [입력 출처와 해시](data/hcc_screen_atlas/sources.tsv)
+
+| 공개 자료 | 확인한 지원 | 독립 확인 판정 |
+|---|---|---|
+| PANACEA 공개 Table S7 및 후속 저자 코드 배포 | Table S7의 23개 세포주와 후속 분석 디렉터리의 23개 세포주별 파일을 확인했다. 두 목록 모두 간 유래 세포주 0개다. HCC1143의 조직은 유방이다. | 공개 목록에서 성인 HCC 평가 웰을 확인하지 못했다. XPert 논문이 PANACEA에서 평가한 결과는 별도 플랫폼 비교로 남긴다. [Table S7](https://aacr.figshare.com/articles/dataset/Table_S7_from_A_Transcriptome-Based_Precision_Oncology_Platform_for_Patient_Therapy_Alignment_in_a_Diverse_Set_of_Treatment-Resistant_Malignancies/30859175) · [후속 저자 배포](https://github.com/califano-lab/PanACEA/tree/98ab14e3b18c33ffd5680f81f97e4da265807f43/data/PANACEA_final_matrix) · [Cellosaurus HCC1143](https://www.cellosaurus.org/CVCL_1245) · [XPert](https://www.nature.com/articles/s42256-025-01165-w) |
+| PANACEA DREAM 공개 하위 집합 GSE186341 | 32개 kinase inhibitor, 11개 세포주, 1,728개 등록 표본이다. 48 h IC20에 해당하는 약물·세포주별 농도로 24 h 전사체를 측정했다. 논문 명부 및 세포주별 보충 파일명 모두 간 유래 세포주 0개다. | 24 h RNA와 대조군을 가진 다약물 벤치마크다. 성인 HCC 및 고정 10 µM의 지원은 확보되지 않았다. [GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE186341) · [원 논문](https://pubmed.ncbi.nlm.nih.gov/35106508/) |
+| LINCS GSE101406 | 90개 약물과 여섯 맥락의 L1000·인산화·크로마틴 자료다. A375, A549, MCF7, PC3, YAPC, 신경 전구세포를 원 논문 Methods에서 확인했다. | 과제의 목표인 간 유래 발현은 0개다. [GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE101406) · [실험 방법](https://pmc.ncbi.nlm.nih.gov/articles/PMC5951639/) |
+| MIX-Seq 공개 v3 | 실험 3의 JHH-5·Li-7에 BRD-3379 10 µM를 6 h와 24 h, 실험 10의 SNU-761에 everolimus 10 µM를 24 h로 등록했다. Hep3B는 소아 HCC이므로 성인 지원에서 제외했다. | 24 h의 두 실험은 R14에서 이미 사용했다. 실험 3의 6 h는 별도의 기술적 시간 쌍 후보가 한 약물에 있다. 논문의 풀 처리에서는 같은 풀에서 나온 비간계열 세포와 성인 HCC가 동일 약물 노출을 공유한다. 이 세포들을 분리된 물리 웰의 donor로 셀 수 없다. [보충표 1–3](https://doi.org/10.6084/m9.figshare.10298696.v3) · [풀 처리 방법](https://www.nature.com/articles/s41467-020-17440-w) · [R14 노출 명부](../r14_cross_organ/DATA.md) |
+
+MIX-Seq의 `out_of_pool` 참조 항목을 실험 배정으로 세지 않았다. JHH-6와 HLF는 실험 2에 있으나 해당 실험은 유전 개입이다. HUH7·JHH-7·SNU-423은 참조 명부에만 있었다. 실험 1과 5의 약물 처리를 이 세포주들에 할당할 근거가 없다. 6 h의 BRD-3379 처리와 DMSO 파일은 공개 v3에 각각 `18716384`, `18716393`으로 등록됐다. 파일을 내려받지 않았으므로 6 h의 세포 배정과 독립 배양은 미확인이다. 24 h 원본 분류와 당시 점수 영수증은 기존 기록에 남아 있다. [공개 v3 파일 목록](https://api.figshare.com/v2/articles/10298696/versions/3) · [24 h 분류](../r14_cross_organ/data/mix_seq_liver_assignments.tsv) · [R14 별도 채점 영수증](data/r14-original/mixseq/receipt.json)
+
+공개 설계·등록 파일과 저자 방법만 읽었다. 후보 점수 산출과 R18 보호 자료 접근은 없었다. 10 µM·24 h 독립 판정에는 기존 동결 SNU-423·HUH7 설계의 새 측정이 여전히 필요하다. [독립 평가 설계 및 실측 인수](HCC_OFF_POSITION_PILOT_RESULTS.md)

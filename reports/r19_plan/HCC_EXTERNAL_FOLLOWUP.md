@@ -1,0 +1,28 @@
+# 성인 간암 외부 전사체 지원 추가 감사
+
+**공개 GEO 10개 연구의 표본 150개를 대조했다.** SNU-423에서 일곱 약물의 72시간 전사체가 있었고, 그중 vorinostat은 SNU-387에서도 같은 3.7 µM·72 h로 등록됐다. 두 세포주 모두 처리와 차량이 한 표본씩이다. 이번에 검토한 연구에는 여러 미측정 약물과 독립 반복·대조군을 공통으로 갖춘 성인 HCC 확인 코호트가 없었다. [표본 150개](data/hcc_external_followup/geo_sample_metadata.tsv) · [GEO 등록 해시](data/hcc_external_followup/receipt.json)
+
+| 공개 등록 | 처리 RNA의 실제 지원 | 계획에서의 지위 |
+|---|---|---|
+| GSE79246, GSE85257 | SNU-423은 72 h 단일 약물 7개와 DMSO 1개다. 연결 연구의 SNU-387에서는 같은 농도·시간의 vorinostat과 DMSO만 등록됐다. C3A의 다른 두 약물을 SNU-387에 추가로 세지 않았다. | 두 성인 세포주의 동일 노출 기술 비교는 vorinostat 한 약물·각 1 대 1이다. 용량과 시간에 따른 독립 검증의 지원은 제한적이다. [SNU-423](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE79246) · [SNU-387 표본](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM2263271) · [원 논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC5660733/) |
+| GSE193897 | 다섯 간 유래 맥락에서 homoharringtonine(HHT)의 6 h RNA를 측정했다. 성인 HUH7과 PLC/PRF/5에서 각각 처리 2·대조 2표본이다. 0.1·0.5·1·10 µM는 HepG2 표본 제목에서만 각각 확인됐다. 성인 두 세포의 GSM에는 용량이 기재되지 않았다. | 단일 약물의 짧은 시간 기술 비교다. HUH7·PLC에 네 용량씩 있다고 가정할 근거와 3개 물리 차량 역할 지원을 확보하지 못했다. [GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE193897) · [HUH7 표본](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM5823332) · [논문](https://elifesciences.org/articles/71880) |
+| GSE179345, GSE120311 | PLC/PRF/5의 24 h JIB-04 6 µM RNA-seq와 oleanolic acid 50 µM microarray다. 연구별로 처리 1·DMSO 1표본이다. | 두 약물을 다른 플랫폼·농도에서 각각 기술할 수 있다. 독립 반복 수를 추정할 표본이 없다. [JIB-04 원 논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC9322929/) · [Oleanolic acid 원 논문](https://aacrjournals.org/mct/article/18/1/62/92469/Oleanolic-Acid-Inhibits-Epithelial-Mesenchymal) |
+| GSE154936 | PLC/PRF/5 파생주에서 remdesivir와 hydroxychloroquine 처리 RNA가 8/24 h에 있다. 24 h는 각각 10/80 µM이고 처리별 한 표본과 시간별 DMSO 하나다. 24개 전체 GEO 표본에는 다른 세포주도 포함된다. | 파생 세포주에서의 기술 비교다. 원 세포주 또는 공통 5 µM 평가로 포함하지 않았다. [GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154936) · [24 h 약물 1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4684628) · [24 h 약물 2](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4684626) |
+| GSE179752 | 31개 SuperSeries 표본에 SNU-387·PLC/PRF/5의 dasatinib 처리 상태에서의 두 유전 상태 비교와 다른 유전 개입이 포함된다. 대표 SNU-387과 PLC 표본에서 dasatinib 100 nM를 확인했다. | 각 유전 상태에 대응하는 DMSO 처리 전사체 쌍이 등록된 약물 반응 코호트는 확보되지 않았다. SuperSeries와 SubSeries를 합산하지 않았다. [SuperSeries](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE179752) · [SNU-387 실험 설계](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE179749) |
+| GSE254939 | HUH7에서 IACS-010759·harmine·결합·대조가 각각 두 표본이다. 별도 HUH7 oligomycin 실험은 조건당 한 표본이며, 나머지 12개는 PDX다. | PDX 반복을 HUH7 반복으로 합산하지 않았다. 성인 cell-line 주 비교 3역할과 5 µM·24 h를 확정할 근거가 부족하다. [GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE254939) · [Oligomycin 표본군](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8060465) |
+| GSE129836 | HUH7의 24 h schizocommunin 10 µM, 유사체 0.5 µM, DMSO가 각각 1개다. | 한 화학 계열의 기술 비교다. 위치와 독립 대조 역할은 미확인이다. [GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE129836) · [GSM 처리 정보](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM3723067) |
+| GSE182593 | HCC 환자 4명의 감수성·내성 오가노이드에서 등록한 24개 RNA 표본이다. | 장기 내성 상태 비교에 해당한다. 고정 급성 약물 대비의 대조군으로 사용하지 않았다. [GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE182593) |
+
+GSE114184의 논문은 PLC/PRF/5에서 12 h 단독 약물 두 개와 결합·DMSO의 생물 반복 3개씩을 기술한다. 확인 시 GEO 접수번호는 비공개였고 표시된 공개 예정일은 **2027-03-31**이었다. 표본과 발현은 열지 않았다. 1,642개 화합물을 처리한 Basel HCC 오가노이드 연구는 대규모 5 µM 측정에서 5일 생존율을 읽었다. 현재 24 h ΔRNA 과제의 약물 처리 후 발현으로 환산할 근거는 없다. [GSE114184 원 논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC7007841/) · [GEO 접근 확인](data/hcc_external_followup/public_access.json) · [Basel 연구 방법](https://doi.org/10.1016/j.celrep.2026.117895)
+
+성인 비교에는 등록상 SNU-423, SNU-387, HUH7, PLC/PRF/5를 사용한다. 기존 GSE151412 메모는 Hep3B를 성인 HCC로 표기했으나 해당 세포주는 8세 소아 HCC 유래다. HuH-6와 HepG2/C3A는 간모세포종 맥락이다. 임상 상태와 조직 분류는 assay 자격과 별도로 기록했다. [Hep3B](https://www.cellosaurus.org/CVCL_0326) · [HuH-6](https://www.cellosaurus.org/CVCL_4381) · [SNU-387](https://www.cellosaurus.org/CVCL_0250) · [PLC/PRF/5](https://www.cellosaurus.org/CVCL_0485)
+
+앞선 GEO 263개 표본과 GSM이 겹치지 않았고, 선택한 열 개 accession은 점검한 로컬 GEO·R14 경로와 기존 저장소 기록에 없었다. 이 조회로 공식 체크포인트의 사전학습 노출이나 원시 표본의 중복을 확인할 수는 없다. 새 분석은 GEO의 metadata-only 요청으로 전 표본 등록과 대표 GSM 18개의 조건을 검증한 것이다. 발현 행렬·예약 자료를 수집하거나 채점하지 않았다. [대표 GSM](data/hcc_external_followup/individual_metadata.tsv) · [별도 표본 검산](data/hcc_external_followup/targeted_sample_receipt.json) · [기존 정확 조건 감사](HCC_EXTERNAL_PREFLIGHT.md)
+
+## DRIVE 원 조건 명부 추가 대조
+
+공개 DRIVE의 931개 처리–대조 조건 중 원 조직 분류가 간 계열이거나 등록 세포주 목록과 일치한 22개 조건을 찾았다. 13개 원 GEO가 포함된다. Zenodo의 ZIP64 중앙 디렉터리와 `all_sample_meta.rds` 항목만 byte range로 읽었고, 42,163-byte 명부의 SHA-256을 기록했다. 데이터 배포 기록의 라이선스는 CC BY 4.0이다. 전체 아카이브와 전사체는 수집하지 않았다. [DRIVE 논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC13380495/) · [배포 기록](https://zenodo.org/records/19816802) · [선택 명부](data/hcc_drive_support/conditions.tsv) · [수집 영수증](data/hcc_drive_support/receipt.json)
+
+- MHCC-97H의 **GK921 2 µM·24 h**는 원 GEO와 논문이 일치하며 처리 3·DMSO 3개가 등록됐다. 원 실험의 배양 블록과 웰 좌표는 확인하지 못했고 같은 조건의 여러 약물은 없다. [GSE283279](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE283279) · [개별 표본](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8659099) · [원논문](https://doi.org/10.1016/j.jhep.2024.12.038)
+- HCCLM3의 quercetin 50·100 µM는 농도별 3표본과 공통 대조 3표본이다. GEO의 RNA 표본에서 노출 시간이 확인되지 않았다. 원논문의 72시간 생존율 측정을 RNA 표본 시간으로 대입하지 않았다. [GSE282022](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE282022) · [원논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC12365044/)
+- 기존 HUH7 내성 파생주 GSE113005도 DRIVE에 수록됐다. 이 명부에서는 새 JHH-5 규약의 10 µM·24 h 또는 기존 독립 5 µM·24 h 규약을 충족하는 성인 HCC의 여러 화합물 코호트를 확인하지 못했다. [DRIVE 조건 원표](data/hcc_drive_support/conditions.tsv) · [JHH-5 규약](HCC_LINCS_24H_TRANSFER_PROTOCOL.md)

@@ -55,16 +55,15 @@ def split(bank, fold):
                  (training.loc[~selection],training.loc[selection],training,outer))
 
 
-def forecast(args):
-    bank = RoleBank(args,args.scenario)
-    inner, validation, training, outer = split(bank,args.fold)
+def fit_slice(args, bank, inner, validation, training, outer, get_position=position):
+    """Run the R17 fit and selection on the supplied physical role and parent axes."""
     if set(inner.parent)&set(validation.parent) or set(training.parent)&set(outer.parent):
         raise ValueError("R17 parent leakage into fit")
     select, score = rotation(args.role)
     truth = bank.response(validation,select)
-    y, inner_pos, val_pos = position(bank,inner,validation,args.role)
+    y, inner_pos, val_pos = get_position(bank,inner,validation,args.role)
     pos_gain = gain_choice(validation,truth,val_pos,np.zeros_like(truth))
-    raw, final_pos, outer_pos = position(bank,training,outer,args.role)
+    raw, final_pos, outer_pos = get_position(bank,training,outer,args.role)
     x_inner, x_valid = bank.transfer(inner),bank.transfer(validation)
     x_outer = bank.transfer(outer)
     inner_anchor = pos_gain*val_pos+x_valid
@@ -110,8 +109,15 @@ def forecast(args):
                 a,b = pick(grid)
                 choices[blend] = dict(a=a,b=b,objective=grid[a,b])
                 arrays[blend] = blend_anchor+a*outer_kernel+b*outer_neural
+    return arrays, dict(audit,model=args.model,settings=choices)
+
+
+def forecast(args):
+    bank = RoleBank(args,args.scenario)
+    inner, validation, training, outer = split(bank,args.fold)
+    arrays, selection = fit_slice(args,bank,inner,validation,training,outer)
     path = args.out/"predict"/args.scenario/f"f{args.fold}-{args.role}"/args.model
-    write_forecast(args,bank,path,outer,arrays,dict(audit,model=args.model,settings=choices,
+    write_forecast(args,bank,path,outer,arrays,dict(selection,
         predictor_sha256=sha256(__file__),vehicles_sha256=bank.receipts["R17"]))
 
 
