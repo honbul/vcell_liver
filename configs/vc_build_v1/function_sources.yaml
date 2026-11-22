@@ -46,10 +46,19 @@ lccl:
   rna_assay: bulk_rnaseq_log2_fpkm_plus_one
   source_protocol: Caruso_2019_LCCL_native_AUC
 cross:
-  cellosaurus: manifests/pathway_sensitivity_a1/cellosaurus_lookup.tsv
+  locked_roster:
+    path: data_manifests/vc_build_v1/function/cross_holdout_roster.tsv
+    url: derived_from_the_pinned_public_cell_identity_registries
+    sha256: 51317c82f4f01f411626f76cc85d5d76066a1695c25bf1688e3a8a872823f53c
   gdsc_pug_match: data_manifests/vc_build_v1/function/gdsc_pug_match.tsv
   clean_families: 50
   sources:
+    cellosaurus:
+      path: ${function_root}/sources/Cellosaurus-57.0.txt.gz
+      url: https://ftp.expasy.org/databases/cellosaurus/cellosaurus.txt
+      release: Cellosaurus_57.0_2026-10-22_repacked_gzip
+      sha256: 8d609cff7754b58530bea8d91e102fee14d31e0049ff7506967292a94383ded3
+      license: CC-BY-4.0
     depmap_models:
       path: /mnt/S1/sdata/pubdata/DepMap/25Q3/Model.csv
       url: https://depmap.org/portal/data_page/
