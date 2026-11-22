@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "study": "vc_build_v1",
+  "base_commit": "0f359f0f870769f400fae5a024827ead598f2128",
+  "storage_root": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vc_build_v1",
+  "input_mode": "baseline_rna_and_structure",
+  "functional_source": "LIMORE",
+  "functional_contract": "curve_summary",
+  "functional_dataset": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vc_build_v1/function/prepared",
+  "state_contract": {"time_h": 24, "target": "treated_minus_matched_vehicle", "baseline_role": "predose_or_declared_independent_proxy"},
+  "split": {"primary": "C", "secondary": ["D", "CD", "X"], "outer_folds": 5, "inner_folds": 3, "seed": 14822, "bootstrap_replicates": 4000, "confidence": 0.95},
+  "search": {"max_trainable_families": 3, "max_settings_each": 4, "final_seeds": [14822, 14823, 14824]},
+  "thresholds": {
+    "functional_context_relative_macro_mae_gain": 0.05,
+    "state_relative_macro_error_gain": 0.05,
+    "positive_paired_interval_lower_bound": 0.0,
+    "prospective_precision_at_5_gain_target": 0.10,
+    "functional_summary_endpoint_hit_threshold": null,
+    "interval_nominal_coverage": 0.90
+  },
+  "roles": {"public_development": ["fit", "select", "calibrate", "heldout_development"], "future_local": ["development", "blind_confirm"]},
+  "clinical_use": false,
+  "sealed_previous_cohorts": ["R18", "R19 pilot", "all previous reserved/quarantined cohorts"],
+  "local_biological_execution": "design_only"
+}

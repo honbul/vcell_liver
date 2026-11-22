@@ -1,0 +1,27 @@
+# Practical HCC Virtual Cell protocol
+
+The 2026-11-22 Practical-VC Build Plan governs this work. The code and artifacts start from Git `0f359f0f870769f400fae5a024827ead598f2128` on a new `research/vc-build-v1` worktree and independent G1 namespace. The root guide and reproduction plan describe the November 5 GEARS/scGPT study. This user-authorized build has different inputs, endpoints and scope. General provenance, existing run protections and Git data exclusions carry over. The build may reuse audited public adapters and chemistry/identity utilities with provenance. Older forecasts, trained weights, R18 partitions and reserved outcomes are excluded.
+
+## Functional development
+
+Begin with an actual measured LIMORE activity-area summary after adult HCC identity, gene expression, chemical structure and endpoint join. Record the source protocol and preserve its endpoint scale and direction. Requesting a dose-specific response abstains. Rank within a declared candidate pool. A true hit threshold requires a protocol with a measured assay criterion. Activity-area ranking is reported as a continuous measure until then.
+
+The primary C generalization task predicts a known panel for a held-out HCC lineage. Group aliases, related cell lines and biological origin before splitting. D groups chemistry by parent/scaffold and reports maximum training similarity. CD holds both out. X reports assay/site differences and overlap. Use the same inner split, preprocessing access and selection loss within each comparison. Start with drug mean, RNA-neighbor, additive, fingerprint/RNA regularized linear or tree, and one small interaction family. A context comparison includes RNA dropped or exchanged. C, D, CD, and X are scored separately.
+
+For H1, require point relative cell/lineage-macro MAE improvement ≥5% and a strictly positive 95% paired lineage-resampled lower bound against the inner-selected strongest noninteraction comparison on the same primary C support. Report held-out score intervals, per-cell rank/NDCG@5, and cell-specific residual evidence separately. Model fitting, complex preprocessing and model selection are confined to fitting and inner development groups. Record all exploratory splits. Public data here remain development evidence.
+
+## State and joint models
+
+Use a 24h physical vehicle contrast and record the source, dose, assay, block, and whether basal RNA is independent proxy or measured predose. Adult HCC is evaluated separately from hepatoblastoma, HepaRG and PHH. Program definitions or projections are chosen using fit/development data. Require at least 5% held-out macro error improvement versus the best eligible simple comparison, a positive 95% paired lower bound and direction/repeat support for state promotion. Without genuine crossed context support, mark the residual task unsupported. A state-only output also requires support for the relevant cell/condition.
+
+Use the same structural/basal inputs, functional folds and budget for Direct, Multi-output and State-assisted. For sequential training, generate out-of-fold predicted states for downstream fit and use only predicted state in evaluation. Exclude state observations for any held-out lineage from training and feature selection. Keep native assay endpoint heads and explicitly masked missing target slots. Joint-development H2 uses paired cell-macro functional MAE versus matched Direct with positive 95% lower bound and reports 5% practical target, status, and small-sample limitations. Do not infer a causal mediator from the comparison.
+
+## Calibration and scoring
+
+Use a 90% interval fitted on held-in calibration groups independent of their fitted predictions. Report coverage, width and abstention together on separate evaluation groups. Public cross-source calibration reports same-assay or explicitly mapped endpoint results and match counts. Sentinel and scored drugs are disjoint. An incompatible endpoint is evaluated as a rank-transfer task if justified by orientation. Report physical source/cell overlap and keep local calibration in data-wait status pending local outcomes.
+
+Freeze exact forecast identities, artifact and manifest hashes before opening evaluation labels. Use a separate scorer and verify hashes. Never overwrite a frozen artifact. The design for VCB-06 records costs, approval, QC, independent biological units and a blind evaluation manifest. For future V2 use equal candidate pool and top-5 count, measure Precision@5 gain and target +0.10 absolute. The 0.50 signal-loss hit definition, scale, shared budget, paired independent analysis and actual allowed doses must be locked before the new biological confirmation. Current work prepares the design only.
+
+## Reproducibility
+
+Published activity/structure assets are accounted for by exact source/version, file SHA-256 and usage terms. Keep datasets, checkpoints, outcome tables, scored row-level predictions and server logs in authorized artifact storage. Git retains small contracts, selected evidence, reproducibility tools, and model usage documents. Synthetic records are restricted to interfaces and invariants.
