@@ -161,7 +161,7 @@ def gdsc(source, archive, files, summary=curve_endpoints, columns=VALUES):
     return frame, {"archive_rows": total, "duration_days_field": 4, **qc}
 
 
-def prism(source, treatment, curve, summary=curve_endpoints, columns=VALUES):
+def prism(source, treatment, curve, summary=curve_endpoints, columns=VALUES, *, require_target_window=True):
     require_hash(treatment, TREATMENTS_HASH)
     names = ["broad_id", "depmap_id", "screen_id"]
     match = source.rename(columns=dict(zip(["native_compound_id", "cell_id", "source_run"], names)))
@@ -177,7 +177,8 @@ def prism(source, treatment, curve, summary=curve_endpoints, columns=VALUES):
     auc, _ = integrate_prism(fit, fit["min"].to_numpy(), fit["max"].to_numpy())
     valid = np.abs(auc - fit.auc) <= TOLERANCE
     fit = fit.loc[valid].copy()
-    fit = fit[(fit["min"] <= fit.second) & (fit["max"] >= fit.maximum)].copy()
+    if require_target_window:
+        fit = fit[(fit["min"] <= fit.second) & (fit["max"] >= fit.maximum)].copy()
     # Sample the verified continuous fit within the administered dose limits only.
     records = []
     for row in fit.itertuples(index=False):
@@ -191,7 +192,7 @@ def prism(source, treatment, curve, summary=curve_endpoints, columns=VALUES):
     return result, {"verified_native_auc": int(valid.sum()), "dose_supported_curves": len(fit)}
 
 
-def extract_curves(args, summary, columns):
+def extract_curves(args, summary, columns, *, require_prism_window=True):
     digest = registration(args.inputs)
     require_hash(args.original / "receipt.json",
                  "663eb5717b30c6f03ea43c04c4bb076bd233ea0c05405450e17f0c9e85f7fa86")
@@ -203,7 +204,8 @@ def extract_curves(args, summary, columns):
     f = {
         "CTRPv2": lambda: ctrp(rows, args.ctrp, original, summary, columns),
         "GDSC2": lambda: gdsc(rows, args.gdsc, original, summary, columns),
-        "PRISM20Q2": lambda: prism(rows, args.prism_treatments, original["prism_curves"]["path"], summary, columns),
+        "PRISM20Q2": lambda: prism(rows, args.prism_treatments, original["prism_curves"]["path"], summary, columns,
+                                  require_target_window=require_prism_window),
     }
     estimates, qc = f[args.assay]()
     result = rows.drop(columns="endpoint_value").merge(estimates, on=KEY, validate="one_to_one")
