@@ -142,4 +142,4 @@ Wong과 Yang의 HCC 오가노이드 RNA로 추정한 고정 절편은 LICOB 자�
 
 같은 LICOB 연구의 간내담관암 12개에서 구한 약물별 절편을 더하자 LIMORE NDCG@5가 .7380→.7851, LICOB HCC 시료 내 Spearman이 .3387→.4375였다. ICC에서 적합한 개인화 잔차의 공동 기준은 LIMORE, LICOB HCC 및 별개 Wong 모두 미통과였다. [ICC 보정의 세 코호트 성적](LICOB_ICC_BRIDGE_RESULTS.md)
 
-Zhu 저자 공개 S3 발현과 S4 반응표를 공여자 단위로 연결했다. 확장 학습과 정확한 구조가 맞는 범위는 성인 HCC 16명·18약물의 다농도 좌표와 21명·37약물의 초기 10 µM 좌표다. 이번에는 반응값 없이 등록했다. [신규 독립 연구 등록](ZHU_HCC_PUBLIC_REGISTRATION.md)
+Zhu 저자 공개 S3 발현과 S4 반응표를 공여자 단위로 연결했다. 반응값을 읽기 전에 성인 HCC 16명·18약물의 다농도 좌표와 21명·37약물의 초기 10 µM 좌표를 등록했다. ICC에서 얻은 약물별 절편은 첫 별도 채점의 주 다농도 평가에서 같은 구조 모델보다 공여자 내 Spearman +.0249, NDCG@5 +.0197로 사전 기준을 통과했다. 잔차를 포함한 개인화의 공동 기준은 두 패널 모두 미통과였다. [독립 연구 등록](ZHU_HCC_PUBLIC_REGISTRATION.md) · [Zhu 동결 성적](ZHU_HCC_CONFIRMATION_RESULTS.md)
