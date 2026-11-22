@@ -6,7 +6,7 @@ V0+ v2는 약물별 감수성 평균 위에 세포별 잔차를 더한다. 잔�
 
 ```bash
 repo=/home/gsun/work/vc_liver/tune_v0plus_v2
-package=/mnt/S1/sdata/workbench/Virtual_Cell/gssong/top3_tuning_v2/a/runs/release-01/package
+package=/mnt/S1/sdata/workbench/Virtual_Cell/gssong/top3_tuning_v2/a/runs/release-02/package
 PYTHONPATH="$repo:$repo/src" python -m v0plus_v2.predict \
   --package "$package" --rna expression.tsv --scale bulk_log2_tpm_plus_1 \
   --compounds compounds.tsv --out scores.tsv

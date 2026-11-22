@@ -28,6 +28,8 @@ def run(args):
         for name in CELL_MODALITIES:
             fm[name], _ = fm_read(args.cell_bank / name)
     mask = q.status.eq("predicted")
+    for column in ("sensitivity_score", "drug_mean_anchor", "personalization_delta"):
+        q[column] = float("nan")
     if mask.any():
         forecasts, anchor = release.predict(q.loc[mask], expression, fm)
         name = args.recipe or manifest["default"]

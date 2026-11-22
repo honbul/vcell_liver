@@ -1,6 +1,7 @@
 """Package source-selected sensitivity ensembles and independently score frozen LIMORE forecasts."""
 
 import argparse
+import io
 import json
 from pathlib import Path
 
@@ -19,6 +20,19 @@ from .source import load, load_drug_models
 
 HISTORICAL = ("drug_ridge", "cellhit", "v0plus_inductive", "drug_mean", "ridge_molecular_average")
 
+
+
+def load_cpu(path):
+    """Open trusted study joblib files with tagged torch storages placed on the CPU."""
+    import torch
+
+    storage_load = torch.storage._load_from_bytes
+    try:
+        torch.storage._load_from_bytes = lambda raw: torch.load(
+            io.BytesIO(raw), map_location="cpu", weights_only=False)
+        return joblib.load(path)
+    finally:
+        torch.storage._load_from_bytes = storage_load
 
 
 def read_receipt(path):
@@ -46,7 +60,7 @@ def package(args):
     members, selected = [], set()
     for fold in range(3):
         names = dict(round1="models.joblib", round2="trees.joblib", round3="neural.joblib", round4="meta.joblib")
-        steps = {name: (load_drug_models if name=="round1" else joblib.load)(args.runs / f"{name}-{'02' if name in ('round1','round2') else '01'}"
+        steps = {name: (load_drug_models if name=="round1" else load_cpu)(args.runs / f"{name}-{'02' if name in ('round1','round2') else '01'}"
                      / f"fold{fold}" / file) for name, file in names.items()}
         fitted = {name: steps["round4"][name] for name in methods}
         desired = set().union(*(model.columns for model in fitted.values()))
@@ -76,7 +90,7 @@ def load_release(root):
     path = root/"checkpoint.joblib"
     if sha256(path) != manifest["checkpoint_sha256"] or manifest["version"] != "V0+ v2":
         raise ValueError("The V0+ v2 release checkpoint differs from the manifest")
-    return joblib.load(path), manifest
+    return load_cpu(path), manifest
 
 
 def historical(path, names):
