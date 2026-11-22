@@ -230,7 +230,7 @@ def gate(result):
             for name in CONTROLS}
 
 
-def score(args):
+def scoring_inputs(args):
     forecast, seal = verify_forecast(args.run / "forecast.parquet")
     proof = seal["provenance"]
     if (proof["previous_sha256"], proof["dose_sha256"], proof["licob_sha256"], proof["labels_sha256"]) != (
@@ -238,14 +238,32 @@ def score(args):
     ) or (registration(args.inputs), checked_cold(args.cold, ("query",))) != (DOSE_REGISTRATION, COLD):
         raise ValueError("Unexpected crossing forecast or input hashes")
     roster = pd.read_parquet(args.cold / "query.parquet")
-    roster = roster[roster.compound_id.isin(proof["compound_ids"])]
     dose = pd.read_parquet(args.inputs / "dose.parquet")
+    require_hash(args.supplement, proof["labels_sha256"])
+    return forecast, seal, roster, dose
+
+
+def limited_emax(forecast, emax, selected):
+    potency = forecast[forecast.track.eq(POTENCY)]
+    reference = forecast[forecast.track.eq("emax_reference")].assign(track=POTENCY)
+    predicted = pd.concat([potency, reference], ignore_index=True)
+    limited = paired_donors(predicted[predicted.row_id.isin(selected)], emax[emax.row_id.isin(selected)])
+    anchor = potency[potency.method.eq("crossing_mean")].groupby("compound_id").predicted_value.first()
+    mask = limited.method.eq("crossing_mean")
+    limited.loc[mask, "predicted_value"] = limited.loc[mask, "compound_id"].map(anchor)
+    metrics, _, _ = axis_metrics(limited, ())
+    return {"organoid_pairs": len(selected), "donor_pairs": int(limited.row_id.nunique()),
+            "emax_within_drug": metrics["across_cell_scores"]}
+
+
+def score(args):
+    forecast, seal, roster, dose = scoring_inputs(args)
+    roster = roster[roster.compound_id.isin(seal["provenance"]["compound_ids"])]
     probabilities = verify_probabilities(forecast, roster, dose.set_index("compound_id"))
     potency = forecast[forecast.track.eq(POTENCY)]
     shared_support(potency, roster, (*PRIOR_METHODS, *CDF_METHODS))
     reference = forecast[forecast.track.eq("emax_reference")]
     shared_support(reference, roster, ("curve_emax",))
-    require_hash(args.supplement, proof["labels_sha256"])
     outcome = read_outcomes(args.supplement, roster, dose, selected=(POTENCY, "emax"))
     truth = outcome[POTENCY]
     donors = paired_donors(potency, truth)
@@ -254,16 +272,34 @@ def score(args):
     donors.loc[same, "predicted_value"] = donors.loc[same, "compound_id"].map(anchor)
     result = summarize(donors, [("crossing_logit", name) for name in CONTROLS], compound_strata(roster))
     result["gate"] = gate(result)
-    predicted = pd.concat([potency, reference.assign(track=POTENCY)], ignore_index=True)
     above = truth[truth.adult_age_confirmed & truth.bound_status.eq("above")].row_id
-    emax = outcome["emax"]
-    limited = paired_donors(predicted[predicted.row_id.isin(above)], emax[emax.row_id.isin(above)])
-    is_anchor = limited.method.eq("crossing_mean")
-    limited.loc[is_anchor, "predicted_value"] = limited.loc[is_anchor, "compound_id"].map(anchor)
-    metrics, _, _ = axis_metrics(limited, ())
     publish_json(args.run / "score.json", {"forecast_sha256": seal["sha256"], "binomial": score_events(probabilities, truth),
-        "scope": result, "actual_above_boundary": {"organoid_pairs": len(above),
-            "donor_pairs": int(limited.row_id.nunique()), "emax_within_drug": metrics["across_cell_scores"]}})
+        "scope": result, "actual_above_boundary": limited_emax(forecast, outcome["emax"], above)})
+
+
+def audit(args):
+    forecast, seal, roster, dose = scoring_inputs(args)
+    compounds = seal["provenance"]["compound_ids"]
+    supported = roster[roster.compound_id.isin(compounds)]
+    probability = verify_probabilities(forecast, supported, dose.set_index("compound_id"))
+    outcome = read_outcomes(args.supplement, roster, dose, selected=(POTENCY, "emax"))
+    emax = outcome["emax"].assign(emax_viability=lambda r: -r.endpoint_value)
+    ic50 = outcome[POTENCY]
+    table = ic50[ic50.adult_age_confirmed].merge(emax[["row_id", "emax_viability"]], on="row_id", validate="one_to_one")
+    summaries = {}
+    for name, group in table.groupby(np.where(table.compound_id.isin(compounds), "supported", "outside_support")):
+        paired = group.dropna(subset=["endpoint_value", "emax_viability"])
+        cross = paired.groupby([paired.bound_status.eq("above").rename("ic50_above"),
+                                paired.emax_viability.gt(.5).rename("emax_above")]).size()
+        summaries[name] = {"donors": group.donor_id.nunique(), "drugs": group.compound_id.nunique(),
+                           "pairs": len(paired), "joint_counts": {f"ic50_above_{int(i)}/emax_above_{int(j)}": int(cross.get((i,j), 0))
+                                                                 for i in (False, True) for j in (False, True)}}
+    supported_emax = emax[emax.compound_id.isin(compounds)].assign(
+        bound_status=lambda r: np.where(r.emax_viability.gt(.5), "above", "within"))
+    subset = supported_emax[supported_emax.adult_age_confirmed & supported_emax.bound_status.eq("above")].row_id
+    publish_json(args.run / "endpoint_audit.json", {"forecast_sha256": seal["sha256"], "paired": summaries,
+        "emax_binomial": score_events(probability, supported_emax),
+        "emax_above_half_viability": limited_emax(forecast, supported_emax, subset)})
 
 
 def main():
@@ -272,6 +308,7 @@ def main():
     for name, function, paths in (
         ("fit", fit, ("previous", "priors", "hallmark", "targets", "auxiliary")),
         ("score", score, ("supplement",)),
+        ("audit", audit, ("supplement",)),
     ):
         action = actions.add_parser(name)
         for field in ("run", "inputs", "cold", *paths):
