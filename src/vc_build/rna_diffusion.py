@@ -57,7 +57,14 @@ def topology(similarities, reference_groups, query_groups):
 
 
 def group_codes(fit, query, source, held):
-    mapping = pd.concat([fit, query], ignore_index=True)[["cell_id", "lineage_group"]].drop_duplicates()
+    # LICOB's original roster calls each PDO a lineage, but query graph edges
+    # must exclude multiple PDOs from the same patients.
+    fit_groups = fit[["cell_id", "lineage_group"]]
+    column = "donor_id" if "donor_id" in query else "lineage_group"
+    held_groups = query[["cell_id", column]].rename(columns={column: "lineage_group"})
+    if held_groups.lineage_group.isna().any():
+        raise ValueError("Missing independent query graph group")
+    mapping = pd.concat([fit_groups, held_groups], ignore_index=True).drop_duplicates()
     mapping = mapping.set_index("cell_id", verify_integrity=True).lineage_group
     codes = pd.Index(mapping.unique())
     return (codes.get_indexer(mapping.loc[ids]) for ids in (source, held))
