@@ -61,6 +61,20 @@ def hard_weights(masks, y, raw):
     return result/result.mean()
 
 
+def nested_error_weights(train_table, x, actual, difficult, baseline):
+    """Estimate reweighting from local inner-training predictions only."""
+    weight_sets = []
+    for f, v in inner_groups(train_table):
+        part = train_table.iloc[f]
+        error_scores = np.empty(len(part))
+        for p, t in GroupKFold(3).split(part, groups=part.group):
+            va = train("v1_lgbm", baseline["representation"], baseline["config"],
+                       subset(x, f[p]), actual[f[p]])
+            error_scores[t] = va.raw(subset(x, f[t]))
+        local = hard_weights({k: mask[f] for k,mask in difficult.items()}, actual[f], error_scores)
+        weight_sets.append((f, v, local))
+    return weight_sets
+
 def add_mechanisms(inner, outer):
     endpoints = [name for name in inner if "__" in name]
     if not endpoints:
@@ -92,17 +106,7 @@ def run(args):
     difficult, query_masks = error_features(x), error_features(q)
     weights = hard_weights(difficult, actual, inner.v1_lgbm.to_numpy())
     models = {}
-    weight_sets = []
-    baseline = config["selected"]["v1_lgbm"]
-    for f, v in inner_groups(train_table):
-        part = train_table.iloc[f]
-        error_scores = np.empty(len(part))
-        for p, t in GroupKFold(3).split(part, groups=part.group):
-            va = train("v1_lgbm", baseline["representation"], baseline["config"],
-                       subset(x, f[p]), actual[f[p]])
-            error_scores[t] = va.raw(subset(x, f[t]))
-        local = hard_weights({k: mask[f] for k,mask in difficult.items()}, actual[f], error_scores)
-        weight_sets.append((f, v, local))
+    weight_sets = nested_error_weights(train_table, x, actual, difficult, config["selected"]["v1_lgbm"])
     for name in REWEIGHT:
         choice = config["selected"][name]
         method = name+"_reweighted"

@@ -14,7 +14,7 @@ def read(path):
 
 def run(args):
     args.out.mkdir(exist_ok=False,parents=True)
-    metrics, selections, calibration, errors = [],[],[],[]
+    metrics, selections, calibration, errors, cases = [],[],[],[],[]
     sources = ("round1-03-cpu","round1-03-cat","round1-04-kernels","round2-01","round3-02","round4-01")
     for folder in sources:
         for split in ("murcko","butina"):
@@ -34,6 +34,8 @@ def run(args):
                 metrics.extend({"stage":folder,"split":split,"fold":fold,"method":name,**data}
                                for name,data in records.items())
                 if folder=="round3-02":
+                    sample=pd.read_csv(p.parent/"error_roster.tsv",sep="\t")
+                    cases.append(sample.assign(split=split,fold=fold))
                     errors.extend({"split":split,"fold":fold,**r} for r in observed["errors"])
                 if folder.startswith("round1"):
                     selections.extend({"stage":folder,"split":split,"fold":fold,"method":method,**cfg}
@@ -45,6 +47,13 @@ def run(args):
     pd.DataFrame(selections).to_csv(args.out/"chemistry_selected.tsv",sep="\t",index=False)
     pd.DataFrame(calibration).to_csv(args.out/"calibrator_cv.tsv",sep="\t",index=False)
     pd.DataFrame(errors).to_csv(args.out/"subgroup_error.tsv",sep="\t",index=False)
+    if args.fda_registry:
+        roster = pd.read_csv(args.fda_registry,sep="\t",usecols=["fda_id","name"],dtype=str).drop_duplicates("fda_id")
+        types = pd.concat(cases,ignore_index=True)
+        types["error_type"] = types.label.map({0:"false_positive",1:"false_negative"})
+        worst = (types.sort_values("error",ascending=False).groupby(["split","error_type"]).head(8)
+                 .merge(roster,on="fda_id",how="left",validate="many_to_one"))
+        worst.drop(columns=["error","label","probability"]).to_csv(args.out/"largest_oof_errors.tsv",sep="\t",index=False)
     score = args.release/"score.json"
     for name,path in {
         "final_score.json":score,"forecast_freeze.json":args.release/"freeze.json",
@@ -74,4 +83,5 @@ if __name__ == "__main__":
     p=argparse.ArgumentParser(description=__doc__)
     for name in ("runs","release","input","out"):
         p.add_argument("--"+name,type=Path,required=True)
+    p.add_argument("--fda-registry",type=Path)
     run(p.parse_args())

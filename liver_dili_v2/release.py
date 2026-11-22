@@ -21,7 +21,7 @@ from .rankers import train
 from .release_types import ReleaseFit
 from .round1 import ranking
 from .round2 import CONFIGS, safe_auxiliary, workflow
-from .round3 import REWEIGHT, add_mechanisms, error_features, hard_weights
+from .round3 import REWEIGHT, add_mechanisms, error_features, hard_weights, nested_error_weights
 from .stack import GRID, construct, tune
 
 
@@ -125,11 +125,12 @@ def history(args, data, selected):
         chosen[name] = {"representation": representation, "config": cfg}
     masks = error_features(x)
     weight = hard_weights(masks,y,oof.v1_lgbm.to_numpy())
+    local_weights = nested_error_weights(rows, x, y, masks, chosen["v1_lgbm"])
     for name in REWEIGHT:
         representation, cfg = (chosen[name][key] for key in ("representation","config"))
         raw = np.empty(len(y))
-        for tr, va in splits:
-            fit = train(name, representation, cfg, subset(x,tr), y[tr], sample_weight=weight[tr])
+        for tr, va, local in local_weights:
+            fit = train(name, representation, cfg, subset(x,tr), y[tr], sample_weight=local)
             raw[va] = fit.raw(subset(x,va))
         oof[name+"_reweighted"] = raw
         models[name+"_reweighted"] = train(name, representation, cfg, x, y, sample_weight=weight)
@@ -216,7 +217,7 @@ def group_lookup(dataset, kind):
     return groups
 
 
-def bootstrap(frame, *, seed, n=3500):
+def bootstrap(frame, *, seed, n=10000):
     groups = [g for _,g in frame.groupby("cluster", sort=True).indices.items()]
     data = frame[["label", "v2", "v1", "v2_decision", "v1_decision"]].to_numpy(dtype=float)
     generator = np.random.default_rng(seed)

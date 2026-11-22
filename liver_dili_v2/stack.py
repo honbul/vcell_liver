@@ -51,6 +51,8 @@ GRID = {
     "foundation_tree": ("lgbm", "catboost", "xgboost", "extra", "linear"),
     "structure_only": ("tsvm", "countsvm", "tlogit", "minmaxsvm", "rbfsvm", "dmpnn"),
     "sparse": ("extra", "linear", "tsvm", "mechanism_dmpnn"),
+    "extra_single": ("extra",),
+    "extra_anchor": ("extra", "extra_reweighted", "xgboost", "rbfsvm", "dmpnn", "mechanism_dmpnn"),
     "kernel_tree": ("lgbm", "catboost", "extra", "tsvm", "tlogit", "minmaxsvm", "rbfsvm"),
 }
 
