@@ -48,3 +48,5 @@ PYTHONPATH=src python -m vc_build.v0plus_cli predict \
 LIMORE 구조 커널 재현 명령은 14.75초, Wong 조직 RNA는 14.38초였다. 전체 재현 작업에서 자식 CLI 최대 RSS는 866,800 KiB였다. LICOB의 이전 연구용 동결 평가는 소스와 공통인 14,421개 유전자로 모델을 재적합한 별도 평가다. 이 배포판의 17,871개 유전자 모델에는 해당 공개 가공 파일을 직접 넣을 수 없다. [CLI 재현 영수증](structured_release_replay_receipt.json) · [LICOB 공통 RNA 재적합](LICOB_WIDE_RNA_RESULTS.md)
 
 `7323ac1`에서 명세를 고정했다. GPU 적합·패키지 `33530`과 CPU 재현 `33537`이 종료 코드 0으로 완료됐다. 최초 패키지 `33528`은 정정 학습 영수증에 없는 소스 집계 필드에서 중단되어 실측 학습 행에서 집계를 직접 계산했다. 최초 CPU 재현 `33531`은 LICOB 가공 발현의 음수 값에서 입력 오류로 중단됐다. 후속 검증은 해당 거절과 커버리지를 기록하고 같은 체크포인트를 그대로 사용했다. 배포 명세 SHA-256은 `a9e6582ae6c9a87cb92075d73ae1dc2deb3919a0876a01897237d597c2a7c754`다. [패키지 영수증](structured_release_package_receipt.json) · [작업 원장](RUN_LEDGER.tsv)
+
+LICOB 가공 RNA와 76약물은 공통 14,421유전자로 적합한 별도 패키지에서 실행한다. 43개 오가노이드의 기존 동결 예측을 재현했고, 반응이 등록되지 않은 44번째 HCC 모델에도 76약물 예측을 생성했다. [LICOB 패키지 실행과 재현](LICOB_OFFLINE_MODEL_CARD.md)
