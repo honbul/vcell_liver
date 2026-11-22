@@ -1,0 +1,699 @@
+{
+  "actual_above_boundary": {
+    "donor_pairs": 0,
+    "emax_within_drug": [],
+    "organoid_pairs": 0
+  },
+  "binomial": {
+    "brier_logit_difference_ci95": {
+      "crossing_linear": [
+        -0.014418938031594714,
+        0.016262541790290873
+      ],
+      "crossing_mean": [
+        -0.006014209921756618,
+        0.05972174895983326
+      ]
+    },
+    "mean_brier": {
+      "crossing_linear": 0.2653051820300512,
+      "crossing_logit": 0.2660662033990612,
+      "crossing_mean": 0.23928396533311408
+    },
+    "mean_predicted": {
+      "crossing_linear": 0.5940069617380647,
+      "crossing_logit": 0.5796484906855878,
+      "crossing_mean": 0.6011250389641837
+    },
+    "patient_drug_rows": 1444,
+    "rate": 1.0,
+    "within_drug_auroc": {
+      "crossing_linear": {
+        "auroc": null,
+        "eligible_drugs": 0
+      },
+      "crossing_logit": {
+        "auroc": null,
+        "eligible_drugs": 0
+      },
+      "crossing_mean": {
+        "auroc": null,
+        "eligible_drugs": 0
+      }
+    }
+  },
+  "forecast_sha256": "026b3c5152e2c82d7236d67277b0c5274bcea35de27238cab1e5c33a955c64ea",
+  "scope": {
+    "donors": 38,
+    "drugs": 38,
+    "gate": {
+      "crossing_linear": false,
+      "curve_joint": false,
+      "direct_endpoint": false,
+      "drug_mean": false
+    },
+    "metrics": {
+      "across_cell_drug_only_intervals": [
+        {
+          "baseline": "drug_mean",
+          "candidate": "crossing_logit",
+          "drug_bootstrap_ci95": [
+            0.045963396339362944,
+            0.1735611196415231
+          ],
+          "drugs": 38,
+          "gain": 0.11454170657846723,
+          "metric": "spearman",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "drug_mean",
+          "candidate": "crossing_logit",
+          "drug_bootstrap_ci95": [
+            0.04002657708653789,
+            0.15398878227538862
+          ],
+          "drugs": 38,
+          "gain": 0.09813513569456349,
+          "metric": "pearson",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "direct_endpoint",
+          "candidate": "crossing_logit",
+          "drug_bootstrap_ci95": [
+            -0.008258596264496132,
+            0.04995939975537608
+          ],
+          "drugs": 38,
+          "gain": 0.019951912364564634,
+          "metric": "spearman",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "direct_endpoint",
+          "candidate": "crossing_logit",
+          "drug_bootstrap_ci95": [
+            -0.005043348809193037,
+            0.041126722163342094
+          ],
+          "drugs": 38,
+          "gain": 0.017313504145681405,
+          "metric": "pearson",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "curve_joint",
+          "candidate": "crossing_logit",
+          "drug_bootstrap_ci95": [
+            -0.07058995121289006,
+            0.03368945975111512
+          ],
+          "drugs": 38,
+          "gain": -0.015908938905836705,
+          "metric": "spearman",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "curve_joint",
+          "candidate": "crossing_logit",
+          "drug_bootstrap_ci95": [
+            -0.07705017464506148,
+            0.01670348057245781
+          ],
+          "drugs": 38,
+          "gain": -0.02964339137961429,
+          "metric": "pearson",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "crossing_linear",
+          "candidate": "crossing_logit",
+          "drug_bootstrap_ci95": [
+            0.001984194325674182,
+            0.06659137917354291
+          ],
+          "drugs": 38,
+          "gain": 0.03436955502486998,
+          "metric": "spearman",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "crossing_linear",
+          "candidate": "crossing_logit",
+          "drug_bootstrap_ci95": [
+            -0.004826346530935053,
+            0.05305525030990573
+          ],
+          "drugs": 38,
+          "gain": 0.02376219089711767,
+          "metric": "pearson",
+          "track": "ic50_bounded"
+        }
+      ],
+      "across_cell_scores": [
+        {
+          "method": "crossing_linear",
+          "n_drugs": 38,
+          "track": "ic50_bounded",
+          "within_drug_pearson": 0.07437294479744579,
+          "within_drug_spearman": 0.08017215155359722
+        },
+        {
+          "method": "crossing_logit",
+          "n_drugs": 38,
+          "track": "ic50_bounded",
+          "within_drug_pearson": 0.09813513569456349,
+          "within_drug_spearman": 0.11454170657846723
+        },
+        {
+          "method": "crossing_mean",
+          "n_drugs": 38,
+          "track": "ic50_bounded",
+          "within_drug_pearson": 0.0,
+          "within_drug_spearman": 0.0
+        },
+        {
+          "method": "curve_joint",
+          "n_drugs": 38,
+          "track": "ic50_bounded",
+          "within_drug_pearson": 0.12777852707417775,
+          "within_drug_spearman": 0.13045064548430388
+        },
+        {
+          "method": "direct_endpoint",
+          "n_drugs": 38,
+          "track": "ic50_bounded",
+          "within_drug_pearson": 0.08082163154888207,
+          "within_drug_spearman": 0.09458979421390257
+        },
+        {
+          "method": "drug_mean",
+          "n_drugs": 38,
+          "track": "ic50_bounded",
+          "within_drug_pearson": 0.0,
+          "within_drug_spearman": 0.0
+        }
+      ],
+      "paired_contrasts": [
+        {
+          "baseline": "drug_mean",
+          "candidate": "crossing_logit",
+          "ci95": [
+            -0.07809223851381407,
+            -0.008521625708802931
+          ],
+          "gain": -0.04278288929183027,
+          "lineages": 38,
+          "metric": "ndcg_at_5",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "drug_mean",
+          "candidate": "crossing_logit",
+          "ci95": [
+            -0.08333333333333326,
+            0.026315789473684237
+          ],
+          "gain": -0.025438596491228038,
+          "lineages": 38,
+          "metric": "top5_overlap",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "drug_mean",
+          "candidate": "crossing_logit",
+          "ci95": [
+            0.007596862025237629,
+            0.05250236006047588
+          ],
+          "gain": 0.03062832846201813,
+          "lineages": 38,
+          "metric": "spearman",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "direct_endpoint",
+          "candidate": "crossing_logit",
+          "ci95": [
+            -0.02107328993318331,
+            0.0014688343466172427
+          ],
+          "gain": -0.009697413964580459,
+          "lineages": 38,
+          "metric": "ndcg_at_5",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "direct_endpoint",
+          "candidate": "crossing_logit",
+          "ci95": [
+            0.0,
+            0.004643962848297212
+          ],
+          "gain": 0.001547987616099089,
+          "lineages": 38,
+          "metric": "top5_overlap",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "direct_endpoint",
+          "candidate": "crossing_logit",
+          "ci95": [
+            -0.0255718436924213,
+            -0.005916691555676012
+          ],
+          "gain": -0.0163001328103759,
+          "lineages": 38,
+          "metric": "spearman",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "curve_joint",
+          "candidate": "crossing_logit",
+          "ci95": [
+            -0.007635611194070305,
+            0.03572713163621939
+          ],
+          "gain": 0.012978081158161237,
+          "lineages": 38,
+          "metric": "ndcg_at_5",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "curve_joint",
+          "candidate": "crossing_logit",
+          "ci95": [
+            -0.035294117647058865,
+            0.026109391124870984
+          ],
+          "gain": -0.0045923632610939125,
+          "lineages": 38,
+          "metric": "top5_overlap",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "curve_joint",
+          "candidate": "crossing_logit",
+          "ci95": [
+            -0.0008344714849837187,
+            0.05911608111668274
+          ],
+          "gain": 0.029002262538680434,
+          "lineages": 38,
+          "metric": "spearman",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "crossing_linear",
+          "candidate": "crossing_logit",
+          "ci95": [
+            0.0025000315144912385,
+            0.042361435406597266
+          ],
+          "gain": 0.021341459382083094,
+          "lineages": 38,
+          "metric": "ndcg_at_5",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "crossing_linear",
+          "candidate": "crossing_logit",
+          "ci95": [
+            -0.002189112487100183,
+            0.05701754385964919
+          ],
+          "gain": 0.026986584107327183,
+          "lineages": 38,
+          "metric": "top5_overlap",
+          "track": "ic50_bounded"
+        },
+        {
+          "baseline": "crossing_linear",
+          "candidate": "crossing_logit",
+          "ci95": [
+            0.006582144180448899,
+            0.04865526289980803
+          ],
+          "gain": 0.027208416447581207,
+          "lineages": 38,
+          "metric": "spearman",
+          "track": "ic50_bounded"
+        }
+      ],
+      "scores": [
+        {
+          "cells": 38,
+          "common_rows": 1444,
+          "covered_rows": 1444,
+          "lineages": 38,
+          "macro_ndcg_at_5": 0.670283778971859,
+          "macro_spearman": 0.4843210461030144,
+          "macro_top5_overlap": 0.2947368421052632,
+          "method": "crossing_linear",
+          "registered_rows": 1444,
+          "track": "ic50_bounded"
+        },
+        {
+          "cells": 38,
+          "common_rows": 1444,
+          "covered_rows": 1444,
+          "lineages": 38,
+          "macro_ndcg_at_5": 0.6916252383539421,
+          "macro_spearman": 0.5115294625505955,
+          "macro_top5_overlap": 0.3217234262125903,
+          "method": "crossing_logit",
+          "registered_rows": 1444,
+          "track": "ic50_bounded"
+        },
+        {
+          "cells": 38,
+          "common_rows": 1444,
+          "covered_rows": 1444,
+          "lineages": 38,
+          "macro_ndcg_at_5": 0.7344081276457723,
+          "macro_spearman": 0.48358919623363295,
+          "macro_top5_overlap": 0.34716202270381835,
+          "method": "crossing_mean",
+          "registered_rows": 1444,
+          "track": "ic50_bounded"
+        },
+        {
+          "cells": 38,
+          "common_rows": 1444,
+          "covered_rows": 1444,
+          "lineages": 38,
+          "macro_ndcg_at_5": 0.6786471571957806,
+          "macro_spearman": 0.48252720001191507,
+          "macro_top5_overlap": 0.32631578947368434,
+          "method": "curve_joint",
+          "registered_rows": 1444,
+          "track": "ic50_bounded"
+        },
+        {
+          "cells": 38,
+          "common_rows": 1444,
+          "covered_rows": 1444,
+          "lineages": 38,
+          "macro_ndcg_at_5": 0.7013226523185225,
+          "macro_spearman": 0.5278295953609715,
+          "macro_top5_overlap": 0.3201754385964913,
+          "method": "direct_endpoint",
+          "registered_rows": 1444,
+          "track": "ic50_bounded"
+        },
+        {
+          "cells": 38,
+          "common_rows": 1444,
+          "covered_rows": 1444,
+          "lineages": 38,
+          "macro_ndcg_at_5": 0.7344081276457723,
+          "macro_spearman": 0.48090113408857743,
+          "macro_top5_overlap": 0.34716202270381835,
+          "method": "drug_mean",
+          "registered_rows": 1444,
+          "track": "ic50_bounded"
+        }
+      ]
+    },
+    "pairs": 1444,
+    "strata": {
+      "egfr": {
+        "crossing_linear": {
+          "pearson": -0.006243274505505774,
+          "spearman": -0.015607938307064062
+        },
+        "crossing_logit": {
+          "pearson": 0.0009651260126458894,
+          "spearman": -0.004062779768476185
+        },
+        "crossing_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        },
+        "curve_joint": {
+          "pearson": 0.013643608537607793,
+          "spearman": 0.05261487102574859
+        },
+        "direct_endpoint": {
+          "pearson": -0.018116049691278384,
+          "spearman": -0.0426580351680594
+        },
+        "drug_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        }
+      },
+      "fgfr": {
+        "crossing_linear": {
+          "pearson": 0.012924416644821309,
+          "spearman": 0.0806378381139487
+        },
+        "crossing_logit": {
+          "pearson": -0.138995804233275,
+          "spearman": -0.10484781260543445
+        },
+        "crossing_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        },
+        "curve_joint": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        },
+        "direct_endpoint": {
+          "pearson": -0.09942866289968114,
+          "spearman": -0.054565557892348654
+        },
+        "drug_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        }
+      },
+      "hcc_tki": {
+        "crossing_linear": {
+          "pearson": -0.02784425297578505,
+          "spearman": -0.056608812778505
+        },
+        "crossing_logit": {
+          "pearson": -0.06299228390152485,
+          "spearman": -0.08009293205732482
+        },
+        "crossing_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        },
+        "curve_joint": {
+          "pearson": -0.0007744664560656189,
+          "spearman": 0.03672326449394871
+        },
+        "direct_endpoint": {
+          "pearson": -0.06758471427358809,
+          "spearman": -0.07912070065181954
+        },
+        "drug_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        }
+      },
+      "hdac": {
+        "crossing_linear": {
+          "pearson": 0.23355422326033756,
+          "spearman": 0.24773591995665112
+        },
+        "crossing_logit": {
+          "pearson": 0.14011170470462497,
+          "spearman": 0.21200705774727613
+        },
+        "crossing_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        },
+        "curve_joint": {
+          "pearson": 0.2232102379693152,
+          "spearman": 0.3188080809364755
+        },
+        "direct_endpoint": {
+          "pearson": 0.16232478970617364,
+          "spearman": 0.18159142918793092
+        },
+        "drug_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        }
+      },
+      "kinase_inhibitor": {
+        "crossing_linear": {
+          "pearson": 0.029609198899906257,
+          "spearman": 0.029603703653864482
+        },
+        "crossing_logit": {
+          "pearson": 0.059682928768534496,
+          "spearman": 0.06530937791269073
+        },
+        "crossing_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        },
+        "curve_joint": {
+          "pearson": 0.11507226909000119,
+          "spearman": 0.12248658897922823
+        },
+        "direct_endpoint": {
+          "pearson": 0.04130282385234462,
+          "spearman": 0.044955105278966886
+        },
+        "drug_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        }
+      },
+      "met": {
+        "crossing_linear": {
+          "pearson": 0.1682737942171101,
+          "spearman": 0.14925062880130344
+        },
+        "crossing_logit": {
+          "pearson": 0.2563037923378071,
+          "spearman": 0.29672764996888723
+        },
+        "crossing_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        },
+        "curve_joint": {
+          "pearson": 0.3498725631026131,
+          "spearman": 0.3578546963463359
+        },
+        "direct_endpoint": {
+          "pearson": 0.22990826109284943,
+          "spearman": 0.3014611049558872
+        },
+        "drug_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        }
+      },
+      "mtor": {
+        "crossing_linear": {
+          "pearson": -0.2990827406453463,
+          "spearman": -0.3533505805528343
+        },
+        "crossing_logit": {
+          "pearson": -0.23862153042445441,
+          "spearman": -0.37865748206246624
+        },
+        "crossing_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        },
+        "curve_joint": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        },
+        "direct_endpoint": {
+          "pearson": -0.24318137260736594,
+          "spearman": -0.3395326695139037
+        },
+        "drug_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        }
+      },
+      "nonselective_cytotoxics": {
+        "crossing_linear": {
+          "pearson": 0.1214785674972327,
+          "spearman": 0.1358278132366762
+        },
+        "crossing_logit": {
+          "pearson": 0.08147463773602637,
+          "spearman": 0.1129472960856021
+        },
+        "crossing_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        },
+        "curve_joint": {
+          "pearson": 0.10429693710503765,
+          "spearman": 0.09929929389509443
+        },
+        "direct_endpoint": {
+          "pearson": 0.10160305051147507,
+          "spearman": 0.14228554812609884
+        },
+        "drug_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        }
+      },
+      "targeted_or_kinase": {
+        "crossing_linear": {
+          "pearson": 0.048149655659945466,
+          "spearman": 0.049433905135936
+        },
+        "crossing_logit": {
+          "pearson": 0.06699463567181545,
+          "spearman": 0.07864553062492576
+        },
+        "crossing_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        },
+        "curve_joint": {
+          "pearson": 0.1249029935335752,
+          "spearman": 0.140333997338978
+        },
+        "direct_endpoint": {
+          "pearson": 0.05230482074814726,
+          "spearman": 0.057376589270690885
+        },
+        "drug_mean": {
+          "pearson": 0.0,
+          "spearman": 0.0
+        }
+      }
+    },
+    "within_drug_ci95": {
+      "crossing_logit/crossing_linear": {
+        "pearson": [
+          -0.032176276599838585,
+          0.09874767177302976
+        ],
+        "spearman": [
+          -0.034258439808781786,
+          0.10970596323927763
+        ]
+      },
+      "crossing_logit/curve_joint": {
+        "pearson": [
+          -0.09820085609866851,
+          0.047327729032766414
+        ],
+        "spearman": [
+          -0.09702120243442638,
+          0.06206593020086323
+        ]
+      },
+      "crossing_logit/direct_endpoint": {
+        "pearson": [
+          -0.030644625531940018,
+          0.08652431985218939
+        ],
+        "spearman": [
+          -0.03617285924279548,
+          0.09211436661722577
+        ]
+      },
+      "crossing_logit/drug_mean": {
+        "pearson": [
+          0.0031551156238257233,
+          0.2118827707997923
+        ],
+        "spearman": [
+          0.01181531509482773,
+          0.21793178740018002
+        ]
+      }
+    }
+  }
+}

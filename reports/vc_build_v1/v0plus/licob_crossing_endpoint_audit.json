@@ -1,0 +1,120 @@
+{
+  "emax_above_half_viability": {
+    "donor_pairs": 451,
+    "emax_within_drug": [
+      {
+        "method": "crossing_linear",
+        "n_drugs": 25,
+        "track": "ic50_bounded",
+        "within_drug_pearson": 0.06447750936885552,
+        "within_drug_spearman": 0.044170149728518696
+      },
+      {
+        "method": "crossing_logit",
+        "n_drugs": 25,
+        "track": "ic50_bounded",
+        "within_drug_pearson": 0.09048795088946816,
+        "within_drug_spearman": 0.07298365329033049
+      },
+      {
+        "method": "crossing_mean",
+        "n_drugs": 25,
+        "track": "ic50_bounded",
+        "within_drug_pearson": 0.0,
+        "within_drug_spearman": 0.0
+      },
+      {
+        "method": "curve_emax",
+        "n_drugs": 25,
+        "track": "ic50_bounded",
+        "within_drug_pearson": 0.09009793329820585,
+        "within_drug_spearman": 0.0643607124070205
+      },
+      {
+        "method": "curve_joint",
+        "n_drugs": 25,
+        "track": "ic50_bounded",
+        "within_drug_pearson": 0.05467266893236989,
+        "within_drug_spearman": 0.046656847562482805
+      },
+      {
+        "method": "direct_endpoint",
+        "n_drugs": 25,
+        "track": "ic50_bounded",
+        "within_drug_pearson": 0.0936352496476068,
+        "within_drug_spearman": 0.0782706547295506
+      },
+      {
+        "method": "drug_mean",
+        "n_drugs": 25,
+        "track": "ic50_bounded",
+        "within_drug_pearson": 0.0,
+        "within_drug_spearman": 0.0
+      }
+    ],
+    "organoid_pairs": 487
+  },
+  "emax_binomial": {
+    "brier_logit_difference_ci95": {
+      "crossing_linear": [
+        -0.00639772508290737,
+        0.0062637701719016154
+      ],
+      "crossing_mean": [
+        -0.008783659598274542,
+        0.015996837756763294
+      ]
+    },
+    "mean_brier": {
+      "crossing_linear": 0.18181445341971952,
+      "crossing_logit": 0.18135132357232173,
+      "crossing_mean": 0.17773361319260417
+    },
+    "mean_predicted": {
+      "crossing_linear": 0.5940069617380647,
+      "crossing_logit": 0.5796484906855878,
+      "crossing_mean": 0.6011250389641837
+    },
+    "patient_drug_rows": 1444,
+    "rate": 0.6937903970452447,
+    "within_drug_auroc": {
+      "crossing_linear": {
+        "auroc": 0.5203199160367586,
+        "eligible_drugs": 33
+      },
+      "crossing_logit": {
+        "auroc": 0.5001429897312465,
+        "eligible_drugs": 33
+      },
+      "crossing_mean": {
+        "auroc": 0.5,
+        "eligible_drugs": 33
+      }
+    }
+  },
+  "forecast_sha256": "026b3c5152e2c82d7236d67277b0c5274bcea35de27238cab1e5c33a955c64ea",
+  "paired": {
+    "outside_support": {
+      "donors": 38,
+      "drugs": 38,
+      "joint_counts": {
+        "ic50_above_0/emax_above_0": 1061,
+        "ic50_above_0/emax_above_1": 478,
+        "ic50_above_1/emax_above_0": 25,
+        "ic50_above_1/emax_above_1": 70
+      },
+      "pairs": 1634
+    },
+    "supported": {
+      "donors": 38,
+      "drugs": 38,
+      "joint_counts": {
+        "ic50_above_0/emax_above_0": 1147,
+        "ic50_above_0/emax_above_1": 487,
+        "ic50_above_1/emax_above_0": 0,
+        "ic50_above_1/emax_above_1": 0
+      },
+      "pairs": 1634
+    }
+  }
+}
