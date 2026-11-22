@@ -53,13 +53,13 @@ def registry(assets, rna, source_genes):
     row_ids = {value: row for row, (value,) in enumerate(
         s6.iter_rows(min_row=3, max_col=1, values_only=True), 3,
     )}
-    if len(row_ids) != 376 or any(not re.fullmatch(r"P\d+C\d+", key) for key in row_ids):
+    if len(row_ids) != 376 or any(not re.fullmatch(r"P\d+C\d*", key) for key in row_ids):
         raise ValueError("Unexpected Yang PDO roster")
     matched = meta.join(donors, on="CaseID")
     matched["pdo_id"] = matched.index.str.removesuffix("_O")
     matched = matched[matched.index.str.endswith("_O") & matched.pdo_id.isin(row_ids)]
     cohort = matched.loc[matched.Pathology.eq("HCC") & matched.Age.ge(18)].copy()
-    if not all(re.fullmatch(rf"{donor}C\d+", pdo) for pdo, donor in zip(cohort.pdo_id, cohort.CaseID)):
+    if not all(re.fullmatch(rf"{donor}C\d*", pdo) for pdo, donor in zip(cohort.pdo_id, cohort.CaseID)):
         raise ValueError("Conflicting Yang sample and donor identifiers")
     cohort["response_row"] = cohort.pdo_id.map(row_ids)
     cohort["cell_id"] = COHORT + ":" + cohort.pdo_id
