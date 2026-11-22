@@ -35,6 +35,16 @@
 
 추가 채점 `31774`는 원 동결과 추가 동결을 같은 합성 인수 명부에 연결했다. 합성 처리 539웰에서 두 지표별 공개 VC 최선 모델을 각 재표집에서 다시 고르는 계산과 parent 및 배양 단위 10,000회 재표집을 검증했다. 독립 실측 정확도는 미측정이다. 실측 채점에는 기존 동결 인자에 `--native`, `--native-pin`, `--native-protocol`을 더해 채점한다. [채점 코드](../../src/r19_plan/hcc_off_position_pilot_native_score.py) · [합성 영수증](data/hcc_off_position_pilot/native/score_smoke/receipt.json) · [지원 검산](data/hcc_off_position_pilot/native/score_smoke/support.tsv)
 
+## 약물별 배율 보조 비교 동결
+
+원평균과 유전자별 축소에 같은 약물별 배율 규칙을 준 두 예측을 실측 전에 추가 동결했다. 두 arm은 원 JHH-5 적합 277군과 96군의 비간계열 원천 8개를 그대로 사용한다. 세 DMSO 역할의 각 `96 × 978` 배열을 두 목표 세포주에 동일하게 적용한다. 원 고정 배율 원평균과 축소를 모든 역할에서 배열 수준으로 재현했다. [보조 명세](HCC_OFF_POSITION_PILOT_AMPLITUDE_PROTOCOL.md) · [추가 동결 영수증](data/hcc_off_position_pilot/amplitude/freeze.json)
+
+보조 채점은 약물별 배율 원평균 대 축소와 B0·기존 고정 배율·공개 VC 최선 비교를 보고한다. 공개 VC 비교에서 원천 정보는 같고 공개 모델의 배율 적합은 원 규약에 따른다. 별도 채점 `31922`에서 기존 539개 합성 처리 웰, 두 지표, 두 재표집 방식과 10,000회 가중의 128개 비교 행을 검증했다. 기존 합성 공개 VC 최선 점추정과 대조한 참조값 32개가 일치했다. 이 검산의 용도는 실측 인수와 채점 연결을 확인하는 것이다. [합성 검산](data/hcc_off_position_pilot/amplitude/verification.json) · [합성 지원](data/hcc_off_position_pilot/amplitude/score/support.tsv)
+
+명세는 `c576aa5`에 고정했다. 첫 재현 검사는 원천 평균의 계산 정밀도와 동결 저장 정밀도를 바로 비교해 중단됐다. `e67663f`에서 원천 패널과 두 고정 배율 예측을 원래 정밀도로 재구성한 후 저장 형식에서 대조했다. 예측 `31920` → 동결 `31921` → 합성 채점 `31922`는 종료 코드 0이다. 보조 동결 SHA-256은 `60d213a373de2df3a0fe866af18d9ae0936c451d24772303f0501f58d4d8bc85`다. [실행 원장](data/hcc_off_position_pilot/amplitude/launch.tsv) · [시도 이력](data/hcc_off_position_pilot/amplitude/attempts.tsv)
+
+실측이 확보되면 보조 채점기의 `score`에 원 인수·공개 VC 동결 인자와 `--amplitude`, `--amplitude-protocol`, `--amplitude-sha256`을 연결한다. 예측은 G1의 실행 원장에 적힌 폴더에 있다. 이 보조 결과와 원 파일럿의 주 판정은 각각 등록된 명세에 따른다. [보조 채점 코드](../../src/r19_plan/hcc_off_position_pilot_amplitude.py) · [원 실측 인수 형식](#실측-파일-인수-형식)
+
 ## 독립 확인 규모 산정
 
 10 µM·24 h의 JHH-5·JHH-7 개발 구간으로 96군 배치의 정밀도를 점검했다. 개발 효과와 배양 표준편차 0.25를 가정한 두 지표 공동 통과확률 하한은 한 세포주에서 58–87%였다. 파일럿 자체가 제공해야 할 정보는 독립 배양 변동, 다른 위치 반복의 재현성, 공개 VC 대비 오차 차이다. 파일럿과 scaffold가 다른 정식 확인 후보 상한은 등록 단계에서 176군이다. [10 µM 규모 산정](HCC_OFF_POSITION_POWER_RESULTS.md)
