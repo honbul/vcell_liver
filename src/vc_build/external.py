@@ -72,7 +72,7 @@ def _chemistry(frame):
 
     generator = rdFingerprintGenerator.GetMorganGenerator(radius=2, fpSize=256, includeChirality=True)
     features = {}
-    for key, smiles in frame[["compound_id", "canonical_isomeric_smiles"]].drop_duplicates().itertuples(index=False, name=None):
+    for key, smiles in frame[["compound_id", "isomeric_smiles"]].drop_duplicates().itertuples(index=False, name=None):
         molecule = Chem.MolFromSmiles(smiles)
         if molecule is None:
             raise ValueError(f"Invalid structure for {key}")
