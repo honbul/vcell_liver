@@ -235,7 +235,17 @@ def score(args):
     require_hash(args.supplement, ASSET_HASHES["supplement"])
     query = pd.read_parquet(args.input / "query.parquet")
     shared_support(forecast, query, MODELS)
-    with args.supplement.open("rb") as stream:
+    joined = joined_outcomes(query, forecast, args.supplement)
+    scopes = {"new_donors_primary": joined[joined.new_donor], "previous_donors_technical": joined[~joined.new_donor],
+              "all_donors_technical": joined}
+    publish_json(args.out, {"stage": TRACK, "forecast_sha256": seal["sha256"], "registration_sha256": receipt,
+        "labels_sha256": ASSET_HASHES["supplement"], "primary": PRIMARY,
+        "scopes": {name: metrics(adult_donor_outcomes(frame), query) for name, frame in scopes.items()},
+    })
+
+
+def joined_outcomes(query, forecast, supplement):
+    with supplement.open("rb") as stream:
         book = load_workbook(stream, read_only=True, data_only=True)
         rows = list(book["S6. AUC"].values)
         book.close()
@@ -247,15 +257,9 @@ def score(args):
             raise ValueError("Registered recovered LICOB response has a missing or different identity")
         labels.append(-float(value))
     patients = query[["cell_id", "donor_id", "adult_age_confirmed", "new_donor"]].drop_duplicates()
-    joined = join_observations(forecast, query.assign(endpoint_value=labels)).merge(
+    return join_observations(forecast, query.assign(endpoint_value=labels)).merge(
         patients, on="cell_id", validate="many_to_one",
     )
-    scopes = {"new_donors_primary": joined[joined.new_donor], "previous_donors_technical": joined[~joined.new_donor],
-              "all_donors_technical": joined}
-    publish_json(args.out, {"stage": TRACK, "forecast_sha256": seal["sha256"], "registration_sha256": receipt,
-        "labels_sha256": ASSET_HASHES["supplement"], "primary": PRIMARY,
-        "scopes": {name: metrics(adult_donor_outcomes(frame), query) for name, frame in scopes.items()},
-    })
 
 
 def main():
