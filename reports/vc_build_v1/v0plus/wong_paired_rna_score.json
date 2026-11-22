@@ -1,0 +1,1727 @@
+{
+  "all_drugs": {
+    "across_cell_scores": [
+      {
+        "method": "cellhit",
+        "n_drugs": 62,
+        "track": "WONG_EXPANDED_3D_HCC",
+        "within_drug_pearson": -0.01740403455073372,
+        "within_drug_spearman": -0.026594714280402165
+      },
+      {
+        "method": "drug_mean",
+        "n_drugs": 62,
+        "track": "WONG_EXPANDED_3D_HCC",
+        "within_drug_pearson": 0.0,
+        "within_drug_spearman": 0.0
+      },
+      {
+        "method": "drug_ridge",
+        "n_drugs": 62,
+        "track": "WONG_EXPANDED_3D_HCC",
+        "within_drug_pearson": 0.0049302883250703,
+        "within_drug_spearman": -0.03647210061530751
+      },
+      {
+        "method": "mean_shift",
+        "n_drugs": 62,
+        "track": "WONG_EXPANDED_3D_HCC",
+        "within_drug_pearson": 0.07435457261458817,
+        "within_drug_spearman": 0.03294589733771899
+      },
+      {
+        "method": "observed_pdo",
+        "n_drugs": 62,
+        "track": "WONG_EXPANDED_3D_HCC",
+        "within_drug_pearson": -0.039432612122251846,
+        "within_drug_spearman": -0.013493009346802847
+      },
+      {
+        "method": "paired_ridge",
+        "n_drugs": 62,
+        "track": "WONG_EXPANDED_3D_HCC",
+        "within_drug_pearson": 0.08427222303860457,
+        "within_drug_spearman": 0.05914157036973928
+      },
+      {
+        "method": "raw_tissue",
+        "n_drugs": 62,
+        "track": "WONG_EXPANDED_3D_HCC",
+        "within_drug_pearson": 0.06223473848716831,
+        "within_drug_spearman": 0.025325429894806916
+      },
+      {
+        "method": "shuffled_ridge",
+        "n_drugs": 62,
+        "track": "WONG_EXPANDED_3D_HCC",
+        "within_drug_pearson": 0.06751771909112855,
+        "within_drug_spearman": 0.025225595190065498
+      }
+    ],
+    "gate": {
+      "mean_shift": false,
+      "raw_tissue": false,
+      "shuffled_ridge": false
+    },
+    "observed_rows": 620,
+    "paired_drug_ci95": {
+      "drug_mean": {
+        "pearson": [
+          -0.11110324163590955,
+          0.26961610309630474
+        ],
+        "spearman": [
+          -0.1321058822722022,
+          0.25672644261353955
+        ]
+      },
+      "mean_shift": {
+        "pearson": [
+          -0.01221790019780929,
+          0.03546481753033212
+        ],
+        "spearman": [
+          -0.025362783098952495,
+          0.07718147744859331
+        ]
+      },
+      "observed_pdo": {
+        "pearson": [
+          -0.1481529528926567,
+          0.3720956970701009
+        ],
+        "spearman": [
+          -0.19893394020574764,
+          0.3511623621046409
+        ]
+      },
+      "raw_tissue": {
+        "pearson": [
+          -0.009466032841235294,
+          0.060975848754459154
+        ],
+        "spearman": [
+          -0.022054920375663537,
+          0.08786765446828415
+        ]
+      },
+      "shuffled_ridge": {
+        "pearson": [
+          -0.022897670695233636,
+          0.06037905938426184
+        ],
+        "spearman": [
+          -0.03573112269518965,
+          0.10441880805041556
+        ]
+      }
+    },
+    "paired_rank_contrasts": [
+      {
+        "baseline": "raw_tissue",
+        "candidate": "paired_ridge",
+        "ci95": [
+          -0.057985820018670246,
+          0.008859674279724013
+        ],
+        "gain": -0.020764316811966887,
+        "lineages": 10,
+        "metric": "ndcg_at_5",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "raw_tissue",
+        "candidate": "paired_ridge",
+        "ci95": [
+          -0.06000000000000005,
+          0.0
+        ],
+        "gain": -0.020000000000000018,
+        "lineages": 10,
+        "metric": "top5_overlap",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "raw_tissue",
+        "candidate": "paired_ridge",
+        "ci95": [
+          0.0011679024863485558,
+          0.01608214658756673
+        ],
+        "gain": 0.008431003523946268,
+        "lineages": 10,
+        "metric": "spearman",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "mean_shift",
+        "candidate": "paired_ridge",
+        "ci95": [
+          -0.0010276836435195724,
+          0.03588204082817548
+        ],
+        "gain": 0.012316416921892226,
+        "lineages": 10,
+        "metric": "ndcg_at_5",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "mean_shift",
+        "candidate": "paired_ridge",
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "gain": 0.0,
+        "lineages": 10,
+        "metric": "top5_overlap",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "mean_shift",
+        "candidate": "paired_ridge",
+        "ci95": [
+          -0.00028209515798025274,
+          0.0055276917171308984
+        ],
+        "gain": 0.0024980839116427456,
+        "lineages": 10,
+        "metric": "spearman",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "shuffled_ridge",
+        "candidate": "paired_ridge",
+        "ci95": [
+          -0.025946039864979897,
+          0.039619764273545084
+        ],
+        "gain": 0.006871913217326053,
+        "lineages": 10,
+        "metric": "ndcg_at_5",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "shuffled_ridge",
+        "candidate": "paired_ridge",
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "gain": 0.0,
+        "lineages": 10,
+        "metric": "top5_overlap",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "shuffled_ridge",
+        "candidate": "paired_ridge",
+        "ci95": [
+          -0.0021936482152450252,
+          0.0064090257927831955
+        ],
+        "gain": 0.00202971042687361,
+        "lineages": 10,
+        "metric": "spearman",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "drug_mean",
+        "candidate": "paired_ridge",
+        "ci95": [
+          -0.08204648012286979,
+          0.0430040302037248
+        ],
+        "gain": -0.021151379127458236,
+        "lineages": 10,
+        "metric": "ndcg_at_5",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "drug_mean",
+        "candidate": "paired_ridge",
+        "ci95": [
+          -0.10000000000000009,
+          0.08000000000000007
+        ],
+        "gain": 0.0,
+        "lineages": 10,
+        "metric": "top5_overlap",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "drug_mean",
+        "candidate": "paired_ridge",
+        "ci95": [
+          0.013818736112823157,
+          0.04894321955832298
+        ],
+        "gain": 0.02986850655006229,
+        "lineages": 10,
+        "metric": "spearman",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "observed_pdo",
+        "candidate": "paired_ridge",
+        "ci95": [
+          -0.08231677231988838,
+          0.015221550715287894
+        ],
+        "gain": -0.03473827921130901,
+        "lineages": 10,
+        "metric": "ndcg_at_5",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "observed_pdo",
+        "candidate": "paired_ridge",
+        "ci95": [
+          -0.11999999999999988,
+          0.040000000000000036
+        ],
+        "gain": -0.040000000000000036,
+        "lineages": 10,
+        "metric": "top5_overlap",
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "baseline": "observed_pdo",
+        "candidate": "paired_ridge",
+        "ci95": [
+          -0.02160647095093842,
+          -0.002034645566466911
+        ],
+        "gain": -0.011143133255600346,
+        "lineages": 10,
+        "metric": "spearman",
+        "track": "WONG_EXPANDED_3D_HCC"
+      }
+    ],
+    "scores": [
+      {
+        "cells": 10,
+        "common_rows": 620,
+        "covered_rows": 620,
+        "lineages": 10,
+        "macro_ndcg_at_5": 0.7380435806644761,
+        "macro_spearman": 0.4291190431790229,
+        "macro_top5_overlap": 0.38000000000000006,
+        "method": "cellhit",
+        "registered_rows": 620,
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "cells": 10,
+        "common_rows": 620,
+        "covered_rows": 620,
+        "lineages": 10,
+        "macro_ndcg_at_5": 0.8149290329784694,
+        "macro_spearman": 0.4169661810826459,
+        "macro_top5_overlap": 0.38000000000000006,
+        "method": "drug_mean",
+        "registered_rows": 620,
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "cells": 10,
+        "common_rows": 620,
+        "covered_rows": 620,
+        "lineages": 10,
+        "macro_ndcg_at_5": 0.7948581433252706,
+        "macro_spearman": 0.4225791923735511,
+        "macro_top5_overlap": 0.36,
+        "method": "drug_ridge",
+        "registered_rows": 620,
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "cells": 10,
+        "common_rows": 620,
+        "covered_rows": 620,
+        "lineages": 10,
+        "macro_ndcg_at_5": 0.7814612369291193,
+        "macro_spearman": 0.4443366037210653,
+        "macro_top5_overlap": 0.38,
+        "method": "mean_shift",
+        "registered_rows": 620,
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "cells": 10,
+        "common_rows": 620,
+        "covered_rows": 620,
+        "lineages": 10,
+        "macro_ndcg_at_5": 0.8285159330623205,
+        "macro_spearman": 0.4579778208883085,
+        "macro_top5_overlap": 0.42000000000000004,
+        "method": "observed_pdo",
+        "registered_rows": 620,
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "cells": 10,
+        "common_rows": 620,
+        "covered_rows": 620,
+        "lineages": 10,
+        "macro_ndcg_at_5": 0.7937776538510114,
+        "macro_spearman": 0.4468346876327082,
+        "macro_top5_overlap": 0.38,
+        "method": "paired_ridge",
+        "registered_rows": 620,
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "cells": 10,
+        "common_rows": 620,
+        "covered_rows": 620,
+        "lineages": 10,
+        "macro_ndcg_at_5": 0.8145419706629783,
+        "macro_spearman": 0.4384036841087619,
+        "macro_top5_overlap": 0.4,
+        "method": "raw_tissue",
+        "registered_rows": 620,
+        "track": "WONG_EXPANDED_3D_HCC"
+      },
+      {
+        "cells": 10,
+        "common_rows": 620,
+        "covered_rows": 620,
+        "lineages": 10,
+        "macro_ndcg_at_5": 0.7869057406336855,
+        "macro_spearman": 0.44480497720583456,
+        "macro_top5_overlap": 0.38,
+        "method": "shuffled_ridge",
+        "registered_rows": 620,
+        "track": "WONG_EXPANDED_3D_HCC"
+      }
+    ]
+  },
+  "forecast_sha256": "69d58f808084866b2db8a7e799366f60782a1cb268c360337f01bbfa6a88fb07",
+  "molecular_scores": {
+    "mean_shift": {
+      "mean_spearman": 0.9139364080292317,
+      "median_spearman": 0.9137602932752424,
+      "rank_rmse": 0.11954696323230249,
+      "top1_pairs": 6
+    },
+    "paired_ridge": {
+      "mean_spearman": 0.9165933557604525,
+      "median_spearman": 0.9163737008444519,
+      "rank_rmse": 0.11768691337632403,
+      "top1_pairs": 6
+    },
+    "raw_tissue": {
+      "mean_spearman": 0.885482172168456,
+      "median_spearman": 0.8831680309134081,
+      "rank_rmse": 0.13774661807743951,
+      "top1_pairs": 7
+    },
+    "shuffled_ridge": {
+      "mean_spearman": 0.9111418941419297,
+      "median_spearman": 0.9129941586358411,
+      "rank_rmse": 0.12147186310192189,
+      "top1_pairs": 6
+    }
+  },
+  "passed": false,
+  "strata": {
+    "additional_35": {
+      "across_cell_scores": [
+        {
+          "method": "cellhit",
+          "n_drugs": 35,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.08590463972524295,
+          "within_drug_spearman": -0.11135306096770807
+        },
+        {
+          "method": "drug_mean",
+          "n_drugs": 35,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.0,
+          "within_drug_spearman": 0.0
+        },
+        {
+          "method": "drug_ridge",
+          "n_drugs": 35,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.08737264059185985,
+          "within_drug_spearman": -0.12746486394711617
+        },
+        {
+          "method": "mean_shift",
+          "n_drugs": 35,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.03157005910810724,
+          "within_drug_spearman": -0.011422245928161835
+        },
+        {
+          "method": "observed_pdo",
+          "n_drugs": 35,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.10524423406638744,
+          "within_drug_spearman": -0.04935644772602478
+        },
+        {
+          "method": "paired_ridge",
+          "n_drugs": 35,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.038167085636317724,
+          "within_drug_spearman": 0.005197967945009971
+        },
+        {
+          "method": "raw_tissue",
+          "n_drugs": 35,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.015505289702775604,
+          "within_drug_spearman": -0.024228718991536828
+        },
+        {
+          "method": "shuffled_ridge",
+          "n_drugs": 35,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.029968749327038323,
+          "within_drug_spearman": -0.012976997611364477
+        }
+      ],
+      "gate": {},
+      "observed_rows": 350,
+      "paired_drug_ci95": {},
+      "paired_rank_contrasts": [],
+      "scores": [
+        {
+          "cells": 10,
+          "common_rows": 350,
+          "covered_rows": 350,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7838271830121772,
+          "macro_spearman": 0.339647030573983,
+          "macro_top5_overlap": 0.6,
+          "method": "cellhit",
+          "registered_rows": 350,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 350,
+          "covered_rows": 350,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.757393755074639,
+          "macro_spearman": 0.32982896313620125,
+          "macro_top5_overlap": 0.44000000000000006,
+          "method": "drug_mean",
+          "registered_rows": 350,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 350,
+          "covered_rows": 350,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7914549564341672,
+          "macro_spearman": 0.34170550588833004,
+          "macro_top5_overlap": 0.6,
+          "method": "drug_ridge",
+          "registered_rows": 350,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 350,
+          "covered_rows": 350,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8047361389327244,
+          "macro_spearman": 0.36433983818692667,
+          "macro_top5_overlap": 0.6,
+          "method": "mean_shift",
+          "registered_rows": 350,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 350,
+          "covered_rows": 350,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.804347587090278,
+          "macro_spearman": 0.37128679738171244,
+          "macro_top5_overlap": 0.6,
+          "method": "observed_pdo",
+          "registered_rows": 350,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 350,
+          "covered_rows": 350,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8047361389327244,
+          "macro_spearman": 0.36515223374079914,
+          "macro_top5_overlap": 0.6,
+          "method": "paired_ridge",
+          "registered_rows": 350,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 350,
+          "covered_rows": 350,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8047269749094947,
+          "macro_spearman": 0.3612444186274999,
+          "macro_top5_overlap": 0.6,
+          "method": "raw_tissue",
+          "registered_rows": 350,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 350,
+          "covered_rows": 350,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8030060478814057,
+          "macro_spearman": 0.3645497623358766,
+          "macro_top5_overlap": 0.6,
+          "method": "shuffled_ridge",
+          "registered_rows": 350,
+          "track": "WONG_EXPANDED_3D_HCC"
+        }
+      ]
+    },
+    "egfr": {
+      "across_cell_scores": [
+        {
+          "method": "cellhit",
+          "n_drugs": 5,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.14926007458105423,
+          "within_drug_spearman": -0.06424242424242424
+        },
+        {
+          "method": "drug_mean",
+          "n_drugs": 5,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.0,
+          "within_drug_spearman": 0.0
+        },
+        {
+          "method": "drug_ridge",
+          "n_drugs": 5,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.013404671677629997,
+          "within_drug_spearman": -0.018181818181818167
+        },
+        {
+          "method": "mean_shift",
+          "n_drugs": 5,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.1376206167042616,
+          "within_drug_spearman": -0.19757575757575757
+        },
+        {
+          "method": "observed_pdo",
+          "n_drugs": 5,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.4855632529637119,
+          "within_drug_spearman": -0.5078787878787878
+        },
+        {
+          "method": "paired_ridge",
+          "n_drugs": 5,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.12886035181361022,
+          "within_drug_spearman": -0.19272727272727272
+        },
+        {
+          "method": "raw_tissue",
+          "n_drugs": 5,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.14167809087558153,
+          "within_drug_spearman": -0.2024242424242424
+        },
+        {
+          "method": "shuffled_ridge",
+          "n_drugs": 5,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.13784610507117995,
+          "within_drug_spearman": -0.19999999999999998
+        }
+      ],
+      "gate": {},
+      "observed_rows": 50,
+      "paired_drug_ci95": {},
+      "paired_rank_contrasts": [],
+      "scores": [
+        {
+          "cells": 10,
+          "common_rows": 50,
+          "covered_rows": 50,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9112113842568617,
+          "macro_spearman": 0.18,
+          "macro_top5_overlap": 1.0,
+          "method": "cellhit",
+          "registered_rows": 50,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 50,
+          "covered_rows": 50,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9107183578476379,
+          "macro_spearman": 0.18,
+          "macro_top5_overlap": 1.0,
+          "method": "drug_mean",
+          "registered_rows": 50,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 50,
+          "covered_rows": 50,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8351250003661864,
+          "macro_spearman": 0.029999999999999992,
+          "macro_top5_overlap": 1.0,
+          "method": "drug_ridge",
+          "registered_rows": 50,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 50,
+          "covered_rows": 50,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9125061692037798,
+          "macro_spearman": 0.19,
+          "macro_top5_overlap": 1.0,
+          "method": "mean_shift",
+          "registered_rows": 50,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 50,
+          "covered_rows": 50,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9071427351353542,
+          "macro_spearman": 0.15999999999999998,
+          "macro_top5_overlap": 1.0,
+          "method": "observed_pdo",
+          "registered_rows": 50,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 50,
+          "covered_rows": 50,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9107183578476379,
+          "macro_spearman": 0.18,
+          "macro_top5_overlap": 1.0,
+          "method": "paired_ridge",
+          "registered_rows": 50,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 50,
+          "covered_rows": 50,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9107183578476379,
+          "macro_spearman": 0.18,
+          "macro_top5_overlap": 1.0,
+          "method": "raw_tissue",
+          "registered_rows": 50,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 50,
+          "covered_rows": 50,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9142939805599217,
+          "macro_spearman": 0.19999999999999998,
+          "macro_top5_overlap": 1.0,
+          "method": "shuffled_ridge",
+          "registered_rows": 50,
+          "track": "WONG_EXPANDED_3D_HCC"
+        }
+      ]
+    },
+    "hdac": {
+      "across_cell_scores": [
+        {
+          "method": "cellhit",
+          "n_drugs": 4,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.27686868489485694,
+          "within_drug_spearman": -0.23333333333333334
+        },
+        {
+          "method": "drug_mean",
+          "n_drugs": 4,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.0,
+          "within_drug_spearman": 0.0
+        },
+        {
+          "method": "drug_ridge",
+          "n_drugs": 4,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.18357852732329571,
+          "within_drug_spearman": -0.16060606060606059
+        },
+        {
+          "method": "mean_shift",
+          "n_drugs": 4,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.017331731148801502,
+          "within_drug_spearman": 0.06666666666666665
+        },
+        {
+          "method": "observed_pdo",
+          "n_drugs": 4,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.23066087061642931,
+          "within_drug_spearman": -0.14545454545454545
+        },
+        {
+          "method": "paired_ridge",
+          "n_drugs": 4,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.02943037314361694,
+          "within_drug_spearman": 0.12727272727272723
+        },
+        {
+          "method": "raw_tissue",
+          "n_drugs": 4,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.0447875278403365,
+          "within_drug_spearman": 0.030303030303030304
+        },
+        {
+          "method": "shuffled_ridge",
+          "n_drugs": 4,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.013888929239693426,
+          "within_drug_spearman": 0.048484848484848464
+        }
+      ],
+      "gate": {},
+      "observed_rows": 40,
+      "paired_drug_ci95": {},
+      "paired_rank_contrasts": [],
+      "scores": [
+        {
+          "cells": 10,
+          "common_rows": 40,
+          "covered_rows": 40,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9785016963908696,
+          "macro_spearman": 0.8799999999999999,
+          "macro_top5_overlap": 1.0,
+          "method": "cellhit",
+          "registered_rows": 40,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 40,
+          "covered_rows": 40,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9702530435247951,
+          "macro_spearman": 0.82,
+          "macro_top5_overlap": 1.0,
+          "method": "drug_mean",
+          "registered_rows": 40,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 40,
+          "covered_rows": 40,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9840007983015855,
+          "macro_spearman": 0.9199999999999999,
+          "macro_top5_overlap": 1.0,
+          "method": "drug_ridge",
+          "registered_rows": 40,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 40,
+          "covered_rows": 40,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9675034925694371,
+          "macro_spearman": 0.7999999999999999,
+          "macro_top5_overlap": 1.0,
+          "method": "mean_shift",
+          "registered_rows": 40,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 40,
+          "covered_rows": 40,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9702530435247951,
+          "macro_spearman": 0.82,
+          "macro_top5_overlap": 1.0,
+          "method": "observed_pdo",
+          "registered_rows": 40,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 40,
+          "covered_rows": 40,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9702530435247951,
+          "macro_spearman": 0.82,
+          "macro_top5_overlap": 1.0,
+          "method": "paired_ridge",
+          "registered_rows": 40,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 40,
+          "covered_rows": 40,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9812512473462276,
+          "macro_spearman": 0.9,
+          "macro_top5_overlap": 1.0,
+          "method": "raw_tissue",
+          "registered_rows": 40,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 40,
+          "covered_rows": 40,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.9675034925694371,
+          "macro_spearman": 0.7999999999999999,
+          "macro_top5_overlap": 1.0,
+          "method": "shuffled_ridge",
+          "registered_rows": 40,
+          "track": "WONG_EXPANDED_3D_HCC"
+        }
+      ]
+    },
+    "kinase_inhibitor": {
+      "across_cell_scores": [
+        {
+          "method": "cellhit",
+          "n_drugs": 20,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.0002729467202224195,
+          "within_drug_spearman": -0.0296969696969697
+        },
+        {
+          "method": "drug_mean",
+          "n_drugs": 20,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.0,
+          "within_drug_spearman": 0.0
+        },
+        {
+          "method": "drug_ridge",
+          "n_drugs": 20,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.06533029193579445,
+          "within_drug_spearman": 0.024848484848484842
+        },
+        {
+          "method": "mean_shift",
+          "n_drugs": 20,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.08360768738797207,
+          "within_drug_spearman": 0.021818181818181813
+        },
+        {
+          "method": "observed_pdo",
+          "n_drugs": 20,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.1159038775238391,
+          "within_drug_spearman": -0.12787878787878787
+        },
+        {
+          "method": "paired_ridge",
+          "n_drugs": 20,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.09740811103740668,
+          "within_drug_spearman": 0.04424242424242424
+        },
+        {
+          "method": "raw_tissue",
+          "n_drugs": 20,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.0695422189889132,
+          "within_drug_spearman": 0.0018181818181818034
+        },
+        {
+          "method": "shuffled_ridge",
+          "n_drugs": 20,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.07475785839634555,
+          "within_drug_spearman": -0.008484848484848479
+        }
+      ],
+      "gate": {},
+      "observed_rows": 200,
+      "paired_drug_ci95": {},
+      "paired_rank_contrasts": [],
+      "scores": [
+        {
+          "cells": 10,
+          "common_rows": 200,
+          "covered_rows": 200,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8562621331928227,
+          "macro_spearman": 0.5180451127819549,
+          "macro_top5_overlap": 0.62,
+          "method": "cellhit",
+          "registered_rows": 200,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 200,
+          "covered_rows": 200,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.868432132325513,
+          "macro_spearman": 0.5009022556390976,
+          "macro_top5_overlap": 0.64,
+          "method": "drug_mean",
+          "registered_rows": 200,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 200,
+          "covered_rows": 200,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8211036676523789,
+          "macro_spearman": 0.43383458646616546,
+          "macro_top5_overlap": 0.5399999999999999,
+          "method": "drug_ridge",
+          "registered_rows": 200,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 200,
+          "covered_rows": 200,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8546703380291003,
+          "macro_spearman": 0.4977443609022556,
+          "macro_top5_overlap": 0.62,
+          "method": "mean_shift",
+          "registered_rows": 200,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 200,
+          "covered_rows": 200,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8664348581721271,
+          "macro_spearman": 0.5004511278195488,
+          "macro_top5_overlap": 0.6599999999999999,
+          "method": "observed_pdo",
+          "registered_rows": 200,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 200,
+          "covered_rows": 200,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8636755794144644,
+          "macro_spearman": 0.4966917293233082,
+          "macro_top5_overlap": 0.64,
+          "method": "paired_ridge",
+          "registered_rows": 200,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 200,
+          "covered_rows": 200,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8421553811039602,
+          "macro_spearman": 0.4804511278195488,
+          "macro_top5_overlap": 0.6,
+          "method": "raw_tissue",
+          "registered_rows": 200,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 200,
+          "covered_rows": 200,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8476509069495478,
+          "macro_spearman": 0.4993984962406014,
+          "macro_top5_overlap": 0.62,
+          "method": "shuffled_ridge",
+          "registered_rows": 200,
+          "track": "WONG_EXPANDED_3D_HCC"
+        }
+      ]
+    },
+    "mtor": {
+      "across_cell_scores": [
+        {
+          "method": "cellhit",
+          "n_drugs": 8,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.10576215648376931,
+          "within_drug_spearman": 0.013636363636363627
+        },
+        {
+          "method": "drug_mean",
+          "n_drugs": 8,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.0,
+          "within_drug_spearman": 0.0
+        },
+        {
+          "method": "drug_ridge",
+          "n_drugs": 8,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.14221513366883243,
+          "within_drug_spearman": 0.14090909090909087
+        },
+        {
+          "method": "mean_shift",
+          "n_drugs": 8,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.13668224977911975,
+          "within_drug_spearman": 0.10606060606060605
+        },
+        {
+          "method": "observed_pdo",
+          "n_drugs": 8,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.030328932319322217,
+          "within_drug_spearman": 0.015151515151515159
+        },
+        {
+          "method": "paired_ridge",
+          "n_drugs": 8,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.14892585500939304,
+          "within_drug_spearman": 0.14090909090909087
+        },
+        {
+          "method": "raw_tissue",
+          "n_drugs": 8,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.1191930524468637,
+          "within_drug_spearman": 0.09696969696969696
+        },
+        {
+          "method": "shuffled_ridge",
+          "n_drugs": 8,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.11599583187186208,
+          "within_drug_spearman": 0.04393939393939396
+        }
+      ],
+      "gate": {},
+      "observed_rows": 80,
+      "paired_drug_ci95": {},
+      "paired_rank_contrasts": [],
+      "scores": [
+        {
+          "cells": 10,
+          "common_rows": 80,
+          "covered_rows": 80,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7854280586680462,
+          "macro_spearman": 0.4404761904761905,
+          "macro_top5_overlap": 0.6799999999999999,
+          "method": "cellhit",
+          "registered_rows": 80,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 80,
+          "covered_rows": 80,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7885426176242658,
+          "macro_spearman": 0.45952380952380967,
+          "macro_top5_overlap": 0.6799999999999999,
+          "method": "drug_mean",
+          "registered_rows": 80,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 80,
+          "covered_rows": 80,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7870918037852908,
+          "macro_spearman": 0.38809523809523816,
+          "macro_top5_overlap": 0.6799999999999999,
+          "method": "drug_ridge",
+          "registered_rows": 80,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 80,
+          "covered_rows": 80,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7834174614218736,
+          "macro_spearman": 0.42142857142857143,
+          "macro_top5_overlap": 0.6799999999999999,
+          "method": "mean_shift",
+          "registered_rows": 80,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 80,
+          "covered_rows": 80,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.793914233038691,
+          "macro_spearman": 0.4404761904761905,
+          "macro_top5_overlap": 0.6799999999999999,
+          "method": "observed_pdo",
+          "registered_rows": 80,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 80,
+          "covered_rows": 80,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7834174614218736,
+          "macro_spearman": 0.42142857142857143,
+          "macro_top5_overlap": 0.6799999999999999,
+          "method": "paired_ridge",
+          "registered_rows": 80,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 80,
+          "covered_rows": 80,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7834174614218737,
+          "macro_spearman": 0.42142857142857154,
+          "macro_top5_overlap": 0.6799999999999999,
+          "method": "raw_tissue",
+          "registered_rows": 80,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 80,
+          "covered_rows": 80,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7834174614218736,
+          "macro_spearman": 0.42142857142857143,
+          "macro_top5_overlap": 0.6799999999999999,
+          "method": "shuffled_ridge",
+          "registered_rows": 80,
+          "track": "WONG_EXPANDED_3D_HCC"
+        }
+      ]
+    },
+    "nonselective_cytotoxics": {
+      "across_cell_scores": [
+        {
+          "method": "cellhit",
+          "n_drugs": 3,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.047009288924992725,
+          "within_drug_spearman": 0.006060606060606061
+        },
+        {
+          "method": "drug_mean",
+          "n_drugs": 3,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.0,
+          "within_drug_spearman": 0.0
+        },
+        {
+          "method": "drug_ridge",
+          "n_drugs": 3,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.00639601859514032,
+          "within_drug_spearman": -0.05858585858585858
+        },
+        {
+          "method": "mean_shift",
+          "n_drugs": 3,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.01647784559711629,
+          "within_drug_spearman": 0.10303030303030303
+        },
+        {
+          "method": "observed_pdo",
+          "n_drugs": 3,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.2576175923120572,
+          "within_drug_spearman": 0.25252525252525254
+        },
+        {
+          "method": "paired_ridge",
+          "n_drugs": 3,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.019842654522010537,
+          "within_drug_spearman": 0.11919191919191918
+        },
+        {
+          "method": "raw_tissue",
+          "n_drugs": 3,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.0009945964901184403,
+          "within_drug_spearman": 0.10303030303030303
+        },
+        {
+          "method": "shuffled_ridge",
+          "n_drugs": 3,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.04454861016556019,
+          "within_drug_spearman": 0.09494949494949494
+        }
+      ],
+      "gate": {},
+      "observed_rows": 30,
+      "paired_drug_ci95": {},
+      "paired_rank_contrasts": [],
+      "scores": [
+        {
+          "cells": 10,
+          "common_rows": 30,
+          "covered_rows": 30,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.766065636701154,
+          "macro_spearman": -0.35,
+          "macro_top5_overlap": 1.0,
+          "method": "cellhit",
+          "registered_rows": 30,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 30,
+          "covered_rows": 30,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.766065636701154,
+          "macro_spearman": -0.35,
+          "macro_top5_overlap": 1.0,
+          "method": "drug_mean",
+          "registered_rows": 30,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 30,
+          "covered_rows": 30,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7529390516346426,
+          "macro_spearman": -0.3,
+          "macro_top5_overlap": 1.0,
+          "method": "drug_ridge",
+          "registered_rows": 30,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 30,
+          "covered_rows": 30,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7800937667159342,
+          "macro_spearman": -0.3,
+          "macro_top5_overlap": 1.0,
+          "method": "mean_shift",
+          "registered_rows": 30,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 30,
+          "covered_rows": 30,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7850703250369506,
+          "macro_spearman": -0.25,
+          "macro_top5_overlap": 1.0,
+          "method": "observed_pdo",
+          "registered_rows": 30,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 30,
+          "covered_rows": 30,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.766065636701154,
+          "macro_spearman": -0.35,
+          "macro_top5_overlap": 1.0,
+          "method": "paired_ridge",
+          "registered_rows": 30,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 30,
+          "covered_rows": 30,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7800937667159342,
+          "macro_spearman": -0.3,
+          "macro_top5_overlap": 1.0,
+          "method": "raw_tissue",
+          "registered_rows": 30,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 30,
+          "covered_rows": 30,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7800937667159342,
+          "macro_spearman": -0.3,
+          "macro_top5_overlap": 1.0,
+          "method": "shuffled_ridge",
+          "registered_rows": 30,
+          "track": "WONG_EXPANDED_3D_HCC"
+        }
+      ]
+    },
+    "previous_27": {
+      "across_cell_scores": [
+        {
+          "method": "cellhit",
+          "n_drugs": 27,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.0713930462310375,
+          "within_drug_spearman": 0.08327721661054995
+        },
+        {
+          "method": "drug_mean",
+          "n_drugs": 27,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.0,
+          "within_drug_spearman": 0.0
+        },
+        {
+          "method": "drug_ridge",
+          "n_drugs": 27,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.12458223321738719,
+          "within_drug_spearman": 0.08148148148148149
+        },
+        {
+          "method": "mean_shift",
+          "n_drugs": 27,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.12981597901187827,
+          "within_drug_spearman": 0.09046015712682381
+        },
+        {
+          "method": "observed_pdo",
+          "n_drugs": 27,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.045878749657183165,
+          "within_drug_spearman": 0.032996632996633
+        },
+        {
+          "method": "paired_ridge",
+          "n_drugs": 27,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.14403814189342082,
+          "within_drug_spearman": 0.12906846240179573
+        },
+        {
+          "method": "raw_tissue",
+          "n_drugs": 27,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.122809949874344,
+          "within_drug_spearman": 0.08956228956228955
+        },
+        {
+          "method": "shuffled_ridge",
+          "n_drugs": 27,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.11619230952606034,
+          "within_drug_spearman": 0.07474747474747474
+        }
+      ],
+      "gate": {},
+      "observed_rows": 270,
+      "paired_drug_ci95": {},
+      "paired_rank_contrasts": [],
+      "scores": [
+        {
+          "cells": 10,
+          "common_rows": 270,
+          "covered_rows": 270,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7175066975232727,
+          "macro_spearman": 0.43572923484770987,
+          "macro_top5_overlap": 0.36,
+          "method": "cellhit",
+          "registered_rows": 270,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 270,
+          "covered_rows": 270,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.6961358402604375,
+          "macro_spearman": 0.41081916963536813,
+          "macro_top5_overlap": 0.26,
+          "method": "drug_mean",
+          "registered_rows": 270,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 270,
+          "covered_rows": 270,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.7335814516563351,
+          "macro_spearman": 0.4325506613920352,
+          "macro_top5_overlap": 0.42000000000000004,
+          "method": "drug_ridge",
+          "registered_rows": 270,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 270,
+          "covered_rows": 270,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.6752469371574497,
+          "macro_spearman": 0.46448360856429904,
+          "macro_top5_overlap": 0.30000000000000004,
+          "method": "mean_shift",
+          "registered_rows": 270,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 270,
+          "covered_rows": 270,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.706633498960571,
+          "macro_spearman": 0.48325680523422293,
+          "macro_top5_overlap": 0.34,
+          "method": "observed_pdo",
+          "registered_rows": 270,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 270,
+          "covered_rows": 270,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.6880474623292157,
+          "macro_spearman": 0.4683909522701321,
+          "macro_top5_overlap": 0.32000000000000006,
+          "method": "paired_ridge",
+          "registered_rows": 270,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 270,
+          "covered_rows": 270,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.6736218412113483,
+          "macro_spearman": 0.4522426472679196,
+          "macro_top5_overlap": 0.30000000000000004,
+          "method": "raw_tissue",
+          "registered_rows": 270,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 270,
+          "covered_rows": 270,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.6701811493308903,
+          "macro_spearman": 0.461095111158168,
+          "macro_top5_overlap": 0.28,
+          "method": "shuffled_ridge",
+          "registered_rows": 270,
+          "track": "WONG_EXPANDED_3D_HCC"
+        }
+      ]
+    },
+    "targeted_or_kinase": {
+      "across_cell_scores": [
+        {
+          "method": "cellhit",
+          "n_drugs": 24,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.04637223641599483,
+          "within_drug_spearman": -0.06363636363636363
+        },
+        {
+          "method": "drug_mean",
+          "n_drugs": 24,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.0,
+          "within_drug_spearman": 0.0
+        },
+        {
+          "method": "drug_ridge",
+          "n_drugs": 24,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.02384548872594608,
+          "within_drug_spearman": -0.006060606060606062
+        },
+        {
+          "method": "mean_shift",
+          "n_drugs": 24,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.06678445096517648,
+          "within_drug_spearman": 0.02929292929292929
+        },
+        {
+          "method": "observed_pdo",
+          "n_drugs": 24,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": -0.13503004303927083,
+          "within_drug_spearman": -0.1308080808080808
+        },
+        {
+          "method": "paired_ridge",
+          "n_drugs": 24,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.08607848805510838,
+          "within_drug_spearman": 0.05808080808080809
+        },
+        {
+          "method": "raw_tissue",
+          "n_drugs": 24,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.050487261184038255,
+          "within_drug_spearman": 0.006565656565656557
+        },
+        {
+          "method": "shuffled_ridge",
+          "n_drugs": 24,
+          "track": "WONG_EXPANDED_3D_HCC",
+          "within_drug_pearson": 0.05998339379033902,
+          "within_drug_spearman": 0.0010101010101010073
+        }
+      ],
+      "gate": {},
+      "observed_rows": 240,
+      "paired_drug_ci95": {},
+      "paired_rank_contrasts": [],
+      "scores": [
+        {
+          "cells": 10,
+          "common_rows": 240,
+          "covered_rows": 240,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8996735558542538,
+          "macro_spearman": 0.6186086956521739,
+          "macro_top5_overlap": 0.6799999999999999,
+          "method": "cellhit",
+          "registered_rows": 240,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 240,
+          "covered_rows": 240,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8813986160806205,
+          "macro_spearman": 0.6065217391304347,
+          "macro_top5_overlap": 0.6199999999999999,
+          "method": "drug_mean",
+          "registered_rows": 240,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 240,
+          "covered_rows": 240,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8923228509080612,
+          "macro_spearman": 0.566695652173913,
+          "macro_top5_overlap": 0.64,
+          "method": "drug_ridge",
+          "registered_rows": 240,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 240,
+          "covered_rows": 240,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8840305753076834,
+          "macro_spearman": 0.6067826086956521,
+          "macro_top5_overlap": 0.6399999999999999,
+          "method": "mean_shift",
+          "registered_rows": 240,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 240,
+          "covered_rows": 240,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8784706164322074,
+          "macro_spearman": 0.6106956521739129,
+          "macro_top5_overlap": 0.6199999999999999,
+          "method": "observed_pdo",
+          "registered_rows": 240,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 240,
+          "covered_rows": 240,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.885252006390371,
+          "macro_spearman": 0.6081739130434781,
+          "macro_top5_overlap": 0.6399999999999999,
+          "method": "paired_ridge",
+          "registered_rows": 240,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 240,
+          "covered_rows": 240,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8977487148358151,
+          "macro_spearman": 0.5992173913043477,
+          "macro_top5_overlap": 0.6599999999999999,
+          "method": "raw_tissue",
+          "registered_rows": 240,
+          "track": "WONG_EXPANDED_3D_HCC"
+        },
+        {
+          "cells": 10,
+          "common_rows": 240,
+          "covered_rows": 240,
+          "lineages": 10,
+          "macro_ndcg_at_5": 0.8834833787697199,
+          "macro_spearman": 0.608086956521739,
+          "macro_top5_overlap": 0.6399999999999999,
+          "method": "shuffled_ridge",
+          "registered_rows": 240,
+          "track": "WONG_EXPANDED_3D_HCC"
+        }
+      ]
+    }
+  },
+  "workbook_sha256": "724e0276c474c8afbdacb734c291f53e0399a77a4e473b5ae57751dd637841e7"
+}

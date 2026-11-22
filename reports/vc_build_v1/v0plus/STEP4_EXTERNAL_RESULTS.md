@@ -71,3 +71,5 @@ LICOB 화합물의 입체 구조를 바로잡아 기존 훈련 연결의 오류�
 LIMORE 핵심 공개 2D 검증에는 ECFP·기저 RNA·경로, 표적 유전자 발현, 실측 HCC 변이·절대 CNA를 함께 넣은 비교가 있다. 실측 결합은 약물 평균 대비 공동 지표를 통과했고 DNA 추가 효과는 불확실했다. LICOB의 물리 농도를 맞춘 Emax·IC50 모델은 모두 사전 공동 개선 기준에 미달했다. [LIMORE 분자 입력 비교](MEASURED_DRIVER_RESULTS.md) · [LICOB 종말점 비교](LICOB_DOSE_ENDPOINT_RESULTS.md)
 
 LIMORE의 구조 커널과 같은 학습표의 Ridge·약물 평균을 68약물 오프라인 패키지로 제공한다. LIMORE 3,400개 동결 예측을 CPU에서 모두 재현했고 Wong 원발 조직 RNA의 270개 등록 요청을 처리했다. LICOB 가공 발현은 이 배포판의 값 범위·유전자 커버리지 규약에 미달했다. [구조 커널 배포와 입력 검증](STRUCTURED_RELEASE_MODEL_CARD.md)
+
+Wong의 10명에서 다른 환자의 원발 종양·오가노이드 RNA 쌍으로 원발 RNA를 교정했다. 분자 수준의 발현 순위는 실제 오가노이드에 가까워졌고, 62약물에서 약물 내 환자 순위와 상위 약물 순위의 공동 개선 기준은 미통과였다. [공여자 보류 RNA 교정](WONG_PAIRED_RNA_ADAPTER_RESULTS.md)
