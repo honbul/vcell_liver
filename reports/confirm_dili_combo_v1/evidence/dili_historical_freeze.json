@@ -1,0 +1,421 @@
+{
+  "checkpoint": {
+    "bytes": 182102,
+    "sha256": "245aaa63c87ab1d357d010197375e343cab5f07f2385dc5234ad7f5867d36941"
+  },
+  "clamp_checkpoint": {
+    "checkpoint.pt": "fc41395199dde8b7afce18a2214537c66b46602b636f27eefb22463a1e78eb2a",
+    "hp.json": "d5430190b2848a53138865bc1335581a9730a72a4debc7953fd47dfc513d02f7"
+  },
+  "deployment": "clamp_lightgbm",
+  "external_labels_loaded": false,
+  "frozen_vectors_sha256": "eea3e355933ed96b6bdf72ede73cace50f2f1589cbaaf47fac85fc9f04a723ef",
+  "historical_heads": {
+    "bytes": 304819,
+    "sha256": "f1927fd2656948c5b5a943795e2db49644d8b3d8abd5fd637ace279fa57255df"
+  },
+  "history_connectivity": 681,
+  "history_rows": 702,
+  "history_sha256": "21aec557214bd7427a1a9886ec0eb28c1399530139d9c8cc45e2c8425ca84910",
+  "methods": {
+    "clamp_lightgbm": {
+      "method": "beta",
+      "metrics": {
+        "auprc": 0.8468860026663165,
+        "auroc": 0.7839976604511489,
+        "balanced_accuracy": 0.704954954954955,
+        "brier": 0.17477802743121948,
+        "ece": 0.029717451142026775
+      },
+      "nested_calibration": {
+        "beta": {
+          "auprc": 0.8468860026663165,
+          "auroc": 0.7839976604511489,
+          "balanced_accuracy": 0.704954954954955,
+          "brier": 0.17477802743121948,
+          "ece": 0.029717451142026775
+        },
+        "platt": {
+          "auprc": 0.8489917867835497,
+          "auroc": 0.7854118653537256,
+          "balanced_accuracy": 0.704954954954955,
+          "brier": 0.1750184816100195,
+          "ece": 0.038704416407900885
+        },
+        "prior_em": {
+          "auprc": 0.8489712712184798,
+          "auroc": 0.7854031356938334,
+          "balanced_accuracy": 0.704954954954955,
+          "brier": 0.17501857076604962,
+          "ece": 0.03870487233607221
+        },
+        "temperature": {
+          "auprc": 0.8480781693266737,
+          "auroc": 0.7839016341923317,
+          "balanced_accuracy": 0.704954954954955,
+          "brier": 0.17566363161978552,
+          "ece": 0.04044167904964792
+        }
+      },
+      "outer_inner_settings": [
+        [
+          15,
+          140
+        ],
+        [
+          31,
+          180
+        ],
+        [
+          7,
+          100
+        ],
+        [
+          31,
+          180
+        ],
+        [
+          31,
+          180
+        ]
+      ],
+      "setting": [
+        7,
+        100
+      ]
+    },
+    "clamp_ridge": {
+      "method": "prior_em",
+      "metrics": {
+        "auprc": 0.8086701065788149,
+        "auroc": 0.745368915427055,
+        "balanced_accuracy": 0.6963387806411062,
+        "brier": 0.1899729417072728,
+        "ece": 0.036507800388584005
+      },
+      "nested_calibration": {
+        "beta": {
+          "auprc": 0.8014238739194375,
+          "auroc": 0.7392581535023396,
+          "balanced_accuracy": 0.6963387806411062,
+          "brier": 0.19105214607725515,
+          "ece": 0.045421415668023386
+        },
+        "platt": {
+          "auprc": 0.8086613393010113,
+          "auroc": 0.7453689154270549,
+          "balanced_accuracy": 0.6963387806411062,
+          "brier": 0.1899768995075105,
+          "ece": 0.036513732271523956
+        },
+        "prior_em": {
+          "auprc": 0.8086701065788149,
+          "auroc": 0.745368915427055,
+          "balanced_accuracy": 0.6963387806411062,
+          "brier": 0.1899729417072728,
+          "ece": 0.036507800388584005
+        },
+        "temperature": {
+          "auprc": 0.8078306927651043,
+          "auroc": 0.7464513932537189,
+          "balanced_accuracy": 0.6963387806411062,
+          "brier": 0.19287225743133043,
+          "ece": 0.06765823543569606
+        }
+      },
+      "outer_inner_settings": [
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0
+      ],
+      "setting": 100.0
+    },
+    "clogp": {
+      "method": "beta",
+      "metrics": {
+        "auprc": 0.656311999367306,
+        "auroc": 0.5709721349256234,
+        "balanced_accuracy": 0.5632463859208046,
+        "brier": 0.2240199787676388,
+        "ece": 0.03696224552133542
+      },
+      "nested_calibration": {
+        "beta": {
+          "auprc": 0.656311999367306,
+          "auroc": 0.5709721349256234,
+          "balanced_accuracy": 0.5632463859208046,
+          "brier": 0.2240199787676388,
+          "ece": 0.03696224552133542
+        },
+        "platt": {
+          "auprc": 0.6562076500248264,
+          "auroc": 0.577650324743348,
+          "balanced_accuracy": 0.5632463859208046,
+          "brier": 0.22467332301128734,
+          "ece": 0.0462099196022525
+        },
+        "prior_em": {
+          "auprc": 0.6561978576425107,
+          "auroc": 0.5776852433829178,
+          "balanced_accuracy": 0.5632463859208046,
+          "brier": 0.2246721128010272,
+          "ece": 0.046173520053709415
+        },
+        "temperature": {
+          "auprc": 0.6578957369896903,
+          "auroc": 0.5812818632586074,
+          "balanced_accuracy": 0.5632463859208046,
+          "brier": 0.22429915015928373,
+          "ece": 0.05550621974802646
+        }
+      },
+      "outer_inner_settings": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "setting": 1.0
+    },
+    "ecfp_clamp_elasticnet": {
+      "method": "temperature",
+      "metrics": {
+        "auprc": 0.8271590832165112,
+        "auroc": 0.7651677840631328,
+        "balanced_accuracy": 0.7027027027027026,
+        "brier": 0.18302843215219883,
+        "ece": 0.029706785545709623
+      },
+      "nested_calibration": {
+        "beta": {
+          "auprc": 0.8267381008045643,
+          "auroc": 0.7643646553530274,
+          "balanced_accuracy": 0.7027027027027026,
+          "brier": 0.18306626727829553,
+          "ece": 0.04335363267268927
+        },
+        "platt": {
+          "auprc": 0.8267627704789399,
+          "auroc": 0.7653336476010894,
+          "balanced_accuracy": 0.7027027027027026,
+          "brier": 0.18275962152647798,
+          "ece": 0.03481085121641003
+        },
+        "prior_em": {
+          "auprc": 0.8267687364084727,
+          "auroc": 0.7653423772609818,
+          "balanced_accuracy": 0.7027027027027026,
+          "brier": 0.18275961245754416,
+          "ece": 0.034810858768568695
+        },
+        "temperature": {
+          "auprc": 0.8271590832165112,
+          "auroc": 0.7651677840631328,
+          "balanced_accuracy": 0.7027027027027026,
+          "brier": 0.18302843215219883,
+          "ece": 0.029706785545709623
+        }
+      },
+      "outer_inner_settings": [
+        [
+          0.025,
+          0.2
+        ],
+        [
+          0.025,
+          0.2
+        ],
+        [
+          0.025,
+          0.2
+        ],
+        [
+          0.025,
+          0.2
+        ],
+        [
+          0.025,
+          0.2
+        ]
+      ],
+      "setting": [
+        0.025,
+        0.2
+      ]
+    },
+    "ecfp_lightgbm": {
+      "method": "temperature",
+      "metrics": {
+        "auprc": 0.7771115278221228,
+        "auroc": 0.7161507437670229,
+        "balanced_accuracy": 0.6417609469935052,
+        "brier": 0.20120202745470817,
+        "ece": 0.046552984524095495
+      },
+      "nested_calibration": {
+        "beta": {
+          "auprc": 0.7715867149125459,
+          "auroc": 0.7069409525804875,
+          "balanced_accuracy": 0.6417609469935052,
+          "brier": 0.20295755810695992,
+          "ece": 0.04616212932243107
+        },
+        "platt": {
+          "auprc": 0.7740117430832811,
+          "auroc": 0.7100923598016621,
+          "balanced_accuracy": 0.6417609469935052,
+          "brier": 0.2035144270831636,
+          "ece": 0.03909084851788052
+        },
+        "prior_em": {
+          "auprc": 0.7740294319479901,
+          "auroc": 0.7101098191214471,
+          "balanced_accuracy": 0.6417609469935052,
+          "brier": 0.20351073218912616,
+          "ece": 0.03909680372249802
+        },
+        "temperature": {
+          "auprc": 0.7771115278221228,
+          "auroc": 0.7161507437670229,
+          "balanced_accuracy": 0.6417609469935052,
+          "brier": 0.20120202745470817,
+          "ece": 0.046552984524095495
+        }
+      },
+      "outer_inner_settings": [
+        [
+          15,
+          140
+        ],
+        [
+          31,
+          180
+        ],
+        [
+          31,
+          180
+        ],
+        [
+          7,
+          100
+        ],
+        [
+          31,
+          180
+        ]
+      ],
+      "setting": [
+        31,
+        180
+      ]
+    },
+    "ecfp_logistic": {
+      "method": "prior_em",
+      "metrics": {
+        "auprc": 0.8223231754436444,
+        "auroc": 0.759318911935191,
+        "balanced_accuracy": 0.7176304211187932,
+        "brier": 0.1880471803252032,
+        "ece": 0.035842471448535515
+      },
+      "nested_calibration": {
+        "beta": {
+          "auprc": 0.8218894787669127,
+          "auroc": 0.7584983239053007,
+          "balanced_accuracy": 0.7176304211187932,
+          "brier": 0.18835250169456877,
+          "ece": 0.0374637662201609
+        },
+        "platt": {
+          "auprc": 0.8223366470272293,
+          "auroc": 0.759318911935191,
+          "balanced_accuracy": 0.7176304211187932,
+          "brier": 0.18805223040633615,
+          "ece": 0.03584067141313983
+        },
+        "prior_em": {
+          "auprc": 0.8223231754436444,
+          "auroc": 0.759318911935191,
+          "balanced_accuracy": 0.7176304211187932,
+          "brier": 0.1880471803252032,
+          "ece": 0.035842471448535515
+        },
+        "temperature": {
+          "auprc": 0.8199847578792361,
+          "auroc": 0.7576166282561632,
+          "balanced_accuracy": 0.7176304211187932,
+          "brier": 0.18973767722981943,
+          "ece": 0.05027381470703547
+        }
+      },
+      "outer_inner_settings": [
+        0.2,
+        0.2,
+        0.02,
+        0.02,
+        0.02
+      ],
+      "setting": 0.2
+    },
+    "ecfp_ridge": {
+      "method": "beta",
+      "metrics": {
+        "auprc": 0.8216662109396038,
+        "auroc": 0.7619814582023885,
+        "balanced_accuracy": 0.7044573643410852,
+        "brier": 0.18637539466140296,
+        "ece": 0.03695997953390549
+      },
+      "nested_calibration": {
+        "beta": {
+          "auprc": 0.8216662109396038,
+          "auroc": 0.7619814582023885,
+          "balanced_accuracy": 0.7044573643410852,
+          "brier": 0.18637539466140296,
+          "ece": 0.03695997953390549
+        },
+        "platt": {
+          "auprc": 0.822390474353792,
+          "auroc": 0.7627147496333543,
+          "balanced_accuracy": 0.7044573643410852,
+          "brier": 0.1861046096090288,
+          "ece": 0.040290226686263565
+        },
+        "prior_em": {
+          "auprc": 0.8224112601983544,
+          "auroc": 0.7627234792932468,
+          "balanced_accuracy": 0.7044573643410852,
+          "brier": 0.18610885618840353,
+          "ece": 0.040287819608467446
+        },
+        "temperature": {
+          "auprc": 0.8221634960361563,
+          "auroc": 0.7621385920804525,
+          "balanced_accuracy": 0.7044573643410852,
+          "brier": 0.18732366298022302,
+          "ece": 0.054393822422257966
+        }
+      },
+      "outer_inner_settings": [
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0
+      ],
+      "setting": 100.0
+    }
+  },
+  "program": {
+    "confirm_dili/data.py": "e93c78a507a764593f9be1c152f1d393391c36f9a86b6744ea6c2faf6438d09f",
+    "confirm_dili/fit.py": "e910f6e7c213f261fd094402106fd1182dc77d4f2e276b6323bcb543b2bebfa9",
+    "confirm_dili/models.py": "5ebdec534a920c862df0cc3b1aee8098a752d6fad52b88cd944d71b3961e0a77",
+    "confirm_dili/molecular.py": "334e21e6a1df323eedffeaf7131eff5ceeaca9f83e60051aa5b21a8e8ddaa507"
+  },
+  "rank_auroc": "clamp_lightgbm",
+  "shortlist_auprc": "clamp_lightgbm",
+  "split_sha256": "dfeafbe69eb2553a4b18b3d39e8a3b5f4f3e1a910de59ba91236c9af9e8f048d"
+}

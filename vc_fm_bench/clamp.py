@@ -38,8 +38,9 @@ def embeddings(checkpoint, values, device, batch_size):
     dimensions = [size, *metadata["compound_layer_sizes"], metadata["embedding_size"]]
     # The official checkpoint also stores optimizer state and a NumPy
     # validation scalar. Keep PyTorch deserialization in weights-only mode.
-    allowed = [np.core.multiarray.scalar, np.dtype, np.dtypes.Float32DType,
-               np.dtypes.Float64DType, np.dtypes.Int64DType]
+    scalar = np.core.multiarray.scalar
+    allowed = [scalar, (scalar, "numpy.core.multiarray.scalar"), np.dtype,
+               np.dtypes.Float32DType, np.dtypes.Float64DType, np.dtypes.Int64DType]
     with torch.serialization.safe_globals(allowed):
         checkpoint_data = torch.load(checkpoint / "checkpoint.pt", mmap=True,
                                      map_location="cpu", weights_only=True)
