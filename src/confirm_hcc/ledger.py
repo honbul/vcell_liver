@@ -167,7 +167,7 @@ def score(args):
             TRAIN_SHA, OBSERVATIONS, sha256(args.contract)):
         raise ValueError("Registered comparison changed between prediction and scoring")
     # Opening the measured LIMORE file happens only here, after verification and OOF scoring.
-    _, _, query, _ = inputs()
+    train, train_rna, query, _ = inputs()
     check_keys(frames, query, MODELS)
     args.out.mkdir(parents=True)
     oof(args.root, args.out)
@@ -230,6 +230,8 @@ def score(args):
     publish_json(args.out / "score_receipt.json", {
         "prediction_sha256": stamp["sha256"], "labels_sha256": OBSERVATIONS, "training_sha256": TRAIN_SHA,
         "actual_n": len(labels), "n_lineages": len(y), "n_compounds": y.shape[1], "score_passes": 1,
+        "training_n": len(train), "training_lineages": int(train.lineage_group.nunique()),
+        "training_models": len(train_rna), "training_by_source": train.source_id.value_counts().to_dict(),
         "contract_sha256": sha256(args.contract), "models": list(MODELS), "crossed_bootstrap_draws": 2400,
         "legacy_2d_metric_max_abs_difference": float(max(errors)), "drug_mean_within_drug_math_value": None,
         "drug_mean_compared_within_drug_value": 0.0, "files": {p.name: sha256(p) for p in args.out.glob("*.tsv")},
