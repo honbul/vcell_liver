@@ -1,0 +1,185 @@
+{
+  "LICOB": {
+    "artifact": "LICOB.parquet",
+    "frozen_utc": "2026-11-22T16:45:20.017360+00:00",
+    "provenance": {
+      "archive_sha256": "d3cfcde3c4d4e71d29edacf1200176b2abbe5828b5ad0bddc7d266fc466f0616",
+      "cell_kernel_rank": 227,
+      "drug_kernel_rank": 21,
+      "fit_donors": {
+        "Wong": 10,
+        "YANG2024_HCC": 74
+      },
+      "holdout": "LICOB",
+      "inputs_sha256": "bd27132354dcf5537b717227099147514851ec0218d0c96920ec4c8a00a96a4c",
+      "pairs_by_study": {
+        "Wong": 945,
+        "YANG2024_HCC": 8103
+      },
+      "priors": {
+        "dorothea": {
+          "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+          "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+        },
+        "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+        "hallmark": {
+          "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+          "source": "MSigDB 2026.1.Hs h.all symbols"
+        },
+        "progeny": {
+          "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+          "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+        }
+      },
+      "solves": {
+        "ordinal_without_2d": {
+          "gradient_max_abs": 1.1273261301195103e-07,
+          "iterations": 7,
+          "objective_final": 0.6588057032683198,
+          "objective_initial": 0.6931471805599454
+        },
+        "pairwise_ordinal": {
+          "gradient_max_abs": 2.3595534633796822e-08,
+          "iterations": 7,
+          "objective_final": 0.799013424902357,
+          "objective_initial": 0.8559574487818336
+        },
+        "pairwise_squared": {
+          "gradient_max_abs": 4.3316514038854725e-08,
+          "iterations": 12,
+          "objective_final": 1.266292281283611,
+          "objective_initial": 1.8635017275479946
+        }
+      },
+      "training_studies": [
+        "Wong",
+        "YANG2024_HCC"
+      ]
+    },
+    "rows": 8127,
+    "schema_version": 1,
+    "sha256": "f229aeab6b3466e0f10b76820e7c6c3ba82feda817bd5b437532a76b1204e9cd"
+  },
+  "Wong": {
+    "artifact": "Wong.parquet",
+    "frozen_utc": "2026-11-22T16:45:20.370758+00:00",
+    "provenance": {
+      "archive_sha256": "d3cfcde3c4d4e71d29edacf1200176b2abbe5828b5ad0bddc7d266fc466f0616",
+      "cell_kernel_rank": 251,
+      "drug_kernel_rank": 21,
+      "fit_donors": {
+        "LICOB": 29,
+        "YANG2024_HCC": 74
+      },
+      "holdout": "Wong",
+      "inputs_sha256": "bd27132354dcf5537b717227099147514851ec0218d0c96920ec4c8a00a96a4c",
+      "pairs_by_study": {
+        "LICOB": 8526,
+        "YANG2024_HCC": 8103
+      },
+      "priors": {
+        "dorothea": {
+          "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+          "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+        },
+        "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+        "hallmark": {
+          "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+          "source": "MSigDB 2026.1.Hs h.all symbols"
+        },
+        "progeny": {
+          "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+          "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+        }
+      },
+      "solves": {
+        "ordinal_without_2d": {
+          "gradient_max_abs": 4.4115276326504166e-08,
+          "iterations": 6,
+          "objective_final": 0.6786782175447981,
+          "objective_initial": 0.6931471805599452
+        },
+        "pairwise_ordinal": {
+          "gradient_max_abs": 5.242705788596758e-09,
+          "iterations": 6,
+          "objective_final": 0.7668830846513542,
+          "objective_initial": 0.7835848984225932
+        },
+        "pairwise_squared": {
+          "gradient_max_abs": 7.09888884602855e-08,
+          "iterations": 10,
+          "objective_final": 1.330735067068935,
+          "objective_initial": 1.5820819542031728
+        }
+      },
+      "training_studies": [
+        "LICOB",
+        "YANG2024_HCC"
+      ]
+    },
+    "rows": 1890,
+    "schema_version": 1,
+    "sha256": "fe86dc67a2eb8758de33c74b9cb6a32aacbca998432e19f978a2b0bad18658a6"
+  },
+  "YANG2024_HCC": {
+    "artifact": "YANG2024_HCC.parquet",
+    "frozen_utc": "2026-11-22T16:45:20.011484+00:00",
+    "provenance": {
+      "archive_sha256": "d3cfcde3c4d4e71d29edacf1200176b2abbe5828b5ad0bddc7d266fc466f0616",
+      "cell_kernel_rank": 44,
+      "drug_kernel_rank": 21,
+      "fit_donors": {
+        "LICOB": 29,
+        "Wong": 10
+      },
+      "holdout": "YANG2024_HCC",
+      "inputs_sha256": "bd27132354dcf5537b717227099147514851ec0218d0c96920ec4c8a00a96a4c",
+      "pairs_by_study": {
+        "LICOB": 8526,
+        "Wong": 945
+      },
+      "priors": {
+        "dorothea": {
+          "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+          "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+        },
+        "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+        "hallmark": {
+          "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+          "source": "MSigDB 2026.1.Hs h.all symbols"
+        },
+        "progeny": {
+          "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+          "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+        }
+      },
+      "solves": {
+        "ordinal_without_2d": {
+          "gradient_max_abs": 2.0060549763868674e-08,
+          "iterations": 7,
+          "objective_final": 0.6791623221726,
+          "objective_initial": 0.6931471805599454
+        },
+        "pairwise_ordinal": {
+          "gradient_max_abs": 6.586172100753185e-09,
+          "iterations": 6,
+          "objective_final": 0.7924865884191774,
+          "objective_initial": 0.8164707599089475
+        },
+        "pairwise_squared": {
+          "gradient_max_abs": 3.348685525660783e-08,
+          "iterations": 10,
+          "objective_final": 1.4066937611064356,
+          "objective_initial": 1.729474904063876
+        }
+      },
+      "training_studies": [
+        "LICOB",
+        "Wong"
+      ]
+    },
+    "rows": 5859,
+    "schema_version": 1,
+    "sha256": "834d3b98c90e6e20205cd3c4f3e4e78d1227ac2ba615bbbb5270683fa159c1ea"
+  }
+}
