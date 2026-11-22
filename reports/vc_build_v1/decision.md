@@ -16,7 +16,7 @@
 |---|---|---|
 | VCB-00 데이터·실측 실행 | 완료. 77 성인 HCC 모델, 74 계통, 88약물, 6,776실측. 작은 checkpoint·동결·채점 확인 | [수집 감사](data_function/VCB00_LIMORE.md) |
 | VCB-01 내부 및 독립 학습원 외부 | 완료. LIMORE C, D, CD 개발 분리. GDSC2·CTRPv2·PRISM에서 학습하고, 세포·환자 중복이 없는 성인 HCC LIMORE 50계통에서 68약물·3,400쌍을 공개 2D 검증의 핵심으로 별도 동결·채점 | [명부 및 최초 외부 평가](PUBLIC_EXTERNAL_RESULTS.md) · [정정 학습표의 외부 성적](v0plus/LIMORE_CORRECTED_RESULTS.md) |
-| VCB-01 표적·경로·변이/CNV | 완료. LIMORE 외부 50계통에서 ECFP·기저 RNA·경로 및 약물 표적 주석을 공유한 구조 커널에 표적 유전자 발현과 실측 HCC 변이·절대 CNA를 단계별로 추가. 실측 결합은 약물 평균 대비 공동 지표를 통과. 표적 발현만 쓴 모델 및 DNA 순열 대비 실측 DNA의 추가 효과는 불확실 | [개발 비교](function/MOLECULAR_RESULTS.md) · [외부 비교와 짝지은 구간](v0plus/MEASURED_DRIVER_RESULTS.md) |
+| VCB-01 표적·경로·변이/CNV | 완료. LIMORE 외부 50계통에서 ECFP·기저 RNA·경로 및 약물 표적 주석을 공유한 구조 커널에 표적 유전자 발현과 실측 HCC 변이·절대 CNA를 단계별로 추가. 실측 결합은 약물 평균 대비 공동 지표를 통과. 실측 DNA의 추가 효과는 불확실. 같은 행에서 표적×연결 경로 항을 추가한 후보도 약물 평균 대비 공동 기준 통과. 기존 실측 결합과 연결 교체 대조 대비 상호작용 추가 이득 미확인 | [개발 비교](function/MOLECULAR_RESULTS.md) · [실측 변이·CNA 비교](v0plus/MEASURED_DRIVER_RESULTS.md) · [표적×경로 비교](v0plus/TARGET_PATHWAY_RESULTS.md) |
 | VCB-02/03 24h 상태와 세포 고유 효과 | 완료, 승격 미통과. JHH-5/JHH-7의 교차 95약물에서 세포 차이 RMSE가 +2.14% 악화. 반복이 부족하고 기본 상태 입력은 독립 기저 발현 대리값 | [상태 성적](state/RESULTS.md) |
 | VCB-04 고정 Direct/Multi-output/State-assisted | 완료. 동일 LIMORE 기능 분할 74계통에서 State-assisted MAE +1.33% [95% +0.18%, +2.51%] 개선. 상대 5% 목표 미달 | [통합 성적](JOINT_RESULTS.md) |
 | VCB-05 공개 소스 이동 | 완료. 15/10/25 계통으로 적합/구간/평가 분리, 평가 약물과 겹치지 않는 5 sentinel 사용. MAE 개선 불확실, 구간이 넓음. 현지 대응 실측은 자료 대기 | [보정 성적](PUBLIC_EXTERNAL_RESULTS.md#공개-소스-보정) |

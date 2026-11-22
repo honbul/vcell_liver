@@ -6,6 +6,8 @@ LIMORE is the primary public 2D external validation, regardless of access to OEP
 
 On the corrected split, the same-support comparison includes ECFP, basal RNA, pathway and TF signatures, and mapped drug-target similarity. Additional arms test RNA expression of each drug's targets, measured HCC coding variants, absolute copy-number calls, and their combination. The combined arm passed the joint criteria against drug mean. The added contribution of measured DNA remained uncertain against both the target-expression arm and a donor-block DNA permutation. [Input definitions and locked comparisons](../v0plus/MEASURED_DRIVER_PROTOCOL.md) · [Coverage, scores and paired intervals](../v0plus/MEASURED_DRIVER_RESULTS.md)
 
+A separate matched comparison linked 52 of the 68 drugs to Hallmark pathways and tested target expression × linked pathway activity on top of the measured variant/CNA arm. The full arm exceeded drug mean on all joint criteria. The interaction gain over the measured arm, pathway main effect and link reassignment was inconclusive. [Matched pathway comparison](../v0plus/TARGET_PATHWAY_RESULTS.md)
+
 | Scope | Observed rows | Cell models | Adults with HCC | Compounds |
 |---|---:|---:|---:|---:|
 | GDSC2 release 8.5 | 24,839 | 714 | 12 | 42 |
