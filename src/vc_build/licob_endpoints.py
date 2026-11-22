@@ -99,7 +99,7 @@ def fit_matched(fit, query, rna, edges, targets, aux, endpoint):
             train_cell, gram, weights, torch.as_tensor(residual, dtype=weights.dtype, device=device), PENALTY,
         )
         preds[method] = (query_cell @ coef @ gram.T).cpu().numpy()[ix] + anchor[ix[1]]
-        solves[method] = {"steps": steps, "relative_residual": norm}
+        solves[method] = {"steps": steps, "residual_norm": norm}
         if outcome == endpoint:
             preds["drug_mean"] = anchor[ix[1]]
     return pd.concat([query[KEY].assign(method=m, predicted_value=preds[m]) for m in METHODS],

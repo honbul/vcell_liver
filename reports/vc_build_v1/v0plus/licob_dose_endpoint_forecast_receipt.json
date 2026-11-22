@@ -1,0 +1,686 @@
+{
+  "artifact": "forecast.parquet",
+  "frozen_utc": "2026-11-22T13:24:16.072975+00:00",
+  "provenance": {
+    "cold_sha256": "67c11aba490282e30be9ef6d3d4d28ad192a2f5620a9e0b84c978019a0ccdb9e",
+    "extracts": {
+      "CTRPv2": {
+        "curve_sha256": "93f9fff84c60c4f85c10a82bebb91e4c964629d3f0d7344df7cb19fd1920f81a",
+        "ic50_supported_drugs": 38,
+        "ic50_supported_rows": 23482,
+        "input_sha256": "61ebf8b95d4a12eb3a23619b5e67ba0a683c025185f8de4a35c615e4abf7f84b",
+        "matched_drugs": 40,
+        "matched_rows": 24829,
+        "qc": {
+          "selected_points": 430413
+        },
+        "receipt_sha256": "4dc49f2601eeb856cda5d4ca21711a12fe429106f804bd84403afd4c7efa0733",
+        "source": "CTRPv2"
+      },
+      "GDSC2": {
+        "curve_sha256": "69c65fac66d5a1ffb7e880f8472122b6509dcb1155ca0e56f57ef7b0220a05bd",
+        "ic50_supported_drugs": 0,
+        "ic50_supported_rows": 0,
+        "input_sha256": "61ebf8b95d4a12eb3a23619b5e67ba0a683c025185f8de4a35c615e4abf7f84b",
+        "matched_drugs": 1,
+        "matched_rows": 569,
+        "qc": {
+          "archive_rows": 15069449,
+          "both_control_and_treatment_wells_excluded": 0,
+          "control_well_conflicts": 0,
+          "duration_days_field": 4,
+          "eligible_for_plate_control_check": 9814,
+          "fraction_clipped_viability": 0.24424964370197322,
+          "multiple_read_scans_excluded": 0,
+          "normalized_treatment_wells": 544488,
+          "treatment_well_conflicts": 1316,
+          "usable_treatment_plates": 9813,
+          "zprime_quantiles": [
+            0.49918803699959013,
+            0.6040717971124641,
+            0.6985548862210302
+          ]
+        },
+        "receipt_sha256": "14aec9f766ee432fbf89a013818148ed3f1030ff75f67d4e27cd1dbb11eb3344",
+        "source": "GDSC2"
+      },
+      "PRISM20Q2": {
+        "curve_sha256": "2041cad26bd36887dcb737f077da02a130fb2d20a5722f1bf3baf0cfc9e148fa",
+        "ic50_supported_drugs": 0,
+        "ic50_supported_rows": 0,
+        "input_sha256": "61ebf8b95d4a12eb3a23619b5e67ba0a683c025185f8de4a35c615e4abf7f84b",
+        "matched_drugs": 0,
+        "matched_rows": 0,
+        "qc": {
+          "dose_supported_curves": 0,
+          "verified_native_auc": 8474
+        },
+        "receipt_sha256": "9511c7df444306948e36cf1430ca825e24120369b2a234e8c1d0b2697ef453a3",
+        "source": "PRISM20Q2"
+      }
+    },
+    "panels": {
+      "emax": {
+        "all_source_curves": 25398,
+        "all_source_drugs": 40,
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "drugs": 40,
+        "features": 130,
+        "fit_rows": 25398,
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "solves": {
+          "matched_auc": {
+            "relative_residual": 0.0007345371996052563,
+            "steps": 25
+          },
+          "matched_endpoint": {
+            "relative_residual": 0.0012034975225105882,
+            "steps": 25
+          }
+        },
+        "sources": {
+          "CTRPv2": 24829,
+          "GDSC2": 569
+        },
+        "support": {
+          "AOJJSUZBOXZQNB-TZSSRYMLSA-N": {
+            "cells": 707,
+            "rows_by_source": {
+              "CTRPv2": 707
+            }
+          },
+          "AYUNIORJHRXIBJ-TXHRRWQRSA-N": {
+            "cells": 664,
+            "rows_by_source": {
+              "CTRPv2": 664
+            }
+          },
+          "BKQFRNYHFIQEKN-UHFFFAOYSA-N": {
+            "cells": 685,
+            "rows_by_source": {
+              "CTRPv2": 685
+            }
+          },
+          "CBPNZQVSJQDFBE-FUXHJELOSA-N": {
+            "cells": 319,
+            "rows_by_source": {
+              "CTRPv2": 319
+            }
+          },
+          "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+            "cells": 682,
+            "rows_by_source": {
+              "CTRPv2": 682
+            }
+          },
+          "CYOHGALHFOKKQC-UHFFFAOYSA-N": {
+            "cells": 680,
+            "rows_by_source": {
+              "CTRPv2": 680
+            }
+          },
+          "DNVXATUJJDPFDM-KRWDZBQOSA-N": {
+            "cells": 697,
+            "rows_by_source": {
+              "CTRPv2": 697
+            }
+          },
+          "FBOZXECLQNJBKD-ZDUSSCGKSA-N": {
+            "cells": 656,
+            "rows_by_source": {
+              "CTRPv2": 656
+            }
+          },
+          "FDLYAMZZIXQODN-UHFFFAOYSA-N": {
+            "cells": 693,
+            "rows_by_source": {
+              "CTRPv2": 693
+            }
+          },
+          "FNHKPVJBJVTLMP-UHFFFAOYSA-N": {
+            "cells": 630,
+            "rows_by_source": {
+              "CTRPv2": 630
+            }
+          },
+          "FPOHNWQLNRZRFC-ZHACJKMWSA-N": {
+            "cells": 695,
+            "rows_by_source": {
+              "CTRPv2": 695
+            }
+          },
+          "GHASVSINZRGABV-UHFFFAOYSA-N": {
+            "cells": 690,
+            "rows_by_source": {
+              "CTRPv2": 690
+            }
+          },
+          "HLXSCTYHLQHQDJ-UHFFFAOYSA-N": {
+            "cells": 861,
+            "rows_by_source": {
+              "CTRPv2": 687,
+              "GDSC2": 569
+            }
+          },
+          "IAYGCINLNONXHY-LBPRGKRZSA-N": {
+            "cells": 702,
+            "rows_by_source": {
+              "CTRPv2": 702
+            }
+          },
+          "JLYAXFNOILIKPP-KXQOOQHDSA-N": {
+            "cells": 544,
+            "rows_by_source": {
+              "CTRPv2": 544
+            }
+          },
+          "JOGKUKXHTYWRGZ-UHFFFAOYSA-N": {
+            "cells": 503,
+            "rows_by_source": {
+              "CTRPv2": 503
+            }
+          },
+          "KTEIFNKAUNYNJU-GFCCVEGCSA-N": {
+            "cells": 682,
+            "rows_by_source": {
+              "CTRPv2": 682
+            }
+          },
+          "LIRYPHYGHXZJBZ-UHFFFAOYSA-N": {
+            "cells": 347,
+            "rows_by_source": {
+              "CTRPv2": 347
+            }
+          },
+          "MLDQJTXFUGDVEO-UHFFFAOYSA-N": {
+            "cells": 639,
+            "rows_by_source": {
+              "CTRPv2": 639
+            }
+          },
+          "NCNRHFGMJRPRSK-MDZDMXLPSA-N": {
+            "cells": 354,
+            "rows_by_source": {
+              "CTRPv2": 354
+            }
+          },
+          "PKCDDUHJAFVJJB-UHFFFAOYSA-N": {
+            "cells": 646,
+            "rows_by_source": {
+              "CTRPv2": 646
+            }
+          },
+          "PLHJCIYEEKOWNM-HHHXNRCGSA-N": {
+            "cells": 363,
+            "rows_by_source": {
+              "CTRPv2": 363
+            }
+          },
+          "QFJCIRLUMZQUOT-HPLJOQBZSA-N": {
+            "cells": 609,
+            "rows_by_source": {
+              "CTRPv2": 609
+            }
+          },
+          "QQWUGDVOUVUTOY-UHFFFAOYSA-N": {
+            "cells": 678,
+            "rows_by_source": {
+              "CTRPv2": 678
+            }
+          },
+          "QYZOGCMHVIGURT-UHFFFAOYSA-N": {
+            "cells": 679,
+            "rows_by_source": {
+              "CTRPv2": 679
+            }
+          },
+          "RYMZZMVNJRMUDD-HGQWONQESA-N": {
+            "cells": 577,
+            "rows_by_source": {
+              "CTRPv2": 577
+            }
+          },
+          "SDUQYLNIPVEERB-QPPQHZFASA-N": {
+            "cells": 602,
+            "rows_by_source": {
+              "CTRPv2": 602
+            }
+          },
+          "TUVCWJQQGGETHL-UHFFFAOYSA-N": {
+            "cells": 588,
+            "rows_by_source": {
+              "CTRPv2": 588
+            }
+          },
+          "UCEQXRCJXIVODC-PMACEKPBSA-N": {
+            "cells": 350,
+            "rows_by_source": {
+              "CTRPv2": 350
+            }
+          },
+          "UCFGDBYHRUNTLO-QHCPKHFHSA-N": {
+            "cells": 699,
+            "rows_by_source": {
+              "CTRPv2": 699
+            }
+          },
+          "ULXXDDBFHOBEHA-CWDCEQMOSA-N": {
+            "cells": 608,
+            "rows_by_source": {
+              "CTRPv2": 608
+            }
+          },
+          "VABYUUZNAVQNPG-BQYQJAHWSA-N": {
+            "cells": 679,
+            "rows_by_source": {
+              "CTRPv2": 679
+            }
+          },
+          "VJJPUSNTGOMMGY-MRVIYFEKSA-N": {
+            "cells": 690,
+            "rows_by_source": {
+              "CTRPv2": 690
+            }
+          },
+          "VUVUVNZRUGEAHB-CYBMUJFWSA-N": {
+            "cells": 695,
+            "rows_by_source": {
+              "CTRPv2": 695
+            }
+          },
+          "WAEXFXRVDQXREF-UHFFFAOYSA-N": {
+            "cells": 677,
+            "rows_by_source": {
+              "CTRPv2": 677
+            }
+          },
+          "WINHZLLDWRZWRT-ATVHPVEESA-N": {
+            "cells": 680,
+            "rows_by_source": {
+              "CTRPv2": 680
+            }
+          },
+          "WOSKHXYHFSIKNG-UHFFFAOYSA-N": {
+            "cells": 684,
+            "rows_by_source": {
+              "CTRPv2": 684
+            }
+          },
+          "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+            "cells": 703,
+            "rows_by_source": {
+              "CTRPv2": 703
+            }
+          },
+          "ZBNZXTGUTAYRHI-UHFFFAOYSA-N": {
+            "cells": 697,
+            "rows_by_source": {
+              "CTRPv2": 697
+            }
+          },
+          "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+            "cells": 669,
+            "rows_by_source": {
+              "CTRPv2": 669
+            }
+          }
+        }
+      },
+      "ic50_bounded": {
+        "all_source_curves": 23482,
+        "all_source_drugs": 38,
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "drugs": 38,
+        "features": 130,
+        "fit_rows": 23482,
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "solves": {
+          "matched_auc": {
+            "relative_residual": 0.0006407641340047121,
+            "steps": 25
+          },
+          "matched_endpoint": {
+            "relative_residual": 0.003145116614177823,
+            "steps": 25
+          }
+        },
+        "sources": {
+          "CTRPv2": 23482
+        },
+        "support": {
+          "AOJJSUZBOXZQNB-TZSSRYMLSA-N": {
+            "cells": 705,
+            "rows_by_source": {
+              "CTRPv2": 705
+            }
+          },
+          "AYUNIORJHRXIBJ-TXHRRWQRSA-N": {
+            "cells": 660,
+            "rows_by_source": {
+              "CTRPv2": 660
+            }
+          },
+          "BKQFRNYHFIQEKN-UHFFFAOYSA-N": {
+            "cells": 684,
+            "rows_by_source": {
+              "CTRPv2": 684
+            }
+          },
+          "CBPNZQVSJQDFBE-FUXHJELOSA-N": {
+            "cells": 319,
+            "rows_by_source": {
+              "CTRPv2": 319
+            }
+          },
+          "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+            "cells": 678,
+            "rows_by_source": {
+              "CTRPv2": 678
+            }
+          },
+          "CYOHGALHFOKKQC-UHFFFAOYSA-N": {
+            "cells": 680,
+            "rows_by_source": {
+              "CTRPv2": 680
+            }
+          },
+          "DNVXATUJJDPFDM-KRWDZBQOSA-N": {
+            "cells": 697,
+            "rows_by_source": {
+              "CTRPv2": 697
+            }
+          },
+          "FBOZXECLQNJBKD-ZDUSSCGKSA-N": {
+            "cells": 656,
+            "rows_by_source": {
+              "CTRPv2": 656
+            }
+          },
+          "FDLYAMZZIXQODN-UHFFFAOYSA-N": {
+            "cells": 689,
+            "rows_by_source": {
+              "CTRPv2": 689
+            }
+          },
+          "FNHKPVJBJVTLMP-UHFFFAOYSA-N": {
+            "cells": 521,
+            "rows_by_source": {
+              "CTRPv2": 521
+            }
+          },
+          "GHASVSINZRGABV-UHFFFAOYSA-N": {
+            "cells": 687,
+            "rows_by_source": {
+              "CTRPv2": 687
+            }
+          },
+          "HLXSCTYHLQHQDJ-UHFFFAOYSA-N": {
+            "cells": 686,
+            "rows_by_source": {
+              "CTRPv2": 686
+            }
+          },
+          "IAYGCINLNONXHY-LBPRGKRZSA-N": {
+            "cells": 702,
+            "rows_by_source": {
+              "CTRPv2": 702
+            }
+          },
+          "JLYAXFNOILIKPP-KXQOOQHDSA-N": {
+            "cells": 544,
+            "rows_by_source": {
+              "CTRPv2": 544
+            }
+          },
+          "KTEIFNKAUNYNJU-GFCCVEGCSA-N": {
+            "cells": 681,
+            "rows_by_source": {
+              "CTRPv2": 681
+            }
+          },
+          "LIRYPHYGHXZJBZ-UHFFFAOYSA-N": {
+            "cells": 347,
+            "rows_by_source": {
+              "CTRPv2": 347
+            }
+          },
+          "MLDQJTXFUGDVEO-UHFFFAOYSA-N": {
+            "cells": 638,
+            "rows_by_source": {
+              "CTRPv2": 638
+            }
+          },
+          "NCNRHFGMJRPRSK-MDZDMXLPSA-N": {
+            "cells": 354,
+            "rows_by_source": {
+              "CTRPv2": 354
+            }
+          },
+          "PKCDDUHJAFVJJB-UHFFFAOYSA-N": {
+            "cells": 645,
+            "rows_by_source": {
+              "CTRPv2": 645
+            }
+          },
+          "PLHJCIYEEKOWNM-HHHXNRCGSA-N": {
+            "cells": 362,
+            "rows_by_source": {
+              "CTRPv2": 362
+            }
+          },
+          "QFJCIRLUMZQUOT-HPLJOQBZSA-N": {
+            "cells": 609,
+            "rows_by_source": {
+              "CTRPv2": 609
+            }
+          },
+          "QQWUGDVOUVUTOY-UHFFFAOYSA-N": {
+            "cells": 676,
+            "rows_by_source": {
+              "CTRPv2": 676
+            }
+          },
+          "QYZOGCMHVIGURT-UHFFFAOYSA-N": {
+            "cells": 679,
+            "rows_by_source": {
+              "CTRPv2": 679
+            }
+          },
+          "RYMZZMVNJRMUDD-HGQWONQESA-N": {
+            "cells": 576,
+            "rows_by_source": {
+              "CTRPv2": 576
+            }
+          },
+          "SDUQYLNIPVEERB-QPPQHZFASA-N": {
+            "cells": 602,
+            "rows_by_source": {
+              "CTRPv2": 602
+            }
+          },
+          "TUVCWJQQGGETHL-UHFFFAOYSA-N": {
+            "cells": 585,
+            "rows_by_source": {
+              "CTRPv2": 585
+            }
+          },
+          "UCEQXRCJXIVODC-PMACEKPBSA-N": {
+            "cells": 349,
+            "rows_by_source": {
+              "CTRPv2": 349
+            }
+          },
+          "UCFGDBYHRUNTLO-QHCPKHFHSA-N": {
+            "cells": 698,
+            "rows_by_source": {
+              "CTRPv2": 698
+            }
+          },
+          "ULXXDDBFHOBEHA-CWDCEQMOSA-N": {
+            "cells": 608,
+            "rows_by_source": {
+              "CTRPv2": 608
+            }
+          },
+          "VABYUUZNAVQNPG-BQYQJAHWSA-N": {
+            "cells": 676,
+            "rows_by_source": {
+              "CTRPv2": 676
+            }
+          },
+          "VJJPUSNTGOMMGY-MRVIYFEKSA-N": {
+            "cells": 689,
+            "rows_by_source": {
+              "CTRPv2": 689
+            }
+          },
+          "VUVUVNZRUGEAHB-CYBMUJFWSA-N": {
+            "cells": 694,
+            "rows_by_source": {
+              "CTRPv2": 694
+            }
+          },
+          "WAEXFXRVDQXREF-UHFFFAOYSA-N": {
+            "cells": 676,
+            "rows_by_source": {
+              "CTRPv2": 676
+            }
+          },
+          "WINHZLLDWRZWRT-ATVHPVEESA-N": {
+            "cells": 678,
+            "rows_by_source": {
+              "CTRPv2": 678
+            }
+          },
+          "WOSKHXYHFSIKNG-UHFFFAOYSA-N": {
+            "cells": 684,
+            "rows_by_source": {
+              "CTRPv2": 684
+            }
+          },
+          "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+            "cells": 703,
+            "rows_by_source": {
+              "CTRPv2": 703
+            }
+          },
+          "ZBNZXTGUTAYRHI-UHFFFAOYSA-N": {
+            "cells": 697,
+            "rows_by_source": {
+              "CTRPv2": 697
+            }
+          },
+          "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+            "cells": 668,
+            "rows_by_source": {
+              "CTRPv2": 668
+            }
+          }
+        }
+      }
+    },
+    "prior_sha256": "4cc7e3afa71fee91c0ca9a12ce06002d7a1016f9d4951b1833237830e3d7a2a1",
+    "registration_sha256": "61ebf8b95d4a12eb3a23619b5e67ba0a683c025185f8de4a35c615e4abf7f84b"
+  },
+  "rows": 16598,
+  "schema_version": 1,
+  "sha256": "5cc6c93c5ccc9adf4b6e9f6ec271e3031835bda8928bf444af5b098b0493e15a"
+}
