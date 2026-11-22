@@ -14,7 +14,7 @@ from vc_build.v0plus_cv import attach_native, panel_targets, summarize, validati
 
 from .metrics import compare, pooled
 from .source import grouped, load
-from .stack import CAPS, RECIPES, build, pivot
+from .stack import CAPS, RECIPES, build, fit_offsets, pivot
 
 BASELINE = np.array([.366, .404, .893, .627, .734])
 AXES = ("spearman", "pearson", "macro_ndcg_at_5", "macro_top5_overlap", "macro_spearman")
@@ -57,11 +57,25 @@ def fit_recipes(fit, arms, evaluations):
     truth = aligned.reset_index()[["inner", "cell_id", "compound_id", "lineage_group", "residual", "anchor"]]
     anchor = truth.anchor.to_numpy()
     methods, ranking, models = {}, [], {}
+    native_panel = pd.concat([
+        v.assign(inner=i,observed=native_sensitivity(v))[["inner","source_id","endpoint_id","cell_id",
+                                                            "compound_id","observed"]]
+        for i,v in enumerate(evaluations)],ignore_index=True)
+    changes = {}
+    keys = ["inner","cell_id","compound_id"]
+
     for name in RECIPES:
         estimator = build(lead, truth, name)
         preds = estimator.predict(lead, anchor, truth.compound_id)
         for a in CAPS:
             values = anchor + a*(preds-anchor)
+            if name.startswith("pairwise"):
+                train_ranking = native_panel.merge(truth[keys].assign(predicted_value=values),
+                                                   on=keys,validate="many_to_one")
+                offsets = fit_offsets(train_ranking,sorted(truth.compound_id.unique()),
+                                      float(name=="pairwise_top5"),.55 if name=="pairwise_top5" else .85)
+                changes[name,a]=offsets
+                values += truth.compound_id.map(offsets).fillna(0.).to_numpy()
             tag = f"{name}/{a}"
             methods[tag] = values
         models[name] = estimator
@@ -78,6 +92,7 @@ def fit_recipes(fit, arms, evaluations):
         if key not in found:
             found[key] = record
             models[key].amplitude = float(amp)
+            models[key].offsets = changes.get((key,float(amp)),{})
     return models, list(found.values()), ordered
 
 
