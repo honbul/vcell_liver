@@ -22,7 +22,7 @@ if [[ ! -f "$work/assays/receipt.json" ]]; then
         --depmap /mnt/S1/sdata/pubdata/DepMap/25Q3/Model.csv --drugs "$raw/DrugComb_drug_identifiers.xlsx" \
         --cells "$raw/DrugComb_cell_line_identifiers.xlsx" --sanger "$raw/"*_matrix_results.csv \
         --sanger-structures "$root/preflight/gdsc-combo-structures-v1" --sanger-zip "$work/sanger-zip" \
-        --output "$work/assays"
+        --drugcombdb "$raw/drugcombdb" --output "$work/assays"
 fi
 if [[ ! -f "$work/panels/receipt.json" ]]; then
     "$python" -m vc_combo_hcc.splits --assays "$work/assays/assays.parquet" --output "$work/panels"

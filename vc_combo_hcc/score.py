@@ -56,7 +56,7 @@ def macro_interval(cell, rng, draws):
 def profiles(frozen):
     for source_group, group in frozen.groupby("source_family"):
         for column in OUTCOMES:
-            if column == "added_inhibition" and source_group != "Sanger":
+            if column == "added_inhibition" and source_group == "DrugComb":
                 continue
             frame = group[["cell_group", column + "_true", column + "_pred"]]
             yield source_group, column, frame.rename(columns={column + "_true": column, column + "_pred": "prediction"})

@@ -1,4 +1,4 @@
-"""Harmonize public DrugComb and Sanger oncology combination outcomes."""
+"""Harmonize public DrugComb, DrugCombDB and Sanger oncology combination outcomes."""
 import argparse
 from collections import Counter
 import json
@@ -8,12 +8,13 @@ import tempfile
 import numpy as np
 import pandas as pd
 
+from .drugcombdb import STUDY, oncology_rows
 from .identity import CellRegistry, CompoundRegistry
 from .splits import KEYS, OUTCOMES, record, validate_assays
 
 
 ONCOLOGY_STUDIES = {
-    "ALMANAC", "ASTRAZENECA", "ONEIL", "CLOUD", "FRIEDMAN", "FRIEDMAN2",
+    "ALMANAC", "ONEIL", "CLOUD", "FRIEDMAN", "FRIEDMAN2",
     "FLOBAK", "FORCINA", "FALLAHI-SICHANI", "NCATS_DIPG",
     "NCATS_ES(FAKI/AURKI)", "NCATS_ES(NAMPT+PARP)",
 }
@@ -48,7 +49,8 @@ def map_assay(rows, cells, compounds):
     return known[KEYS + OUTCOMES]
 
 
-def drugcomb(path, cells, compounds, audit):
+def drugcomb(path, cells, compounds, audit, *, replaced=()):
+    studies = ONCOLOGY_STUDIES - set(replaced)
     scans, retained = Counter(), Counter()
     raw_liver = Counter()
     for block in pd.read_csv(path, usecols=DRUGCOMB_FIELDS, chunksize=80_000,
@@ -59,7 +61,7 @@ def drugcomb(path, cells, compounds, audit):
         scans.update(block.study_name.value_counts().to_dict())
         raw_liver.update(block.loc[block.tissue_name.fillna("").str.lower().eq("liver"),
                                    "study_name"].value_counts().to_dict())
-        supported = block[block.study_name.isin(ONCOLOGY_STUDIES)].copy()
+        supported = block[block.study_name.isin(studies)].copy()
         if not len(supported):
             continue
         identity = cells.lookup(supported.cell_line_name)
@@ -77,7 +79,8 @@ def drugcomb(path, cells, compounds, audit):
         yield out
     audit.update({"eligible_rows_before_study_exclusions": dict(scans), "liver_tissue_native_studies": dict(raw_liver),
                   "eligible_matched_rows_by_study": dict(retained),
-                  "excluded_studies": sorted(set(scans) - ONCOLOGY_STUDIES)})
+                  "excluded_studies": sorted(set(scans) - ONCOLOGY_STUDIES),
+                  "replaced_mirrored_studies": sorted(set(replaced))})
 
 
 def sanger(files, cells, compounds, audit, zip_scores):
@@ -129,8 +132,18 @@ def prepare(a):
     if record(zip_path) != reads["files"]["sanger_zip.parquet"]:
         raise ValueError("Sanger ZIP reconstruction failed its recorded SHA-256")
     reconstructed_zip = pd.read_parquet(zip_path).set_index("id", verify_integrity=True).zip
-    audit_comb, audit_sanger = {}, {}
-    batches = [*drugcomb(a.drugcomb, cells, drugs, audit_comb), *sanger(a.sanger, cells, drugs, audit_sanger, reconstructed_zip)]
+    audit_comb, audit_sanger, audit_db = {}, {}, {}
+    batches, replaced = [], ()
+    if a.drugcombdb is not None:
+        raw_db, audit_db = oncology_rows(a.drugcombdb, cells, drugs)
+        filtered = map_assay(raw_db, cells, drugs)
+        if filtered.empty:
+            raise ValueError("DrugCombDB O'Neil lacks eligible observed dose matrices")
+        audit_db["eligible_matched_rows"] = len(filtered)
+        replaced = (STUDY,)
+        batches.append(filtered)
+    batches.extend(drugcomb(a.drugcomb, cells, drugs, audit_comb, replaced=replaced))
+    batches.extend(sanger(a.sanger, cells, drugs, audit_sanger, reconstructed_zip))
     distinct = pd.concat(batches, ignore_index=True).drop_duplicates()
     validate_assays(distinct)
     test = distinct[distinct.adult_hcc]
@@ -147,12 +160,13 @@ def prepare(a):
             "input_files": {p.name: record(p) for p in (a.drugcomb, a.depmap, a.drugs, a.cells, *a.sanger)},
             "sanger_compound_snapshot": record(structures_manifest),
             "sanger_zip_reconstruction": record(zip_manifest),
-            "drugcomb": audit_comb, "sanger": audit_sanger, "all_assays": len(distinct),
+            "drugcomb": audit_comb, "drugcombdb": audit_db, "sanger": audit_sanger, "all_assays": len(distinct),
             "adult_hcc_assays": len(test), "adult_hcc_cell_groups": test.cell_group.nunique(),
             "registered_compounds": len(used), "failed_publisher_compound_records": drugs.rejected,
             "endpoint_sources": {
                 "DrugComb": "Published ZIP, Bliss, CSS_ri and matched-dose HSA increment",
                 "Sanger": "Published Bliss and gain over strongest single agent, and reconstructed ZIP",
+                "DrugCombDB": "Published ZIP and Bliss, observed dose-grid gain over the strongest single agent",
             },
             "files": {p.name: record(p) for p in sorted(staged.iterdir()) if p.is_file()},
         }
@@ -165,6 +179,7 @@ def main():
     for key in ("drugcomb", "depmap", "drugs", "cells", "sanger-structures", "sanger-zip", "output"):
         p.add_argument("--" + key, type=Path, required=True)
     p.add_argument("--sanger", nargs="+", type=Path, required=True)
+    p.add_argument("--drugcombdb", type=Path)
     prepare(p.parse_args())
 
 

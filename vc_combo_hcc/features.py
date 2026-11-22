@@ -168,7 +168,10 @@ class FoldFeatures:
             self.cell_ids.get_indexer(rows.cell_id)
         if any(x.min() < 0 for x in (a, b, c)):
             raise ValueError("Unregistered held-out features")
-        assay = rows.source.str.startswith("Sanger:").to_numpy(dtype=np.float32)[:, None]
+        assay = np.column_stack([
+            rows.source.str.startswith(prefix).to_numpy(dtype=np.float32)
+            for prefix in ("Sanger:", "DrugCombDB:")
+        ])
         mono = self.base.mono.reindex(
             pd.MultiIndex.from_arrays([pd.concat([rows.cell_id, rows.cell_id]),
                                        pd.concat([rows.compound_a, rows.compound_b])])

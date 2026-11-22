@@ -35,8 +35,8 @@ def source_weights(source, y):
 def targets(rows):
     values = rows.loc[:, OUTCOMES].to_numpy(dtype=np.float32, copy=True)
     # DrugComb HSA is the mean matched-dose additive increment. The HCC
-    # response endpoint here is Sanger's maximum inhibited growth gain.
-    values[~rows.source.str.startswith("Sanger:").to_numpy(), OUTCOMES.index("added_inhibition")] = np.nan
+    # response endpoint here is the maximum gain in Sanger or DrugCombDB.
+    values[rows.source.str.startswith("DrugComb:").to_numpy(), OUTCOMES.index("added_inhibition")] = np.nan
     return values
 
 
@@ -178,15 +178,15 @@ class NeuralInputs:
                 other["drug_crispr"] = other["drug_crispr"] * keep
         return network(first, other, context)
 
-    def network(self, name, width, dropout):
+    def network(self, name, width, dropout, assay_width):
         compound = self.mol["morgan"].shape[-1]
-        cell = self.cells["rna"].shape[-1] + 1
+        cell = self.cells["rna"].shape[-1] + assay_width
         if name == "deepsynergy":
             return DeepSynergy(compound, cell, width, dropout)
         if name == "matchmaker":
             return MatchMaker(compound, cell, width, dropout)
         shapes = {k: v.shape[-1] for k, v in {**self.mol, **self.cells}.items()}
-        shapes.update(drug_crispr=4, assay=1)
+        shapes.update(drug_crispr=4, assay=assay_width)
         excluded = {"no_crispr": {"crispr", "drug_crispr"}, "no_targets": {"targets", "drug_crispr"},
                     "no_foundation": {"foundation"}}
         fields = [k for k in ("morgan", "foundation", "targets", "drug_crispr", "crispr", "assay", "rna")
@@ -216,7 +216,7 @@ def fit_neural(name, config, inputs, data, y, weights, seed):
     width, epochs, dropout = config
     torch.manual_seed(seed)
     rng = np.random.default_rng(seed)
-    net = inputs.network(name, width, dropout).to(inputs.device)
+    net = inputs.network(name, width, dropout, data.assay.shape[-1]).to(inputs.device)
     x = inputs.view(data)
     center, scale = calibration(y)
     y_scale = (y - center) / scale
