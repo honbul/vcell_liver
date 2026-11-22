@@ -18,7 +18,7 @@ def top_effect_metrics(pred, truth, depth=20):
     top_prediction = np.argsort(-np.abs(pred), axis=1, kind="stable")[:, :depth]
     recovery, sign_recovery, direction_truth = [], [], []
     for i, (known, found) in enumerate(zip(top_truth, top_prediction)):
-        shared = np.intersect1d(known, found, assume_unique=True)
+        shared = np.intersect1d(known, found[pred[i, found] != 0], assume_unique=True)
         observed_top = np.sign(truth[i, known])
         recovered = np.sign(pred[i, shared]) == np.sign(truth[i, shared])
         direction_truth.append(float(np.mean((np.sign(pred[i, known]) == observed_top) & (observed_top != 0))))
@@ -38,12 +38,18 @@ def perturbation_metrics(prediction, observation, source_training_mean):
         raise ValueError("Centering vector must come from the registered training gene axis")
     if not all(np.isfinite(a).all() for a in (prediction, observation, source_training_mean)):
         raise ValueError("Nonfinite centered effect")
-    predicted_residual = prediction - source_training_mean
-    observed_residual = observation - source_training_mean
+    # Center after freezing, separately within each assay's scored panel.
+    # The fitted model and its hyperparameters never receive the observed center.
+    predicted_residual = prediction - prediction.mean(axis=0, keepdims=True)
+    observed_residual = observation - observation.mean(axis=0, keepdims=True)
     values = {
         "centered_pearson": float(row_correlation(predicted_residual, observed_residual).mean()),
         "centered_rmse": float(np.sqrt(np.mean(np.square(predicted_residual - observed_residual)))),
+        "source_reference_pearson": float(row_correlation(
+            prediction - source_training_mean, observation - source_training_mean,
+        ).mean()),
         "uncentered_pearson": float(row_correlation(prediction, observation).mean()),
+        "uncentered_rmse": float(np.sqrt(np.mean(np.square(prediction - observation)))),
         "measured_targets": len(observation),
         "measured_expression_genes": observation.shape[1],
     }
