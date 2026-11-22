@@ -8,6 +8,7 @@ import tempfile
 import pandas as pd
 
 from .context import verified
+from .identity import unique_map
 from .score import markdown
 from .splits import record
 
@@ -50,6 +51,16 @@ def track2_reference(root, selected):
     columns = ["anchor", "molecule", "candidate", "dili_concern"]
     table = selected[columns].merge(crosswalk.reset_index(), on="molecule", how="left",
                                      sort=False, validate="many_to_one")
+    names_path = root / "chemistry-v1" / "fda_structures.tsv"
+    names_receipt = names_path.with_name("fda_receipt.json")
+    sources = json.loads(names_receipt.read_text())["sha256"]
+    fingerprint = record(names_path)
+    if {v for k, v in sources.items() if Path(k).name == names_path.name} != {fingerprint["sha256"]}:
+        raise ValueError("Track 2 FDA compound names are outside their source receipt")
+    names = pd.read_csv(names_path, sep="\t", usecols=["inchikey", "name", "status"], dtype=str)
+    names = names[names.status.eq("resolved")].dropna(subset=["inchikey", "name"])
+    table["fda_name"] = table.molecule.map(unique_map(zip(names.inchikey, names.name)))
+    provenance["fda_names"] = {"receipt": record(names_receipt), "structures": fingerprint}
     return table, provenance
 
 
@@ -73,6 +84,8 @@ def report(a):
     crosscheck, dili_provenance = None, None
     if a.track2_dili is not None:
         crosscheck, dili_provenance = track2_reference(a.track2_dili, selected)
+        selected["candidate"] = selected.candidate.where(selected.candidate.ne(selected.molecule),
+                                                        crosscheck.fda_name.fillna(selected.candidate))
     columns = ["anchor", "candidate", "dili_concern", "organoid_donors", "bliss", "added_inhibition",
                "added_inhibition_donor_low", "added_inhibition_donor_high", "added_inhibition_limore"]
     sections = [

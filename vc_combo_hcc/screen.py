@@ -118,8 +118,9 @@ def rank(a):
     query = pd.read_parquet(verified(a.query, "query.parquet"))
     pred = pd.read_parquet(candidate_file)
     labels = pd.read_parquet(verified(a.organoids, "organoids/labels.parquet"))
-    name, validation = max(frozen["model_selection"].items(),
-                           key=lambda m: sum(m[1]["validation"][e] for e in ENDPOINTS))
+    name, selected = max(frozen["model_selection"].items(),
+                         key=lambda m: sum(m[1]["validation"][e] for e in ENDPOINTS))
+    validation = selected["validation"]
     cases = query.merge(pred[pred.model.eq(name)], on="id", validate="one_to_one")
     if len(cases) != len(query) or cases.id.duplicated().any():
         raise ValueError("Missing frozen candidate predictions")
