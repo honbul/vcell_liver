@@ -300,6 +300,22 @@ def audit_patients(args):
     publish_json(args.out, cohort_metadata(args.cohort, args.supplement))
 
 
+def adult_donor_outcomes(joined):
+    adult = joined[joined.adult_age_confirmed]
+    axes = ["donor_id", "track", "fold", "compound_id", "method"]
+    result = adult.groupby(axes, as_index=False)[["endpoint_value", "predicted_value"]].mean()
+    constant = adult[adult.method.eq("drug_mean")].groupby("compound_id").predicted_value
+    if not constant.nunique().eq(1).all():
+        raise ValueError("The sealed drug mean varies by organoid")
+    drug_mean = result.method.eq("drug_mean")
+    # Reaveraging identical floating-point anchors with different group sizes can create spurious ranks.
+    result.loc[drug_mean, "predicted_value"] = result.loc[drug_mean, "compound_id"].map(constant.first())
+    return result.assign(
+        cell_id=lambda table: table.donor_id, lineage_group=lambda table: table.donor_id,
+        row_id=lambda table: COHORT + "|donor|" + table.donor_id + "|" + table.compound_id,
+    )
+
+
 def score(args):
     if args.out.exists():
         raise FileExistsError(args.out)
@@ -326,12 +342,7 @@ def score(args):
     joined = join_observations(prediction, query.assign(endpoint_value=measured)).merge(
         pd.DataFrame(patient_receipt["models"]), on="cell_id", validate="many_to_one",
     )
-    adult = (joined[joined.adult_age_confirmed].groupby(
-        ["donor_id", "track", "fold", "compound_id", "method"], as_index=False,
-    )[["endpoint_value", "predicted_value"]].mean().assign(
-        cell_id=lambda table: table.donor_id, lineage_group=lambda table: table.donor_id,
-        row_id=lambda table: COHORT + "|donor|" + table.donor_id + "|" + table.compound_id,
-    ))
+    adult = adult_donor_outcomes(joined)
     outcomes = {}
     if int(adult.lineage_group.nunique()) != patient_receipt["adult_donors"]:
         raise ValueError("A preregistered adult donor was lost at scoring")
