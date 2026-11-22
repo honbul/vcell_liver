@@ -1,0 +1,19 @@
+# VCB-00/01/03 functional development protocol
+
+The observed target is the LIMORE Table S4 activity area. The adapter keeps the reported scale and assay metadata. A fitted endpoint is a curve summary. Inference uses baseline RNA and exact registered compound identity; a curve-summary output does not answer a concentration query.
+
+## Public development split
+
+- C is primary. Every alias or related line in an audited lineage group follows the same fold. The query panel only includes compounds observed in the training rows. C intentionally permits shared drug identities.
+- D separates components formed by connections through either canonical parent connectivity or a nonempty exact Murcko scaffold. The query includes cells observed in the fit partition. The local ligand extrapolation comparator uses a Tanimoto-weighted average of the three nearest training compounds with a global-mean fallback.
+- CD pairs the independently assigned cell and drug fold numbers. The held cells crossed with held compounds are scored. Rows with just one held axis are embargoed. This five-fold diagnostic covers a subset of all crossed cells and compounds.
+- Five outer and three inner folds use the project seeds. The split manifest keys every row and role and is saved before model fitting. Fit-only preprocessing never reads outer RNA for estimating transformation parameters. Training passes query RNA and compound/features to the predictors without outcome values.
+- The separate evaluator may read outer outcomes only after a forecast and receipt are frozen. C, D and CD are separate evaluations of public development material under this protocol. Prospective confirmation and local screening utility have separate requirements.
+
+## Comparisons and selection
+
+Known-compound training means provide a common anchor. The comparison arms are drug mean, five-neighbor basal RNA, additive RNA ridge, ECFP plus descriptor and basal RNA ridge, and a single-hidden-layer residual MLP. Fit-only RNA preprocessing selects up to 1,000 high-variance measured genes, then imputes, scales and fits PCA of up to 16 dimensions. Molecular features use radius-2 chiral 256-bit ECFP plus six descriptors derived from the fragment parent while exact structure identity remains isomeric and salt-specific. Descriptor scaling uses distinct fit compounds.
+
+The two searched families use three settings each. Ridge penalties are 10, 100 and 1,000. MLP widths are 16, 32 and 64. Additive uses ridge penalty 10. MLP uses a fixed 100-iteration ceiling and fit-loss convergence monitoring. Search uses one seed. The selected context MLP, when selected, uses the three registered final seeds. Each fold independently selects its strongest context arm (RNA neighbor or MLP) and strongest noninteraction arm (drug mean, additive or structure ridge) by the mean inner fold lineage-macro MAE, or chemical-group-macro MAE for D. The primary H1 comparison is the inner-selected arms on the same withheld C rows, with an at least 5% relative lineage-macro MAE point gain and a positive paired lineage-bootstrap 95% lower bound. Ranking and RNA drop/swap diagnostics are reported separately. Random priority supports ranking comparisons only.
+
+Prediction interval half-widths use the 90th percentile of inner grouped cross-fit absolute errors with equal lineage weight. Outer records report empirical coverage where available. These intervals characterize this public domain and do not guarantee calibration after a source, cell or assay shift. The release package repeats grouped cross-fitting on deployment development groups for its radius. The first smoke run uses the first 12 audited compound IDs in lexical order, three lineage folds, and fixed additive and drug mean arms. It verifies the actual-endpoint pipeline without testing H1.
