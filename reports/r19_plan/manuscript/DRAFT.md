@@ -136,7 +136,7 @@ We also tested whether training on 0.05 and 0.5 µM alongside 5 µM improved the
 
 The development sources include CMap 2020 Level 3 and GEO GSE92742, GSE284321 and GSE296254. The evidence index records input accessions, score tables, cohorts and checksums. The publication repository and release scope require author confirmation. [CMap](https://clue.io/) · [GSE92742](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE92742) · [GSE284321](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE284321) · [GSE296254](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE296254) · [Evidence index](../RESULTS.md)
 
-A separate prospective pilot plan identifies 96 compounds with eight eligible nonhepatic source cell lines and lays out three repeated treatment positions for each compound in each of two adult HCC lines. We froze predictions and matched comparators using 277 chemically disjoint JHH-5 fitting parents before collecting the prospective measurements. The manuscript's accuracy estimates use the development measurements described above. [Prospective pilot assets](../HCC_OFF_POSITION_PILOT_RESULTS.md)
+A separate prospective pilot plan identifies 96 compounds with eight eligible nonhepatic source cell lines and lays out three repeated treatment positions for each compound in each of two adult HCC lines. We froze predictions and five matched public model adaptations using 277 chemically disjoint JHH-5 fitting parents before collecting the prospective measurements. The manuscript's accuracy estimates use the development measurements described above. [Prospective pilot assets](../HCC_OFF_POSITION_PILOT_RESULTS.md)
 
 ## Code availability
 

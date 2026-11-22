@@ -29,6 +29,12 @@
 
 합성 입력의 실측 모드 사용, 계획과 다른 화합물, 재사용 배양 시작 ID, 잘못된 인수 잠금 및 해시가 다른 발현 파일을 각각 거부했다. 이 검산으로 배치·측정 내보내기·동결 모델을 잇는 소프트웨어 경로를 확인했다. 실제 독립 배양, assay 호환성과 정확도는 실측 자료가 필요하다. [거부 검산](data/hcc_off_position_pilot/score_smoke/verification.json) · [합성 채점 영수증](data/hcc_off_position_pilot/score_smoke/score/receipt.json)
 
+## 공개 VC 추가 동결
+
+기존 State에 더해 XPert, PRnet, chemCPA, TranSiGen의 96군 예측을 별도로 동결했다. 네 적응 모두 기존 후보와 같은 8개 비간계열 원천을 받았다. 각 DMSO 역할에서 JHH-5 내부 적합 224군과 선택 53군을 쓴 뒤, 전체 277군에서 다시 적합했다. 재적합한 단일 배율 기준선은 원 동결 배열과 정확히 일치했다. 준비 `31758`, 예측 `31759`, 동결 `31760`의 추가 영수증 SHA-256은 `9ba8564065d6854f12e8a12d0bc7c3058303d08280cd634c5b4cb0716d93cfda`다. [추가 비교 명세](HCC_OFF_POSITION_PILOT_NATIVE_PROTOCOL.md) · [추가 동결 영수증](data/hcc_off_position_pilot/native/forecast/freeze.json) · [실행 원장](data/hcc_off_position_pilot/native/forecast/jobs.tsv)
+
+추가 채점 `31774`는 원 동결과 추가 동결을 같은 합성 인수 명부에 연결했다. 합성 처리 539웰에서 두 지표별 공개 VC 최선 모델을 각 재표집에서 다시 고르는 계산과 parent 및 배양 단위 10,000회 재표집을 검증했다. 독립 실측 정확도는 미측정이다. 실측 채점에는 기존 동결 인자에 `--native`, `--native-pin`, `--native-protocol`을 더해 채점한다. [채점 코드](../../src/r19_plan/hcc_off_position_pilot_native_score.py) · [합성 영수증](data/hcc_off_position_pilot/native/score_smoke/receipt.json) · [지원 검산](data/hcc_off_position_pilot/native/score_smoke/support.tsv)
+
 ## 실측 파일 인수 형식
 
 | 파일 | 필요한 내용 |
