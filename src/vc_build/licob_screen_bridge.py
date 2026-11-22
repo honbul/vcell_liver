@@ -57,7 +57,8 @@ def prism_rows(raw, supported, registered):
     if len(parents) != 5:
         raise ValueError("PRISM physical lot mapping differs from preflight")
     ids = ["BRD:" + native for native in parents]
-    metadata = pd.read_csv(raw / "prism_compounds.csv").set_index("IDs", verify_integrity=True).loc[ids]
+    metadata = pd.read_csv(raw / "prism_compounds.csv")
+    metadata = metadata[metadata.IDs.isin(ids)].set_index("IDs", verify_integrity=True).loc[ids]
     design = pd.read_csv(raw / "prism_treatments.csv")
     if not metadata.dose.eq(2.5).all():
         raise ValueError("Unexpected treatment concentrations")
@@ -72,6 +73,9 @@ def prism_rows(raw, supported, registered):
             raise ValueError(f"Unknown measurement source {screen}")
         cohorts[native] = screen
     matrix = pd.read_csv(raw / "prism_matrix.csv", index_col=0).loc[ids]
+    if not matrix.index.is_unique:
+        raise ValueError("Registered PRISM lots must have one response row each")
+    matrix = matrix.where(np.isfinite(matrix))
     table = -matrix.loc[:, matrix.columns.isin(supported)].T
     table.columns = table.columns.str.removeprefix("BRD:")
     return table, parents, {"release_rows": matrix.notna().sum(axis=1).to_dict(), "screens": cohorts}
@@ -91,7 +95,8 @@ def nci_rows(raw, models, supported, registered):
     cols = ["NSC", "EXPID", "CONCENTRATION_UNIT", "CELL_NAME", "PANEL_NAME", "AVERAGE"]
     with pd.read_csv(raw / "nci_gi50.zip", usecols=cols, chunksize=200_000) as chunks:
         measurements = pd.concat([chunk[chunk.NSC.isin(NCI_IDS)] for chunk in chunks], ignore_index=True)
-    selected = measurements[measurements.NSC.isin(parents) & measurements.CONCENTRATION_UNIT.eq("M")].copy()
+    selected = measurements[measurements.NSC.isin(parents) & measurements.CONCENTRATION_UNIT.eq("M")
+                            & np.isfinite(measurements.AVERAGE)].copy()
     selected["model"] = selected.CELL_NAME.map(alias_token).map(unique)
     # Count raw support before alias filtering and aggregation.
     support = selected.groupby("NSC").agg(rows=("NSC", "size"), cells=("CELL_NAME", "nunique"),
