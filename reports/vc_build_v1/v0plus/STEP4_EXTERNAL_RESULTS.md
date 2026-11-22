@@ -119,3 +119,5 @@ RNA 이웃을 구조 커널의 적합 단계에 넣어 두 단계 그래프 확�
 정확한 parent 41약물의 비간계열 LINCS Level5 서명에서 처리 방향과 투여 전 경로 활성의 곱을 구조 커널에 추가했다. LIMORE 서명 보유 약물에서 약물 내 Spearman은 구조 .360, 보유 마스크 .388, 서명·경로 .360이었다. LICOB에서 같은 지표는 .029, .021, .031이었다. 두 코호트와 세 스크린의 사전 공동 기준에 미달했다. [LINCS 처리 서명과 경로 상호작용](LINCS_PATHWAY_RESULTS.md)
 
 공개 GSE298810 같은 HCC 계통의 2D·3D 발현으로 예측 일관성 제약을 실험했다. 같은 RNA 축에서 약물 내 Spearman 변화는 LIMORE +.00190, LICOB +.00079였고 두 구간이 0을 포함했다. 소스와 외부의 공동 승격 기준은 미달했다. [짝지은 배양 제약 성적](CULTURE_CONSISTENCY_RESULTS.md)
+
+공개 Sanger 3D 오가노이드 CRISPR의 표적별 의존성을 RNA에서 예측했다. 대장암과 식도암을 각각 보류하면 2D Chronos에 3D 정보를 결합하는 효과의 구간이 두 조직에서 0을 포함했다. 사전 게이트에 따라 LIMORE와 LICOB 약물 반응을 재채점하는 단계는 적용하지 않았다. [3D 의존성 선행 검증](ORGANOID_DEPENDENCY_RESULTS.md)
