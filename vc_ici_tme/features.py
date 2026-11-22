@@ -184,10 +184,19 @@ def published_markers(expression):
 
 
 def tide_fit_center(fit, query):
-    from tidepy.pred import TIDE
+    from tidepy.model import tide_pred
+    from tidepy.pred import MODEL_DB
+    from tidepy.utils import toEntrez
 
-    transformed = query.sub(fit.mean(axis=0), axis=1).T.copy()
-    out = -TIDE(transformed, cancer="Other", ignore_norm=True)["TIDE"].reindex(query.index)
+    transformed = toEntrez(query.sub(fit.mean(axis=0), axis=1).T.copy())
+    bundled = MODEL_DB["tide"]
+    names = ("Dysfunction", "Exclusion")
+    genes = transformed.index.union(bundled[names[0]].index).union(bundled[names[1]].index)
+    # pandas 1.5 requires an explicit common index for corrwith with a
+    # Series. Use missing values rather than imputing unassayed genes.
+    weights = {**bundled, **{name: bundled[name].reindex(genes) for name in names}}
+    result = tide_pred(transformed.reindex(genes), cancer="Other", tide_model=weights)
+    out = -result["TIDE"].reindex(query.index)
     if not np.isfinite(out).all():
         raise ValueError("TIDE produced nonfinite external scores")
     return out.to_numpy()

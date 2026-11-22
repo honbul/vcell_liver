@@ -14,6 +14,10 @@ from .cohorts import record
 
 TYPES = ("malignant", "cd8", "treg", "tam", "caf", "endothelial", "other")
 TRACK5 = ("GSE149614", "GSE151530")
+CURATED_EDGES = {
+    ("PVR", "TIGIT"): "https://doi.org/10.1073/pnas.1120606109",
+    ("NECTIN2", "TIGIT"): "https://pmc.ncbi.nlm.nih.gov/articles/PMC5500806/",
+}
 REGULATORS = {
     "VEGFA_KDR": {"VEGFA", "KDR"},
     "TGFB1": {"TGFB1", "TGFBR1", "TGFBR2"},
@@ -120,6 +124,7 @@ def interaction_edges(path, axis):
         left, right = [tuple(re.split(r"_", gene)) for gene in (ligand, receptor)]
         if genes.issuperset(left) and genes.issuperset(right):
             result.append((ligand, receptor))
+    result.extend((ligand, receptor) for ligand, receptor in CURATED_EDGES if genes.issuperset((ligand, receptor)))
     edges = pd.DataFrame(result, columns=["ligand", "receptor"]).drop_duplicates().sort_values(["ligand", "receptor"])
     if len(edges) < 100:
         raise ValueError("Too few verified human ligand and receptor complexes")
@@ -154,7 +159,10 @@ def prepare(a):
         (stage / "markers.json").write_text(json.dumps(markers, indent=2, sort_keys=True) + "\n")
         (stage / "receipt.json").write_text(json.dumps({
             "inputs": {"patients": record(a.patients / "receipt.json"), "liana": record(a.liana)},
-            "cell_type_support": support, "genes": len(ref), "consensus_interactions": len(special),
+            "cell_type_support": support, "genes": len(ref), "registered_interactions": len(special),
+            "structure_supported_edges": {f"{ligand}:{receptor}": source
+                                          for (ligand, receptor), source in CURATED_EDGES.items()
+                                          if set((ligand, receptor)).issubset(ref.index)},
             "registry": "Donor-equally weighted annotated HCC malignant, immune and stromal pseudobulks",
             "files": {p.name: record(p) for p in sorted(stage.iterdir())},
         }, indent=2, sort_keys=True) + "\n")

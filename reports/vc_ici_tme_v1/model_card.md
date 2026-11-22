@@ -29,3 +29,5 @@ Use the pinned runtime described in the preflight ledger. `python -m vc_ici_tme.
 - Jiang et al., Tumor Immune Dysfunction and Exclusion. [Nature Medicine](https://doi.org/10.1038/s41591-018-0136-1), [TIDEpy author release](https://github.com/jingxinfu/TIDEpy)
 - Dimitrov et al., human ligand–receptor consensus. [LIANA author repository](https://github.com/saezlab/liana)
 - Finn et al., [IMbrave150](https://doi.org/10.1056/NEJMoa1915745) assesses the combination of atezolizumab and bevacizumab in unresectable HCC. Its treatment evidence is contextual and outside this model benchmark.
+
+Two TIGIT edges supplement LIANA consensus with structural evidence for the PVR and NECTIN2 ligands. The TIDE adapter aligns the author model and expression gene indexes explicitly to support the pinned pandas release. Genes outside the expression assay remain missing in the author correlation. [PVR–TIGIT cocrystal](https://doi.org/10.1073/pnas.1120606109), [NECTIN2–TIGIT cocrystal](https://pmc.ncbi.nlm.nih.gov/articles/PMC5500806/)
