@@ -1,0 +1,1089 @@
+{
+  "C_paired_cell_difference": {
+    "drug_mean": {
+      "contrast_mae": 0.15054802225636213,
+      "pairs": 48576
+    },
+    "selected_context": {
+      "contrast_mae": 0.14562636641541737,
+      "pairs": 48576
+    },
+    "selected_noninteraction": {
+      "contrast_mae": 0.1504930560994888,
+      "pairs": 48576
+    }
+  },
+  "chemical_similarity": {
+    "C": {
+      "groups": 440,
+      "quantiles": {
+        "0": 1.0,
+        "0.25": 1.0,
+        "0.5": 1.0,
+        "0.75": 1.0,
+        "1": 1.0
+      }
+    },
+    "CD": {
+      "groups": 88,
+      "quantiles": {
+        "0": 0.18333333333333332,
+        "0.25": 0.3017441860465116,
+        "0.5": 0.3409090909090909,
+        "0.75": 0.375,
+        "1": 0.7972972972972973
+      }
+    },
+    "D": {
+      "groups": 88,
+      "quantiles": {
+        "0": 0.18333333333333332,
+        "0.25": 0.3017441860465116,
+        "0.5": 0.3409090909090909,
+        "0.75": 0.375,
+        "1": 0.7972972972972973
+      }
+    }
+  },
+  "cli": {
+    "sample": {
+      "abstentions": 0,
+      "candidates": 8,
+      "latency_seconds": 1.4002148360013962,
+      "peak_process_rss_kib": 223280,
+      "reasons": {
+        "supported": 8
+      },
+      "receipt_sha256": "3fa76bb4263dadaac14076b77fb328558a9919cab1f0406412f0c6e9fc449d9a"
+    },
+    "stress": {
+      "abstentions": 12,
+      "candidates": 100,
+      "latency_seconds": 2.9964289627969265,
+      "peak_process_rss_kib": 222680,
+      "reasons": {
+        "compound_outside_registered_panel": 12,
+        "supported": 88
+      },
+      "receipt_sha256": "d3bdc09660fd1aef6cfcb32a3b4c6b512131c5288f54b2dfe98b5d35f9d9e70f"
+    }
+  },
+  "full": {
+    "freeze": {
+      "artifact": "predictions.parquet",
+      "frozen_utc": "2026-11-22T05:06:58.422252+00:00",
+      "provenance": {
+        "code_commit": "9f82d8486498c9ff96fc5e8e0799929c20df9744",
+        "code_sha256": {
+          "functional.py": "fdcb2533aed1d6b377317edc1b849ebb1b9c1d2836fa8046b7858b2f239cad33",
+          "io.py": "6fb51bef570f3e1caa474d08f9241afb752a5290ab49a18c6e23fcf5c1fa043e",
+          "splits.py": "0046050d81f7f51ebf6686330e1ae2fe1d667094af48fb076ae73c86046de135",
+          "train.py": "db5052aa1d40280996d735300dbf7b43349307fb9795b92aff5d84c9c9bb9471"
+        },
+        "config_sha256": "eea1057706e527c090fb40fbbd47ce1445d2b853451aa9169a05abb2ce1dbcca",
+        "rna_sha256": "ab74542386e70b0d872d47fc145c66bb3fc1ec55c3a62cb2cb3942dae54715bd",
+        "rows_sha256": "2e2d40c2c27232985512d3828955ae9b381632015bf7a99e0030fd300ee41555",
+        "scope": "existing public development data; outer targets excluded under this contract",
+        "splits_sha256": "de0390bb93b9dcd2390e290ad1510a6b4f2afb53dac9ecb26b98e600a7cb563f"
+      },
+      "rows": 124684,
+      "schema_version": 1,
+      "sha256": "affd6e3c8a3cd1eff7071d5342387a166579c9455be2736768c0ac6b5c4f5b5a"
+    },
+    "metrics": {
+      "C": {
+        "endpoint_direction": "higher",
+        "freeze_sha256": "affd6e3c8a3cd1eff7071d5342387a166579c9455be2736768c0ac6b5c4f5b5a",
+        "metrics_sha256": "28d82aaf77542164a29557ae30c5315a4175c3b8b755838800dd82eaf33b6d64",
+        "observations_sha256": "fb047b2f9e99f593882b8da8edd427a8f1e13c306aba608aa257dc030e52fc1b",
+        "paired_contrasts": [
+          {
+            "baseline": "selected_noninteraction",
+            "candidate": "selected_context",
+            "ci95": [
+              0.004556605482174331,
+              0.06994068634430561
+            ],
+            "gain": 0.03833068729484232,
+            "lineages": 74,
+            "metric": "mae",
+            "track": "C"
+          },
+          {
+            "baseline": "selected_noninteraction",
+            "candidate": "selected_context",
+            "ci95": [
+              0.02020814015200557,
+              0.05114180307783994
+            ],
+            "gain": 0.03526550839374998,
+            "lineages": 74,
+            "metric": "ndcg_at_5",
+            "track": "C"
+          },
+          {
+            "baseline": "selected_noninteraction",
+            "candidate": "selected_context",
+            "ci95": [
+              0.0107579770499515,
+              0.026898135984134326
+            ],
+            "gain": 0.018587066340106317,
+            "lineages": 74,
+            "metric": "spearman",
+            "track": "C"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "selected_context",
+            "ci95": [
+              0.008008112346086359,
+              0.11391383074081071
+            ],
+            "gain": 0.06384611401741606,
+            "lineages": 74,
+            "metric": "mae",
+            "track": "C"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "selected_context",
+            "ci95": [
+              0.02020814015200557,
+              0.05114180307783994
+            ],
+            "gain": 0.03526550839374998,
+            "lineages": 74,
+            "metric": "ndcg_at_5",
+            "track": "C"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "selected_context",
+            "ci95": [
+              0.0107579770499515,
+              0.026898135984134326
+            ],
+            "gain": 0.018587066340106317,
+            "lineages": 74,
+            "metric": "spearman",
+            "track": "C"
+          },
+          {
+            "baseline": "selected_context_rna_swap",
+            "candidate": "selected_context",
+            "ci95": [
+              0.0753118732590335,
+              0.20814852102672238
+            ],
+            "gain": 0.1434787490085962,
+            "lineages": 74,
+            "metric": "mae",
+            "track": "C"
+          },
+          {
+            "baseline": "selected_context_rna_swap",
+            "candidate": "selected_context",
+            "ci95": [
+              0.02225590201501077,
+              0.06052104469763817
+            ],
+            "gain": 0.0409452845616568,
+            "lineages": 74,
+            "metric": "ndcg_at_5",
+            "track": "C"
+          },
+          {
+            "baseline": "selected_context_rna_swap",
+            "candidate": "selected_context",
+            "ci95": [
+              0.024200129331579365,
+              0.04229369210160925
+            ],
+            "gain": 0.032813625375884614,
+            "lineages": 74,
+            "metric": "spearman",
+            "track": "C"
+          },
+          {
+            "baseline": "selected_context_rna_drop",
+            "candidate": "selected_context",
+            "ci95": [
+              0.017057722159135615,
+              0.1229199608744344
+            ],
+            "gain": 0.07266559982806464,
+            "lineages": 74,
+            "metric": "mae",
+            "track": "C"
+          },
+          {
+            "baseline": "selected_context_rna_drop",
+            "candidate": "selected_context",
+            "ci95": [
+              0.02202506340875617,
+              0.05496201321496893
+            ],
+            "gain": 0.03786716047865968,
+            "lineages": 74,
+            "metric": "ndcg_at_5",
+            "track": "C"
+          },
+          {
+            "baseline": "selected_context_rna_drop",
+            "candidate": "selected_context",
+            "ci95": [
+              0.014794374879228082,
+              0.029382774100916314
+            ],
+            "gain": 0.02187410480464269,
+            "lineages": 74,
+            "metric": "spearman",
+            "track": "C"
+          }
+        ],
+        "rank_only": false,
+        "scores": [
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.9008264462809918,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.5138038151606086,
+            "macro_mae": 0.10982311125647043,
+            "macro_mse": 0.02425868451899437,
+            "macro_ndcg_at_5": 0.8692380695730725,
+            "macro_spearman": 0.7475728584751741,
+            "macro_top5_overlap": 0.4129870129870129,
+            "method": "additive",
+            "registered_rows": 6776,
+            "track": "C"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.9000885478158204,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.5381475522986167,
+            "macro_mae": 0.11153939019679612,
+            "macro_mse": 0.026197056407570054,
+            "macro_ndcg_at_5": 0.8692380695730725,
+            "macro_spearman": 0.7475728584751741,
+            "macro_top5_overlap": 0.4129870129870129,
+            "method": "drug_mean",
+            "registered_rows": 6776,
+            "track": "C"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.902302243211334,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.49447470351248823,
+            "macro_mae": 0.10430820861932867,
+            "macro_mse": 0.022355502760174933,
+            "macro_ndcg_at_5": 0.9043429271432,
+            "macro_spearman": 0.7662117275001814,
+            "macro_top5_overlap": 0.464935064935065,
+            "method": "interaction_mlp",
+            "registered_rows": 6776,
+            "track": "C"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_fraction": 0.0,
+            "macro_ndcg_at_5": 0.5187544055852589,
+            "macro_spearman": 0.015418173302475979,
+            "macro_top5_overlap": 0.05714285714285715,
+            "method": "random_priority_order",
+            "registered_rows": 6776,
+            "track": "C"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.8968417945690672,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.5105358128922936,
+            "macro_mae": 0.10846328115524792,
+            "macro_mse": 0.02475958974548465,
+            "macro_ndcg_at_5": 0.8964016091988881,
+            "macro_spearman": 0.7507297514350946,
+            "macro_top5_overlap": 0.44675324675324685,
+            "method": "rna_neighbor",
+            "registered_rows": 6776,
+            "track": "C"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.902302243211334,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.49447470351248823,
+            "macro_mae": 0.10430820861932867,
+            "macro_mse": 0.022355502760174933,
+            "macro_ndcg_at_5": 0.9043429271432,
+            "macro_spearman": 0.7662117275001814,
+            "macro_top5_overlap": 0.464935064935065,
+            "method": "selected_context",
+            "registered_rows": 6776,
+            "track": "C"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_fraction": 0.0,
+            "macro_mae": 0.11261914090452149,
+            "macro_mse": 0.026389311945238185,
+            "macro_ndcg_at_5": 0.8668306812660846,
+            "macro_spearman": 0.7441240706044542,
+            "macro_top5_overlap": 0.4181818181818181,
+            "method": "selected_context_rna_drop",
+            "registered_rows": 6776,
+            "track": "C"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_fraction": 0.0,
+            "macro_mae": 0.12138126036779998,
+            "macro_mse": 0.028970767310651686,
+            "macro_ndcg_at_5": 0.8639763929894227,
+            "macro_spearman": 0.7341984050305941,
+            "macro_top5_overlap": 0.3766233766233766,
+            "method": "selected_context_rna_swap",
+            "registered_rows": 6776,
+            "track": "C"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.9014167650531288,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.5173519618034416,
+            "macro_mae": 0.10886971664950006,
+            "macro_mse": 0.02423702634454602,
+            "macro_ndcg_at_5": 0.8692380695730725,
+            "macro_spearman": 0.7475728584751741,
+            "macro_top5_overlap": 0.4129870129870129,
+            "method": "selected_noninteraction",
+            "registered_rows": 6776,
+            "track": "C"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.9014167650531288,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.5173519618034416,
+            "macro_mae": 0.10886971664950006,
+            "macro_mse": 0.02423702634454602,
+            "macro_ndcg_at_5": 0.8692380695730725,
+            "macro_spearman": 0.7475728584751741,
+            "macro_top5_overlap": 0.4129870129870129,
+            "method": "structure_ridge",
+            "registered_rows": 6776,
+            "track": "C"
+          }
+        ],
+        "split": "C"
+      },
+      "CD": {
+        "endpoint_direction": "higher",
+        "freeze_sha256": "affd6e3c8a3cd1eff7071d5342387a166579c9455be2736768c0ac6b5c4f5b5a",
+        "metrics_sha256": "5a8ff02047c5f1494d9e1d091c8ef852cf658ca2382eba145f03f874725019f0",
+        "observations_sha256": "fb047b2f9e99f593882b8da8edd427a8f1e13c306aba608aa257dc030e52fc1b",
+        "paired_contrasts": [
+          {
+            "baseline": "selected_noninteraction",
+            "candidate": "selected_context",
+            "ci95": [
+              -0.06709708370004037,
+              -0.010705128856440024
+            ],
+            "gain": -0.03758043025657117,
+            "lineages": 74,
+            "metric": "mae",
+            "track": "CD"
+          },
+          {
+            "baseline": "selected_noninteraction",
+            "candidate": "selected_context",
+            "ci95": [
+              -0.033292769478789654,
+              -0.001511618999732205
+            ],
+            "gain": -0.017237151289629438,
+            "lineages": 74,
+            "metric": "ndcg_at_5",
+            "track": "CD"
+          },
+          {
+            "baseline": "selected_noninteraction",
+            "candidate": "selected_context",
+            "ci95": [
+              -0.01795382030800411,
+              0.01886407688196874
+            ],
+            "gain": 0.000223920236273642,
+            "lineages": 74,
+            "metric": "spearman",
+            "track": "CD"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "selected_context",
+            "ci95": [
+              -0.035536167124737124,
+              0.01658581907955973
+            ],
+            "gain": -0.009769632494638721,
+            "lineages": 74,
+            "metric": "mae",
+            "track": "CD"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "selected_context",
+            "ci95": [
+              -0.033292769478789654,
+              -0.001511618999732205
+            ],
+            "gain": -0.017237151289629438,
+            "lineages": 74,
+            "metric": "ndcg_at_5",
+            "track": "CD"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "selected_context",
+            "ci95": [
+              -0.01795382030800411,
+              0.01886407688196874
+            ],
+            "gain": 0.000223920236273642,
+            "lineages": 74,
+            "metric": "spearman",
+            "track": "CD"
+          }
+        ],
+        "rank_only": false,
+        "scores": [
+          {
+            "cells": 77,
+            "common_rows": 1356,
+            "covered_rows": 1356,
+            "lineages": 74,
+            "macro_interval_coverage": 0.90183346065699,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.6832467534726411,
+            "macro_mae": 0.16544849479400747,
+            "macro_mse": 0.0479011667384664,
+            "macro_ndcg_at_5": 0.6439405105873697,
+            "macro_spearman": 0.08469204347366557,
+            "macro_top5_overlap": 0.3532467532467532,
+            "method": "additive",
+            "registered_rows": 1356,
+            "track": "CD"
+          },
+          {
+            "cells": 77,
+            "common_rows": 1356,
+            "covered_rows": 1356,
+            "lineages": 74,
+            "macro_interval_coverage": 0.910449028096087,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.6807840391465897,
+            "macro_mae": 0.1697540719616973,
+            "macro_mse": 0.049486702539755296,
+            "macro_ndcg_at_5": 0.6439405105873697,
+            "macro_spearman": 0.08469204347366557,
+            "macro_top5_overlap": 0.3532467532467532,
+            "method": "drug_mean",
+            "registered_rows": 1356,
+            "track": "CD"
+          },
+          {
+            "cells": 77,
+            "common_rows": 1356,
+            "covered_rows": 1356,
+            "lineages": 74,
+            "macro_interval_coverage": 0.9039130803836686,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.6908210475016977,
+            "macro_mae": 0.1663155901054525,
+            "macro_mse": 0.04867010727154229,
+            "macro_ndcg_at_5": 0.6208630999337749,
+            "macro_spearman": 0.10711534160338262,
+            "macro_top5_overlap": 0.3376623376623376,
+            "method": "interaction_mlp",
+            "registered_rows": 1356,
+            "track": "CD"
+          },
+          {
+            "cells": 77,
+            "common_rows": 1356,
+            "covered_rows": 1356,
+            "lineages": 74,
+            "macro_interval_coverage": 0.910449028096087,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.6807840391465897,
+            "macro_mae": 0.1697540719616973,
+            "macro_mse": 0.049486702539755296,
+            "macro_ndcg_at_5": 0.6439405105873697,
+            "macro_spearman": 0.08469204347366557,
+            "macro_top5_overlap": 0.3532467532467532,
+            "method": "rna_neighbor",
+            "registered_rows": 1356,
+            "track": "CD"
+          },
+          {
+            "cells": 77,
+            "common_rows": 1356,
+            "covered_rows": 1356,
+            "lineages": 74,
+            "macro_interval_coverage": 0.9002206943383412,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.679669180201431,
+            "macro_mae": 0.17129717259843616,
+            "macro_mse": 0.04994315228714806,
+            "macro_ndcg_at_5": 0.625999364292835,
+            "macro_spearman": 0.08447812991825884,
+            "macro_top5_overlap": 0.34285714285714286,
+            "method": "selected_context",
+            "registered_rows": 1356,
+            "track": "CD"
+          },
+          {
+            "cells": 77,
+            "common_rows": 1356,
+            "covered_rows": 1356,
+            "lineages": 74,
+            "macro_interval_coverage": 0.9010695187165775,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.6791361358725677,
+            "macro_mae": 0.1655155677614466,
+            "macro_mse": 0.04792381446998695,
+            "macro_ndcg_at_5": 0.6439405105873697,
+            "macro_spearman": 0.08469204347366557,
+            "macro_top5_overlap": 0.3532467532467532,
+            "method": "selected_noninteraction",
+            "registered_rows": 1356,
+            "track": "CD"
+          },
+          {
+            "cells": 77,
+            "common_rows": 1356,
+            "covered_rows": 1356,
+            "lineages": 74,
+            "macro_interval_coverage": 0.9010695187165775,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.6791361358725677,
+            "macro_mae": 0.1655155677614466,
+            "macro_mse": 0.04792381446998695,
+            "macro_ndcg_at_5": 0.6439405105873697,
+            "macro_spearman": 0.08469204347366557,
+            "macro_top5_overlap": 0.3532467532467532,
+            "method": "structure_ridge",
+            "registered_rows": 1356,
+            "track": "CD"
+          }
+        ],
+        "split": "CD"
+      },
+      "D": {
+        "endpoint_direction": "higher",
+        "freeze_sha256": "affd6e3c8a3cd1eff7071d5342387a166579c9455be2736768c0ac6b5c4f5b5a",
+        "metrics_sha256": "55792806b8fd09218fac954a71f77ab4c8e2389e9d1b2ae39c8ccf2074e60ed4",
+        "observations_sha256": "fb047b2f9e99f593882b8da8edd427a8f1e13c306aba608aa257dc030e52fc1b",
+        "paired_contrasts": [
+          {
+            "baseline": "selected_noninteraction",
+            "candidate": "selected_context",
+            "ci95": [
+              0.013014108455044067,
+              0.04946708267179342
+            ],
+            "gain": 0.030684342020770985,
+            "lineages": 74,
+            "metric": "mae",
+            "track": "D"
+          },
+          {
+            "baseline": "selected_noninteraction",
+            "candidate": "selected_context",
+            "ci95": [
+              -0.025244011875022412,
+              -0.0043133628167468215
+            ],
+            "gain": -0.014841711752217157,
+            "lineages": 74,
+            "metric": "ndcg_at_5",
+            "track": "D"
+          },
+          {
+            "baseline": "selected_noninteraction",
+            "candidate": "selected_context",
+            "ci95": [
+              -0.00572011515692126,
+              0.020537295500024703
+            ],
+            "gain": 0.006895352926475973,
+            "lineages": 74,
+            "metric": "spearman",
+            "track": "D"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "selected_context",
+            "ci95": [
+              0.03723572547417124,
+              0.1040088620127036
+            ],
+            "gain": 0.06957247656429123,
+            "lineages": 74,
+            "metric": "mae",
+            "track": "D"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "selected_context",
+            "ci95": [
+              -0.025244011875022412,
+              -0.0043133628167468215
+            ],
+            "gain": -0.014841711752217157,
+            "lineages": 74,
+            "metric": "ndcg_at_5",
+            "track": "D"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "selected_context",
+            "ci95": [
+              -0.00572011515692126,
+              0.020537295500024703
+            ],
+            "gain": 0.006895352926475973,
+            "lineages": 74,
+            "metric": "spearman",
+            "track": "D"
+          }
+        ],
+        "rank_only": false,
+        "scores": [
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.8963924963924965,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.6699322458623946,
+            "macro_mae": 0.16819589685270564,
+            "macro_mse": 0.04892059550187158,
+            "macro_ndcg_at_5": 0.6337422039713824,
+            "macro_spearman": 0.05155841577991169,
+            "macro_top5_overlap": 0.35205936920222636,
+            "method": "additive",
+            "registered_rows": 6776,
+            "track": "D"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.8977675918852391,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.6725918044262028,
+            "macro_mae": 0.17490380891052112,
+            "macro_mse": 0.05232223282969755,
+            "macro_ndcg_at_5": 0.6337422039713824,
+            "macro_spearman": 0.05155841577991169,
+            "macro_top5_overlap": 0.35205936920222636,
+            "method": "drug_mean",
+            "registered_rows": 6776,
+            "track": "D"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.8957643663526017,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.6759548612154392,
+            "macro_mae": 0.16309298141555847,
+            "macro_mse": 0.047592836111116345,
+            "macro_ndcg_at_5": 0.6196936627326145,
+            "macro_spearman": 0.05881531255419037,
+            "macro_top5_overlap": 0.32964749536178106,
+            "method": "interaction_mlp",
+            "registered_rows": 6776,
+            "track": "D"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.8977675918852391,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.6725918044262028,
+            "macro_mae": 0.17490380891052112,
+            "macro_mse": 0.05232223282969755,
+            "macro_ndcg_at_5": 0.6337422039713824,
+            "macro_spearman": 0.05155841577991169,
+            "macro_top5_overlap": 0.35205936920222636,
+            "method": "rna_neighbor",
+            "registered_rows": 6776,
+            "track": "D"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.8957643663526017,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.6759548612154392,
+            "macro_mae": 0.16309298141555847,
+            "macro_mse": 0.047592836111116345,
+            "macro_ndcg_at_5": 0.6196936627326145,
+            "macro_spearman": 0.05881531255419037,
+            "macro_top5_overlap": 0.32964749536178106,
+            "method": "selected_context",
+            "registered_rows": 6776,
+            "track": "D"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.8960954078601139,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.669717730864101,
+            "macro_mae": 0.16821057993043706,
+            "macro_mse": 0.04892966056810944,
+            "macro_ndcg_at_5": 0.6337422039713824,
+            "macro_spearman": 0.05155841577991169,
+            "macro_top5_overlap": 0.35205936920222636,
+            "method": "selected_noninteraction",
+            "registered_rows": 6776,
+            "track": "D"
+          },
+          {
+            "cells": 77,
+            "common_rows": 6776,
+            "covered_rows": 6776,
+            "lineages": 74,
+            "macro_interval_coverage": 0.8960954078601139,
+            "macro_interval_fraction": 1.0,
+            "macro_interval_width": 0.6697177308641021,
+            "macro_mae": 0.16821057993043714,
+            "macro_mse": 0.048929660568109455,
+            "macro_ndcg_at_5": 0.6337422039713824,
+            "macro_spearman": 0.05155841577991169,
+            "macro_top5_overlap": 0.35205936920222636,
+            "method": "structure_ridge",
+            "registered_rows": 6776,
+            "track": "D"
+          }
+        ],
+        "split": "D"
+      }
+    },
+    "train": {
+      "artifact_sha256": {
+        "inner_calibration.parquet": "307b8154750aff8127f68898090d26d30fa0bedf4c0ba9b6c860fe4783177a9e",
+        "inner_selection.tsv": "80cf77af26bea97bc64b4af1cf6ae2d571d154429633c5ad232e2db57edc1342",
+        "labels.parquet": "fb047b2f9e99f593882b8da8edd427a8f1e13c306aba608aa257dc030e52fc1b",
+        "predictions.parquet": "affd6e3c8a3cd1eff7071d5342387a166579c9455be2736768c0ac6b5c4f5b5a",
+        "predictions.parquet.freeze.json": "ea1e7e8c53984f75624dc263829b30190e2e9d2b2497a258c24400dec5b60652",
+        "release_selection.tsv": "0bae15abcec34401490c76932f233a33f06ac7b69a9c9da7a5985a609d8dbc3d",
+        "sample_request.json": "be34b5433d287e4a89b832db5ee19557f7b32aaad2bde92c79beb56f7ac2a10c",
+        "splits.parquet": "de0390bb93b9dcd2390e290ad1510a6b4f2afb53dac9ecb26b98e600a7cb563f",
+        "v0/calibration.tsv": "86a0383d4ac1164af626142d74c044002c44bc06090a7654b9c71e78b7e8b8e9",
+        "v0/checkpoint.joblib": "0dfd69d6a05f8fba21057f26664260a3c0f897f1837387e937a57b2b27c0de6f",
+        "v0/contract.json": "06125fcba34559e1d230873220d1038da5182167f1f5d7cc21084d8279c2c8cf",
+        "v0/receipt.json": "efbb8235a0a6fd528cef125b95dd7aaa619524683e0519e642ccbe425a56c0aa",
+        "v0_baseline/calibration.tsv": "d495a71c5fbb8042407536e605818c388506c51580f305aeb6b4d376ee031077",
+        "v0_baseline/checkpoint.joblib": "0dace8b28322e150969751515fab6331e551eb1773cdc8281c806738d0036844",
+        "v0_baseline/contract.json": "db6ee95ccea7b069cb7a4a829843cb458191858ab401c49ed5306ec635250045",
+        "v0_baseline/receipt.json": "ed7770df058888d5d818aa58b1014380c5189a9db9c58224b0fe1cf34661663a"
+      },
+      "cells": 77,
+      "code_commit": "9f82d8486498c9ff96fc5e8e0799929c20df9744",
+      "code_sha256": {
+        "functional.py": "fdcb2533aed1d6b377317edc1b849ebb1b9c1d2836fa8046b7858b2f239cad33",
+        "io.py": "6fb51bef570f3e1caa474d08f9241afb752a5290ab49a18c6e23fcf5c1fa043e",
+        "splits.py": "0046050d81f7f51ebf6686330e1ae2fe1d667094af48fb076ae73c86046de135",
+        "train.py": "db5052aa1d40280996d735300dbf7b43349307fb9795b92aff5d84c9c9bb9471"
+      },
+      "compounds": 88,
+      "config_sha256": "eea1057706e527c090fb40fbbd47ce1445d2b853451aa9169a05abb2ce1dbcca",
+      "convergence_warnings": 78,
+      "deployment_method": "interaction_mlp",
+      "elapsed_s": 153.11908911168575,
+      "forecast_rows": 124684,
+      "lineage_groups": 74,
+      "outcome_rows": 6776,
+      "rna_sha256": "ab74542386e70b0d872d47fc145c66bb3fc1ec55c3a62cb2cb3942dae54715bd",
+      "rows_sha256": "2e2d40c2c27232985512d3828955ae9b381632015bf7a99e0030fd300ee41555",
+      "scope": "existing public development data; outer targets excluded under this contract",
+      "smoke": false,
+      "splits_sha256": "de0390bb93b9dcd2390e290ad1510a6b4f2afb53dac9ecb26b98e600a7cb563f",
+      "track_names": [
+        "C",
+        "D",
+        "CD"
+      ]
+    }
+  },
+  "releases": {
+    "v0": {
+      "contract": {
+        "assay_id": "CellTiterGlo_72h",
+        "baseline_is_proxy": true,
+        "cell_rna_ood": "nearest fit-cell distance in fit-only standardized RNA PCA",
+        "culture_format": "2D",
+        "dose_uM": null,
+        "endpoint_contract": "curve_summary",
+        "endpoint_direction": "higher",
+        "endpoint_id": "LIMORE_Activity_Area",
+        "expression_scale": "log2(FPKM+1)",
+        "input_mode": "baseline_rna_and_structure",
+        "interval": {
+          "half_width": 0.2465951403088265,
+          "method": "development_lineage_weighted_C_cross_fit_absolute_error_quantile",
+          "nominal_coverage": 0.9
+        },
+        "known_panel_only": true,
+        "method": "interaction_mlp",
+        "min_gene_fraction": 0.9,
+        "model_version": "v0",
+        "predicted_unit": "dimensionless_activity_area",
+        "program_definition_version": null,
+        "program_prediction_available": false,
+        "registered_panel_size": 88,
+        "rna_distance_threshold": 5.0663826220524095,
+        "seeds": [
+          14822,
+          14823,
+          14824
+        ],
+        "setting": 32,
+        "source_id": "LIMORE",
+        "source_protocol": "Qiu_2019_LIMORE_72h_CTG_TableS4",
+        "structure_ood": "exact isomeric SMILES registration and nearest fit ECFP Tanimoto",
+        "supported_dose_response": false,
+        "supported_primary_input": "baseline RNA plus registered compound identity",
+        "time_h": 72,
+        "versions": {
+          "python": "3.10.12",
+          "rdkit": "2025.03.5",
+          "scikit_learn": "1.6.1"
+        }
+      },
+      "receipt": {
+        "files": {
+          "calibration.tsv": "86a0383d4ac1164af626142d74c044002c44bc06090a7654b9c71e78b7e8b8e9",
+          "checkpoint.joblib": "0dfd69d6a05f8fba21057f26664260a3c0f897f1837387e937a57b2b27c0de6f",
+          "contract.json": "06125fcba34559e1d230873220d1038da5182167f1f5d7cc21084d8279c2c8cf"
+        }
+      }
+    },
+    "v0_baseline": {
+      "contract": {
+        "assay_id": "CellTiterGlo_72h",
+        "baseline_is_proxy": true,
+        "cell_rna_ood": "nearest fit-cell distance in fit-only standardized RNA PCA",
+        "culture_format": "2D",
+        "dose_uM": null,
+        "endpoint_contract": "curve_summary",
+        "endpoint_direction": "higher",
+        "endpoint_id": "LIMORE_Activity_Area",
+        "expression_scale": "log2(FPKM+1)",
+        "input_mode": "baseline_rna_and_structure",
+        "interval": {
+          "half_width": 0.257760355212667,
+          "method": "development_lineage_weighted_C_cross_fit_absolute_error_quantile",
+          "nominal_coverage": 0.9
+        },
+        "known_panel_only": true,
+        "method": "structure_ridge",
+        "min_gene_fraction": 0.9,
+        "model_version": "v0_baseline",
+        "predicted_unit": "dimensionless_activity_area",
+        "program_definition_version": null,
+        "program_prediction_available": false,
+        "registered_panel_size": 88,
+        "rna_distance_threshold": 5.0663826220524095,
+        "seeds": [
+          14822
+        ],
+        "setting": 1000,
+        "source_id": "LIMORE",
+        "source_protocol": "Qiu_2019_LIMORE_72h_CTG_TableS4",
+        "structure_ood": "exact isomeric SMILES registration and nearest fit ECFP Tanimoto",
+        "supported_dose_response": false,
+        "supported_primary_input": "baseline RNA plus registered compound identity",
+        "time_h": 72,
+        "versions": {
+          "python": "3.10.12",
+          "rdkit": "2025.03.5",
+          "scikit_learn": "1.6.1"
+        }
+      },
+      "receipt": {
+        "files": {
+          "calibration.tsv": "d495a71c5fbb8042407536e605818c388506c51580f305aeb6b4d376ee031077",
+          "checkpoint.joblib": "0dace8b28322e150969751515fab6331e551eb1773cdc8281c806738d0036844",
+          "contract.json": "db6ee95ccea7b069cb7a4a829843cb458191858ab401c49ed5306ec635250045"
+        }
+      }
+    }
+  },
+  "run": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vc_build_v1/function/function-registered.ekrmqfpZ",
+  "smoke": {
+    "freeze": {
+      "artifact": "predictions.parquet",
+      "frozen_utc": "2026-11-22T05:04:42.187908+00:00",
+      "provenance": {
+        "code_commit": "9f82d8486498c9ff96fc5e8e0799929c20df9744",
+        "code_sha256": {
+          "functional.py": "fdcb2533aed1d6b377317edc1b849ebb1b9c1d2836fa8046b7858b2f239cad33",
+          "io.py": "6fb51bef570f3e1caa474d08f9241afb752a5290ab49a18c6e23fcf5c1fa043e",
+          "splits.py": "0046050d81f7f51ebf6686330e1ae2fe1d667094af48fb076ae73c86046de135",
+          "train.py": "db5052aa1d40280996d735300dbf7b43349307fb9795b92aff5d84c9c9bb9471"
+        },
+        "config_sha256": "eea1057706e527c090fb40fbbd47ce1445d2b853451aa9169a05abb2ce1dbcca",
+        "rna_sha256": "ab74542386e70b0d872d47fc145c66bb3fc1ec55c3a62cb2cb3942dae54715bd",
+        "rows_sha256": "2e2d40c2c27232985512d3828955ae9b381632015bf7a99e0030fd300ee41555",
+        "scope": "real endpoint pipeline smoke; no comparative claim",
+        "splits_sha256": "9015b4d945990df99464f21d6be8cf67d35dc7b452d05f4e0914838491a37b76"
+      },
+      "rows": 2772,
+      "schema_version": 1,
+      "sha256": "e4d741653c53781f2af80ab5fa46d292dd3f07a8e3dd0a37b26775d09e58614c"
+    },
+    "metrics": {
+      "C": {
+        "endpoint_direction": "higher",
+        "freeze_sha256": "e4d741653c53781f2af80ab5fa46d292dd3f07a8e3dd0a37b26775d09e58614c",
+        "metrics_sha256": "a290f6a6492103d3cd9ab4e673949c040397a568dcdec807c72ee42d7ddad221",
+        "observations_sha256": "42bb36799548d284e015cabd70375be1c221fa75c62f9104d7d2f8a85897a4e0",
+        "paired_contrasts": [],
+        "rank_only": false,
+        "scores": [
+          {
+            "cells": 77,
+            "common_rows": 924,
+            "covered_rows": 924,
+            "lineages": 74,
+            "macro_interval_fraction": 0.0,
+            "macro_mae": 0.1063455751774047,
+            "macro_mse": 0.023169832457788617,
+            "macro_ndcg_at_5": 0.924335488130315,
+            "macro_spearman": 0.7513291515973267,
+            "macro_top5_overlap": 0.7764069264069263,
+            "method": "additive",
+            "registered_rows": 924,
+            "track": "C"
+          },
+          {
+            "cells": 77,
+            "common_rows": 924,
+            "covered_rows": 924,
+            "lineages": 74,
+            "macro_interval_fraction": 0.0,
+            "macro_mae": 0.10680916462833151,
+            "macro_mse": 0.02441371171910089,
+            "macro_ndcg_at_5": 0.924335488130315,
+            "macro_spearman": 0.7513291515973267,
+            "macro_top5_overlap": 0.7764069264069263,
+            "method": "drug_mean",
+            "registered_rows": 924,
+            "track": "C"
+          },
+          {
+            "cells": 77,
+            "common_rows": 924,
+            "covered_rows": 924,
+            "lineages": 74,
+            "macro_interval_fraction": 0.0,
+            "macro_mae": 0.10680916462833151,
+            "macro_mse": 0.02441371171910089,
+            "macro_ndcg_at_5": 0.924335488130315,
+            "macro_spearman": 0.7513291515973267,
+            "macro_top5_overlap": 0.7764069264069263,
+            "method": "selected_noninteraction",
+            "registered_rows": 924,
+            "track": "C"
+          }
+        ],
+        "split": "C"
+      }
+    },
+    "train": {
+      "artifact_sha256": {
+        "labels.parquet": "42bb36799548d284e015cabd70375be1c221fa75c62f9104d7d2f8a85897a4e0",
+        "predictions.parquet": "e4d741653c53781f2af80ab5fa46d292dd3f07a8e3dd0a37b26775d09e58614c",
+        "predictions.parquet.freeze.json": "63718300d6158921c0c4d30dc938fd49436278dfccd19cf01a142fd3e03424ed",
+        "sample_request.json": "be34b5433d287e4a89b832db5ee19557f7b32aaad2bde92c79beb56f7ac2a10c",
+        "splits.parquet": "9015b4d945990df99464f21d6be8cf67d35dc7b452d05f4e0914838491a37b76",
+        "v0-smoke/calibration.tsv": "7c632a6e531d7848bb43bd9eebd9f0f7d7da7a4485b5366baf06ccfd42362c88",
+        "v0-smoke/checkpoint.joblib": "3a5b34da7e88000565edb17347e30a12c14708e9704fbb86b238f676de4d3842",
+        "v0-smoke/contract.json": "e90d1d11c6e3eac2e8e3c1b1dec37a7075258339c1629408530ef79587fa8349",
+        "v0-smoke/receipt.json": "202f79b4cab7a3eda1a3ce2906306c3cf662d58204e2922138de25fe1ada6aca"
+      },
+      "cells": 77,
+      "code_commit": "9f82d8486498c9ff96fc5e8e0799929c20df9744",
+      "code_sha256": {
+        "functional.py": "fdcb2533aed1d6b377317edc1b849ebb1b9c1d2836fa8046b7858b2f239cad33",
+        "io.py": "6fb51bef570f3e1caa474d08f9241afb752a5290ab49a18c6e23fcf5c1fa043e",
+        "splits.py": "0046050d81f7f51ebf6686330e1ae2fe1d667094af48fb076ae73c86046de135",
+        "train.py": "db5052aa1d40280996d735300dbf7b43349307fb9795b92aff5d84c9c9bb9471"
+      },
+      "compounds": 12,
+      "config_sha256": "eea1057706e527c090fb40fbbd47ce1445d2b853451aa9169a05abb2ce1dbcca",
+      "convergence_warnings": 0,
+      "deployment_method": "additive",
+      "elapsed_s": 4.696078281849623,
+      "forecast_rows": 2772,
+      "lineage_groups": 74,
+      "outcome_rows": 924,
+      "rna_sha256": "ab74542386e70b0d872d47fc145c66bb3fc1ec55c3a62cb2cb3942dae54715bd",
+      "rows_sha256": "2e2d40c2c27232985512d3828955ae9b381632015bf7a99e0030fd300ee41555",
+      "scope": "real endpoint pipeline smoke; no comparative claim",
+      "smoke": true,
+      "splits_sha256": "9015b4d945990df99464f21d6be8cf67d35dc7b452d05f4e0914838491a37b76",
+      "track_names": [
+        "C"
+      ]
+    }
+  }
+}
