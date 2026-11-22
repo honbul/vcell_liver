@@ -175,7 +175,15 @@ def unambiguous_parent(smiles):
         return None
 
 
-def source_structures(metadata, id_column, name_column, smiles_column, limore_panel):
+def prism_parent(smiles):
+    """Resolve repeated PRISM SMILES annotations only when all encode one exact parent."""
+    parents = [unambiguous_parent(annotation.strip()) for annotation in smiles.split(",")]
+    if any(parent is None for parent in parents) or len({parent[1] for parent in parents}) != 1:
+        return None
+    return min(parents)
+
+
+def source_structures(metadata, id_column, name_column, smiles_column, limore_panel, *, resolve=unambiguous_parent):
     """Require a single exact standardized parent for each source chemical identifier."""
     structures = metadata[[id_column, name_column, smiles_column]].drop_duplicates().copy()
     lookup = {}
@@ -183,7 +191,7 @@ def source_structures(metadata, id_column, name_column, smiles_column, limore_pa
     RDLogger.DisableLog("rdApp.error")
     try:
         for smiles in structures[smiles_column].unique():
-            parent = unambiguous_parent(smiles)
+            parent = resolve(smiles)
             lookup[smiles] = parent[1] if parent else None
     finally:
         RDLogger.EnableLog("rdApp.warning")
@@ -278,7 +286,8 @@ def ctrp_rows(sources, lookup, limore_panel, *, native_ids=None):
 def prism_rows(sources, lookup, limore_panel, *, native_ids=None):
     raw = read_raw(sources["prism_curves"]["path"],
                    ["broad_id", "depmap_id", "ccle_name", "screen_id", "auc", "passed_str_profiling", "name", "smiles"])
-    mapping = source_structures(raw, "broad_id", "name", "smiles", limore_panel).drop(columns="native_drug_label")
+    mapping = source_structures(raw, "broad_id", "name", "smiles", limore_panel, resolve=prism_parent)
+    mapping = mapping.drop(columns="native_drug_label")
     if native_ids is not None:
         mapping = mapping[mapping.native_compound_id.isin(native_ids)]
     rows = raw[raw.passed_str_profiling.str.upper().eq("TRUE")].rename(columns={

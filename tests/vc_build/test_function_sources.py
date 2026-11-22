@@ -2,7 +2,9 @@ import gzip
 
 import pandas as pd
 
-from vc_build.cross_source_data import MODEL_COLS, parse_cellosaurus_identity, protected_adult_families
+from vc_build.cross_source_data import (
+    MODEL_COLS, parse_cellosaurus_identity, prism_parent, protected_adult_families, source_structures,
+)
 from vc_build.function_data import canonical_chemistry
 
 
@@ -12,6 +14,26 @@ def test_isomeric_parent_preserves_stereochemistry_and_groups_connectivity():
     assert left[1] != right[1]
     assert left[2] == right[2]
     assert left == canonical_chemistry("C[C@H](O)C([O-])=O.[Na+]")
+
+
+def test_prism_repeated_annotations_restore_only_one_verified_parent():
+    drug = "C[C@H](O)C(O)=O"
+    alternative = "C[C@H](O)C([O-])=O.[Na+]"
+    opposite = "C[C@@H](O)C(O)=O"
+    exact = canonical_chemistry(drug)[1]
+    assert prism_parent(f"{drug}, {alternative}, {drug}")[1] == exact
+    assert prism_parent(f"{drug}, {opposite}") is None
+    assert prism_parent(f"{drug}, ") is None
+    metadata = pd.DataFrame([
+        ("same", "single", f"{drug}, {alternative}"),
+        ("ambiguous", "single", f"{drug}, {opposite}"),
+        ("marked", "one + two", f"{drug}, {drug}"),
+        ("conflict", "single", f"{drug}, {drug}"),
+        ("conflict", "single", opposite),
+    ], columns=["id", "name", "smiles"])
+    selected = source_structures(metadata, "id", "name", "smiles", pd.DataFrame({"compound_id": [exact]}),
+                                 resolve=prism_parent)
+    assert selected.native_compound_id.tolist() == ["same"]
 
 
 def test_query_roster_excludes_parent_alias_and_holds_same_donor_together(tmp_path):

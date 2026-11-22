@@ -10,7 +10,7 @@ import pandas as pd
 from rdkit import RDLogger
 
 from .cross_source_data import (
-    MIXTURE, MODEL_COLS, ctrp_rows, prism_rows, read_raw, response_rows, roster_maps, roster_table,
+    MIXTURE, MODEL_COLS, ctrp_rows, prism_parent, prism_rows, read_raw, response_rows, roster_maps, roster_table,
     unambiguous_parent,
 )
 from .function_data import new_output
@@ -32,7 +32,8 @@ def compound_panel(sources):
     try:
         for source, (name, native, label, compound, target, delim) in SOURCE_COLUMNS.items():
             table = read_raw(sources[name]["path"], [native, label, compound, target], sep=delim).drop_duplicates()
-            lookup = {smiles: unambiguous_parent(smiles) for smiles in table[compound].unique()}
+            resolve = prism_parent if source == "PRISM20Q2" else unambiguous_parent
+            lookup = {smiles: resolve(smiles) for smiles in table[compound].unique()}
             candidate = table[compound].map(lookup).mask(table[label].str.contains(MIXTURE)).dropna()
             keys = table[[native, label, target]].join(candidate.rename("parent"), how="inner")
             definitions = pd.DataFrame(keys.parent.tolist(), index=keys.index, columns=[
