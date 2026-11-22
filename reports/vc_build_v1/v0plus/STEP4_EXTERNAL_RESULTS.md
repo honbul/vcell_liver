@@ -83,3 +83,5 @@ Oslo 대장암 간전이 자료의 91개 PDO·52명에서 기저 RNA와 웰별 �
 후속 화학 확인으로 Oslo–LICOB의 입체 구조를 지정한 13약물에서 3D RNA 반응을 기존 2D 모델에 추가했다. LICOB 38명의 AUC에서 추가 편차는 공동 개선 기준을 통과하지 못했다. 최고 물리 농도를 맞춘 Emax는 2약물에 비교 지지가 있었고 ceralasertib은 Oslo 단독 기술값을 보고했다. [Oslo–LICOB 전이](OSLO_LICOB_TRANSFER_RESULTS.md)
 
 새로 연결한 Singapore 치료 전 PDX RNA에서 sorafenib 구조 커널의 약물 내 두 상관은 양수였지만 10환자군의 사전 기준은 미통과였다. Vinorelbine 실측의 2023–2024 공통 11군에서 Spearman .782 [+.183, +.972]로 사전 재현 기준을 통과했다. PRISM의 같은 parent 반복 표기 처리도 바로잡아 vinorelbine과 everolimus의 학습 지지를 복원했다. [PDX 결과와 PRISM 감사](SHUEN_PDX_RESULTS.md)
+
+복원한 PRISM 데이터를 사용해 vinorelbine의 2D 실측으로 학습하고 Singapore PDX의 공통 6환자군을 별도 평가했다. 기전 커널의 약물 내 순위는 양수였으며 두 출판물 모두에서 기준 미통과였다. LICOB에서는 기존 학습에 없던 7약물의 정확한 PRISM 실측을 추가해 같은 38명에서 평가했다. 상위 5약물 점 추정치와 약물별 환자 순위가 서로 다른 방향으로 움직여 공동 기준에 미달했다. [Vinorelbine PDX](VINORELBINE_TRANSFER_RESULTS.md) · [LICOB PRISM 7약물](LICOB_PRISM_RESTORED_RESULTS.md)
