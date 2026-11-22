@@ -51,3 +51,5 @@ GDSC2에서 Pearson 차이의 95% 구간은 [+.013, +.038]이었고 NDCG@5 차�
 ## 동결 및 실행
 
 명세 커밋은 `1ba7f80`이다. G1에서 `33566` 등록, `33567` GPU 15분할 적합·동결, `33568` CPU 별도 채점을 완료했다. 15개 예측 SHA-256과 624,066개 행을 검증했다. 채점 SHA-256은 `b62260b128e691b03af4d80a66e85b4043de14e15233d0bf3c8d66c2eb6e391c`다. [등록 영수증](gdsc1_bridge_input_receipt.json) · [채점 및 동결 SHA-256](gdsc1_bridge_score.json) · [작업 원장](RUN_LEDGER.tsv)
+
+후속 6일 GR50 평가에서 같은 공여자를 전 약물 학습에서 뺀 뒤 네 TKI를 채점했다. CellHit는 GR50 약물 내 Spearman .571을 기록했으나 모든 모델의 공여자 내 순위는 음수였다. [6일 GR50 동결 평가](TKI_GR50_RESULTS.md)
