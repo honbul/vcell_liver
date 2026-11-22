@@ -30,6 +30,8 @@ UPSTREAM_VERSIONS = {
     "Velodrome": "453dd5883337f32a3e667bf63cc53b681fdc363d",
     "CODE-AE": "46b448bcadfafb4c8f552233aa8392f47d2e6b33",
 }
+MOLECULAR_ARMS = ("v0plus_inductive", "v0plus_transductive", "v0plus_fixed", "no_chronos",
+                  "no_driver", "no_pathways", "no_targets", "no_alignment", "no_rank")
 
 
 def training_inputs(bundle):
@@ -181,10 +183,16 @@ def settings_for(arm):
         return [(arm, depth, 512) for depth in (3, 5)]
     if arm in PUBLIC_ARMS:
         return [(arm, alpha, 512) for alpha in (0.05, 0.25)]
+    if arm in MOLECULAR_ARMS:
+        from .v0plus_neural import GPU_SETTINGS
+
+        choices = GPU_SETTINGS if arm in ("v0plus_inductive", "v0plus_transductive") else GPU_SETTINGS[:1]
+        return [(arm, width, epochs) for width, epochs in choices]
     return [(arm, *setting) for setting in TREES]
 
 
-def candidate_forecasts(arm, train, query, rna, edges, targets, *, gpu=False, selected=None, upstream=None):
+def candidate_forecasts(arm, train, query, rna, edges, targets, *, gpu=False, selected=None,
+                        upstream=None, auxiliary=None):
     candidates = settings_for(arm) if selected is None else sorted({entry[:3] for entry in selected})
     gammas = GAMMAS if selected is None else tuple(sorted({entry[3] for entry in selected}))
     fit_rna = rna.loc[sorted(train.cell_id.unique())]
@@ -192,7 +200,8 @@ def candidate_forecasts(arm, train, query, rna, edges, targets, *, gpu=False, se
     panel, anchor, source_rows, calibration = panel_targets(train)
     chemistry = design_drugs(train) if arm in {"lightgbm", "catboost"} else None
     n_genes = 512 if arm == "linear" or arm in PUBLIC_ARMS else 256
-    features = ExpressionFeatures.fit(fit_rna, edges, targets, n_variable=n_genes, rank=True)
+    if arm not in MOLECULAR_ARMS:
+        features = ExpressionFeatures.fit(fit_rna, edges, targets, n_variable=n_genes, rank=True)
     if arm in PUBLIC_ARMS:
         fit_x, query_x = features.transform(fit_rna), features.transform(query_rna)
     predictions = []
@@ -200,11 +209,18 @@ def candidate_forecasts(arm, train, query, rna, edges, targets, *, gpu=False, se
         if arm in PUBLIC_ARMS:
             ref = query.compound_id.map(anchor).to_numpy()
             residual = public_predictions(arm, source_rows, query, fit_x, query_x, upstream, penalty, gpu=gpu)
+        elif arm in MOLECULAR_ARMS:
+            from .v0plus_neural import fit_molecular
+
+            model = fit_molecular(arm, int(penalty), width, source_rows, anchor, fit_rna, query_rna,
+                                  edges, targets, auxiliary, gpu=gpu)
+            ref, residual = model.predict(query, query_rna)
         else:
             model = fit_baseline(method, (penalty, width), panel, anchor, fit_rna, features, targets,
                                  chemistry=chemistry, gpu=gpu)
             ref, residual = model.predict(query, query_rna)
-        for multiplier in (1.,) if method == "drug_mean" else gammas:
+        fixed_arch = arm in MOLECULAR_ARMS and arm not in ("v0plus_inductive", "v0plus_transductive")
+        for multiplier in (1.,) if method == "drug_mean" or fixed_arch else gammas:
             if selected is not None and (method, penalty, width, multiplier) not in selected:
                 continue
             name = f"{method}/{penalty}/{width}/{multiplier}"
@@ -224,23 +240,28 @@ def choose(metrics):
     return list(picked.values())
 
 
-def run_fold(train, rna, edges, targets, arm, fold, *, gpu, upstream):
+def run_fold(train, rna, edges, targets, arm, fold, *, gpu, upstream, auxiliary):
     folds = list(GroupKFold(n_splits=3).split(train, groups=train.lineage_group))
     outer_fit, outer_check = (train.iloc[indices] for indices in folds[fold])
-    inner_forecasts = []
-    for inner_fold, (fit_index, check_index) in enumerate(
-        GroupKFold(n_splits=2).split(outer_fit, groups=outer_fit.lineage_group)
-    ):
-        fit, check = outer_fit.iloc[fit_index], outer_fit.iloc[check_index]
-        prediction, _ = candidate_forecasts(
-            arm, fit, validation_roster(check), rna, edges, targets, gpu=gpu, upstream=upstream,
-        )
-        inner_forecasts.append(attach_native(prediction, check, inner_fold))
-    inner = summarize(pd.concat(inner_forecasts, ignore_index=True))
-    selected = choose(inner)
+    if arm in MOLECULAR_ARMS and arm not in ("v0plus_inductive", "v0plus_transductive"):
+        selected = [(*settings_for(arm)[0], 1.)]
+        inner = pd.DataFrame()
+    else:
+        inner_forecasts = []
+        for inner_fold, (fit_index, check_index) in enumerate(
+            GroupKFold(n_splits=2).split(outer_fit, groups=outer_fit.lineage_group)
+        ):
+            fit, check = outer_fit.iloc[fit_index], outer_fit.iloc[check_index]
+            prediction, _ = candidate_forecasts(
+                arm, fit, validation_roster(check), rna, edges, targets,
+                gpu=gpu, upstream=upstream, auxiliary=auxiliary,
+            )
+            inner_forecasts.append(attach_native(prediction, check, inner_fold))
+        inner = summarize(pd.concat(inner_forecasts, ignore_index=True))
+        selected = choose(inner)
     outer, calibration = candidate_forecasts(
         arm, outer_fit, validation_roster(outer_check), rna, edges, targets,
-        gpu=gpu, selected=selected, upstream=upstream,
+        gpu=gpu, selected=selected, upstream=upstream, auxiliary=auxiliary,
     )
     outer.method = outer.method.str.split("/").str[0]
     results = attach_native(outer, outer_check, fold)
@@ -253,8 +274,9 @@ def main():
     parser.add_argument("--priors", required=True, type=Path)
     parser.add_argument("--hallmark", required=True, type=Path)
     parser.add_argument("--targets", required=True, type=Path)
-    parser.add_argument("--arm", choices=("linear", "catboost", "lightgbm", *PUBLIC_ARMS), required=True)
+    parser.add_argument("--arm", choices=("linear", "catboost", "lightgbm", *PUBLIC_ARMS, *MOLECULAR_ARMS), required=True)
     parser.add_argument("--upstream", type=Path)
+    parser.add_argument("--auxiliary", type=Path)
     parser.add_argument("--gpu", action="store_true")
     parser.add_argument("--fold", required=True, type=int, choices=(0, 1, 2))
     parser.add_argument("--out", required=True, type=Path)
@@ -262,8 +284,14 @@ def main():
     fit, rna, receipt = training_inputs(args.bundle)
     edges, targets, provenance = molecular_inputs(args.priors, args.hallmark, args.targets)
     upstream = verify_upstream(args.upstream) if args.arm in PUBLIC_ARMS else {}
+    auxiliary, aux_receipt = None, None
+    if args.arm in MOLECULAR_ARMS:
+        from .v0plus_neural import load_auxiliary
+
+        auxiliary, aux_receipt = load_auxiliary(args.auxiliary)
     outer, selected, calibration, inner = run_fold(
-        fit, rna, edges, targets, args.arm, args.fold, gpu=args.gpu, upstream=args.upstream,
+        fit, rna, edges, targets, args.arm, args.fold, gpu=args.gpu,
+        upstream=args.upstream, auxiliary=auxiliary,
     )
     report = {
         "fold": args.fold, "arm": args.arm, "gpu": args.gpu, "selected": selected, "calibration": calibration,
@@ -274,6 +302,8 @@ def main():
     if upstream:
         report["upstream_commits"] = UPSTREAM_VERSIONS
         report["upstream_file_sha256"] = upstream
+    if aux_receipt:
+        report["auxiliary_priors"] = aux_receipt
     # Internal OOF observations were registered as source-only development data.
     args.out.mkdir(parents=True, exist_ok=False)
     outer.to_parquet(args.out / "validation.parquet", index=False)

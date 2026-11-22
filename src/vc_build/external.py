@@ -115,17 +115,17 @@ def _target_features(rows, rna, targets):
     return matrix
 
 
-def _chemistry(frame):
+def _chemistry(frame, fp_size=256):
     from rdkit import Chem, DataStructs
     from rdkit.Chem import Descriptors, rdFingerprintGenerator
 
-    generator = rdFingerprintGenerator.GetMorganGenerator(radius=2, fpSize=256, includeChirality=True)
+    generator = rdFingerprintGenerator.GetMorganGenerator(radius=2, fpSize=fp_size, includeChirality=True)
     features = {}
     for key, smiles in frame[["compound_id", "isomeric_smiles"]].drop_duplicates().itertuples(index=False, name=None):
         molecule = Chem.MolFromSmiles(smiles)
         if molecule is None:
             raise ValueError(f"Invalid structure for {key}")
-        fp = np.zeros(256, dtype=np.float64)
+        fp = np.zeros(fp_size, dtype=np.float64)
         DataStructs.ConvertToNumpyArray(generator.GetFingerprint(molecule), fp)
         descriptors = [Descriptors.MolWt(molecule) / 500, Descriptors.MolLogP(molecule) / 5,
                        Descriptors.TPSA(molecule) / 150, Descriptors.NumHDonors(molecule) / 5]
