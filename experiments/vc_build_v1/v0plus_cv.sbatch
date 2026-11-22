@@ -21,6 +21,7 @@ args=(
   --hallmark /mnt/S1/sdata/pubdata/Virtual_Cell/MSigDB/2026.1.Hs/h.all.v2026.1.Hs.symbols.gmt
   --targets "$root/external-code-v3/drug_targets.json"
   --arm "$arm"
+  --upstream "$root/v0plus-upstream"
   --fold "$SLURM_ARRAY_TASK_ID"
   --out "$run/$arm/fold$SLURM_ARRAY_TASK_ID"
 )

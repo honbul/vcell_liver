@@ -15,6 +15,7 @@ from .evaluate import score, score_across_cells
 from .external import KEY, SOURCE, _rna, align_endpoints, native_sensitivity
 from .io import freeze_table, publish_json, read_table, sha256
 from .v0plus_features import ExpressionFeatures, signatures, validated_public_prior
+from .v0plus_sota import PUBLIC_ARMS, public_predictions, verify_upstream
 
 IDENTITY = ["cell_id", "lineage_group", "compound_id"]
 LINEAR = [
@@ -176,22 +177,33 @@ def fit_baseline(method, settings, panel, anchor, rna, features, targets, *, che
 def settings_for(arm):
     if arm == "linear":
         return [("drug_mean", 0., 256), ("additive", 30., 512), ("additive", 300., 512), *LINEAR]
+    if arm == "cellhit":
+        return [(arm, depth, 512) for depth in (3, 5)]
+    if arm in PUBLIC_ARMS:
+        return [(arm, alpha, 512) for alpha in (0.05, 0.25)]
     return [(arm, *setting) for setting in TREES]
 
 
-def candidate_forecasts(arm, train, query, rna, edges, targets, *, gpu=False, selected=None):
+def candidate_forecasts(arm, train, query, rna, edges, targets, *, gpu=False, selected=None, upstream=None):
     candidates = settings_for(arm) if selected is None else sorted({entry[:3] for entry in selected})
     gammas = GAMMAS if selected is None else tuple(sorted({entry[3] for entry in selected}))
     fit_rna = rna.loc[sorted(train.cell_id.unique())]
     query_rna = rna.loc[sorted(query.cell_id.unique())]
-    panel, anchor, _, calibration = panel_targets(train)
+    panel, anchor, source_rows, calibration = panel_targets(train)
     chemistry = design_drugs(train) if arm in {"lightgbm", "catboost"} else None
-    features = ExpressionFeatures.fit(fit_rna, edges, targets, n_variable=512 if arm == "linear" else 256, rank=True)
+    n_genes = 512 if arm == "linear" or arm in PUBLIC_ARMS else 256
+    features = ExpressionFeatures.fit(fit_rna, edges, targets, n_variable=n_genes, rank=True)
+    if arm in PUBLIC_ARMS:
+        fit_x, query_x = features.transform(fit_rna), features.transform(query_rna)
     predictions = []
     for method, penalty, width in candidates:
-        model = fit_baseline(method, (penalty, width), panel, anchor, fit_rna, features, targets,
-                             chemistry=chemistry, gpu=gpu)
-        ref, residual = model.predict(query, query_rna)
+        if arm in PUBLIC_ARMS:
+            ref = query.compound_id.map(anchor).to_numpy()
+            residual = public_predictions(arm, source_rows, query, fit_x, query_x, upstream, penalty, gpu=gpu)
+        else:
+            model = fit_baseline(method, (penalty, width), panel, anchor, fit_rna, features, targets,
+                                 chemistry=chemistry, gpu=gpu)
+            ref, residual = model.predict(query, query_rna)
         for multiplier in (1.,) if method == "drug_mean" else gammas:
             if selected is not None and (method, penalty, width, multiplier) not in selected:
                 continue
@@ -212,7 +224,7 @@ def choose(metrics):
     return list(picked.values())
 
 
-def run_fold(train, rna, edges, targets, arm, fold, *, gpu):
+def run_fold(train, rna, edges, targets, arm, fold, *, gpu, upstream):
     folds = list(GroupKFold(n_splits=3).split(train, groups=train.lineage_group))
     outer_fit, outer_check = (train.iloc[indices] for indices in folds[fold])
     inner_forecasts = []
@@ -220,12 +232,15 @@ def run_fold(train, rna, edges, targets, arm, fold, *, gpu):
         GroupKFold(n_splits=2).split(outer_fit, groups=outer_fit.lineage_group)
     ):
         fit, check = outer_fit.iloc[fit_index], outer_fit.iloc[check_index]
-        prediction, _ = candidate_forecasts(arm, fit, validation_roster(check), rna, edges, targets, gpu=gpu)
+        prediction, _ = candidate_forecasts(
+            arm, fit, validation_roster(check), rna, edges, targets, gpu=gpu, upstream=upstream,
+        )
         inner_forecasts.append(attach_native(prediction, check, inner_fold))
     inner = summarize(pd.concat(inner_forecasts, ignore_index=True))
     selected = choose(inner)
     outer, calibration = candidate_forecasts(
-        arm, outer_fit, validation_roster(outer_check), rna, edges, targets, gpu=gpu, selected=selected,
+        arm, outer_fit, validation_roster(outer_check), rna, edges, targets,
+        gpu=gpu, selected=selected, upstream=upstream,
     )
     outer.method = outer.method.str.split("/").str[0]
     results = attach_native(outer, outer_check, fold)
@@ -238,20 +253,27 @@ def main():
     parser.add_argument("--priors", required=True, type=Path)
     parser.add_argument("--hallmark", required=True, type=Path)
     parser.add_argument("--targets", required=True, type=Path)
-    parser.add_argument("--arm", choices=("linear", "catboost", "lightgbm"), required=True)
+    parser.add_argument("--arm", choices=("linear", "catboost", "lightgbm", *PUBLIC_ARMS), required=True)
+    parser.add_argument("--upstream", type=Path)
     parser.add_argument("--gpu", action="store_true")
     parser.add_argument("--fold", required=True, type=int, choices=(0, 1, 2))
     parser.add_argument("--out", required=True, type=Path)
     args = parser.parse_args()
     fit, rna, receipt = training_inputs(args.bundle)
     edges, targets, provenance = molecular_inputs(args.priors, args.hallmark, args.targets)
-    outer, selected, calibration, inner = run_fold(fit, rna, edges, targets, args.arm, args.fold, gpu=args.gpu)
+    upstream = verify_upstream(args.upstream) if args.arm in PUBLIC_ARMS else {}
+    outer, selected, calibration, inner = run_fold(
+        fit, rna, edges, targets, args.arm, args.fold, gpu=args.gpu, upstream=args.upstream,
+    )
     report = {
         "fold": args.fold, "arm": args.arm, "gpu": args.gpu, "selected": selected, "calibration": calibration,
         "molecular_priors": provenance, "source_training_rows": receipt["train_rows"],
         "validation_lineages": int(outer.lineage_group.nunique()),
         "inner_metrics": inner.to_dict("records"), "outer_metrics": summarize(outer).to_dict("records"),
     }
+    if upstream:
+        report["upstream_commits"] = UPSTREAM_VERSIONS
+        report["upstream_file_sha256"] = upstream
     # Internal OOF observations were registered as source-only development data.
     args.out.mkdir(parents=True, exist_ok=False)
     outer.to_parquet(args.out / "validation.parquet", index=False)
