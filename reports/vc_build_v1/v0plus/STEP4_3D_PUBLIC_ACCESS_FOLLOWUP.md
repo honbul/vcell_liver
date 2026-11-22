@@ -43,3 +43,5 @@ NCI GDC의 공개 cases API에서 HCMI-CMDC 등록 805명 중 `Hepatocellular ca
 ## LICOB 동일 화합물의 공개 스크린 보강
 
 PRISM24Q2의 새 처리 3약물과 기존 primary 2약물, NCI DTP GI50의 6약물을 정확한 isomeric parent로 연결했다. 합집합 6약물이 기존 64약물에 더해져 LICOB 76약물 중 70개가 공개 적합 반응을 갖는다. 신규 두 스크린을 결합한 모델은 성인 38명의 6약물에서 이전 동결 대비 약물 내 Spearman −.083과 Pearson −.055였으며 두 95% 구간은 0을 포함했다. 기존 모델 교체의 사전 공동 기준은 미달했다. [6약물 화학 감사 및 성적](LICOB_SCREEN_BRIDGE_RESULTS.md)
+
+Gao PDX 공개 원표에서 기저 RNA, 단일 약물과 동일 모델 무처리 14일 성장률을 162모델·22약물로 연결했다. 암종 전체를 보류하면 2D와 PDX 보정 결합의 약물 내 Spearman 점수가 2D보다 낮았고 다섯 짝지은 구간은 모두 0을 포함했다. Weill Cornell의 공개 RNA 목록에서 HCC는 0개였고, PharmaFormer 공개 코드의 LIHC 원표 경로도 별도로 감사했다. [등록과 암종 보류 결과](PDX_UNTREATED_RESULTS.md)
