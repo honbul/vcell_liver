@@ -78,8 +78,8 @@ def cell_kernels(fit, query, signatures, auxiliary, *, device):
             if not np.isfinite(values).all():
                 raise ValueError("Invalid public auxiliary target")
             estimator = Ridge(alpha=1000).fit(x_small[valid], values)
-            proxy_fit.append(estimator.predict(x_small))
-            proxy_query.append(estimator.predict(q_small))
+            proxy_fit.append(estimator.predict(x_small).reshape(len(x_small), len(columns)))
+            proxy_query.append(estimator.predict(q_small).reshape(len(q_small), len(columns)))
     if not proxy_fit:
         raise ValueError("Insufficient fit-only support for biological auxiliaries")
     u, v = standardized(np.concatenate(proxy_fit, axis=1), np.concatenate(proxy_query, axis=1), 0.005)
