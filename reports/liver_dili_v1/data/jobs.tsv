@@ -1,0 +1,19 @@
+job_id	job_name	partition	stage	output
+32428	dili-v1-acquire	cpu	FDA source acquisition	FDA workbook in raw/
+32448	dili-v1-pubchem	cpu	Exact-name molecular identity	chemistry-v1/
+32505	dili-v1-splits	cpu	Sealed grouped holdouts	splits-v1/receipt.json
+32543	dili-v1-phh	cpu	PHH CEL processing, eight tasks	phh-v4/
+32544	dili-v1-phh-collect	cpu	PHH contrasts and viability join	phh-matrix-v2/
+32569	dili-v1-embedding-full	cpu	Frozen molecular embeddings	embeddings-full-v1/receipt.json
+32571	dili-v1-assays	cpu	Assay harmonization	assays-v1/receipt.json
+32604	dili-v1-full-v2	cpu	Label-free DILI forecasts, 11 tasks	full-v2-forecasts/*/freeze.json
+32605	dili-v1-full-score-v2	cpu	Independent DILI label scoring	full-v2-score/receipt.json
+32606	dili-v1-paired-v2	cpu	Connectivity-paired modality effects	paired-v2/receipt.json
+32609	dili-v1-release-v2	cpu	Standalone grouped release fit	release-v2/receipt.json
+32610	dili-v1-offline-cli-v2	cpu	Explicit offline checkpoint replay	cli-v2/cli.sha256
+32635	dili-v1-default-cli	cpu	Default checkpoint offline replay	cli-v2/cli_default.sha256
+32650	dili-v1-source-final	cpu	Public-source and physical plate audit	source_audit-final.json
+32655	dili-v1-transfer-plate	cpu	Scaffold- and plate-purged prediction	transfer-plate/freeze.json
+32656	dili-v1-transfer-score-plate	cpu	Independent pathway scoring	transfer-score-plate/receipt.json
+32657	dili-v1-transfer-scaffold-replay	cpu	Scaffold-only sensitivity prediction	transfer-scaffold-final/freeze.json
+32658	dili-v1-score-scaffold-replay	cpu	Independent sensitivity scoring	transfer-score-scaffold-final/receipt.json
