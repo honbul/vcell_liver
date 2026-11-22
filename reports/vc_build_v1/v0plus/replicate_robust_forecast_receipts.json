@@ -1,0 +1,4872 @@
+{
+  "forecasts": {
+    "CTRPv2-0": {
+      "artifact": "CTRPv2-0.parquet",
+      "frozen_utc": "2026-11-22T21:13:39.067814+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 634,
+          "kernel_reproduction_error": 5.8710575103759766e-06,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 6.613554432988167e-07,
+              "iterations": 19,
+              "loss_final": 0.008412336930632591,
+              "loss_start": 0.008437449112534523,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 1.0878939065150917e-06,
+              "iterations": 22,
+              "loss_final": 0.008421464823186398,
+              "loss_start": 0.008481049910187721,
+              "mean_max_assay_weight": 0.6823803186416626
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 1.4717588783241808e-06,
+              "iterations": 19,
+              "loss_final": 0.00839925091713667,
+              "loss_start": 0.008409068919718266,
+              "mean_max_assay_weight": 0.5859233140945435
+            }
+          },
+          "repeats": {
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.017663537114389866,
+                0.0065909405352356926
+              ],
+              "cells": 278
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.002062253813143029,
+                0.0019318612042300933
+              ],
+              "cells": 202
+            },
+            "HWGQMRYQVZSGDQ-HZPDHXFCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02445411971931482,
+                0.013684361378945268
+              ],
+              "cells": 286
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.033355958801504534,
+                0.0048375078096576235
+              ],
+              "cells": 104
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02643318707284968,
+                0.019287819351066902
+              ],
+              "cells": 164
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.012987777576511953,
+                0.02290414038510627
+              ],
+              "cells": 184
+            }
+          }
+        },
+        "fold": 0,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "CTRPv2",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "6f44cf12f4af999ab475bb98170c138188cb8897e601600545ca753100f236b4"
+      },
+      "rows": 43140,
+      "schema_version": 1,
+      "sha256": "02316d7db8092e013f7663979f9fe72c9d8cb3b5e889bbb37749116df773dcea"
+    },
+    "CTRPv2-1": {
+      "artifact": "CTRPv2-1.parquet",
+      "frozen_utc": "2026-11-22T21:13:39.351265+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 631,
+          "kernel_reproduction_error": 4.857778549194336e-06,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 3.4947697713505477e-07,
+              "iterations": 19,
+              "loss_final": 0.009007849730551243,
+              "loss_start": 0.009025813080370426,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 1.2002492439933121e-06,
+              "iterations": 20,
+              "loss_final": 0.009012691676616669,
+              "loss_start": 0.009046755731105804,
+              "mean_max_assay_weight": 0.6001357436180115
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 1.9132858142256737e-07,
+              "iterations": 18,
+              "loss_final": 0.00900021381676197,
+              "loss_start": 0.009009438566863537,
+              "mean_max_assay_weight": 0.5843397974967957
+            }
+          },
+          "repeats": {
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.014957126876588142,
+                0.0075811505502609506
+              ],
+              "cells": 271
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0007274331261501458,
+                0.003001881340501979
+              ],
+              "cells": 197
+            },
+            "HWGQMRYQVZSGDQ-HZPDHXFCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.028317076123331467,
+                0.018171535646103906
+              ],
+              "cells": 293
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.030974237121488547,
+                0.005399939572383506
+              ],
+              "cells": 108
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.03011015254769302,
+                0.021079210919082072
+              ],
+              "cells": 169
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.016743384406902616,
+                0.040195084522333016
+              ],
+              "cells": 178
+            }
+          }
+        },
+        "fold": 1,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "CTRPv2",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "a0ac520264c3afe0d08f047ec524f2d758291133bdc8f50211b257fab5287c4a"
+      },
+      "rows": 42198,
+      "schema_version": 1,
+      "sha256": "ad30a1bff2aa98eb3bf423ff036e22dfd14d35408c1870144db3471dbc48100e"
+    },
+    "CTRPv2-2": {
+      "artifact": "CTRPv2-2.parquet",
+      "frozen_utc": "2026-11-22T21:14:06.777566+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 631,
+          "kernel_reproduction_error": 5.543231964111328e-06,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 2.2405220079235733e-07,
+              "iterations": 19,
+              "loss_final": 0.008650077506899834,
+              "loss_start": 0.008669448085129261,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 5.025140126235783e-07,
+              "iterations": 21,
+              "loss_final": 0.008663298562169075,
+              "loss_start": 0.00870888214558363,
+              "mean_max_assay_weight": 0.6907998919487
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 1.2058990250807256e-07,
+              "iterations": 18,
+              "loss_final": 0.00864130537956953,
+              "loss_start": 0.008652012795209885,
+              "mean_max_assay_weight": 0.5564959645271301
+            }
+          },
+          "repeats": {
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.016761806542034727,
+                0.006077264428010679
+              ],
+              "cells": 287
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.002180616139234588,
+                0.0031243237722128757
+              ],
+              "cells": 211
+            },
+            "HWGQMRYQVZSGDQ-HZPDHXFCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.030236589284303374,
+                0.016861357457714707
+              ],
+              "cells": 299
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.03167382650800378,
+                0.007177701667181353
+              ],
+              "cells": 94
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02943132920450979,
+                0.025457864579878954
+              ],
+              "cells": 173
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.014911410958790632,
+                0.03982399286449244
+              ],
+              "cells": 192
+            }
+          }
+        },
+        "fold": 2,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "CTRPv2",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "732d17229cc92775a5ec9736b4176a1d689c3162bf89cb0ae31cbc29fff12b9d"
+      },
+      "rows": 43410,
+      "schema_version": 1,
+      "sha256": "9f392a9f27eeb726335397de7cb5749eb89a8b89941b65bb8e291e028be68e1e"
+    },
+    "GDSC2-0": {
+      "artifact": "GDSC2-0.parquet",
+      "frozen_utc": "2026-11-22T21:15:09.199669+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 585,
+          "kernel_reproduction_error": 2.2315482794965646e-14,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 4.494847076108626e-08,
+              "iterations": 39,
+              "loss_final": 2.8971727677243964,
+              "loss_start": 2.909652582076973,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 2.0039310989240777e-07,
+              "iterations": 46,
+              "loss_final": 2.9071753630309805,
+              "loss_start": 2.926562504504292,
+              "mean_max_assay_weight": 0.7612943989592333
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 4.3981858851844906e-08,
+              "iterations": 38,
+              "loss_final": 2.9010354646196284,
+              "loss_start": 2.9046277747637457,
+              "mean_max_assay_weight": 0.5708556064807839
+            }
+          },
+          "repeats": {
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                3.481677709633061,
+                2.6614174911855417
+              ],
+              "cells": 312
+            },
+            "FNHKPVJBJVTLMP-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                1.971259385373041,
+                11.964473364418062
+              ],
+              "cells": 237
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                1.4209934244557076,
+                0.7828797348044745
+              ],
+              "cells": 257
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                11.34746015200898,
+                1.9452418161788276
+              ],
+              "cells": 259
+            },
+            "MUOKSQABCJCOPU-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.1993590430238203,
+                18.921449342686227
+              ],
+              "cells": 202
+            },
+            "NCNRHFGMJRPRSK-MDZDMXLPSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.2428971532798174,
+                2.101965318948181
+              ],
+              "cells": 142
+            },
+            "PLHJCIYEEKOWNM-HHHXNRCGSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.9463152536443853,
+                8.093389988133765
+              ],
+              "cells": 130
+            },
+            "QQWUGDVOUVUTOY-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.0702630643568587,
+                5.585604745620636
+              ],
+              "cells": 238
+            },
+            "UCEQXRCJXIVODC-PMACEKPBSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.3607079710698917,
+                1.7223674133008073
+              ],
+              "cells": 150
+            },
+            "WOSKHXYHFSIKNG-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                3.2426447192752237,
+                1.2175221103261078
+              ],
+              "cells": 315
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                7.935485855702197,
+                11.616933275104037
+              ],
+              "cells": 254
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                4.1431436558671075,
+                12.661755590491746
+              ],
+              "cells": 253
+            }
+          }
+        },
+        "fold": 0,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "GDSC2",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "4e116499395ed6988e8b202a3bc8c348b71d9d99e6e181a01ff38afc95a469ee"
+      },
+      "rows": 33594,
+      "schema_version": 1,
+      "sha256": "9ea40193aef1e4eb5fafa74df358ec44b98b794f441ebba0f3e0d5fc6b20c749"
+    },
+    "GDSC2-1": {
+      "artifact": "GDSC2-1.parquet",
+      "frozen_utc": "2026-11-22T21:15:09.299110+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 587,
+          "kernel_reproduction_error": 2.042810365310288e-14,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 1.0409077949092346e-07,
+              "iterations": 58,
+              "loss_final": 2.929566074549962,
+              "loss_start": 2.9401741617049044,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 5.390661166756951e-07,
+              "iterations": 41,
+              "loss_final": 2.9400728972036188,
+              "loss_start": 2.9528580794672634,
+              "mean_max_assay_weight": 0.7591348031544007
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 2.7743216366642263e-08,
+              "iterations": 33,
+              "loss_final": 2.9361626140638863,
+              "loss_start": 2.9394191116767314,
+              "mean_max_assay_weight": 0.5648860172773235
+            }
+          },
+          "repeats": {
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                3.135133679907515,
+                2.753158888632109
+              ],
+              "cells": 315
+            },
+            "FNHKPVJBJVTLMP-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.0541110850738065,
+                12.381196698480904
+              ],
+              "cells": 255
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                1.272961837642702,
+                1.087263450787167
+              ],
+              "cells": 259
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                12.45946613710916,
+                2.3142470852226276
+              ],
+              "cells": 268
+            },
+            "MUOKSQABCJCOPU-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                1.8796463037772686,
+                17.259095891673475
+              ],
+              "cells": 209
+            },
+            "NCNRHFGMJRPRSK-MDZDMXLPSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.318724218414828,
+                1.881353288893228
+              ],
+              "cells": 156
+            },
+            "PLHJCIYEEKOWNM-HHHXNRCGSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                3.102116907298438,
+                10.124245683822135
+              ],
+              "cells": 138
+            },
+            "QQWUGDVOUVUTOY-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.2653850054535987,
+                5.028977302551419
+              ],
+              "cells": 244
+            },
+            "UCEQXRCJXIVODC-PMACEKPBSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.309220691168021,
+                1.8066205460192246
+              ],
+              "cells": 162
+            },
+            "WOSKHXYHFSIKNG-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                1.9782038107487565,
+                1.4580329094992626
+              ],
+              "cells": 318
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                8.855531351511278,
+                10.742515102560736
+              ],
+              "cells": 265
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                4.911859516045162,
+                14.815680324538448
+              ],
+              "cells": 266
+            }
+          }
+        },
+        "fold": 1,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "GDSC2",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "cb7cc54ea12df6dca91a570d78090ae896f6e5664bd85c75eb744531e8eb3352"
+      },
+      "rows": 34794,
+      "schema_version": 1,
+      "sha256": "ef6b9379a703337428d4557629d584e940c090dc699d15760c1f1afa1839d98e"
+    },
+    "GDSC2-2": {
+      "artifact": "GDSC2-2.parquet",
+      "frozen_utc": "2026-11-22T21:15:09.141878+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 588,
+          "kernel_reproduction_error": 2.4868995751603507e-14,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 9.387448558491156e-08,
+              "iterations": 45,
+              "loss_final": 2.8328743046241294,
+              "loss_start": 2.8421743699477466,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 4.348188728184061e-08,
+              "iterations": 40,
+              "loss_final": 2.842655802848329,
+              "loss_start": 2.857782627692033,
+              "mean_max_assay_weight": 0.7560785967307636
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 4.910398027568267e-08,
+              "iterations": 37,
+              "loss_final": 2.8360460505619605,
+              "loss_start": 2.839840558779446,
+              "mean_max_assay_weight": 0.5656067660451499
+            }
+          },
+          "repeats": {
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                3.420231570316562,
+                2.067488387438616
+              ],
+              "cells": 317
+            },
+            "FNHKPVJBJVTLMP-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                1.7800150478951278,
+                9.767497556222443
+              ],
+              "cells": 240
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                1.1128891999444444,
+                0.9250456619509704
+              ],
+              "cells": 260
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                13.009547009526809,
+                2.096464729832784
+              ],
+              "cells": 267
+            },
+            "MUOKSQABCJCOPU-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.3419822971695474,
+                15.946879594221226
+              ],
+              "cells": 203
+            },
+            "NCNRHFGMJRPRSK-MDZDMXLPSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.42815641499021,
+                1.8940714185054157
+              ],
+              "cells": 146
+            },
+            "PLHJCIYEEKOWNM-HHHXNRCGSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                3.6543900886808807,
+                7.539507652918101
+              ],
+              "cells": 132
+            },
+            "QQWUGDVOUVUTOY-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.2533004647012804,
+                2.5616467760985264
+              ],
+              "cells": 240
+            },
+            "UCEQXRCJXIVODC-PMACEKPBSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                2.23490106845679,
+                1.4126075616094789
+              ],
+              "cells": 156
+            },
+            "WOSKHXYHFSIKNG-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                3.048098045557389,
+                1.0582738236543154
+              ],
+              "cells": 311
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                8.416583646793882,
+                8.300399679947233
+              ],
+              "cells": 257
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                4.390832460819741,
+                11.135693402151542
+              ],
+              "cells": 255
+            }
+          }
+        },
+        "fold": 2,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "GDSC2",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "de075887926f50b859456876f744f678c0a8fa3fcedb467eee18cb5c0c953bf9"
+      },
+      "rows": 33798,
+      "schema_version": 1,
+      "sha256": "643385918c514282acde4653e384914ce8a3c33777f4ac834f44ef939510df13"
+    },
+    "LICOB": {
+      "artifact": "LICOB.parquet",
+      "frozen_utc": "2026-11-22T21:13:39.245050+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 1014,
+          "kernel_reproduction_error": 7.748603820800781e-06,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 5.411238817032427e-07,
+              "iterations": 29,
+              "loss_final": 0.006940226536244154,
+              "loss_start": 0.00698547437787056,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 1.4169563655741513e-07,
+              "iterations": 31,
+              "loss_final": 0.00696828356012702,
+              "loss_start": 0.0070509398356080055,
+              "mean_max_assay_weight": 0.6203406453132629
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 9.885816325549968e-07,
+              "iterations": 30,
+              "loss_final": 0.006938623730093241,
+              "loss_start": 0.006964873988181353,
+              "mean_max_assay_weight": 0.5428087711334229
+            }
+          },
+          "repeats": {
+            "AYUNIORJHRXIBJ-TXHRRWQRSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.012639735599814905,
+                0.011564665841737513
+              ],
+              "cells": 488
+            },
+            "CBPNZQVSJQDFBE-FUXHJELOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.014030929492780671,
+                0.014866676135920465
+              ],
+              "cells": 235
+            },
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01829092485277194,
+                0.009717449981390526,
+                0.006941520511645449
+              ],
+              "cells": 337
+            },
+            "CYOHGALHFOKKQC-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.013110772479876354,
+                0.016855621417841478
+              ],
+              "cells": 470
+            },
+            "FBOZXECLQNJBKD-ZDUSSCGKSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.030555300946012765,
+                0.028164213546720825
+              ],
+              "cells": 419
+            },
+            "FDLYAMZZIXQODN-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0016376372916023494,
+                0.004745327826819382
+              ],
+              "cells": 404
+            },
+            "FNHKPVJBJVTLMP-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004946748091596851,
+                0.029905791616846228
+              ],
+              "cells": 366
+            },
+            "GXJABQQUPOEUTA-RDJZCZTQSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00536828777367017,
+                0.0034392346405097305
+              ],
+              "cells": 467
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0017872936428679823,
+                0.003759730024623967,
+                0.002486648505577036
+              ],
+              "cells": 252
+            },
+            "HLXSCTYHLQHQDJ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.014548938338554085,
+                0.0038574592684268326
+              ],
+              "cells": 400
+            },
+            "HWGQMRYQVZSGDQ-HZPDHXFCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02774214634929786,
+                0.01590472476902678
+              ],
+              "cells": 439
+            },
+            "IAYGCINLNONXHY-LBPRGKRZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0257527771892737,
+                0.009802981324199097
+              ],
+              "cells": 308
+            },
+            "JLYAXFNOILIKPP-KXQOOQHDSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.019050791714245556,
+                0.01240976602942127
+              ],
+              "cells": 393
+            },
+            "JOGKUKXHTYWRGZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.008485499443503257,
+                0.011052624226181114
+              ],
+              "cells": 338
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.028400651684624675,
+                0.02723188364390817,
+                0.005347323101148775
+              ],
+              "cells": 105
+            },
+            "KTEIFNKAUNYNJU-GFCCVEGCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.006592723354117868,
+                0.005490321596298845
+              ],
+              "cells": 367
+            },
+            "LIRYPHYGHXZJBZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02704918213943913,
+                0.02714511749922045
+              ],
+              "cells": 202
+            },
+            "LQBVNQSMGBZMKD-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.018291391436883794,
+                0.020633645138687956
+              ],
+              "cells": 272
+            },
+            "MLDQJTXFUGDVEO-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.010176533536019897,
+                0.007149132406460671
+              ],
+              "cells": 425
+            },
+            "MUOKSQABCJCOPU-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00546598614896515,
+                0.0458628861555488
+              ],
+              "cells": 307
+            },
+            "NCNRHFGMJRPRSK-MDZDMXLPSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0059784556100949135,
+                0.005152298544722658
+              ],
+              "cells": 222
+            },
+            "OTSOOHRUMBRSHZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02219575559681445,
+                0.012416085560275049
+              ],
+              "cells": 433
+            },
+            "PKCDDUHJAFVJJB-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.002918934102024288,
+                0.005546066904051855
+              ],
+              "cells": 386
+            },
+            "PLHJCIYEEKOWNM-HHHXNRCGSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.008277618969459997,
+                0.022497166243467665
+              ],
+              "cells": 200
+            },
+            "QFJCIRLUMZQUOT-HPLJOQBZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004252089014184018,
+                0.020494912061383003
+              ],
+              "cells": 396
+            },
+            "QQWUGDVOUVUTOY-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00562219353744091,
+                0.011453577505004668
+              ],
+              "cells": 361
+            },
+            "UCEQXRCJXIVODC-PMACEKPBSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005888390151330147,
+                0.004319185539119333
+              ],
+              "cells": 234
+            },
+            "UCFGDBYHRUNTLO-QHCPKHFHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.025220932448516697,
+                0.01617481053087348
+              ],
+              "cells": 397
+            },
+            "ULXXDDBFHOBEHA-CWDCEQMOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.013033225680360978,
+                0.011047554852717965
+              ],
+              "cells": 338
+            },
+            "VABYUUZNAVQNPG-BQYQJAHWSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004175151522622827,
+                0.004505301933627208
+              ],
+              "cells": 83
+            },
+            "WAEXFXRVDQXREF-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007037567430172476,
+                0.003554435694976187
+              ],
+              "cells": 441
+            },
+            "WOSKHXYHFSIKNG-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007042893369408982,
+                0.003261905355586276
+              ],
+              "cells": 472
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.028720422002697067,
+                0.0212017376627796,
+                0.020795057495226196
+              ],
+              "cells": 221
+            },
+            "XYFPWWZEPKGCCK-GOSISDBHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007923645912945749,
+                0.009690824821844662
+              ],
+              "cells": 318
+            },
+            "ZBNZXTGUTAYRHI-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02557811813057944,
+                0.019445313272255023
+              ],
+              "cells": 409
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.015263902328927817,
+                0.012144331405499528,
+                0.02756002170540901
+              ],
+              "cells": 237
+            }
+          }
+        },
+        "fold": 0,
+        "inputs_sha256": "1f37cdff695ad7c9cbac06430a86b77d5ef5dfca5f9fa03d4557954b464102a0",
+        "mode": "LICOB",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "fc5ab2b2902c2ee0fdca5b4027544208f6630fe2ec7b7304615ab36389c1dde7"
+      },
+      "rows": 22790,
+      "schema_version": 1,
+      "sha256": "5fd7e5109da72ed0792cabc2bfbe524a27de0ec60932e3922626ba6e9ec1acd1"
+    },
+    "LIMORE": {
+      "artifact": "LIMORE.parquet",
+      "frozen_utc": "2026-11-22T21:13:39.119420+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 1014,
+          "kernel_reproduction_error": 6.854534149169922e-06,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 1.5310397429857403e-06,
+              "iterations": 30,
+              "loss_final": 0.006909979972988367,
+              "loss_start": 0.006956040859222412,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 1.0477488103788346e-06,
+              "iterations": 33,
+              "loss_final": 0.006938533391803503,
+              "loss_start": 0.007021921221166849,
+              "mean_max_assay_weight": 0.6210319995880127
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 1.8513037502998486e-07,
+              "iterations": 27,
+              "loss_final": 0.006908762734383345,
+              "loss_start": 0.006935648154467344,
+              "mean_max_assay_weight": 0.5413526296615601
+            }
+          },
+          "repeats": {
+            "AYUNIORJHRXIBJ-TXHRRWQRSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.012639735599814905,
+                0.011564665841737513
+              ],
+              "cells": 488
+            },
+            "CBPNZQVSJQDFBE-FUXHJELOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.014030929492780671,
+                0.014866676135920465
+              ],
+              "cells": 235
+            },
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01829092485277194,
+                0.009717449981390526,
+                0.006941520511645449
+              ],
+              "cells": 337
+            },
+            "CYOHGALHFOKKQC-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.013110772479876354,
+                0.016855621417841478
+              ],
+              "cells": 470
+            },
+            "FBOZXECLQNJBKD-ZDUSSCGKSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.030555300946012765,
+                0.028164213546720825
+              ],
+              "cells": 419
+            },
+            "FDLYAMZZIXQODN-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0016376372916023494,
+                0.004745327826819382
+              ],
+              "cells": 404
+            },
+            "FNHKPVJBJVTLMP-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004946748091596851,
+                0.029905791616846228
+              ],
+              "cells": 366
+            },
+            "GXJABQQUPOEUTA-RDJZCZTQSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00536828777367017,
+                0.0034392346405097305
+              ],
+              "cells": 467
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0017872936428679823,
+                0.003759730024623967,
+                0.002486648505577036
+              ],
+              "cells": 252
+            },
+            "HLXSCTYHLQHQDJ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.014548938338554085,
+                0.0038574592684268326
+              ],
+              "cells": 400
+            },
+            "HWGQMRYQVZSGDQ-HZPDHXFCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02774214634929786,
+                0.01590472476902678
+              ],
+              "cells": 439
+            },
+            "IAYGCINLNONXHY-LBPRGKRZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0257527771892737,
+                0.009802981324199097
+              ],
+              "cells": 308
+            },
+            "JLYAXFNOILIKPP-KXQOOQHDSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.019050791714245556,
+                0.01240976602942127
+              ],
+              "cells": 393
+            },
+            "JOGKUKXHTYWRGZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.008485499443503257,
+                0.011052624226181114
+              ],
+              "cells": 338
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.028400651684624675,
+                0.02723188364390817,
+                0.005347323101148775
+              ],
+              "cells": 105
+            },
+            "KTEIFNKAUNYNJU-GFCCVEGCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.006592723354117868,
+                0.005490321596298845
+              ],
+              "cells": 367
+            },
+            "LIRYPHYGHXZJBZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02704918213943913,
+                0.02714511749922045
+              ],
+              "cells": 202
+            },
+            "LQBVNQSMGBZMKD-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.018291391436883794,
+                0.020633645138687956
+              ],
+              "cells": 272
+            },
+            "MLDQJTXFUGDVEO-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.010176533536019897,
+                0.007149132406460671
+              ],
+              "cells": 425
+            },
+            "MUOKSQABCJCOPU-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00546598614896515,
+                0.0458628861555488
+              ],
+              "cells": 307
+            },
+            "NCNRHFGMJRPRSK-MDZDMXLPSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0059784556100949135,
+                0.005152298544722658
+              ],
+              "cells": 222
+            },
+            "OTSOOHRUMBRSHZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02219575559681445,
+                0.012416085560275049
+              ],
+              "cells": 433
+            },
+            "PKCDDUHJAFVJJB-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.002918934102024288,
+                0.005546066904051855
+              ],
+              "cells": 386
+            },
+            "PLHJCIYEEKOWNM-HHHXNRCGSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.008277618969459997,
+                0.022497166243467665
+              ],
+              "cells": 200
+            },
+            "QFJCIRLUMZQUOT-HPLJOQBZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004252089014184018,
+                0.020494912061383003
+              ],
+              "cells": 396
+            },
+            "QQWUGDVOUVUTOY-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00562219353744091,
+                0.011453577505004668
+              ],
+              "cells": 361
+            },
+            "UCEQXRCJXIVODC-PMACEKPBSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005888390151330147,
+                0.004319185539119333
+              ],
+              "cells": 234
+            },
+            "UCFGDBYHRUNTLO-QHCPKHFHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.025220932448516697,
+                0.01617481053087348
+              ],
+              "cells": 397
+            },
+            "ULXXDDBFHOBEHA-CWDCEQMOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.013033225680360978,
+                0.011047554852717965
+              ],
+              "cells": 338
+            },
+            "VABYUUZNAVQNPG-BQYQJAHWSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004175151522622827,
+                0.004505301933627208
+              ],
+              "cells": 83
+            },
+            "WAEXFXRVDQXREF-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007037567430172476,
+                0.003554435694976187
+              ],
+              "cells": 441
+            },
+            "WOSKHXYHFSIKNG-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007042893369408982,
+                0.003261905355586276
+              ],
+              "cells": 472
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.028720422002697067,
+                0.0212017376627796,
+                0.020795057495226196
+              ],
+              "cells": 221
+            },
+            "XYFPWWZEPKGCCK-GOSISDBHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007923645912945749,
+                0.009690824821844662
+              ],
+              "cells": 318
+            },
+            "ZBNZXTGUTAYRHI-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02557811813057944,
+                0.019445313272255023
+              ],
+              "cells": 409
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.015263902328927817,
+                0.012144331405499528,
+                0.02756002170540901
+              ],
+              "cells": 237
+            }
+          }
+        },
+        "fold": 0,
+        "inputs_sha256": "663eb5717b30c6f03ea43c04c4bb076bd233ea0c05405450e17f0c9e85f7fa86",
+        "mode": "LIMORE",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "fe7f9e656801d63fd1263ec3e94093cad86b049130aa038d4f2e8fdd059b02bb"
+      },
+      "rows": 34000,
+      "schema_version": 1,
+      "sha256": "c69c84c8924f16943cdd0afd0bd0c01189193b4e9c6ab5e147f7f3bf91822505"
+    },
+    "PRISM20Q2-0": {
+      "artifact": "PRISM20Q2-0.parquet",
+      "frozen_utc": "2026-11-22T21:14:08.479723+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 625,
+          "kernel_reproduction_error": 5.617737770080566e-06,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 9.699724614620209e-07,
+              "iterations": 25,
+              "loss_final": 0.007106934208422899,
+              "loss_start": 0.007134454324841499,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 7.725993782514706e-07,
+              "iterations": 23,
+              "loss_final": 0.007111911661922932,
+              "loss_start": 0.00714624160900712,
+              "mean_max_assay_weight": 0.5741291046142578
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 7.111611921573058e-07,
+              "iterations": 22,
+              "loss_final": 0.007104771211743355,
+              "loss_start": 0.007128261961042881,
+              "mean_max_assay_weight": 0.5500279664993286
+            }
+          },
+          "repeats": {
+            "AYUNIORJHRXIBJ-TXHRRWQRSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.011595945564133963,
+                0.012170201456938486
+              ],
+              "cells": 325
+            },
+            "CBPNZQVSJQDFBE-FUXHJELOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.012328807737551158,
+                0.014990759199295224
+              ],
+              "cells": 154
+            },
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02311927142917904,
+                0.012360460728523235
+              ],
+              "cells": 316
+            },
+            "CYOHGALHFOKKQC-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01422926052303865,
+                0.018612697282530573
+              ],
+              "cells": 314
+            },
+            "FBOZXECLQNJBKD-ZDUSSCGKSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.03085811973884413,
+                0.029750436129690565
+              ],
+              "cells": 281
+            },
+            "FDLYAMZZIXQODN-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0012519546544570194,
+                0.004657699762900826
+              ],
+              "cells": 269
+            },
+            "GXJABQQUPOEUTA-RDJZCZTQSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005237421011508565,
+                0.0038488144503112916
+              ],
+              "cells": 310
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0026077415316021436,
+                0.004042789844232739
+              ],
+              "cells": 293
+            },
+            "HLXSCTYHLQHQDJ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.013889218265685118,
+                0.0038589979165893577
+              ],
+              "cells": 268
+            },
+            "IAYGCINLNONXHY-LBPRGKRZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02806225948355061,
+                0.011498328155654635
+              ],
+              "cells": 213
+            },
+            "JLYAXFNOILIKPP-KXQOOQHDSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.020763194373235212,
+                0.014216164102595158
+              ],
+              "cells": 264
+            },
+            "JOGKUKXHTYWRGZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00852268072272036,
+                0.011047720109214006
+              ],
+              "cells": 223
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02771220030851208,
+                0.029182339346543056
+              ],
+              "cells": 112
+            },
+            "KTEIFNKAUNYNJU-GFCCVEGCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007254186489921522,
+                0.006593384795674488
+              ],
+              "cells": 248
+            },
+            "LIRYPHYGHXZJBZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.031083444099402516,
+                0.031036652736226873
+              ],
+              "cells": 133
+            },
+            "LQBVNQSMGBZMKD-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.021194812092796077,
+                0.02377333420408159
+              ],
+              "cells": 185
+            },
+            "MLDQJTXFUGDVEO-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.013956909646681113,
+                0.008804700611384674
+              ],
+              "cells": 284
+            },
+            "OTSOOHRUMBRSHZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.019486414566495774,
+                0.012778700624286389
+              ],
+              "cells": 292
+            },
+            "PKCDDUHJAFVJJB-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0033102994222336053,
+                0.005627663026313085
+              ],
+              "cells": 257
+            },
+            "QFJCIRLUMZQUOT-HPLJOQBZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0036151498013794587,
+                0.02054744360883192
+              ],
+              "cells": 268
+            },
+            "UCFGDBYHRUNTLO-QHCPKHFHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.023573716236937464,
+                0.01620656320072881
+              ],
+              "cells": 268
+            },
+            "ULXXDDBFHOBEHA-CWDCEQMOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01054764597031621,
+                0.011728350862032288
+              ],
+              "cells": 225
+            },
+            "VABYUUZNAVQNPG-BQYQJAHWSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.003914144859399762,
+                0.00466981345050858
+              ],
+              "cells": 54
+            },
+            "WAEXFXRVDQXREF-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007190443816734695,
+                0.0038144351490291698
+              ],
+              "cells": 295
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.04205762165869687,
+                0.027614924747681412
+              ],
+              "cells": 237
+            },
+            "XYFPWWZEPKGCCK-GOSISDBHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.006887578576071164,
+                0.010077714359556405
+              ],
+              "cells": 215
+            },
+            "ZBNZXTGUTAYRHI-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.028695333094163267,
+                0.02257710657637666
+              ],
+              "cells": 273
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02761599349142295,
+                0.016944302916033795
+              ],
+              "cells": 252
+            }
+          }
+        },
+        "fold": 0,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "PRISM20Q2",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "6cbcf48118827ff82ed71a6745fed04464789d51c627f3c0cc1102886e7dfc3b"
+      },
+      "rows": 14124,
+      "schema_version": 1,
+      "sha256": "68d981d6838d3ceb753cfcbf2ed15a6af2de5ac82a094509ab7da5c80f8bf871"
+    },
+    "PRISM20Q2-1": {
+      "artifact": "PRISM20Q2-1.parquet",
+      "frozen_utc": "2026-11-22T21:14:15.489117+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 622,
+          "kernel_reproduction_error": 5.945563316345215e-06,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 7.187154551502317e-07,
+              "iterations": 21,
+              "loss_final": 0.0068426490761339664,
+              "loss_start": 0.006868945434689522,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 1.0004878276959062e-06,
+              "iterations": 21,
+              "loss_final": 0.006856739055365324,
+              "loss_start": 0.006893144454807043,
+              "mean_max_assay_weight": 0.6390285491943359
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 2.929489710368216e-06,
+              "iterations": 22,
+              "loss_final": 0.006848541088402271,
+              "loss_start": 0.0068720667622983456,
+              "mean_max_assay_weight": 0.5461581349372864
+            }
+          },
+          "repeats": {
+            "AYUNIORJHRXIBJ-TXHRRWQRSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0137323788655182,
+                0.011363937491168909
+              ],
+              "cells": 328
+            },
+            "CBPNZQVSJQDFBE-FUXHJELOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01781123655253658,
+                0.01501834097844636
+              ],
+              "cells": 158
+            },
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.016661917786114026,
+                0.00884058354562945
+              ],
+              "cells": 315
+            },
+            "CYOHGALHFOKKQC-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.015492530001443515,
+                0.016497511136708234
+              ],
+              "cells": 312
+            },
+            "FBOZXECLQNJBKD-ZDUSSCGKSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.03069581365299172,
+                0.02604938475573637
+              ],
+              "cells": 278
+            },
+            "FDLYAMZZIXQODN-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.001994904462911309,
+                0.004578694571493749
+              ],
+              "cells": 268
+            },
+            "GXJABQQUPOEUTA-RDJZCZTQSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00527736303737527,
+                0.003284193357371134
+              ],
+              "cells": 309
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0005907860183318746,
+                0.003101169559927528
+              ],
+              "cells": 284
+            },
+            "HLXSCTYHLQHQDJ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.015112495894259958,
+                0.004045490125131392
+              ],
+              "cells": 267
+            },
+            "IAYGCINLNONXHY-LBPRGKRZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02267377991581101,
+                0.009099026292457455
+              ],
+              "cells": 202
+            },
+            "JLYAXFNOILIKPP-KXQOOQHDSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01637404858894312,
+                0.009879625891639269
+              ],
+              "cells": 262
+            },
+            "JOGKUKXHTYWRGZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.008797184526170548,
+                0.010635719489813351
+              ],
+              "cells": 232
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.028754814733097905,
+                0.030187210315632765
+              ],
+              "cells": 110
+            },
+            "KTEIFNKAUNYNJU-GFCCVEGCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005348381579447938,
+                0.0037273400577621063
+              ],
+              "cells": 241
+            },
+            "LIRYPHYGHXZJBZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02783395600760569,
+                0.027251828865913978
+              ],
+              "cells": 138
+            },
+            "LQBVNQSMGBZMKD-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.016098408973931742,
+                0.017869502102752507
+              ],
+              "cells": 181
+            },
+            "MLDQJTXFUGDVEO-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004932123010415453,
+                0.005629504258347807
+              ],
+              "cells": 286
+            },
+            "OTSOOHRUMBRSHZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.022617918880809034,
+                0.012526274072892722
+              ],
+              "cells": 286
+            },
+            "PKCDDUHJAFVJJB-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0026582562897685545,
+                0.00551190924002273
+              ],
+              "cells": 255
+            },
+            "QFJCIRLUMZQUOT-HPLJOQBZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004239523948872581,
+                0.019398407130826568
+              ],
+              "cells": 265
+            },
+            "UCFGDBYHRUNTLO-QHCPKHFHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.025142406093792414,
+                0.016208236629163618
+              ],
+              "cells": 260
+            },
+            "ULXXDDBFHOBEHA-CWDCEQMOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.014790288194948029,
+                0.010494669630741858
+              ],
+              "cells": 223
+            },
+            "VABYUUZNAVQNPG-BQYQJAHWSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004225723042915077,
+                0.00422322159497287
+              ],
+              "cells": 57
+            },
+            "WAEXFXRVDQXREF-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.006860186258452684,
+                0.0035492622216955236
+              ],
+              "cells": 296
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.04196069229712508,
+                0.02434566150296856
+              ],
+              "cells": 242
+            },
+            "XYFPWWZEPKGCCK-GOSISDBHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.009865411751977877,
+                0.009768668031096826
+              ],
+              "cells": 209
+            },
+            "ZBNZXTGUTAYRHI-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01980234144972406,
+                0.016756201166621493
+              ],
+              "cells": 273
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.026286712362949393,
+                0.015659293888047782
+              ],
+              "cells": 248
+            }
+          }
+        },
+        "fold": 1,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "PRISM20Q2",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "f97d127a2fa85244abb4547e96bebad4c2f5eaf5120710864ff88af652ea5fa7"
+      },
+      "rows": 13800,
+      "schema_version": 1,
+      "sha256": "566b843e1ed5b44716ba3926ddd803ac4d6bc3edafad41701855af7ba5839648"
+    },
+    "PRISM20Q2-2": {
+      "artifact": "PRISM20Q2-2.parquet",
+      "frozen_utc": "2026-11-22T21:14:15.451130+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 621,
+          "kernel_reproduction_error": 5.8710575103759766e-06,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 4.000066837761551e-07,
+              "iterations": 22,
+              "loss_final": 0.007006047293543816,
+              "loss_start": 0.00703346636146307,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 6.171048880787566e-07,
+              "iterations": 21,
+              "loss_final": 0.007015991024672985,
+              "loss_start": 0.0070487214252352715,
+              "mean_max_assay_weight": 0.6050055623054504
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 3.9150290831457824e-07,
+              "iterations": 20,
+              "loss_final": 0.007014371454715729,
+              "loss_start": 0.007039279211312532,
+              "mean_max_assay_weight": 0.5805091857910156
+            }
+          },
+          "repeats": {
+            "AYUNIORJHRXIBJ-TXHRRWQRSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.012555111722608899,
+                0.011902286962540648
+              ],
+              "cells": 323
+            },
+            "CBPNZQVSJQDFBE-FUXHJELOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.011857039196961764,
+                0.015488849844655582
+              ],
+              "cells": 158
+            },
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.022661282686164807,
+                0.011315602253040537
+              ],
+              "cells": 315
+            },
+            "CYOHGALHFOKKQC-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.009504128445552457,
+                0.016511994858256475
+              ],
+              "cells": 314
+            },
+            "FBOZXECLQNJBKD-ZDUSSCGKSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.030160931709249585,
+                0.030526808349938362
+              ],
+              "cells": 279
+            },
+            "FDLYAMZZIXQODN-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.001639418764043268,
+                0.005294917898406704
+              ],
+              "cells": 271
+            },
+            "GXJABQQUPOEUTA-RDJZCZTQSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005587287433669057,
+                0.003417663635557781
+              ],
+              "cells": 315
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0027171041315173076,
+                0.003025924524401972
+              ],
+              "cells": 285
+            },
+            "HLXSCTYHLQHQDJ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01465459965594434,
+                0.0038956835771080302
+              ],
+              "cells": 265
+            },
+            "IAYGCINLNONXHY-LBPRGKRZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.026392490141564626,
+                0.009471486781073723
+              ],
+              "cells": 201
+            },
+            "JLYAXFNOILIKPP-KXQOOQHDSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.020005620539272084,
+                0.014064431528223235
+              ],
+              "cells": 260
+            },
+            "JOGKUKXHTYWRGZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.008111258277874228,
+                0.012147168520988837
+              ],
+              "cells": 221
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.029143197683677194,
+                0.03213427730704501
+              ],
+              "cells": 96
+            },
+            "KTEIFNKAUNYNJU-GFCCVEGCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007142984331309042,
+                0.006619733680214605
+              ],
+              "cells": 245
+            },
+            "LIRYPHYGHXZJBZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0220238493348406,
+                0.02477049763499538
+              ],
+              "cells": 133
+            },
+            "LQBVNQSMGBZMKD-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01743986927488115,
+                0.02174805462242779
+              ],
+              "cells": 178
+            },
+            "MLDQJTXFUGDVEO-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.011661836142992857,
+                0.007628006461008811
+              ],
+              "cells": 280
+            },
+            "OTSOOHRUMBRSHZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02444882623606992,
+                0.012704703223083643
+              ],
+              "cells": 288
+            },
+            "PKCDDUHJAFVJJB-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0027826760134216405,
+                0.0058151508933851495
+              ],
+              "cells": 260
+            },
+            "QFJCIRLUMZQUOT-HPLJOQBZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004914738102845955,
+                0.022876218214301212
+              ],
+              "cells": 259
+            },
+            "UCFGDBYHRUNTLO-QHCPKHFHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.026756242099882446,
+                0.017055255202980582
+              ],
+              "cells": 266
+            },
+            "ULXXDDBFHOBEHA-CWDCEQMOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01370589695719279,
+                0.011679653453344143
+              ],
+              "cells": 228
+            },
+            "VABYUUZNAVQNPG-BQYQJAHWSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004273810506022765,
+                0.00492719781273963
+              ],
+              "cells": 55
+            },
+            "WAEXFXRVDQXREF-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007072507427288251,
+                0.0035294674440018736
+              ],
+              "cells": 291
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.041215830795255676,
+                0.02670294346868169
+              ],
+              "cells": 239
+            },
+            "XYFPWWZEPKGCCK-GOSISDBHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00704024619746585,
+                0.00985762142444774
+              ],
+              "cells": 212
+            },
+            "ZBNZXTGUTAYRHI-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.028119660184006766,
+                0.020484745447333495
+              ],
+              "cells": 272
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.029312920918894682,
+                0.017195808019447218
+              ],
+              "cells": 252
+            }
+          }
+        },
+        "fold": 2,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "PRISM20Q2",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "59342df8aab4454a2413c0b595e0ba72c5f22a5ff96c33945576e31a467f9112"
+      },
+      "rows": 13710,
+      "schema_version": 1,
+      "sha256": "93050d384c49a7d568c15feb9f5e436613525389585fefb40648e26bf940596b"
+    },
+    "pooled-0": {
+      "artifact": "pooled-0.parquet",
+      "frozen_utc": "2026-11-22T21:13:39.786386+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 677,
+          "kernel_reproduction_error": 9.238719940185547e-06,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 5.992769729346037e-07,
+              "iterations": 28,
+              "loss_final": 0.007141147740185261,
+              "loss_start": 0.007192051038146019,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 1.4198667486198246e-06,
+              "iterations": 26,
+              "loss_final": 0.007166155148297548,
+              "loss_start": 0.007267851382493973,
+              "mean_max_assay_weight": 0.6094248294830322
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 2.802544258884154e-07,
+              "iterations": 20,
+              "loss_final": 0.007131241261959076,
+              "loss_start": 0.007161191664636135,
+              "mean_max_assay_weight": 0.5460273623466492
+            }
+          },
+          "repeats": {
+            "AYUNIORJHRXIBJ-TXHRRWQRSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.011595945564133963,
+                0.012170201456938486
+              ],
+              "cells": 325
+            },
+            "CBPNZQVSJQDFBE-FUXHJELOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.012328807737551158,
+                0.014990759199295224
+              ],
+              "cells": 154
+            },
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.019575005570104925,
+                0.011127094462288054,
+                0.007006999887865551
+              ],
+              "cells": 222
+            },
+            "CYOHGALHFOKKQC-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01422926052303865,
+                0.018612697282530573
+              ],
+              "cells": 314
+            },
+            "FBOZXECLQNJBKD-ZDUSSCGKSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.03085811973884413,
+                0.029750436129690565
+              ],
+              "cells": 281
+            },
+            "FDLYAMZZIXQODN-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0012519546544570194,
+                0.004657699762900826
+              ],
+              "cells": 269
+            },
+            "FNHKPVJBJVTLMP-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005394629122088253,
+                0.02940847874576362
+              ],
+              "cells": 237
+            },
+            "GXJABQQUPOEUTA-RDJZCZTQSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005237421011508565,
+                0.0038488144503112916
+              ],
+              "cells": 310
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.002373760084208143,
+                0.0048273784058220515,
+                0.001867598077813531
+              ],
+              "cells": 167
+            },
+            "HLXSCTYHLQHQDJ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.013889218265685118,
+                0.0038589979165893577
+              ],
+              "cells": 268
+            },
+            "HWGQMRYQVZSGDQ-HZPDHXFCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02445411971931482,
+                0.013684361378945268
+              ],
+              "cells": 286
+            },
+            "IAYGCINLNONXHY-LBPRGKRZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02806225948355061,
+                0.011498328155654635
+              ],
+              "cells": 213
+            },
+            "JLYAXFNOILIKPP-KXQOOQHDSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.020763194373235212,
+                0.014216164102595158
+              ],
+              "cells": 264
+            },
+            "JOGKUKXHTYWRGZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00852268072272036,
+                0.011047720109214006
+              ],
+              "cells": 223
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02836505936223473,
+                0.02527772443319457,
+                0.004363445217167971
+              ],
+              "cells": 74
+            },
+            "KTEIFNKAUNYNJU-GFCCVEGCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007254186489921522,
+                0.006593384795674488
+              ],
+              "cells": 248
+            },
+            "LIRYPHYGHXZJBZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.031083444099402516,
+                0.031036652736226873
+              ],
+              "cells": 133
+            },
+            "LQBVNQSMGBZMKD-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.021194812092796077,
+                0.02377333420408159
+              ],
+              "cells": 185
+            },
+            "MLDQJTXFUGDVEO-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.013956909646681113,
+                0.008804700611384674
+              ],
+              "cells": 284
+            },
+            "MUOKSQABCJCOPU-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.006018855981846941,
+                0.0465086112764727
+              ],
+              "cells": 202
+            },
+            "NCNRHFGMJRPRSK-MDZDMXLPSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.006138004156486192,
+                0.005166596182198655
+              ],
+              "cells": 142
+            },
+            "OTSOOHRUMBRSHZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.019486414566495774,
+                0.012778700624286389
+              ],
+              "cells": 292
+            },
+            "PKCDDUHJAFVJJB-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0033102994222336053,
+                0.005627663026313085
+              ],
+              "cells": 257
+            },
+            "PLHJCIYEEKOWNM-HHHXNRCGSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.008063006922427413,
+                0.01989341947595073
+              ],
+              "cells": 130
+            },
+            "QFJCIRLUMZQUOT-HPLJOQBZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0036151498013794587,
+                0.02054744360883192
+              ],
+              "cells": 268
+            },
+            "QQWUGDVOUVUTOY-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00566556664243843,
+                0.013729324596294978
+              ],
+              "cells": 238
+            },
+            "UCEQXRCJXIVODC-PMACEKPBSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0064604100627120254,
+                0.004233550773500035
+              ],
+              "cells": 150
+            },
+            "UCFGDBYHRUNTLO-QHCPKHFHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.023573716236937464,
+                0.01620656320072881
+              ],
+              "cells": 268
+            },
+            "ULXXDDBFHOBEHA-CWDCEQMOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01054764597031621,
+                0.011728350862032288
+              ],
+              "cells": 225
+            },
+            "VABYUUZNAVQNPG-BQYQJAHWSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.003914144859399762,
+                0.00466981345050858
+              ],
+              "cells": 54
+            },
+            "WAEXFXRVDQXREF-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007190443816734695,
+                0.0038144351490291698
+              ],
+              "cells": 295
+            },
+            "WOSKHXYHFSIKNG-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0088739542675037,
+                0.0029926493221596275
+              ],
+              "cells": 315
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.026941451991070318,
+                0.022818167387321436,
+                0.02090475650338945
+              ],
+              "cells": 142
+            },
+            "XYFPWWZEPKGCCK-GOSISDBHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.006887578576071164,
+                0.010077714359556405
+              ],
+              "cells": 215
+            },
+            "ZBNZXTGUTAYRHI-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.028695333094163267,
+                0.02257710657637666
+              ],
+              "cells": 273
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.012898481662298886,
+                0.012832018301233204,
+                0.02049407308471916
+              ],
+              "cells": 155
+            }
+          }
+        },
+        "fold": 0,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "pooled",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "2808c91f98c26ceb09578ce037fe01509ea5aa3dc37deb32c396cb74118121a1"
+      },
+      "rows": 131280,
+      "schema_version": 1,
+      "sha256": "340d5c591d7fd2f45f46f0299e85af69010d46f20b7d1cd2976db85ac2dbbfbe"
+    },
+    "pooled-1": {
+      "artifact": "pooled-1.parquet",
+      "frozen_utc": "2026-11-22T21:13:39.782507+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 676,
+          "kernel_reproduction_error": 7.510185241699219e-06,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 1.1156107575516216e-06,
+              "iterations": 25,
+              "loss_final": 0.007065701764076948,
+              "loss_start": 0.007113061845302582,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 1.604967110324651e-07,
+              "iterations": 23,
+              "loss_final": 0.007094783242791891,
+              "loss_start": 0.007164041046053171,
+              "mean_max_assay_weight": 0.6340477466583252
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 4.785055352840573e-06,
+              "iterations": 21,
+              "loss_final": 0.007079953793436289,
+              "loss_start": 0.0071138544008135796,
+              "mean_max_assay_weight": 0.5561197400093079
+            }
+          },
+          "repeats": {
+            "AYUNIORJHRXIBJ-TXHRRWQRSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0137323788655182,
+                0.011363937491168909
+              ],
+              "cells": 328
+            },
+            "CBPNZQVSJQDFBE-FUXHJELOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01781123655253658,
+                0.01501834097844636
+              ],
+              "cells": 158
+            },
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0166102870408013,
+                0.008765438988207327,
+                0.007812964135768371
+              ],
+              "cells": 221
+            },
+            "CYOHGALHFOKKQC-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.015492530001443515,
+                0.016497511136708234
+              ],
+              "cells": 312
+            },
+            "FBOZXECLQNJBKD-ZDUSSCGKSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.03069581365299172,
+                0.02604938475573637
+              ],
+              "cells": 278
+            },
+            "FDLYAMZZIXQODN-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.001994904462911309,
+                0.004578694571493749
+              ],
+              "cells": 268
+            },
+            "FNHKPVJBJVTLMP-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0050666570034259804,
+                0.032940712236405954
+              ],
+              "cells": 255
+            },
+            "GXJABQQUPOEUTA-RDJZCZTQSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00527736303737527,
+                0.003284193357371134
+              ],
+              "cells": 309
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0006079445736927652,
+                0.003733277471860572,
+                0.0029011232146374617
+              ],
+              "cells": 166
+            },
+            "HLXSCTYHLQHQDJ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.015112495894259958,
+                0.004045490125131392
+              ],
+              "cells": 267
+            },
+            "HWGQMRYQVZSGDQ-HZPDHXFCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.028317076123331467,
+                0.018171535646103906
+              ],
+              "cells": 293
+            },
+            "IAYGCINLNONXHY-LBPRGKRZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02267377991581101,
+                0.009099026292457455
+              ],
+              "cells": 202
+            },
+            "JLYAXFNOILIKPP-KXQOOQHDSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01637404858894312,
+                0.009879625891639269
+              ],
+              "cells": 262
+            },
+            "JOGKUKXHTYWRGZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.008797184526170548,
+                0.010635719489813351
+              ],
+              "cells": 232
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02563101800616437,
+                0.02621200552208952,
+                0.005787385824040977
+              ],
+              "cells": 74
+            },
+            "KTEIFNKAUNYNJU-GFCCVEGCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005348381579447938,
+                0.0037273400577621063
+              ],
+              "cells": 241
+            },
+            "LIRYPHYGHXZJBZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02783395600760569,
+                0.027251828865913978
+              ],
+              "cells": 138
+            },
+            "LQBVNQSMGBZMKD-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.016098408973931742,
+                0.017869502102752507
+              ],
+              "cells": 181
+            },
+            "MLDQJTXFUGDVEO-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004932123010415453,
+                0.005629504258347807
+              ],
+              "cells": 286
+            },
+            "MUOKSQABCJCOPU-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004636323311917998,
+                0.04591857516470172
+              ],
+              "cells": 209
+            },
+            "NCNRHFGMJRPRSK-MDZDMXLPSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005719350032046979,
+                0.005005422239358452
+              ],
+              "cells": 156
+            },
+            "OTSOOHRUMBRSHZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.022617918880809034,
+                0.012526274072892722
+              ],
+              "cells": 286
+            },
+            "PKCDDUHJAFVJJB-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0026582562897685545,
+                0.00551190924002273
+              ],
+              "cells": 255
+            },
+            "PLHJCIYEEKOWNM-HHHXNRCGSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007651661328357533,
+                0.026935995914060422
+              ],
+              "cells": 138
+            },
+            "QFJCIRLUMZQUOT-HPLJOQBZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004239523948872581,
+                0.019398407130826568
+              ],
+              "cells": 265
+            },
+            "QQWUGDVOUVUTOY-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005587783877289808,
+                0.01337981280816648
+              ],
+              "cells": 244
+            },
+            "UCEQXRCJXIVODC-PMACEKPBSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005695908693731744,
+                0.004806592527045432
+              ],
+              "cells": 162
+            },
+            "UCFGDBYHRUNTLO-QHCPKHFHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.025142406093792414,
+                0.016208236629163618
+              ],
+              "cells": 260
+            },
+            "ULXXDDBFHOBEHA-CWDCEQMOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.014790288194948029,
+                0.010494669630741858
+              ],
+              "cells": 223
+            },
+            "VABYUUZNAVQNPG-BQYQJAHWSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004225723042915077,
+                0.00422322159497287
+              ],
+              "cells": 57
+            },
+            "WAEXFXRVDQXREF-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.006860186258452684,
+                0.0035492622216955236
+              ],
+              "cells": 296
+            },
+            "WOSKHXYHFSIKNG-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004879424615720831,
+                0.0038791599610817724
+              ],
+              "cells": 318
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.029735384679593992,
+                0.02079113201816137,
+                0.018503029002571322
+              ],
+              "cells": 151
+            },
+            "XYFPWWZEPKGCCK-GOSISDBHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.009865411751977877,
+                0.009768668031096826
+              ],
+              "cells": 209
+            },
+            "ZBNZXTGUTAYRHI-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01980234144972406,
+                0.016756201166621493
+              ],
+              "cells": 273
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.017205898063692673,
+                0.013030834438580864,
+                0.03299955021822231
+              ],
+              "cells": 159
+            }
+          }
+        },
+        "fold": 1,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "pooled",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "fc530198a3f3009a58769d76ce1aec82fb0289226ea7140f0c9106bcb3881992"
+      },
+      "rows": 131256,
+      "schema_version": 1,
+      "sha256": "b50cf73f8fd41614c449f49fc1c04cd81b269ac4353e6daad0964390cbb50d78"
+    },
+    "pooled-2": {
+      "artifact": "pooled-2.parquet",
+      "frozen_utc": "2026-11-22T21:13:39.796423+00:00",
+      "provenance": {
+        "auxiliary": {
+          "data_release": "DepMap Public 25Q3",
+          "endpoints": {
+            "chronos": {
+              "features": 114,
+              "models_with_any": 754,
+              "observed": 85172,
+              "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+            },
+            "drivers": {
+              "features": 18,
+              "models_with_any": 1005,
+              "observed": 15706,
+              "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+            }
+          },
+          "fit_model_count": 1014,
+          "inputs": {
+            "chronos": {
+              "bytes": 432295412,
+              "file": "CRISPRGeneEffect.csv",
+              "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+            },
+            "copy": {
+              "bytes": 400701924,
+              "file": "OmicsCNGeneWGS.csv",
+              "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+            },
+            "mutations": {
+              "bytes": 6644955,
+              "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+              "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+            }
+          },
+          "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+        },
+        "core_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "diagnostics": {
+          "fit_cells": 675,
+          "kernel_reproduction_error": 8.255243301391602e-06,
+          "optimize": {
+            "replicate_balanced": {
+              "gradient_max": 5.99051418248564e-07,
+              "iterations": 25,
+              "loss_final": 0.0071283066645264626,
+              "loss_start": 0.007177053019404411,
+              "mean_max_assay_weight": null
+            },
+            "replicate_robust": {
+              "gradient_max": 1.2140662875026464e-06,
+              "iterations": 28,
+              "loss_final": 0.00716380774974823,
+              "loss_start": 0.007254553493112326,
+              "mean_max_assay_weight": 0.6299917697906494
+            },
+            "replicate_shuffled_assays": {
+              "gradient_max": 4.539415385806933e-07,
+              "iterations": 24,
+              "loss_final": 0.007135779596865177,
+              "loss_start": 0.007168157957494259,
+              "mean_max_assay_weight": 0.5556343197822571
+            }
+          },
+          "repeats": {
+            "AYUNIORJHRXIBJ-TXHRRWQRSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.012555111722608899,
+                0.011902286962540648
+              ],
+              "cells": 323
+            },
+            "CBPNZQVSJQDFBE-FUXHJELOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.011857039196961764,
+                0.015488849844655582
+              ],
+              "cells": 158
+            },
+            "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.018672787201456417,
+                0.009951448988854882,
+                0.006322844581417789
+              ],
+              "cells": 231
+            },
+            "CYOHGALHFOKKQC-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.009504128445552457,
+                0.016511994858256475
+              ],
+              "cells": 314
+            },
+            "FBOZXECLQNJBKD-ZDUSSCGKSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.030160931709249585,
+                0.030526808349938362
+              ],
+              "cells": 279
+            },
+            "FDLYAMZZIXQODN-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.001639418764043268,
+                0.005294917898406704
+              ],
+              "cells": 271
+            },
+            "FNHKPVJBJVTLMP-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004690489161314354,
+                0.028785773234021365
+              ],
+              "cells": 240
+            },
+            "GXJABQQUPOEUTA-RDJZCZTQSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005587287433669057,
+                0.003417663635557781
+              ],
+              "cells": 315
+            },
+            "HFNKQEVNSGCOJV-OAHLLOKOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0023532513593275723,
+                0.003013856608487437,
+                0.0029102274914421375
+              ],
+              "cells": 171
+            },
+            "HLXSCTYHLQHQDJ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01465459965594434,
+                0.0038956835771080302
+              ],
+              "cells": 265
+            },
+            "HWGQMRYQVZSGDQ-HZPDHXFCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.030236589284303374,
+                0.016861357457714707
+              ],
+              "cells": 299
+            },
+            "IAYGCINLNONXHY-LBPRGKRZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.026392490141564626,
+                0.009471486781073723
+              ],
+              "cells": 201
+            },
+            "JLYAXFNOILIKPP-KXQOOQHDSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.020005620539272084,
+                0.014064431528223235
+              ],
+              "cells": 260
+            },
+            "JOGKUKXHTYWRGZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.008111258277874228,
+                0.012147168520988837
+              ],
+              "cells": 221
+            },
+            "KPBNHDGDUADAGP-VAWYXSNFSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.031498935225584404,
+                0.03230431548763619,
+                0.0064259374151671884
+              ],
+              "cells": 62
+            },
+            "KTEIFNKAUNYNJU-GFCCVEGCSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007142984331309042,
+                0.006619733680214605
+              ],
+              "cells": 245
+            },
+            "LIRYPHYGHXZJBZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0220238493348406,
+                0.02477049763499538
+              ],
+              "cells": 133
+            },
+            "LQBVNQSMGBZMKD-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01743986927488115,
+                0.02174805462242779
+              ],
+              "cells": 178
+            },
+            "MLDQJTXFUGDVEO-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.011661836142992857,
+                0.007628006461008811
+              ],
+              "cells": 280
+            },
+            "MUOKSQABCJCOPU-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.006171320064880179,
+                0.04699701813562867
+              ],
+              "cells": 203
+            },
+            "NCNRHFGMJRPRSK-MDZDMXLPSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.006398396103423566,
+                0.005582014229161932
+              ],
+              "cells": 146
+            },
+            "OTSOOHRUMBRSHZ-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.02444882623606992,
+                0.012704703223083643
+              ],
+              "cells": 288
+            },
+            "PKCDDUHJAFVJJB-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.0027826760134216405,
+                0.0058151508933851495
+              ],
+              "cells": 260
+            },
+            "PLHJCIYEEKOWNM-HHHXNRCGSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.009629624829543666,
+                0.022219668481494374
+              ],
+              "cells": 132
+            },
+            "QFJCIRLUMZQUOT-HPLJOQBZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004914738102845955,
+                0.022876218214301212
+              ],
+              "cells": 259
+            },
+            "QQWUGDVOUVUTOY-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005937635987608038,
+                0.0075494242796567915
+              ],
+              "cells": 240
+            },
+            "UCEQXRCJXIVODC-PMACEKPBSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.005889152033069807,
+                0.004163093023888164
+              ],
+              "cells": 156
+            },
+            "UCFGDBYHRUNTLO-QHCPKHFHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.026756242099882446,
+                0.017055255202980582
+              ],
+              "cells": 266
+            },
+            "ULXXDDBFHOBEHA-CWDCEQMOSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.01370589695719279,
+                0.011679653453344143
+              ],
+              "cells": 228
+            },
+            "VABYUUZNAVQNPG-BQYQJAHWSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.004273810506022765,
+                0.00492719781273963
+              ],
+              "cells": 55
+            },
+            "WAEXFXRVDQXREF-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.007072507427288251,
+                0.0035294674440018736
+              ],
+              "cells": 291
+            },
+            "WOSKHXYHFSIKNG-UHFFFAOYSA-N": {
+              "assays": [
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.008031994371180578,
+                0.003118836747269732
+              ],
+              "cells": 311
+            },
+            "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.029232184639026923,
+                0.02117411955106872,
+                0.023980574600251152
+              ],
+              "cells": 149
+            },
+            "XYFPWWZEPKGCCK-GOSISDBHSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.00704024619746585,
+                0.00985762142444774
+              ],
+              "cells": 212
+            },
+            "ZBNZXTGUTAYRHI-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.028119660184006766,
+                0.020484745447333495
+              ],
+              "cells": 272
+            },
+            "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+              "assays": [
+                "GDSC2/GDSC2_native_AUC",
+                "CTRPv2/CTRPv2_native_AUC",
+                "PRISM20Q2/PRISM20Q2_native_AUC"
+              ],
+              "baseline_ms": [
+                0.015463699991165532,
+                0.011164670867387917,
+                0.03143438535509341
+              ],
+              "cells": 160
+            }
+          }
+        },
+        "fold": 2,
+        "inputs_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+        "mode": "pooled",
+        "priors": {
+          "dorothea": {
+            "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          },
+          "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+          "hallmark": {
+            "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+            "source": "MSigDB 2026.1.Hs h.all symbols"
+          },
+          "progeny": {
+            "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+            "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+          }
+        },
+        "reference_sha256": "ad302ced26a793dec85c37fe5fc00217b1a9c9e85b9b67657a9a9483a4a3e5ab"
+      },
+      "rows": 131292,
+      "schema_version": 1,
+      "sha256": "5dfff1392a6160e1247d243a85575fbe48c306447499a975ce0b48e95adc6e67"
+    }
+  },
+  "scores": {
+    "external_score.json": "28178be35568da40f1a7324c19c0623993f5eb971d426fc06cce66c4f0289ee3",
+    "source_score.json": "34771bd04a8b4a754934962d2aad0c677e746e79ea6fe3e06d49089bc2d1d4b0"
+  }
+}
