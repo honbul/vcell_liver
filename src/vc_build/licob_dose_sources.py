@@ -39,7 +39,8 @@ def dose_metadata(path, query):
         "Dilution fold": "dilution", "# Point of doses": "points",
     })
     table = table[["catalogue", "maximum", "dilution", "points"]]
-    table = table.assign(second=table.maximum / table.dilution,
+    table = table.assign(catalogue=table.catalogue.str.strip(),
+                         second=table.maximum / table.dilution,
                          minimum=table.maximum / table.dilution ** (table.points - 1))
     keys = query[["compound_id", "catalogue"]].drop_duplicates()
     merged = keys.merge(table, on="catalogue", validate="one_to_one")
@@ -183,7 +184,8 @@ def prism(source, treatment, curve):
         yy = row.lower_limit + (row.upper_limit - row.lower_limit) * expit(
             -row.slope * (np.log(x) - np.log(row.ec50)))
         vals = curve_endpoints(x, yy, minimum=row.minimum, second=row.second, maximum=row.maximum)
-        records.append((row.depmap_id, row.compound_id, *vals))
+        if vals is not None:
+            records.append((row.depmap_id, row.compound_id, *vals))
     result = pd.DataFrame(records, columns=[*KEY, *VALUES]).groupby(KEY, as_index=False).median()
     return result, {"verified_native_auc": int(valid.sum()), "dose_supported_curves": len(fit)}
 
