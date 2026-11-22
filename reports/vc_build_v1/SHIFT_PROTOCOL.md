@@ -1,0 +1,7 @@
+# Public shift and local calibration
+
+The public assessment compares cross-source rank-only transfer, source-scale calibration from other HCC lineages, and source-scale calibration with sentinel response from the query model. LIMORE activity area and the destination assay keep distinct native units. Monotone rescaling or a shift that is constant for a cell has no within-cell ranking effect and is assessed on native-scale error. Such calibration is evaluated only where an auditable source join supports it.
+
+The source-scale and interval adaptations fit on separate lineages outside the scored group. Select sentinel compounds in a locked role disjoint from the scored candidate panel. Use a nonnegative slope and a ridge penalty of 1 for source rescaling. For sentinel adjustment shrink the cell residual mean with a zero-offset prior of 8 observations. Only publish the sentinel estimate for models with observed eligible sentinels. No tuned parameter can use the scored query labels.
+
+Report width, empirical coverage and abstention for 90% intervals. Calibration uses the finite-sample quantile of lineage-level maximum residual. Publish no interval when the independent lineage count is insufficient. The sentinel variant does not inherit the unadjusted interval. Public coverage is conditional on the evaluated protocol and does not attest to performance at a local site. No authorized local 72h sentinel measurements have been supplied.
