@@ -1,4 +1,4 @@
-"""Reconstruct zero-interaction potency from released Sanger dose matrices."""
+"""Reconstruct ZIP and cross-design CSS from released Sanger dose matrices."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import json
@@ -23,20 +23,23 @@ STUDY = re.compile(r"combo_well_stats_(GDSC_\d{3}|Sandpiper-\d+)_\d+\w+\d+\.csv"
 def curve_fit(dose, y, fix_zero, fixed_bottom=0.):
     """Profile a bounded log-logistic curve over its potency and slope."""
     logd = np.empty(len(dose))
-    logd[0] = -np.inf
-    logd[1:] = np.log(dose[1:])
+    positive = int(dose[0] == 0.)
+    if positive:
+        logd[0] = -np.inf
+    logd[positive:] = np.log(dose[positive:])
     if np.max(y) - np.min(y) < 1e-6:
-        return np.full_like(y, y[0])
-    center_lo, center_hi = logd[1] - 1.4, logd[-1] + 1.4
+        return np.full_like(y, y[0]), (y[0], y[0], np.nan, 1.)
+    center_lo, center_hi = logd[positive] - 1.4, logd[-1] + 1.4
     hill_lo, hill_hi = .18, 5.
     basis = np.zeros(len(y))
     best_pred = y.copy()
-    best_loss, best_c, best_h = 1e6, 0., 1.
+    best_loss, best_c, best_h = np.inf, 0., 1.
+    best_bottom, best_plateau = 0., 0.
     for _ in range(3):
         centers, slopes = np.linspace(center_lo, center_hi, 11), np.linspace(hill_lo, hill_hi, 7)
         for center in centers:
             for slope in slopes:
-                basis[1:] = 1. / (1. + np.exp(np.minimum(40., slope * (center - logd[1:]))))
+                basis[positive:] = 1. / (1. + np.exp(np.minimum(40., slope * (center - logd[positive:]))))
                 if fix_zero:
                     bottom = fixed_bottom
                     amplitude = np.dot(basis, y - bottom) / max(np.dot(basis, basis), 1e-8)
@@ -51,33 +54,72 @@ def curve_fit(dose, y, fix_zero, fixed_bottom=0.):
                 loss = np.sum((predicted - y) ** 2)
                 if loss < best_loss:
                     best_loss, best_c, best_h = loss, center, slope
+                    best_bottom, best_plateau = bottom, plateau
                     best_pred = predicted
         center_step = (center_hi - center_lo) / 10
         slope_step = (hill_hi - hill_lo) / 6
         center_lo, center_hi = best_c - center_step, best_c + center_step
         hill_lo, hill_hi = max(.12, best_h - slope_step), min(8., best_h + slope_step)
-    return best_pred
+    return best_pred, (best_bottom, best_plateau, best_c, best_h)
 
 
 @njit(cache=True, nogil=True)
-def zip_score(dose_a, dose_b, inhibition, single_a, single_b):
-    dose_a = np.concatenate((np.zeros(1), dose_a))
-    dose_b = np.concatenate((np.zeros(1), dose_b))
+def closest_ic50(doses, parameters):
+    bottom, plateau, center, _ = parameters
+    # A relative IC50 from a flat, decreasing, or unbracketed monotherapy
+    # cannot identify an observed cross. Keep that CSS label missing.
+    if (plateau - bottom < .10 or not np.isfinite(center)
+            or center < np.log(doses[0]) or center > np.log(doses[-1])):
+        return -1
+    return np.argmin(np.abs(doses - np.exp(center)))
+
+
+@njit(cache=True, nogil=True)
+def cross_sensitivity(dose, inhibition):
+    _, (bottom, plateau, center, slope) = curve_fit(dose, inhibition, False)
+    low, high = np.log(dose[0]), np.log(dose[-1])
+    mean_inhibition = bottom
+    if plateau != bottom:
+        upper = np.log1p(np.exp(slope * (high - center)))
+        lower = np.log1p(np.exp(slope * (low - center)))
+        mean_inhibition += (plateau - bottom) * (upper - lower) / (slope * (high - low))
+    return min(100., max(0., 100. * (mean_inhibition - .10) / .90))
+
+
+@njit(cache=True, nogil=True)
+def dose_scores(dose_a, dose_b, inhibition, single_a, single_b):
+    a_with_control = np.concatenate((np.zeros(1), dose_a))
+    b_with_control = np.concatenate((np.zeros(1), dose_b))
     mono_a = np.concatenate((np.zeros(1), single_a))
     mono_b = np.concatenate((np.zeros(1), single_b))
-    fit_a = curve_fit(dose_a, mono_a, False)[1:]
-    fit_b = curve_fit(dose_b, mono_b, False)[1:]
+    fit_a, parameters_a = curve_fit(a_with_control, mono_a, False)
+    fit_b, parameters_b = curve_fit(b_with_control, mono_b, False)
+    fit_a, fit_b = fit_a[1:], fit_b[1:]
     by_a = np.empty_like(inhibition)
     by_b = np.empty_like(inhibition)
     for j in range(len(single_b)):
         y = np.concatenate((single_b[j:j+1], inhibition[:, j]))
-        by_a[:, j] = curve_fit(dose_a, y, True, single_b[j])[1:]
+        fitted, _ = curve_fit(a_with_control, y, True, single_b[j])
+        by_a[:, j] = fitted[1:]
     for i in range(len(single_a)):
         y = np.concatenate((single_a[i:i+1], inhibition[i, :]))
-        by_b[i, :] = curve_fit(dose_b, y, True, single_a[i])[1:]
+        fitted, _ = curve_fit(b_with_control, y, True, single_a[i])
+        by_b[i, :] = fitted[1:]
     null = fit_a.reshape((len(fit_a), 1)) + fit_b - fit_a.reshape((len(fit_a), 1)) * fit_b
     delta = .5 * (by_a + by_b) - null
-    return 100 * np.mean(delta)
+    zip_value = 100 * np.mean(delta)
+    control_a = closest_ic50(dose_a, parameters_a)
+    control_b = closest_ic50(dose_b, parameters_b)
+    css_value = np.nan
+    if control_a >= 0 and control_b >= 0:
+        css_a = cross_sensitivity(dose_a, inhibition[:, control_b])
+        css_b = cross_sensitivity(dose_b, inhibition[control_a, :])
+        css_value = .5 * (css_a + css_b)
+    return zip_value, css_value
+
+
+def zip_score(dose_a, dose_b, inhibition, single_a, single_b):
+    return dose_scores(dose_a, dose_b, inhibition, single_a, single_b)[0]
 
 
 def matrices(archive, entry):
@@ -125,9 +167,10 @@ def per_study(archive, entry):
         measured = (np.bincount(ix, weights=measured) / np.bincount(ix)).reshape(len(aa), len(bb))
         ma = np.bincount(ai, weights=one_a) / np.bincount(ai)
         mb = np.bincount(bi, weights=one_b) / np.bincount(bi)
-        value = zip_score(aa, bb, measured, ma, mb)
-        ready.append((name, value, len(aa), len(bb)))
-    return ready, {"study": part, "matrices": len(seen), "scored": len(ready), "excluded": failed}
+        synergy, sensitivity = dose_scores(aa, bb, measured, ma, mb)
+        ready.append((name, synergy, sensitivity, len(aa), len(bb)))
+    return ready, {"study": part, "matrices": len(seen), "zip": len(ready),
+                   "css": sum(bool(np.isfinite(row[2])) for row in ready), "excluded": failed}
 
 
 def run(a):
@@ -141,12 +184,12 @@ def run(a):
     # Compiles once before the five worker threads enter the fitting loop.
     x = np.geomspace(.01, 10, 7)
     y = np.linspace(.01, .90, 7)
-    zip_score(x, x, np.outer(y, y), y, y)
+    dose_scores(x, x, np.outer(y, y), y, y)
     with ThreadPoolExecutor(max_workers=min(5, a.workers)) as pool:
         futures = [pool.submit(per_study, a.wells, entry) for entry in entries]
         results = [future.result() for future in futures]
     export = pd.DataFrame([row for rows, _ in results for row in rows],
-                          columns=["id", "zip", "dose_levels_a", "dose_levels_b"])
+                          columns=["id", "zip", "css", "dose_levels_a", "dose_levels_b"])
     if not export.id.is_unique or not len(export) or not np.isfinite(export.zip).all():
         raise ValueError("Reconstructed ZIP does not map to unique source assays")
     with tempfile.TemporaryDirectory(prefix=f".{a.output.name}.", dir=a.output.parent) as d:
@@ -158,7 +201,12 @@ def run(a):
             "algorithm": "Bounded four-parameter log-logistic single agent and conditional curves, "
                          "SynergyFinder ZIP reference and two-directional fit mean, reconstructed from "
                          "matched-dose observed source mono values and normalized zero control.",
+            "css_algorithm": "Mean of the two nearest-monotherapy-IC50 cross scores. Fit observed "
+                             "positive-dose combination curves, integrate over log-dose, and normalize "
+                             "at the original 10 percent inhibition threshold. Both monotherapy midpoints "
+                             "must be bracketed by measured doses with at least ten percentage points of fit amplitude.",
             "primary_method": "https://doi.org/10.1016/j.csbj.2015.09.001",
+            "css_primary_method": "https://doi.org/10.1371/journal.pcbi.1006752",
             "author_implementation_reviewed": "https://github.com/bioc/synergyfinder/tree/90ba7b94c23d0560e8759dde2e7c3e2fd81bbb7c",
         }
         (stage / "receipt.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")

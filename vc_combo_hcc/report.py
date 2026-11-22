@@ -47,8 +47,11 @@ def report(a):
     for label, group in data.groupby("endpoint"):
         parts = ", ".join(sorted(group.source.unique()))
         sections.append(f"The held HCC {label} endpoint has scoreable observations from {parts}.")
-    if "css" not in set(data.endpoint):
-        sections.append("Native CSS has no eligible adult HCC labels after oncology filtering.")
+    css_sources = set(data.loc[data.endpoint.eq("css"), "source"])
+    if "Sanger" in css_sources:
+        sections.append("The Sanger CSS rows use a reconstruction from observed dose matrices.")
+    if "DrugComb" not in css_sources:
+        sections.append("The DrugComb native CSS subset has zero eligible adult HCC labels after oncology filtering.")
     a.output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=f".{a.output.name}.", dir=a.output.parent) as handle:
         stage = Path(handle)

@@ -187,9 +187,10 @@ def run(a):
             "# Track 8 — held adult HCC drug-combination assays",
             "Every model was selected using its inner blocked validation. Frozen predictions were "
             "verified against held assay IDs and outcome hashes in a separate command.",
-            "The Sanger scorecard includes measured Bliss, independently reconstructed ZIP and "
-            "maximum growth inhibition gained over the strongest measured single agent. CSS is "
-            "an efficacy endpoint of DrugComb. Where a protocol has no held HCC assay, the score is missing.",
+            "The Sanger scorecard includes measured Bliss, reconstructed ZIP and cross-design CSS, "
+            "and maximum growth inhibition gained over the strongest measured single agent. "
+            "Sanger CSS requires both relative single-agent IC50 values to be bracketed by measured doses. "
+            "DrugComb's published CSS is a separate protocol. A missing score indicates unsupported held observations.",
         ]
         columns = ["source", "endpoint", "model", "n", "lineages", "spearman", "rmse",
                    "cell_macro_spearman", "cell_macro_spearman_low", "cell_macro_spearman_high"]

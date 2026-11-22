@@ -83,7 +83,7 @@ def drugcomb(path, cells, compounds, audit, *, replaced=()):
                   "replaced_mirrored_studies": sorted(set(replaced))})
 
 
-def sanger(files, cells, compounds, audit, zip_scores):
+def sanger(files, cells, compounds, audit, reconstructed):
     for path in files:
         source = "Sanger:" + path.stem.removesuffix("_matrix_results")
         data = pd.read_csv(path, usecols=SANGER_FIELDS, dtype={key: str for key in SANGER_FIELDS[:11]})
@@ -102,11 +102,14 @@ def sanger(files, cells, compounds, audit, zip_scores):
             "css": np.nan, "added_inhibition": efficacy * 100,
         })
         qp = qp.dropna(subset=["bliss", "added_inhibition"])
-        qp["zip"] = qp.id.map(zip_scores)
+        for endpoint in ("zip", "css"):
+            qp[endpoint] = qp.id.map(reconstructed[endpoint])
         out = map_assay(qp, cells, compounds)
         audit[source] = {"published_matrices": len(data), "resolved_matrices": len(out),
                          "reconstructed_zip_matrices": int(out.zip.notna().sum()),
                          "adult_hcc_zip_matrices": int(out.loc[out.adult_hcc, "zip"].notna().sum()),
+                         "reconstructed_css_matrices": int(out.css.notna().sum()),
+                         "adult_hcc_css_matrices": int(out.loc[out.adult_hcc, "css"].notna().sum()),
                          "adult_hcc_matrices": int(out.adult_hcc.sum()),
                          "adult_hcc_models": out.loc[out.adult_hcc, "cell_id"].nunique()}
         yield out
@@ -131,7 +134,7 @@ def prepare(a):
     zip_path = a.sanger_zip / "sanger_zip.parquet"
     if record(zip_path) != reads["files"]["sanger_zip.parquet"]:
         raise ValueError("Sanger ZIP reconstruction failed its recorded SHA-256")
-    reconstructed_zip = pd.read_parquet(zip_path).set_index("id", verify_integrity=True).zip
+    reconstructed = pd.read_parquet(zip_path, columns=["id", "zip", "css"]).set_index("id", verify_integrity=True)
     audit_comb, audit_sanger, audit_db = {}, {}, {}
     batches, replaced = [], ()
     if a.drugcombdb is not None:
@@ -143,7 +146,7 @@ def prepare(a):
         replaced = (STUDY,)
         batches.append(filtered)
     batches.extend(drugcomb(a.drugcomb, cells, drugs, audit_comb, replaced=replaced))
-    batches.extend(sanger(a.sanger, cells, drugs, audit_sanger, reconstructed_zip))
+    batches.extend(sanger(a.sanger, cells, drugs, audit_sanger, reconstructed))
     distinct = pd.concat(batches, ignore_index=True).drop_duplicates()
     validate_assays(distinct)
     test = distinct[distinct.adult_hcc]
@@ -166,7 +169,7 @@ def prepare(a):
             "scaffold_aliases_closed_under_equal_parent_connectivity": drugs.scaffold_aliases,
             "endpoint_sources": {
                 "DrugComb": "Published ZIP, Bliss, CSS_ri and matched-dose HSA increment",
-                "Sanger": "Published Bliss and gain over strongest single agent, and reconstructed ZIP",
+                "Sanger": "Published Bliss and gain over strongest single agent, reconstructed ZIP and cross-design CSS",
                 "DrugCombDB": "Published ZIP and Bliss, observed dose-grid gain over the strongest single agent",
             },
             "files": {p.name: record(p) for p in sorted(staged.iterdir()) if p.is_file()},
