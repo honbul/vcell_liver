@@ -1,4 +1,4 @@
-# Internal manuscript review
+# Final internal manuscript review for the closed R19 track
 
 [Editable review manuscript](REVIEW.docx) · [Markdown source](DRAFT.md) · [Table 1 source rows](table1.tsv) · [Evidence and scope by claim](CLAIMS.md) · [Artifact checksums](review_receipt.json)
 
@@ -6,7 +6,8 @@ The four adult HCC Table 1 comparisons can be replayed from anonymous parent-lev
 
 The review manuscript reports two distinct information settings. The HEPG2 benchmark predicts the later response from a measured earlier response to the same drug. The adult HCC benchmark receives measured same-drug responses from eight nonhepatic cells. Its high-dose development results, lower-dose limits and between-line comparison appear together. The Article format and references follow the current journal guidance for internal review. [Scientific Reports submission guidelines](https://www.nature.com/srep/author-instructions/submission-guidelines) · [Initial submission checklist](https://www.nature.com/documents/srep-checklist-for-initial-submissions.pdf)
 
-- **Evidence awaiting measurement.** The independent SNU-423/HUH7 pilot has frozen predictions and a scoring protocol. The available pilot assay is synthetic. Independent measurements are required for the intended external HCC claim. The R18 reserved confirmation is a separate experiment with no scored result. [Independent pilot](../HCC_OFF_POSITION_PILOT_RESULTS.md) · [R18 status](../R18_CONFIRMATION_PROTOCOL.md)
+- **Final R18 result.** One prediction freeze and separate scoring completed. The verification job reproduced the registered C1 decision. A passed 4/12 and B passed 13/14, yielding the overall label “확인되지 않음” (not confirmed). C2 had two positive B strata, and C3 remained descriptive. [R18 results](../R18_RESULTS.md) · [Final closeout](../FINAL_CLOSEOUT.md)
+- **Independent HCC evidence.** The SNU-423/HUH7 pilot has frozen predictions and synthetic validation of the score path. Actual independent cultures and measurements were unavailable at closeout. [Independent pilot](../HCC_OFF_POSITION_PILOT_RESULTS.md)
 - **Items for author verification.** Confirm names, affiliations, corresponding author, contributions, funding, competing interests, study-specific ethics applicability, and the description of AI assistance before submission. The review author line is explicitly pending. [Journal declarations](https://www.nature.com/srep/author-instructions/submission-guidelines) · [Journal AI policy](https://www.nature.com/srep/journal-policies/ai)
 - **Reader access.** The draft identifies public data sources and exact CMap files. Confirm a stable release with code, split manifests, runnable scripts, score artifacts, version and access terms. The repository's review files are local. [Journal code and data policy](https://www.nature.com/srep/journal-policies/editorial-policies)
 
