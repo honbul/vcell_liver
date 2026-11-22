@@ -11,7 +11,7 @@ import pandas as pd
 
 KEYS = ["id", "source", "cell_id", "cell_group", "liver", "adult_hcc",
         "compound_a", "compound_b", "connectivity_a", "connectivity_b", "scaffold_a", "scaffold_b"]
-OUTCOMES = ["zip", "bliss", "css"]
+OUTCOMES = ["zip", "bliss", "css", "added_inhibition"]
 
 
 def record(path):
@@ -37,8 +37,10 @@ def pair_key(left, right):
 def validate_assays(frame):
     if set(frame.columns) != set(KEYS + OUTCOMES):
         raise ValueError("Expected registered combination identities plus ZIP, Bliss and CSS")
-    if frame[KEYS].isna().any().any() or not np.isfinite(frame[OUTCOMES].to_numpy()).all():
-        raise ValueError("Combination eligibility requires exact assay identities and complete endpoints")
+    if frame[KEYS].isna().any().any() or np.isinf(frame[OUTCOMES].to_numpy()).any():
+        raise ValueError("Combination eligibility requires exact assay identities and valid endpoints")
+    if frame.bliss.isna().any() or frame[["css", "added_inhibition"]].isna().all(axis=1).any():
+        raise ValueError("Every registered assay must measure Bliss and at least one efficacy outcome")
     if not frame.id.is_unique or (frame.connectivity_a == frame.connectivity_b).any():
         raise ValueError("Repeated assay IDs or same-parent drug combinations")
     if not frame.loc[frame.adult_hcc, "liver"].all():
@@ -152,6 +154,8 @@ def register(a):
                     "axis": axis, "train_rows": len(fit), "validation_rows": len(valid), "test_rows": len(query),
                     "query_lineages": query.cell_group.nunique(), "query_pairs": query.pair.nunique(),
                     "query_studies": query.source.value_counts().to_dict(),
+                    "endpoint_support": {role: table[OUTCOMES].notna().sum().to_dict()
+                                         for role, table in (("fit", fit), ("validation", valid), ("query", query))},
                     "reserved_scaffolds": sorted(held) if held is not None else [],
                     "files": paths,
                 }
