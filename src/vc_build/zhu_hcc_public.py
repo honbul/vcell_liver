@@ -26,6 +26,7 @@ ASSETS = {
     "zhu-s4.xlsx": "f751429f48d7cbbbf97250236766ea06844173ee0f840965d85af44b0b8a1a92",
 }
 PUBLICATION = "10.1016/j.xcrm.2023.101375"
+EXPANDED = "67c11aba490282e30be9ef6d3d4d28ad192a2f5620a9e0b84c978019a0ccdb9e"
 SHEETS = ("AUC，1-AA", "Primary screen_Inhibition rato")
 
 
@@ -133,7 +134,13 @@ def register(args):
         require_hash(args.data / name, expected)
     require_hash(args.vendor, ASSET_HASHES["catalog"])
     require_hash(args.core / "receipt.json", RECEIPTS["core"])
+    require_hash(args.expanded / "receipt.json", EXPANDED)
+    expanded_path = args.expanded / "train.parquet"
+    expanded_receipt = json.loads((args.expanded / "receipt.json").read_text())
+    require_hash(expanded_path, expanded_receipt["files"][expanded_path.name])
+    expanded = set(pd.read_parquet(expanded_path, columns=["compound_id"]).compound_id)
     fit, fit_rna, _ = training_inputs(args.core)
+    core = set(fit.compound_id)
     with closing(load_workbook(args.data/"zhu-s1.xlsx",read_only=True,data_only=True)) as s1:
         patients = donors(s1)
     with closing(load_workbook(args.data/"zhu-s3.xlsx",read_only=True,data_only=True)) as s3:
@@ -157,30 +164,35 @@ def register(args):
                 raise ValueError("Unexpected exact adult AUC-linked patient support")
             fields = ("sheet_row","sheet_column") if label == "auc" else ("sheet_column","sheet_row")
             full = drug[name]
-            eligible = full.loc[full.status.eq("exact") & full.compound_id.isin(fit.compound_id)]
+            eligible = full.loc[full.status.eq("exact") & full.compound_id.isin(expanded | core)]
+            eligible = eligible.assign(in_core=eligible.compound_id.isin(core),
+                                       in_expanded=eligible.compound_id.isin(expanded))
             cells = patients.loc[support].assign(**{fields[0]:support.map(plates[name])}).reset_index()
             query = cells.merge(eligible.rename(columns={"drug_axis":fields[1]}),how="cross")
             query = query.assign(row_id=lambda q: "ZHU|"+label+"|"+q.cell_id+"|"+q.compound_id)
-            _validate(fit,query)
+            _validate(fit,query[query.in_core])
             for key, data in ((f"{label}_roster.parquet",query),(f"{label}_chemistry.parquet",full)):
                 data.to_parquet(out/key,index=False)
                 artifacts[key] = sha256(out/key)
             info[label] = {"models":len(support),"donors":patients.loc[support].lineage_group.nunique(),
                            "all_drugs":len(full),"exact_structure_drugs":int(full.status.eq("exact").sum()),
-                           "core_drugs":len(eligible),"query_rows":len(query),
+                           "core_drugs":int(eligible.in_core.sum()),"core_query_rows":int(query.in_core.sum()),
+                           "expanded_drugs":int(eligible.in_expanded.sum()),
+                           "expanded_query_rows":int(query.in_expanded.sum()),"union_query_rows":len(query),
                            "chemistry_status":full.status.value_counts().to_dict()}
         target = out/"rna.parquet"
         rna.loc[sorted(all_samples)].to_parquet(target)
         artifacts[target.name] = sha256(target)
         publish_json(out/"receipt.json",{"publication":PUBLICATION,"published_accession":"HRA004348",
                      "supplement_sha256":ASSETS,"drug_catalogue_sha256":ASSET_HASHES["catalog"],
-                     "core_receipt_sha256":RECEIPTS["core"],"genes":len(rna.columns),
+                     "core_receipt_sha256":RECEIPTS["core"],"expanded_receipt_sha256":EXPANDED,
+                     "genes":len(rna.columns),
                      "scored_outcome_values_read":0,"support":info,"files":artifacts})
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    for field in ("data","vendor","core","out"):
+    for field in ("data","vendor","core","expanded","out"):
         parser.add_argument("--"+field,type=Path,required=True)
     register(parser.parse_args())
 
