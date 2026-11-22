@@ -63,7 +63,7 @@ def jhh7_forecasts(args, old, ref, genes, frozen, native):
     return queries, rows, pieces
 
 
-def frozen_comparison(args):
+def frozen_vectors(args):
     pinned, best = verified_score(args)
     is_jhh5 = args.cell == "JHH5"
     original_args = argparse.Namespace(**(vars(args) | {"protocol": args.native_protocol}))
@@ -104,7 +104,12 @@ def frozen_comparison(args):
     replay = pd.DataFrame(replay)
     fields = ["arm_value", "ref_value", "difference", "low99", "high99"]
     np.testing.assert_allclose(best[fields], replay[fields], atol=1e-12, rtol=0)
-    return rows, len(genes), squared_rows(truth), np.column_stack([squared_rows(truth, arrays[a]) for a in COMPARED])
+    return rows, truth, arrays
+
+
+def frozen_comparison(args):
+    rows, truth, arrays = frozen_vectors(args)
+    return rows, truth.shape[1], squared_rows(truth), np.column_stack([squared_rows(truth, arrays[a]) for a in COMPARED])
 
 
 def moments(rows, genes, energy, errors):

@@ -139,8 +139,8 @@ def compare(rows, truth, arrays, comparisons, label):
     return result
 
 
-def contrast(rows, truth, arrays):
-    predictions = {name: arrays[name].astype("float64") for name in BASE}
+def contrast(rows, truth, arrays, *, arms=BASE):
+    predictions = {name: arrays[name].astype("float64") for name in arms}
     target = truth.astype("float64")
     details = []
     for positions in rows.groupby(POOL, sort=False).indices.values():
@@ -154,7 +154,7 @@ def contrast(rows, truth, arrays):
             value[positions] -= center
             means -= center
             centered[name] = means / np.maximum(np.linalg.norm(means, axis=1, keepdims=True), 1e-12)
-        for arm in BASE:
+        for arm in arms:
             cosine = centered[arm] @ centered["target"].T
             correct = cosine.diagonal()[:, None]
             ties = np.isclose(cosine, correct, atol=1e-10, rtol=1e-8)
@@ -162,7 +162,8 @@ def contrast(rows, truth, arrays):
             for k in (1, 5):
                 hit = np.clip((k - better) / ties.sum(axis=1), 0, 1)
                 for i, parent in enumerate(labels):
-                    details.append(dict(parent=parent, arm=arm, k=k, top=hit[i], chance=min(k/len(labels), 1), pool_size=len(labels)))
+                    details.append(dict(parent=parent, arm=arm, k=k, top=hit[i], cosine=correct[i, 0],
+                        chance=min(k/len(labels), 1), pool_size=len(labels)))
     return target, predictions, pd.DataFrame(details)
 
 
