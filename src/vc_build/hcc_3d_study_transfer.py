@@ -43,10 +43,10 @@ PAIRS = tuple((PRIMARY, arm) for arm in ("drug_mean", "2d_ridge", "2d_teacher", 
                                          "pdo_signed_transfer", "pdo_structured")) + (("pdo_ridge_coral", PRIMARY),)
 
 
-def target_inputs(study, cohort, patient_audit):
+def target_inputs(study, cohort, patient_audit, *, compounds=DRUGS):
     require_hash(cohort / "receipt.json", COHORT_HASHES[study])
     frame = pd.read_parquet(cohort / "query.parquet")
-    frame = frame[frame.compound_id.isin(DRUGS)].copy()
+    frame = frame[frame.compound_id.isin(compounds)].copy()
     if study == "LICOB":
         checked_registration(cohort)
         require_hash(patient_audit, DONORS_HASH)
@@ -62,9 +62,10 @@ def target_inputs(study, cohort, patient_audit):
     else:
         read_registration(cohort)
     patients = 29 if study == "LICOB" else 10
-    if (frame.lineage_group.nunique() != patients or not frame.groupby("cell_id").compound_id.nunique().eq(3).all()
+    if (frame.lineage_group.nunique() != patients
+            or not frame.groupby("cell_id").compound_id.nunique().eq(len(compounds)).all()
             or frame.duplicated(["cell_id", "compound_id"]).any()):
-        raise ValueError("Expected the three registered TKI parents in each recipient model")
+        raise ValueError("Expected every registered parent in each recipient model")
     frame["model_native"] = frame.cell_id
     frame["cell_id"] = study + ":" + frame.cell_id
     frame["lineage_group"] = study + ":" + frame.lineage_group.astype(str)
@@ -138,6 +139,10 @@ def predict_source(args):
     query = pd.read_parquet(args.inputs / "application.parquet")
     if args.component == "cellhit":
         query = query[query.study.isin(STUDIES) & query.compound_id.isin(DRUGS)]
+    return fit_source_forecast(args, registered, train, query)
+
+
+def fit_source_forecast(args, registered, train, query):
     _validate(train, query)
     rna = pd.read_parquet(args.inputs / "rna.parquet")
     edges, targets, provenance = parameters(args)
