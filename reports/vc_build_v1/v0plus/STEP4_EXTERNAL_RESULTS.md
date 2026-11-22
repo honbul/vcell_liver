@@ -139,3 +139,7 @@ Wong과 Yang의 HCC 오가노이드 RNA로 추정한 고정 절편은 LICOB 자�
 같은 세포의 RNA-seq·Affymetrix로 선택한 경로 내 유전자 쌍은 보류 측정에서 순서가 94.5% 일치했다. 이를 추가한 LICOB의 약물 내 Spearman 차이는 +.0201, NDCG@5 차이는 −.0069로 두 구간이 0을 포함했다. LIMORE의 약물 내 Pearson은 .3780→.3434였고, 두 외부의 공동 기준에 미달했다. [유전자 순서 재현성과 동결 성적](PAIRED_ORDINAL_RESULTS.md)
 
 유전자 쌍을 스크린 간 약물별 연관 방향의 일치로 다시 골랐다. 같은 RNA 축 기준 대비 약물 내 Spearman 차이는 LIMORE −.0148, LICOB −.0075로 두 구간이 0을 포함했다. 보류 스크린의 직접 지원은 5약물이며, GDSC1을 추가하고 GDSC 연구 계열을 묶어서 집계하면 5–6약물이었다. [약물별 선택과 스크린 지원 감사](DRUG_STABLE_ORDINAL_RESULTS.md)
+
+같은 LICOB 연구의 간내담관암 12개에서 구한 약물별 절편을 더하자 LIMORE NDCG@5가 .7380→.7851, LICOB HCC 시료 내 Spearman이 .3387→.4375였다. ICC에서 적합한 개인화 잔차의 공동 기준은 LIMORE, LICOB HCC 및 별개 Wong 모두 미통과였다. [ICC 보정의 세 코호트 성적](LICOB_ICC_BRIDGE_RESULTS.md)
+
+Zhu 저자 공개 S3 발현과 S4 반응표를 공여자 단위로 연결했다. 확장 학습과 정확한 구조가 맞는 범위는 성인 HCC 16명·18약물의 다농도 좌표와 21명·37약물의 초기 10 µM 좌표다. 이번에는 반응값 없이 등록했다. [신규 독립 연구 등록](ZHU_HCC_PUBLIC_REGISTRATION.md)
