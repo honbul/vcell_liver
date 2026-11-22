@@ -11,3 +11,9 @@ Bulk-only and organoid-augmented Ridge, ElasticNet and LightGBM are compared wit
 High resistance uses source-only score quantiles. The scorer tests rank partial correlations within donor, adjusting for biopsy, UMI count, detection, mitochondrial fraction and S/G2M cell cycle measures. UMAP and grouped transcriptional states are descriptive and rendered after scoring.
 
 Run `python -m vc_scrna_subclone.predict --help` and `python -m vc_scrna_subclone.score --help` offline. The G1 batch scripts list the raw counts, fixed checkpoints and registered artifacts. Scoring reads clinical metadata and outcomes after prediction hashes have been written.
+
+The CPU figure stage uses UMAP-learn 0.5.3 and PyNNDescent 0.5.13 from the shared study runtime. The UMAP panels use separate within-donor color scales because they show forecasts from different held-donor folds.
+
+## Observed transfer
+
+Across 74 held cell lineages and five drugs, the scGPT adversarial model reached within-drug Spearman 0.0836 for 4,000-read pseudobulk. Bulk-trained LightGBM reached 0.1572. The same scGPT model predicted higher resistance in three of four held organoid pairs, with mean difference +0.0281, 95% donor bootstrap interval [−0.0144, 0.0815], and exact sign-flip p of 0.50. In GSE151530, its donor-mean partial correlations were −0.1105 for UMI count, +0.2193 for detected genes, and +0.1000 for the G2M score. The primary-to-PVTT and primary-to-lymph comparisons each retained one paired donor, and the NCI temporal comparison retained three. The observed data support treating the expression-state figures as descriptive. [Complete held-donor scorecard](RESULTS.md)
