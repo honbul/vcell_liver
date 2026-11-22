@@ -10,4 +10,4 @@ Broutier GSE84073의 HCC-1·HCC-3은 세 학습 스크린과 별도 연구에서
 
 V0+의 Spearman은 HCC-1에서 .643, HCC-3에서 .464였다. 같은 두 표본의 Ridge는 .679, .214였다. 오가노이드 두 개가 각 환자를 대표하므로 약물별 개인화 Spearman·Pearson의 최소 5계통을 충족하는 약물은 0개다. 이 비교는 약물 순위의 기술 평가로 해석한다.
 
-주 3D 코호트 LICOB에서는 43개 모델·76약물의 반응과 일치하는 RNA 헤더를 확인했다. 발행 RNA 아카이브가 MD5·CRC 검사를 통과하지 못했으므로 주 3D 확인은 미완료다. [LICOB 무결성·지원 감사](STEP1_SCALE_AND_LICOB.md) · [결과 원표](broutier_score.json) · [동결 영수증](broutier_forecast_receipt.json)
+당시 LICOB NODE RNA 아카이브가 MD5·CRC 검사를 통과하지 못했다. 후속 저자 패키지 RNA와 공식 반응표로 29명·53약물 범위의 LICOB 외부 채점을 수행했다. [LICOB 무결성·지원 감사](STEP1_SCALE_AND_LICOB.md) · [LICOB 새 검증](LICOB_AUTHOR_RESULTS.md) · [Broutier 결과 원표](broutier_score.json) · [Broutier 동결 영수증](broutier_forecast_receipt.json)

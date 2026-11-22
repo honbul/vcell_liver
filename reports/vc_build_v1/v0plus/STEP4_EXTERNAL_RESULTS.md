@@ -1,6 +1,6 @@
 # V0+ 최종 외부 평가
 
-**성인 HCC 2D에서 같은 약물에 대한 계통별 감수성 신호를 확인했다. V0+의 2D·3D 두 축 동시 우위는 미충족이다.** Ridge는 계통별 감수성, CellHit는 세포별 약물 순위에서 더 높은 점수를 냈다. 독립 Wong 3D 오가노이드 10개에서는 V0+의 환자별 전체 약물 순위가 약물 평균보다 높았고 약물 내 상관 및 NDCG@5 차이의 95% 구간은 0을 포함했다. [Wong 3D 성적](WONG_3D_EXTERNAL_RESULTS.md)
+**성인 HCC 2D에서 같은 약물에 대한 계통별 감수성 신호를 확인했다. V0+의 2D·3D 두 축 동시 우위는 미충족이다.** Ridge는 계통별 감수성, CellHit는 세포별 약물 순위에서 더 높은 점수를 냈다. 후속 LICOB의 29명·53약물에서도 V0+의 환자별 전체 약물 순위가 약물 평균보다 높았고 NDCG@5는 낮았다. 같은 약물의 환자 순위에서는 CODE-AE가 가장 높았다. [LICOB 성적](LICOB_AUTHOR_RESULTS.md) · [Wong 3D 성적](WONG_3D_EXTERNAL_RESULTS.md)
 
 ## LIMORE 50개 독립 계통
 
@@ -44,7 +44,7 @@ V0+의 sorafenib·cabozantinib 약물 내 Spearman은 각각 −.076·−.056이
 
 ## 독립 3D
 
-Wong의 환자 유래 HCC 오가노이드 10개와 27약물에서는 V0+의 약물 내 Spearman .061, 오가노이드 내 Spearman .495, NDCG@5 .780을 관측했다. 약물 평균 대비 오가노이드 내 Spearman 차이는 +.044 [95% .021, .070]이었다. NDCG@5와 약물 내 Spearman 개선 구간은 0을 포함했다. Broutier의 독립 오가노이드 2개·7약물 기술 평가에서 V0+의 약물 순위 Spearman은 .554였다. Hu의 독립 PDX 16개에서 sorafenib 감수성 순위 Spearman은 −.324였다. LICOB은 43개×76약물의 반응과 RNA 헤더를 연결했고 배포본의 8 MiB 손상으로 분석용 RNA 교집합은 0개였다. [Wong 3D 성적](WONG_3D_EXTERNAL_RESULTS.md) · [Broutier 기술 채점](STEP4_3D_TECHNICAL.md) · [Hu PDX 및 LICOB 재감사](STEP4_3D_PUBLIC_ACCESS_FOLLOWUP.md)
+Wong의 환자 유래 HCC 오가노이드 10개와 27약물에서는 V0+의 약물 내 Spearman .061, 오가노이드 내 Spearman .495, NDCG@5 .780을 관측했다. 약물 평균 대비 오가노이드 내 Spearman 차이는 +.044 [95% .021, .070]이었다. NDCG@5와 약물 내 Spearman 개선 구간은 0을 포함했다. Broutier의 독립 오가노이드 2개·7약물 기술 평가에서 V0+의 약물 순위 Spearman은 .554였다. Hu의 독립 PDX 16개에서 sorafenib 감수성 순위 Spearman은 −.324였다. LICOB NODE 배포본은 8 MiB가 손상됐다. 후속 저자 패키지 RNA로 공식 S6와 34모델을 연결해 29명·53약물을 채점했다. V0+의 약물 내 Spearman은 .097, 환자 내 Spearman은 .407, NDCG@5는 .642였다. [LICOB 성적](LICOB_AUTHOR_RESULTS.md) [Wong 3D 성적](WONG_3D_EXTERNAL_RESULTS.md) · [Broutier 기술 채점](STEP4_3D_TECHNICAL.md) · [Hu PDX 및 LICOB 재감사](STEP4_3D_PUBLIC_ACCESS_FOLLOWUP.md)
 
 예측 병합·동결 `32466`, 별도 채점 `32467`, 패키지·CPU 재현 `32468→32469`. 동결 SHA-256 `894d5dc7a5fb7efdca49f261ba87aa58cf7b520595993a681fdb336175c17dba`. [동결 영수증](limore_forecast_receipt.json) · [오프라인 모델 카드](V0PLUS_MODEL_CARD.md)
 

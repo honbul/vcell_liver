@@ -45,3 +45,5 @@
 | Wong et al. | 100약물 오가노이드 연구. 논문이 보충표를 제공하며 식별자 단위의 투여 전 전사체·연속 반응 결합은 추가 확인 대상이다. [원논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC12205652/) |
 | Nuciforo et al. | 초기 1,642개 화합물은 4개 대표 오가노이드에서 스크린했다. 공개 S2–S5는 처리 약물 정보이며, 논문은 대응 분자 프로파일을 후속 단계로 기술한다. [원논문](https://doi.org/10.1016/j.celrep.2026.117895) |
 | HRA006499 / Yang et al. | 399개 원발성 간암 오가노이드·144명·7개 약물 연구. GSA-Human의 PRJCA010765 등록은 controlled access이며 DAC HDAC003619를 명시한다. 같은 표본의 기저 RNA와 반응을 공개 경로에서 연결할 수 있는 행렬은 확인되지 않았다. [원논문](https://doi.org/10.1016/j.ccell.2024.03.004) · [GSA-Human](https://ngdc.cncb.ac.cn/gsa-human/browse/HRA006499) |
+
+후속 감사에서 저자 iLICOB 패키지의 별도 RNA를 발견해 34모델·29명과 53약물의 공식 S6 외부 채점을 완료했다. [LICOB 새 검증](LICOB_AUTHOR_RESULTS.md)

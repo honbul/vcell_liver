@@ -1,6 +1,6 @@
 # V0+ 오프라인 RNA-seq 예측기
 
-V0+는 연구용 HCC 배양 샘플의 투약 전 bulk RNA-seq와 정확히 일치하는 등록 약물 68개에서 소스 약물 스크린에 맞춘 감수성 점수를 돌려준다. 점수가 높을수록 예측 감수성이 크다. 검증 범위는 LIMORE 성인 HCC 50계통과 Wong 환자 유래 HCC 오가노이드 10개의 곡선 요약치다. 공개 평가에서 약물 내 환자 구별과 환자별 약물 순위의 동시 우위는 미확인이다. Wong 평가는 공통 유전자에서 소스만으로 재적합한 레시피의 전이 평가다. 아래 배포 체크포인트의 직접 CPU 재현 검사는 LIMORE RNA를 사용했다. [최종 외부 결과](STEP4_EXTERNAL_RESULTS.md) · [Wong 3D 성적](WONG_3D_EXTERNAL_RESULTS.md)
+V0+는 연구용 HCC 배양 샘플의 투약 전 bulk RNA-seq와 정확히 일치하는 등록 약물 68개에서 소스 약물 스크린에 맞춘 감수성 점수를 돌려준다. 점수가 높을수록 예측 감수성이 크다. 검증 범위는 LIMORE 성인 HCC 50계통, Wong 환자 유래 HCC 오가노이드 10개, LICOB 성인 HCC 공여자 29명의 곡선 요약치다. 공개 평가에서 약물 내 환자 구별과 환자별 약물 순위의 동시 우위는 미확인이다. Wong과 LICOB 평가는 공통 유전자에서 소스만으로 재적합한 레시피의 전이 평가다. 아래 배포 체크포인트의 직접 CPU 재현 검사는 LIMORE RNA를 사용했다. [최종 외부 결과](STEP4_EXTERNAL_RESULTS.md) · [Wong 3D 성적](WONG_3D_EXTERNAL_RESULTS.md) · [LICOB 3D 성적](LICOB_AUTHOR_RESULTS.md)
 
 체크포인트는 G1의 아래 디렉터리에 있다. 디렉터리 전체를 복사하면 모델과 manifest의 상대 경로를 유지할 수 있다.
 

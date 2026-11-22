@@ -4,7 +4,9 @@
 
 공식 NODE 파일의 손상 구간 `bytes=41943040-50331647`을 표준 HTTP Range 요청으로 다시 받았다. 서버는 HTTP 200과 동일한 전체 파일 69,058,905바이트를 반환했다. SHA-256 `c40ef61dcb7453415fcf1fdbeb557016e1935c9097715dfb22d75225b6fbf69e` 및 8,388,608바이트 길이의 0 구간을 재확인했다. 출판 MD5 `3687652d53aba2b8cdac1c2ef59e59b7`와 수신 MD5 `96e1a019b16f07ff6d6df16eb3aa16c5`가 불일치한다.
 
-원논문이 연결한 LICOB 웹 포털은 로컬과 G1에서 HTTP와 HTTPS 모두 403이었다. 미국 NCI의 ICPC 프로젝트 페이지도 동일한 NODE 프로젝트를 가리킨다. 검증된 HCC RNA·반응 교집합은 **0개**다. 응답표의 **43개 HCC × 76약물**과 RNA 헤더 ID는 확보했다. 파일별 재배포 라이선스가 확인된 행렬은 없다. [원논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC10949980/) · [NODE 공개 객체](https://www.biosino.org/node/api/download/node/data/public/OED00796358) · [ICPC 등록](https://icpc.cancer.gov/projects/liver-cancer-organoids-for-precision-oncology/) · [1차 감사](STEP1_SCALE_AND_LICOB.md)
+원논문이 연결한 LICOB 웹 포털은 로컬과 G1에서 HTTP와 HTTPS 모두 403이었다. 미국 NCI의 ICPC 프로젝트 페이지도 동일한 NODE 프로젝트를 가리킨다. 이 감사에서 NODE 배포본의 검증된 HCC RNA·반응 교집합은 **0개**였다. 응답표의 **43개 HCC × 76약물**과 RNA 헤더 ID는 확보했다. 파일별 재배포 라이선스가 확인된 행렬은 없다. [원논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC10949980/) · [NODE 공개 객체](https://www.biosino.org/node/api/download/node/data/public/OED00796358) · [ICPC 등록](https://icpc.cancer.gov/projects/liver-cancer-organoids-for-precision-oncology/) · [1차 감사](STEP1_SCALE_AND_LICOB.md)
+
+후속으로 저자 iLICOB 패키지의 별도 공개 RNA를 검증해 34모델·29명의 성인 HCC를 공식 S6과 연결하고 53약물을 채점했다. [LICOB 새 검증](LICOB_AUTHOR_RESULTS.md)
 
 ## 공개 대체 자료
 
