@@ -1,0 +1,4023 @@
+{
+  "cohorts": {
+    "LICOB": {
+      "across_cell_ci95": {
+        "cellhit": {
+          "pearson": [
+            -0.07888318836575353,
+            0.12856903866264502
+          ],
+          "spearman": [
+            -0.07478989652991773,
+            0.13470403145836132
+          ]
+        },
+        "codeae_inductive": {
+          "pearson": [
+            -0.1843769091290491,
+            0.09119903555378106
+          ],
+          "spearman": [
+            -0.17315985142675377,
+            0.106403679853528
+          ]
+        },
+        "drug_mean": {
+          "pearson": [
+            -0.045505406344163,
+            0.21336491164495258
+          ],
+          "spearman": [
+            -0.03869183688930504,
+            0.21657701323137557
+          ]
+        },
+        "drug_ridge": {
+          "pearson": [
+            -0.06291321955238482,
+            0.08528231347514002
+          ],
+          "spearman": [
+            -0.057188841789512175,
+            0.08784689737500283
+          ]
+        },
+        "pancreas_native_rank": {
+          "pearson": [
+            -7.695656791979728e-17,
+            3.317668876128025e-17
+          ],
+          "spearman": [
+            0.0,
+            0.0
+          ]
+        },
+        "pancreas_rerank": {
+          "pearson": [
+            -0.0066291551096473635,
+            0.06469905063143248
+          ],
+          "spearman": [
+            -0.009967225612952076,
+            0.06098077070091096
+          ]
+        },
+        "rank_context_equal": {
+          "pearson": [
+            -0.004229131339620932,
+            0.03126868872090119
+          ],
+          "spearman": [
+            -0.008602758032644865,
+            0.03163999101193261
+          ]
+        },
+        "structured": {
+          "pearson": [
+            0.02015191201470049,
+            0.10050346586672931
+          ],
+          "spearman": [
+            0.015035219535172832,
+            0.09878447317544806
+          ]
+        },
+        "v0plus_inductive": {
+          "pearson": [
+            -0.09932736919975593,
+            0.14319917338704893
+          ],
+          "spearman": [
+            -0.08609607364526364,
+            0.1543698291606533
+          ]
+        },
+        "velodrome_inductive": {
+          "pearson": [
+            -0.11185536158223872,
+            0.14967757074422725
+          ],
+          "spearman": [
+            -0.10488140313890208,
+            0.1595419889341094
+          ]
+        }
+      },
+      "gates": {
+        "cellhit": false,
+        "codeae_inductive": false,
+        "drug_mean": false,
+        "drug_ridge": false,
+        "pancreas_native_rank": false,
+        "pancreas_rerank": false,
+        "rank_context_equal": false,
+        "structured": false,
+        "v0plus_inductive": false,
+        "velodrome_inductive": false
+      },
+      "groups": 38,
+      "metrics": {
+        "across_cell_drug_only_intervals": [
+          {
+            "baseline": "structured",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.04337145181236543,
+              0.0727466982680488
+            ],
+            "drugs": 53,
+            "gain": 0.05782392276930509,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "structured",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.04409415832259938,
+              0.07734495316338232
+            ],
+            "drugs": 53,
+            "gain": 0.060581184360064586,
+            "metric": "pearson",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.05513298800289864,
+              0.13942196722732972
+            ],
+            "drugs": 53,
+            "gain": 0.0974901262885374,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.04209068140125586,
+              0.13077863728274894
+            ],
+            "drugs": 53,
+            "gain": 0.08738485642322284,
+            "metric": "pearson",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -0.010308299285459163,
+              0.04833968870711671
+            ],
+            "drugs": 53,
+            "gain": 0.01878327796897807,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -0.019036641588013267,
+              0.04033805454933223
+            ],
+            "drugs": 53,
+            "gain": 0.010086806627501449,
+            "metric": "pearson",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -0.010033301195168126,
+              0.07506002679786195
+            ],
+            "drugs": 53,
+            "gain": 0.0323391147621535,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -0.016640948912109592,
+              0.0672202511594044
+            ],
+            "drugs": 53,
+            "gain": 0.023928413737312422,
+            "metric": "pearson",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "codeae_inductive",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -0.07644709486814749,
+              0.023632390315607793
+            ],
+            "drugs": 53,
+            "gain": -0.027499809029103966,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "codeae_inductive",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -0.09774511255468595,
+              0.007252059776081408
+            ],
+            "drugs": 53,
+            "gain": -0.046046965968874566,
+            "metric": "pearson",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "velodrome_inductive",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -0.008105217737789735,
+              0.07839582382779998
+            ],
+            "drugs": 53,
+            "gain": 0.03431695388001247,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "velodrome_inductive",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -0.02374591451172754,
+              0.058051402052515855
+            ],
+            "drugs": 53,
+            "gain": 0.017280584064332805,
+            "metric": "pearson",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "v0plus_inductive",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -0.014432548047245164,
+              0.08295290554476259
+            ],
+            "drugs": 53,
+            "gain": 0.034213726368641964,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "v0plus_inductive",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -0.027957578309856776,
+              0.06604198966490893
+            ],
+            "drugs": 53,
+            "gain": 0.017309300940664116,
+            "metric": "pearson",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.0,
+              0.0
+            ],
+            "drugs": 53,
+            "gain": 0.0,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -6.922528588096127e-17,
+              1.540794483615258e-18
+            ],
+            "drugs": 53,
+            "gain": -3.073406309324947e-17,
+            "metric": "pearson",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_rerank",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.008022222818647852,
+              0.03687947362227403
+            ],
+            "drugs": 53,
+            "gain": 0.022668761496964077,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_rerank",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.014725366153078623,
+              0.04065425351761987
+            ],
+            "drugs": 53,
+            "gain": 0.028214345247785568,
+            "metric": "pearson",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "rank_context_equal",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.002493873447200166,
+              0.01790801190006751
+            ],
+            "drugs": 53,
+            "gain": 0.010343396639325143,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "rank_context_equal",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.0065558259204888175,
+              0.01956463454135819
+            ],
+            "drugs": 53,
+            "gain": 0.013298140414980219,
+            "metric": "pearson",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_source_offset",
+            "drug_bootstrap_ci95": [
+              0.0,
+              0.0
+            ],
+            "drugs": 53,
+            "gain": 0.0,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_source_offset",
+            "drug_bootstrap_ci95": [
+              -4.0916562590917104e-17,
+              3.6658307416868376e-18
+            ],
+            "drugs": 53,
+            "gain": -1.7609079812745702e-17,
+            "metric": "pearson",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_query_offset",
+            "drug_bootstrap_ci95": [
+              0.0,
+              0.0
+            ],
+            "drugs": 53,
+            "gain": 0.0,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_query_offset",
+            "drug_bootstrap_ci95": [
+              -2.936183136248857e-17,
+              1.8658096556237343e-17
+            ],
+            "drugs": 53,
+            "gain": -6.317011903085354e-18,
+            "metric": "pearson",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "rank_context_raw_mix",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.0,
+              0.0
+            ],
+            "drugs": 53,
+            "gain": 0.0,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "rank_context_raw_mix",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -6.922528588096127e-17,
+              1.540794483615258e-18
+            ],
+            "drugs": 53,
+            "gain": -3.073406309324947e-17,
+            "metric": "pearson",
+            "track": "LICOB"
+          }
+        ],
+        "across_cell_scores": [
+          {
+            "method": "cellhit",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.06345644268591041,
+            "within_drug_spearman": 0.06515101152638393
+          },
+          {
+            "method": "codeae_inductive",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.13343182239209742,
+            "within_drug_spearman": 0.12498993531764137
+          },
+          {
+            "method": "drug_mean",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          {
+            "method": "drug_ridge",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.07729804979572139,
+            "within_drug_spearman": 0.07870684831955933
+          },
+          {
+            "method": "pancreas_native_rank",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.08738485642322287,
+            "within_drug_spearman": 0.0974901262885374
+          },
+          {
+            "method": "pancreas_rerank",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.05917051117543727,
+            "within_drug_spearman": 0.07482136479157332
+          },
+          {
+            "method": "rank_context_calibrated",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.08738485642322284,
+            "within_drug_spearman": 0.0974901262885374
+          },
+          {
+            "method": "rank_context_equal",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.07408671600824264,
+            "within_drug_spearman": 0.08714672964921227
+          },
+          {
+            "method": "rank_context_native_query_offset",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.08738485642322287,
+            "within_drug_spearman": 0.0974901262885374
+          },
+          {
+            "method": "rank_context_native_source_offset",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.08738485642322284,
+            "within_drug_spearman": 0.0974901262885374
+          },
+          {
+            "method": "rank_context_raw_mix",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.08738485642322287,
+            "within_drug_spearman": 0.0974901262885374
+          },
+          {
+            "method": "structured",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.02680367206315825,
+            "within_drug_spearman": 0.039666203519232314
+          },
+          {
+            "method": "v0plus_inductive",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.07007555548255871,
+            "within_drug_spearman": 0.06327639991989545
+          },
+          {
+            "method": "velodrome_inductive",
+            "n_drugs": 53,
+            "track": "LICOB",
+            "within_drug_pearson": 0.07010427235889002,
+            "within_drug_spearman": 0.06317317240852494
+          }
+        ],
+        "paired_contrasts": [
+          {
+            "baseline": "structured",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.0023733997199618826,
+              0.00982849548935522
+            ],
+            "gain": 0.0032867442028999827,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "structured",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "structured",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.013743910150315277,
+              -0.003933576078561282
+            ],
+            "gain": -0.008875902867958474,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.013240856286019087,
+              0.0723257764765369
+            ],
+            "gain": 0.043845263896279185,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.03157894736842101,
+              0.042105263157894784
+            ],
+            "gain": 0.005263157894736831,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.056912509866829705,
+              0.006183955898454476
+            ],
+            "gain": -0.02588080021049244,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.04034815516414471,
+              0.002335915009510919
+            ],
+            "gain": -0.01919069130622486,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.042105263157894784,
+              0.010526315789473717
+            ],
+            "gain": -0.01578947368421052,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.03487213437561006,
+              0.08691928933363892
+            ],
+            "gain": 0.0611934407862908,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.015333910978886752,
+              0.02095533215685044
+            ],
+            "gain": 0.002834345869130006,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.04210526315789476,
+              0.021052631578947406
+            ],
+            "gain": -0.010526315789473717,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.022089815734304182,
+              0.017183402082855872
+            ],
+            "gain": -0.0021346302379073867,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "codeae_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.012931235771571561,
+              0.03382247206458868
+            ],
+            "gain": 0.009859177342230852,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "codeae_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.031578947368421095,
+              0.036842105263157926
+            ],
+            "gain": 0.0,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "codeae_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.05140862254814588,
+              -0.018173480083857566
+            ],
+            "gain": -0.03466758332696768,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "velodrome_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.005003423621098942,
+              0.042043230470008575
+            ],
+            "gain": 0.018296567753766424,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "velodrome_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.04210526315789476,
+              0.042105263157894784
+            ],
+            "gain": 0.0,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "velodrome_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.029516886071007324,
+              0.07347668881929072
+            ],
+            "gain": 0.05122688191208552,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "v0plus_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.0034600411689349572,
+              0.05125185705477248
+            ],
+            "gain": 0.02483399961227728,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "v0plus_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.03157894736842101,
+              0.042105263157894784
+            ],
+            "gain": 0.005263157894736831,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "v0plus_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.060047827599962626,
+              -0.015400688768364939
+            ],
+            "gain": -0.037547000059413194,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.000882432768194219,
+              0.0
+            ],
+            "gain": -0.00029414425606466565,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.00037133229784669516,
+              0.00021431178332870227
+            ],
+            "gain": -6.365696534516019e-05,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_rerank",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.020963354656839944,
+              -0.004673674273830297
+            ],
+            "gain": -0.01216128649063064,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_rerank",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.026315789473684237,
+              0.0
+            ],
+            "gain": -0.010526315789473717,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_rerank",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.010666785493001875,
+              -0.0017648363167230487
+            ],
+            "gain": -0.006376306028738954,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "rank_context_equal",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.012102095793034864,
+              -0.0009997622357362818
+            ],
+            "gain": -0.005765690502661847,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "rank_context_equal",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.026315789473684237,
+              0.0
+            ],
+            "gain": -0.010526315789473717,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "rank_context_equal",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.006308511360646389,
+              -0.0011075251020634415
+            ],
+            "gain": -0.0037833456403467136,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_source_offset",
+            "ci95": [
+              -0.000882432768194219,
+              0.0
+            ],
+            "gain": -0.00029414425606466565,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_source_offset",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_source_offset",
+            "ci95": [
+              -0.0005898878788649934,
+              8.063215610376873e-05
+            ],
+            "gain": -0.00023553077177701498,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_query_offset",
+            "ci95": [
+              0.003889385285037664,
+              0.01946540392096654
+            ],
+            "gain": 0.010917585186086431,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_query_offset",
+            "ci95": [
+              0.0,
+              0.026315789473684237
+            ],
+            "gain": 0.010526315789473717,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_query_offset",
+            "ci95": [
+              0.0015955087889050173,
+              0.009434121406564253
+            ],
+            "gain": 0.005582715860769583,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "rank_context_raw_mix",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.000882432768194219,
+              0.0
+            ],
+            "gain": -0.00029414425606466565,
+            "lineages": 38,
+            "metric": "ndcg_at_5",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "rank_context_raw_mix",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 38,
+            "metric": "top5_overlap",
+            "track": "LICOB"
+          },
+          {
+            "baseline": "rank_context_raw_mix",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.00037133229784669516,
+              0.00021431178332870227
+            ],
+            "gain": -6.365696534516019e-05,
+            "lineages": 38,
+            "metric": "spearman",
+            "track": "LICOB"
+          }
+        ],
+        "scores": [
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6246004020390987,
+            "macro_spearman": 0.3320029027576198,
+            "macro_top5_overlap": 0.16315789473684217,
+            "method": "cellhit",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6175755705659979,
+            "macro_spearman": 0.3645358558466801,
+            "macro_top5_overlap": 0.15263157894736845,
+            "method": "codeae_inductive",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.5835894840119495,
+            "macro_spearman": 0.35574907273020484,
+            "macro_top5_overlap": 0.14736842105263162,
+            "method": "drug_mean",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6466254392144536,
+            "macro_spearman": 0.2686748317334216,
+            "macro_top5_overlap": 0.16842105263157897,
+            "method": "drug_ridge",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6277288921642934,
+            "macro_spearman": 0.32993192948505756,
+            "macro_top5_overlap": 0.15263157894736845,
+            "method": "pancreas_native_rank",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6395960343988594,
+            "macro_spearman": 0.33624457854845136,
+            "macro_top5_overlap": 0.16315789473684217,
+            "method": "pancreas_rerank",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6274347479082287,
+            "macro_spearman": 0.3298682725197124,
+            "macro_top5_overlap": 0.15263157894736845,
+            "method": "rank_context_calibrated",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6332004384108906,
+            "macro_spearman": 0.3336516181600591,
+            "macro_top5_overlap": 0.16315789473684217,
+            "method": "rank_context_equal",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6386464773503798,
+            "macro_spearman": 0.33551464534582714,
+            "macro_top5_overlap": 0.16315789473684217,
+            "method": "rank_context_native_query_offset",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6274347479082287,
+            "macro_spearman": 0.32969639871328055,
+            "macro_top5_overlap": 0.15263157894736845,
+            "method": "rank_context_native_source_offset",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6277288921642934,
+            "macro_spearman": 0.32993192948505756,
+            "macro_top5_overlap": 0.15263157894736845,
+            "method": "rank_context_raw_mix",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6241480037053287,
+            "macro_spearman": 0.3387441753876709,
+            "macro_top5_overlap": 0.15263157894736845,
+            "method": "structured",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6026007482959514,
+            "macro_spearman": 0.3674152725791256,
+            "macro_top5_overlap": 0.14736842105263162,
+            "method": "v0plus_inductive",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          },
+          {
+            "cells": 38,
+            "common_rows": 2014,
+            "covered_rows": 2014,
+            "lineages": 38,
+            "macro_ndcg_at_5": 0.6091381801544623,
+            "macro_spearman": 0.2786413906076269,
+            "macro_top5_overlap": 0.15263157894736845,
+            "method": "velodrome_inductive",
+            "registered_rows": 2014,
+            "track": "LICOB"
+          }
+        ]
+      },
+      "observations": 2014,
+      "strata": {
+        "hcc_tki": {
+          "drugs": 3,
+          "metrics": {
+            "across_cell_drug_only_intervals": [],
+            "across_cell_scores": [
+              {
+                "method": "cellhit",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.1591530432380275,
+                "within_drug_spearman": 0.18991866360287415
+              },
+              {
+                "method": "codeae_inductive",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.227248996519917,
+                "within_drug_spearman": 0.2847503373819163
+              },
+              {
+                "method": "drug_mean",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.0,
+                "within_drug_spearman": 0.0
+              },
+              {
+                "method": "drug_ridge",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.12107426993488113,
+                "within_drug_spearman": 0.18955392639603166
+              },
+              {
+                "method": "pancreas_native_rank",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.05476700649817679,
+                "within_drug_spearman": 0.12404712404712404
+              },
+              {
+                "method": "pancreas_rerank",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.05588374315466179,
+                "within_drug_spearman": 0.11288616551774448
+              },
+              {
+                "method": "rank_context_calibrated",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.05476700649817659,
+                "within_drug_spearman": 0.12404712404712404
+              },
+              {
+                "method": "rank_context_equal",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.055747326813513,
+                "within_drug_spearman": 0.11201079622132254
+              },
+              {
+                "method": "rank_context_native_query_offset",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.05476700649817678,
+                "within_drug_spearman": 0.12404712404712404
+              },
+              {
+                "method": "rank_context_native_source_offset",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.05476700649817683,
+                "within_drug_spearman": 0.12404712404712404
+              },
+              {
+                "method": "rank_context_raw_mix",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.05476700649817679,
+                "within_drug_spearman": 0.12404712404712404
+              },
+              {
+                "method": "structured",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": -0.03171383091385524,
+                "within_drug_spearman": 0.04402378086588613
+              },
+              {
+                "method": "v0plus_inductive",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.11693903663336185,
+                "within_drug_spearman": 0.16475179633074372
+              },
+              {
+                "method": "velodrome_inductive",
+                "n_drugs": 3,
+                "track": "LICOB",
+                "within_drug_pearson": 0.05707015802290196,
+                "within_drug_spearman": 0.15169420432578326
+              }
+            ],
+            "paired_contrasts": [],
+            "scores": [
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "cellhit",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "codeae_inductive",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "drug_mean",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "drug_ridge",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "pancreas_native_rank",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "pancreas_rerank",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "rank_context_calibrated",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "rank_context_equal",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "rank_context_native_query_offset",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "rank_context_native_source_offset",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "rank_context_raw_mix",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "structured",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "v0plus_inductive",
+                "registered_rows": 114,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 114,
+                "covered_rows": 114,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.8559227211226434,
+                "macro_spearman": 0.07894736842105263,
+                "macro_top5_overlap": 1.0,
+                "method": "velodrome_inductive",
+                "registered_rows": 114,
+                "track": "LICOB"
+              }
+            ]
+          }
+        },
+        "nonselective_cytotoxics": {
+          "drugs": 9,
+          "metrics": {
+            "across_cell_drug_only_intervals": [],
+            "across_cell_scores": [
+              {
+                "method": "cellhit",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.00310633158167622,
+                "within_drug_spearman": 0.018783966152387206
+              },
+              {
+                "method": "codeae_inductive",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.08998407921989486,
+                "within_drug_spearman": 0.06651590862117178
+              },
+              {
+                "method": "drug_mean",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.0,
+                "within_drug_spearman": 0.0
+              },
+              {
+                "method": "drug_ridge",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.06868812662256289,
+                "within_drug_spearman": 0.08156739735687103
+              },
+              {
+                "method": "pancreas_native_rank",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.05862513982754739,
+                "within_drug_spearman": 0.10439994650520966
+              },
+              {
+                "method": "pancreas_rerank",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.01677297079014857,
+                "within_drug_spearman": 0.05975611238769133
+              },
+              {
+                "method": "rank_context_calibrated",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.05862513982754742,
+                "within_drug_spearman": 0.10439994650520966
+              },
+              {
+                "method": "rank_context_equal",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.03789439587000264,
+                "within_drug_spearman": 0.08083792294318609
+              },
+              {
+                "method": "rank_context_native_query_offset",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.05862513982754744,
+                "within_drug_spearman": 0.10439994650520966
+              },
+              {
+                "method": "rank_context_native_source_offset",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.05862513982754739,
+                "within_drug_spearman": 0.10439994650520966
+              },
+              {
+                "method": "rank_context_raw_mix",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.05862513982754739,
+                "within_drug_spearman": 0.10439994650520966
+              },
+              {
+                "method": "structured",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": -0.0012180715496517929,
+                "within_drug_spearman": 0.05092947198210356
+              },
+              {
+                "method": "v0plus_inductive",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.1111361519713974,
+                "within_drug_spearman": 0.11653353758616916
+              },
+              {
+                "method": "velodrome_inductive",
+                "n_drugs": 9,
+                "track": "LICOB",
+                "within_drug_pearson": 0.0019042624382482386,
+                "within_drug_spearman": -0.003756793230477444
+              }
+            ],
+            "paired_contrasts": [],
+            "scores": [
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6435039716210769,
+                "macro_spearman": 0.11491228070175437,
+                "macro_top5_overlap": 0.6210526315789473,
+                "method": "cellhit",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6425629946621529,
+                "macro_spearman": 0.11491228070175437,
+                "macro_top5_overlap": 0.6210526315789473,
+                "method": "codeae_inductive",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6444890022148451,
+                "macro_spearman": 0.10438596491228067,
+                "macro_top5_overlap": 0.6210526315789473,
+                "method": "drug_mean",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.5772746971635808,
+                "macro_spearman": -0.08333333333333333,
+                "macro_top5_overlap": 0.5157894736842105,
+                "method": "drug_ridge",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6296694030475445,
+                "macro_spearman": 0.05614035087719297,
+                "macro_top5_overlap": 0.6105263157894738,
+                "method": "pancreas_native_rank",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6270065165751287,
+                "macro_spearman": 0.04035087719298245,
+                "macro_top5_overlap": 0.6105263157894738,
+                "method": "pancreas_rerank",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6296694030475445,
+                "macro_spearman": 0.05614035087719297,
+                "macro_top5_overlap": 0.6105263157894738,
+                "method": "rank_context_calibrated",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6276671130613837,
+                "macro_spearman": 0.047368421052631574,
+                "macro_top5_overlap": 0.6105263157894738,
+                "method": "rank_context_equal",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6284107715441862,
+                "macro_spearman": 0.04956140350877192,
+                "macro_top5_overlap": 0.6105263157894738,
+                "method": "rank_context_native_query_offset",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6296694030475445,
+                "macro_spearman": 0.05614035087719297,
+                "macro_top5_overlap": 0.6105263157894738,
+                "method": "rank_context_native_source_offset",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6296694030475445,
+                "macro_spearman": 0.05614035087719297,
+                "macro_top5_overlap": 0.6105263157894738,
+                "method": "rank_context_raw_mix",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6335617458829499,
+                "macro_spearman": 0.05701754385964912,
+                "macro_top5_overlap": 0.6157894736842104,
+                "method": "structured",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6391594312933571,
+                "macro_spearman": 0.10745614035087721,
+                "macro_top5_overlap": 0.6210526315789473,
+                "method": "v0plus_inductive",
+                "registered_rows": 342,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 342,
+                "covered_rows": 342,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.62727561550024,
+                "macro_spearman": 0.007456140350877201,
+                "macro_top5_overlap": 0.5842105263157894,
+                "method": "velodrome_inductive",
+                "registered_rows": 342,
+                "track": "LICOB"
+              }
+            ]
+          }
+        },
+        "targeted_or_kinase": {
+          "drugs": 29,
+          "metrics": {
+            "across_cell_drug_only_intervals": [],
+            "across_cell_scores": [
+              {
+                "method": "cellhit",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.12464821368241968,
+                "within_drug_spearman": 0.13229018492176386
+              },
+              {
+                "method": "codeae_inductive",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.18331415776939056,
+                "within_drug_spearman": 0.18036003335458875
+              },
+              {
+                "method": "drug_mean",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.0,
+                "within_drug_spearman": 0.0
+              },
+              {
+                "method": "drug_ridge",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.1021826510370245,
+                "within_drug_spearman": 0.10578007855684805
+              },
+              {
+                "method": "pancreas_native_rank",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.12167924302747707,
+                "within_drug_spearman": 0.13221472205138268
+              },
+              {
+                "method": "pancreas_rerank",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.09724649356496437,
+                "within_drug_spearman": 0.11791450811414513
+              },
+              {
+                "method": "rank_context_calibrated",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.12167924302747701,
+                "within_drug_spearman": 0.13221472205138268
+              },
+              {
+                "method": "rank_context_equal",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.11075897051602548,
+                "within_drug_spearman": 0.12669838622651688
+              },
+              {
+                "method": "rank_context_native_query_offset",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.12167924302747701,
+                "within_drug_spearman": 0.13221472205138268
+              },
+              {
+                "method": "rank_context_native_source_offset",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.12167924302747703,
+                "within_drug_spearman": 0.13221472205138268
+              },
+              {
+                "method": "rank_context_raw_mix",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.12167924302747707,
+                "within_drug_spearman": 0.13221472205138268
+              },
+              {
+                "method": "structured",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.056051649695281945,
+                "within_drug_spearman": 0.07394229354301951
+              },
+              {
+                "method": "v0plus_inductive",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.10007144985204057,
+                "within_drug_spearman": 0.09882240190770136
+              },
+              {
+                "method": "velodrome_inductive",
+                "n_drugs": 29,
+                "track": "LICOB",
+                "within_drug_pearson": 0.1120074440757049,
+                "within_drug_spearman": 0.11112284977983708
+              }
+            ],
+            "paired_contrasts": [],
+            "scores": [
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.7281750871566915,
+                "macro_spearman": 0.384975369458128,
+                "macro_top5_overlap": 0.41052631578947374,
+                "method": "cellhit",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.7347841989996469,
+                "macro_spearman": 0.45521130412237487,
+                "macro_top5_overlap": 0.4105263157894738,
+                "method": "codeae_inductive",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.7422093064208362,
+                "macro_spearman": 0.43991444127560275,
+                "macro_top5_overlap": 0.38947368421052636,
+                "method": "drug_mean",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6713969097626993,
+                "macro_spearman": 0.31296344309048474,
+                "macro_top5_overlap": 0.3052631578947369,
+                "method": "drug_ridge",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6762149204043049,
+                "macro_spearman": 0.36943220119263664,
+                "macro_top5_overlap": 0.3105263157894737,
+                "method": "pancreas_native_rank",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6857928057032628,
+                "macro_spearman": 0.38135856883588276,
+                "macro_top5_overlap": 0.31578947368421056,
+                "method": "pancreas_rerank",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6762149204043049,
+                "macro_spearman": 0.36943220119263664,
+                "macro_top5_overlap": 0.3105263157894737,
+                "method": "rank_context_calibrated",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6785581386047174,
+                "macro_spearman": 0.37610837438423633,
+                "macro_top5_overlap": 0.3105263157894737,
+                "method": "rank_context_equal",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.685266402321378,
+                "macro_spearman": 0.38050298159191076,
+                "macro_top5_overlap": 0.3105263157894737,
+                "method": "rank_context_native_query_offset",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6762149204043049,
+                "macro_spearman": 0.36923774954627936,
+                "macro_top5_overlap": 0.3105263157894737,
+                "method": "rank_context_native_source_offset",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6762149204043049,
+                "macro_spearman": 0.36943220119263664,
+                "macro_top5_overlap": 0.3105263157894737,
+                "method": "rank_context_raw_mix",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6728566652963089,
+                "macro_spearman": 0.37531760435571687,
+                "macro_top5_overlap": 0.31578947368421056,
+                "method": "structured",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.7375696056731452,
+                "macro_spearman": 0.47026186155042776,
+                "macro_top5_overlap": 0.38947368421052636,
+                "method": "v0plus_inductive",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              },
+              {
+                "cells": 38,
+                "common_rows": 1102,
+                "covered_rows": 1102,
+                "lineages": 38,
+                "macro_ndcg_at_5": 0.6985121032680659,
+                "macro_spearman": 0.3687321752657504,
+                "macro_top5_overlap": 0.35789473684210527,
+                "method": "velodrome_inductive",
+                "registered_rows": 1102,
+                "track": "LICOB"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "LIMORE": {
+      "across_cell_ci95": {
+        "cellhit": {
+          "pearson": [
+            0.11580437137563121,
+            0.31794023637717417
+          ],
+          "spearman": [
+            0.1144515113483532,
+            0.3361386056061587
+          ]
+        },
+        "codeae_inductive": {
+          "pearson": [
+            0.048212519725624035,
+            0.31715592557360284
+          ],
+          "spearman": [
+            0.046703675487849504,
+            0.30505142769861543
+          ]
+        },
+        "drug_mean": {
+          "pearson": [
+            0.20961843567863786,
+            0.5042224479984091
+          ],
+          "spearman": [
+            0.19881722000029167,
+            0.4481175682100753
+          ]
+        },
+        "drug_ridge": {
+          "pearson": [
+            0.026522773060697846,
+            0.16646394071052148
+          ],
+          "spearman": [
+            0.011623810386760441,
+            0.16569674883810767
+          ]
+        },
+        "pancreas_native_rank": {
+          "pearson": [
+            -5.877651306839064e-17,
+            6.246790258271186e-17
+          ],
+          "spearman": [
+            0.0,
+            0.0
+          ]
+        },
+        "pancreas_rerank": {
+          "pearson": [
+            -0.009659755537749778,
+            0.04356020395431713
+          ],
+          "spearman": [
+            -0.011782062234958214,
+            0.0588020396907742
+          ]
+        },
+        "rank_context_equal": {
+          "pearson": [
+            -0.007140351923892634,
+            0.019650770705448607
+          ],
+          "spearman": [
+            -0.010531765563178147,
+            0.025561682629306057
+          ]
+        },
+        "structured": {
+          "pearson": [
+            -0.03249301626524679,
+            0.015441795741019903
+          ],
+          "spearman": [
+            -0.024495635681362093,
+            0.026050525926229563
+          ]
+        },
+        "v0plus_inductive": {
+          "pearson": [
+            0.04159130071213033,
+            0.26722996435577
+          ],
+          "spearman": [
+            0.03803966277512521,
+            0.2511330554488053
+          ]
+        },
+        "velodrome_inductive": {
+          "pearson": [
+            0.04408000578135648,
+            0.2538931394521376
+          ],
+          "spearman": [
+            0.03964320844064494,
+            0.26881611751300183
+          ]
+        }
+      },
+      "gates": {
+        "cellhit": false,
+        "codeae_inductive": true,
+        "drug_mean": true,
+        "drug_ridge": false,
+        "pancreas_native_rank": false,
+        "pancreas_rerank": false,
+        "rank_context_equal": false,
+        "structured": false,
+        "v0plus_inductive": false,
+        "velodrome_inductive": false
+      },
+      "groups": 50,
+      "metrics": {
+        "across_cell_drug_only_intervals": [
+          {
+            "baseline": "structured",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -0.008869752306554337,
+              0.009895104410334477
+            ],
+            "drugs": 68,
+            "gain": 0.0007193119408226109,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "structured",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -0.01810487798900589,
+              -0.002995818836809284
+            ],
+            "drugs": 68,
+            "gain": -0.010413122191207174,
+            "metric": "pearson",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.2695360617387125,
+              0.38411344059837965
+            ],
+            "drugs": 68,
+            "gain": 0.32747035596338686,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.3160389739067048,
+              0.4221891665521779
+            ],
+            "drugs": 68,
+            "gain": 0.36977993367074985,
+            "metric": "pearson",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.05408564685498373,
+              0.11303780351573585
+            ],
+            "drugs": 68,
+            "gain": 0.08453460279040721,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.07352975498898466,
+              0.12146358744806564
+            ],
+            "drugs": 68,
+            "gain": 0.09819313331522966,
+            "metric": "pearson",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.176254810560357,
+              0.2725378930000175
+            ],
+            "drugs": 68,
+            "gain": 0.22349938650361761,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.17108608025921312,
+              0.25943871697200543
+            ],
+            "drugs": 68,
+            "gain": 0.21535289544824804,
+            "metric": "pearson",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "codeae_inductive",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.13092998009150517,
+              0.22465065589814
+            ],
+            "drugs": 68,
+            "gain": 0.17843618880044196,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "codeae_inductive",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.1486945524842427,
+              0.2413724023448881
+            ],
+            "drugs": 68,
+            "gain": 0.19619917656034846,
+            "metric": "pearson",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "velodrome_inductive",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.11337959472811855,
+              0.195999917382112
+            ],
+            "drugs": 68,
+            "gain": 0.1544270368478273,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "velodrome_inductive",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.11101360209052566,
+              0.1919127830343637
+            ],
+            "drugs": 68,
+            "gain": 0.15186024487038097,
+            "metric": "pearson",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "v0plus_inductive",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.100648054931645,
+              0.1952638113985389
+            ],
+            "drugs": 68,
+            "gain": 0.14867270189993367,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "v0plus_inductive",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.12033497976817042,
+              0.2013528774023842
+            ],
+            "drugs": 68,
+            "gain": 0.16154783366062878,
+            "metric": "pearson",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.0,
+              0.0
+            ],
+            "drugs": 68,
+            "gain": 0.0,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -3.284558593245645e-17,
+              4.998905446039563e-17
+            ],
+            "drugs": 68,
+            "gain": 8.711883338912936e-18,
+            "metric": "pearson",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_rerank",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.013057625871315622,
+              0.03358414182243029
+            ],
+            "drugs": 68,
+            "gain": 0.023307929521118424,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_rerank",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.0075488774978940834,
+              0.024296653114268225
+            ],
+            "drugs": 68,
+            "gain": 0.015970050047072883,
+            "metric": "pearson",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "rank_context_equal",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.0017509910195519483,
+              0.012245082065960098
+            ],
+            "drugs": 68,
+            "gain": 0.007010042889253132,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "rank_context_equal",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.001057659549374071,
+              0.009324635983146822
+            ],
+            "drugs": 68,
+            "gain": 0.005223830909851507,
+            "metric": "pearson",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_source_offset",
+            "drug_bootstrap_ci95": [
+              0.0,
+              0.0
+            ],
+            "drugs": 68,
+            "gain": 0.0,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_source_offset",
+            "drug_bootstrap_ci95": [
+              -3.284558593245645e-17,
+              4.998905446039563e-17
+            ],
+            "drugs": 68,
+            "gain": 8.711883338912936e-18,
+            "metric": "pearson",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_query_offset",
+            "drug_bootstrap_ci95": [
+              0.0,
+              0.0
+            ],
+            "drugs": 68,
+            "gain": 0.0,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_query_offset",
+            "drug_bootstrap_ci95": [
+              -7.765629948726616e-17,
+              1.1455552601285081e-17
+            ],
+            "drugs": 68,
+            "gain": -3.209238430557093e-17,
+            "metric": "pearson",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "rank_context_raw_mix",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              0.0,
+              0.0
+            ],
+            "drugs": 68,
+            "gain": 0.0,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "rank_context_raw_mix",
+            "candidate": "rank_context_calibrated",
+            "drug_bootstrap_ci95": [
+              -3.284558593245645e-17,
+              4.998905446039563e-17
+            ],
+            "drugs": 68,
+            "gain": 8.711883338912936e-18,
+            "metric": "pearson",
+            "track": "LIMORE"
+          }
+        ],
+        "across_cell_scores": [
+          {
+            "method": "cellhit",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.15442703822250167,
+            "within_drug_spearman": 0.10397096945976927
+          },
+          {
+            "method": "codeae_inductive",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.1735807571104013,
+            "within_drug_spearman": 0.14903416716294493
+          },
+          {
+            "method": "drug_mean",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          {
+            "method": "drug_ridge",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.27158680035552013,
+            "within_drug_spearman": 0.24293575317297963
+          },
+          {
+            "method": "pancreas_native_rank",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.36977993367074985,
+            "within_drug_spearman": 0.32747035596338686
+          },
+          {
+            "method": "pancreas_rerank",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.35380988362367694,
+            "within_drug_spearman": 0.30416242644226843
+          },
+          {
+            "method": "rank_context_calibrated",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.36977993367074985,
+            "within_drug_spearman": 0.32747035596338686
+          },
+          {
+            "method": "rank_context_equal",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.3645561027608983,
+            "within_drug_spearman": 0.3204603130741338
+          },
+          {
+            "method": "rank_context_native_query_offset",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.36977993367074985,
+            "within_drug_spearman": 0.32747035596338686
+          },
+          {
+            "method": "rank_context_native_source_offset",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.36977993367074985,
+            "within_drug_spearman": 0.32747035596338686
+          },
+          {
+            "method": "rank_context_raw_mix",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.36977993367074985,
+            "within_drug_spearman": 0.32747035596338686
+          },
+          {
+            "method": "structured",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.3801930558619569,
+            "within_drug_spearman": 0.3267510440225643
+          },
+          {
+            "method": "v0plus_inductive",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.208232100010121,
+            "within_drug_spearman": 0.17879765406345322
+          },
+          {
+            "method": "velodrome_inductive",
+            "n_drugs": 68,
+            "track": "LIMORE",
+            "within_drug_pearson": 0.21791968880036877,
+            "within_drug_spearman": 0.17304331911555962
+          }
+        ],
+        "paired_contrasts": [
+          {
+            "baseline": "structured",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.003112693865272698,
+              0.00601464393625409
+            ],
+            "gain": 0.0009114310631801459,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "structured",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0,
+              0.02799999999999997
+            ],
+            "gain": 0.01200000000000001,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "structured",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.004761165982601867,
+              0.008996458507802882
+            ],
+            "gain": 0.006850762195402815,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.010131994856651269,
+              0.0492848364522632
+            ],
+            "gain": 0.029449975204935197,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0040000000000000036,
+              0.052000000000000046
+            ],
+            "gain": 0.02799999999999997,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.006471638696863344,
+              0.042034796579171
+            ],
+            "gain": 0.023415261458276326,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.008117147361610628,
+              0.021673496142538457
+            ],
+            "gain": 0.0072833773260571055,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.01200000000000001,
+              0.04399999999999993
+            ],
+            "gain": 0.016000000000000014,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.02940815526827884,
+              0.05297094722382067
+            ],
+            "gain": 0.04110057751199869,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.020216221895208098,
+              0.0024232776194125587
+            ],
+            "gain": -0.008863992518689301,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.019999999999999907,
+              0.008000000000000063
+            ],
+            "gain": -0.0040000000000000036,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.007491449069904435,
+              0.009228853573413947
+            ],
+            "gain": 0.0003391166578630145,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "codeae_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0021937151904613847,
+              0.029896347463630218
+            ],
+            "gain": 0.015903108087573004,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "codeae_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.004000000000000059,
+              0.04400000000000004
+            ],
+            "gain": 0.019999999999999962,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "codeae_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.009051158696668176,
+              0.03107298465679546
+            ],
+            "gain": 0.0199839040449874,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "velodrome_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.0127173618444719,
+              0.01793757313809336
+            ],
+            "gain": 0.0028018555084963204,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "velodrome_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.01600000000000007,
+              0.03999999999999998
+            ],
+            "gain": 0.011999999999999955,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "velodrome_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.03475357485366795,
+              0.061532971831539725
+            ],
+            "gain": 0.04767266813921156,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "v0plus_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.01373578662101877,
+              0.015738153185866962
+            ],
+            "gain": 0.0011468215802428183,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "v0plus_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.020000000000000018,
+              0.019999999999999962
+            ],
+            "gain": 0.0,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "v0plus_inductive",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -4.329969514144327e-05,
+              0.021362793160268793
+            ],
+            "gain": 0.010565463776105233,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.0001683708100260195,
+              0.0002132544436354855
+            ],
+            "gain": 2.2057684182286152e-05,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_rerank",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.0006250429148896147,
+              0.00845120490579365
+            ],
+            "gain": 0.0033258477784051665,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_rerank",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0,
+              0.02799999999999997
+            ],
+            "gain": 0.01200000000000001,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_rerank",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0041039111022751675,
+              0.008529498607912328
+            ],
+            "gain": 0.006177099613280057,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "rank_context_equal",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.0010406383684234994,
+              0.002003625645875309
+            ],
+            "gain": 0.00015699749453634837,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "rank_context_equal",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0,
+              0.01200000000000001
+            ],
+            "gain": 0.003999999999999948,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "rank_context_equal",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.002075523682480487,
+              0.004801499992955719
+            ],
+            "gain": 0.0033761225596342648,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_source_offset",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_source_offset",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_source_offset",
+            "ci95": [
+              -0.0001683708100260195,
+              0.0002132544436354855
+            ],
+            "gain": 2.2057684182286152e-05,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_query_offset",
+            "ci95": [
+              -0.005428664733750682,
+              0.000195359280760532
+            ],
+            "gain": -0.002317940083856218,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_query_offset",
+            "ci95": [
+              -0.019999999999999962,
+              0.0
+            ],
+            "gain": -0.008000000000000007,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "pancreas_native_rank",
+            "candidate": "rank_context_native_query_offset",
+            "ci95": [
+              -0.006533171253934914,
+              -0.0038944063830577435
+            ],
+            "gain": -0.005168354071793724,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "rank_context_raw_mix",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "rank_context_raw_mix",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "LIMORE"
+          },
+          {
+            "baseline": "rank_context_raw_mix",
+            "candidate": "rank_context_calibrated",
+            "ci95": [
+              -0.0001683708100260195,
+              0.0002132544436354855
+            ],
+            "gain": 2.2057684182286152e-05,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "LIMORE"
+          }
+        ],
+        "scores": [
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7485012094006497,
+            "macro_spearman": 0.5534965662713802,
+            "macro_top5_overlap": 0.296,
+            "method": "cellhit",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7237341087943875,
+            "macro_spearman": 0.5338517788842558,
+            "macro_top5_overlap": 0.272,
+            "method": "codeae_inductive",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7101872416770252,
+            "macro_spearman": 0.5304204214709669,
+            "macro_top5_overlap": 0.264,
+            "method": "drug_mean",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7323538395559034,
+            "macro_spearman": 0.5127351054172447,
+            "macro_top5_overlap": 0.27599999999999997,
+            "method": "drug_ridge",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7396372168819606,
+            "macro_spearman": 0.5538136252450611,
+            "macro_top5_overlap": 0.292,
+            "method": "pancreas_native_rank",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7363113691035553,
+            "macro_spearman": 0.5476585833159631,
+            "macro_top5_overlap": 0.28,
+            "method": "pancreas_rerank",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7396372168819606,
+            "macro_spearman": 0.5538356829292432,
+            "macro_top5_overlap": 0.292,
+            "method": "rank_context_calibrated",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7394802193874243,
+            "macro_spearman": 0.550459560369609,
+            "macro_top5_overlap": 0.288,
+            "method": "rank_context_equal",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7373192767981042,
+            "macro_spearman": 0.5486452711732673,
+            "macro_top5_overlap": 0.284,
+            "method": "rank_context_native_query_offset",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7396372168819606,
+            "macro_spearman": 0.5538356829292432,
+            "macro_top5_overlap": 0.292,
+            "method": "rank_context_native_source_offset",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7396372168819606,
+            "macro_spearman": 0.5538136252450611,
+            "macro_top5_overlap": 0.292,
+            "method": "rank_context_raw_mix",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7387257858187803,
+            "macro_spearman": 0.5469849207338404,
+            "macro_top5_overlap": 0.28,
+            "method": "structured",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7384903953017177,
+            "macro_spearman": 0.5432702191531379,
+            "macro_top5_overlap": 0.292,
+            "method": "v0plus_inductive",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7368353613734642,
+            "macro_spearman": 0.5061630147900316,
+            "macro_top5_overlap": 0.27999999999999997,
+            "method": "velodrome_inductive",
+            "registered_rows": 3400,
+            "track": "LIMORE"
+          }
+        ]
+      },
+      "observations": 3400,
+      "strata": {
+        "hcc_tki": {
+          "drugs": 4,
+          "metrics": {
+            "across_cell_drug_only_intervals": [],
+            "across_cell_scores": [
+              {
+                "method": "cellhit",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.3067219731246273,
+                "within_drug_spearman": 0.18676913570889775
+              },
+              {
+                "method": "codeae_inductive",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.18914023314248715,
+                "within_drug_spearman": 0.14695746859514042
+              },
+              {
+                "method": "drug_mean",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.0,
+                "within_drug_spearman": 0.0
+              },
+              {
+                "method": "drug_ridge",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.26236152744096103,
+                "within_drug_spearman": 0.08536857306714962
+              },
+              {
+                "method": "pancreas_native_rank",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.3709551117517791,
+                "within_drug_spearman": 0.18501650630031993
+              },
+              {
+                "method": "pancreas_rerank",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.4024713086564534,
+                "within_drug_spearman": 0.2042367324950995
+              },
+              {
+                "method": "rank_context_calibrated",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.3709551117517792,
+                "within_drug_spearman": 0.18501650630031993
+              },
+              {
+                "method": "rank_context_equal",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.3895524408511839,
+                "within_drug_spearman": 0.1944520461834096
+              },
+              {
+                "method": "rank_context_native_query_offset",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.370955111751779,
+                "within_drug_spearman": 0.18501650630031993
+              },
+              {
+                "method": "rank_context_native_source_offset",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.3709551117517792,
+                "within_drug_spearman": 0.18501650630031993
+              },
+              {
+                "method": "rank_context_raw_mix",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.3709551117517791,
+                "within_drug_spearman": 0.18501650630031993
+              },
+              {
+                "method": "structured",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.39181044635170004,
+                "within_drug_spearman": 0.19536704826302834
+              },
+              {
+                "method": "v0plus_inductive",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.19665595963419275,
+                "within_drug_spearman": 0.14828600338983466
+              },
+              {
+                "method": "velodrome_inductive",
+                "n_drugs": 4,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.2204963823643297,
+                "within_drug_spearman": 0.05131165317442612
+              }
+            ],
+            "paired_contrasts": [],
+            "scores": [
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8306829308563127,
+                "macro_spearman": 1.8873791418627663e-17,
+                "macro_top5_overlap": 1.0,
+                "method": "cellhit",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8388287527130239,
+                "macro_spearman": 0.03410818510677894,
+                "macro_top5_overlap": 1.0,
+                "method": "codeae_inductive",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8469647664192624,
+                "macro_spearman": 0.04210818510677893,
+                "macro_top5_overlap": 1.0,
+                "method": "drug_mean",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8060999712827115,
+                "macro_spearman": -0.05221637021355784,
+                "macro_top5_overlap": 1.0,
+                "method": "drug_ridge",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8306715648262419,
+                "macro_spearman": -0.00021637021355783243,
+                "macro_top5_overlap": 1.0,
+                "method": "pancreas_native_rank",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8337717843591781,
+                "macro_spearman": 0.00778362978644217,
+                "macro_top5_overlap": 1.0,
+                "method": "pancreas_rerank",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8306715648262419,
+                "macro_spearman": -0.00021637021355783243,
+                "macro_top5_overlap": 1.0,
+                "method": "rank_context_calibrated",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8337717843591781,
+                "macro_spearman": 0.00778362978644217,
+                "macro_top5_overlap": 1.0,
+                "method": "rank_context_equal",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8361253640840567,
+                "macro_spearman": 0.014324555320336772,
+                "macro_top5_overlap": 1.0,
+                "method": "rank_context_native_query_offset",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8306715648262419,
+                "macro_spearman": -0.00021637021355783243,
+                "macro_top5_overlap": 1.0,
+                "method": "rank_context_native_source_offset",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8306715648262419,
+                "macro_spearman": -0.00021637021355783243,
+                "macro_top5_overlap": 1.0,
+                "method": "rank_context_raw_mix",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.827571345293306,
+                "macro_spearman": -0.008216370213557821,
+                "macro_top5_overlap": 1.0,
+                "method": "structured",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8417736700920194,
+                "macro_spearman": 0.06610818510677892,
+                "macro_top5_overlap": 1.0,
+                "method": "v0plus_inductive",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 200,
+                "covered_rows": 200,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.8189230228517994,
+                "macro_spearman": -0.01475729574745242,
+                "macro_top5_overlap": 1.0,
+                "method": "velodrome_inductive",
+                "registered_rows": 200,
+                "track": "LIMORE"
+              }
+            ]
+          }
+        },
+        "nonselective_cytotoxics": {
+          "drugs": 12,
+          "metrics": {
+            "across_cell_drug_only_intervals": [],
+            "across_cell_scores": [
+              {
+                "method": "cellhit",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.17341493746535094,
+                "within_drug_spearman": 0.12720166711021993
+              },
+              {
+                "method": "codeae_inductive",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.23750655878387752,
+                "within_drug_spearman": 0.18169330797677008
+              },
+              {
+                "method": "drug_mean",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.0,
+                "within_drug_spearman": 0.0
+              },
+              {
+                "method": "drug_ridge",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.33764873655529776,
+                "within_drug_spearman": 0.31011887850965175
+              },
+              {
+                "method": "pancreas_native_rank",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.4354917487614272,
+                "within_drug_spearman": 0.41240874859703647
+              },
+              {
+                "method": "pancreas_rerank",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.4309756399582227,
+                "within_drug_spearman": 0.40863687068941235
+              },
+              {
+                "method": "rank_context_calibrated",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.4354917487614274,
+                "within_drug_spearman": 0.41240874859703647
+              },
+              {
+                "method": "rank_context_equal",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.4363264419004991,
+                "within_drug_spearman": 0.41772500177631516
+              },
+              {
+                "method": "rank_context_native_query_offset",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.43549174876142716,
+                "within_drug_spearman": 0.41240874859703647
+              },
+              {
+                "method": "rank_context_native_source_offset",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.4354917487614274,
+                "within_drug_spearman": 0.41240874859703647
+              },
+              {
+                "method": "rank_context_raw_mix",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.4354917487614272,
+                "within_drug_spearman": 0.41240874859703647
+              },
+              {
+                "method": "structured",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.436759700976876,
+                "within_drug_spearman": 0.41210101182186126
+              },
+              {
+                "method": "v0plus_inductive",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.2716857370550995,
+                "within_drug_spearman": 0.1817873549414322
+              },
+              {
+                "method": "velodrome_inductive",
+                "n_drugs": 12,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.3193577242226711,
+                "within_drug_spearman": 0.27623160327236657
+              }
+            ],
+            "paired_contrasts": [],
+            "scores": [
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6851003124998504,
+                "macro_spearman": 0.3085952413382286,
+                "macro_top5_overlap": 0.5399393939393939,
+                "method": "cellhit",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6757591275079943,
+                "macro_spearman": 0.25387840568282644,
+                "macro_top5_overlap": 0.5218282828282829,
+                "method": "codeae_inductive",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6678050181215468,
+                "macro_spearman": 0.15697885515710075,
+                "macro_top5_overlap": 0.5218282828282829,
+                "method": "drug_mean",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6762223467084455,
+                "macro_spearman": 0.2809896161271983,
+                "macro_top5_overlap": 0.540439393939394,
+                "method": "drug_ridge",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6643367284264039,
+                "macro_spearman": 0.2734684462454021,
+                "macro_top5_overlap": 0.5178282828282829,
+                "method": "pancreas_native_rank",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6615597458030037,
+                "macro_spearman": 0.2686309996039528,
+                "macro_top5_overlap": 0.5178282828282829,
+                "method": "pancreas_rerank",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6641879799313557,
+                "macro_spearman": 0.2730488658258217,
+                "macro_top5_overlap": 0.5178282828282829,
+                "method": "rank_context_calibrated",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6622481619588473,
+                "macro_spearman": 0.2743751495700252,
+                "macro_top5_overlap": 0.5178282828282829,
+                "method": "rank_context_equal",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6627550284955309,
+                "macro_spearman": 0.27073443450847834,
+                "macro_top5_overlap": 0.5178282828282829,
+                "method": "rank_context_native_query_offset",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6641879799313557,
+                "macro_spearman": 0.2730488658258217,
+                "macro_top5_overlap": 0.5178282828282829,
+                "method": "rank_context_native_source_offset",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6643367284264039,
+                "macro_spearman": 0.2734684462454021,
+                "macro_top5_overlap": 0.5178282828282829,
+                "method": "rank_context_raw_mix",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6608649749633598,
+                "macro_spearman": 0.26162326664634095,
+                "macro_top5_overlap": 0.5178282828282829,
+                "method": "structured",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6722156643608261,
+                "macro_spearman": 0.26382559801531086,
+                "macro_top5_overlap": 0.5218282828282829,
+                "method": "v0plus_inductive",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 600,
+                "covered_rows": 600,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.6797285625536675,
+                "macro_spearman": 0.23805124914434703,
+                "macro_top5_overlap": 0.5333282828282828,
+                "method": "velodrome_inductive",
+                "registered_rows": 600,
+                "track": "LIMORE"
+              }
+            ]
+          }
+        },
+        "targeted_or_kinase": {
+          "drugs": 37,
+          "metrics": {
+            "across_cell_drug_only_intervals": [],
+            "across_cell_scores": [
+              {
+                "method": "cellhit",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.14578513381379285,
+                "within_drug_spearman": 0.07492736645111933
+              },
+              {
+                "method": "codeae_inductive",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.16172273413519073,
+                "within_drug_spearman": 0.13829550413408354
+              },
+              {
+                "method": "drug_mean",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.0,
+                "within_drug_spearman": 0.0
+              },
+              {
+                "method": "drug_ridge",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.25130526979735457,
+                "within_drug_spearman": 0.20883386667190723
+              },
+              {
+                "method": "pancreas_native_rank",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.3492344434544836,
+                "within_drug_spearman": 0.28948370797766626
+              },
+              {
+                "method": "pancreas_rerank",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.33041041152561984,
+                "within_drug_spearman": 0.2602685640409684
+              },
+              {
+                "method": "rank_context_calibrated",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.3492344434544837,
+                "within_drug_spearman": 0.28948370797766626
+              },
+              {
+                "method": "rank_context_equal",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.34249040930550434,
+                "within_drug_spearman": 0.278985452061845
+              },
+              {
+                "method": "rank_context_native_query_offset",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.34923444345448357,
+                "within_drug_spearman": 0.28948370797766626
+              },
+              {
+                "method": "rank_context_native_source_offset",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.3492344434544837,
+                "within_drug_spearman": 0.28948370797766626
+              },
+              {
+                "method": "rank_context_raw_mix",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.3492344434544836,
+                "within_drug_spearman": 0.28948370797766626
+              },
+              {
+                "method": "structured",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.3653754376154263,
+                "within_drug_spearman": 0.2919647034550746
+              },
+              {
+                "method": "v0plus_inductive",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.22176010455155173,
+                "within_drug_spearman": 0.18946456673427658
+              },
+              {
+                "method": "velodrome_inductive",
+                "n_drugs": 37,
+                "track": "LIMORE",
+                "within_drug_pearson": 0.19939516296928253,
+                "within_drug_spearman": 0.13762184592173438
+              }
+            ],
+            "paired_contrasts": [],
+            "scores": [
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7593695777187878,
+                "macro_spearman": 0.6047865194718882,
+                "macro_top5_overlap": 0.4040000000000001,
+                "method": "cellhit",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7238839061516517,
+                "macro_spearman": 0.5849415272443406,
+                "macro_top5_overlap": 0.312,
+                "method": "codeae_inductive",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7486068644214923,
+                "macro_spearman": 0.6190162026197906,
+                "macro_top5_overlap": 0.33199999999999996,
+                "method": "drug_mean",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7170471351828906,
+                "macro_spearman": 0.52962274141746,
+                "macro_top5_overlap": 0.28800000000000003,
+                "method": "drug_ridge",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7302746280755137,
+                "macro_spearman": 0.5937233355938648,
+                "macro_top5_overlap": 0.33599999999999997,
+                "method": "pancreas_native_rank",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7327913102936503,
+                "macro_spearman": 0.591925218043183,
+                "macro_top5_overlap": 0.336,
+                "method": "pancreas_rerank",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7302746280755137,
+                "macro_spearman": 0.5935589835726003,
+                "macro_top5_overlap": 0.33599999999999997,
+                "method": "rank_context_calibrated",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7306620930804557,
+                "macro_spearman": 0.5935275558265177,
+                "macro_top5_overlap": 0.33599999999999997,
+                "method": "rank_context_equal",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7298898350032609,
+                "macro_spearman": 0.5935389674365475,
+                "macro_top5_overlap": 0.33599999999999997,
+                "method": "rank_context_native_query_offset",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7302746280755137,
+                "macro_spearman": 0.5935589835726003,
+                "macro_top5_overlap": 0.33599999999999997,
+                "method": "rank_context_native_source_offset",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7302746280755137,
+                "macro_spearman": 0.5937233355938648,
+                "macro_top5_overlap": 0.33599999999999997,
+                "method": "rank_context_raw_mix",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7323497685073644,
+                "macro_spearman": 0.5914739786820007,
+                "macro_top5_overlap": 0.32800000000000007,
+                "method": "structured",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7399176987765415,
+                "macro_spearman": 0.6081864080130833,
+                "macro_top5_overlap": 0.3399999999999999,
+                "method": "v0plus_inductive",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              },
+              {
+                "cells": 50,
+                "common_rows": 1850,
+                "covered_rows": 1850,
+                "lineages": 50,
+                "macro_ndcg_at_5": 0.7161618518368988,
+                "macro_spearman": 0.5438698596964633,
+                "macro_top5_overlap": 0.30400000000000005,
+                "method": "velodrome_inductive",
+                "registered_rows": 1850,
+                "track": "LIMORE"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "forecast_sha256": {
+    "LICOB": "77129c97a650fb9db0ec1a418b1f2f7b2186b660e440aa6ef0909314317630db",
+    "LIMORE": "9085c2df897c1415bb417da2b703c8f0f00a3448b278aaf967d323302f556962"
+  },
+  "pass": false
+}
