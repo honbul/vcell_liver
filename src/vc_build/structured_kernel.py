@@ -190,9 +190,11 @@ def solve_residuals(cell, drug, weights, response, penalty, *, per_drug_prior=No
     rhs = root * response
     kernel_diagonal = cell.diagonal()[:, None] * drug.diagonal()[None, :]
     if per_drug_prior is not None:
-        if per_drug_prior.shape != weights.shape:
-            raise ValueError("The per-drug kernel feature must share the observation grid")
-        kernel_diagonal = kernel_diagonal + per_drug_prior.square()
+        if per_drug_prior.ndim not in (2, 3) or per_drug_prior.shape[:2] != weights.shape:
+            raise ValueError("The per-drug kernel features must share the observation grid")
+        if per_drug_prior.ndim == 2:
+            per_drug_prior = per_drug_prior.unsqueeze(-1)
+        kernel_diagonal = kernel_diagonal + per_drug_prior.square().sum(dim=-1)
     diagonal = penalty + weights * kernel_diagonal
     coefficient = torch.zeros_like(rhs)
     residual = rhs.clone()
@@ -203,7 +205,7 @@ def solve_residuals(cell, drug, weights, response, penalty, *, per_drug_prior=No
         weighted = root * direction
         kernel_product = cell @ weighted @ drug
         if per_drug_prior is not None:
-            kernel_product = kernel_product + per_drug_prior * (per_drug_prior * weighted).sum(dim=0)
+            kernel_product = kernel_product + project_drug_features(per_drug_prior, per_drug_prior, weighted)
         product = root * kernel_product + penalty * direction
         update = energy / (direction * product).sum().clamp_min(1e-20)
         coefficient += update * direction
@@ -216,6 +218,12 @@ def solve_residuals(cell, drug, weights, response, penalty, *, per_drug_prior=No
         direction = scaled + (next_energy / energy) * direction
         energy = next_energy
     raise RuntimeError(f"Kernel solver residual {error:.4g} exceeds {threshold:.4g}")
+
+
+def project_drug_features(fit, query, coefficients):
+    """Apply independent linear feature kernels for each drug."""
+    effects = (fit * coefficients.unsqueeze(-1)).sum(dim=0)
+    return (query * effects).sum(dim=-1)
 
 
 @dataclass
