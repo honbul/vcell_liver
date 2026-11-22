@@ -85,3 +85,5 @@ Oslo 대장암 간전이 자료의 91개 PDO·52명에서 기저 RNA와 웰별 �
 새로 연결한 Singapore 치료 전 PDX RNA에서 sorafenib 구조 커널의 약물 내 두 상관은 양수였지만 10환자군의 사전 기준은 미통과였다. Vinorelbine 실측의 2023–2024 공통 11군에서 Spearman .782 [+.183, +.972]로 사전 재현 기준을 통과했다. PRISM의 같은 parent 반복 표기 처리도 바로잡아 vinorelbine과 everolimus의 학습 지지를 복원했다. [PDX 결과와 PRISM 감사](SHUEN_PDX_RESULTS.md)
 
 복원한 PRISM 데이터를 사용해 vinorelbine의 2D 실측으로 학습하고 Singapore PDX의 공통 6환자군을 별도 평가했다. 기전 커널의 약물 내 순위는 양수였으며 두 출판물 모두에서 기준 미통과였다. LICOB에서는 기존 학습에 없던 7약물의 정확한 PRISM 실측을 추가해 같은 38명에서 평가했다. 상위 5약물 점 추정치와 약물별 환자 순위가 서로 다른 방향으로 움직여 공동 기준에 미달했다. [Vinorelbine PDX](VINORELBINE_TRANSFER_RESULTS.md) · [LICOB PRISM 7약물](LICOB_PRISM_RESTORED_RESULTS.md)
+
+Vinorelbine은 286개 동일 2D 계통에서 실제 농도를 일치시키면 두 스크린의 약물 내 Spearman이 .329에서 .104로 감소했다. 같은 구간으로 적합한 모델의 PDX 공동 기준도 미통과였다. LICOB에서 최고 두 농도가 지원되는 ispinesib 한 종은 별도 동결했다. PRISM 기술 반복의 Emax 순위 상관은 .874였으나 LICOB 38명의 같은 약물 내 예측은 .033으로 미통과였다. [Vinorelbine 원자료](VINORELBINE_RAW_DOSE_RESULTS.md) · [Ispinesib 최고 농도](LICOB_ISPINESIB_EMAX_RESULTS.md)
