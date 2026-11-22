@@ -1,0 +1,7 @@
+# VCB-02 HepaRG development arm
+
+Use GSE284321 10 µM and 24 h previously exposed development records. These TempO-Seq contrasts come from the fixed R14 raw count preparation. The original count adapter collapses mapped Ensembl functions, calculates log1p(CP10k) and subtracts the QC-passing same-plate DMSO mean. Source matrix, sample and gene order are independently hash-pinned. Use only resolved isomeric structures and distinct physical wells. No state array from a previously learned model is used here.
+
+Assign each physical plate and canonical connectivity group separately to fit or holdout using SHA-256 mod 5 with fixed strings. Score the intersection of held plate and held connectivity. Fit their complement intersection. Report the two omitted partitions explicitly. This design keeps shared DMSO wells and all isomers in a role. The same exact dose and assay are used for all models.
+
+Compare zero response, fit-wide response mean, Tanimoto nearest fit compound and Tanimoto kernel ridge with fixed regularization 0.2. Eight axes and variance scaling fit only on distinct training compounds. Project fit and score responses with the linear basis so zero response remains zero. Use paired compound-clustered macro programme RMSE, 95% interval and direction agreement. Separate forecasts, freeze and original outcome scoring. Report independently of CMap and adult HCC. This head has one HepaRG context and no independently measured 0 h feature. Its result supports only within-assay conditional expression response.
