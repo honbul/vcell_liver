@@ -52,7 +52,7 @@ def report(a):
     a.output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=f".{a.output.name}.", dir=a.output.parent) as handle:
         stage = Path(handle)
-        for filename in ("external_metrics.tsv", "per_lineage.tsv", "joint_efficacy_synergy.tsv"):
+        for filename in ("external_metrics.tsv", "per_lineage.tsv", "paired_lineage_gains.tsv", "joint_efficacy_synergy.tsv"):
             shutil.copyfile(verified(observed, filename), stage / filename)
         shutil.copyfile(candidate_path, stage / "top20.tsv")
         (stage / "RESULTS.md").write_text("\n\n".join(sections) + "\n")

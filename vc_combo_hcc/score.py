@@ -24,7 +24,12 @@ def metrics(g, outcome):
     y, p = y[valid], p[valid]
     if len(y) < 3:
         return None
-    rho = (float(spearmanr(y, p).statistic) if np.ptp(p) and np.ptp(y) else np.nan)
+    if not np.ptp(y):
+        rho = np.nan
+    elif not np.ptp(p):
+        rho = 0.
+    else:
+        rho = float(spearmanr(y, p).statistic)
     return {"n": len(y), "spearman": rho,
             "mae": float(np.mean(np.abs(y - p))), "rmse": float(np.sqrt(np.mean((y - p) ** 2)))}
 
@@ -51,6 +56,25 @@ def macro_interval(cell, rng, draws):
         low, high = np.quantile(projected, [.025, .975])
         result.update({f"cell_macro_{name}": val.mean(), f"cell_macro_{name}_low": low, f"cell_macro_{name}_high": high})
     return result
+
+
+def paired_lineage_gains(table, rng, draws):
+    fields = ["axis", "source", "endpoint", "comparator", "metric", "lineages", "gain", "ci95_low", "ci95_high"]
+    rows = []
+    for (axis, source, endpoint), group in table.groupby(fields[:3]):
+        predicted = group[group.model.eq("cross_attention")].drop(columns="model")
+        for comparator, baseline in group[~group.model.eq("cross_attention")].groupby("model"):
+            paired = predicted.merge(baseline, on="cell_group", suffixes=("_model", "_prior"), validate="one_to_one")
+            same_support = paired[paired.n_model.eq(paired.n_prior)]
+            for metric, direction in (("spearman", 1), ("mae", -1), ("rmse", -1)):
+                diffs = direction * (same_support[f"{metric}_model"] - same_support[f"{metric}_prior"])
+                deltas = diffs.dropna().to_numpy()
+                if not len(deltas):
+                    continue
+                replicates = rng.choice(deltas, size=(draws, len(deltas)), replace=True).mean(axis=1)
+                lo, hi = np.quantile(replicates, [.025, .975])
+                rows.append((axis, source, endpoint, comparator, metric, len(deltas), deltas.mean(), lo, hi))
+    return pd.DataFrame(rows, columns=fields)
 
 
 def profiles(frozen):
@@ -149,11 +173,14 @@ def run(a):
             if joint:
                 joint_rows.append({"axis": axis, "model": model, **joint})
     metrics_table = pd.DataFrame(scores)
+    lineages = pd.concat(per_line, ignore_index=True)
+    paired = paired_lineage_gains(lineages, rng, a.bootstrap)
     a.output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=f".{a.output.name}.", dir=a.output.parent) as tmp:
         stage = Path(tmp)
         metrics_table.to_csv(stage / "external_metrics.tsv", sep="\t", index=False)
-        pd.concat(per_line, ignore_index=True).to_csv(stage / "per_lineage.tsv", sep="\t", index=False)
+        lineages.to_csv(stage / "per_lineage.tsv", sep="\t", index=False)
+        paired.to_csv(stage / "paired_lineage_gains.tsv", sep="\t", index=False)
         joint = pd.DataFrame(joint_rows)
         joint.to_csv(stage / "joint_efficacy_synergy.tsv", sep="\t", index=False)
         sections = [
@@ -168,6 +195,17 @@ def run(a):
                    "cell_macro_spearman", "cell_macro_spearman_low", "cell_macro_spearman_high"]
         for axis, group in metrics_table.groupby("axis", sort=False):
             sections.extend([f"## {axis}", markdown(group.reindex(columns=columns), columns)])
+        paired_primary = paired[
+            paired.source.eq("Sanger") & paired.metric.eq("spearman") &
+            paired.comparator.isin(["lightgbm", "deepsynergy", "matchmaker"])
+        ]
+        if len(paired_primary):
+            sections.extend([
+                "## Cross-attention gains on matched HCC lineages",
+                "A positive difference favors cross-attention. Confidence intervals resample the "
+                "same held lineages for both models with common assay support.",
+                markdown(paired_primary, ["axis", "endpoint", "comparator", "lineages", "gain", "ci95_low", "ci95_high"]),
+            ])
         if len(joint):
             sections.extend([
                 "## Joint efficacy and synergy",

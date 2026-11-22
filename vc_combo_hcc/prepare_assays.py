@@ -163,6 +163,7 @@ def prepare(a):
             "drugcomb": audit_comb, "drugcombdb": audit_db, "sanger": audit_sanger, "all_assays": len(distinct),
             "adult_hcc_assays": len(test), "adult_hcc_cell_groups": test.cell_group.nunique(),
             "registered_compounds": len(used), "failed_publisher_compound_records": drugs.rejected,
+            "scaffold_aliases_closed_under_equal_parent_connectivity": drugs.scaffold_aliases,
             "endpoint_sources": {
                 "DrugComb": "Published ZIP, Bliss, CSS_ri and matched-dose HSA increment",
                 "Sanger": "Published Bliss and gain over strongest single agent, and reconstructed ZIP",

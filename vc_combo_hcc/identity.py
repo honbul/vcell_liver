@@ -113,6 +113,25 @@ def structural_identity(smiles, published_key):
     return exact, connectivity, group, Chem.MolToSmiles(parent, isomericSmiles=True)
 
 
+def scaffold_aliases(keys):
+    # Generic scaffold assignments inferred from equivalent connectivities
+    # are one group, including other compounds with either scaffold.
+    choices = keys[["connectivity", "scaffold"]].drop_duplicates()
+    linked = choices[choices.connectivity.duplicated(keep=False)]
+    parents = {scaffold: scaffold for scaffold in linked.scaffold}
+
+    def representative(scaffold):
+        while parents[scaffold] != scaffold:
+            scaffold = parents[scaffold]
+        return scaffold
+
+    for _, group in linked.groupby("connectivity"):
+        roots = sorted({representative(scaffold) for scaffold in group.scaffold})
+        for scaffold in roots[1:]:
+            parents[scaffold] = roots[0]
+    return {source: representative(source) for source in parents if source != representative(source)}
+
+
 class CompoundRegistry:
     def __init__(self, path):
         raw = pd.read_excel(path, sheet_name="drug", engine="openpyxl", dtype=str)
@@ -154,6 +173,8 @@ class CompoundRegistry:
         ):
             raise ValueError("The source compound keys disagree on scaffold identity")
         self.keys = pd.concat((self.keys, unique.loc[~unique.index.isin(self.keys.index)]))
+        self.scaffold_aliases = scaffold_aliases(self.keys)
+        self.keys["scaffold"] = self.keys.scaffold.replace(self.scaffold_aliases)
 
     def lookup_sanger(self, names, drug_ids):
         annotated = self.sanger.reindex(drug_ids.to_numpy())
