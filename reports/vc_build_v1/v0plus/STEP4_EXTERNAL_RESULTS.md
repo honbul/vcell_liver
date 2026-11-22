@@ -105,3 +105,7 @@ LIMORE에서 점 추정 .363을 기록한 별도 ECFP4·경로 ElasticNet의 계
 Kim 18 PDO의 약물×환자 잔차는 반복 간 PCC .864–.906이었다. Zhang 33명의 단일배양↔CAF 잔차 PCC는 .489였고 교차 재표집 구간에 0이 포함됐다. LICOB에서는 동일 검체의 서로 다른 PDO 6쌍을 확인했으며, 기존 모델의 쌍 차이 순위는 양의 방향을 안정적으로 보이지 않았다. [반복과 같은 검체의 신호 감사](HCC_3D_REPEAT_COMPONENTS_RESULTS.md)
 
 약물별 RNA 근방 지원에 따라 지역 보강을 혼합했다. 학습 기준 하위 10백분위 미만은 LIMORE 11.2%, LICOB 52.8%였다. LICOB 약물 내 Pearson은 +.0170 [95% +.0024, +.0351]였으나 Spearman과 잔차 PCC 개선은 불확실했다. LIMORE의 두 약물 내 상관은 낮아져 공동 기준 미통과였다. [RNA 근방 지원 평가](RNA_NEIGHBOR_SUPPORT_RESULTS.md)
+
+공통 21약물의 코호트 평균 순위에서 LIMORE↔LICOB Spearman은 .784, LICOB↔Wong은 .442였다. 코호트 평균의 일치와 LICOB에서 낮은 약물 내 개인화 성적이 함께 관측됐다. [코호트 평균 약물 순서 감사](HCC_COMPOUND_MARGIN_RESULTS.md)
+
+RNA 이웃을 구조 커널의 적합 단계에 넣어 두 단계 그래프 확산을 평가했다. LICOB 공여자 내 Spearman은 .339→.350으로 올랐고 상위 5개 지표의 비열등 기준에 미달했다. LIMORE 약물 내 Pearson은 .380→.353으로 낮아졌으며 두 외부의 공동 기준은 미통과였다. [RNA 그래프 확산 평가](RNA_DIFFUSION_RESULTS.md)
