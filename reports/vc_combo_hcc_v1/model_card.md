@@ -18,6 +18,8 @@ The report can annotate candidate partners with the completed Track 2 Murcko-hel
 
 `python -m vc_combo_hcc.prepare_assays`, `python -m vc_combo_hcc.splits`, and `python -m vc_combo_hcc.context` register input roles. `python -m vc_combo_hcc.predict` fits and freezes outputs on the selected head and device. `python -m vc_combo_hcc.score` opens scoring outcomes. `python -m vc_combo_hcc.screen` supports separate registration and ranking. Batch scripts under `experiments/vc_combo_hcc_v1` use the G1 shared data and the Track 6 offline embedding CLI.
 
+The shared study runtime uses openpyxl 3.1.5 and et-xmlfile 2.0.0 to parse the frozen DrugComb identity workbooks on the Slurm workers.
+
 ## Sources
 
 - [DrugComb database](https://drugcomb.org/), [public version 1.5 Zenodo record](https://zenodo.org/records/15235991), [Sanger public study](https://figshare.com/projects/Large-scale_pan-cancer_cell_line_screening_identifies_actionable_and_effective_drug_combinations/163378)
