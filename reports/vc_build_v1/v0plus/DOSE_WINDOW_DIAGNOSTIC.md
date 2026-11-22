@@ -25,3 +25,5 @@ PRISM에서 공개 dose와 유한한 곡선 적합값이 모두 있는 원자료
 같은 8.5 릴리스의 공식 GDSC2 원자료 ZIP 122,866,072바이트를 G1에 확보했다. 내부 데이터 CSV 2,112,924,313바이트와 함께 실린 필드 설명 PDF가 ZIP CRC를 통과했다. 원자료 CSV는 Sanger 모델 ID, 플레이트 바코드와 scan, 위치, control·treatment 태그, 약물 ID, µM 농도, 강도를 포함한다. 저자 문서는 같은 물리 웰에 복수 태그가 붙을 수 있음을 명시한다. ZIP SHA-256은 `45dca6c707dcb8b80e73764adc91aeabe9c620af4a3f1f87648c80c35cd74d1b`다. 현재 확인 범위는 배포본 무결성 및 원자료 스키마이며, 이 문서의 공통 농도 실측 표는 위 두 소스를 다룬다. [Sanger 공개 다운로드](https://cog.sanger.ac.uk/cmp/download/GDSC2_public_raw_data_27Oct23.zip) · [Sanger 실험 문서](https://depmap.sanger.ac.uk/documentation/datasets/drug-sensitivity/)
 
 첫 Slurm 작업 `32845`은 래퍼의 인자 조립 오류로 Python 모듈을 시작하기 전에 종료했다. 인자를 수정한 `3e0e6dc`에서 동일 명세로 `32848`을 완료했다. [원장](RUN_LEDGER.tsv)
+
+GDSC2 원자료를 플레이트 대조 웰로 정규화해 추가한 후속 결과가 있다. [세 소스 공통 농도 진단](GDSC_RAW_WINDOW_RESULTS.md)
