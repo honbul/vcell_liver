@@ -113,3 +113,5 @@ RNA 이웃을 구조 커널의 적합 단계에 넣어 두 단계 그래프 확�
 공개 ProCan 단백질체로 학습한 RNA 추정은 LICOB의 실측 단백질 순위를 같은 유전자 RNA보다 덜 잘 보존했다(2,323단백질의 공여자 간 Spearman 중앙값 .246 대 .404). 실측 단백질을 투입한 LICOB 기술 비교는 약물 내 Spearman .045→.122였으나 짝지은 95% 구간은 0을 포함했다. RNA 추정의 두 외부 공동 기준에 미달했다. [단백질체 감독과 LICOB 실측 비교](PROTEIN_PROXY_RESULTS.md)
 
 약물별 표적 RNA를 직접 유지하고 ProCan에서 학습한 표적 단백질 잔차를 추가했다. LICOB 실측 잔차와의 상관 중앙값은 .225였고, 두 외부에서 직접 표적 RNA 또는 다른 유전자 잔차 대조를 상대로 약물 내 상관 개선은 확인되지 않았다. LICOB에 실측 단백질 잔차를 대입한 기술 비교 역시 구간이 0을 포함했다. [약물 표적 단백질 잔차의 전이 평가](TARGET_PROTEIN_RESULTS.md)
+
+저자 코드를 같은 정정 코어의 연속 반응에 적합한 VCAT-SMILES에서 LICOB Precision@5는 .216, 약물 내 Spearman은 .079였다. CODE-AE의 같은 두 지표는 .153과 .125였다. 구조 커널·VCAT 평균은 LIMORE 개인화 지표를 낮췄고 두 외부의 공동 기준에 미달했다. 논문의 LINCS 기반 VCAT 체크포인트에는 직접 접속하지 못했다. [정정 코어 동일 행 VCAT 비교](VCAT_MATCHED_RESULTS.md)
