@@ -72,6 +72,32 @@ def summary_table(long_form):
     return metrics.reset_index()
 
 
+def matched_gains(table):
+    dimensions = ["within_drug_spearman", "cell_macro_ndcg5", "auroc", "auprc"]
+    reference = table.loc[table.representation.eq("ecfp4"), ["task", "head", *dimensions]]
+    compared = table[table.representation.ne("ecfp4")].merge(
+        reference, on=["task", "head"], suffixes=("", "_classical"), validate="many_to_one",
+    )
+    for metric in dimensions:
+        compared[metric + "_delta"] = compared[metric] - compared[metric + "_classical"]
+    return compared[["task", "representation", "head", *(m + "_delta" for m in dimensions)]]
+
+
+def rank_winners(summary):
+    tables = []
+    for task, rows in summary.groupby("task", sort=False):
+        fields = {"auroc", "auprc"} if task.startswith("dili") else {"within_drug_spearman", "cell_macro_ndcg5"}
+        for metric in sorted(fields):
+            ranked = rows.loc[rows[metric].notna()].sort_values([metric, "representation", "head"],
+                                                                ascending=[False, True, True])
+            best = ranked.iloc[0]
+            classical = ranked.loc[ranked.representation.eq("ecfp4")].iloc[0]
+            tables.append({"task": task, "metric": metric, "representation": best.representation,
+                           "head": best["head"], "score": best[metric], "best_ecfp4": classical[metric],
+                           "ecfp4_head": classical["head"], "absolute_gain": best[metric] - classical[metric]})
+    return pd.DataFrame(tables)
+
+
 def markdown_table(data, columns):
     out = ["| " + " | ".join(columns) + " |", "| " + " | ".join("---" for _ in columns) + " |"]
     for row in data.loc[:, columns].itertuples(index=False, name=None):
@@ -106,7 +132,10 @@ def model_evidence(store):
         receipts[name] = {"receipt": file_record(path), "vectors": record["output"]}
     if not rows:
         raise ValueError("No verified embeddings")
-    return pd.DataFrame(rows), receipts
+    data = pd.DataFrame(rows)
+    data["failed"] = data.requested - data.embedded
+    data["failure_rate"] = data.failed / data.requested
+    return data, receipts
 
 
 def main():
@@ -119,17 +148,27 @@ def main():
     table = add_public_comparators(args.results, score_evidence, table)
     averaged = summary_table(table)
     models, feature_evidence = model_evidence(args.store)
+    gains = matched_gains(averaged)
+    winners = rank_winners(averaged)
     with new_directory(args.output) as out:
         table.to_csv(out / "fold_scores.tsv", sep="\t", index=False)
         averaged.to_csv(out / "matched_heads.tsv", sep="\t", index=False)
         models.to_csv(out / "extraction.tsv", sep="\t", index=False)
+        gains.to_csv(out / "matched_gains.tsv", sep="\t", index=False)
+        winners.to_csv(out / "metric_winners.tsv", sep="\t", index=False)
         chunks = [
             "# Track 6 — foundation representation benchmark",
             "Scores are from separately verified frozen predictions. All means weight panel folds equally. "
             "Counts of scorable folds and assay groups are recorded in the TSVs.",
             "## Feature extraction",
             markdown_table(models, ["store", "requested", "embedded", "dimension",
-                                    "device", "seconds", "peak VRAM MiB"]),
+                                    "failure_rate", "device", "seconds", "peak VRAM MiB"]),
+            "## Highest measured performance by endpoint",
+            "These rows identify the strongest observed fold-average scores. All head hyperparameters "
+            "were chosen within their source folds before forecasting. The matched-head gain table "
+            "specifies the ablation differences against ECFP4 under each identical head.",
+            markdown_table(winners, ["task", "metric", "representation", "head", "score",
+                                     "best_ecfp4", "absolute_gain"]),
         ]
         for task, panels in FAMILIES.items():
             subset = averaged.loc[averaged.task.eq(task)]
