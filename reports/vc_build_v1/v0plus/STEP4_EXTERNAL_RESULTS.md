@@ -55,3 +55,5 @@ Wong의 환자 유래 HCC 오가노이드 10개와 27약물에서는 V0+의 약�
 이 외부 회차 이후의 구조 커널 실험은 세 학습 스크린의 계통·assay 보류에서 평가했다. [소스 전이 개발 성적](STRUCTURED_CV_RESULTS.md)
 
 정정 코어를 사용한 별도 Yang 3D 평가에서 Ridge·구조 커널 결합의 74명·5약물 주 기준은 미통과였다. 세포주 예측의 기저 RNA 전이와 같은 조건에서 13개 모델을 비교했다. [Yang 동결 성적](YANG_HCC_EXTERNAL_RESULTS.md)
+
+LICOB NODE RNA의 복구 축으로 이미 채점한 29공여자와 겹치지 않는 성인 HCC 공여자 9명·53약물을 새로 확인했다. 구조 커널은 사전 공동 개선 조건을 충족하지 못했다. [새 공여자 동결 성적](LICOB_NODE_RECOVERY_RESULTS.md)

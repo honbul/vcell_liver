@@ -47,3 +47,5 @@
 | HRA006499 / Yang et al. | 399개 원발성 간암 오가노이드·144명·7개 약물 연구. GSA-Human의 PRJCA010765 등록은 controlled access이며 DAC HDAC003619를 명시한다. 같은 표본의 기저 RNA와 반응을 공개 경로에서 연결할 수 있는 행렬은 확인되지 않았다. [원논문](https://doi.org/10.1016/j.ccell.2024.03.004) · [GSA-Human](https://ngdc.cncb.ac.cn/gsa-human/browse/HRA006499) |
 
 후속 감사에서 저자 iLICOB 패키지의 별도 RNA를 발견해 34모델·29명과 53약물의 공식 S6 외부 채점을 완료했다. [LICOB 새 검증](LICOB_AUTHOR_RESULTS.md)
+
+이후 공용 RNA 워크시트의 손상 지점 앞만 복구해 14,799개 완전 유전자 행과 65표본을 확인했다. 7,123개 공통 유전자 축에서 같은 S6의 43 HCC 모델을 연결하고 기존 평가와 겹치지 않는 공여자 9명의 주 확인을 완료했다. [부분 복구와 새 공여자 결과](LICOB_NODE_RECOVERY_RESULTS.md)
