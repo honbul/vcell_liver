@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 import pandas as pd
-from rdkit import RDLogger
+from rdkit import Chem, RDLogger
 
 from .cross_source_data import (
     MIXTURE, MODEL_COLS, gdsc_rows, read_raw, response_rows, roster_maps, roster_table,
@@ -53,7 +53,7 @@ def matched_structures(table, metadata, ids):
 
 
 def run(args):
-    _, clean, _, _ = registered_inputs(args)
+    _, clean, _, extra = registered_inputs(args, include_extension=True)
     if sha256(args.drug_info) != DRUG_INFO_SHA256:
         raise ValueError("Unexpected extracted IMPROVE structure catalogue")
     rece = json.loads((args.original / "receipt.json").read_text())["inputs"]
@@ -75,6 +75,12 @@ def run(args):
     # A disagreement in an older native ID cannot introduce an alternative parent to the library.
     new = mapped[~mapped.native_compound_id.isin(current.native_compound_id) &
                  ~mapped.compound_id.isin(current.compound_id)].copy()
+    unspecified = new.isomeric_smiles.map(
+        lambda smiles: any(item.specified != Chem.StereoSpecified.Specified
+                           for item in Chem.FindPotentialStereo(Chem.MolFromSmiles(smiles))),
+    )
+    exclusions["new_native_ids_with_unassigned_stereo"] = sorted(new.loc[unspecified, "native_compound_id"])
+    new = new.loc[~unspecified]
 
     raw = read_raw(paths["gdsc2"], ["CELL_LINE_NAME", "SANGER_MODEL_ID", "COSMIC_ID"])
     roster = roster_table(raw, "GDSC2", "CELL_LINE_NAME", "SANGER_MODEL_ID", "COSMIC_ID")
@@ -114,6 +120,9 @@ def run(args):
             "new_source_drugs_already_in_core_through_other_sources": int(
                 single.loc[single.compound_id.isin(clean.compound_id), "compound_id"].nunique()
             ),
+            "new_source_drugs_exact_overlap_with_ctrp_prism_extension": int(
+                single.loc[single.compound_id.isin(extra.compound_id), "compound_id"].nunique()
+            ),
             "new_source_cells": int(single.cell_id.nunique()),
             "hcc_new_source_rows": len(hcc), "hcc_new_source_drugs": int(hcc.compound_id.nunique()),
             "hcc_cell_models": int(hcc.cell_id.nunique()), "excluded": exclusions,
@@ -123,7 +132,7 @@ def run(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ("original", "core", "drug-info", "out"):
+    for name in ("original", "core", "extension", "drug-info", "out"):
         parser.add_argument("--" + name, type=Path, required=True)
     run(parser.parse_args())
 
