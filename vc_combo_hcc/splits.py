@@ -31,7 +31,9 @@ def split_groups(rows, fields):
 
 
 def pair_key(left, right):
-    return np.where(left < right, left + "|" + right, right + "|" + left)
+    a, b = np.asarray(left, dtype=str), np.asarray(right, dtype=str)
+    first, second = np.where(a < b, a, b), np.where(a < b, b, a)
+    return np.char.add(np.char.add(first, "|"), second)
 
 
 def validate_assays(frame):
