@@ -103,3 +103,5 @@ LIMORE에서 점 추정 .363을 기록한 별도 ECFP4·경로 ElasticNet의 계
 보류 스크린에서 68약물 중 12개의 신경망 배율을 선택하고 소스 아핀을 적용했다. LICOB의 공여자 내 전체 순위 Spearman은 구조 커널 수준을 회복했다. 두 코호트의 약물 내 상관과 공동 승격은 미통과였다. [보류 스크린 선택과 척도 보정](SOURCE_GATED_CALIBRATION_RESULTS.md)
 
 Kim 18 PDO의 약물×환자 잔차는 반복 간 PCC .864–.906이었다. Zhang 33명의 단일배양↔CAF 잔차 PCC는 .489였고 교차 재표집 구간에 0이 포함됐다. LICOB에서는 동일 검체의 서로 다른 PDO 6쌍을 확인했으며, 기존 모델의 쌍 차이 순위는 양의 방향을 안정적으로 보이지 않았다. [반복과 같은 검체의 신호 감사](HCC_3D_REPEAT_COMPONENTS_RESULTS.md)
+
+약물별 RNA 근방 지원에 따라 지역 보강을 혼합했다. 학습 기준 하위 10백분위 미만은 LIMORE 11.2%, LICOB 52.8%였다. LICOB 약물 내 Pearson은 +.0170 [95% +.0024, +.0351]였으나 Spearman과 잔차 PCC 개선은 불확실했다. LIMORE의 두 약물 내 상관은 낮아져 공동 기준 미통과였다. [RNA 근방 지원 평가](RNA_NEIGHBOR_SUPPORT_RESULTS.md)
