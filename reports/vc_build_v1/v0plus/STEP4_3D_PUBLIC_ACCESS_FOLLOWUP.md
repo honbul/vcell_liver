@@ -31,3 +31,5 @@
 | V0+ inductive | −.324 | [−.787, .237] |
 
 V0+와 Ridge의 차이는 −.050 [−.845, .779]이다. 공개 그림 순위에서 양의 전이 근거를 확보하지 못했다. LIMORE 2D sorafenib의 V0+ Spearman도 −.076이었다. PDX에서 측정한 것은 치료 4주 후 종양 성장 순위다. 이 채점은 1약물이며, 수치 표에서 계산하는 Pearson과 다약물 약물선별 지표의 지원은 없다. 공개 microarray에는 GEO 제출자의 다표본 quantile 정규화가 포함된다. 파일 단위 재배포 허가는 확인하지 않았다. [기술 평가 등록](PDX_TECHNICAL_PROTOCOL.md) · [등록 영수증](pdx_registration_receipt.json) · [동결 영수증](pdx_forecast_receipt.json) · [수치 원표](pdx_score.json)
+
+새 GEO GSE343846의 공개 FPKM과 표본별 SOFT를 대조했다. RNA 6개가 모두 lenvatinib 처리 후에 채취됐으므로 투여 전 모델의 평가에서 제외했다. 앞서 확보한 Zhang·Kim 공개 반응표로 배양 조건과 기술 반복의 실측 일치도를 별도로 측정했고, 두 자료의 약물 관계를 예측에 추가한 보정은 LICOB·Wong 공동 기준에 미달했다. [후속 감사와 성적](HCC_3D_PUBLIC_RESPONSE_RESULTS.md)
