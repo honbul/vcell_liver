@@ -86,14 +86,17 @@ def score(panel, predictions, output, bootstrap, seed):
 def main():
     import sys
 
-    if len(sys.argv) > 1 and sys.argv[1] == "chronos":
-        from .chronos import arguments, score as score_chronos
+    if len(sys.argv) > 1 and sys.argv[1] in ("chronos", "bridge"):
+        if sys.argv[1] == "chronos":
+            from . import chronos as task
+        else:
+            from . import bridge as task
 
         del sys.argv[1]
-        score_chronos(arguments(score_mode=True))
+        task.score(task.arguments(score_mode=True))
         return
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("task", choices=["hepg2"], metavar="{hepg2,chronos}")
+    p.add_argument("task", choices=["hepg2"], metavar="{hepg2,chronos,bridge}")
     for name in ("panel", "predictions", "output"):
         p.add_argument("--" + name, type=Path, required=True)
     p.add_argument("--bootstrap", type=int, default=2000)

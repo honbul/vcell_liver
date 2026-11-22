@@ -101,9 +101,12 @@ def prepare(directory, out, seed):
     genes = pd.read_csv(paths["hgnc"], usecols=["entrez_id", "ensembl_gene_id", "symbol"], dtype=str).dropna()
     symbols = unambiguous_symbol_map(paths["hgnc"])
     genes = genes[genes.ensembl_gene_id.isin(symbols.index) & ~genes.entrez_id.duplicated(keep=False)]
-    effect = pd.read_csv(paths["chronos"], index_col=0, dtype=np.float32)
-    source_axis = entrez_axis(effect.columns)
+    header = pd.read_csv(paths["chronos"], nrows=0).columns
+    source_axis = entrez_axis(header)
     genes = genes[genes.entrez_id.isin(source_axis)].set_index("entrez_id").sort_index()
+    columns = [source_axis[i] for i in genes.index]
+    effect = pd.read_csv(paths["chronos"], usecols=[header[0], *columns], index_col=0,
+                         dtype={field: np.float32 for field in columns})
     if not effect.index.is_unique or len(genes) < 500:
         raise ValueError("Ambiguous or sparse Chronos assay")
     models = annotated_models(paths["models"])
@@ -134,7 +137,7 @@ def prepare(directory, out, seed):
     rna_frame = raw_rna.reindex(sorted(raw_rna.columns), axis=1)
     indices = ready.get_indexer(models.index)
     assays = {name: result[0][indices] for name, result in measures.items()}
-    outcome = effect.loc[models.index, [source_axis[i] for i in genes.index]].to_numpy(np.float32)
+    outcome = effect.loc[models.index, columns].to_numpy(np.float32)
     train_genes = train_genes[np.isfinite(outcome[np.ix_(train_models, train_genes)]).any(axis=0)]
     with tempfile.TemporaryDirectory(prefix=f".{out.name}.", dir=out.parent) as directory:
         stage = Path(directory)

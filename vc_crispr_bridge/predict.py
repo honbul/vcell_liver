@@ -159,14 +159,17 @@ def predict(a):
 def main():
     import sys
 
-    if len(sys.argv) > 1 and sys.argv[1] == "chronos":
-        from .chronos import arguments, predict as predict_chronos
+    if len(sys.argv) > 1 and sys.argv[1] in ("chronos", "bridge"):
+        if sys.argv[1] == "chronos":
+            from . import chronos as task
+        else:
+            from . import bridge as task
 
         del sys.argv[1]
-        predict_chronos(arguments())
+        task.predict(task.arguments())
         return
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("task", choices=["hepg2"], metavar="{hepg2,chronos}")
+    parser.add_argument("task", choices=["hepg2"], metavar="{hepg2,chronos,bridge}")
     for name in ("panel", "output", "store", "proteins", "hgnc", "links", "aliases"):
         parser.add_argument("--" + name, required=True, type=Path)
     parser.add_argument("--device", choices=["cpu", "cuda"], default="cuda")
