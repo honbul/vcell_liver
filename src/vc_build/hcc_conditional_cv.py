@@ -200,8 +200,13 @@ def score_mode(frame):
     comparators = [base for base in ("drug_mean", "drug_ridge", "structured", "cellhit") if base in methods]
     contrasts = [(m, b) for m in ARMS for b in comparators]
     cell, _ = score(frame, endpoint_direction="higher", rank_only=True, comparisons=contrasts)
-    drug, _ = score_across_cells(frame)
-    across = drug.groupby(["track", "method"], as_index=False)[["spearman", "pearson"]].mean()
+    identities = frame[["track", "row_id", "fold"]].drop_duplicates()
+    if identities.duplicated(["track", "row_id"]).any():
+        raise ValueError("A grouped prediction row was present in more than one outer fold")
+    fold_drug, _ = score_across_cells(frame)
+    oof_drug, _ = score_across_cells(frame.assign(fold=0))
+    across = oof_drug.groupby(["track", "method"], as_index=False)[["spearman", "pearson"]].mean()
+    within_fold = fold_drug.groupby(["track", "method"], as_index=False)[["spearman", "pearson"]].mean()
     intervals = [
         {"track": track, "candidate": PRIMARY, "baseline": base,
          "ci95": crossed_patient_drug_ci(part, PRIMARY, base, repeats=1200)}
@@ -219,6 +224,7 @@ def score_mode(frame):
                            and all(v[0] > 0 for d in drug_intervals for v in d.values())
                            and all(d[0] > 0 for d in cell_intervals))
     return {"across_cell": across.to_dict("records"), "within_cell": cell["scores"],
+            "within_fold_across_cell": within_fold.to_dict("records"),
             "across_cell_intervals": intervals, "within_cell_intervals": cell["paired_contrasts"],
             "fold_centered": fold_centered_correlations(frame), "track_gate": by_track}
 
