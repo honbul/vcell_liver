@@ -44,7 +44,7 @@ def layout(seed=14822):
                 well = next(slot for slot in available if slot not in seen)
                 available.remove(well)
                 seen.add(well)
-                pairing = f"{key}-{drug}-{dose}" if kind == "treated" else ""
+                pairing = f"{key}-{drug}-{dose}" if kind == "treated" else "NA"
                 records.append((model, role, day, measurement, plate, well, kind, drug, dose, time, pairing))
     return records
 
