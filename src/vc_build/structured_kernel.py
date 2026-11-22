@@ -66,9 +66,8 @@ class CellKernelBasis:
         return replace(self, reference=tuple(x.cpu() for x in self.reference),
                        reference_energy=self.reference_energy.cpu())
 
-    def cross(self, query):
-        x, p, u = self.reference
-        device = x.device
+    def vectors(self, query):
+        device = self.reference[0].device
         raw = ranked_expression(query[self.genes])
         if self.projection is not None:
             raw = self.projection.apply(raw)
@@ -76,6 +75,11 @@ class CellKernelBasis:
         s = self.pathway.apply(raw @ self.pathway_weights, device)
         proxy = auxiliary_features(self.auxiliary_models, auxiliary_inputs(q, s, self.indices))
         v = self.auxiliary.apply(proxy, device)
+        return q, s, v
+
+    def cross(self, query):
+        x, p, u = self.reference
+        q, s, v = self.vectors(query)
         linear = dot_kernel(q, x) / self.reference_scale
         energy = q.square().mean(dim=1) / self.reference_scale
         rna = 0.5 * (linear + radial(linear, energy, self.reference_energy, 2.0))

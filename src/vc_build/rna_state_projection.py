@@ -150,20 +150,20 @@ def predict(args):
     })
 
 
-def assess(frame, *, external):
-    controls = (*CONTROLS, "drug_ridge", *PUBLIC) if external else (*CONTROLS, "drug_ridge")
-    overall, _, _ = axis_metrics(frame, [(PRIMARY, arm) for arm in controls])
+def assess(frame, *, external, primary=PRIMARY, controls=CONTROLS, require_precision=False):
+    comparisons = (*controls, "drug_ridge", *PUBLIC) if external else (*controls, "drug_ridge")
+    overall, _, _ = axis_metrics(frame, [(primary, arm) for arm in comparisons])
     interval = crossed_patient_drug_ci if external else paired_intervals
-    across = {arm: interval(frame, PRIMARY, arm) for arm in controls}
+    across = {arm: interval(frame, primary, arm) for arm in comparisons}
     within = {(row["baseline"], row["metric"]): row["ci95"] for row in overall["paired_contrasts"]}
+    ranks = ("spearman", "ndcg_at_5", "top5_overlap") if require_precision else ("spearman", "ndcg_at_5")
     gates = {arm: all(across[arm][metric][0] > 0 for metric in ("spearman", "pearson"))
-             and all(within[arm, metric][0] > -.005 for metric in ("spearman", "ndcg_at_5"))
-             for arm in CONTROLS}
+             and all(within[arm, metric][0] > -.005 for metric in ranks) for arm in controls}
     return {"metrics": overall, "across_cell_ci95": across, "gates": gates,
             "groups": frame.lineage_group.nunique(), "observations": frame.row_id.nunique()}
 
 
-def score_source(args):
+def score_source(args, *, assessor=assess):
     original, clean, _, _ = registered_inputs(args)
     result, hashes = {}, {}
     for mode in ASSAYS:
@@ -173,26 +173,26 @@ def score_source(args):
             frame, hashes[name] = check_component(args.forecasts / f"{name}.parquet", mode, fold, RECEIPTS["core"])
             _, _, labels = same_split(original, clean, fold, mode)
             parts.append(attach(frame, labels))
-        result[mode] = {track: assess(rows, external=False)
+        result[mode] = {track: assessor(rows, external=False)
                         for track, rows in pd.concat(parts, ignore_index=True).groupby("track")}
     passed = sum(all(next(iter(result[mode].values()))["gates"].values()) for mode in ASSAYS if mode != "pooled")
     publish_json(args.out, {"modes": result, "forecast_sha256": hashes, "screen_gates_passed": passed,
                             "pass": passed >= 2})
 
 
-def score_external(args):
+def score_external(args, *, assessor=assess, arms=ARMS):
     result, hashes = {}, {}
     for mode in EXTERNAL_TRACKS:
         _, query, _, registered = external_inputs(args, mode)
         frame, hashes[mode] = check_component(args.forecasts / f"{mode}.parquet", mode, 0, registered)
-        shared_support(frame, query, (*BASELINES, *PUBLIC, *ARMS))
+        shared_support(frame, query, (*BASELINES, *PUBLIC, *arms))
         if mode == "LIMORE":
             require_hash(args.limore_labels, OBSERVATIONS)
             observed = join_observations(frame, pd.read_parquet(args.limore_labels))
         else:
             require_hash(args.licob_labels, ASSET_HASHES["supplement"])
             observed = adult_donor_outcomes(joined_outcomes(query, frame, args.licob_labels))
-        report = assess(observed, external=True)
+        report = assessor(observed, external=True)
         strata = compound_strata(query)
         report["strata"] = {}
         for name in ("hcc_tki", "targeted_or_kinase", "nonselective_cytotoxics"):
