@@ -32,12 +32,13 @@ WONG_PANEL = "58f45948f59816f13fb6963ac0c8fe193ac7cffcd83276af125f3733ffd9d4b8"
 PAIR = ["sample_id", "compound_id"]
 
 
-def fit_kernel(rna, source, anchor, edges, targets, auxiliary):
+def fit_kernel(rna, source, anchor, edges, targets, auxiliary, *, device=None):
     from .structured_kernel import (
         KernelExpressionSchema, StructuredPredictor, drug_kernels, fit_cell_kernels, solve_residuals, training_grid,
     )
 
-    device = device_cuda()
+    if device is None:
+        device = device_cuda()
     basis, cell = fit_cell_kernels(rna, edges, auxiliary, device=device)
     drugs, matrices = drug_kernels(source, targets, device=device)
     drug = matrices["structured"]

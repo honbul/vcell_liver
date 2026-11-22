@@ -104,7 +104,9 @@ class FittedBaseline:
     drug_columns: dict
 
     def predict(self, query, rna):
-        projected = self.features.transform(rna)
+        return self.predict_projected(query, self.features.transform(rna))
+
+    def predict_projected(self, query, projected):
         base = query.compound_id.map(self.anchor).to_numpy()
         if self.method == "drug_mean":
             return base, np.zeros(len(query))

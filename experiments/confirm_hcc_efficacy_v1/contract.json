@@ -1,0 +1,37 @@
+{
+  "study": "confirm_hcc_efficacy_v1",
+  "exposure": "retrospective locked comparisons on previously examined LIMORE, LICOB, Wong, Yang",
+  "two_dimensional": {
+    "rows": 65678,
+    "train_data_sha256": "1edd32ef38be60a742efe0dcc376e15910623c1da8cc27d923291bee8a4a38cc",
+    "controls": [
+      "drug_mean",
+      "additive",
+      "drug_ridge"
+    ],
+    "query": "50 independent adult LIMORE HCC lines, 68 stereo exact parent compounds, Activity Area",
+    "metrics": "Native positive orientation. Mean drug-wise Spearman and Pearson. Within-lineage rank-gain NDCG@5, expected tie-corrected Precision@5, and Spearman. Any mathematically undefined prediction-constant drug correlation has conventional value zero in paired comparisons only.",
+    "bootstrap": "2400 paired resamples from both independent lineage and compound axes, with re-ranking and re-estimation on each sample. 95% percentile intervals.",
+    "refit": "Estimate every base model anew from the corrected table. Pairwise members reuse historical fixed per-drug architectures and amplitudes. Meta-parameters use corrected inner OOF predictions, with a full 65,678-row base refit for each external member. Historical group IDs only preserve the original fold-settings association.",
+    "shuffle": "100 seeded random derangements of LIMORE lineages. Move frozen scGPT and Geneformer representations with the matched raw RNA. Mean RNA and train-mean embeddings are estimated from source only. Models with separable cell effects retain their same rankings across profiles.",
+    "joint_gate": "Require positive paired lower 95% limits over drug_mean and additive on LIMORE NDCG@5 and within-drug Spearman, positive lower residual Spearman limit and more than one Top-5 set. Also require positive OOF point gains over drug_mean and additive for both co-primary endpoints. Use mean OOF gain on the two axes over additive to order eligible candidates. If no model meets the joint gate, use structured only as a sensitivity reference when both sensitivity lower limits and the interaction lower limit pass. Otherwise keep the drug mean as a nonpersonalized rank reference."
+  },
+  "three_dimensional": {
+    "eligible_budgets": [
+      2,
+      4,
+      8
+    ],
+    "study_panels": [
+      "LICOB",
+      "Wong",
+      "Yang"
+    ],
+    "repeats": 100,
+    "local_labels": "Patient-blocked local labels on the same declared K recipients, for all supervised arms. Yang P1 and P2 excluded. Pre-treatment RNA only. Patient-level mean over regional PDO samples.",
+    "shrinkage": "Fit a nonnegative affine transform of the 2D drug means to local K drug means and estimate empirical-Bayes prior strength from between-drug signal and pooled within-drug noise, using local K only. Estimate gamma by nonnegative least squares on treatment responses and score residuals centered on the local reference drug means.",
+    "gate": "Require positive paired lower 95% limits for d minus c on within-patient NDCG and interaction Spearman while outperforming the pure local K mean under paired comparison. Treat isolated results as descriptive and do not claim field utility without new experiment.",
+    "transfer": "Use identical compound identities and patient aggregation across cohorts. Keep Sorafenib-only correlations separate from common 3-drug rankings.",
+    "support": "Compare all arms on exact matches to the frozen 68-compound registry. For the Yang five-drug secondary panel, allow local calibrated b/c/d arms and use the same local mean and zero transported residual for unsupported compounds. Use V0+ v2's fixed offline missing-cell-embedding path in all PDO studies. Center the residual by calibration compound means and the current sample mean on the supported drug panel."
+  }
+}
