@@ -206,7 +206,8 @@ class FittedMolecular:
         return query.compound_id.map(self.anchor).to_numpy(), residual
 
 
-def fit_molecular(arm, width, epochs, source, anchor, fit_rna, query_rna, edges, targets, auxiliary, *, gpu):
+def fit_molecular(arm, width, epochs, source, anchor, fit_rna, query_rna, edges, targets, auxiliary, *,
+                  gpu, interaction_target=False):
     configs = ABLATIONS["v0plus_inductive"] | ABLATIONS[arm]
     if not gpu or not torch.cuda.is_available():
         raise RuntimeError("V0+ molecular model requires CUDA")
@@ -249,8 +250,9 @@ def fit_molecular(arm, width, epochs, source, anchor, fit_rna, query_rna, edges,
                                                    target_rna[cell].gather(1, genes), target_mask[drug])
             size = len(primary)
             error = F.smooth_l1_loss(pred[:size], response[primary], beta=0.5, reduction="none")
-            observed = response if epoch % 2 == 0 else absolute
-            value = pred if epoch % 2 == 0 else pred + potency[rows]
+            use_residual = interaction_target or epoch % 2 == 0
+            observed = response if use_residual else absolute
+            value = pred if use_residual else pred + potency[rows]
             delta = observed[primary] - observed[pair[primary]]
             sign_loss = F.softplus(-(value[:size] - value[size:]) * delta.sign())
             valid = delta.abs() > 0.06
