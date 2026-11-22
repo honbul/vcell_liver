@@ -26,6 +26,10 @@ def aligned_layout(path, receipt, realized):
         raise ValueError("The approved pilot layout changed")
     planned = pd.read_csv(path, sep="\t")
     verify(planned)
+    return bind_realized(planned, realized, dose=5)
+
+
+def bind_realized(planned, realized, dose):
     if len(realized) != len(planned) or realized.duplicated(COORD).any():
         raise ValueError("One realized record is required for each planned physical well")
     fields = COORD + ["specimen_id", "plate_id", "culture_id", "canonical_parent", "actual_uM",
@@ -49,7 +53,7 @@ def aligned_layout(path, receipt, realized):
     if (ids.eq("").any().any() or ids.parent_slot.duplicated().any() or ids.canonical_parent.duplicated().any()
             or physical.loc[~treated, "canonical_parent"].ne("").any()
             or not pd.to_numeric(physical.actual_hours, errors="raise").eq(24).all()
-            or not pd.to_numeric(physical.loc[treated, "actual_uM"], errors="raise").eq(5).all()
+            or not pd.to_numeric(physical.loc[treated, "actual_uM"], errors="raise").eq(dose).all()
             or physical.loc[~treated, "actual_uM"].ne("").any()):
         raise ValueError("A real treatment has the wrong identity, exposure or vehicle status")
     return physical
@@ -138,6 +142,10 @@ def measured(path, cfg, accepted, controls, targets):
         matrix = data["values"]
     if matrix.shape != (len(accepted), len(cfg["genes"])) or matrix.dtype.kind != "f" or not np.isfinite(matrix).all():
         raise ValueError("Invalid measured well expression matrix")
+    return vehicle_contrasts(matrix, accepted, controls, targets)
+
+
+def vehicle_contrasts(matrix, accepted, controls, targets):
     index = pd.Index(accepted.specimen_id)
     y = matrix[index.get_indexer(targets.specimen_id)].astype(np.float64)
     vehicle = pd.DataFrame(matrix[index.get_indexer(controls.specimen_id)]).groupby(
