@@ -95,3 +95,5 @@ PRISM 검출 반복이 높은 농도를 더 반영하도록 24약물·9,681개 �
 Wong의 원발 종양–오가노이드 RNA 10쌍으로 구한 방향을 2D 학습과 외부 평가 양쪽에서 제거했다. LICOB NDCG@5는 .624→.633으로 올랐다. 약물별 환자 순위는 공여자 짝 순열보다 낮았고 두 코호트의 사전 공동 기준은 미통과였다. [짝지은 RNA 사영의 전이 평가](RNA_STATE_PROJECTION_RESULTS.md)
 
 LIMORE에서 점 추정 .363을 기록한 별도 ECFP4·경로 ElasticNet의 계통 순위는 68개 약물 모두에서 같았다. 새 가산 대조에서도 약물 내 Spearman은 LIMORE .334, LICOB −.091로 방향이 달랐다. 약물별 경로 효과를 분리한 희소 회귀는 두 코호트 공동 승격 기준에 미달했다. [공통 감수성과 약물별 효과의 전이](SPARSE_PATHWAY_TRANSFER_RESULTS.md)
+
+약물별 상호작용을 직접 학습한 신경망을 구조 커널에 더하면 LICOB NDCG@5는 .624→.661로 올랐다. 공여자 내 전체 약물 순위 Spearman은 .339→.277로 낮아졌다. 실측을 쓰지 않은 보정 분해에서 LICOB 보정 제곱합의 77.7%는 시료가 공유하는 약물별 편차였다. [상호작용 신경망과 사후 진단](NEURAL_INTERACTION_TRANSFER_RESULTS.md)
