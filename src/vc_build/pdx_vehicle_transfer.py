@@ -24,7 +24,7 @@ from .v0plus_score import axis_metrics, crossed_patient_drug_ci
 from .yang_hcc_external import require_hash
 
 WORKBOOK = "c4b9a6903a4d1f76e3ddca4199039776d56bb99970aa5b7abe4f3abd732a0c6d"
-CHEMISTRY = "e68701450b5e11e3b5635d7483fd57516e15de35c116585ecbcbd04acd463a"
+CHEMISTRY = "e68701450b5e11e3b5635d7483fd57516e15de35c116585ecbcdbbd04acd463a"
 TISSUES = ("BRCA", "CRC", "NSCLC", "PDAC", "CM")
 DAY = 14
 PENALTY = 4.0
