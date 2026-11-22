@@ -12,6 +12,7 @@ from vc_build.external import KEY, SOURCE, native_sensitivity
 from vc_build.io import publish_json, sha256
 from vc_build.v0plus_cv import attach_native, panel_targets, summarize, validation_roster
 
+from .metrics import compare, pooled
 from .source import grouped, load
 from .stack import CAPS, RECIPES, build, pivot
 
@@ -55,23 +56,19 @@ def fit_recipes(fit, arms, evaluations):
     lead = aligned.loc[:, list(arms.columns)]
     truth = aligned.reset_index()[["inner", "cell_id", "compound_id", "lineage_group", "residual", "anchor"]]
     anchor = truth.anchor.to_numpy()
-    methods, ranking, models = [], [], {}
+    methods, ranking, models = {}, [], {}
     for name in RECIPES:
         estimator = build(lead, truth, name)
         preds = estimator.predict(lead, anchor, truth.compound_id)
         for a in CAPS:
             values = anchor + a*(preds-anchor)
             tag = f"{name}/{a}"
-            methods.append(truth[KEY[1:]+["inner"]].assign(method=tag, predicted_value=values))
+            methods[tag] = values
         models[name] = estimator
-    pred = pd.concat(methods, ignore_index=True)
-    pred["row_id"] = pred.cell_id + "|" + pred.compound_id
-    parts = []
-    for idx, valid in enumerate(evaluations):
-        held = pred.loc[pred.inner.eq(idx)]
-        parts.append(attach_native(held, valid, idx))
-    description = summarize(pd.concat(parts, ignore_index=True))
-    scores = description.groupby("method")[list(AXES)].mean()
+    pred = pd.concat([truth[["cell_id","compound_id","inner"]],pd.DataFrame(methods)],axis=1)
+    names = list(methods)
+    evaluated = [compare(pred.loc[pred.inner.eq(idx)],valid,names) for idx,valid in enumerate(evaluations)]
+    scores = pooled(evaluated,names,AXES)
     for method, vals in scores.iterrows():
         ranking.append({"candidate": method, "utility": angle(vals), **vals.to_dict()})
     ordered = sorted(ranking, key=lambda s: -s["utility"])
