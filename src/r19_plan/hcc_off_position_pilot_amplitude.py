@@ -3,11 +3,14 @@
 import argparse
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from types import SimpleNamespace
 
 import numpy as np
 import pandas as pd
 
 from src.r11_chemical_probe.common import read_json, sha256, write_json
+from src.r19_plan.hcc_lincs_24h_transfer import context, effect, group_means
+from src.r19_plan.hcc_donor_panel_size import choices
 from src.r19_plan.hcc_off_position_pilot import SLOTS
 from src.r19_plan.hcc_off_position_pilot_freeze import old_panels
 from src.r19_plan.hcc_off_position_pilot_native_score import native_predictions
@@ -57,6 +60,21 @@ def log_rms(mean):
     return np.log(np.maximum(np.sqrt(np.square(mean).mean(axis=1)), 1e-8))[:, None]
 
 
+def query_panel(source, controls, ref, genes, cols, role, slots):
+    values = effect(source, controls, ref, genes, cols, role)
+    plates, vectors = group_means(values, source, ["parent_slot", "parent", "cell_id", "rna_plate"])
+    cells, vectors = group_means(vectors, plates, ["parent_slot", "parent", "cell_id"])
+    result = []
+    for (slot, parent), idx in cells.groupby(["parent_slot", "parent"], sort=True).indices.items():
+        names = cells.cell_id.iloc[idx].tolist()
+        if len(names) != COUNT:
+            raise ValueError("Expected the original eight source cell lines for every slot")
+        result.append((slot, parent, vectors[idx[choices(parent, names, 0)]]))
+    if [(slot,parent) for slot,parent,_ in result] != list(slots[["parent_slot","parent"]].itertuples(index=False, name=None)):
+        raise ValueError("The source panel and assigned prospective parents differ")
+    return np.stack([panel for _,_,panel in result])
+
+
 def predict(args, base, native, stamp):
     role = args.role
     idx = ROLES.index(role)
@@ -88,20 +106,31 @@ def predict(args, base, native, stamp):
         raise ValueError("The prospective assessment crosses an original training identity, scaffold or context")
     with pinned_npz(prep/"input.npz", record["files"]["input.npz"]) as payload:
         xfit, y = (checked_array(payload[name], (len(train), len(genes)), name) for name in ("x_outer", "y_outer"))
-        xnew = checked_array(payload["x_query"], (len(SLOTS), len(genes)), "x_query")
+        prepared_xnew = checked_array(payload["x_query"], (len(SLOTS), len(genes)), "x_query")
     if (sha256(args.previous/"freeze.json") != sha256(args.previous_pin)
             or sha256(args.previous_pin) != base["previous_freeze_sha256"]):
         raise ValueError("The donor arrays must come from the original JHH-5 development freeze")
     development = read_json(args.previous_pin)
-    parents, vectors = old_panels(args, {"target_parents":development["support"]["parents"]}, genes, development, role)
+    old = SimpleNamespace(access=args.previous/"access", access_pin=args.previous_access_pin, protocol=args.previous_protocol)
+    ref, axis, cols, lineage = context(old)
+    if not np.array_equal(axis.astype(str), genes) or any(development[k] != v for k,v in lineage.items()):
+        raise ValueError("Source matrix axes differ from the original JHH-5 donor freeze")
+    parents, vectors = old_panels(args, ref, axis, development, role)
     positions = parents.get_indexer(train.parent)
     if not parents.is_unique or (positions < 0).any():
         raise ValueError("Expected the original eight donor vectors per training parent")
     train_vectors = vectors[positions]
     np.testing.assert_array_equal(train_vectors.mean(axis=1), xfit)
-    np.testing.assert_array_equal(xnew, arrays[MEAN][idx])
+    source, controls = (read_pinned(root/role, name, access["role_files"][role][name])
+                        for name in ("source.tsv", "source_controls.tsv"))
+    # Replay in the original precision before casting, including both fixed-gain references.
+    target_vectors = query_panel(source, controls, ref, axis, cols, role, slots)
+    xnew = target_vectors.mean(axis=1)
+    np.testing.assert_array_equal(xnew, prepared_xnew)
+    np.testing.assert_array_equal(xnew.astype("float32"), arrays[MEAN][idx])
     sfit = shrink_consensus(train_vectors, [COUNT]*len(train), xfit)
-    snew = arrays[SHRINK][idx]
+    snew = shrink_consensus(target_vectors, [COUNT]*len(target_vectors), xnew)
+    np.testing.assert_array_equal(snew.astype("float32"), arrays[SHRINK][idx])
     output, fit_summary = {}, {}
     for arm, ref, x, z in ((MEAN_ENERGY, SCALAR, xfit, xnew), (ENERGY, CALIBRATED, sfit, snew)):
         constant = scalar(train, x, y)
@@ -217,8 +246,8 @@ if __name__ == "__main__":
             sub.add_argument("--"+name, type=Path, required=True)
         if phase == "predict":
             sub.add_argument("--role", choices=ROLES, required=True)
-            sub.add_argument("--previous", type=Path, required=True)
-            sub.add_argument("--previous-pin", type=Path, required=True)
+            for name in ("previous", "previous-pin", "previous-access-pin", "previous-protocol"):
+                sub.add_argument("--"+name, type=Path, required=True)
         if phase == "score":
             for name in ("audit", "wells", "cultures", "qc-record", "assay-receipt", "protocol", "intake", "measurements", "output"):
                 sub.add_argument("--"+name, type=Path, required=True)

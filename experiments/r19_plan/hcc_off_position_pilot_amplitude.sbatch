@@ -25,7 +25,9 @@ args=(--amplitude "$run" --amplitude-protocol "$paper/HCC_OFF_POSITION_PILOT_AMP
 roles=(A B C)
 case "$phase" in
   predict) args+=(--role "${roles[${SLURM_ARRAY_TASK_ID:?}]}" --previous "$root/jhh5-off-position.0ldmuIkJ"
-    --previous-pin "$paper/data/jhh5_off_position/freeze.json") ;;
+    --previous-pin "$paper/data/jhh5_off_position/freeze.json"
+    --previous-access-pin "$paper/data/jhh5_off_position/access/receipt.json"
+    --previous-protocol "$paper/JHH5_OFF_POSITION_PROTOCOL.md") ;;
   freeze) ;;
   score) args+=(--amplitude-sha256 "$(cat "$run/freeze.sha256")"
     --audit "$root/hcc-off-pilot.GzfiFSmB/audit" --protocol "$paper/HCC_OFF_POSITION_PILOT_SCORE_PROTOCOL.md"
