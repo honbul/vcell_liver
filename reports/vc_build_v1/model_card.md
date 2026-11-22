@@ -34,7 +34,7 @@ The exact actual input and output samples are in the G1 run directories. Here ar
   "cell": {
     "cell_id": "research-cell-id",
     "lineage_role": "adult_hcc",
-    "culture_format": "2d_monolayer",
+    "culture_format": "2D",
     "expression_scale": "log2(FPKM+1)",
     "baseline_rna": {"TP53": 1.0}
   },

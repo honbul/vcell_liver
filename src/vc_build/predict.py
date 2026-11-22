@@ -85,7 +85,7 @@ def infer(model_dir, request):
         if not isinstance(request.get(field), str) or not request[field]:
             raise ValueError(f"Expected nonempty request {field}")
     if not isinstance(cell.get("cell_id"), str) or not cell["cell_id"]:
-        raise ValueError("Expected a child query cell ID")
+        raise ValueError("Expected a query cell ID")
     identities = []
     for candidate in candidates:
         if not isinstance(candidate, dict):
@@ -101,6 +101,7 @@ def infer(model_dir, request):
     model = None if common else load_model(model_dir)
     interval = contract.get("interval")
     rows = []
+    resolved = set()
     for identity, candidate in zip(identities, candidates):
         reason, concentration, value, flags = common, None, None, {}
         if "dose" in candidate or "dose_unit" in candidate:
@@ -118,6 +119,11 @@ def infer(model_dir, request):
                 smiles, compound_id = candidate.get("smiles"), candidate.get("compound_id")
                 if hasattr(model, "assess_domain"):
                     flags = model.assess_domain(rna, smiles, compound_id)
+                    registered = flags.get("registered_compound_id")
+                    if registered in resolved:
+                        raise DomainError("duplicate_registered_compound")
+                    if registered:
+                        resolved.add(registered)
                 value = float(model.predict(rna, smiles, compound_id))
                 if not math.isfinite(value):
                     raise ValueError("Non-finite result in model artifact")
@@ -138,8 +144,14 @@ def infer(model_dir, request):
             "program_prediction_available": False, "program_definition_version": None,
             "rank_in_candidate_pool": None, "candidate_pool_id": request["candidate_pool_id"],
             "supported": reason is None, "abstention_reason": reason, "domain_flags": flags,
-            "data_provenance_summary": contract.get("data_provenance_summary"),
-            "limitations": contract.get("limitations"),
+            "data_provenance_summary": contract.get("data_provenance_summary", {
+                "source_id": contract.get("source_id"),
+                "basal_expression_scale": contract.get("expression_scale"),
+                "basal_expression_is_proxy": contract.get("baseline_is_proxy"),
+            }),
+            "limitations": contract.get("limitations", [
+                "registered_cell_line_curve_summary", "public_development_interval", "research_use",
+            ]),
         })
     direction = contract.get("endpoint_direction")
     if direction not in {"higher", "lower"}:
