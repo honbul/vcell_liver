@@ -31,6 +31,43 @@ COMPARISONS = (
     *(("purged_operator", baseline) for baseline in ("purged_scalar", "identity6", "full_operator", "count_operator", "direct24")),
     ("full_operator", "full_scalar"), ("full_operator", "local_operator"), ("count_operator", "count_scalar"),
 )
+MEAN_SHIFT_ARMS = ("purged_mean_scalar", "purged_diagonal")
+
+
+def centered_fit(fit, query):
+    """Fit the centered scalar and a diagonal ridge selected within source parents."""
+    rows, earlier, later = fit
+    group, parents = pd.factorize(rows.parent, sort=True)
+    counts = np.bincount(group)
+    weights = 1.0 / counts[group]
+    x_mean = np.average(earlier, axis=0, weights=weights)
+    y_mean = np.average(later, axis=0, weights=weights)
+    x = earlier - x_mean
+    y = later - y_mean
+    energy = (weights[:, None] * x * x).sum(axis=0)
+    cross = (weights[:, None] * x * y).sum(axis=0)
+    gain = cross.sum() / energy.sum()
+
+    # Exact leave-one-parent-out moments with a newly fitted intercept for each holdout.
+    parent_stats = []
+    for values in (x, y, x * x, x * y):
+        totals = np.zeros((len(parents), x.shape[1]))
+        np.add.at(totals, group, values * weights[:, None])
+        parent_stats.append(totals)
+    sum_x, sum_y, sum_xx, sum_xy = parent_stats
+    mass = len(parents) - 1
+    x_loo = -sum_x / mass
+    y_loo = -sum_y / mass
+    xx_loo = np.maximum(energy - sum_xx - mass * x_loo**2, 0)
+    xy_loo = cross - sum_xy - mass * x_loo * y_loo
+    losses = []
+    for ridge in (.01, .1, 1., 10., 100.):
+        slopes = (xy_loo / (xx_loo + ridge))[group]
+        residual = y - y_loo[group] - (x - x_loo[group]) * slopes
+        losses.append(((weights[:, None] * residual**2).sum(), ridge))
+    _, penalty = min(losses)
+    centered = query - x_mean
+    return y_mean + gain * centered, y_mean + centered * cross / (energy + penalty), gain, penalty
 
 
 def scaffold(parent):
@@ -55,6 +92,9 @@ def inputs(args):
     genes, cols = matrix_axes(scope.access, ref)
     stamp = dict(protocol_sha256=sha256(args.protocol), code_sha256=sha256(__file__),
                  access_sha256=sha256(scope.pin), previous_freeze_sha256=sha256(pin))
+    if args.mean_shift:
+        operator = Path(__file__).with_name("time_operator.py")
+        stamp.update(time_operator_sha256=sha256(operator))
     return SimpleNamespace(scope=scope, ref=ref, frozen=frozen, forecasts=args.previous / "forecasts",
                            genes=genes.pr_gene_id.to_numpy(), cols=cols, stamp=stamp)
 
@@ -143,6 +183,11 @@ def predict(args, ctx):
                                      fit_conditions=len(fit[0]), removed=len(removed) if mode != "full" else 0,
                                      held_scaffold_in_fit=len({mapping[p] for p in members} & {mapping[p] for p in held}),
                                      scalar_gain=gain, removal_count_control=len(count)))
+                if args.mean_shift and mode == "purged":
+                    centered, diagonal, centered_gain, penalty = centered_fit(fit, query6)
+                    fits["purged_mean_scalar"] = centered.astype("float32")
+                    fits["purged_diagonal"] = diagonal.astype("float32")
+                    settings[-1].update(centered_scalar_gain=centered_gain, diagonal_ridge=penalty)
             path = stage / f"{key}.npz"
             np.savez_compressed(path, **fits)
             hashes[key] = sha256(path)
@@ -167,12 +212,12 @@ def cluster_effects(parent, mapping, rmse, sse, energy):
     return np.quantile(effect, [.005, .995], axis=1).T, np.quantile(relative, [.005, .995])
 
 
-def summarize(rows, truth, arrays, mapping):
+def summarize(rows, truth, arrays, mapping, comparisons=COMPARISONS):
     results = []
     energy = squared_rows(truth)
     errors = {arm: squared_rows(truth, data) for arm, data in arrays.items()}
     parent = sorted(set(rows.parent))
-    for arm, baseline in COMPARISONS:
+    for arm, baseline in comparisons:
         moments = parent_summaries(rows, truth.shape[1], energy, errors[arm], errors[baseline])
         points, intervals, draws = paired_effects(*moments)
         low, high, _ = relative_interval(moments[0])
@@ -189,7 +234,7 @@ def collect(args, ctx):
     groups = sorted({key[:4] for key in ctx.ref["slices"]})
     hashes, queries, settings = {}, {}, []
     scoring = args.action == "score"
-    arrays = {name: [] for name in ARMS}
+    arrays = {name: [] for name in ARMS + (MEAN_SHIFT_ARMS if args.mean_shift else ())}
     for group in groups:
         directory = args.forecasts / group
         receipt = read_json(directory / "receipt.json")
@@ -206,7 +251,7 @@ def collect(args, ctx):
             if sha256(path) != digest:
                 raise ValueError("The scaffold prediction array changed")
             with np.load(path, allow_pickle=False) as packed:
-                if set(packed.files) != set(ARMS) - set(old):
+                if set(packed.files) != set(arrays) - set(old):
                     raise ValueError("Unexpected model inventory in the scaffold prediction")
                 new = {name: checked_array(packed[name], old["identity6"].shape, name) for name in packed.files}
             if scoring:
@@ -233,7 +278,10 @@ def evaluate(args, ctx):
         raise ValueError("The candidates differ from the prospective freeze")
     truth = np.concatenate([score_delta(ctx.scope, ctx.ref, k, q, ctx.cols, ctx.genes) for k, q in queries.items()])
     _, mapping = registry(ctx)
-    table = summarize(rows, truth, {arm: np.concatenate(parts) for arm, parts in arrays.items()}, mapping)
+    comparisons = COMPARISONS
+    if args.mean_shift:
+        comparisons += tuple(("purged_operator", baseline) for baseline in MEAN_SHIFT_ARMS)
+    table = summarize(rows, truth, {arm: np.concatenate(parts) for arm, parts in arrays.items()}, mapping, comparisons)
     with TemporaryDirectory(dir=args.out.parent, prefix=".t4-scaffold-score-") as tmp:
         stage = Path(tmp)
         table.to_csv(stage / "paired.tsv", sep="\t", index=False, na_rep="NA")
@@ -251,6 +299,7 @@ if __name__ == "__main__":
         cli.add_argument("--" + field, type=Path)
     cli.add_argument("--group")
     cli.add_argument("--digest")
+    cli.add_argument("--mean-shift", action="store_true")
     args = cli.parse_args()
     ctx = inputs(args)
     (predict if args.action == "predict" else evaluate)(args, ctx)

@@ -1,0 +1,7 @@
+# Mean-shift and diagonal controls for the HEPG2 time operator
+
+Use the published T4 scaffold-blocked analysis as the registry. Retain the same 132 parents, 268 physical 24 h wells on 12 plates, exact measured doses, 978 landmarks, three outer folds, physical plate exclusion, and three DMSO role rotations. Fit participants, washout of held scaffolds, and all measured 6 h inputs follow the previous scaffold protocol. The rank-16 operator remains fixed at ridge 1.
+
+Within each fold, plate and role, calculate source means and cross-products with each parent contributing equal total weight. Fit an unrestricted shared slope on centered source pairs for the mean-shift scalar. Fit separate slopes for the diagonal ridge with an unpenalized intercept, selecting the common zero-centered penalty from {0.01, 0.1, 1, 10, 100} by minimum parent-balanced squared error in leave-one-parent-out source fits. Use the smaller penalty for ties. Refit slopes on all eligible scaffold-purged source pairs. Both controls receive the same measured 6 h input as the operator.
+
+Freeze forecast hashes before separately reading the 24 h scoring wells. Report 10,000 paired parent bootstrap draws with 99% intervals for relative parent-macro RMSE improvement and pooled R² improvement, alongside scaffold bootstrap sensitivity. Call the cross-gene map an incremental improvement if both lower bounds exceed zero against both controls. Treat an interval crossing zero as unresolved and report the size and direction of the contrasts.
