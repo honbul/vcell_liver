@@ -170,7 +170,15 @@ def train_rankers(train, query, train_rna, query_rna, targets):
     combined = source_values.groupby("row_id", as_index=False)[methods].mean()
     combined = query[KEY].merge(combined, on="row_id", how="left", validate="one_to_one")
     predictions = combined.melt(id_vars=KEY, var_name="method", value_name="predicted_value")
-    return predictions.assign(track="X_C_LIMORE", fold=0), source_values, source_counts
+    primary = predictions.assign(track="X_C_LIMORE", fold=0)
+    source_families = {"GDSC2", "CTRPv2", "PRISM20Q2"}
+    confirmed = source_values[source_values.source_id.isin(source_families)].groupby("row_id").source_id.nunique()
+    all_three_rows = confirmed[confirmed == len(source_families)].index
+    if len(all_three_rows):
+        shared = primary[primary.row_id.isin(all_three_rows)].assign(track="X_C_LIMORE_ALL3")
+        if shared.compound_id.nunique() >= 5:
+            primary = pd.concat([primary, shared], ignore_index=True)
+    return primary, source_values, source_counts
 
 
 def _rna(path):

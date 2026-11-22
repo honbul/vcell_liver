@@ -16,7 +16,9 @@ def ordered(keys, scope):
 
 
 def roster(forecasts):
-    eligible = forecasts[forecasts.method.isin(["drug_mean", "direct_structure_rna"])].copy()
+    eligible = forecasts[
+        forecasts.method.isin(["drug_mean", "direct_structure_rna"]) & forecasts.track.ne("X_C_LIMORE_ALL3")
+    ].copy()
     groups = ordered(eligible.lineage_group.unique(), "lineage")
     chemistry = ordered(eligible.compound_id.unique(), "sentinel")
     if len(groups) < 35 or len(chemistry) < 15:

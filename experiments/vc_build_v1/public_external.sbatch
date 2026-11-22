@@ -20,10 +20,16 @@ case "$step" in
   predict)
     exec "$python" -m vc_build.external --bundle "$bundle" --out "$run" --targets "$targets" ;;
   score)
-    exec "$python" -m vc_build.evaluate --prediction "$run/predictions.parquet" \
-      --observations "$outcomes" --split X_C_LIMORE --endpoint-direction higher --rank-only \
-      --compare direct_structure_rna drug_mean --compare direct_with_targets drug_mean \
-      --compare direct_with_targets direct_structure_rna --out "$run/metrics.json" ;;
+    score_external() {
+      "$python" -m vc_build.evaluate --prediction "$run/predictions.parquet" \
+        --observations "$outcomes" --split "$1" --endpoint-direction higher --rank-only \
+        --compare direct_structure_rna drug_mean --compare direct_with_targets drug_mean \
+        --compare direct_with_targets direct_structure_rna --out "$2"
+    }
+    score_external X_C_LIMORE "$run/metrics.json"
+    if "$python" -c 'import pandas as pd, sys; sys.exit(not pd.read_parquet(sys.argv[1], columns=["track"]).track.eq("X_C_LIMORE_ALL3").any())' "$run/predictions.parquet"; then
+      score_external X_C_LIMORE_ALL3 "$run/metrics-all3.json"
+    fi ;;
   shift_register)
     exec "$python" -m vc_build.shift_roster --dir "$run/shift" --register-from "$run/predictions.parquet" ;;
   shift_predict)
