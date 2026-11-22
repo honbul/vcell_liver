@@ -194,8 +194,10 @@ class FittedMolecular:
         residual = np.full(len(query), np.nan)
         self.network.eval()
         latent = self.network.encode(profile)
-        for rows in np.array_split(valid, max(1, (len(valid) + 1023) // 1024)):
-            cell, drug = cell_index[rows], drug_index[rows]
+        for start in range(0, len(valid), 1024):
+            rows = valid[start:start + 1024]
+            cell = torch.as_tensor(cell_index[rows], device=device)
+            drug = torch.as_tensor(drug_index[rows], device=device)
             indices = targets[drug]
             cell_targets = target_rna[cell].gather(1, indices)
             output, _, _ = self.network.predict(latent[cell], chemical[drug], drug, indices,
