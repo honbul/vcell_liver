@@ -110,9 +110,15 @@ def main():
     cold = set(shared[::5]) | unavailable
     seen = external_targets - cold
     fit_pool = all_source - cold
-    inner_valid = set(sorted(fit_pool, key=lambda g: gene_order(g, a.seed + 1))[::5])
+    # Keep every same-gene evaluation gene represented in source training.
+    # Tune on source genes that will never appear in either HepG2 panel.
+    validation_pool = fit_pool - external_targets
+    if len(validation_pool) < 10:
+        raise ValueError("Too few source-only targets for gene-cold tuning")
+    inner_valid = set(sorted(validation_pool, key=lambda g: gene_order(g, a.seed + 1))[::5])
     inner_train = fit_pool - inner_valid
-    if (cold & fit_pool or cold & seen or inner_train & inner_valid or not seen or not cold
+    if (cold & fit_pool or cold & seen or inner_train & inner_valid or not seen <= inner_train
+            or external_targets & inner_valid or not seen or not cold
             or set(meta.loc[meta.target_ensembl.isin(fit_pool), "target_ensembl"]) & cold):
         raise ValueError("Invalid source-to-HepG2 gene split")
 
