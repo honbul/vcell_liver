@@ -124,7 +124,7 @@ def prepare(directory, out, seed):
     complete = ready.intersection(measures["rna"][1])
     # Keep one culture per donor independent of effect magnitudes, preferring
     # complete basal omics before lexicographic tie breaking.
-    models = models.loc[complete].copy()
+    models = models.loc[complete].copy().rename_axis("ModelID")
     models["profile_count"] = models.index.isin(measures["cnv"][1]).astype(int) + models.index.isin(measures["mut"][1])
     models = models.reset_index().sort_values(["profile_count", "ModelID"], ascending=[False, True])
     models = models.drop_duplicates("PatientID").set_index("ModelID").sort_index()
