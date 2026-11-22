@@ -98,7 +98,7 @@ def frozen_vectors(args):
             raise ValueError("Recorded target coordinates differ from the fixed prediction query")
         truth.append(effect(target, controls, ref, genes, cols, role))
     truth = np.concatenate(truth)
-    arrays = {arm: np.concatenate([d[arm] for d in pieces.values()]) for arm in COMPARED[:-1]}
+    arrays = {arm: np.concatenate([d[arm] for d in pieces.values()]) for arm in (*COMPARED[:-1], SCALAR)}
     arrays["B0"] = np.zeros_like(truth)
     replay, _ = best_comparison(rows, truth, arrays, "all")
     replay = pd.DataFrame(replay)
