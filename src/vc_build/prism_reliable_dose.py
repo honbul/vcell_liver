@@ -8,20 +8,22 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import GroupKFold
 
-from .expanded_panel_cv import expanded_targets
+from .evaluate import join_observations
+from .expanded_panel_cv import RECEIPTS, expanded_targets
 from .external import KEY, SOURCE
 from .hcc_conditional_cv import fold_centered_correlations
 from .io import freeze_table, publish_json, sha256, verify_forecast
 from .licob_cold import checked
 from .licob_node_recovery import joined_outcomes
 from .licob_prism_restored import OLD_INPUT, RANK_METRICS
-from .limore_corrected import shared_support
+from .limore_corrected import OBSERVATIONS, shared_support
 from .pdo_transfer_cv import device_cuda
 from .structured_cv import attach, paired_intervals, with_assay
 from .structured_kernel import cell_kernels, drug_kernels, solve_residuals, training_grid
 from .v0plus_cv import molecular_inputs, panel_targets, training_inputs, validation_roster
 from .v0plus_licob import ASSET_HASHES, adult_donor_outcomes
 from .v0plus_neural import load_auxiliary
+from .v0plus_release import load_query
 from .v0plus_score import axis_metrics, compound_strata, crossed_patient_drug_ci
 from .vinorelbine_raw_doses import MANIFEST, prism_curves
 from .vinorelbine_transfer import EXTENSION_SHA
@@ -225,19 +227,47 @@ def predict(args):
     prior(args.historical, ("rna", "query"))
     rna = pd.read_parquet(args.historical / "rna.parquet")
     query = pd.read_parquet(args.historical / "query.parquet")
+    if args.case == "limore":
+        require_hash(args.limore / "receipt.json", RECEIPTS["original"])
+        query, limore_rna, _ = load_query(args.limore, data)
+        rna = pd.concat([rna, limore_rna.loc[:, rna.columns]], verify_integrity=True)
+        if (len(query) != 3400 or query.lineage_group.nunique() != 50
+                or len(set(support["eligible"]) & set(query.compound_id)) != 14):
+            raise ValueError("Unexpected LIMORE RNA and compounds")
     edges, targets, priors = molecular_inputs(args.priors, args.hallmark, args.targets)
     auxiliary, aux = load_auxiliary(args.auxiliary)
     output, diagnostics = [], {}
-    for fold, (fit, check, assay) in enumerate(grouped_cases(args.case, data, query, support["eligible"])):
+    cases = [(data, query, None)] if args.case == "limore" else grouped_cases(
+        args.case, data, query, support["eligible"],
+    )
+    for fold, (fit, check, assay) in enumerate(cases):
         prediction, details = structural_fit(fit, check, rna, support["eligible"], wells, edges, targets, auxiliary,
                                               device_cuda())
         shared_support(prediction, check, ARMS)
         output.append(with_assay(prediction, assay, fold) if assay is not None
-                      else prediction.assign(track="licob", fold=fold))
+                      else prediction.assign(track=args.case, fold=fold))
         diagnostics[str(fold)] = details
     freeze_table(pd.concat(output, ignore_index=True), args.run / f"{args.case}.parquet", provenance={
         "registration_sha256": receipt, "case": args.case, "diagnostics": diagnostics,
         "priors": priors, "auxiliary": aux["endpoints"],
+    })
+
+
+def score_limore(args):
+    require_hash(args.limore / "receipt.json", RECEIPTS["original"])
+    (fit,), support, registered = load(args.run, ("fit",))
+    query, _, _ = load_query(args.limore, fit)
+    rows, seal = verify_forecast(args.run / "limore.parquet")
+    if (seal["provenance"]["registration_sha256"], seal["provenance"]["case"]) != (registered, "limore"):
+        raise ValueError("Unexpected LIMORE freeze")
+    shared_support(rows, query, ARMS)
+    destination = args.limore / "test_labels/outcomes.parquet"
+    require_hash(destination, OBSERVATIONS)
+    table = join_observations(rows, pd.read_parquet(destination))
+    panels = {"primary_14": table[table.compound_id.isin(support["eligible"])], "full_68": table}
+    publish_json(args.run / "limore_score.json", {"forecast_sha256": seal["sha256"],
+        "registration_sha256": registered, "observations_sha256": OBSERVATIONS,
+        "results": {name: summary(part, query, external=True) for name, part in panels.items()},
     })
 
 
@@ -297,12 +327,13 @@ def main():
     modes = parser.add_subparsers(dest="mode", required=True)
     for name, task, keys in (("register", register, ("core", "extension", "raw")),
                              ("predict", predict, ("priors", "hallmark", "targets", "auxiliary")),
-                             ("score", score, ("supplement",))):
+                             ("score", score, ("supplement",)), ("limore_score", score_limore, ("limore",))):
         command = modes.add_parser(name)
         for key in ("run", "historical", *keys):
             command.add_argument("--" + key, type=Path, required=True)
         if name == "predict":
-            command.add_argument("--case", choices=CASES, required=True)
+            command.add_argument("--case", choices=(*CASES, "limore"), required=True)
+            command.add_argument("--limore", type=Path)
         command.set_defaults(task=task)
     args = parser.parse_args()
     args.task(args)
