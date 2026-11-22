@@ -2,6 +2,8 @@
 
 [Editable review manuscript](REVIEW.docx) · [Markdown source](DRAFT.md) · [Table 1 source rows](table1.tsv) · [Evidence and scope by claim](CLAIMS.md) · [Artifact checksums](review_receipt.json)
 
+The four adult HCC Table 1 comparisons can be replayed from anonymous parent-level error summaries. An isolated Python environment reproduced the absolute and centered scores, 99% intervals and the best comparator counts. The archive contains the replay script, its dependency and the corresponding Table 1. [Replay ZIP](HCC_SCORE_REPLAY.zip) · [Replay scope](REPLAY_SCOPE.md) · [Verification receipt](replay_verification.json)
+
 The review manuscript reports two distinct information settings. The HEPG2 benchmark predicts the later response from a measured earlier response to the same drug. The adult HCC benchmark receives measured same-drug responses from eight nonhepatic cells. Its high-dose development results, lower-dose limits and between-line comparison appear together. The Article format and references follow the current journal guidance for internal review. [Scientific Reports submission guidelines](https://www.nature.com/srep/author-instructions/submission-guidelines) · [Initial submission checklist](https://www.nature.com/documents/srep-checklist-for-initial-submissions.pdf)
 
 - **Evidence awaiting measurement.** The independent SNU-423/HUH7 pilot has frozen predictions and a scoring protocol. The available pilot assay is synthetic. Independent measurements are required for the intended external HCC claim. The R18 reserved confirmation is a separate experiment with no scored result. [Independent pilot](../HCC_OFF_POSITION_PILOT_RESULTS.md) · [R18 status](../R18_CONFIRMATION_PROTOCOL.md)
