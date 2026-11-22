@@ -8,7 +8,7 @@ import re
 
 import numpy as np
 import pandas as pd
-from rdkit import RDLogger
+from rdkit import Chem, RDLogger
 
 from .function_data import alias_token, canonical_chemistry, file_sha256, new_output, read_tsv, verify_inputs, write_json
 
@@ -20,6 +20,7 @@ MODEL_COLS = [
 ]
 MODEL_KEYS = ["ModelID", "RRID", "SangerModelID", "COSMICID", "ModelIDAlias", "PatientID"]
 MODEL_NAMES = ["CellLineName", "StrippedCellLineName", "CCLEName"]
+MIXTURE = re.compile(r"mol/mol|\b(?:combination|mixture)\b|\b\d+:\d+\b|\s\+\s", re.I)
 
 
 def read_raw(path, columns, sep=","):
@@ -157,6 +158,23 @@ def roster_maps(roster, models):
     return table
 
 
+def unambiguous_parent(smiles):
+    if not smiles:
+        return None
+    try:
+        molecule = Chem.MolFromSmiles(smiles)
+        if molecule is None:
+            return None
+        fragments = Chem.GetMolFrags(molecule, asMols=True)
+        organic = {Chem.MolToSmiles(frag) for frag in fragments if frag.GetNumHeavyAtoms() >= 8
+                   and any(atom.GetAtomicNum() == 6 for atom in frag.GetAtoms())}
+        if len(organic) > 1:
+            return None
+        return canonical_chemistry(smiles)
+    except (ValueError, RuntimeError):
+        return None
+
+
 def source_structures(metadata, id_column, name_column, smiles_column, limore_panel):
     """Require a single exact standardized parent for each source chemical identifier."""
     structures = metadata[[id_column, name_column, smiles_column]].drop_duplicates().copy()
@@ -165,14 +183,13 @@ def source_structures(metadata, id_column, name_column, smiles_column, limore_pa
     RDLogger.DisableLog("rdApp.error")
     try:
         for smiles in structures[smiles_column].unique():
-            try:
-                lookup[smiles] = canonical_chemistry(smiles)[1] if smiles else None
-            except (ValueError, RuntimeError):
-                lookup[smiles] = None
+            parent = unambiguous_parent(smiles)
+            lookup[smiles] = parent[1] if parent else None
     finally:
         RDLogger.EnableLog("rdApp.warning")
         RDLogger.EnableLog("rdApp.error")
-    structures["compound_id"] = structures[smiles_column].map(lookup)
+    marked_mixture = structures[name_column].str.contains(MIXTURE, na=False)
+    structures["compound_id"] = structures[smiles_column].map(lookup).mask(marked_mixture)
     groups = structures.groupby(id_column, dropna=False).compound_id.nunique(dropna=False)
     ambiguous = set(groups[groups.ne(1)].index)
     matched = structures[structures.compound_id.isin(limore_panel.compound_id) & ~structures[id_column].isin(ambiguous)]
@@ -219,7 +236,9 @@ def gdsc_rows(path, lookup, match):
                            "MIN_CONC", "MAX_CONC", "AUC"])
     gdsc = gdsc.rename(columns={"DRUG_ID": "native_compound_id", "DRUG_NAME": "native_drug_label",
                                 "AUC": "endpoint_value", "MIN_CONC": "dose_min_uM", "MAX_CONC": "dose_max_uM"})
-    rows = gdsc.merge(match, on="native_compound_id", validate="m:1", how="inner")
+    rows = gdsc[~gdsc.native_drug_label.str.contains(MIXTURE)].merge(
+        match, on="native_compound_id", validate="m:1", how="inner",
+    )
     cells = lookup.rename(columns={"source_key": "SANGER_MODEL_ID", "source_key_2": "COSMIC_ID",
                                    "name": "CELL_LINE_NAME"})
     rows = rows.merge(cells[["SANGER_MODEL_ID", "COSMIC_ID", "CELL_LINE_NAME", "cell_id"]],

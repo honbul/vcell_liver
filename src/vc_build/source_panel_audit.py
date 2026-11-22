@@ -4,42 +4,24 @@ import argparse
 import json
 import os
 from pathlib import Path
-import re
 
 import numpy as np
 import pandas as pd
-from rdkit import Chem, RDLogger
+from rdkit import RDLogger
 
 from .cross_source_data import (
-    MODEL_COLS, ctrp_rows, prism_rows, read_raw, response_rows, roster_maps, roster_table,
+    MIXTURE, MODEL_COLS, ctrp_rows, prism_rows, read_raw, response_rows, roster_maps, roster_table,
+    unambiguous_parent,
 )
-from .function_data import canonical_chemistry, new_output
+from .function_data import new_output
 from .io import publish_json, sha256
 from .v0plus_cv import training_inputs
 
 
-MIXTURE = re.compile(r"mol/mol|\b(?:combination|mixture)\b|\b\d+:\d+\b|\s\+\s", re.I)
 SOURCE_COLUMNS = {
     "CTRPv2": ("ctrp_compounds", "master_cpd_id", "cpd_name", "cpd_smiles", "gene_symbol_of_protein_target", "\t"),
     "PRISM20Q2": ("prism_curves", "broad_id", "name", "smiles", "target", ","),
 }
-
-
-def unambiguous_parent(smiles):
-    if not smiles:
-        return None
-    try:
-        molecule = Chem.MolFromSmiles(smiles)
-        if molecule is None:
-            return None
-        fragments = Chem.GetMolFrags(molecule, asMols=True)
-        organic = {Chem.MolToSmiles(frag) for frag in fragments if frag.GetNumHeavyAtoms() >= 8
-                   and any(atom.GetAtomicNum() == 6 for atom in frag.GetAtoms())}
-        if len(organic) > 1:
-            return None
-        return canonical_chemistry(smiles)
-    except (ValueError, RuntimeError):
-        return None
 
 
 def compound_panel(sources):
