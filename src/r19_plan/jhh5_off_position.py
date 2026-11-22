@@ -84,12 +84,12 @@ def access(args):
     register(args, target, source, controls, pd.DataFrame(partitions), detail)
 
 
-def donor(args, ref, genes, cols, stamp):
+def donor(args, ref, genes, cols, stamp, *, dose=DOSE):
     role = args.role
     tables = {name: read_pinned(args.access / "donor-plan" / role, name, digest)
               for name, digest in ref["donors"][role].items()}
     rows = tables["source.tsv"]
-    if not rows.actual_dose_uM.eq(DOSE).all() or not rows.view.eq(VIEW).all() or len(rows) != ref["donor_wells"]:
+    if not rows.actual_dose_uM.eq(dose).all() or not rows.view.eq(VIEW).all() or len(rows) != ref["donor_wells"]:
         raise ValueError("The eight-context donor inventory changed")
     values = effect(rows, tables["controls.tsv"], ref, genes, cols, role)
     plates, v = group_means(values, rows, ["parent", "cell_id", "rna_plate"])
