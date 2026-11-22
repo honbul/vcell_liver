@@ -1,0 +1,68 @@
+{
+  "agreement": {
+    "counts_cpm": {
+      "max_absolute_score_error": 0.06905140308663249,
+      "mean_absolute_score_error": 0.014389780387634731,
+      "mean_top5_overlap": 0.9125000000000001,
+      "median_model_gene_rank_spearman": 0.9709278877201803,
+      "median_within_drug_tumor_rank_spearman": 0.9838235294117648,
+      "median_within_tumor_drug_rank_spearman": 0.9724395923197311
+    },
+    "counts_length_tpm": {
+      "max_absolute_score_error": 5.684792995452881e-06,
+      "mean_absolute_score_error": 1.1242567025832286e-06,
+      "mean_top5_overlap": 1.0,
+      "median_model_gene_rank_spearman": 0.9999999982428223,
+      "median_within_drug_tumor_rank_spearman": 1.0,
+      "median_within_tumor_drug_rank_spearman": 1.0
+    }
+  },
+  "audit": {
+    "gdc_gene_rows": 60660,
+    "gtf_sha256": "81359865bab048361cbeaf91c9441aac4c700b63978e6691d579d78bf2322d30",
+    "lengths_available": 59317,
+    "sample_count": 16,
+    "unique_gene_symbols": 59317
+  },
+  "checkpoint_sha256": "6840a6a8413a5a948f33c74fc0f707dc2dd4bb18f19dcf466cec581a9d52ffea",
+  "decision": {
+    "checks": {
+      "gene_rank_gt_0.99": true,
+      "score_mae_improves_upper95_lt_0": true,
+      "within_drug_rank_gt_0.95": true,
+      "within_tumor_rank_gt_0.99": true
+    },
+    "mae_difference": -0.01438865613093215,
+    "paired_donor_bootstrap_95": [
+      -0.014944475641878856,
+      -0.013831863697179505
+    ],
+    "pass": true
+  },
+  "gene_lengths_sha256": "75422c2fc7d9662919b75baca4a0518b388a59e31f4e9e0a87ce16e400273bd7",
+  "inputs_manifest_sha256": "73d6e6ffd78f4d07f8922e238c37cf9f2c007fad86a3851f6935503519191b77",
+  "outputs": {
+    "counts_cpm": {
+      "input_sha256": "806dba190db3885502dd10cfb09c35e5c997f6f309cae7340bc16f171a006067",
+      "min_rna_coverage": 0.9984332158245202,
+      "min_selected_coverage": 0.9973958333333334,
+      "output_sha256": "7548cadf983513c60cc04576ef06d1024a42330f4d504a6d2415a6d19597602e",
+      "predicted": 1088
+    },
+    "counts_length_tpm": {
+      "input_sha256": "806dba190db3885502dd10cfb09c35e5c997f6f309cae7340bc16f171a006067",
+      "min_rna_coverage": 0.9984332158245202,
+      "min_selected_coverage": 0.9973958333333334,
+      "output_sha256": "7d649293945c2d593be37ab22a16e2f9219bbf38562dc2ee88ac25d4ce4169e8",
+      "predicted": 1088
+    },
+    "published_tpm": {
+      "input_sha256": "64595f2082889ed18b8b305214b302791bd22045eadc22a9981a2aeb54ec0400",
+      "min_rna_coverage": 0.9984332158245202,
+      "min_selected_coverage": 0.9973958333333334,
+      "output_sha256": "c11f33e561ff1eb99221d9963f5f729af5368b9897e84ca9deb275581d18691b",
+      "predicted": 1088
+    }
+  },
+  "release_sha256": "a9e6582ae6c9a87cb92075d73ae1dc2deb3919a0876a01897237d597c2a7c754"
+}

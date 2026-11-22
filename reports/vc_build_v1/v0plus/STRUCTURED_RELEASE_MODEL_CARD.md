@@ -18,7 +18,9 @@ PYTHONPATH=src python -m vc_build.v0plus_cli predict \
   --compounds compounds_of_interest.tsv --out predicted.tsv
 ```
 
-기본값은 `structured`다. `--model drug_ridge`와 `--model drug_mean`으로 대조군을 선택한다. 발현 TSV는 `sample_id`와 HGNC 유전자 열 또는 긴 형식의 `sample_id`, `gene`, `value`를 받는다. 원시 카운트에는 `bulk_counts`, 이미 로그 변환된 값에는 `bulk_log2_tpm_plus_1`을 쓴다. Ensembl ID를 쓸 때 `--gene-map`에 `input_id`, `gene_symbol` 두 열을 전달한다. 약물 파일은 `compound_id`에 정확한 parent InChIKey를 넣거나 `smiles`를 준다. 생략하면 68약물을 요청한다.
+기본값은 `structured`다. `--model drug_ridge`와 `--model drug_mean`으로 대조군을 선택한다. 발현 TSV는 `sample_id`와 HGNC 유전자 열 또는 긴 형식의 `sample_id`, `gene`, `value`를 받는다. TPM은 `bulk_tpm`, 이미 log₂(TPM+1)로 변환한 값은 `bulk_log2_tpm_plus_1`을 쓴다. Ensembl ID를 쓸 때 `--gene-map`에 `input_id`, `gene_symbol` 두 열을 전달한다. 약물 파일은 `compound_id`에 정확한 parent InChIKey를 넣거나 `smiles`를 준다. 생략하면 68약물을 요청한다.
+
+원시 카운트에는 `--scale bulk_counts --gene-lengths gene_lengths.tsv`를 쓴다. 길이 TSV는 `gene`과 `length_bp` 두 열로 구성하고, 카운트 생성에 사용한 주석과 동일한 버전의 양수 염기 길이를 매핑 후의 유전자 심볼로 제공한다. 길이가 누락된 유전자는 커버리지 평가에서 결측으로 센다. 출력에 정규화 방식과 길이 파일 SHA-256을 기록한다. 길이 파일을 생략하면 기존 CPM 방식이 적용된다. [공개 HCC 카운트·TPM 재현 결과](RAW_COUNT_INPUT_RESULTS.md)
 
 전체 17,871개 유전자와 보조 특징용 768개 고변이 유전자의 커버리지가 각각 85% 이상이어야 한다. 결측 허용 범위에서는 소스 적합 표본의 유전자별 중앙값으로 대체한 후 각 샘플의 유전자 순위를 계산한다. 예측에는 약물 평균과 개인화 편차를 함께 반환한다. 미등록 parent, 발현이 모두 0인 샘플, 커버리지 미달은 상태 열에 기록한다.
 
