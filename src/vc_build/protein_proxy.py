@@ -171,7 +171,7 @@ def new_forecasts(fit, query, rna, edges, targets, auxiliary, learned, measured,
     return pd.concat(output, ignore_index=True), audit
 
 
-def predict(args):
+def predict(args, *, forecast=new_forecasts, arms=ARMS, technical=TECHNICAL, protein_receipt=None):
     external = args.mode in EXTERNAL_TRACKS
     if external:
         fit, query, rna, registered = external_inputs(args, args.mode)
@@ -185,6 +185,8 @@ def predict(args):
     edges, targets, priors = molecular_inputs(args.priors, args.hallmark, args.targets)
     auxiliary, aux = load_auxiliary(args.auxiliary)
     receipt_path = args.protein / "receipt.json"
+    if protein_receipt is not None:
+        require_hash(receipt_path, protein_receipt)
     receipt = json.loads(receipt_path.read_text())
     if any(receipt["input_hashes"].get(k) != digest for k, digest in SOURCES.items()):
         raise ValueError("Unexpected proteomics registration")
@@ -193,17 +195,17 @@ def predict(args):
         path = args.protein / (name + ".parquet")
         require_hash(path, receipt["files"][path.name])
         data[name] = pd.read_parquet(path)
-    current, audit = new_forecasts(
+    current, audit = forecast(
         fit, query, rna, edges, targets, auxiliary, data["source"], data.get("licob"), replay=external,
     )
     current = current.assign(track=args.mode, fold=0) if external else with_assay(current, check, args.fold)
     joint = pd.concat([previous, current], ignore_index=True)[FORECAST_SCHEMA]
     if external:
-        extra = TECHNICAL if args.mode == "LICOB" else ()
-        shared_support(joint, query, (*BASELINES, *PUBLIC, *ARMS, *extra))
+        extra = technical if args.mode == "LICOB" else ()
+        shared_support(joint, query, (*BASELINES, *PUBLIC, *arms, *extra))
     else:
         support = joint.pivot(index=[*KEY, "track", "fold"], columns="method", values="predicted_value")
-        if set(support) != {*BASELINES, *ARMS} or not np.isfinite(support).all(axis=None):
+        if set(support) != {*BASELINES, *arms} or not np.isfinite(support).all(axis=None):
             raise ValueError("Source forecasts differ from comparison support")
     freeze_table(joint, args.out, provenance={"mode": args.mode, "fold": args.fold, "inputs_sha256": registered,
         "core_sha256": RECEIPTS["core"], "reference_sha256": reference, "priors": priors, "auxiliary": aux,
@@ -224,7 +226,7 @@ def assess_protein(frame, *, external):
     return result
 
 
-def main():
+def main(*, forecast=new_forecasts, arms=ARMS, technical=TECHNICAL, assessor=assess_protein, protein_receipt=None):
     parser = argparse.ArgumentParser(description=__doc__)
     stages = parser.add_subparsers(dest="stage", required=True)
     fields = {
@@ -243,11 +245,11 @@ def main():
     if args.stage == "prepare":
         prepare(args)
     elif args.stage == "predict":
-        predict(args)
+        predict(args, forecast=forecast, arms=arms, technical=technical, protein_receipt=protein_receipt)
     elif args.stage == "source":
-        score_source(args, assessor=assess_protein)
+        score_source(args, assessor=assessor)
     else:
-        score_external(args, assessor=assess_protein, arms=ARMS, extra_by_mode={"LICOB": TECHNICAL})
+        score_external(args, assessor=assessor, arms=arms, extra_by_mode={"LICOB": technical})
 
 
 if __name__ == "__main__":
