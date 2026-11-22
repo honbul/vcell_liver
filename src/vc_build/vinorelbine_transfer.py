@@ -44,6 +44,8 @@ def observations(args, core, extra):
             raise ValueError(f"Registered source changed: {name}")
     official = read_raw(inputs["gdsc_labels"]["path"], ["DRUG_ID", "DRUG_NAME", "SYNONYMS"])
     depmap = read_raw(inputs["depmap_models"]["path"], ["ModelID", "SangerModelID", "COSMICID"])
+    # DepMap serializes integer COSMIC accessions as decimal strings in this release.
+    depmap["COSMICID"] = depmap.COSMICID.str.replace(r"\.0+$", "", regex=True)
     depmap = depmap[depmap.ModelID.isin(core.cell_id)
                     & depmap.SangerModelID.ne("") & depmap.COSMICID.ne("")]
     if depmap.duplicated(["SangerModelID", "COSMICID"]).any():
@@ -76,7 +78,8 @@ def observations(args, core, extra):
     roster = core[["cell_id", "lineage_group", "lineage_role"]].drop_duplicates().set_index("cell_id")
     data = pd.concat([part[fields] for part in all_rows], ignore_index=True)
     data = data.join(roster, on="cell_id", validate="many_to_one")
-    if (data.duplicated(["cell_id", "source_id"]).any() or data.lineage_group.isna().any()
+    if (set(data.source_id) != set(ASSAYS) or data.duplicated(["cell_id", "source_id"]).any()
+            or data.lineage_group.isna().any()
             or not np.isfinite(data.endpoint_value).all() or data.groupby("source_id").size().min() < 100):
         raise ValueError("Inadequate and inconsistent Vinorelbine source support")
     return data.assign(sensitivity=-data.endpoint_value), {key: inputs[key]["sha256"] for key in roles}
