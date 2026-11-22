@@ -1,0 +1,3804 @@
+{
+  "all_21_drug_gate": false,
+  "forecast_sha256": "d3cfcde3c4d4e71d29edacf1200176b2abbe5828b5ad0bddc7d266fc466f0616",
+  "primary": "balanced_residual",
+  "registration_sha256": "bd27132354dcf5537b717227099147514851ec0218d0c96920ec4c8a00a96a4c",
+  "scores": {
+    "LICOB": {
+      "all": {
+        "crossed_ci95": [
+          {
+            "baseline": "2d_teacher",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.019622605693075258,
+                0.010527128026029668
+              ],
+              "spearman": [
+                -0.029658773915554063,
+                0.011354044883964564
+              ]
+            }
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.05542704406007866,
+                0.027717711631261435
+              ],
+              "spearman": [
+                -0.046908678633699456,
+                0.04520782345196764
+              ]
+            }
+          },
+          {
+            "baseline": "2d_cellhit",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.1195055030940199,
+                0.14453428485887704
+              ],
+              "spearman": [
+                -0.12208486491479441,
+                0.1702847916500238
+              ]
+            }
+          },
+          {
+            "baseline": "study_balanced_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.1414615618558655,
+                0.3530403750943776
+              ],
+              "spearman": [
+                -0.11608869349802503,
+                0.3895176148983669
+              ]
+            }
+          },
+          {
+            "baseline": "pooled_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.13904873089567604,
+                0.3777503036401463
+              ],
+              "spearman": [
+                -0.10906101850597703,
+                0.40473722846963717
+              ]
+            }
+          },
+          {
+            "baseline": "balanced_residual",
+            "candidate": "balanced_interaction",
+            "ci95": {
+              "pearson": [
+                -0.014597957311776105,
+                0.009471999727212304
+              ],
+              "spearman": [
+                -0.01996942585111261,
+                0.016426602642551285
+              ]
+            }
+          }
+        ],
+        "joint_direction_gate": false,
+        "report": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.019351914088756188,
+                0.002137099505520564
+              ],
+              "drugs": 21,
+              "gain": -0.008138850244113403,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.015271183526607893,
+                0.005933004437350774
+              ],
+              "drugs": 21,
+              "gain": -0.0039556842863429165,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.024552285078600876,
+                0.020093893778104298
+              ],
+              "drugs": 21,
+              "gain": -0.002719897456739567,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.039023828250486475,
+                0.00625536015092813
+              ],
+              "drugs": 21,
+              "gain": -0.016795084817457766,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.046176251439409344,
+                0.09622705412179097
+              ],
+              "drugs": 21,
+              "gain": 0.02380170801223433,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.05985541322519663,
+                0.075019584421646
+              ],
+              "drugs": 21,
+              "gain": 0.005821210150739248,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                0.0028780370885634096,
+                0.26324230534756854
+              ],
+              "drugs": 21,
+              "gain": 0.13489024015339807,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.022987208987997935,
+                0.21921743181953987
+              ],
+              "drugs": 21,
+              "gain": 0.09990879643013952,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                0.007576112839270737,
+                0.280374533006112
+              ],
+              "drugs": 21,
+              "gain": 0.1469682522314101,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.017300634144067704,
+                0.2362203479149712
+              ],
+              "drugs": 21,
+              "gain": 0.11006020805110026,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.010796481849113429,
+                0.004273156904735861
+              ],
+              "drugs": 21,
+              "gain": -0.002646950015371064,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.009582419206037944,
+                0.002708321368911399
+              ],
+              "drugs": 21,
+              "gain": -0.0033612548592099017,
+              "metric": "pearson",
+              "track": "LICOB"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "2d_cellhit",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": 0.08025687531636763,
+              "within_drug_spearman": 0.09097066991803834
+            },
+            {
+              "method": "2d_mean",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "2d_ridge",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": 0.10287317028456465,
+              "within_drug_spearman": 0.11749227538701221
+            },
+            {
+              "method": "2d_structured",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": 0.05197688804715059,
+              "within_drug_spearman": 0.08691687639056059
+            },
+            {
+              "method": "2d_teacher",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": 0.09003376975344979,
+              "within_drug_spearman": 0.12291122817438606
+            },
+            {
+              "method": "balanced_interaction",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": 0.08271683060789697,
+              "within_drug_spearman": 0.11212542791490158
+            },
+            {
+              "method": "balanced_residual",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": 0.08607808546710688,
+              "within_drug_spearman": 0.11477237793027265
+            },
+            {
+              "method": "pooled_3d",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": -0.023982122583993407,
+              "within_drug_spearman": -0.03219587430113746
+            },
+            {
+              "method": "study_balanced_3d",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": -0.013830710963032627,
+              "within_drug_spearman": -0.020117862223125376
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.00356304494232762,
+                0.0049808408506909485
+              ],
+              "gain": 0.0009237879524681691,
+              "lineages": 38,
+              "metric": "ndcg_at_5",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.010526315789473772,
+                0.02105263157894738
+              ],
+              "gain": 0.005263157894736803,
+              "lineages": 38,
+              "metric": "top5_overlap",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.004888072453862027,
+                0.004203691045796212
+              ],
+              "gain": -0.0004784688995215225,
+              "lineages": 38,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.0077875517774374315,
+                0.019593433524438077
+              ],
+              "gain": 0.005067157205592032,
+              "lineages": 38,
+              "metric": "ndcg_at_5",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.0052631578947369695,
+                0.05789473684210528
+              ],
+              "gain": 0.026315789473684237,
+              "lineages": 38,
+              "metric": "top5_overlap",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.02839542036910466,
+                0.08004442925495557
+              ],
+              "gain": 0.054135338345864537,
+              "lineages": 38,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.0006460272235663578,
+                0.06865974511637164
+              ],
+              "gain": 0.032661993221058006,
+              "lineages": 38,
+              "metric": "ndcg_at_5",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.05263157894736831,
+                0.08421052631578962
+              ],
+              "gain": 0.01578947368421063,
+              "lineages": 38,
+              "metric": "top5_overlap",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.08832023239917985,
+                0.00014695830485305216
+              ],
+              "gain": -0.043301435406698674,
+              "lineages": 38,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.0326807107669861,
+                0.09575047137066112
+              ],
+              "gain": 0.031039400927264094,
+              "lineages": 38,
+              "metric": "ndcg_at_5",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.12631578947368421,
+                0.07368421052631574
+              ],
+              "gain": -0.026315789473684237,
+              "lineages": 38,
+              "metric": "top5_overlap",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.11671565276828445,
+                0.020478468899521388
+              ],
+              "gain": -0.048257006151743165,
+              "lineages": 38,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.029519508824418457,
+                0.09658461977763272
+              ],
+              "gain": 0.033467791147957504,
+              "lineages": 38,
+              "metric": "ndcg_at_5",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.12105263157894725,
+                0.07368421052631585
+              ],
+              "gain": -0.02105263157894738,
+              "lineages": 38,
+              "metric": "top5_overlap",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.11651230348598787,
+                0.019595864661654205
+              ],
+              "gain": -0.04859876965140131,
+              "lineages": 38,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                0.0,
+                0.00025393359552783323
+              ],
+              "gain": 8.464453184264809e-05,
+              "lineages": 38,
+              "metric": "ndcg_at_5",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 38,
+              "metric": "top5_overlap",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                -0.004818865345181056,
+                0.0008544087491456104
+              ],
+              "gain": -0.0019822282980176964,
+              "lineages": 38,
+              "metric": "spearman",
+              "track": "LICOB"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 38,
+              "common_rows": 798,
+              "covered_rows": 798,
+              "lineages": 38,
+              "macro_ndcg_at_5": 0.6118265351622622,
+              "macro_spearman": 0.3833902939166097,
+              "macro_top5_overlap": 0.3473684210526315,
+              "method": "2d_cellhit",
+              "registered_rows": 798,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 798,
+              "covered_rows": 798,
+              "lineages": 38,
+              "macro_ndcg_at_5": 0.6105953829326936,
+              "macro_spearman": 0.37563226247436776,
+              "macro_top5_overlap": 0.3842105263157894,
+              "method": "2d_mean",
+              "registered_rows": 798,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 798,
+              "covered_rows": 798,
+              "lineages": 38,
+              "macro_ndcg_at_5": 0.6394213711777281,
+              "macro_spearman": 0.28595352016404657,
+              "macro_top5_overlap": 0.3368421052631579,
+              "method": "2d_ridge",
+              "registered_rows": 798,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 798,
+              "covered_rows": 798,
+              "lineages": 38,
+              "macro_ndcg_at_5": 0.6358799776993255,
+              "macro_spearman": 0.38257006151742984,
+              "macro_top5_overlap": 0.3736842105263158,
+              "method": "2d_structured",
+              "registered_rows": 798,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 798,
+              "covered_rows": 798,
+              "lineages": 38,
+              "macro_ndcg_at_5": 0.6435647404308519,
+              "macro_spearman": 0.3405673274094327,
+              "macro_top5_overlap": 0.3578947368421052,
+              "method": "2d_teacher",
+              "registered_rows": 798,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 798,
+              "covered_rows": 798,
+              "lineages": 38,
+              "macro_ndcg_at_5": 0.6445731729151628,
+              "macro_spearman": 0.33810663021189347,
+              "macro_top5_overlap": 0.363157894736842,
+              "method": "balanced_interaction",
+              "registered_rows": 798,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 798,
+              "covered_rows": 798,
+              "lineages": 38,
+              "macro_ndcg_at_5": 0.6444885283833202,
+              "macro_spearman": 0.34008885850991105,
+              "macro_top5_overlap": 0.363157894736842,
+              "method": "balanced_residual",
+              "registered_rows": 798,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 798,
+              "covered_rows": 798,
+              "lineages": 38,
+              "macro_ndcg_at_5": 0.6110207372353627,
+              "macro_spearman": 0.3886876281613124,
+              "macro_top5_overlap": 0.3842105263157894,
+              "method": "pooled_3d",
+              "registered_rows": 798,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 798,
+              "covered_rows": 798,
+              "lineages": 38,
+              "macro_ndcg_at_5": 0.613449127456056,
+              "macro_spearman": 0.3883458646616542,
+              "macro_top5_overlap": 0.38947368421052625,
+              "method": "study_balanced_3d",
+              "registered_rows": 798,
+              "track": "LICOB"
+            }
+          ]
+        },
+        "support": {
+          "donors": 38,
+          "drugs": 21
+        }
+      },
+      "nine_previous_confirmation_donors": {
+        "crossed_ci95": [
+          {
+            "baseline": "2d_teacher",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.01869563016761449,
+                0.038103448951608075
+              ],
+              "spearman": [
+                -0.046769080439193214,
+                0.0740789282073686
+              ]
+            }
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.13470144971039863,
+                0.0874429033528352
+              ],
+              "spearman": [
+                -0.15570844614322876,
+                0.16480884557721143
+              ]
+            }
+          },
+          {
+            "baseline": "2d_cellhit",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.4257524097477123,
+                0.08945234463628733
+              ],
+              "spearman": [
+                -0.42050885398343035,
+                0.07522667525081848
+              ]
+            }
+          },
+          {
+            "baseline": "study_balanced_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.8319500548369212,
+                0.3090430078635119
+              ],
+              "spearman": [
+                -0.791863354037267,
+                0.3225409002576043
+              ]
+            }
+          },
+          {
+            "baseline": "pooled_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.8701921971526612,
+                0.2936585799735851
+              ],
+              "spearman": [
+                -0.8013096904132513,
+                0.3140648717891763
+              ]
+            }
+          },
+          {
+            "baseline": "balanced_residual",
+            "candidate": "balanced_interaction",
+            "ci95": {
+              "pearson": [
+                -0.033655728464670596,
+                0.004959813111134326
+              ],
+              "spearman": [
+                -0.05962978559146578,
+                0.0422360248447205
+              ]
+            }
+          }
+        ],
+        "joint_direction_gate": false,
+        "report": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.007936507936507938,
+                0.034126984126984124
+              ],
+              "drugs": 21,
+              "gain": 0.012698412698412698,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                0.002033874779891778,
+                0.022669098109640864
+              ],
+              "drugs": 21,
+              "gain": 0.012876149165876422,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.04841269841269838,
+                0.09126984126984124
+              ],
+              "drugs": 21,
+              "gain": 0.019841269841269833,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.07331029663613127,
+                0.029888592401640723
+              ],
+              "drugs": 21,
+              "gain": -0.026292765633981276,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.3420634920634921,
+                -0.05077380952380943
+              ],
+              "drugs": 21,
+              "gain": -0.1865079365079365,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.3154220498139154,
+                -0.04949323529470874
+              ],
+              "drugs": 21,
+              "gain": -0.16943904764263445,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.47621031746031744,
+                -0.02140873015873006
+              ],
+              "drugs": 21,
+              "gain": -0.2579365079365079,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.6081065189303382,
+                -0.13456996923776035
+              ],
+              "drugs": 21,
+              "gain": -0.36926340108901734,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.5015873015873016,
+                -0.041210317460317246
+              ],
+              "drugs": 21,
+              "gain": -0.276984126984127,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.6381382695667369,
+                -0.1683065851380111
+              ],
+              "drugs": 21,
+              "gain": -0.40304092384283163,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.02936507936507936,
+                0.006349206349206347
+              ],
+              "drugs": 21,
+              "gain": -0.010317460317460317,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.022281318159449167,
+                -0.00965268330359602
+              ],
+              "drugs": 21,
+              "gain": -0.016093334448862177,
+              "metric": "pearson",
+              "track": "LICOB"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "2d_cellhit",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": 0.10244958404575548,
+              "within_drug_spearman": 0.12539682539682542
+            },
+            {
+              "method": "2d_mean",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "2d_ridge",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": -0.04069669796289771,
+              "within_drug_spearman": -0.08095238095238096
+            },
+            {
+              "method": "2d_structured",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": -0.13131297890334453,
+              "within_drug_spearman": -0.11984126984126983
+            },
+            {
+              "method": "2d_teacher",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": -0.07986561276275539,
+              "within_drug_spearman": -0.07380952380952382
+            },
+            {
+              "method": "balanced_interaction",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": -0.08308279804574115,
+              "within_drug_spearman": -0.07142857142857144
+            },
+            {
+              "method": "balanced_residual",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": -0.066989463596879,
+              "within_drug_spearman": -0.0611111111111111
+            },
+            {
+              "method": "pooled_3d",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": 0.33605146024595256,
+              "within_drug_spearman": 0.2158730158730159
+            },
+            {
+              "method": "study_balanced_3d",
+              "n_drugs": 21,
+              "track": "LICOB",
+              "within_drug_pearson": 0.3022739374921383,
+              "within_drug_spearman": 0.19682539682539685
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 9,
+              "metric": "ndcg_at_5",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 9,
+              "metric": "top5_overlap",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.00649350649350644,
+                0.01096681096681096
+              ],
+              "gain": 0.0012987012987013546,
+              "lineages": 9,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.025928499949187424,
+                0.04647938961008333
+              ],
+              "gain": 0.012269362292781416,
+              "lineages": 9,
+              "metric": "ndcg_at_5",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.0444444444444444,
+                0.1333333333333333
+              ],
+              "gain": 0.04444444444444445,
+              "lineages": 9,
+              "metric": "top5_overlap",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.019188311688311647,
+                0.10245310245310246
+              ],
+              "gain": 0.06190476190476202,
+              "lineages": 9,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.06867840213904007,
+                0.040015609724389854
+              ],
+              "gain": -0.019356416162697898,
+              "lineages": 9,
+              "metric": "ndcg_at_5",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.15611111111111103,
+                0.06666666666666665
+              ],
+              "gain": -0.04444444444444445,
+              "lineages": 9,
+              "metric": "top5_overlap",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.1393939393939394,
+                -0.023376623376623436
+              ],
+              "gain": -0.08831168831168823,
+              "lineages": 9,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.061841327886896,
+                0.09830698262889666
+              ],
+              "gain": 0.019656438013088362,
+              "lineages": 9,
+              "metric": "ndcg_at_5",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.1555555555555556,
+                0.08944444444444659
+              ],
+              "gain": -0.0222222222222222,
+              "lineages": 9,
+              "metric": "top5_overlap",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.1497835497835498,
+                -0.006201298701298695
+              ],
+              "gain": -0.07705627705627699,
+              "lineages": 9,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.061841327886896,
+                0.09830698262889666
+              ],
+              "gain": 0.019656438013088362,
+              "lineages": 9,
+              "metric": "ndcg_at_5",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.1555555555555556,
+                0.08944444444444659
+              ],
+              "gain": -0.0222222222222222,
+              "lineages": 9,
+              "metric": "top5_overlap",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.1497835497835498,
+                -0.006201298701298695
+              ],
+              "gain": -0.07705627705627699,
+              "lineages": 9,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 9,
+              "metric": "ndcg_at_5",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 9,
+              "metric": "top5_overlap",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                -0.00880230880230884,
+                0.0008658008658009031
+              ],
+              "gain": -0.0030303030303031053,
+              "lineages": 9,
+              "metric": "spearman",
+              "track": "LICOB"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 9,
+              "common_rows": 189,
+              "covered_rows": 189,
+              "lineages": 9,
+              "macro_ndcg_at_5": 0.6736123783771497,
+              "macro_spearman": 0.4163059163059163,
+              "macro_top5_overlap": 0.4000000000000001,
+              "method": "2d_cellhit",
+              "registered_rows": 189,
+              "track": "LICOB"
+            },
+            {
+              "cells": 9,
+              "common_rows": 189,
+              "covered_rows": 189,
+              "lineages": 9,
+              "macro_ndcg_at_5": 0.6351333982414559,
+              "macro_spearman": 0.39206349206349206,
+              "macro_top5_overlap": 0.37777777777777777,
+              "method": "2d_mean",
+              "registered_rows": 189,
+              "track": "LICOB"
+            },
+            {
+              "cells": 9,
+              "common_rows": 189,
+              "covered_rows": 189,
+              "lineages": 9,
+              "macro_ndcg_at_5": 0.6419865999216703,
+              "macro_spearman": 0.26608946608946604,
+              "macro_top5_overlap": 0.3111111111111111,
+              "method": "2d_ridge",
+              "registered_rows": 189,
+              "track": "LICOB"
+            },
+            {
+              "cells": 9,
+              "common_rows": 189,
+              "covered_rows": 189,
+              "lineages": 9,
+              "macro_ndcg_at_5": 0.6364752348826028,
+              "macro_spearman": 0.3721500721500722,
+              "macro_top5_overlap": 0.35555555555555557,
+              "method": "2d_structured",
+              "registered_rows": 189,
+              "track": "LICOB"
+            },
+            {
+              "cells": 9,
+              "common_rows": 189,
+              "covered_rows": 189,
+              "lineages": 9,
+              "macro_ndcg_at_5": 0.6542559622144516,
+              "macro_spearman": 0.3266955266955267,
+              "macro_top5_overlap": 0.35555555555555557,
+              "method": "2d_teacher",
+              "registered_rows": 189,
+              "track": "LICOB"
+            },
+            {
+              "cells": 9,
+              "common_rows": 189,
+              "covered_rows": 189,
+              "lineages": 9,
+              "macro_ndcg_at_5": 0.6542559622144516,
+              "macro_spearman": 0.32496392496392495,
+              "macro_top5_overlap": 0.35555555555555557,
+              "method": "balanced_interaction",
+              "registered_rows": 189,
+              "track": "LICOB"
+            },
+            {
+              "cells": 9,
+              "common_rows": 189,
+              "covered_rows": 189,
+              "lineages": 9,
+              "macro_ndcg_at_5": 0.6542559622144516,
+              "macro_spearman": 0.327994227994228,
+              "macro_top5_overlap": 0.35555555555555557,
+              "method": "balanced_residual",
+              "registered_rows": 189,
+              "track": "LICOB"
+            },
+            {
+              "cells": 9,
+              "common_rows": 189,
+              "covered_rows": 189,
+              "lineages": 9,
+              "macro_ndcg_at_5": 0.6345995242013633,
+              "macro_spearman": 0.4050505050505051,
+              "macro_top5_overlap": 0.37777777777777777,
+              "method": "pooled_3d",
+              "registered_rows": 189,
+              "track": "LICOB"
+            },
+            {
+              "cells": 9,
+              "common_rows": 189,
+              "covered_rows": 189,
+              "lineages": 9,
+              "macro_ndcg_at_5": 0.6345995242013633,
+              "macro_spearman": 0.4050505050505051,
+              "macro_top5_overlap": 0.37777777777777777,
+              "method": "study_balanced_3d",
+              "registered_rows": 189,
+              "track": "LICOB"
+            }
+          ]
+        },
+        "support": {
+          "donors": 9,
+          "drugs": 21
+        }
+      },
+      "three_TKI": {
+        "crossed_ci95": [
+          {
+            "baseline": "2d_teacher",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.08654691126256857,
+                0.010207024477960043
+              ],
+              "spearman": [
+                -0.09699243504694821,
+                0.01718226334311381
+              ]
+            }
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.15637683073114236,
+                -0.007730325682058194
+              ],
+              "spearman": [
+                -0.15012448602468384,
+                0.012077799064249014
+              ]
+            }
+          },
+          {
+            "baseline": "2d_cellhit",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.3217114546866995,
+                0.09164765141020145
+              ],
+              "spearman": [
+                -0.25882245171825274,
+                0.13007166263688005
+              ]
+            }
+          },
+          {
+            "baseline": "study_balanced_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.2104152356617328,
+                0.8121665597286353
+              ],
+              "spearman": [
+                -0.21731697799110594,
+                0.859965228359458
+              ]
+            }
+          },
+          {
+            "baseline": "pooled_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.32669459355531155,
+                0.8695813859444355
+              ],
+              "spearman": [
+                -0.2951780540714937,
+                0.9347872329335785
+              ]
+            }
+          },
+          {
+            "baseline": "balanced_residual",
+            "candidate": "balanced_interaction",
+            "ci95": {
+              "pearson": [
+                -0.03403847826516012,
+                0.038204730197908515
+              ],
+              "spearman": [
+                -0.06594316402229392,
+                0.04846737874544258
+              ]
+            }
+          }
+        ],
+        "joint_direction_gate": null,
+        "report": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.06937301674143778,
+                0.012255170149906992
+              ],
+              "drugs": 3,
+              "gain": -0.03333698070540175,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.06500046058308528,
+                0.011513229608325293
+              ],
+              "drugs": 3,
+              "gain": -0.03692036455667296,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.09169493380019696,
+                -0.042236568552358016
+              ],
+              "drugs": 3,
+              "gain": -0.061057008425429486,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.11037818690204908,
+                -0.04049159738406123
+              ],
+              "drugs": 3,
+              "gain": -0.08173989413363614,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.12036327825801513,
+                0.014443593390961795
+              ],
+              "drugs": 3,
+              "gain": -0.061421745632271964,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.19645363269631022,
+                -0.015151102892735163
+              ],
+              "drugs": 3,
+              "gain": -0.11981866743678249,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.22212495896706427,
+                0.5801510012036328
+              ],
+              "drugs": 3,
+              "gain": 0.3058686216580954,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.19912611782536918,
+                0.5423366367015465
+              ],
+              "drugs": 3,
+              "gain": 0.26840073218519755,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.3387679177152861,
+                0.668344457818142
+              ],
+              "drugs": 3,
+              "gain": 0.31447641973957763,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.3415708890176344,
+                0.5996550301912648
+              ],
+              "drugs": 3,
+              "gain": 0.2539469464816626,
+              "metric": "pearson",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.0536163694058431,
+                0.016632016632016633
+              ],
+              "drugs": 3,
+              "gain": -0.010431484115694644,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.03226619673622969,
+                0.023264182580039715
+              ],
+              "drugs": 3,
+              "gain": 5.190887882700288e-05,
+              "metric": "pearson",
+              "track": "LICOB"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "2d_cellhit",
+              "n_drugs": 3,
+              "track": "LICOB",
+              "within_drug_pearson": 0.1591530432380275,
+              "within_drug_spearman": 0.18991866360287415
+            },
+            {
+              "method": "2d_mean",
+              "n_drugs": 3,
+              "track": "LICOB",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "2d_ridge",
+              "n_drugs": 3,
+              "track": "LICOB",
+              "within_drug_pearson": 0.12107426993488113,
+              "within_drug_spearman": 0.18955392639603166
+            },
+            {
+              "method": "2d_structured",
+              "n_drugs": 3,
+              "track": "LICOB",
+              "within_drug_pearson": -0.03171383091385524,
+              "within_drug_spearman": 0.04402378086588613
+            },
+            {
+              "method": "2d_teacher",
+              "n_drugs": 3,
+              "track": "LICOB",
+              "within_drug_pearson": 0.07625474035791796,
+              "within_drug_spearman": 0.16183389867600392
+            },
+            {
+              "method": "balanced_interaction",
+              "n_drugs": 3,
+              "track": "LICOB",
+              "within_drug_pearson": 0.039386284680072,
+              "within_drug_spearman": 0.11806543385490753
+            },
+            {
+              "method": "balanced_residual",
+              "n_drugs": 3,
+              "track": "LICOB",
+              "within_drug_pearson": 0.039334375801245,
+              "within_drug_spearman": 0.12849691797060217
+            },
+            {
+              "method": "pooled_3d",
+              "n_drugs": 3,
+              "track": "LICOB",
+              "within_drug_pearson": -0.2146125706804176,
+              "within_drug_spearman": -0.18597950176897546
+            },
+            {
+              "method": "study_balanced_3d",
+              "n_drugs": 3,
+              "track": "LICOB",
+              "within_drug_pearson": -0.2290663563839526,
+              "within_drug_spearman": -0.1773717036874932
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 38,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 38,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 38,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 38,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 38,
+              "metric": "spearman",
+              "track": "LICOB"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 38,
+              "metric": "spearman",
+              "track": "LICOB"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 38,
+              "common_rows": 114,
+              "covered_rows": 114,
+              "lineages": 38,
+              "macro_spearman": 0.07894736842105263,
+              "method": "2d_cellhit",
+              "registered_rows": 114,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 114,
+              "covered_rows": 114,
+              "lineages": 38,
+              "macro_spearman": 0.07894736842105263,
+              "method": "2d_mean",
+              "registered_rows": 114,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 114,
+              "covered_rows": 114,
+              "lineages": 38,
+              "macro_spearman": 0.07894736842105263,
+              "method": "2d_ridge",
+              "registered_rows": 114,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 114,
+              "covered_rows": 114,
+              "lineages": 38,
+              "macro_spearman": 0.07894736842105263,
+              "method": "2d_structured",
+              "registered_rows": 114,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 114,
+              "covered_rows": 114,
+              "lineages": 38,
+              "macro_spearman": 0.07894736842105263,
+              "method": "2d_teacher",
+              "registered_rows": 114,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 114,
+              "covered_rows": 114,
+              "lineages": 38,
+              "macro_spearman": 0.07894736842105263,
+              "method": "balanced_interaction",
+              "registered_rows": 114,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 114,
+              "covered_rows": 114,
+              "lineages": 38,
+              "macro_spearman": 0.07894736842105263,
+              "method": "balanced_residual",
+              "registered_rows": 114,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 114,
+              "covered_rows": 114,
+              "lineages": 38,
+              "macro_spearman": 0.07894736842105263,
+              "method": "pooled_3d",
+              "registered_rows": 114,
+              "track": "LICOB"
+            },
+            {
+              "cells": 38,
+              "common_rows": 114,
+              "covered_rows": 114,
+              "lineages": 38,
+              "macro_spearman": 0.07894736842105263,
+              "method": "study_balanced_3d",
+              "registered_rows": 114,
+              "track": "LICOB"
+            }
+          ]
+        },
+        "support": {
+          "donors": 38,
+          "drugs": 3
+        }
+      }
+    },
+    "Wong": {
+      "all": {
+        "crossed_ci95": [
+          {
+            "baseline": "2d_teacher",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.01814739570936187,
+                0.034434450030237956
+              ],
+              "spearman": [
+                -0.07977444594189875,
+                0.056556510182689444
+              ]
+            }
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.055452324735318984,
+                0.08963532534973684
+              ],
+              "spearman": [
+                -0.11028626761709469,
+                0.09703937788518141
+              ]
+            }
+          },
+          {
+            "baseline": "2d_cellhit",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.16271858897606958,
+                0.22610630818994326
+              ],
+              "spearman": [
+                -0.20187181790955377,
+                0.28217224468403723
+              ]
+            }
+          },
+          {
+            "baseline": "study_balanced_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.20918681886525858,
+                0.35778925239019155
+              ],
+              "spearman": [
+                -0.20943024552816294,
+                0.3508346084295452
+              ]
+            }
+          },
+          {
+            "baseline": "pooled_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.21085516211252545,
+                0.37688502857219536
+              ],
+              "spearman": [
+                -0.21727028145695365,
+                0.3653788559448937
+              ]
+            }
+          },
+          {
+            "baseline": "balanced_residual",
+            "candidate": "balanced_interaction",
+            "ci95": {
+              "pearson": [
+                -0.019597219726261515,
+                0.0163304922226861
+              ],
+              "spearman": [
+                -0.032952896160443335,
+                0.06748090745732263
+              ]
+            }
+          }
+        ],
+        "joint_direction_gate": false,
+        "report": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.0404040404040404,
+                0.01904761904761905
+              ],
+              "drugs": 21,
+              "gain": -0.009812409812409809,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.004880084763495926,
+                0.020991233110896578
+              ],
+              "drugs": 21,
+              "gain": 0.0077694787885229976,
+              "metric": "pearson",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.05369408369408368,
+                0.03174603174603174
+              ],
+              "drugs": 21,
+              "gain": -0.010966810966810972,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.02569765451802881,
+                0.037559581144640516
+              ],
+              "drugs": 21,
+              "gain": 0.006371703624508303,
+              "metric": "pearson",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.07965367965367966,
+                0.14545454545454545
+              ],
+              "drugs": 21,
+              "gain": 0.03232323232323232,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.07406614041937834,
+                0.14450806907724523
+              ],
+              "drugs": 21,
+              "gain": 0.036045185604860884,
+              "metric": "pearson",
+              "track": "Wong"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.06233766233766234,
+                0.21704184704184712
+              ],
+              "drugs": 21,
+              "gain": 0.08427128427128423,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.07612135873082719,
+                0.2442494247987664
+              ],
+              "drugs": 21,
+              "gain": 0.08679346532215496,
+              "metric": "pearson",
+              "track": "Wong"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.05541125541125539,
+                0.2054834054834054
+              ],
+              "drugs": 21,
+              "gain": 0.0808080808080808,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.0670554940425018,
+                0.2461011876845471
+              ],
+              "drugs": 21,
+              "gain": 0.09246302457169606,
+              "metric": "pearson",
+              "track": "Wong"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.004040404040404037,
+                0.03232323232323232
+              ],
+              "drugs": 21,
+              "gain": 0.01212121212121212,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.010073411893696985,
+                0.00346785328071774
+              ],
+              "drugs": 21,
+              "gain": -0.0032290267225053696,
+              "metric": "pearson",
+              "track": "Wong"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "2d_cellhit",
+              "n_drugs": 21,
+              "track": "Wong",
+              "within_drug_pearson": -0.014472264469889196,
+              "within_drug_spearman": -0.022222222222222227
+            },
+            {
+              "method": "2d_mean",
+              "n_drugs": 21,
+              "track": "Wong",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "2d_ridge",
+              "n_drugs": 21,
+              "track": "Wong",
+              "within_drug_pearson": 0.015201217510463397,
+              "within_drug_spearman": 0.021067821067821076
+            },
+            {
+              "method": "2d_structured",
+              "n_drugs": 21,
+              "track": "Wong",
+              "within_drug_pearson": 0.02415655685017514,
+              "within_drug_spearman": 0.04877344877344877
+            },
+            {
+              "method": "2d_teacher",
+              "n_drugs": 21,
+              "track": "Wong",
+              "within_drug_pearson": 0.013803442346448697,
+              "within_drug_spearman": 0.01991341991341991
+            },
+            {
+              "method": "balanced_interaction",
+              "n_drugs": 21,
+              "track": "Wong",
+              "within_drug_pearson": 0.01834389441246632,
+              "within_drug_spearman": 0.022222222222222213
+            },
+            {
+              "method": "balanced_residual",
+              "n_drugs": 21,
+              "track": "Wong",
+              "within_drug_pearson": 0.021572921134971692,
+              "within_drug_spearman": 0.010101010101010088
+            },
+            {
+              "method": "pooled_3d",
+              "n_drugs": 21,
+              "track": "Wong",
+              "within_drug_pearson": -0.07089010343672437,
+              "within_drug_spearman": -0.0707070707070707
+            },
+            {
+              "method": "study_balanced_3d",
+              "n_drugs": 21,
+              "track": "Wong",
+              "within_drug_pearson": -0.06522054418718326,
+              "within_drug_spearman": -0.07417027417027418
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.019531567990199384,
+                0.002116478390006599
+              ],
+              "gain": -0.007690859324234411,
+              "lineages": 10,
+              "metric": "ndcg_at_5",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.06000000000000005,
+                0.0
+              ],
+              "gain": -0.020000000000000018,
+              "lineages": 10,
+              "metric": "top5_overlap",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.009870382987167362,
+                0.008701298701298765
+              ],
+              "gain": -0.0010392141559986134,
+              "lineages": 10,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.027721004765204095,
+                0.0006628698311299643
+              ],
+              "gain": -0.012124244639450943,
+              "lineages": 10,
+              "metric": "ndcg_at_5",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.06000000000000005,
+                0.0
+              ],
+              "gain": -0.020000000000000018,
+              "lineages": 10,
+              "metric": "top5_overlap",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.020259740259740203,
+                0.05104330199615324
+              ],
+              "gain": 0.014030108270918884,
+              "lineages": 10,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.05641075159494686,
+                0.06606767875526913
+              ],
+              "gain": -0.0005051253759307262,
+              "lineages": 10,
+              "metric": "ndcg_at_5",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.12,
+                0.03999999999999998
+              ],
+              "gain": -0.039999999999999925,
+              "lineages": 10,
+              "metric": "top5_overlap",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.05195134299678038,
+                0.07962012987012981
+              ],
+              "gain": 0.013245867337122075,
+              "lineages": 10,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.07604405877341343,
+                0.10666843110046897
+              ],
+              "gain": 0.005427974015581372,
+              "lineages": 10,
+              "metric": "ndcg_at_5",
+              "track": "Wong"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.16000000000000003,
+                0.16000000000000003
+              ],
+              "gain": -0.020000000000000018,
+              "lineages": 10,
+              "metric": "top5_overlap",
+              "track": "Wong"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.03714613975435081,
+                0.14065909090909104
+              ],
+              "gain": 0.046882399718177314,
+              "lineages": 10,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.0811248823824454,
+                0.10018677487753594
+              ],
+              "gain": -0.00358641911894364,
+              "lineages": 10,
+              "metric": "ndcg_at_5",
+              "track": "Wong"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.18,
+                0.14
+              ],
+              "gain": -0.039999999999999925,
+              "lineages": 10,
+              "metric": "top5_overlap",
+              "track": "Wong"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.0364966712474223,
+                0.14039285714285715
+              ],
+              "gain": 0.04694727150385314,
+              "lineages": 10,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                -0.0031142071037454366,
+                0.006186096277812306
+              ],
+              "gain": 0.001459176509807758,
+              "lineages": 10,
+              "metric": "ndcg_at_5",
+              "track": "Wong"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 10,
+              "metric": "top5_overlap",
+              "track": "Wong"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                -0.0002594871427028522,
+                0.008312207201615188
+              ],
+              "gain": 0.004026227143011596,
+              "lineages": 10,
+              "metric": "spearman",
+              "track": "Wong"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 10,
+              "common_rows": 210,
+              "covered_rows": 210,
+              "lineages": 10,
+              "macro_ndcg_at_5": 0.7264525659006505,
+              "macro_spearman": 0.43793861490185765,
+              "macro_top5_overlap": 0.43999999999999995,
+              "method": "2d_cellhit",
+              "registered_rows": 210,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 210,
+              "covered_rows": 210,
+              "lineages": 10,
+              "macro_ndcg_at_5": 0.6941443519660794,
+              "macro_spearman": 0.3857300211567802,
+              "macro_top5_overlap": 0.36,
+              "method": "2d_mean",
+              "registered_rows": 210,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 210,
+              "covered_rows": 210,
+              "lineages": 10,
+              "macro_ndcg_at_5": 0.7380716851641707,
+              "macro_spearman": 0.43715437396806084,
+              "macro_top5_overlap": 0.42000000000000004,
+              "method": "2d_ridge",
+              "registered_rows": 210,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 210,
+              "covered_rows": 210,
+              "lineages": 10,
+              "macro_ndcg_at_5": 0.7121200931968242,
+              "macro_spearman": 0.44956340476202666,
+              "macro_top5_overlap": 0.4,
+              "method": "2d_structured",
+              "registered_rows": 210,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 210,
+              "covered_rows": 210,
+              "lineages": 10,
+              "macro_ndcg_at_5": 0.7336382998489541,
+              "macro_spearman": 0.45222369639497834,
+              "macro_top5_overlap": 0.42000000000000004,
+              "method": "2d_teacher",
+              "registered_rows": 210,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 210,
+              "covered_rows": 210,
+              "lineages": 10,
+              "macro_ndcg_at_5": 0.7274066170345274,
+              "macro_spearman": 0.4552107093819913,
+              "macro_top5_overlap": 0.4,
+              "method": "balanced_interaction",
+              "registered_rows": 210,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 210,
+              "covered_rows": 210,
+              "lineages": 10,
+              "macro_ndcg_at_5": 0.7259474405247197,
+              "macro_spearman": 0.4511844822389797,
+              "macro_top5_overlap": 0.4,
+              "method": "balanced_residual",
+              "registered_rows": 210,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 210,
+              "covered_rows": 210,
+              "lineages": 10,
+              "macro_ndcg_at_5": 0.7295338596436634,
+              "macro_spearman": 0.4042372107351266,
+              "macro_top5_overlap": 0.44000000000000006,
+              "method": "pooled_3d",
+              "registered_rows": 210,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 210,
+              "covered_rows": 210,
+              "lineages": 10,
+              "macro_ndcg_at_5": 0.7205194665091383,
+              "macro_spearman": 0.4043020825208024,
+              "macro_top5_overlap": 0.42000000000000004,
+              "method": "study_balanced_3d",
+              "registered_rows": 210,
+              "track": "Wong"
+            }
+          ]
+        },
+        "support": {
+          "donors": 10,
+          "drugs": 21
+        }
+      },
+      "three_TKI": {
+        "crossed_ci95": [
+          {
+            "baseline": "2d_teacher",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.036326124416262214,
+                0.13595319841986536
+              ],
+              "spearman": [
+                -0.3312091503267974,
+                0.22093750000000037
+              ]
+            }
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.10317428716019911,
+                0.1488381525212849
+              ],
+              "spearman": [
+                -0.1509433962264151,
+                0.2527838295812154
+              ]
+            }
+          },
+          {
+            "baseline": "2d_cellhit",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.35564262796123003,
+                0.7076336180485767
+              ],
+              "spearman": [
+                -0.4528384099971225,
+                0.6915793151642216
+              ]
+            }
+          },
+          {
+            "baseline": "study_balanced_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.28941664121413296,
+                0.548749301449601
+              ],
+              "spearman": [
+                -0.3435647129940451,
+                0.6584388185654017
+              ]
+            }
+          },
+          {
+            "baseline": "pooled_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.23337744572524205,
+                0.5841396678662591
+              ],
+              "spearman": [
+                -0.3395975672877847,
+                0.6578395302197405
+              ]
+            }
+          },
+          {
+            "baseline": "balanced_residual",
+            "candidate": "balanced_interaction",
+            "ci95": {
+              "pearson": [
+                -0.05367388808333071,
+                0.040788014500442234
+              ],
+              "spearman": [
+                -0.058747855917667256,
+                0.2989264801561486
+              ]
+            }
+          }
+        ],
+        "joint_direction_gate": null,
+        "report": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.16969696969696968,
+                0.06060606060606059
+              ],
+              "drugs": 3,
+              "gain": -0.04444444444444443,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                0.00784346957282167,
+                0.08708108534633065
+              ],
+              "drugs": 3,
+              "gain": 0.03518733694440749,
+              "metric": "pearson",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.024242424242424242,
+                0.08484848484848484
+              ],
+              "drugs": 3,
+              "gain": 0.01616161616161616,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.05324484702013238,
+                0.05960949463237414
+              ],
+              "drugs": 3,
+              "gain": -0.007210633724006756,
+              "metric": "pearson",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.27878787878787875,
+                0.303030303030303
+              ],
+              "drugs": 3,
+              "gain": 0.101010101010101,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.11914582088532151,
+                0.4975280684966792
+              ],
+              "drugs": 3,
+              "gain": 0.16140926529694533,
+              "metric": "pearson",
+              "track": "Wong"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.024242424242424242,
+                0.303030303030303
+              ],
+              "drugs": 3,
+              "gain": 0.13333333333333333,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.09863054176812143,
+                0.2707958618966006
+              ],
+              "drugs": 3,
+              "gain": 0.06930589123156729,
+              "metric": "pearson",
+              "track": "Wong"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.024242424242424242,
+                0.3151515151515151
+              ],
+              "drugs": 3,
+              "gain": 0.12525252525252525,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.032728623955014385,
+                0.26322482494018307
+              ],
+              "drugs": 3,
+              "gain": 0.10814243712376163,
+              "metric": "pearson",
+              "track": "Wong"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                0.0,
+                0.16969696969696968
+              ],
+              "drugs": 3,
+              "gain": 0.06868686868686869,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.020839944738808652,
+                0.009473322033017761
+              ],
+              "drugs": 3,
+              "gain": -0.006748878050729934,
+              "metric": "pearson",
+              "track": "Wong"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "2d_cellhit",
+              "n_drugs": 3,
+              "track": "Wong",
+              "within_drug_pearson": -0.2198355682406128,
+              "within_drug_spearman": -0.12727272727272726
+            },
+            {
+              "method": "2d_mean",
+              "n_drugs": 3,
+              "track": "Wong",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "2d_ridge",
+              "n_drugs": 3,
+              "track": "Wong",
+              "within_drug_pearson": -0.05121566921966069,
+              "within_drug_spearman": -0.04242424242424242
+            },
+            {
+              "method": "2d_structured",
+              "n_drugs": 3,
+              "track": "Wong",
+              "within_drug_pearson": -0.17142469249261724,
+              "within_drug_spearman": -0.03838383838383838
+            },
+            {
+              "method": "2d_teacher",
+              "n_drugs": 3,
+              "track": "Wong",
+              "within_drug_pearson": -0.09361363988807493,
+              "within_drug_spearman": 0.01818181818181818
+            },
+            {
+              "method": "balanced_interaction",
+              "n_drugs": 3,
+              "track": "Wong",
+              "within_drug_pearson": -0.06517518099439738,
+              "within_drug_spearman": 0.04242424242424242
+            },
+            {
+              "method": "balanced_residual",
+              "n_drugs": 3,
+              "track": "Wong",
+              "within_drug_pearson": -0.058426302943667435,
+              "within_drug_spearman": -0.026262626262626255
+            },
+            {
+              "method": "pooled_3d",
+              "n_drugs": 3,
+              "track": "Wong",
+              "within_drug_pearson": -0.16656874006742908,
+              "within_drug_spearman": -0.15151515151515152
+            },
+            {
+              "method": "study_balanced_3d",
+              "n_drugs": 3,
+              "track": "Wong",
+              "within_drug_pearson": -0.1277321941752347,
+              "within_drug_spearman": -0.1595959595959596
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.15000000000000002,
+                0.0
+              ],
+              "gain": -0.05000000000000002,
+              "lineages": 10,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.15000000000000002,
+                0.0
+              ],
+              "gain": -0.05000000000000002,
+              "lineages": 10,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 10,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 10,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 10,
+              "metric": "spearman",
+              "track": "Wong"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 10,
+              "metric": "spearman",
+              "track": "Wong"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 10,
+              "common_rows": 30,
+              "covered_rows": 30,
+              "lineages": 10,
+              "macro_spearman": 0.15,
+              "method": "2d_cellhit",
+              "registered_rows": 30,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 30,
+              "covered_rows": 30,
+              "lineages": 10,
+              "macro_spearman": 0.15,
+              "method": "2d_mean",
+              "registered_rows": 30,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 30,
+              "covered_rows": 30,
+              "lineages": 10,
+              "macro_spearman": 0.2,
+              "method": "2d_ridge",
+              "registered_rows": 30,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 30,
+              "covered_rows": 30,
+              "lineages": 10,
+              "macro_spearman": 0.15,
+              "method": "2d_structured",
+              "registered_rows": 30,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 30,
+              "covered_rows": 30,
+              "lineages": 10,
+              "macro_spearman": 0.2,
+              "method": "2d_teacher",
+              "registered_rows": 30,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 30,
+              "covered_rows": 30,
+              "lineages": 10,
+              "macro_spearman": 0.15,
+              "method": "balanced_interaction",
+              "registered_rows": 30,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 30,
+              "covered_rows": 30,
+              "lineages": 10,
+              "macro_spearman": 0.15,
+              "method": "balanced_residual",
+              "registered_rows": 30,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 30,
+              "covered_rows": 30,
+              "lineages": 10,
+              "macro_spearman": 0.15,
+              "method": "pooled_3d",
+              "registered_rows": 30,
+              "track": "Wong"
+            },
+            {
+              "cells": 10,
+              "common_rows": 30,
+              "covered_rows": 30,
+              "lineages": 10,
+              "macro_spearman": 0.15,
+              "method": "study_balanced_3d",
+              "registered_rows": 30,
+              "track": "Wong"
+            }
+          ]
+        },
+        "support": {
+          "donors": 10,
+          "drugs": 3
+        }
+      }
+    },
+    "YANG2024_HCC": {
+      "all": {
+        "crossed_ci95": [
+          {
+            "baseline": "2d_teacher",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.08856798328551607,
+                0.031032664964981575
+              ],
+              "spearman": [
+                -0.08919886993156315,
+                0.041296941393291674
+              ]
+            }
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.21680064342321856,
+                0.018654441830073275
+              ],
+              "spearman": [
+                -0.23245862306282178,
+                0.027121470950485387
+              ]
+            }
+          },
+          {
+            "baseline": "2d_cellhit",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.4273153156384803,
+                0.19448500679214023
+              ],
+              "spearman": [
+                -0.3944463464546936,
+                0.22823925039466178
+              ]
+            }
+          },
+          {
+            "baseline": "study_balanced_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.24214854081752712,
+                0.28523790882457795
+              ],
+              "spearman": [
+                -0.34795441224749524,
+                0.25216391131034277
+              ]
+            }
+          },
+          {
+            "baseline": "pooled_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.2946233779938641,
+                0.3175978640053738
+              ],
+              "spearman": [
+                -0.389716208391989,
+                0.27903750918122683
+              ]
+            }
+          },
+          {
+            "baseline": "balanced_residual",
+            "candidate": "balanced_interaction",
+            "ci95": {
+              "pearson": [
+                -0.02828359734448751,
+                0.027900616297683898
+              ],
+              "spearman": [
+                -0.034413579263191725,
+                0.03582466771564657
+              ]
+            }
+          }
+        ],
+        "joint_direction_gate": null,
+        "report": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.049996297667530554,
+                0.013150684931506845
+              ],
+              "drugs": 3,
+              "gain": -0.027861285943477726,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.06117588737454269,
+                0.015242303364130752
+              ],
+              "drugs": 3,
+              "gain": -0.02876403067505442,
+              "metric": "pearson",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.1847908182154757,
+                -0.020111069974083684
+              ],
+              "drugs": 3,
+              "gain": -0.09653708503023568,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.18184707587145263,
+                -0.005530195298088458
+              ],
+              "drugs": 3,
+              "gain": -0.09352576417693541,
+              "metric": "pearson",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.312210292484265,
+                0.21571269900037024
+              ],
+              "drugs": 3,
+              "gain": -0.09380229544613104,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.37240968559720744,
+                0.18436069826690757
+              ],
+              "drugs": 3,
+              "gain": -0.11405898848643321,
+              "metric": "pearson",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.2386967789707515,
+                0.20389485375786745
+              ],
+              "drugs": 3,
+              "gain": -0.05228680735530048,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.15476101922678046,
+                0.18954924378167545
+              ],
+              "drugs": 3,
+              "gain": 0.030862243029717056,
+              "metric": "pearson",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.2846945575712698,
+                0.2696482784154017
+              ],
+              "drugs": 3,
+              "gain": -0.051398247562631116,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.23100405241709634,
+                0.2751980966603842
+              ],
+              "drugs": 3,
+              "gain": 0.03172306919858318,
+              "metric": "pearson",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.010099962976675304,
+                0.009892632358385778
+              ],
+              "drugs": 3,
+              "gain": 0.0013723312353449365,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.016049843155756097,
+                0.015507411914430724
+              ],
+              "drugs": 3,
+              "gain": 0.0011682417242219513,
+              "metric": "pearson",
+              "track": "YANG2024_HCC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "2d_cellhit",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.08153116481889386,
+              "within_drug_spearman": -0.0993656670368999
+            },
+            {
+              "method": "2d_mean",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "2d_ridge",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.10206438912839166,
+              "within_drug_spearman": -0.09663087745279525
+            },
+            {
+              "method": "2d_structured",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.22928546492638932,
+              "within_drug_spearman": -0.22391213130939155
+            },
+            {
+              "method": "2d_teacher",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.16682612263027263,
+              "within_drug_spearman": -0.16530667653955322
+            },
+            {
+              "method": "balanced_interaction",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.1944219115811051,
+              "within_drug_spearman": -0.19179563124768598
+            },
+            {
+              "method": "balanced_residual",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.19559015330532706,
+              "within_drug_spearman": -0.19316796248303092
+            },
+            {
+              "method": "pooled_3d",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.22731322250391026,
+              "within_drug_spearman": -0.14176971492039983
+            },
+            {
+              "method": "study_balanced_3d",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.2264523963350441,
+              "within_drug_spearman": -0.14088115512773045
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 74,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.006756756756756757,
+                0.08108108108108109
+              ],
+              "gain": 0.033783783783783786,
+              "lineages": 74,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 74,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 74,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 74,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 74,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "2d_cellhit",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "2d_mean",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.04054054054054054,
+              "method": "2d_ridge",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "2d_structured",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "2d_teacher",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "balanced_interaction",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "balanced_residual",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "pooled_3d",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "study_balanced_3d",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            }
+          ]
+        },
+        "support": {
+          "donors": 74,
+          "drugs": 3
+        }
+      },
+      "three_TKI": {
+        "crossed_ci95": [
+          {
+            "baseline": "2d_teacher",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.08856798328551607,
+                0.031032664964981575
+              ],
+              "spearman": [
+                -0.08919886993156315,
+                0.041296941393291674
+              ]
+            }
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.21680064342321856,
+                0.018654441830073275
+              ],
+              "spearman": [
+                -0.23245862306282178,
+                0.027121470950485387
+              ]
+            }
+          },
+          {
+            "baseline": "2d_cellhit",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.4273153156384803,
+                0.19448500679214023
+              ],
+              "spearman": [
+                -0.3944463464546936,
+                0.22823925039466178
+              ]
+            }
+          },
+          {
+            "baseline": "study_balanced_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.24214854081752712,
+                0.28523790882457795
+              ],
+              "spearman": [
+                -0.34795441224749524,
+                0.25216391131034277
+              ]
+            }
+          },
+          {
+            "baseline": "pooled_3d",
+            "candidate": "balanced_residual",
+            "ci95": {
+              "pearson": [
+                -0.2946233779938641,
+                0.3175978640053738
+              ],
+              "spearman": [
+                -0.389716208391989,
+                0.27903750918122683
+              ]
+            }
+          },
+          {
+            "baseline": "balanced_residual",
+            "candidate": "balanced_interaction",
+            "ci95": {
+              "pearson": [
+                -0.02828359734448751,
+                0.027900616297683898
+              ],
+              "spearman": [
+                -0.034413579263191725,
+                0.03582466771564657
+              ]
+            }
+          }
+        ],
+        "joint_direction_gate": null,
+        "report": {
+          "across_cell_drug_only_intervals": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.049996297667530554,
+                0.013150684931506845
+              ],
+              "drugs": 3,
+              "gain": -0.027861285943477726,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.06117588737454269,
+                0.015242303364130752
+              ],
+              "drugs": 3,
+              "gain": -0.02876403067505442,
+              "metric": "pearson",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.1847908182154757,
+                -0.020111069974083684
+              ],
+              "drugs": 3,
+              "gain": -0.09653708503023568,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.18184707587145263,
+                -0.005530195298088458
+              ],
+              "drugs": 3,
+              "gain": -0.09352576417693541,
+              "metric": "pearson",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.312210292484265,
+                0.21571269900037024
+              ],
+              "drugs": 3,
+              "gain": -0.09380229544613104,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.37240968559720744,
+                0.18436069826690757
+              ],
+              "drugs": 3,
+              "gain": -0.11405898848643321,
+              "metric": "pearson",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.2386967789707515,
+                0.20389485375786745
+              ],
+              "drugs": 3,
+              "gain": -0.05228680735530048,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.15476101922678046,
+                0.18954924378167545
+              ],
+              "drugs": 3,
+              "gain": 0.030862243029717056,
+              "metric": "pearson",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.2846945575712698,
+                0.2696482784154017
+              ],
+              "drugs": 3,
+              "gain": -0.051398247562631116,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "drug_bootstrap_ci95": [
+                -0.23100405241709634,
+                0.2751980966603842
+              ],
+              "drugs": 3,
+              "gain": 0.03172306919858318,
+              "metric": "pearson",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.010099962976675304,
+                0.009892632358385778
+              ],
+              "drugs": 3,
+              "gain": 0.0013723312353449365,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "drug_bootstrap_ci95": [
+                -0.016049843155756097,
+                0.015507411914430724
+              ],
+              "drugs": 3,
+              "gain": 0.0011682417242219513,
+              "metric": "pearson",
+              "track": "YANG2024_HCC"
+            }
+          ],
+          "across_cell_scores": [
+            {
+              "method": "2d_cellhit",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.08153116481889386,
+              "within_drug_spearman": -0.0993656670368999
+            },
+            {
+              "method": "2d_mean",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": 0.0,
+              "within_drug_spearman": 0.0
+            },
+            {
+              "method": "2d_ridge",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.10206438912839166,
+              "within_drug_spearman": -0.09663087745279525
+            },
+            {
+              "method": "2d_structured",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.22928546492638932,
+              "within_drug_spearman": -0.22391213130939155
+            },
+            {
+              "method": "2d_teacher",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.16682612263027263,
+              "within_drug_spearman": -0.16530667653955322
+            },
+            {
+              "method": "balanced_interaction",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.1944219115811051,
+              "within_drug_spearman": -0.19179563124768598
+            },
+            {
+              "method": "balanced_residual",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.19559015330532706,
+              "within_drug_spearman": -0.19316796248303092
+            },
+            {
+              "method": "pooled_3d",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.22731322250391026,
+              "within_drug_spearman": -0.14176971492039983
+            },
+            {
+              "method": "study_balanced_3d",
+              "n_drugs": 3,
+              "track": "YANG2024_HCC",
+              "within_drug_pearson": -0.2264523963350441,
+              "within_drug_spearman": -0.14088115512773045
+            }
+          ],
+          "paired_contrasts": [
+            {
+              "baseline": "2d_teacher",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 74,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_ridge",
+              "candidate": "balanced_residual",
+              "ci95": [
+                -0.006756756756756757,
+                0.08108108108108109
+              ],
+              "gain": 0.033783783783783786,
+              "lineages": 74,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "2d_cellhit",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 74,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "study_balanced_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 74,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "pooled_3d",
+              "candidate": "balanced_residual",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 74,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            },
+            {
+              "baseline": "balanced_residual",
+              "candidate": "balanced_interaction",
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "gain": 0.0,
+              "lineages": 74,
+              "metric": "spearman",
+              "track": "YANG2024_HCC"
+            }
+          ],
+          "scores": [
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "2d_cellhit",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "2d_mean",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.04054054054054054,
+              "method": "2d_ridge",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "2d_structured",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "2d_teacher",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "balanced_interaction",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "balanced_residual",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "pooled_3d",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            },
+            {
+              "cells": 74,
+              "common_rows": 222,
+              "covered_rows": 222,
+              "lineages": 74,
+              "macro_spearman": -0.006756756756756757,
+              "method": "study_balanced_3d",
+              "registered_rows": 222,
+              "track": "YANG2024_HCC"
+            }
+          ]
+        },
+        "support": {
+          "donors": 74,
+          "drugs": 3
+        }
+      }
+    }
+  }
+}
