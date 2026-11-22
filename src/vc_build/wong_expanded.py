@@ -69,7 +69,9 @@ def register(args):
     if known & new or (len(known), len(extra_drugs), len(gdsc_drugs), len(held)) != (27, 32, 3, 10):
         raise ValueError("Unexpected old/new compound or model support")
     drugs = catalogue[catalogue.compound_id.isin(known | new)].merge(shapes, on="compound_id", validate="one_to_one")
-    drugs = drugs.assign(source_compound_label=drugs.product_name, drug_target_source_labels=drugs.mechanism,
+    known_names = old[["compound_id", "source_compound_label"]].drop_duplicates().set_index("compound_id")
+    labels = drugs.compound_id.map(known_names.source_compound_label).fillna(drugs.product_name)
+    drugs = drugs.assign(source_compound_label=labels, drug_target_source_labels=drugs.mechanism,
                          previously_scored=drugs.compound_id.isin(known))
     query = pd.DataFrame({"cell_id": held.index}).merge(drugs, how="cross")
     query = query.assign(lineage_group=query.cell_id,
