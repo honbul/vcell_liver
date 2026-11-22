@@ -2,6 +2,10 @@
 
 **50 independent adult HCC families and 68 exact compound parents are supported.** Freeze/score uses the registered query IDs and fits on public GDSC2, CTRPv2 and PRISM20Q2 response measurements. LIMORE has previous project exposure. The test families are new to the three training resources under the recorded identity audit.
 
+LIMORE is the primary public 2D external validation, regardless of access to OEP003191 or HRA004348. The table below describes the original registration. A later single-agent audit corrected CTRPv2 entries and retained the same 50 families, 68 compounds and 3,400 query observations. [Original frozen evaluation](../v0plus/STEP4_EXTERNAL_RESULTS.md) · [Corrected single-agent evaluation](../v0plus/LIMORE_CORRECTED_RESULTS.md)
+
+On the corrected split, the same-support comparison includes ECFP, basal RNA, pathway and TF signatures, and mapped drug-target similarity. Additional arms test RNA expression of each drug's targets, measured HCC coding variants, absolute copy-number calls, and their combination. The combined arm passed the joint criteria against drug mean. The added contribution of measured DNA remained uncertain against both the target-expression arm and a donor-block DNA permutation. [Input definitions and locked comparisons](../v0plus/MEASURED_DRIVER_PROTOCOL.md) · [Coverage, scores and paired intervals](../v0plus/MEASURED_DRIVER_RESULTS.md)
+
 | Scope | Observed rows | Cell models | Adults with HCC | Compounds |
 |---|---:|---:|---:|---:|
 | GDSC2 release 8.5 | 24,839 | 714 | 12 | 42 |
@@ -25,7 +29,7 @@ CTRP and PRISM use published source structures. GDSC source catalogue names were
 | Dataset | Access and matching assessment |
 |---|---|
 | HRA004348 | The organoid paper links RNA sequencing to GSA-human and separates the 301-compound screen from the detailed 64-compound/21-organoid curve experiments. The accession endpoint was unavailable during the access audit. No matched public RNA-to-response bundle was verified. |
-| LICOB OEP003191 | The paper points to NODE for WES/RNA/protein matrices. NODE lists a downloadable public XLSX and checksum. The processed RNA and response ID join and applicable reuse terms remain unverified. See the [separate access audit](../PUBLIC_ORGANOID_ACCESS.md). The paper separately requires an MTA for physical organoids. |
+| LICOB OEP003191 | The NODE workbook had a checksum mismatch and a damaged RNA sheet. The author's separate public iLICOB package, the recoverable NODE prefix and a matching public processed RNA copy established 43 HCC organoids with 76 response-screen drugs, including 38 adult donor groups eligible for scored analysis. The primary validation here remains LIMORE. [Source integrity audit](../v0plus/STEP1_SCALE_AND_LICOB.md) · [Public RNA comparison](../v0plus/LICOB_WIDE_RNA_RESULTS.md) · [76-drug assessment](../v0plus/LICOB_COLD_RESULTS.md) |
 | Caruso LCCL | Public basal RNA and native AUC matrices are available. The identity/age audit supports 28 adult HCC cell models in 26 families, 24 shared with LIMORE and 2 absent from LIMORE. Fifteen drugs share the original manufacturer catalogue code. Tanespimycin and decitabine add two CAS-verified isomeric products. The dataset is a candidate for assay shift with explicit shared-family reporting and low novel-family support. The source AUC should be evaluated in its own units. |
 
 [HRA004348 paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC10897507/) · [GSA accession](https://ngdc.cncb.ac.cn/gsa-human/browse/HRA004348) · [LICOB paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC10949980/) · [NODE OEP003191](https://www.biosino.org/node/project/detail/OEP003191) · [LCCL public catalogue and matrices](https://lccl.zucmanlab.com/download.html) · [Tanespimycin identity](https://www.sigmaaldrich.com/US/en/product/sigma/a8476) · [Decitabine identity](https://www.apexbio.cn/decitabine-nsc127716-5aza-cdr.html)
