@@ -97,8 +97,12 @@ def generate(a):
             "randomized population. [IMbrave150](https://doi.org/10.1056/NEJMoa1915745)",
         ])
         ranked = effects[effects.group.eq("observed_nonresponders") & np.isclose(effects.attenuation, .90)]
-        sections.append(markdown(ranked.sort_values("delta_probability", ascending=False),
-                                 ["axis", "participants", "delta_probability", "delta_low", "delta_high"]))
+        ranked = ranked.sort_values("delta_probability", ascending=False).copy()
+        for source, label in (("delta_probability", "change in percentage points"),
+                              ("delta_low", "95% lower bound"), ("delta_high", "95% upper bound")):
+            ranked[label] = ranked[source].map(lambda value: f"{100 * value:+.5f}")
+        sections.append(markdown(ranked, ["axis", "participants", "change in percentage points",
+                                          "95% lower bound", "95% upper bound"]))
         count = paths["GSE141198"]["quality"]["exploratory_profiles"]
         sections.extend(["## Exploratory HCC expression", f"GSE141198 supplies {count} RNA profiles. "
                          "The pooled fraction quantiles appear in the companion table. A matched objective "
