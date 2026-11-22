@@ -1,5 +1,7 @@
 # V0+ 2단계 강한 비교군
 
+후속 감사에서 이 결과의 CTRPv2 학습 코어에 단일 약물 두 개로 잘못 등록된 혼합 처리 1,394행이 확인됐다. 정정 코어와 원 자료를 별도로 고정했다. [자료 오류와 정정](SOURCE_PANEL_EXTENSION.md)
+
 GDSC2·CTRPv2·PRISM20Q2의 65,685개 native AUC 관측을 991개 계통으로 묶어 nested CV했다. 표는 세 소스 각각에서 계산한 바깥쪽 보류 점수의 동등 평균이다. 얕은 모델과 공개 비교군 모두 보정한 같은 약물 anchor를 받았다. 외부 RPKM·AA 정답은 이 설정 선택에 사용하지 않았다.
 
 | 방법 | 약물 내 Spearman | 약물 내 Pearson | NDCG@5 | Precision@5 | 세포 내 Spearman |

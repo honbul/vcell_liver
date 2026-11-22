@@ -1,5 +1,7 @@
 # Wong HCC 오가노이드 독립 평가
 
+후속 감사에서 이 결과의 CTRPv2 학습 코어에 단일 약물 두 개로 잘못 등록된 혼합 처리 1,394행이 확인됐다. 표와 동결 영수증은 당시 이력이다. 정정 단독 처리 코어를 적용한 성능은 별도 검증 대상이다. [자료 오류와 정정](SOURCE_PANEL_EXTENSION.md)
+
 **환자별 약물 전체 순위는 개선됐다. 약물 내 환자 감수성 구별과 NDCG@5도 점추정은 양수이며, 두 개선의 95% 구간은 0을 포함한다.**
 
 GDSC2·CTRPv2·PRISM만으로 적합한 7개 방법을 독립 성인 HCC 오가노이드 10개 × 27약물에 적용했다. S6 기저 TPM과 S7 mean inhibition AUC에서 270개 등록 행 모두 관측이 있었다. 소스 RNA와 공통인 유전자는 17,741개다. 100개 중 90개 약물의 구조를 Broad 전체 물리 표본 ID로, 나머지 10개를 PubChem CAS로 해소했다. 기존 학습 패널과 전체 parent InChIKey가 일치한 27개는 모두 Broad에서 확인됐다. [사전 명세](WONG_3D_PROTOCOL.md) · [코호트 등록 영수증](wong_registration_receipt.json) · [원논문](https://doi.org/10.1016/j.jhepr.2025.101426)

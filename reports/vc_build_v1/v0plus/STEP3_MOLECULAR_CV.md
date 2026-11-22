@@ -1,5 +1,7 @@
 # V0+ 3단계 GPU 학습과 절제
 
+후속 감사에서 이 결과의 CTRPv2 학습 코어에 단일 약물 두 개로 잘못 등록된 혼합 처리 1,394행이 확인됐다. 정정 코어와 원 자료를 별도로 고정했다. [자료 오류와 정정](SOURCE_PANEL_EXTENSION.md)
+
 GDSC2·CTRPv2·PRISM20Q2의 65,685행, 1,014개 세포 모델, 991개 계통에 대해 3-fold 보류 교차검증했다. 표는 세 소스를 동등 가중하며 각 소스의 native AUC와 비교한다. 합의된 외부 발현과 정답은 이 표에 들어가지 않았다. 표 안의 transductive는 각 소스 보류 fold의 **RNA만** 공동 정렬에 사용한 경우다.
 
 | 방법 | 약물 내 Spearman | 약물 내 Pearson | 세포 내 NDCG@5 | Precision@5 | 세포 내 Spearman |
