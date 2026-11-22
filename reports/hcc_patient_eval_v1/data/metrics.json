@@ -1,0 +1,274 @@
+{
+  "baseline_native_rank_agreement": {
+    "complete_patients": 368,
+    "median_spearman": 0.9063699764009724,
+    "shared_compounds": 88
+  },
+  "clinical_available": {
+    "OS": 368,
+    "OS.time": 368,
+    "PFI": 368,
+    "PFI.time": 368,
+    "ajcc_pathologic_tumor_stage": 368
+  },
+  "coding_mutations": {
+    "ARID1A_coding_mutation": {
+      "n": 359,
+      "positives": 26
+    },
+    "AXIN1_coding_mutation": {
+      "n": 359,
+      "positives": 26
+    },
+    "CTNNB1_coding_mutation": {
+      "n": 359,
+      "positives": 93
+    },
+    "TERT_coding_mutation": {
+      "n": 359,
+      "positives": 1
+    },
+    "TP53_coding_mutation": {
+      "n": 359,
+      "positives": 103
+    }
+  },
+  "copy_number": {
+    "CCND1_gistic": {
+      "gains": 25,
+      "losses": 0,
+      "n": 358
+    },
+    "CDKN2A_gistic": {
+      "gains": 1,
+      "losses": 20,
+      "n": 358
+    },
+    "FGF19_gistic": {
+      "gains": 24,
+      "losses": 0,
+      "n": 358
+    },
+    "MET_gistic": {
+      "gains": 9,
+      "losses": 0,
+      "n": 358
+    },
+    "VEGFA_gistic": {
+      "gains": 24,
+      "losses": 0,
+      "n": 358
+    }
+  },
+  "distance_marker_spearman": {
+    "native_fpkm": {
+      "absolute_purity": {
+        "n": 351,
+        "rho": 0.2093049776436831
+      },
+      "immune_score": {
+        "n": 368,
+        "rho": -0.05712246554997241
+      },
+      "stromal_score": {
+        "n": 368,
+        "rho": -0.1351376797146718
+      }
+    },
+    "source_quantile_rank": {
+      "absolute_purity": {
+        "n": 351,
+        "rho": -0.23047947359112242
+      },
+      "immune_score": {
+        "n": 368,
+        "rho": 0.3360472933600323
+      },
+      "stromal_score": {
+        "n": 368,
+        "rho": 0.4407484567678279
+      }
+    }
+  },
+  "domain": {
+    "native_fpkm": {
+      "abstain": 0,
+      "distance_quantiles": [
+        3.0947732824932017,
+        3.537439605589542,
+        3.8862665460622727
+      ],
+      "insufficient_genes": 0,
+      "ood": 0,
+      "total": 368
+    },
+    "source_quantile_rank": {
+      "abstain": 0,
+      "distance_quantiles": [
+        2.840345444257883,
+        3.483609618815186,
+        3.898053612507746
+      ],
+      "insufficient_genes": 0,
+      "ood": 0,
+      "total": 368
+    }
+  },
+  "fdr_discoveries": [
+    {
+      "arm": "baseline",
+      "contrast": "CTNNB1_only_vs_TP53_only",
+      "preprocessing": "native_fpkm",
+      "significant": 0
+    },
+    {
+      "arm": "baseline",
+      "contrast": "S1S2_vs_S3",
+      "preprocessing": "native_fpkm",
+      "significant": 0
+    },
+    {
+      "arm": "baseline",
+      "contrast": "CTNNB1_only_vs_TP53_only",
+      "preprocessing": "source_quantile_rank",
+      "significant": 0
+    },
+    {
+      "arm": "baseline",
+      "contrast": "S1S2_vs_S3",
+      "preprocessing": "source_quantile_rank",
+      "significant": 0
+    },
+    {
+      "arm": "candidate",
+      "contrast": "CTNNB1_only_vs_TP53_only",
+      "preprocessing": "native_fpkm",
+      "significant": 51
+    },
+    {
+      "arm": "candidate",
+      "contrast": "S1S2_vs_S3",
+      "preprocessing": "native_fpkm",
+      "significant": 67
+    },
+    {
+      "arm": "candidate",
+      "contrast": "CTNNB1_only_vs_TP53_only",
+      "preprocessing": "source_quantile_rank",
+      "significant": 61
+    },
+    {
+      "arm": "candidate",
+      "contrast": "S1S2_vs_S3",
+      "preprocessing": "source_quantile_rank",
+      "significant": 72
+    },
+    {
+      "arm": "drug_mean",
+      "contrast": "CTNNB1_only_vs_TP53_only",
+      "preprocessing": "native_fpkm",
+      "significant": 0
+    },
+    {
+      "arm": "drug_mean",
+      "contrast": "S1S2_vs_S3",
+      "preprocessing": "native_fpkm",
+      "significant": 0
+    }
+  ],
+  "limore_driver_reference": [
+    {
+      "arm": "candidate",
+      "paired_drugs": 88,
+      "preprocessing": "native_fpkm",
+      "sign_agreement": 0.25,
+      "spearman": -0.3810538550949245
+    },
+    {
+      "arm": "candidate",
+      "paired_drugs": 88,
+      "preprocessing": "source_quantile_rank",
+      "sign_agreement": 0.2840909090909091,
+      "spearman": -0.43578951076045236
+    }
+  ],
+  "limore_driver_support": {
+    "covered_cells": 76,
+    "ctnnb1_only": 1,
+    "tp53_only": 46
+  },
+  "model_prediction_marker_partial_abs_rho": [
+    {
+      "marker": "absolute_purity",
+      "maximum": 0.23826965413905557,
+      "median": 0.05116386378986375,
+      "preprocessing": "native_fpkm"
+    },
+    {
+      "marker": "immune_score",
+      "maximum": 0.30796028549783233,
+      "median": 0.0928030463783415,
+      "preprocessing": "native_fpkm"
+    },
+    {
+      "marker": "stromal_score",
+      "maximum": 0.4645125221997265,
+      "median": 0.11570093961960257,
+      "preprocessing": "native_fpkm"
+    },
+    {
+      "marker": "absolute_purity",
+      "maximum": 0.32330526649956304,
+      "median": 0.10095953740655977,
+      "preprocessing": "source_quantile_rank"
+    },
+    {
+      "marker": "immune_score",
+      "maximum": 0.38058077091596526,
+      "median": 0.09415880239269053,
+      "preprocessing": "source_quantile_rank"
+    },
+    {
+      "marker": "stromal_score",
+      "maximum": 0.5634812424589556,
+      "median": 0.2147890411286768,
+      "preprocessing": "source_quantile_rank"
+    }
+  ],
+  "prognosis_or_response_labels_used": false,
+  "subtypes": {
+    "S1": 108,
+    "S2": 68,
+    "S3": 143,
+    "unassigned": 49
+  },
+  "target_panel_compounds": {
+    "CDK4_6_panel": [
+      "AHJRHEGDXFFMBM-UHFFFAOYSA-N"
+    ],
+    "FGFR_panel": [
+      "CUIHSIWYWATEQL-UHFFFAOYSA-N",
+      "DXCUKNQANPLTEJ-UHFFFAOYSA-N",
+      "PHXJVRSECIGDHY-UHFFFAOYSA-N",
+      "PIQCTGMSNWUMAF-UHFFFAOYSA-N",
+      "QADPYRIHXKWUSV-UHFFFAOYSA-N",
+      "WOSKHXYHFSIKNG-UHFFFAOYSA-N"
+    ],
+    "MET_panel": [
+      "CXQHYVUVSFXTMY-UHFFFAOYSA-N",
+      "KTEIFNKAUNYNJU-GFCCVEGCSA-N",
+      "ONIQOQHATWINJY-UHFFFAOYSA-N",
+      "UCEQXRCJXIVODC-PMACEKPBSA-N"
+    ],
+    "VEGFR_panel": [
+      "CUIHSIWYWATEQL-UHFFFAOYSA-N",
+      "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+      "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+      "PHXJVRSECIGDHY-UHFFFAOYSA-N",
+      "PIQCTGMSNWUMAF-UHFFFAOYSA-N",
+      "WINHZLLDWRZWRT-ATVHPVEESA-N",
+      "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+      "WPEWQEMJFLWMLV-UHFFFAOYSA-N"
+    ]
+  }
+}

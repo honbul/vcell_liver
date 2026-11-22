@@ -1,0 +1,363 @@
+{
+  "common_v0_limore_tcga_protein_coding_genes": 18256,
+  "compound_pool": 88,
+  "contract": {
+    "baseline": {
+      "contract": {
+        "assay_id": "CellTiterGlo_72h",
+        "baseline_is_proxy": true,
+        "cell_rna_ood": "nearest fit-cell distance in fit-only standardized RNA PCA",
+        "culture_format": "2D",
+        "dose_uM": null,
+        "endpoint_contract": "curve_summary",
+        "endpoint_direction": "higher",
+        "endpoint_id": "LIMORE_Activity_Area",
+        "expression_scale": "log2(FPKM+1)",
+        "input_mode": "baseline_rna_and_structure",
+        "interval": {
+          "half_width": 0.257760355212667,
+          "method": "development_lineage_weighted_C_cross_fit_absolute_error_quantile",
+          "nominal_coverage": 0.9
+        },
+        "known_panel_only": true,
+        "method": "structure_ridge",
+        "min_gene_fraction": 0.9,
+        "model_version": "v0_baseline",
+        "predicted_unit": "dimensionless_activity_area",
+        "program_definition_version": null,
+        "program_prediction_available": false,
+        "registered_panel_size": 88,
+        "rna_distance_threshold": 5.0663826220524095,
+        "seeds": [
+          14822
+        ],
+        "setting": 1000,
+        "source_id": "LIMORE",
+        "source_protocol": "Qiu_2019_LIMORE_72h_CTG_TableS4",
+        "structure_ood": "exact isomeric SMILES registration and nearest fit ECFP Tanimoto",
+        "supported_dose_response": false,
+        "supported_primary_input": "baseline RNA plus registered compound identity",
+        "time_h": 72,
+        "versions": {
+          "python": "3.10.12",
+          "rdkit": "2025.03.5",
+          "scikit_learn": "1.6.1"
+        }
+      },
+      "files": {
+        "calibration.tsv": "d495a71c5fbb8042407536e605818c388506c51580f305aeb6b4d376ee031077",
+        "checkpoint.joblib": "0dace8b28322e150969751515fab6331e551eb1773cdc8281c806738d0036844",
+        "contract.json": "db6ee95ccea7b069cb7a4a829843cb458191858ab401c49ed5306ec635250045",
+        "receipt.json": "ed7770df058888d5d818aa58b1014380c5189a9db9c58224b0fe1cf34661663a"
+      },
+      "runtime": {
+        "__init__.py": "4b9b3d402c6878d113fcab7d3760c6c946e7b5ffb05cdc142f92e5221985035f",
+        "calibration.py": "e26ba6646bb5bebc080770066278be5faa0646f2dc828b40faca8406bd894c69",
+        "evaluate.py": "fb7479c80420167c040da4b523c46f484e6e0d450d677d9b3a52f2a8d520ecf3",
+        "external.py": "d68e7260be1d4ad920642fd792670718f0a7f845ba6cd4931f021b4ad6bcf0f7",
+        "functional.py": "fdcb2533aed1d6b377317edc1b849ebb1b9c1d2836fa8046b7858b2f239cad33",
+        "io.py": "6fb51bef570f3e1caa474d08f9241afb752a5290ab49a18c6e23fcf5c1fa043e",
+        "predict.py": "af85d6230c4cd05e9db8ce1fe8fdefddafebc010dbea3568247142f4f9e15694",
+        "shift.py": "749036f038326570a74a2900c3d6f013910bcc30b016dab7a868169e17770e0a",
+        "splits.py": "0046050d81f7f51ebf6686330e1ae2fe1d667094af48fb076ae73c86046de135",
+        "state_data.py": "e7bcaef2c255b4e79881dd7526a99543b63541273c2853d1fa75ba33aa923bb9",
+        "state_eval.py": "f06fa0bf128205edb8f11e32d83bac5d13618df33fb90e9cd756d6f39c6d3506",
+        "state_model.py": "94acceb35dfa7f646c7f438403cd690472e47cd05c17683461527ddfa4e97cea",
+        "train.py": "db5052aa1d40280996d735300dbf7b43349307fb9795b92aff5d84c9c9bb9471"
+      }
+    },
+    "candidate": {
+      "contract": {
+        "assay_id": "CellTiterGlo_72h",
+        "baseline_is_proxy": true,
+        "cell_rna_ood": "nearest fit-cell distance in fit-only standardized RNA PCA",
+        "culture_format": "2D",
+        "dose_uM": null,
+        "endpoint_contract": "curve_summary",
+        "endpoint_direction": "higher",
+        "endpoint_id": "LIMORE_Activity_Area",
+        "expression_scale": "log2(FPKM+1)",
+        "input_mode": "baseline_rna_and_structure",
+        "interval": {
+          "half_width": 0.2465951403088265,
+          "method": "development_lineage_weighted_C_cross_fit_absolute_error_quantile",
+          "nominal_coverage": 0.9
+        },
+        "known_panel_only": true,
+        "method": "interaction_mlp",
+        "min_gene_fraction": 0.9,
+        "model_version": "v0",
+        "predicted_unit": "dimensionless_activity_area",
+        "program_definition_version": null,
+        "program_prediction_available": false,
+        "registered_panel_size": 88,
+        "rna_distance_threshold": 5.0663826220524095,
+        "seeds": [
+          14822,
+          14823,
+          14824
+        ],
+        "setting": 32,
+        "source_id": "LIMORE",
+        "source_protocol": "Qiu_2019_LIMORE_72h_CTG_TableS4",
+        "structure_ood": "exact isomeric SMILES registration and nearest fit ECFP Tanimoto",
+        "supported_dose_response": false,
+        "supported_primary_input": "baseline RNA plus registered compound identity",
+        "time_h": 72,
+        "versions": {
+          "python": "3.10.12",
+          "rdkit": "2025.03.5",
+          "scikit_learn": "1.6.1"
+        }
+      },
+      "files": {
+        "calibration.tsv": "86a0383d4ac1164af626142d74c044002c44bc06090a7654b9c71e78b7e8b8e9",
+        "checkpoint.joblib": "0dfd69d6a05f8fba21057f26664260a3c0f897f1837387e937a57b2b27c0de6f",
+        "contract.json": "06125fcba34559e1d230873220d1038da5182167f1f5d7cc21084d8279c2c8cf",
+        "receipt.json": "efbb8235a0a6fd528cef125b95dd7aaa619524683e0519e642ccbe425a56c0aa"
+      },
+      "runtime": {
+        "__init__.py": "4b9b3d402c6878d113fcab7d3760c6c946e7b5ffb05cdc142f92e5221985035f",
+        "calibration.py": "e26ba6646bb5bebc080770066278be5faa0646f2dc828b40faca8406bd894c69",
+        "evaluate.py": "fb7479c80420167c040da4b523c46f484e6e0d450d677d9b3a52f2a8d520ecf3",
+        "external.py": "d68e7260be1d4ad920642fd792670718f0a7f845ba6cd4931f021b4ad6bcf0f7",
+        "functional.py": "fdcb2533aed1d6b377317edc1b849ebb1b9c1d2836fa8046b7858b2f239cad33",
+        "io.py": "6fb51bef570f3e1caa474d08f9241afb752a5290ab49a18c6e23fcf5c1fa043e",
+        "predict.py": "af85d6230c4cd05e9db8ce1fe8fdefddafebc010dbea3568247142f4f9e15694",
+        "shift.py": "749036f038326570a74a2900c3d6f013910bcc30b016dab7a868169e17770e0a",
+        "splits.py": "0046050d81f7f51ebf6686330e1ae2fe1d667094af48fb076ae73c86046de135",
+        "state_data.py": "e7bcaef2c255b4e79881dd7526a99543b63541273c2853d1fa75ba33aa923bb9",
+        "state_eval.py": "f06fa0bf128205edb8f11e32d83bac5d13618df33fb90e9cd756d6f39c6d3506",
+        "state_model.py": "94acceb35dfa7f646c7f438403cd690472e47cd05c17683461527ddfa4e97cea",
+        "train.py": "db5052aa1d40280996d735300dbf7b43349307fb9795b92aff5d84c9c9bb9471"
+      }
+    }
+  },
+  "depmap_rank_domains": {
+    "CCLE_HCC": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.411705785630306,
+      "profiles": 21,
+      "selected_genes": 948
+    },
+    "CTRPv2": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.654274581086525,
+      "profiles": 19,
+      "selected_genes": 948
+    },
+    "GDSC2_0.00025_0.25": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_0.001001_1": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_0.001001_10": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_0.001001_2": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_0.002001_10": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_0.002001_2": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_0.002501_10": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_0.003002_3": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_0.004002_10": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_0.005003_10": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_0.010005_10": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_0.020011_20": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_1.3e-05_0.0125": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_1e-04_0.1": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_1e-05_0.01": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_2e-05_0.02": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "GDSC2_5e-04_0.5": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 12,
+      "selected_genes": 948
+    },
+    "HTS002": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.203614836367109,
+      "profiles": 15,
+      "selected_genes": 948
+    },
+    "LIMORE": {
+      "common_genes": 17834,
+      "median_nearest_limore": 6.885217957385763e-14,
+      "profiles": 77,
+      "selected_genes": 948
+    },
+    "MTS010": {
+      "common_genes": 17834,
+      "median_nearest_limore": 5.307660310998708,
+      "profiles": 18,
+      "selected_genes": 948
+    },
+    "TCGA-LIHC": {
+      "common_genes": 17834,
+      "median_nearest_limore": 17.744576893589652,
+      "profiles": 368,
+      "selected_genes": 948
+    }
+  },
+  "native_gene_overlap": 958,
+  "native_model_genes": 1000,
+  "outputs": {
+    "compounds.tsv": "8947ed23f39be058b79bac0b4c202de30c87d95b57989f2e30d1ced8f8021c30",
+    "coordinates.parquet": "29f46f6b4a8d7e015cdd3a68797597da2c052129621f55acc86647de19947b0b",
+    "domain.parquet": "f1547898dbfc30770ea261dbbdf13ab97f381d38cd3090a666333c8ab206ef0b",
+    "predictions.parquet": "792742a5f023a7c3ec8952f07f5ad1cdec3ffca7aceb9c5fe75ec366f747b218"
+  },
+  "projection_domains": {
+    "fixed_progeny": {
+      "distance_q05_q50_q95": [
+        6.860083554745417,
+        10.293671616051748,
+        13.150656205827655
+      ],
+      "in_domain": 0,
+      "input_features": 14,
+      "pca_explained_first_two": [
+        0.2272412290314991,
+        0.14589460808308263
+      ],
+      "reference_threshold": 4.184039686062537,
+      "train_cells": 77,
+      "tumors": 368
+    },
+    "native_fpkm": {
+      "distance_q05_q50_q95": [
+        3.1105050767711067,
+        3.635620921727214,
+        4.0163053446904895
+      ],
+      "in_domain": 368,
+      "input_features": 958,
+      "pca_explained_first_two": [
+        0.19603385031223297,
+        0.11064523458480835
+      ],
+      "reference_threshold": 5.023226504924401,
+      "train_cells": 77,
+      "tumors": 368
+    },
+    "native_tpm_sensitivity": {
+      "distance_q05_q50_q95": [
+        2.765827055811513,
+        3.4175258178772157,
+        3.8758967296086864
+      ],
+      "in_domain": 368,
+      "input_features": 958,
+      "pca_explained_first_two": [
+        0.19603385031223297,
+        0.11064523458480835
+      ],
+      "reference_threshold": 5.023226504924401,
+      "train_cells": 77,
+      "tumors": 368
+    },
+    "within_sample_rank": {
+      "distance_q05_q50_q95": [
+        3.002970271838863,
+        3.5889515882364247,
+        3.992093117319482
+      ],
+      "in_domain": 368,
+      "input_features": 958,
+      "pca_explained_first_two": [
+        0.1968435399058989,
+        0.10573524554633364
+      ],
+      "reference_threshold": 4.987459551406933,
+      "train_cells": 77,
+      "tumors": 368
+    }
+  },
+  "sources": {
+    "cohort": "10bd3967ba2c0baee7894c966a009e139afc7f8ca6aadb85d0750cfc0898aa48",
+    "compound_registry": "ae3756148e11d05bc887fdf9b7e2baef3a2ba41aaf0db3c9a3588eb614728dca",
+    "cross_rna": "ced61eceb5aac91defcd592819d01a67ef5d6ed89c3ac76cada348f8d319588e",
+    "cross_rows": "4eaf1868ef64169455d9165c61e974b5288a42cce45acc292a6ff9599f24d6ca",
+    "cross_source": "663eb5717b30c6f03ea43c04c4bb076bd233ea0c05405450e17f0c9e85f7fa86",
+    "depmap_model": "9dbb9de8805696c1345816ab07edd23fb4fd95e117739f3c5c3b1cf062c1233b",
+    "forecast_code": "62f319a931079d210fdb7883808151b9187ed0972cf3a96a7a063ed639d6d276",
+    "limore_rna": "ab74542386e70b0d872d47fc145c66bb3fc1ec55c3a62cb2cb3942dae54715bd",
+    "limore_rows": "2e2d40c2c27232985512d3828955ae9b381632015bf7a99e0030fd300ee41555",
+    "progeny": "fc42e442bd4b8386f5fcc75d463b22e6291dd67c408c23b31dc1c868933719f8"
+  },
+  "tumors": 368
+}
