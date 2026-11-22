@@ -58,7 +58,7 @@ def rank_metrics(actual, forecast, k: int = 5) -> dict:
         spearman = float(np.corrcoef(y, p)[0, 1])
 
     def top_probability(scores):
-        cutoff = np.sort(scores)[-k]
+        cutoff = np.sort(scores)[-min(k, len(scores))]
         above = scores > cutoff
         equal = scores == cutoff
         return above + equal * ((min(len(scores), k) - above.sum()) / equal.sum())
@@ -133,7 +133,7 @@ def score(joined, *, endpoint_direction, rank_only=False, comparisons=()):
         common = support[support.methods == len(methods)][["fold", "row_id"]]
         comparable = available.merge(common, on=["fold", "row_id"], validate="many_to_one")
         for tag, group in comparable.groupby([*keys, "method"], sort=True):
-            rows.append(dict(zip([*keys, "method"], tag)) | _cell_metrics(group, endpoint_direction, rank_only))
+            rows.append(dict(zip([*keys, "method"], tag)) | _cell_metrics(group, endpoint_direction, rank_only or tag[-1] == "random_priority_order"))
         for method, group in section.groupby("method", sort=True):
             covered = int(np.isfinite(group.predicted_value).sum())
             method_summary.append({"track": track, "method": method, "registered_rows": len(group),
