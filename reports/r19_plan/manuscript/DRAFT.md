@@ -146,6 +146,8 @@ The development sources include CMap 2020 Level 3 and GEO GSE92742, GSE284321 an
 
 A separate prospective pilot plan identifies 96 compounds with eight eligible nonhepatic source cell lines and lays out three repeated treatment positions for each compound in each of two adult HCC lines. We froze predictions and five matched public model adaptations using 277 chemically disjoint JHH-5 fitting parents before collecting the prospective measurements. The manuscript's accuracy estimates use the development measurements described above. [Prospective pilot assets](../HCC_OFF_POSITION_PILOT_RESULTS.md)
 
+Planning scenarios based on the JHH scaffold intervals showed that pilot precision depends on independent culture variation and the magnitude of the transferred effect. At the development effect sizes and an assumed additional culture standard deviation of 0.25 units on each endpoint, 130 or 100 chemically distinct compounds were needed for 90% marginal power on both endpoints in the JHH-5 or JHH-7 scenario with eight cultures per line. These calculations inform the independent pilot's variance-estimation role. [Sample-size sensitivity](../HCC_OFF_POSITION_POWER_RESULTS.md)
+
 ## Code availability
 
 Implementation, registered comparison settings, and score replay tools are versioned in this worktree. The final article must name a release that readers can access and state the conditions of access. [Scientific Reports editorial policies](https://www.nature.com/srep/journal-policies/editorial-policies)

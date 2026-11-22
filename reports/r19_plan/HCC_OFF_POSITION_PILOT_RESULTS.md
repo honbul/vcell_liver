@@ -35,6 +35,10 @@
 
 추가 채점 `31774`는 원 동결과 추가 동결을 같은 합성 인수 명부에 연결했다. 합성 처리 539웰에서 두 지표별 공개 VC 최선 모델을 각 재표집에서 다시 고르는 계산과 parent 및 배양 단위 10,000회 재표집을 검증했다. 독립 실측 정확도는 미측정이다. 실측 채점에는 기존 동결 인자에 `--native`, `--native-pin`, `--native-protocol`을 더해 채점한다. [채점 코드](../../src/r19_plan/hcc_off_position_pilot_native_score.py) · [합성 영수증](data/hcc_off_position_pilot/native/score_smoke/receipt.json) · [지원 검산](data/hcc_off_position_pilot/native/score_smoke/support.tsv)
 
+## 독립 확인 규모 산정
+
+10 µM·24 h의 JHH-5·JHH-7 개발 구간으로 96군 배치의 정밀도를 점검했다. 개발 효과와 배양 표준편차 0.25를 가정한 두 지표 공동 통과확률 하한은 한 세포주에서 58–87%였다. 파일럿 자체가 제공해야 할 정보는 독립 배양 변동, 다른 위치 반복의 재현성, 공개 VC 대비 오차 차이다. 파일럿과 scaffold가 다른 정식 확인 후보 상한은 등록 단계에서 176군이다. [10 µM 규모 산정](HCC_OFF_POSITION_POWER_RESULTS.md)
+
 ## 실측 파일 인수 형식
 
 | 파일 | 필요한 내용 |
