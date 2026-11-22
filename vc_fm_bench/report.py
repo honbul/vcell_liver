@@ -37,6 +37,31 @@ def gather(results, scores, predictions):
     return pd.DataFrame(tables)
 
 
+def add_public_comparators(results, score_evidence, table):
+    rows = []
+    for task in ("limore-cell-cold", "dili-scaffold", "dili-release-increment"):
+        for panel in FAMILIES[task]:
+            prediction = results / "public_predictions" / panel / "receipt.json"
+            score = results / "public_scores" / panel / "receipt.json"
+            sidecar = json.loads(score.read_text())
+            data_path = prediction.with_name("predictions.parquet")
+            metric = score.with_name("metrics.json")
+            verify_record(prediction, sidecar["frozen_prediction_receipt"])
+            verify_record(data_path, sidecar["frozen_predictions"])
+            verify_record(metric, sidecar["metrics"])
+            matched = results / "predictions" / panel / "predictions.parquet"
+            same_labels = sidecar["labels"] == score_evidence[panel]["labels"]
+            original = pd.read_parquet(matched, columns=["id"]).sort_values("id").id.to_list()
+            ids = pd.read_parquet(data_path, columns=["id"]).sort_values("id").id.to_list()
+            if not same_labels or ids != original:
+                raise ValueError(f"Public model support differs from the matched panel {panel}")
+            for name, metrics in json.loads(metric.read_text()).items():
+                rows.append({"task": task, "panel": panel, "representation": name,
+                             "head": "public family", "scored_rows": len(ids), **metrics})
+            score_evidence[panel]["public_family"] = sidecar
+    return pd.concat([table, pd.DataFrame(rows)], ignore_index=True)
+
+
 def summary_table(long_form):
     metric_names = ("within_drug_spearman", "cell_macro_ndcg5", "auroc", "auprc")
     key = ["task", "representation", "head"]
@@ -91,6 +116,7 @@ def main():
     args = p.parse_args()
     score_evidence = {}
     table = gather(score_evidence, args.results / "scores", args.results / "predictions")
+    table = add_public_comparators(args.results, score_evidence, table)
     averaged = summary_table(table)
     models, feature_evidence = model_evidence(args.store)
     with new_directory(args.output) as out:
@@ -115,6 +141,12 @@ def main():
                            f"{len(panels)} panels, {records.scored_rows.sum():,} predictions scored.",
                            markdown_table(subset, ["representation", "head", *metric])])
         chunks.extend([
+            "## Public model families",
+            "CellHit-style per-drug XGBoost was refit on normalized source AUC and evaluated on the "
+            "identical LIMORE external cells. The published model uses assay-specific ln(IC50) and "
+            "log-fold change and is unavailable for genuinely unseen compounds. "
+            "The Chemprop-style D-MPNN was independently refit on identical DILI scaffold and "
+            "release-increment partitions. The two model families share the benchmark's test IDs and label hashes.",
             "## External 3D data",
             "The LICOB RNA workbook failed the repository checksum and workbook parser. "
             "The LIMORE cell-cold table is the designated 2D fallback and contributes no standalone 3D score.",

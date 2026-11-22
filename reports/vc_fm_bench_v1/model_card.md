@@ -45,3 +45,7 @@ python -m vc_fm_bench.report --help
 ```
 
 The query TSV uses `id` and `smiles` for molecules or `id` and `sequence` for proteins. Transcriptomes are index-keyed rows with unique gene symbols or Ensembl IDs appropriate to the selected checkpoint and the declared expression scale. The published preparation and Slurm scripts preserve immutable output directories and hash evidence. All four head families use only training or training-validation response.
+
+## Matched public comparators
+
+CellHit per-drug XGBoost is refit on training-only HVG ranks and normalized source AUC for the external LIMORE cell-cold panel. Authors' original ln(IC50) and PRISM LFC model outputs use a different endpoint. The per-drug model requires a training assay for that compound, which excludes it from scaffold-cold fitting. For both DILI designs, an independent D-MPNN comparator passes messages on directed molecular bonds and blocks immediate backtracking. Its architecture follows Yang et al., with a fixed RDKit feature schema and scaffold-blocked model selection. Both comparators are frozen and scored on the exact benchmark IDs and matched outcome checksums. [CellHit primary study](https://doi.org/10.1038/s41467-025-56827-5), [Chemprop D-MPNN primary study](https://doi.org/10.1021/acs.jcim.9b00237)
