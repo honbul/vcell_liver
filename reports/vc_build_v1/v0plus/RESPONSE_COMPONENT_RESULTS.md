@@ -76,3 +76,5 @@ LIMORE의 기존 구조 커널은 같은 약물에 대한 계통 차이와 전�
 ## 재현 기록
 
 `bf4fe80`에서 사전 명세를 고정했다. G1 `33413`이 학습원 12분할을, `33414`가 외부 두 패널을 예측하고 동결했다. `33415`와 `33416`이 각각 동결 해시를 확인한 뒤 별도로 채점했다. 소스 점수의 SHA-256은 `bf85ed3d63cefd03b84c1ffabe2b3f9369ee2bc10a86c5bb9b99dd442adaf930`, 외부 점수는 `b95632a11e6483433b4a9d7a05da70acf0c0589411475474c2600f21caa5d0f1`이다. [LIMORE 동결](response_component_limore_forecast_receipt.json) · [LICOB 동결](response_component_licob_forecast_receipt.json) · [작업 원장](RUN_LEDGER.tsv)
+
+후속 평가에서는 공통 민감도 제거 뒤 남은 반응으로 약물 간 공유 관계를 적합했다. LICOB의 약물 내 Pearson은 구조 커널 대비 .027에서 .055로 높아졌다. LIMORE와 LICOB의 외부 공동 기준은 미통과였다. [학습 반응으로 만든 약물 관계](RESPONSE_RELATEDNESS_RESULTS.md)
