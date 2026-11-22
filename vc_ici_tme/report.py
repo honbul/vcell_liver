@@ -62,12 +62,20 @@ def generate(a):
             effects = pd.read_csv(checked(observed, "counterfactuals.tsv", {"files": score["outputs"]}), sep="\t")
     performance, comparisons = pd.concat(scores, ignore_index=True), pd.concat(deltas, ignore_index=True)
     source_validation = pd.concat(summaries, ignore_index=True)
+    tcga_path = a.results / "tcga-exploratory"
+    tcga_receipt = json.loads((tcga_path / "receipt.json").read_text())
+    if record(tcga_path / "expression_receipt.json") != tcga_receipt["frozen_expression_scores"]:
+        raise ValueError("TCGA exploratory expression receipt changed")
+    checked(tcga_path, "expression_scores.parquet", tcga_receipt)
+    exploratory = pd.read_csv(checked(tcga_path, "immune_subtypes.tsv", tcga_receipt), sep="\t")
+    paths["TCGA-LIHC"] = {"scores": record(tcga_path / "receipt.json"),
+                         "matched_subtypes": tcga_receipt["n_published_subtypes"]}
     a.output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=f".{a.output.name}.", dir=a.output.parent) as d:
         stage = Path(d)
         for filename, table in (("external_metrics", performance), ("paired_deltas", comparisons),
                                 ("counterfactuals", effects), ("fraction_summary", pd.concat(fractions)),
-                                ("non_hcc_loco", source_validation)):
+                                ("non_hcc_loco", source_validation), ("tcga_immune_subtypes", exploratory)):
             table.to_csv(stage / f"{filename}.tsv", sep="\t", index=False)
         sections = ["# Track 7 — HCC anti-PD-1 external benchmark"]
         for cohort in ("GSE202069", "GSE140901"):
@@ -95,6 +103,14 @@ def generate(a):
         sections.extend(["## Exploratory HCC expression", f"GSE141198 supplies {count} RNA profiles. "
                          "The pooled fraction quantiles appear in the companion table. A matched objective "
                          "anti-PD-1 response endpoint is unavailable for this cohort."])
+        brief = exploratory[exploratory.feature.isin(["cd8", "malignant", "ifng6"])]
+        sections.extend([
+            "## TCGA-LIHC exploratory immune subtypes",
+            f"Primary-tumor STAR expression was verified for {tcga_receipt['n_primary_tumors']} donors. "
+            f"The author subtype manifest matched {tcga_receipt['n_published_subtypes']} by exact sample barcode. "
+            "These distributions do not measure ICI response. [PanImmune study](https://doi.org/10.1016/j.immuni.2018.03.023)",
+            markdown(brief, ["subtype", "patients", "feature", "median", "q25", "q75"]),
+        ])
         (stage / "RESULTS.md").write_text("\n\n".join(sections) + "\n")
         (stage / "receipt.json").write_text(json.dumps({
             "targets": paths, "cohorts": record(registry_path),
