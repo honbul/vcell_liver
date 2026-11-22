@@ -26,6 +26,15 @@ def ranked_expression(frame):
     return ((ranks - 0.5) / frame.shape[1] - 0.5).astype(np.float32)
 
 
+def ranked_axis(frame, genes, context=None):
+    if context is None:
+        return ranked_expression(frame if genes.equals(frame.columns) else frame[genes])
+    positions = context.get_indexer(genes)
+    if (positions < 0).any():
+        raise ValueError("RNA ranking context must cover the fitted genes")
+    return ranked_expression(frame[context])[:, positions]
+
+
 @dataclass
 class Standardization:
     center: np.ndarray
@@ -61,6 +70,7 @@ class CellKernelBasis:
     auxiliary_models: tuple
     indices: np.ndarray
     projection: RankProjection | None = None
+    rank_context: pd.Index | None = None
 
     def cpu(self):
         return replace(self, reference=tuple(x.cpu() for x in self.reference),
@@ -68,7 +78,7 @@ class CellKernelBasis:
 
     def vectors(self, query):
         device = self.reference[0].device
-        raw = ranked_expression(query[self.genes])
+        raw = ranked_axis(query, self.genes, self.rank_context)
         if self.projection is not None:
             raw = self.projection.apply(raw)
         q = self.sequence.apply(raw, device)
@@ -95,10 +105,11 @@ def auxiliary_features(models, values):
     return np.concatenate([model.predict(values).reshape(len(values), -1) for model in models], axis=1)
 
 
-def fit_cell_kernels(fit, signatures, auxiliary, *, device, projection_axes=None):
+def fit_cell_kernels(fit, signatures, auxiliary, *, device, projection_axes=None, genes=None):
     """Fit the reusable expression basis and return the training Gram matrices."""
-    genes = fit.columns
-    raw = ranked_expression(fit)
+    context = None if genes is None else fit.columns
+    genes = fit.columns if genes is None else genes
+    raw = ranked_axis(fit, genes, context)
     projection = None
     if projection_axes is not None:
         projection = RankProjection(raw.mean(axis=0), projection_axes)
@@ -151,7 +162,7 @@ def fit_cell_kernels(fit, signatures, auxiliary, *, device, projection_axes=None
     aux = Standardization.fit(proxy, 0.005)
     u = aux.apply(proxy, device)
     basis = CellKernelBasis(genes, (x, p, u), energy, scale, sequence, pathway, aux,
-                            weights, tuple(models), selected, projection)
+                            weights, tuple(models), selected, projection, context)
     enriched = 0.7 * rna + 0.2 * dot_kernel(p, p) + 0.1 * dot_kernel(u, u)
     return basis, {"rna": rna, "full": enriched}
 
