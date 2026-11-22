@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from .io import freeze_table, publish_json, verify_forecast
+from .io import freeze_table, publish_json, sha256, verify_forecast
 
 
 def ordered(keys, scope):
@@ -41,12 +41,17 @@ def register(source, directory):
     records, report = roster(predictions)
     directory.mkdir(parents=True, exist_ok=False)
     source_hash = stage["sha256"]
-    freeze_table(records, directory / "registered.parquet", provenance={"external_freeze_sha256": source_hash, **report})
+    observation_hash = stage["provenance"].get("registered_observations_sha256")
+    freeze_table(records, directory / "registered.parquet", provenance={
+        "external_freeze_sha256": source_hash, "registered_observations_sha256": observation_hash, **report,
+    })
     publish_json(directory / "roles.json", report)
 
 
 def selective_observations(directory, observed):
-    records, _ = verify_forecast(directory / "registered.parquet")
+    records, receipt = verify_forecast(directory / "registered.parquet")
+    if sha256(observed) != receipt["provenance"]["registered_observations_sha256"]:
+        raise ValueError("Source-shift observation file changed since registration")
     actual = pd.read_parquet(observed)
     actual = actual.rename(columns={"record_id": "row_id", "cell_group": "lineage_group"})
     if actual["row_id"].duplicated().any():
