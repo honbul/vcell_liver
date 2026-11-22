@@ -5,6 +5,7 @@ from collections import defaultdict
 from itertools import combinations
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 import pandas as pd
@@ -190,9 +191,16 @@ def predict(args):
     if not torch.cuda.is_available():
         raise RuntimeError("Vinorelbine source fits need the assigned G1 GPU")
     device = torch.device("cuda")
-    if sha256(args.extension / "receipt.json") != EXTENSION_SHA:
+    extension_receipt = args.extension / "receipt.json"
+    if sha256(extension_receipt) != EXTENSION_SHA:
         raise ValueError("Unexpected PRISM corrected extension")
-    _, core, rna, extension = registered_inputs(args, include_extension=True)
+    provenance = json.loads(extension_receipt.read_text())
+    _, core, rna, _ = registered_inputs(SimpleNamespace(original=args.original, core=args.core))
+    table = args.extension / "additional_rows.parquet"
+    if (provenance["original_bundle_sha256"] != sha256(args.original / "receipt.json")
+            or provenance["artifacts"][table.name] != sha256(table)):
+        raise ValueError("Corrected PRISM rows differ from their registration")
+    extension = pd.read_parquet(table, filters=[("compound_id", "==", DRUG)])
     data, source_hashes = observations(args, core, extension)
     edges, _, priors = molecular_inputs(args.priors, args.hallmark, args.targets)
     auxiliary, aux_receipt = load_auxiliary(args.auxiliary)
