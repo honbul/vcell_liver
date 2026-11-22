@@ -85,8 +85,7 @@ def register(args):
     })
 
 
-def fit(args):
-    receipt = json.loads((args.cohort / "receipt.json").read_text())
+def external_3d_forecasts(args, receipt):
     for name in ("query.parquet", "rna.parquet"):
         if sha256(args.cohort / name) != receipt["files"][name]:
             raise ValueError(f"Query differs from registration: {name}")
@@ -118,9 +117,16 @@ def fit(args):
         )
         prediction.method = prediction.method.str.split("/").str[0]
         parts.append(prediction)
-    freeze_table(pd.concat(parts).assign(track=receipt["cohort"], fold=0), args.out,
-                 provenance={"settings_sha256": sha256(args.settings),
-                             "registered_observations_sha256": receipt["files"]["labels.parquet"]})
+    return pd.concat(parts).assign(track=receipt["cohort"], fold=0)
+
+
+def fit(args):
+    receipt = json.loads((args.cohort / "receipt.json").read_text())
+    prediction = external_3d_forecasts(args, receipt)
+    freeze_table(prediction, args.out, provenance={
+        "settings_sha256": sha256(args.settings),
+        "registered_observations_sha256": receipt["files"]["labels.parquet"],
+    })
 
 
 def evaluate(args):
