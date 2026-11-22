@@ -1,0 +1,179 @@
+{
+  "scope": "release-0",
+  "fit_rows": 702,
+  "parent_count": 681,
+  "trained_on_prior_release": true,
+  "increment_labels_seen": false,
+  "policy_sha256": "7868ceaa506b186ef417ced3322ab906734ef528306bbf8509876ee776efbbf1",
+  "checkpoint_sha256": "b7479a9eb8c66be2a9db54256d0e22905cb5b2cae391ac0dcf5a6dcf69da9364",
+  "embedding_sha256": {
+    "chemberta2": "2a49a550e2ece991fbe4697f25b962c77da13646a89da0f6a52009e9d7739f0c",
+    "molformer": "1bd97a74372ce12593f8a63b22d389dd27b833225fc43c4c078974207641c82c",
+    "unimol": "27c9eca5aefe51699b268aaed26d55c0317b7827e050ff8af0cd94034f93c546",
+    "clamp": "eea3e355933ed96b6bdf72ede73cace50f2f1589cbaaf47fac85fc9f04a723ef",
+    "chemberta_fda": "c233542dc52de4d7ce43ce7615c3b8d26517b0e78ee3ce2bf45b79f5d1802bf4"
+  },
+  "recipe": "extra_anchor",
+  "configurations": {
+    "v1_lgbm": {
+      "representation": "v1",
+      "config": [
+        31,
+        160
+      ]
+    },
+    "lgbm": {
+      "representation": "clamp",
+      "config": [
+        31,
+        250
+      ]
+    },
+    "catboost": {
+      "representation": "all_fm",
+      "config": [
+        4,
+        350
+      ]
+    },
+    "xgboost": {
+      "representation": "all_fm",
+      "config": [
+        4,
+        350
+      ]
+    },
+    "extra": {
+      "representation": "all_fm",
+      "config": [
+        3,
+        0.25
+      ]
+    },
+    "linear": {
+      "representation": "all_fm",
+      "config": 0.005
+    },
+    "tsvm": {
+      "representation": "structure",
+      "config": 3.0
+    },
+    "countsvm": {
+      "representation": "structure",
+      "config": 15.0
+    },
+    "tlogit": {
+      "representation": "structure",
+      "config": 6.0
+    },
+    "minmaxsvm": {
+      "representation": "structure",
+      "config": 2.0
+    },
+    "rbfsvm": {
+      "representation": "structure",
+      "config": [
+        2.0,
+        1.7
+      ]
+    }
+  },
+  "graph_tuning": [
+    {
+      "method": "dmpnn",
+      "setting": [
+        80,
+        3,
+        0.17,
+        0.0,
+        36
+      ],
+      "utility": 0.7879644748386848,
+      "auroc": 0.7641071303862002,
+      "auprc": 0.813595133481108
+    },
+    {
+      "method": "dmpnn",
+      "setting": [
+        128,
+        4,
+        0.22,
+        0.0,
+        48
+      ],
+      "utility": 0.7850627628251303,
+      "auroc": 0.7552203366156856,
+      "auprc": 0.8131713211729115
+    },
+    {
+      "method": "mechanism_dmpnn",
+      "setting": [
+        80,
+        3,
+        0.17,
+        0.25,
+        36
+      ],
+      "utility": 0.7831686760810079,
+      "auroc": 0.7586598226133111,
+      "auprc": 0.8186964663954146
+    },
+    {
+      "method": "mechanism_dmpnn",
+      "setting": [
+        128,
+        4,
+        0.22,
+        0.5,
+        48
+      ],
+      "utility": 0.7805419713881955,
+      "auroc": 0.7551417696766535,
+      "auprc": 0.809442444636238
+    }
+  ],
+  "selected_calibration": "prior_em",
+  "calibration_grid": {
+    "platt": {
+      "auroc": 0.8047087785459879,
+      "auprc": 0.8644947653289738,
+      "balanced_accuracy": 0.7287345485019904,
+      "brier": 0.16800879888814516,
+      "ece": 0.02244907755429123,
+      "shift_ece": 0.17267842663687102
+    },
+    "temperature": {
+      "auroc": 0.8057825267127594,
+      "auprc": 0.864949249774746,
+      "balanced_accuracy": 0.7287345485019904,
+      "brier": 0.16782830303661778,
+      "ece": 0.02939563797277286,
+      "shift_ece": 0.17920194490872676
+    },
+    "beta": {
+      "auroc": 0.8045254556882464,
+      "auprc": 0.8640874165117111,
+      "balanced_accuracy": 0.7269275089042531,
+      "brier": 0.1677392060967627,
+      "ece": 0.011262260531200859,
+      "shift_ece": 0.1764832435281828
+    },
+    "isotonic": {
+      "auroc": 0.794486346811928,
+      "auprc": 0.8506522100907907,
+      "balanced_accuracy": 0.7166614288707311,
+      "brier": 0.17052198320900644,
+      "ece": 0.03797896485591525,
+      "shift_ece": 0.16628791370438012
+    },
+    "prior_em": {
+      "auroc": 0.804577833647601,
+      "auprc": 0.8640000913633855,
+      "balanced_accuracy": 0.7274774774774775,
+      "brier": 0.1678841511772852,
+      "ece": 0.02718683783903423,
+      "shift_ece": 0.13751279335901165
+    }
+  },
+  "ood_cutoff": 0.195
+}
