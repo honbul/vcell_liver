@@ -180,12 +180,13 @@ def score_source(args, *, assessor=assess):
                             "pass": passed >= 2})
 
 
-def score_external(args, *, assessor=assess, arms=ARMS):
+def score_external(args, *, assessor=assess, arms=ARMS, extra_by_mode=None):
     result, hashes = {}, {}
     for mode in EXTERNAL_TRACKS:
         _, query, _, registered = external_inputs(args, mode)
         frame, hashes[mode] = check_component(args.forecasts / f"{mode}.parquet", mode, 0, registered)
-        shared_support(frame, query, (*BASELINES, *PUBLIC, *arms))
+        extra = () if extra_by_mode is None else extra_by_mode.get(mode, ())
+        shared_support(frame, query, (*BASELINES, *PUBLIC, *arms, *extra))
         if mode == "LIMORE":
             require_hash(args.limore_labels, OBSERVATIONS)
             observed = join_observations(frame, pd.read_parquet(args.limore_labels))
