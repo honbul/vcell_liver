@@ -47,3 +47,5 @@ V0+의 sorafenib·cabozantinib 약물 내 Spearman은 각각 −.076·−.056이
 Wong의 환자 유래 HCC 오가노이드 10개와 27약물에서는 V0+의 약물 내 Spearman .061, 오가노이드 내 Spearman .495, NDCG@5 .780을 관측했다. 약물 평균 대비 오가노이드 내 Spearman 차이는 +.044 [95% .021, .070]이었다. NDCG@5와 약물 내 Spearman 개선 구간은 0을 포함했다. Broutier의 독립 오가노이드 2개·7약물 기술 평가에서 V0+의 약물 순위 Spearman은 .554였다. Hu의 독립 PDX 16개에서 sorafenib 감수성 순위 Spearman은 −.324였다. LICOB은 43개×76약물의 반응과 RNA 헤더를 연결했고 배포본의 8 MiB 손상으로 분석용 RNA 교집합은 0개였다. [Wong 3D 성적](WONG_3D_EXTERNAL_RESULTS.md) · [Broutier 기술 채점](STEP4_3D_TECHNICAL.md) · [Hu PDX 및 LICOB 재감사](STEP4_3D_PUBLIC_ACCESS_FOLLOWUP.md)
 
 예측 병합·동결 `32466`, 별도 채점 `32467`, 패키지·CPU 재현 `32468→32469`. 동결 SHA-256 `894d5dc7a5fb7efdca49f261ba87aa58cf7b520595993a681fdb336175c17dba`. [동결 영수증](limore_forecast_receipt.json) · [오프라인 모델 카드](V0PLUS_MODEL_CARD.md)
+
+이 외부 회차 이후의 구조 커널 실험은 세 학습 스크린의 계통·assay 보류에서 평가했다. [소스 전이 개발 성적](STRUCTURED_CV_RESULTS.md)
