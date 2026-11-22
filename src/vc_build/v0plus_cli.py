@@ -59,7 +59,7 @@ def read_expression(path, scale, gene_map, gene_lengths=None):
     if gene_lengths is not None and scale != "bulk_counts":
         raise ValueError("--gene-lengths requires --scale bulk_counts")
     raw = pd.read_csv(path, sep="\t" if path.suffix == ".tsv" else ",",
-                      float_precision="round_trip" if scale == RANK_FORMAT else None)
+                      dtype=str if scale == RANK_FORMAT else None)
     if {"sample_id", "gene", "value"} <= set(raw):
         raw = raw.pivot(index="sample_id", columns="gene", values="value")
     else:
@@ -75,11 +75,12 @@ def read_expression(path, scale, gene_map, gene_lengths=None):
         raw = raw.rename(columns=dict(zip(mapping.input_id, mapping.gene_symbol)))
         if not raw.columns.is_unique:
             raise ValueError("Genes become ambiguous after symbol mapping")
-    raw = raw.apply(pd.to_numeric, errors="raise")
     if scale == RANK_FORMAT:
+        raw = raw.astype(float)
         if np.isinf(raw.to_numpy()).any():
             raise ValueError("Rank-preserving RNA requires finite values or missing measurements")
         return raw
+    raw = raw.apply(pd.to_numeric, errors="raise")
     if np.isinf(raw.to_numpy()).any() or (raw < 0).any().any():
         raise ValueError("RNA measurements must be nonnegative finite numbers or missing")
     if scale == "bulk_counts":
