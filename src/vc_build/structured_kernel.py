@@ -109,13 +109,17 @@ def drug_kernels(rows, targets, *, device):
     }
 
 
-def training_grid(rows, cells, drugs, *, device):
+def training_grid(rows, cells, drugs, *, device, row_weight=None):
     """Weight assays equally within each drug while preserving its total effective support."""
     groups = rows.groupby([*SOURCE, "compound_id"]).residual
     sizes = groups.transform("size")
     largest = rows.assign(size=sizes).groupby("compound_id")["size"].transform("max")
     assays = rows[[*SOURCE, "compound_id"]].drop_duplicates().groupby("compound_id").size()
     weight = (largest / (sizes * rows.compound_id.map(assays))).to_numpy()
+    if row_weight is not None:
+        if row_weight.shape != weight.shape or not np.isfinite(row_weight).all() or (row_weight <= 0).any():
+            raise ValueError("Nonpositive or invalid kernel observation weight")
+        weight *= row_weight
     shape = (len(cells), len(drugs))
     index = cells.get_indexer(rows.cell_id), drugs.get_indexer(rows.compound_id)
     total, weighted = np.zeros(shape, dtype=np.float32), np.zeros(shape, dtype=np.float32)
