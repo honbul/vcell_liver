@@ -74,7 +74,8 @@ def observations(args, core, extra):
     if len(prism) != 462 or not prism.native_compound_id.eq(ASSAYS["PRISM20Q2"]).all():
         raise ValueError("Unexpected PRISM vinorelbine support")
     all_rows.append(prism)
-    fields = ["source_id", "source_run", "cell_id", "endpoint_value"]
+    fields = ["source_id", "source_run", "cell_id", "endpoint_value",
+              "native_compound_id", "dose_min_uM", "dose_max_uM"]
     roster = core[["cell_id", "lineage_group", "lineage_role"]].drop_duplicates().set_index("cell_id")
     data = pd.concat([part[fields] for part in all_rows], ignore_index=True)
     data = data.join(roster, on="cell_id", validate="many_to_one")
