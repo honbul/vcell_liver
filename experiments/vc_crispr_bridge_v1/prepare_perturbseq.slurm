@@ -21,11 +21,12 @@ prepare() {
 }
 
 prepare K562-essential "$data/Replogle2022/K562_essential_raw_singlecell_01.h5ad"
+prepare K562-genome-wide "$data/Replogle2022/K562_gwps_raw_singlecell_01.h5ad"
 prepare RPE1 "$data/Replogle2022/rpe1_raw_singlecell_01.h5ad"
 prepare Jurkat "$data/GEO/GSE264667/GSE264667_jurkat_raw_singlecell_01.h5ad"
 prepare HepG2 "$data/GEO/GSE264667/GSE264667_hepg2_raw_singlecell_01.h5ad"
 
 if [[ ! -f "$work/gene-panels-v1/receipt.json" ]]; then
-    "$python" -m vc_crispr_bridge.design --source "$work/K562-essential" "$work/RPE1" "$work/Jurkat" \
+    "$python" -m vc_crispr_bridge.design --source "$work/K562-essential" "$work/K562-genome-wide" "$work/RPE1" "$work/Jurkat" \
         --hepg2 "$work/HepG2" --output "$work/gene-panels-v1"
 fi
