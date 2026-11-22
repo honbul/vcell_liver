@@ -10,10 +10,11 @@ import pandas as pd
 from openpyxl import load_workbook
 
 from .evaluate import join_observations
-from .expanded_panel_cv import RECEIPTS, expanded_targets
+from .expanded_panel_cv import RECEIPTS, expanded_targets, registered_inputs
 from .external import KEY, SOURCE, native_sensitivity
 from .function_data import new_output
 from .hcc_3d_repeat_components import repeat_stats
+from .hcc_panel_support import GDSC_RECEIPT, read_registered
 from .io import freeze_table, publish_json, sha256, verify_forecast
 from .licob_dose_sources import CTRP_QC, RAW_SHA256, SCREENS, TREATMENTS_HASH, ctrp, gdsc, prism
 from .licob_endpoints import fit_matched
@@ -36,6 +37,7 @@ REPLAY = (BASE, "drug_ridge", "cellhit", "icc_offset_drug_mean", "icc_offset_cod
 COMPARATORS = ("matched_auc", "drug_mean", *REPLAY)
 PAIRED_METHODS = (*REPLAY, "icc_anchor_only", "icc_anchor_and_residual")
 IDENTITY = ["cell_id", "compound_id", *SOURCE]
+NATIVE_METADATA = ["native_compound_id", "source_run", "dose_min_uM", "dose_max_uM"]
 
 
 def dose_value(dose, viability, *, minimum, second, maximum):
@@ -52,6 +54,23 @@ def dose_value(dose, viability, *, minimum, second, maximum):
     return (float(np.interp(np.log(DOSE), np.log(dose), y)),)
 
 
+def restore_native_metadata(fit, args):
+    # The expanded model table retained the signed row ID but stripped raw assay identifiers.
+    columns = ["row_id", *IDENTITY, *NATIVE_METADATA]
+    _, core, _, extension = registered_inputs(args, include_extension=True)
+    receipt = args.gdsc_extension / "receipt.json"
+    require_hash(receipt, GDSC_RECEIPT)
+    digest = json.loads(receipt.read_text())["artifacts"]["additional_rows.parquet"]
+    gdsc = read_registered(args.gdsc_extension / "additional_rows.parquet", digest, columns)
+    registry = pd.concat([core[columns], extension[columns], gdsc])
+    source = fit.drop(columns=NATIVE_METADATA, errors="ignore").merge(
+        registry, on=["row_id", *IDENTITY], how="left", validate="one_to_one",
+    )
+    if source.native_compound_id.isna().any() or source.native_compound_id.eq("").any():
+        raise ValueError("Cannot recover the exact raw identifiers of every selected source row")
+    return source
+
+
 def extract(args):
     require_hash(args.original / "receipt.json", ORIGINAL)
     original = json.loads((args.original / "receipt.json").read_text())["inputs"]
@@ -60,6 +79,7 @@ def extract(args):
     source, _, _, _, _, _ = training_bundle(args)
     roster = read_rosters(args.zhu)["single_dose"]
     source = source[source.source_id.eq(args.assay) & source.compound_id.isin(roster.compound_id)].copy()
+    source = restore_native_metadata(source, args)
     if source.duplicated(["cell_id", "compound_id"]).any():
         raise ValueError("Dose extraction requires one registered protocol per source, drug and cell")
     # Legacy extractors use maximum and second to prefilter the PRISM physical range.
@@ -79,6 +99,7 @@ def extract(args):
         result.to_parquet(directory / TABLE, index=False)
         publish_json(directory / "receipt.json", {
             "cohort": ZHU, "expanded": EXPANDED, "core": RECEIPTS["core"], "source": args.assay,
+            "native_metadata_registries": [RECEIPTS["extension"], GDSC_RECEIPT],
             "raw_sha256": raw_hash, "curve_sha256": sha256(directory / TABLE), "qc": qc,
             "eligible_before_curve_check": len(source), "matched_rows": len(result),
             "matched_drugs": int(result.compound_id.nunique()),
@@ -102,6 +123,8 @@ def predict(args):
         if (stamp["cohort"], stamp["expanded"], stamp["core"], stamp["source"]) != (
                 ZHU, EXPANDED, RECEIPTS["core"], source):
             raise ValueError("Unexpected source extraction scope")
+        if stamp["native_metadata_registries"] != [RECEIPTS["extension"], GDSC_RECEIPT]:
+            raise ValueError("Unverified raw model and assay identifiers")
         require_hash(path / TABLE, stamp["curve_sha256"])
         table = pd.read_parquet(path / TABLE)
         if len(table) != stamp["matched_rows"] or not table.source_id.eq(source).all():
@@ -198,7 +221,7 @@ def main():
     tasks = parser.add_subparsers(dest="stage", required=True)
     training = ("zhu", "core", "expanded", "icc", "licob")
     for stage, fields in {
-        "extract": (*training, "original", "raw"),
+        "extract": (*training, "original", "extension", "gdsc-extension", "raw"),
         "predict": (*training, "extracts", "prior", "priors", "hallmark", "targets", "auxiliary"),
         "score": ("zhu", "forecast", "labels"),
     }.items():
