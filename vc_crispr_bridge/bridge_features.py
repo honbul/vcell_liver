@@ -6,7 +6,7 @@ import pandas as pd
 from scipy.stats import rankdata
 from sklearn.decomposition import PCA
 
-from .chronos_prep import entrez_axis
+from .chronos_prep import entrez_annotations, entrez_axis
 from .design import summarize_assay, validate_source
 from .gene_features import unambiguous_symbol_map, verified_vectors
 from .perturbseq import record
@@ -14,13 +14,15 @@ from .predict import PANELS, checked
 
 
 def read_dependency(effect_file, hgnc, targets, model_file, cell_registry):
-    genes = pd.read_csv(hgnc, usecols=["entrez_id", "ensembl_gene_id"], dtype=str).dropna()
+    genes = entrez_annotations(hgnc)
     safe_symbols = unambiguous_symbol_map(hgnc)
     genes = genes[genes.ensembl_gene_id.isin(targets) & genes.ensembl_gene_id.isin(safe_symbols.index)]
     genes = genes[~genes.entrez_id.duplicated(keep=False)].set_index("entrez_id").ensembl_gene_id
     header = pd.read_csv(effect_file, nrows=0).columns
     column_index = entrez_axis(header)
     by_column = {column_index[entrez]: gene for entrez, gene in genes.items() if entrez in column_index}
+    if not by_column:
+        raise ValueError("No registered protein targets overlap DepMap Chronos")
     values = pd.read_csv(effect_file, index_col=0, usecols=[header[0], *by_column],
                          dtype={field: np.float32 for field in by_column})
     values = values.rename(columns=by_column)

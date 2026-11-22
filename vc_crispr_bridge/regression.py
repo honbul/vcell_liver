@@ -10,6 +10,9 @@ from torch import nn
 
 
 def regression_metrics(pred, truth, groups):
+    pred, truth = np.asarray(pred), np.asarray(truth)
+    if pred.ndim != 1 or pred.shape != truth.shape or len(pred) == 0 or len(pred) != len(groups):
+        raise ValueError("Regression rank inputs are empty or misaligned")
     if not (np.isfinite(pred).all() and np.isfinite(truth).all()):
         raise ValueError("Nonfinite regression predictions or outcomes")
     pair = pd.DataFrame({"pred": pred, "truth": truth})

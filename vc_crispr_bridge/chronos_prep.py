@@ -36,6 +36,13 @@ def entrez_axis(columns):
     return out
 
 
+def entrez_annotations(path):
+    genes = pd.read_csv(path, usecols=["entrez_id", "ensembl_gene_id", "symbol"], dtype=str).dropna()
+    # DepMap 25Q3 serializes HGNC's integer Entrez IDs as decimal strings.
+    genes["entrez_id"] = genes.entrez_id.str.extract(r"^([0-9]+)(?:\.0+)?$", expand=False)
+    return genes.dropna(subset=["entrez_id"])
+
+
 def omics(path, models, entrez):
     header = pd.read_csv(path, nrows=0).columns
     axis = entrez_axis(header)
@@ -98,7 +105,7 @@ def prepare(directory, out, seed):
         raise FileExistsError(out)
     out.parent.mkdir(parents=True, exist_ok=True)
     paths = {name: directory / filename for name, filename in FILES.items()}
-    genes = pd.read_csv(paths["hgnc"], usecols=["entrez_id", "ensembl_gene_id", "symbol"], dtype=str).dropna()
+    genes = entrez_annotations(paths["hgnc"])
     symbols = unambiguous_symbol_map(paths["hgnc"])
     genes = genes[genes.ensembl_gene_id.isin(symbols.index) & ~genes.entrez_id.duplicated(keep=False)]
     header = pd.read_csv(paths["chronos"], nrows=0).columns
