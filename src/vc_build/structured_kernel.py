@@ -204,7 +204,8 @@ def training_grid(rows, cells, drugs, *, device, row_weight=None):
     return tuple(torch.as_tensor(value, device=device) for value in (total, response))
 
 
-def solve_residuals(cell, drug, weights, response, penalty, *, per_drug_prior=None, tolerance=5e-5, max_steps=220):
+def solve_residuals(cell, drug, weights, response, penalty, *, per_drug_prior=None, shared_prior=None,
+                    tolerance=5e-5, max_steps=220):
     """Solve weighted kernel ridge in the cell-by-drug grid without a dense pair Gram matrix."""
     root = weights.sqrt()
     rhs = root * response
@@ -215,6 +216,11 @@ def solve_residuals(cell, drug, weights, response, penalty, *, per_drug_prior=No
         if per_drug_prior.ndim == 2:
             per_drug_prior = per_drug_prior.unsqueeze(-1)
         kernel_diagonal = kernel_diagonal + per_drug_prior.square().sum(dim=-1)
+    if shared_prior is not None:
+        cell_basis, drug_basis = shared_prior
+        if (cell_basis.shape[0], drug_basis.shape[0]) != weights.shape or cell_basis.shape[1] != drug_basis.shape[1]:
+            raise ValueError("Shared pair features must match the cell-by-drug grid")
+        kernel_diagonal = kernel_diagonal + cell_basis.square() @ drug_basis.square().T
     diagonal = penalty + weights * kernel_diagonal
     coefficient = torch.zeros_like(rhs)
     residual = rhs.clone()
@@ -226,6 +232,8 @@ def solve_residuals(cell, drug, weights, response, penalty, *, per_drug_prior=No
         kernel_product = cell @ weighted @ drug
         if per_drug_prior is not None:
             kernel_product = kernel_product + project_drug_features(per_drug_prior, per_drug_prior, weighted)
+        if shared_prior is not None:
+            kernel_product = kernel_product + project_shared_features(cell_basis, cell_basis, drug_basis, weighted)
         product = root * kernel_product + penalty * direction
         update = energy / (direction * product).sum().clamp_min(1e-20)
         coefficient += update * direction
@@ -244,6 +252,12 @@ def project_drug_features(fit, query, coefficients):
     """Apply independent linear feature kernels for each drug."""
     effects = (fit * coefficients.unsqueeze(-1)).sum(dim=0)
     return (query * effects).sum(dim=-1)
+
+
+def project_shared_features(fit, query, drugs, coefficients):
+    """Apply shared interaction features ψ(cell, drug) = fit * drugs."""
+    effects = ((fit.T @ coefficients) * drugs.T).sum(dim=1)
+    return (query * effects) @ drugs.T
 
 
 @dataclass
