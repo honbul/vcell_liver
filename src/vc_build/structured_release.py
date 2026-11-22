@@ -97,7 +97,7 @@ def pack(args):
         })
 
 
-def run_cli(package, expression, output, *, method=None, compounds=None):
+def run_cli(package, expression, output, *, method=None, compounds=None, expected_error=None):
     command = [sys.executable, "-m", "vc_build.v0plus_cli", "predict", "--package", str(package),
                "--rna", str(expression), "--scale", "bulk_log2_tpm_plus_1", "--out", str(output)]
     if method is not None:
@@ -105,7 +105,14 @@ def run_cli(package, expression, output, *, method=None, compounds=None):
     if compounds is not None:
         command.extend(["--compounds", str(compounds)])
     started = perf_counter()
-    subprocess.run(command, check=True)
+    try:
+        subprocess.run(command, check=True, capture_output=True, text=True)
+    except subprocess.CalledProcessError as exc:
+        if expected_error is None or expected_error not in exc.stderr or output.exists():
+            raise RuntimeError(exc.stderr) from exc
+        return None, {"seconds": perf_counter() - started, "input_rejected": expected_error}
+    if expected_error is not None:
+        raise ValueError("CLI accepted a registered input with an invalid expression scale")
     elapsed = perf_counter() - started
     frame = pd.read_csv(output, sep="\t", dtype={name: str for name in PAIR})
     return frame, {
@@ -189,12 +196,24 @@ def replay(args):
         licob_panel = work / "licob_compounds.tsv"
         licob_rna.rename_axis("sample_id").to_csv(licob_input, sep="\t")
         licob_query[["compound_id"]].drop_duplicates().to_csv(licob_panel, sep="\t", index=False)
-        licob, licob_info = run_cli(args.package, licob_input, work / "licob_organoid.tsv", compounds=licob_panel)
-        if len(wong) != 620 or len(licob) != 43 * 76:
-            raise ValueError("Unexpected external input coverage population")
-        for name, table in (("Wong", wong), ("LICOB", licob)):
-            if not (table.status.eq("predicted") == np.isfinite(table.sensitivity_score)).all():
-                raise ValueError(f"Inconsistent predictions or abstentions for {name}")
+        negative = licob_rna.lt(0)
+        coverage = licob_rna.reindex(columns=rna.columns).notna().mean(axis=1)
+        if (len(wong) != 620 or len(licob_query) != 43 * 76
+                or not (wong.status.eq("predicted") == np.isfinite(wong.sensitivity_score)).all()
+                or not negative.any(axis=1).all() or coverage.ge(.85).any()):
+            raise ValueError("Unexpected Wong or LICOB external input coverage")
+        _, licob_info = run_cli(
+            args.package, licob_input, work / "licob_organoid.tsv", compounds=licob_panel,
+            expected_error="RNA measurements must be nonnegative finite numbers or missing",
+        )
+        registry = pd.read_csv(args.package / "compounds.tsv", sep="\t", usecols=["compound_id"])
+        licob_info.update(
+            profiles=len(licob_rna), requests=len(licob_query), predictions=0,
+            exact_parent_drugs=licob_query.loc[licob_query.compound_id.isin(registry.compound_id),
+                                             "compound_id"].nunique(),
+            min_gene_coverage=float(coverage.min()), max_gene_coverage=float(coverage.max()),
+            profiles_with_negative_values=int(negative.any(axis=1).sum()), negative_values=int(negative.sum().sum()),
+        )
         publish_json(work / "receipt.json", {
             "release_sha256": sha256(args.package / "release.json"), "reference_forecast_sha256": FORECAST,
             "licob_input_sha256": COLD, "wong_rna_sha256": WONG_RNA, "wong_compounds_sha256": WONG_PANEL,
