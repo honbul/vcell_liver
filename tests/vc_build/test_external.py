@@ -58,3 +58,5 @@ def test_across_cell_uses_independent_lineages_and_drug_mean_is_zero():
     assert result["spearman"] == pytest.approx(1)
     assert result["pearson"] == pytest.approx(1)
     assert across_cell_metrics(group.assign(predicted_value=0))["spearman"] == 0
+    constant = pd.concat([group, group.iloc[:1]], ignore_index=True).assign(predicted_value=0.1)
+    assert across_cell_metrics(constant) == {"lineages": 5, "spearman": 0.0, "pearson": 0.0}

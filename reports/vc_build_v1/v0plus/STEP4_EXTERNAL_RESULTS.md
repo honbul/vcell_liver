@@ -51,3 +51,5 @@ Wong의 환자 유래 HCC 오가노이드 10개와 27약물에서는 V0+의 약�
 예측 병합·동결 `32466`, 별도 채점 `32467`, 패키지·CPU 재현 `32468→32469`. 동결 SHA-256 `894d5dc7a5fb7efdca49f261ba87aa58cf7b520595993a681fdb336175c17dba`. [동결 영수증](limore_forecast_receipt.json) · [오프라인 모델 카드](V0PLUS_MODEL_CARD.md)
 
 이 외부 회차 이후의 구조 커널 실험은 세 학습 스크린의 계통·assay 보류에서 평가했다. [소스 전이 개발 성적](STRUCTURED_CV_RESULTS.md)
+
+정정 코어를 사용한 별도 Yang 3D 평가에서 Ridge·구조 커널 결합의 74명·5약물 주 기준은 미통과였다. 세포주 예측의 기저 RNA 전이와 같은 조건에서 13개 모델을 비교했다. [Yang 동결 성적](YANG_HCC_EXTERNAL_RESULTS.md)

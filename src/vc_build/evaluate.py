@@ -81,7 +81,8 @@ def across_cell_metrics(group, *, min_lineages=5):
     forecast = values.predicted_value.to_numpy()
     if len(values) < min_lineages or np.ptp(actual) == 0:
         return result
-    if np.ptp(forecast) == 0:
+    # Averaging the same nonzero float over groups of different sizes can introduce artificial ranks.
+    if np.ptp(group.predicted_value.to_numpy()) == 0 or np.ptp(forecast) == 0:
         return result | {"spearman": 0.0, "pearson": 0.0}
     return result | {
         "spearman": float(np.corrcoef(rankdata(actual), rankdata(forecast))[0, 1]),

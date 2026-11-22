@@ -1,0 +1,3712 @@
+{
+  "cohort": "YANG2024_HCC",
+  "completeness": {
+    "Apatinib": 223,
+    "Ivosidenib": 223,
+    "Lenvatinib": 223,
+    "Regorafenib": 223,
+    "Sorafenib": 223
+  },
+  "compound_labels": {
+    "FNHKPVJBJVTLMP-UHFFFAOYSA-N": "Regorafenib",
+    "MLDQJTXFUGDVEO-UHFFFAOYSA-N": "Sorafenib",
+    "WIJZXSAJMHAVGX-DHLKQENFSA-N": "Ivosidenib",
+    "WOSKHXYHFSIKNG-UHFFFAOYSA-N": "Lenvatinib",
+    "WPEWQEMJFLWMLV-UHFFFAOYSA-N": "Apatinib"
+  },
+  "endpoint": "Negative S6 Normalized AUC",
+  "excluded_patients": [
+    "YANG2024_HCC:P1",
+    "YANG2024_HCC:P2"
+  ],
+  "forecast_sha256": "00c685ec949ed8c8abe4c135b390c56c2f24b9be8d193ed19074f00129094d79",
+  "gate": {
+    "cellhit": false,
+    "drug_mean": false,
+    "drug_ridge": false
+  },
+  "promoted": false,
+  "sections": {
+    "all_patients": {
+      "drugs": 5,
+      "metrics": {
+        "across_cell_drug_only_intervals": [],
+        "across_cell_scores": [
+          {
+            "method": "additive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.023919604189949706,
+            "within_drug_spearman": 0.026271941799644268
+          },
+          {
+            "method": "catboost",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.12451463474970992,
+            "within_drug_spearman": -0.09924807455116198
+          },
+          {
+            "method": "cellhit",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.05619373610019418,
+            "within_drug_spearman": -0.08079576564745476
+          },
+          {
+            "method": "codeae_inductive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.14692130423595276,
+            "within_drug_spearman": -0.152861472524137
+          },
+          {
+            "method": "drug_elasticnet",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.07739957496322766,
+            "within_drug_spearman": 0.04801383270060379
+          },
+          {
+            "method": "drug_mean",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          {
+            "method": "drug_ridge",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.06215053644604951,
+            "within_drug_spearman": -0.07086003479001213
+          },
+          {
+            "method": "lightgbm",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.04734680337531416,
+            "within_drug_spearman": -0.04928515589729909
+          },
+          {
+            "method": "ridge_structured_average",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.09442561541433418,
+            "within_drug_spearman": -0.09771159302013288
+          },
+          {
+            "method": "structured",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.14558682059700007,
+            "within_drug_spearman": -0.13451808905822518
+          },
+          {
+            "method": "structured_rna_chem",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.08018202005225619,
+            "within_drug_spearman": -0.07188768282254113
+          },
+          {
+            "method": "v0plus_inductive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.20555230182510723,
+            "within_drug_spearman": -0.19571625022279387
+          },
+          {
+            "method": "velodrome_inductive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.09046539652739105,
+            "within_drug_spearman": -0.053118436944330036
+          }
+        ],
+        "paired_contrasts": [],
+        "precision_at_3": {
+          "additive": 0.75,
+          "catboost": 0.706140350877193,
+          "cellhit": 0.5921052631578947,
+          "codeae_inductive": 0.7368421052631579,
+          "drug_elasticnet": 0.706140350877193,
+          "drug_mean": 0.75,
+          "drug_ridge": 0.6842105263157895,
+          "lightgbm": 0.6447368421052632,
+          "ridge_structured_average": 0.6666666666666666,
+          "structured": 0.6052631578947368,
+          "structured_rna_chem": 0.6008771929824561,
+          "v0plus_inductive": 0.5789473684210527,
+          "velodrome_inductive": 0.5964912280701754
+        },
+        "scores": [
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8664909365897088,
+            "macro_spearman": 0.34078947368421053,
+            "macro_top5_overlap": 1.0,
+            "method": "additive",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8623807285338793,
+            "macro_spearman": 0.2973684210526316,
+            "macro_top5_overlap": 1.0,
+            "method": "catboost",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8520429325146716,
+            "macro_spearman": 0.18815789473684208,
+            "macro_top5_overlap": 1.0,
+            "method": "cellhit",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8657158956697021,
+            "macro_spearman": 0.3302631578947368,
+            "macro_top5_overlap": 1.0,
+            "method": "codeae_inductive",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8619341735666393,
+            "macro_spearman": 0.3078947368421053,
+            "macro_top5_overlap": 1.0,
+            "method": "drug_elasticnet",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8664909365897088,
+            "macro_spearman": 0.34078947368421053,
+            "macro_top5_overlap": 1.0,
+            "method": "drug_mean",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8589187363005123,
+            "macro_spearman": 0.2723684210526316,
+            "macro_top5_overlap": 1.0,
+            "method": "drug_ridge",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8561531405705011,
+            "macro_spearman": 0.23157894736842102,
+            "macro_top5_overlap": 1.0,
+            "method": "lightgbm",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8591294905088409,
+            "macro_spearman": 0.2644736842105263,
+            "macro_top5_overlap": 1.0,
+            "method": "ridge_structured_average",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8531638983480795,
+            "macro_spearman": 0.19999999999999996,
+            "macro_top5_overlap": 1.0,
+            "method": "structured",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8526656913110093,
+            "macro_spearman": 0.19473684210526312,
+            "macro_top5_overlap": 1.0,
+            "method": "structured_rna_chem",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8507974149219958,
+            "macro_spearman": 0.17499999999999996,
+            "macro_top5_overlap": 1.0,
+            "method": "v0plus_inductive",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 76,
+            "common_rows": 380,
+            "covered_rows": 380,
+            "lineages": 76,
+            "macro_ndcg_at_5": 0.8530254814066114,
+            "macro_spearman": 0.19736842105263155,
+            "macro_top5_overlap": 1.0,
+            "method": "velodrome_inductive",
+            "registered_rows": 380,
+            "track": "YANG2024_HCC"
+          }
+        ],
+        "sensitivity_ci95": []
+      },
+      "models": 76,
+      "observations": 380,
+      "patients": 76,
+      "per_drug": [
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "additive",
+          "pearson": 0.20211138293480377,
+          "spearman": 0.23272727272727273,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "catboost",
+          "pearson": -0.15542511432712985,
+          "spearman": -0.1758304853041695,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "cellhit",
+          "pearson": -0.2753909068915368,
+          "spearman": -0.27393028024606975,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "codeae_inductive",
+          "pearson": -0.17994921405733738,
+          "spearman": -0.21692412850307588,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_elasticnet",
+          "pearson": -0.0412484428035228,
+          "spearman": -0.0637593984962406,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_ridge",
+          "pearson": 0.0679464239673433,
+          "spearman": 0.06911825017088175,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "lightgbm",
+          "pearson": -0.07609131061032515,
+          "spearman": -0.06898154477101845,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "ridge_structured_average",
+          "pearson": -0.05597717933981821,
+          "spearman": -0.03040328092959672,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "structured",
+          "pearson": -0.22723603501965073,
+          "spearman": -0.18400546821599453,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "structured_rna_chem",
+          "pearson": -0.1630061552166829,
+          "spearman": -0.1733697881066302,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "v0plus_inductive",
+          "pearson": -0.46080175173114046,
+          "spearman": -0.41421736158578265,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "velodrome_inductive",
+          "pearson": -0.03620965568657634,
+          "spearman": 0.022857142857142857,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "additive",
+          "pearson": -0.08055677720054938,
+          "spearman": -0.05913875598086125,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "catboost",
+          "pearson": -0.16768649699289662,
+          "spearman": -0.14602870813397129,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "cellhit",
+          "pearson": -0.19348831468393848,
+          "spearman": -0.2244976076555024,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "codeae_inductive",
+          "pearson": -0.21760561898643432,
+          "spearman": -0.2386056049213944,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_elasticnet",
+          "pearson": 0.1632887907357762,
+          "spearman": 0.12795625427204374,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_ridge",
+          "pearson": -0.3431919872721488,
+          "spearman": -0.3915516062884484,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "lightgbm",
+          "pearson": -0.007456809683398999,
+          "spearman": -0.006343130553656869,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "ridge_structured_average",
+          "pearson": -0.30628395007503323,
+          "spearman": -0.36,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "structured",
+          "pearson": -0.20751055842601057,
+          "spearman": -0.24929596719070404,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "structured_rna_chem",
+          "pearson": -0.056870245555471335,
+          "spearman": -0.11926179084073822,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "v0plus_inductive",
+          "pearson": -0.17284899321531327,
+          "spearman": -0.14266575529733425,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "velodrome_inductive",
+          "pearson": -0.1548204204192394,
+          "spearman": -0.11660970608339027,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "additive",
+          "pearson": -0.09355330968060391,
+          "spearman": -0.12463516497328048,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "catboost",
+          "pearson": -0.05359337825879047,
+          "spearman": 0.04632977669128524,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "cellhit",
+          "pearson": -0.07630681618177904,
+          "spearman": -0.14972077731571434,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "codeae_inductive",
+          "pearson": -0.0984042625340275,
+          "spearman": -0.06504487385574954,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_elasticnet",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_ridge",
+          "pearson": -0.208766008618678,
+          "spearman": -0.18261232134617536,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "lightgbm",
+          "pearson": -0.14036897121821876,
+          "spearman": -0.0918256447433942,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "ridge_structured_average",
+          "pearson": -0.1247994298831151,
+          "spearman": -0.06676737366781857,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "structured",
+          "pearson": -0.03800131661804485,
+          "spearman": 0.011004859910441022,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "structured_rna_chem",
+          "pearson": -0.058543617955156196,
+          "spearman": 0.054299755980461786,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "v0plus_inductive",
+          "pearson": -0.16372066256131726,
+          "spearman": -0.29189536497855484,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "velodrome_inductive",
+          "pearson": -0.024949133896069738,
+          "spearman": 0.013821010396839592,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "additive",
+          "pearson": -0.020274508429511284,
+          "spearman": 0.0323444976076555,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "catboost",
+          "pearson": -0.2247891911757929,
+          "spearman": -0.20784688995215309,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "cellhit",
+          "pearson": 0.22345484986175523,
+          "spearman": 0.19701982228298018,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "codeae_inductive",
+          "pearson": -0.147868120287249,
+          "spearman": -0.1416267942583732,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_elasticnet",
+          "pearson": 0.1266930706721492,
+          "spearman": 0.05725222146274778,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_ridge",
+          "pearson": 0.06110094172828887,
+          "spearman": 0.08358168147641833,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "lightgbm",
+          "pearson": -0.08235659999439013,
+          "spearman": -0.07956254272043746,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "ridge_structured_average",
+          "pearson": -0.06739820827020362,
+          "spearman": -0.06786056049213943,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "structured",
+          "pearson": -0.24249777881404982,
+          "spearman": -0.2571428571428572,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "structured_rna_chem",
+          "pearson": -0.20548052632133226,
+          "spearman": -0.2268215994531784,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "v0plus_inductive",
+          "pearson": -0.06599296325520251,
+          "spearman": 0.015338345864661655,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "velodrome_inductive",
+          "pearson": -0.07957668187594724,
+          "spearman": -0.03521531100478469,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "additive",
+          "pearson": 0.11187123332560933,
+          "spearman": 0.050061859617434805,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "catboost",
+          "pearson": -0.021078992993939782,
+          "spearman": -0.012864066056801241,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "cellhit",
+          "pearson": 0.04076250739452813,
+          "spearman": 0.0471500146970324,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "codeae_inductive",
+          "pearson": -0.09077930531471559,
+          "spearman": -0.10210596108209191,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_elasticnet",
+          "pearson": 0.13826445621173578,
+          "spearman": 0.118620086264468,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "drug_ridge",
+          "pearson": 0.11215794796494707,
+          "spearman": 0.06716382203726304,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "lightgbm",
+          "pearson": 0.06953967462976217,
+          "spearman": 0.0002870833020115049,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "ridge_structured_average",
+          "pearson": 0.08233069049649921,
+          "spearman": 0.03647324998889024,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "structured",
+          "pearson": -0.012688414107244346,
+          "spearman": 0.00684898734798876,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "structured_rna_chem",
+          "pearson": 0.08299044478736178,
+          "spearman": 0.10571500830737939,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "v0plus_inductive",
+          "pearson": -0.16439713836256267,
+          "spearman": -0.1451411151169594,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 76,
+          "method": "velodrome_inductive",
+          "pearson": -0.15677109075912254,
+          "spearman": -0.15044532088745768,
+          "track": "YANG2024_HCC"
+        }
+      ]
+    },
+    "primary_most_resistant_region": {
+      "drugs": 5,
+      "metrics": {
+        "across_cell_drug_only_intervals": [],
+        "across_cell_scores": [
+          {
+            "method": "additive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.09185365129437725,
+            "within_drug_spearman": -0.06954540723920223
+          },
+          {
+            "method": "catboost",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.06183602567967399,
+            "within_drug_spearman": -0.021662436517501122
+          },
+          {
+            "method": "cellhit",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.011834960094797101,
+            "within_drug_spearman": -0.004241474425878801
+          },
+          {
+            "method": "codeae_inductive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.06959883010904391,
+            "within_drug_spearman": -0.053853014079296546
+          },
+          {
+            "method": "drug_elasticnet",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.10415153119966798,
+            "within_drug_spearman": 0.09003334716904883
+          },
+          {
+            "method": "drug_mean",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          {
+            "method": "drug_ridge",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.022672189270143122,
+            "within_drug_spearman": -0.018961509383501086
+          },
+          {
+            "method": "lightgbm",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.07919549041522958,
+            "within_drug_spearman": 0.07731261077989701
+          },
+          {
+            "method": "ridge_structured_average",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.029388699810654263,
+            "within_drug_spearman": -0.018759945790351774
+          },
+          {
+            "method": "structured",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.04290002886784569,
+            "within_drug_spearman": -0.02954420243387564
+          },
+          {
+            "method": "structured_rna_chem",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.06468523785590435,
+            "within_drug_spearman": 0.07288165500515531
+          },
+          {
+            "method": "v0plus_inductive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.14374019177837116,
+            "within_drug_spearman": -0.126310160590873
+          },
+          {
+            "method": "velodrome_inductive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.0279446695656592,
+            "within_drug_spearman": 0.014807015554841707
+          }
+        ],
+        "paired_contrasts": [],
+        "precision_at_3": {
+          "additive": 0.7725225225225225,
+          "catboost": 0.722972972972973,
+          "cellhit": 0.5968468468468469,
+          "codeae_inductive": 0.75,
+          "drug_elasticnet": 0.6914414414414414,
+          "drug_mean": 0.7725225225225225,
+          "drug_ridge": 0.7004504504504504,
+          "lightgbm": 0.6644144144144144,
+          "ridge_structured_average": 0.6959459459459459,
+          "structured": 0.6283783783783784,
+          "structured_rna_chem": 0.6283783783783784,
+          "v0plus_inductive": 0.5878378378378378,
+          "velodrome_inductive": 0.5923423423423423
+        },
+        "scores": [
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8757419820064375,
+            "macro_spearman": 0.3907862817089136,
+            "macro_top5_overlap": 1.0,
+            "method": "additive",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8711333461536118,
+            "macro_spearman": 0.3419621036542842,
+            "macro_top5_overlap": 1.0,
+            "method": "catboost",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8588532159425828,
+            "macro_spearman": 0.21223237392455446,
+            "macro_top5_overlap": 1.0,
+            "method": "cellhit",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8736810537210781,
+            "macro_spearman": 0.36781330873594065,
+            "macro_top5_overlap": 1.0,
+            "method": "codeae_inductive",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.866537204883491,
+            "macro_spearman": 0.29601615770833817,
+            "macro_top5_overlap": 1.0,
+            "method": "drug_elasticnet",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8757419820064375,
+            "macro_spearman": 0.3907862817089136,
+            "macro_top5_overlap": 1.0,
+            "method": "drug_mean",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8685651774049638,
+            "macro_spearman": 0.31912955420609584,
+            "macro_top5_overlap": 1.0,
+            "method": "drug_ridge",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8647374450020342,
+            "macro_spearman": 0.27439453608671666,
+            "macro_top5_overlap": 1.0,
+            "method": "lightgbm",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8683215828904298,
+            "macro_spearman": 0.3123727974493391,
+            "macro_top5_overlap": 1.0,
+            "method": "ridge_structured_average",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8619232484953401,
+            "macro_spearman": 0.24466480635698692,
+            "macro_top5_overlap": 1.0,
+            "method": "structured",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8619232484953401,
+            "macro_spearman": 0.24466480635698687,
+            "macro_top5_overlap": 1.0,
+            "method": "structured_rna_chem",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8580857078043935,
+            "macro_spearman": 0.20412426581644633,
+            "macro_top5_overlap": 1.0,
+            "method": "v0plus_inductive",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8588379768330653,
+            "macro_spearman": 0.2081783198705004,
+            "macro_top5_overlap": 1.0,
+            "method": "velodrome_inductive",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          }
+        ],
+        "sensitivity_ci95": []
+      },
+      "models": 74,
+      "observations": 370,
+      "patients": 74,
+      "per_drug": [
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": -0.06808235195214563,
+          "spearman": -0.027071655473940782,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.02948629299959661,
+          "spearman": -0.04533169442326736,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": -0.08370771048932929,
+          "spearman": -0.0804300661263525,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.06052042630011242,
+          "spearman": -0.09575783604732008,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.13394851024008092,
+          "spearman": 0.11511377352239699,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": 0.1531828529784225,
+          "spearman": 0.11603195877370133,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": 0.09295971465712116,
+          "spearman": 0.06822708794772712,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": 0.12397249437505344,
+          "spearman": 0.1262800909334207,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": 0.04543308213397608,
+          "spearman": 0.08287362364998502,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": 0.15858144276284675,
+          "spearman": 0.2109456567674029,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.29547150032593605,
+          "spearman": -0.3190989937073315,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.08426389094286084,
+          "spearman": -0.014913105613926897,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": -0.1874541179440975,
+          "spearman": -0.12010544400345584,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.16076705688532356,
+          "spearman": -0.1426159587858545,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": -0.09142115789960978,
+          "spearman": -0.1422753391542787,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.22251972996673186,
+          "spearman": -0.19218351995472827,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.15212463869950638,
+          "spearman": 0.14500029620688484,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": -0.28241805443659923,
+          "spearman": -0.2723772288670234,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": 0.000527186189159745,
+          "spearman": -0.014883596944941199,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": -0.23581042921336573,
+          "spearman": -0.24237308218995787,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": -0.13989436853961867,
+          "spearman": -0.16909543275357075,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": 0.029331545407192596,
+          "spearman": 0.017830697235531545,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.11195042296510038,
+          "spearman": -0.09304839761698067,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.0786150298437454,
+          "spearman": -0.06824240270874532,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": -0.14248307903063676,
+          "spearman": -0.15536698064614737,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.028612798275045502,
+          "spearman": 0.06988626266982838,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": 0.01914476284522694,
+          "spearman": -0.022392038388807056,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": 0.01334055273444393,
+          "spearman": 0.054099283223751446,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": -0.12128594177048266,
+          "spearman": -0.09384811327372375,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": 0.0350527864692627,
+          "spearman": 0.0618298679056015,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": -0.0790973640549626,
+          "spearman": -0.02230318109361338,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": -0.020401471777181372,
+          "spearman": 0.026301759377328926,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": -0.02409073685339619,
+          "spearman": 0.03250696049168749,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.11722034383228062,
+          "spearman": -0.15730703159120937,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": 0.08633892444856732,
+          "spearman": 0.13655885316348537,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": -0.10411298266383108,
+          "spearman": -0.06692385726845644,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.18896466376908996,
+          "spearman": -0.14544350569451445,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": 0.1824509197228039,
+          "spearman": 0.191323149380657,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.12024143321836231,
+          "spearman": -0.07532080948602998,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.14496076224088805,
+          "spearman": 0.08442861480138754,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": -0.0403740965638634,
+          "spearman": -0.02006679057286092,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": 0.050413306335723766,
+          "spearman": 0.044665269644094854,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": -0.13907550805704455,
+          "spearman": -0.13167072692494938,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": -0.25294633392745275,
+          "spearman": -0.22975364497960463,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": -0.12890045424141913,
+          "spearman": -0.1275685121731542,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.13507116602350522,
+          "spearman": -0.04858977112144404,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.07086562787492716,
+          "spearman": -0.053091840740742725,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": 0.042864275118824624,
+          "spearman": 0.0217409011959893,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": 0.09865068353068566,
+          "spearman": 0.15519271364630235,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": 0.03270798629489373,
+          "spearman": 0.032566922159387245,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": 0.04194688620554308,
+          "spearman": 0.03989781186784412,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.08972374481786458,
+          "spearman": 0.10562405131457474,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": 0.17753429344180713,
+          "spearman": 0.1754526270224014,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": 0.21702445842488047,
+          "spearman": 0.22672442534700285,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": 0.18306730789704811,
+          "spearman": 0.17626717032334105,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": 0.15330894777104823,
+          "spearman": 0.14195268253648327,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": 0.28850439220429774,
+          "spearman": 0.23069347270430882,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.05898752574503351,
+          "spearman": -0.013506608917399349,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": 0.0076822763846701,
+          "spearman": 0.07372357367413811,
+          "track": "YANG2024_HCC"
+        }
+      ]
+    },
+    "primary_patients": {
+      "drugs": 5,
+      "metrics": {
+        "across_cell_drug_only_intervals": [
+          {
+            "baseline": "drug_mean",
+            "candidate": "ridge_structured_average",
+            "drug_bootstrap_ci95": [
+              -0.23146693862695641,
+              0.008266783396479327
+            ],
+            "drugs": 5,
+            "gain": -0.09619249913722425,
+            "metric": "spearman",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "ridge_structured_average",
+            "drug_bootstrap_ci95": [
+              -0.2212791363972974,
+              0.017139000238223612
+            ],
+            "drugs": 5,
+            "gain": -0.10212691554889038,
+            "metric": "pearson",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "ridge_structured_average",
+            "drug_bootstrap_ci95": [
+              -0.10003114154840831,
+              0.06448336230000888
+            ],
+            "drugs": 5,
+            "gain": -0.020845461976357966,
+            "metric": "spearman",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "ridge_structured_average",
+            "drug_bootstrap_ci95": [
+              -0.09658166619866723,
+              0.04711560326162957
+            ],
+            "drugs": 5,
+            "gain": -0.024733031468518837,
+            "metric": "pearson",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "ridge_structured_average",
+            "drug_bootstrap_ci95": [
+              -0.1649876247443057,
+              0.12723914264722785
+            ],
+            "drugs": 5,
+            "gain": -0.014628471408910642,
+            "metric": "spearman",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "ridge_structured_average",
+            "drug_bootstrap_ci95": [
+              -0.19661347784154615,
+              0.08598962015149211
+            ],
+            "drugs": 5,
+            "gain": -0.0460369879670119,
+            "metric": "pearson",
+            "track": "YANG2024_HCC"
+          }
+        ],
+        "across_cell_scores": [
+          {
+            "method": "additive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.027772278486437936,
+            "within_drug_spearman": 0.037597882106327946
+          },
+          {
+            "method": "catboost",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.11558934227328872,
+            "within_drug_spearman": -0.08893884060852233
+          },
+          {
+            "method": "cellhit",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.05608992758187849,
+            "within_drug_spearman": -0.0815640277283136
+          },
+          {
+            "method": "codeae_inductive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.14651318845359235,
+            "within_drug_spearman": -0.15180181673649057
+          },
+          {
+            "method": "drug_elasticnet",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.09378255936346387,
+            "within_drug_spearman": 0.06739156358072666
+          },
+          {
+            "method": "drug_mean",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          {
+            "method": "drug_ridge",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.07739388408037154,
+            "within_drug_spearman": -0.0753470371608663
+          },
+          {
+            "method": "lightgbm",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.03051473427293413,
+            "within_drug_spearman": -0.030379955855452355
+          },
+          {
+            "method": "ridge_structured_average",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.10212691554889038,
+            "within_drug_spearman": -0.09619249913722425
+          },
+          {
+            "method": "structured",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.13934438410800937,
+            "within_drug_spearman": -0.12204952019397167
+          },
+          {
+            "method": "structured_rna_chem",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.06187238775072516,
+            "within_drug_spearman": -0.046915608709072146
+          },
+          {
+            "method": "v0plus_inductive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.21359787186859655,
+            "within_drug_spearman": -0.20724538511502738
+          },
+          {
+            "method": "velodrome_inductive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.09407799234841345,
+            "within_drug_spearman": -0.06021200615824394
+          }
+        ],
+        "paired_contrasts": [
+          {
+            "baseline": "drug_mean",
+            "candidate": "ridge_structured_average",
+            "ci95": [
+              -0.010489277888587004,
+              -0.0045165219605753084
+            ],
+            "gain": -0.007432486060021892,
+            "lineages": 74,
+            "metric": "ndcg_at_5",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "ridge_structured_average",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 74,
+            "metric": "top5_overlap",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "drug_mean",
+            "candidate": "ridge_structured_average",
+            "ci95": [
+              -0.10945945945945962,
+              -0.045945945945945976
+            ],
+            "gain": -0.07702702702702707,
+            "lineages": 74,
+            "metric": "spearman",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "ridge_structured_average",
+            "ci95": [
+              -0.002150834260611348,
+              0.003584930697682293
+            ],
+            "gain": 0.0005389115045120185,
+            "lineages": 74,
+            "metric": "ndcg_at_5",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "ridge_structured_average",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 74,
+            "metric": "top5_overlap",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "ridge_structured_average",
+            "ci95": [
+              -0.027027027027027084,
+              0.017567567567567527
+            ],
+            "gain": -0.005405405405405406,
+            "lineages": 74,
+            "metric": "spearman",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "ridge_structured_average",
+            "ci95": [
+              0.0042080540358494485,
+              0.010846550509297507
+            ],
+            "gain": 0.007406004611637873,
+            "lineages": 74,
+            "metric": "ndcg_at_5",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "ridge_structured_average",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 74,
+            "metric": "top5_overlap",
+            "track": "YANG2024_HCC"
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "ridge_structured_average",
+            "ci95": [
+              0.04594594594594592,
+              0.1162162162162162
+            ],
+            "gain": 0.07972972972972975,
+            "lineages": 74,
+            "metric": "spearman",
+            "track": "YANG2024_HCC"
+          }
+        ],
+        "precision_at_3": {
+          "additive": 0.7522522522522522,
+          "catboost": 0.7072072072072071,
+          "cellhit": 0.5900900900900901,
+          "codeae_inductive": 0.7387387387387387,
+          "drug_elasticnet": 0.7072072072072071,
+          "drug_mean": 0.7522522522522522,
+          "drug_ridge": 0.6846846846846847,
+          "lightgbm": 0.6441441441441441,
+          "ridge_structured_average": 0.6666666666666666,
+          "structured": 0.6036036036036035,
+          "structured_rna_chem": 0.5990990990990991,
+          "v0plus_inductive": 0.581081081081081,
+          "velodrome_inductive": 0.5990990990990991
+        },
+        "scores": [
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.865285255886631,
+            "macro_spearman": 0.3418918918918919,
+            "macro_top5_overlap": 1.0,
+            "method": "additive",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8610639611265897,
+            "macro_spearman": 0.29729729729729737,
+            "macro_top5_overlap": 1.0,
+            "method": "catboost",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.850446765214971,
+            "macro_spearman": 0.18513513513513513,
+            "macro_top5_overlap": 1.0,
+            "method": "cellhit",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8644892679147321,
+            "macro_spearman": 0.3310810810810811,
+            "macro_top5_overlap": 1.0,
+            "method": "codeae_inductive",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8604436068916005,
+            "macro_spearman": 0.30540540540540545,
+            "macro_top5_overlap": 1.0,
+            "method": "drug_elasticnet",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.865285255886631,
+            "macro_spearman": 0.3418918918918919,
+            "macro_top5_overlap": 1.0,
+            "method": "drug_mean",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8573138583220972,
+            "macro_spearman": 0.2702702702702703,
+            "macro_top5_overlap": 1.0,
+            "method": "drug_ridge",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8546680599750122,
+            "macro_spearman": 0.22972972972972974,
+            "macro_top5_overlap": 1.0,
+            "method": "lightgbm",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.857852769826609,
+            "macro_spearman": 0.2648648648648649,
+            "macro_top5_overlap": 1.0,
+            "method": "ridge_structured_average",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.851598027422255,
+            "macro_spearman": 0.19729729729729728,
+            "macro_top5_overlap": 1.0,
+            "method": "structured",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8512142733531602,
+            "macro_spearman": 0.19324324324324324,
+            "macro_top5_overlap": 1.0,
+            "method": "structured_rna_chem",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8494234210307186,
+            "macro_spearman": 0.1743243243243243,
+            "macro_top5_overlap": 1.0,
+            "method": "v0plus_inductive",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 74,
+            "common_rows": 370,
+            "covered_rows": 370,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8518396235514633,
+            "macro_spearman": 0.19864864864864862,
+            "macro_top5_overlap": 1.0,
+            "method": "velodrome_inductive",
+            "registered_rows": 370,
+            "track": "YANG2024_HCC"
+          }
+        ],
+        "sensitivity_ci95": [
+          {
+            "baseline": "drug_mean",
+            "candidate": "ridge_structured_average",
+            "ci95": {
+              "pearson": [
+                -0.2999815533008696,
+                0.09555335770521686
+              ],
+              "spearman": [
+                -0.30235449815296966,
+                0.10160084204979908
+              ]
+            }
+          },
+          {
+            "baseline": "drug_ridge",
+            "candidate": "ridge_structured_average",
+            "ci95": {
+              "pearson": [
+                -0.11354569716600324,
+                0.06587958492455814
+              ],
+              "spearman": [
+                -0.12752628795864254,
+                0.08954157121716026
+              ]
+            }
+          },
+          {
+            "baseline": "cellhit",
+            "candidate": "ridge_structured_average",
+            "ci95": {
+              "pearson": [
+                -0.25019088564543895,
+                0.1457034368135413
+              ],
+              "spearman": [
+                -0.2224462963318971,
+                0.19825031625710288
+              ]
+            }
+          }
+        ]
+      },
+      "models": 74,
+      "observations": 370,
+      "patients": 74,
+      "per_drug": [
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": 0.2138448839985193,
+          "spearman": 0.24848574601999254,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.12131319296673729,
+          "spearman": -0.14523509811181043,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": -0.24023963635831302,
+          "spearman": -0.23669751943724543,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.18107382273701153,
+          "spearman": -0.21131432802665673,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": -0.003881337970523984,
+          "spearman": -0.02403554239170677,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": 0.03732108326985964,
+          "spearman": 0.06372454646427247,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": -0.03611937325494306,
+          "spearman": -0.031529063309885225,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": -0.07112124145553621,
+          "spearman": -0.03413550536838207,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": -0.20767925104045937,
+          "spearman": -0.14434653831914102,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": -0.13330831869736334,
+          "spearman": -0.12820436875231395,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.4584221609998923,
+          "spearman": -0.40961125509070706,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.09094685813207345,
+          "spearman": -0.021429100333209918,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": -0.08217750172103189,
+          "spearman": -0.05839318770825619,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.178056854402736,
+          "spearman": -0.15335061088485744,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": -0.19260079981206188,
+          "spearman": -0.2227175120325805,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.24066732629582346,
+          "spearman": -0.25974083672713805,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.1723413264359831,
+          "spearman": 0.13990373935579412,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": -0.3411985826429732,
+          "spearman": -0.3875157349129951,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": -0.009972538048456683,
+          "spearman": -0.015031469825990372,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": -0.30637026992631033,
+          "spearman": -0.35763050721954825,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": -0.21276848292054412,
+          "spearman": -0.2534912995186967,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": -0.06445659885082766,
+          "spearman": -0.12716771566086632,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.17596696918847352,
+          "spearman": -0.14689374305812658,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.15888218707129984,
+          "spearman": -0.13045538689374303,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": -0.08842145074617894,
+          "spearman": -0.12173359299551052,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.04273305886590038,
+          "spearman": 0.06853808617800762,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": -0.0774600887765849,
+          "spearman": -0.15669867974276117,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.13125747363084941,
+          "spearman": -0.10501373575804927,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": -0.21146497846379317,
+          "spearman": -0.18043821132083943,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": -0.1475811247921897,
+          "spearman": -0.09777191982437476,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": -0.11616363075201984,
+          "spearman": -0.05030766610775538,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": -0.021256378431528077,
+          "spearman": 0.030774015358232463,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": -0.022869136064152158,
+          "spearman": 0.10640582307454294,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.17305491692325642,
+          "spearman": -0.3139156898693231,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.04815598061097446,
+          "spearman": -0.02686432332042045,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": -0.03931132486549196,
+          "spearman": 0.02800444279896334,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.21160764517927247,
+          "spearman": -0.19398741206960382,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": 0.18824694171369336,
+          "spearman": 0.1613180303591262,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.10968368451331911,
+          "spearman": -0.1112032580525731,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.13846020412026624,
+          "spearman": 0.06778230285079598,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": -0.0023156680120614147,
+          "spearman": 0.03389855609033691,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": -0.04564867678964818,
+          "spearman": -0.04014809329877822,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": -0.12298685650897137,
+          "spearman": -0.10415401703072932,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": -0.26740866081816445,
+          "spearman": -0.27389855609033686,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": -0.20085411044777635,
+          "spearman": -0.21442428730099958,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.10499121449959332,
+          "spearman": -0.03342465753424657,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.029639764334000507,
+          "spearman": 0.007982228804146611,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": 0.13492678576637315,
+          "spearman": 0.09162600241645055,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.02423595995179754,
+          "spearman": -0.02065916815434759,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": 0.041603945323874084,
+          "spearman": 0.04697554221189286,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.06988363509095828,
+          "spearman": -0.07173692511803563,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.161992604231594,
+          "spearman": 0.15330731808875,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": 0.1306887254471105,
+          "spearman": 0.09359565787489374,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": 0.08674804152056698,
+          "spearman": 0.032580766981766804,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": 0.10600742089838591,
+          "spearman": 0.06526520004029378,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": 0.012390852670649247,
+          "spearman": 0.030714777600083797,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": 0.11212622530649376,
+          "spearman": 0.12881250509427622,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.15555409773176718,
+          "spearman": -0.13238158002273337,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.14276517159371896,
+          "spearman": -0.1302934490479929,
+          "track": "YANG2024_HCC"
+        }
+      ]
+    },
+    "primary_pdos": {
+      "drugs": 5,
+      "metrics": {
+        "across_cell_drug_only_intervals": [],
+        "across_cell_scores": [
+          {
+            "method": "additive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.027772278486437936,
+            "within_drug_spearman": 0.037597882106327946
+          },
+          {
+            "method": "catboost",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.11558934227328872,
+            "within_drug_spearman": -0.08893884060852233
+          },
+          {
+            "method": "cellhit",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.05608992758187849,
+            "within_drug_spearman": -0.0815640277283136
+          },
+          {
+            "method": "codeae_inductive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.14651318845359235,
+            "within_drug_spearman": -0.15180181673649057
+          },
+          {
+            "method": "drug_elasticnet",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.09378255936346387,
+            "within_drug_spearman": 0.06739156358072666
+          },
+          {
+            "method": "drug_mean",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": 0.003043050355263652,
+            "within_drug_spearman": 0.014051590879287099
+          },
+          {
+            "method": "drug_ridge",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.07739388408037154,
+            "within_drug_spearman": -0.0753470371608663
+          },
+          {
+            "method": "lightgbm",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.03051473427293413,
+            "within_drug_spearman": -0.030379955855452355
+          },
+          {
+            "method": "ridge_structured_average",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.10212691554889038,
+            "within_drug_spearman": -0.09619249913722425
+          },
+          {
+            "method": "structured",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.13934438410800937,
+            "within_drug_spearman": -0.12204952019397167
+          },
+          {
+            "method": "structured_rna_chem",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.06187238775072516,
+            "within_drug_spearman": -0.046915608709072146
+          },
+          {
+            "method": "v0plus_inductive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.21359787186859655,
+            "within_drug_spearman": -0.20724538511502738
+          },
+          {
+            "method": "velodrome_inductive",
+            "n_drugs": 5,
+            "track": "YANG2024_HCC",
+            "within_drug_pearson": -0.09407799234841345,
+            "within_drug_spearman": -0.06021200615824394
+          }
+        ],
+        "paired_contrasts": [],
+        "precision_at_3": {
+          "additive": 0.7611367127496159,
+          "catboost": 0.7258064516129032,
+          "cellhit": 0.6067588325652842,
+          "codeae_inductive": 0.738095238095238,
+          "drug_elasticnet": 0.705837173579109,
+          "drug_mean": 0.7611367127496159,
+          "drug_ridge": 0.7012288786482335,
+          "lightgbm": 0.6651305683563747,
+          "ridge_structured_average": 0.6889400921658986,
+          "structured": 0.6213517665130568,
+          "structured_rna_chem": 0.6136712749615975,
+          "v0plus_inductive": 0.5967741935483871,
+          "velodrome_inductive": 0.6044546850998463
+        },
+        "scores": [
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8462897205240837,
+            "macro_spearman": 0.254473652910913,
+            "macro_top5_overlap": 1.0,
+            "method": "additive",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8430604830407942,
+            "macro_spearman": 0.2203124124683205,
+            "macro_top5_overlap": 1.0,
+            "method": "catboost",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8320881579934845,
+            "macro_spearman": 0.10438386597974313,
+            "macro_top5_overlap": 1.0,
+            "method": "cellhit",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8446580786229542,
+            "macro_spearman": 0.2367017884499854,
+            "macro_top5_overlap": 1.0,
+            "method": "codeae_inductive",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8414019214550171,
+            "macro_spearman": 0.20924053304339646,
+            "macro_top5_overlap": 1.0,
+            "method": "drug_elasticnet",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8462897205240837,
+            "macro_spearman": 0.254473652910913,
+            "macro_top5_overlap": 1.0,
+            "method": "drug_mean",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.840768468993644,
+            "macro_spearman": 0.2042312665735466,
+            "macro_top5_overlap": 1.0,
+            "method": "drug_ridge",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8372754254731487,
+            "macro_spearman": 0.15877371775489754,
+            "macro_top5_overlap": 1.0,
+            "method": "lightgbm",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8400975293224502,
+            "macro_spearman": 0.19040638178091984,
+            "macro_top5_overlap": 1.0,
+            "method": "ridge_structured_average",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.833507305707848,
+            "macro_spearman": 0.11939075348214537,
+            "macro_top5_overlap": 1.0,
+            "method": "structured",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8331147093790969,
+            "macro_spearman": 0.11524328804435734,
+            "macro_top5_overlap": 1.0,
+            "method": "structured_rna_chem",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8310748869456975,
+            "macro_spearman": 0.09403315977150704,
+            "macro_top5_overlap": 1.0,
+            "method": "v0plus_inductive",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          },
+          {
+            "cells": 217,
+            "common_rows": 1085,
+            "covered_rows": 1085,
+            "lineages": 74,
+            "macro_ndcg_at_5": 0.8323053457368412,
+            "macro_spearman": 0.1058142408222964,
+            "macro_top5_overlap": 1.0,
+            "method": "velodrome_inductive",
+            "registered_rows": 1085,
+            "track": "YANG2024_HCC"
+          }
+        ],
+        "sensitivity_ci95": []
+      },
+      "models": 217,
+      "observations": 1085,
+      "patients": 74,
+      "per_drug": [
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": 0.2138448839985193,
+          "spearman": 0.24848574601999254,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.12131319296673729,
+          "spearman": -0.14523509811181043,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": -0.24023963635831302,
+          "spearman": -0.23669751943724543,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.18107382273701153,
+          "spearman": -0.21131432802665673,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": -0.003881337970523984,
+          "spearman": -0.02403554239170677,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": 0.03732108326985964,
+          "spearman": 0.06372454646427247,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": -0.03611937325494306,
+          "spearman": -0.031529063309885225,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": -0.07112124145553621,
+          "spearman": -0.03413550536838207,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": -0.20767925104045937,
+          "spearman": -0.14434653831914102,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": -0.13330831869736334,
+          "spearman": -0.12820436875231395,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.4584221609998923,
+          "spearman": -0.40961125509070706,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.09094685813207345,
+          "spearman": -0.021429100333209918,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": -0.08217750172103189,
+          "spearman": -0.05839318770825619,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.178056854402736,
+          "spearman": -0.15335061088485744,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": -0.19260079981206188,
+          "spearman": -0.2227175120325805,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.24066732629582346,
+          "spearman": -0.25974083672713805,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.1723413264359831,
+          "spearman": 0.13990373935579412,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": -0.3411985826429732,
+          "spearman": -0.3875157349129951,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": -0.009972538048456683,
+          "spearman": -0.015031469825990372,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": -0.30637026992631033,
+          "spearman": -0.35763050721954825,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": -0.21276848292054412,
+          "spearman": -0.2534912995186967,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": -0.06445659885082766,
+          "spearman": -0.12716771566086632,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.17596696918847352,
+          "spearman": -0.14689374305812658,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.15888218707129984,
+          "spearman": -0.13045538689374303,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": -0.08842145074617894,
+          "spearman": -0.12173359299551052,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.04273305886590038,
+          "spearman": 0.06853808617800762,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": -0.0774600887765849,
+          "spearman": -0.15669867974276117,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.13125747363084941,
+          "spearman": -0.10501373575804927,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": -0.21146497846379317,
+          "spearman": -0.18043821132083943,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": -0.1475811247921897,
+          "spearman": -0.09777191982437476,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": -0.11616363075201984,
+          "spearman": -0.05030766610775538,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": -0.021256378431528077,
+          "spearman": 0.030774015358232463,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": -0.022869136064152158,
+          "spearman": 0.10640582307454294,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.17305491692325642,
+          "spearman": -0.3139156898693231,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WIJZXSAJMHAVGX-DHLKQENFSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.04815598061097446,
+          "spearman": -0.02686432332042045,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": -0.03931132486549196,
+          "spearman": 0.02800444279896334,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.21160764517927247,
+          "spearman": -0.19398741206960382,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": 0.18824694171369336,
+          "spearman": 0.1613180303591262,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.10968368451331911,
+          "spearman": -0.1112032580525731,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.13846020412026624,
+          "spearman": 0.06778230285079598,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.01521525177631826,
+          "spearman": 0.07025795439643549,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": -0.0023156680120614147,
+          "spearman": 0.03389855609033691,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": -0.04564867678964818,
+          "spearman": -0.04014809329877822,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": -0.12298685650897137,
+          "spearman": -0.10415401703072932,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": -0.26740866081816445,
+          "spearman": -0.27389855609033686,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": -0.20085411044777635,
+          "spearman": -0.21442428730099958,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.10499121449959332,
+          "spearman": -0.03342465753424657,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.029639764334000507,
+          "spearman": 0.007982228804146611,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "additive",
+          "pearson": 0.13492678576637315,
+          "spearman": 0.09162600241645055,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "catboost",
+          "pearson": -0.02423595995179754,
+          "spearman": -0.02065916815434759,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "cellhit",
+          "pearson": 0.041603945323874084,
+          "spearman": 0.04697554221189286,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "codeae_inductive",
+          "pearson": -0.06988363509095828,
+          "spearman": -0.07173692511803563,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_elasticnet",
+          "pearson": 0.161992604231594,
+          "spearman": 0.15330731808875,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "drug_ridge",
+          "pearson": 0.1306887254471105,
+          "spearman": 0.09359565787489374,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "lightgbm",
+          "pearson": 0.08674804152056698,
+          "spearman": 0.032580766981766804,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "ridge_structured_average",
+          "pearson": 0.10600742089838591,
+          "spearman": 0.06526520004029378,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured",
+          "pearson": 0.012390852670649247,
+          "spearman": 0.030714777600083797,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "structured_rna_chem",
+          "pearson": 0.11212622530649376,
+          "spearman": 0.12881250509427622,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "v0plus_inductive",
+          "pearson": -0.15555409773176718,
+          "spearman": -0.13238158002273337,
+          "track": "YANG2024_HCC"
+        },
+        {
+          "compound_id": "WPEWQEMJFLWMLV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 74,
+          "method": "velodrome_inductive",
+          "pearson": -0.14276517159371896,
+          "spearman": -0.1302934490479929,
+          "track": "YANG2024_HCC"
+        }
+      ]
+    }
+  }
+}

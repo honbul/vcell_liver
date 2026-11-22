@@ -17,3 +17,5 @@ Apatinib의 PRISM20Q2 AUC 454행에서 출판 SMILES 열에는 같은 구조가 
 현재 네 약물의 892개 PDO·약물 키를 등록했다. 성인의 약물 내 환자 감수성은 계산 가능한 설계이며, 4약물의 Top-5 적중률은 분별력이 없다. 추가 학습 후보를 포함하는 회차는 앵커·공통 비교 범위를 먼저 동결해야 한다. 현재 등록에서는 연속 `Normalized AUC`를 채점하지 않았다. 초기 스키마 출력에 5개 PDO의 이진 `Sensitive` 플래그가 노출된 이력을 명세에 기록했다. 발현 배포는 CC BY 4.0이다. 발행사 표는 파일별 재배포 라이선스가 확인되지 않아 원본을 G1에 둔다. [저자 발현 배포](https://doi.org/10.17632/rv2w3dv9rs.2) · [원논문](https://doi.org/10.1016/j.ccell.2024.03.004) · [공개 다운로드 영수증](yang_hcc_asset_receipt.json) · [PRISM 메타데이터 영수증](yang_hcc_prism_metadata_receipt.json)
 
 Slurm `33216`의 첫 등록은 S6에서 지역 숫자가 생략된 두 PDO 키를 감지하고 중단했다. 이 원본 형식을 허용한 `33217`에서 등록을 완료했으며 두 키는 기저 RNA와 매칭되지 않았다. [작업 원장](RUN_LEDGER.tsv)
+
+후속 회차에서 apatinib을 학습에 추가해 5약물의 동결 외부 평가를 완료했다. [동결 평가 성적](YANG_HCC_EXTERNAL_RESULTS.md)
