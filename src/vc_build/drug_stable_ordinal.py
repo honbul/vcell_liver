@@ -90,10 +90,12 @@ def conditional_correlation(x, y, mask, tissues):
 
 
 def assay_associations(aligned, fit_orders, drugs, device):
-    projections = (aligned[["lineage_group", "tissue_origin"]].drop_duplicates()
-                   .set_index("lineage_group", verify_integrity=True).tissue_origin.fillna("Unknown"))
-    atlas, metadata = [], {}
+    labels = aligned[["lineage_group", "tissue_origin"]].drop_duplicates()
+    ambiguous = labels.lineage_group.duplicated(keep=False)
+    projections = labels.loc[~ambiguous].set_index("lineage_group").tissue_origin.fillna("Unknown")
+    atlas, metadata = [], {"ambiguous_tissue_lineages": int(labels.loc[ambiguous, "lineage_group"].nunique())}
     for assay, group in aligned.groupby(SOURCE, sort=True):
+        group = group.loc[group.lineage_group.isin(projections.index)]
         values = group.groupby(["lineage_group", "compound_id"]).residual.mean().unstack().reindex(columns=drugs)
         observed = values.notna().to_numpy()
         y = orthogonal_parts(values.fillna(0.).to_numpy(), observed.astype(float))[2]
