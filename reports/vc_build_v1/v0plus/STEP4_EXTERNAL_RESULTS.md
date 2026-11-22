@@ -87,3 +87,5 @@ Oslo 대장암 간전이 자료의 91개 PDO·52명에서 기저 RNA와 웰별 �
 복원한 PRISM 데이터를 사용해 vinorelbine의 2D 실측으로 학습하고 Singapore PDX의 공통 6환자군을 별도 평가했다. 기전 커널의 약물 내 순위는 양수였으며 두 출판물 모두에서 기준 미통과였다. LICOB에서는 기존 학습에 없던 7약물의 정확한 PRISM 실측을 추가해 같은 38명에서 평가했다. 상위 5약물 점 추정치와 약물별 환자 순위가 서로 다른 방향으로 움직여 공동 기준에 미달했다. [Vinorelbine PDX](VINORELBINE_TRANSFER_RESULTS.md) · [LICOB PRISM 7약물](LICOB_PRISM_RESTORED_RESULTS.md)
 
 Vinorelbine은 286개 동일 2D 계통에서 실제 농도를 일치시키면 두 스크린의 약물 내 Spearman이 .329에서 .104로 감소했다. 같은 구간으로 적합한 모델의 PDX 공동 기준도 미통과였다. LICOB에서 최고 두 농도가 지원되는 ispinesib 한 종은 별도 동결했다. PRISM 기술 반복의 Emax 순위 상관은 .874였으나 LICOB 38명의 같은 약물 내 예측은 .033으로 미통과였다. [Vinorelbine 원자료](VINORELBINE_RAW_DOSE_RESULTS.md) · [Ispinesib 최고 농도](LICOB_ISPINESIB_EMAX_RESULTS.md)
+
+PRISM 검출 반복이 높은 농도를 더 반영하도록 24약물·9,681개 곡선의 학습 표적을 바꿨다. 같은 지지에서 발행 AUC와 균등 원자료 두 조건을 대조했다. 2D 두 스크린 보류, LIMORE 독립 50계통, LICOB 성인 38명 모두의 공동 기준은 미통과였다. LIMORE에서 해당 14약물의 약물 내 상관은 소폭 높았고, LICOB 24약물에서는 세 개인화 모델 모두 0에 가까웠다. [반복 가중과 두 외부 코호트](PRISM_RELIABLE_DOSE_RESULTS.md)

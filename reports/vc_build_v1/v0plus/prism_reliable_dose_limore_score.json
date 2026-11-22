@@ -1,0 +1,3731 @@
+{
+  "forecast_sha256": "f0e15836e723979e7a9c5b087837e1436898be74413180a64cc8ff6a29d8050e",
+  "observations_sha256": "b03a6e17b5c9743b47c06e6ddea0bf49057f685e0a1146ecc066ede0ab598e17",
+  "registration_sha256": "648b905a1895bba9816052541fabe1c3902107c64c630c08fc3d9ffb63ccb3e5",
+  "results": {
+    "full_68": {
+      "ci95": {
+        "equal_raw": {
+          "pearson": [
+            -0.0016281508129676575,
+            0.011208194740903456
+          ],
+          "spearman": [
+            -0.002680173459893213,
+            0.012812927019876014
+          ]
+        },
+        "fitted_auc": {
+          "pearson": [
+            -0.0044317603933604925,
+            0.007607606901924325
+          ],
+          "spearman": [
+            -0.005467802037020161,
+            0.00857799005129809
+          ]
+        }
+      },
+      "drugs": 68,
+      "gate": {
+        "equal_raw": false,
+        "fitted_auc": false
+      },
+      "lineages": 50,
+      "matched_observations": 3400,
+      "metrics": {
+        "across_cell_drug_only_intervals": [
+          {
+            "baseline": "fitted_auc",
+            "candidate": "reliable_raw",
+            "drug_bootstrap_ci95": [
+              -0.001992744231903568,
+              0.004184971716800603
+            ],
+            "drugs": 68,
+            "gain": 0.00113915454732731,
+            "metric": "spearman",
+            "track": "limore"
+          },
+          {
+            "baseline": "fitted_auc",
+            "candidate": "reliable_raw",
+            "drug_bootstrap_ci95": [
+              -0.0023077642809740955,
+              0.004673659900520364
+            ],
+            "drugs": 68,
+            "gain": 0.0011256781581977337,
+            "metric": "pearson",
+            "track": "limore"
+          },
+          {
+            "baseline": "equal_raw",
+            "candidate": "reliable_raw",
+            "drug_bootstrap_ci95": [
+              4.460714664412555e-05,
+              0.009412834313857909
+            ],
+            "drugs": 68,
+            "gain": 0.004199703971352562,
+            "metric": "spearman",
+            "track": "limore"
+          },
+          {
+            "baseline": "equal_raw",
+            "candidate": "reliable_raw",
+            "drug_bootstrap_ci95": [
+              -0.0006893202100487675,
+              0.008621369395831772
+            ],
+            "drugs": 68,
+            "gain": 0.0034381818774484097,
+            "metric": "pearson",
+            "track": "limore"
+          }
+        ],
+        "across_cell_scores": [
+          {
+            "method": "drug_mean",
+            "n_drugs": 68,
+            "track": "limore",
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          {
+            "method": "equal_raw",
+            "n_drugs": 68,
+            "track": "limore",
+            "within_drug_pearson": 0.34210234069826717,
+            "within_drug_spearman": 0.2905552208429182
+          },
+          {
+            "method": "fitted_auc",
+            "n_drugs": 68,
+            "track": "limore",
+            "within_drug_pearson": 0.34441484441751785,
+            "within_drug_spearman": 0.29361577026694347
+          },
+          {
+            "method": "reliable_raw",
+            "n_drugs": 68,
+            "track": "limore",
+            "within_drug_pearson": 0.34554052257571566,
+            "within_drug_spearman": 0.2947549248142708
+          }
+        ],
+        "paired_contrasts": [
+          {
+            "baseline": "fitted_auc",
+            "candidate": "reliable_raw",
+            "ci95": [
+              -0.00048619288774509606,
+              0.0065286867728743285
+            ],
+            "gain": 0.0022825668199581983,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "limore"
+          },
+          {
+            "baseline": "fitted_auc",
+            "candidate": "reliable_raw",
+            "ci95": [
+              0.0,
+              0.012000000000000066
+            ],
+            "gain": 0.0040000000000000036,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "limore"
+          },
+          {
+            "baseline": "fitted_auc",
+            "candidate": "reliable_raw",
+            "ci95": [
+              -0.0002149701328575948,
+              0.0021604975988659737
+            ],
+            "gain": 0.0009831859291395961,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "limore"
+          },
+          {
+            "baseline": "equal_raw",
+            "candidate": "reliable_raw",
+            "ci95": [
+              -0.004463776003957582,
+              0.0019341340717333982
+            ],
+            "gain": -0.001266352215154809,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "limore"
+          },
+          {
+            "baseline": "equal_raw",
+            "candidate": "reliable_raw",
+            "ci95": [
+              -0.012000000000000066,
+              0.0
+            ],
+            "gain": -0.0040000000000000036,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "limore"
+          },
+          {
+            "baseline": "equal_raw",
+            "candidate": "reliable_raw",
+            "ci95": [
+              0.0007668663936247572,
+              0.0025580772622949832
+            ],
+            "gain": 0.001638147177085325,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "limore"
+          }
+        ],
+        "scores": [
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7101872416770252,
+            "macro_spearman": 0.5183908483077166,
+            "macro_top5_overlap": 0.264,
+            "method": "drug_mean",
+            "registered_rows": 3400,
+            "track": "limore"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7455803958358981,
+            "macro_spearman": 0.5441836267441794,
+            "macro_top5_overlap": 0.29599999999999993,
+            "method": "equal_raw",
+            "registered_rows": 3400,
+            "track": "limore"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7420314768007852,
+            "macro_spearman": 0.5448385879921253,
+            "macro_top5_overlap": 0.288,
+            "method": "fitted_auc",
+            "registered_rows": 3400,
+            "track": "limore"
+          },
+          {
+            "cells": 50,
+            "common_rows": 3400,
+            "covered_rows": 3400,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7443140436207433,
+            "macro_spearman": 0.5458217739212649,
+            "macro_top5_overlap": 0.292,
+            "method": "reliable_raw",
+            "registered_rows": 3400,
+            "track": "limore"
+          }
+        ]
+      },
+      "pass": false,
+      "per_drug": [
+        {
+          "compound_id": "AHJRHEGDXFFMBM-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AHJRHEGDXFFMBM-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.37523215740120686,
+          "spearman": 0.28553750466344346,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AHJRHEGDXFFMBM-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.3788688520745424,
+          "spearman": 0.2936943318668882,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AHJRHEGDXFFMBM-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.37562162210575,
+          "spearman": 0.2906355216655964,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AOJJSUZBOXZQNB-TZSSRYMLSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AOJJSUZBOXZQNB-TZSSRYMLSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5755943372193524,
+          "spearman": 0.5966120096380304,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AOJJSUZBOXZQNB-TZSSRYMLSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5751846508010152,
+          "spearman": 0.5989669305718361,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AOJJSUZBOXZQNB-TZSSRYMLSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.575267506325558,
+          "spearman": 0.5971887249687583,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AOJJSUZBOXZQNB-VTZDEGQISA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AOJJSUZBOXZQNB-VTZDEGQISA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5332061666754111,
+          "spearman": 0.568595554401989,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AOJJSUZBOXZQNB-VTZDEGQISA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.533102261403626,
+          "spearman": 0.5679206063129921,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AOJJSUZBOXZQNB-VTZDEGQISA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5330197887989679,
+          "spearman": 0.568595554401989,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AYUNIORJHRXIBJ-TXHRRWQRSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AYUNIORJHRXIBJ-TXHRRWQRSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.11768250998814396,
+          "spearman": 0.1532292917166867,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AYUNIORJHRXIBJ-TXHRRWQRSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.11918118195610196,
+          "spearman": 0.15265306122448982,
+          "track": "limore"
+        },
+        {
+          "compound_id": "AYUNIORJHRXIBJ-TXHRRWQRSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.11819455025962575,
+          "spearman": 0.15428571428571428,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BKQFRNYHFIQEKN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BKQFRNYHFIQEKN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5014877512713137,
+          "spearman": 0.457684673374148,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BKQFRNYHFIQEKN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.501808343055347,
+          "spearman": 0.457684673374148,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BKQFRNYHFIQEKN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5011454044848083,
+          "spearman": 0.4584878931585054,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BLMPQMFVWMYDKT-NZTKNTHTSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BLMPQMFVWMYDKT-NZTKNTHTSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.4781853920530463,
+          "spearman": 0.40456182472989194,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BLMPQMFVWMYDKT-NZTKNTHTSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.47818281360008297,
+          "spearman": 0.40936374549819926,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BLMPQMFVWMYDKT-NZTKNTHTSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.4781244658987308,
+          "spearman": 0.40542617046818724,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BSMCAPRUBJMWDF-KRWDZBQOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BSMCAPRUBJMWDF-KRWDZBQOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.027303520328698774,
+          "spearman": 0.07418967587034814,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BSMCAPRUBJMWDF-KRWDZBQOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.07391763385279182,
+          "spearman": 0.12384153661464585,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BSMCAPRUBJMWDF-KRWDZBQOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.108171398717366,
+          "spearman": 0.16235294117647062,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CBPNZQVSJQDFBE-FUXHJELOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CBPNZQVSJQDFBE-FUXHJELOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.37551815744151684,
+          "spearman": 0.3777137476836401,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CBPNZQVSJQDFBE-FUXHJELOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.37431949333115966,
+          "spearman": 0.3719500587566263,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CBPNZQVSJQDFBE-FUXHJELOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.37494927100627795,
+          "spearman": 0.3746397802558994,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CEGSUKYESLWKJP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CEGSUKYESLWKJP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.012297435479428255,
+          "spearman": -0.04705052148091447,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CEGSUKYESLWKJP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.014276580147389148,
+          "spearman": -0.0493621131196902,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CEGSUKYESLWKJP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.011557550397227495,
+          "spearman": -0.045702093024961955,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CUIHSIWYWATEQL-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CUIHSIWYWATEQL-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5575139759082441,
+          "spearman": 0.2534631711317112,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CUIHSIWYWATEQL-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5558907081216623,
+          "spearman": 0.24896639987737143,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CUIHSIWYWATEQL-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5603441508422556,
+          "spearman": 0.25235106641289595,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CXQHYVUVSFXTMY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CXQHYVUVSFXTMY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.4846680129938823,
+          "spearman": 0.40997935164854,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CXQHYVUVSFXTMY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.468042817074271,
+          "spearman": 0.40335206448355254,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CXQHYVUVSFXTMY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.47860573421269065,
+          "spearman": 0.4195841156557683,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CYOHGALHFOKKQC-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CYOHGALHFOKKQC-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.04692671684261169,
+          "spearman": -0.06998078972215965,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CYOHGALHFOKKQC-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.047988605643233456,
+          "spearman": -0.0691162363831076,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CYOHGALHFOKKQC-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.048727083875197905,
+          "spearman": -0.06604226895536687,
+          "track": "limore"
+        },
+        {
+          "compound_id": "DMMILYKXNCVKOJ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "DMMILYKXNCVKOJ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.48860950560552496,
+          "spearman": 0.4985418781595028,
+          "track": "limore"
+        },
+        {
+          "compound_id": "DMMILYKXNCVKOJ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.48889662393555544,
+          "spearman": 0.4972823223503348,
+          "track": "limore"
+        },
+        {
+          "compound_id": "DMMILYKXNCVKOJ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.48820218511493724,
+          "spearman": 0.4996076561518756,
+          "track": "limore"
+        },
+        {
+          "compound_id": "DNVXATUJJDPFDM-KRWDZBQOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "DNVXATUJJDPFDM-KRWDZBQOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.13200124473589145,
+          "spearman": -0.05147782661331595,
+          "track": "limore"
+        },
+        {
+          "compound_id": "DNVXATUJJDPFDM-KRWDZBQOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.13129831831816316,
+          "spearman": -0.05387884464565345,
+          "track": "limore"
+        },
+        {
+          "compound_id": "DNVXATUJJDPFDM-KRWDZBQOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.13158794969734083,
+          "spearman": -0.05147782661331595,
+          "track": "limore"
+        },
+        {
+          "compound_id": "DXCUKNQANPLTEJ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "DXCUKNQANPLTEJ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.47679006239860905,
+          "spearman": 0.09990394140157317,
+          "track": "limore"
+        },
+        {
+          "compound_id": "DXCUKNQANPLTEJ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.47760073560921756,
+          "spearman": 0.09841498842876127,
+          "track": "limore"
+        },
+        {
+          "compound_id": "DXCUKNQANPLTEJ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.4731256360891034,
+          "spearman": 0.1040826158736582,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FBOZXECLQNJBKD-ZDUSSCGKSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FBOZXECLQNJBKD-ZDUSSCGKSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.1724207495760264,
+          "spearman": 0.1761033480725309,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FBOZXECLQNJBKD-ZDUSSCGKSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.17181047261475316,
+          "spearman": 0.17677568155303688,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FBOZXECLQNJBKD-ZDUSSCGKSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.17170513053202685,
+          "spearman": 0.17677568155303688,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FDLYAMZZIXQODN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FDLYAMZZIXQODN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.2956425186147625,
+          "spearman": 0.19815375943533328,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FDLYAMZZIXQODN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.29171420455878916,
+          "spearman": 0.2056548481205825,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FDLYAMZZIXQODN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.29245288106910816,
+          "spearman": 0.2035391564401276,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.4104834799438087,
+          "spearman": 0.2869147659063625,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.43409939186659957,
+          "spearman": 0.306890756302521,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.49885775136581045,
+          "spearman": 0.3126530612244898,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FPOHNWQLNRZRFC-ZHACJKMWSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FPOHNWQLNRZRFC-ZHACJKMWSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.1096326439535735,
+          "spearman": 0.00014405762304921967,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FPOHNWQLNRZRFC-ZHACJKMWSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.10876550977646286,
+          "spearman": 0.0007202881152460984,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FPOHNWQLNRZRFC-ZHACJKMWSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.1092362485490085,
+          "spearman": 0.0007202881152460984,
+          "track": "limore"
+        },
+        {
+          "compound_id": "GHASVSINZRGABV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "GHASVSINZRGABV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": -0.022760981207483787,
+          "spearman": 0.03415806303394482,
+          "track": "limore"
+        },
+        {
+          "compound_id": "GHASVSINZRGABV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": -0.02397861181852375,
+          "spearman": 0.03127552606905496,
+          "track": "limore"
+        },
+        {
+          "compound_id": "GHASVSINZRGABV-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": -0.02423926899402589,
+          "spearman": 0.02887341193164674,
+          "track": "limore"
+        },
+        {
+          "compound_id": "GXJABQQUPOEUTA-RDJZCZTQSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "GXJABQQUPOEUTA-RDJZCZTQSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5729572565386489,
+          "spearman": 0.5614885954381752,
+          "track": "limore"
+        },
+        {
+          "compound_id": "GXJABQQUPOEUTA-RDJZCZTQSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5734585636053164,
+          "spearman": 0.5596638655462184,
+          "track": "limore"
+        },
+        {
+          "compound_id": "GXJABQQUPOEUTA-RDJZCZTQSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5731637313370285,
+          "spearman": 0.5608163265306122,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HFNKQEVNSGCOJV-OAHLLOKOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HFNKQEVNSGCOJV-OAHLLOKOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": -0.2316404175197185,
+          "spearman": -0.18200383662731356,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HFNKQEVNSGCOJV-OAHLLOKOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": -0.23163267297530865,
+          "spearman": -0.17827630629859348,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HFNKQEVNSGCOJV-OAHLLOKOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": -0.23135378992241945,
+          "spearman": -0.17827630629859348,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HLXSCTYHLQHQDJ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HLXSCTYHLQHQDJ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5368561627671513,
+          "spearman": 0.4834294087532856,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HLXSCTYHLQHQDJ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5351783789160929,
+          "spearman": 0.47804996575473924,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HLXSCTYHLQHQDJ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5364173351866962,
+          "spearman": 0.4830451628248179,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HWGQMRYQVZSGDQ-HZPDHXFCSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HWGQMRYQVZSGDQ-HZPDHXFCSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.47674907957342444,
+          "spearman": 0.5704333950270541,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HWGQMRYQVZSGDQ-HZPDHXFCSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.46896738855030995,
+          "spearman": 0.5495327539597902,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HWGQMRYQVZSGDQ-HZPDHXFCSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.4724747338363751,
+          "spearman": 0.5816060879478034,
+          "track": "limore"
+        },
+        {
+          "compound_id": "IAYGCINLNONXHY-LBPRGKRZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "IAYGCINLNONXHY-LBPRGKRZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.6994144148832923,
+          "spearman": 0.6115873131970073,
+          "track": "limore"
+        },
+        {
+          "compound_id": "IAYGCINLNONXHY-LBPRGKRZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.6987593787414771,
+          "spearman": 0.6100506616563114,
+          "track": "limore"
+        },
+        {
+          "compound_id": "IAYGCINLNONXHY-LBPRGKRZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.6991833868357576,
+          "spearman": 0.6112031503118334,
+          "track": "limore"
+        },
+        {
+          "compound_id": "IQCKJUKAQJINMK-HUBRGWSESA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "IQCKJUKAQJINMK-HUBRGWSESA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": -0.16204970116384118,
+          "spearman": -0.06239970549868796,
+          "track": "limore"
+        },
+        {
+          "compound_id": "IQCKJUKAQJINMK-HUBRGWSESA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": -0.1613510282853529,
+          "spearman": -0.0603519485269899,
+          "track": "limore"
+        },
+        {
+          "compound_id": "IQCKJUKAQJINMK-HUBRGWSESA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": -0.1633719632210135,
+          "spearman": -0.06262723405109885,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JAMULYFATHSZJM-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JAMULYFATHSZJM-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.10260464983132139,
+          "spearman": 0.05844498898398421,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JAMULYFATHSZJM-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.10197145621289466,
+          "spearman": 0.0568121791027554,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JAMULYFATHSZJM-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.10175678494833508,
+          "spearman": 0.054987273941382024,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JLYAXFNOILIKPP-KXQOOQHDSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JLYAXFNOILIKPP-KXQOOQHDSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.2979950676413777,
+          "spearman": 0.3661464585834333,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JLYAXFNOILIKPP-KXQOOQHDSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.2976749240020487,
+          "spearman": 0.36749099639855937,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JLYAXFNOILIKPP-KXQOOQHDSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.2978693513473286,
+          "spearman": 0.3661464585834333,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JOGKUKXHTYWRGZ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JOGKUKXHTYWRGZ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.6362763420846077,
+          "spearman": 0.5742075093537535,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JOGKUKXHTYWRGZ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.6367463930383391,
+          "spearman": 0.5763208619603252,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JOGKUKXHTYWRGZ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.6362713486688975,
+          "spearman": 0.5754563086212732,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JXLYSJRDGCGARV-CFWMRBGOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JXLYSJRDGCGARV-CFWMRBGOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5271672592085161,
+          "spearman": 0.49402103671178765,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JXLYSJRDGCGARV-CFWMRBGOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5274118674462975,
+          "spearman": 0.49440522727207675,
+          "track": "limore"
+        },
+        {
+          "compound_id": "JXLYSJRDGCGARV-CFWMRBGOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5273108938492761,
+          "spearman": 0.49440522727207675,
+          "track": "limore"
+        },
+        {
+          "compound_id": "KPBNHDGDUADAGP-VAWYXSNFSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "KPBNHDGDUADAGP-VAWYXSNFSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5785693706322808,
+          "spearman": 0.4068034178505058,
+          "track": "limore"
+        },
+        {
+          "compound_id": "KPBNHDGDUADAGP-VAWYXSNFSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5790843870882075,
+          "spearman": 0.40660870519388237,
+          "track": "limore"
+        },
+        {
+          "compound_id": "KPBNHDGDUADAGP-VAWYXSNFSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.575466253211365,
+          "spearman": 0.4158575563834954,
+          "track": "limore"
+        },
+        {
+          "compound_id": "KTEIFNKAUNYNJU-GFCCVEGCSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "KTEIFNKAUNYNJU-GFCCVEGCSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.2950694272512157,
+          "spearman": 0.23267540807510556,
+          "track": "limore"
+        },
+        {
+          "compound_id": "KTEIFNKAUNYNJU-GFCCVEGCSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.30175272831767597,
+          "spearman": 0.24996398328811653,
+          "track": "limore"
+        },
+        {
+          "compound_id": "KTEIFNKAUNYNJU-GFCCVEGCSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.2952089063326707,
+          "spearman": 0.2369975518783583,
+          "track": "limore"
+        },
+        {
+          "compound_id": "LIRYPHYGHXZJBZ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "LIRYPHYGHXZJBZ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": -0.06079401684796488,
+          "spearman": -0.11596638655462185,
+          "track": "limore"
+        },
+        {
+          "compound_id": "LIRYPHYGHXZJBZ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": -0.06028489619883889,
+          "spearman": -0.12,
+          "track": "limore"
+        },
+        {
+          "compound_id": "LIRYPHYGHXZJBZ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": -0.0593802427599572,
+          "spearman": -0.11990396158463384,
+          "track": "limore"
+        },
+        {
+          "compound_id": "LQBVNQSMGBZMKD-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "LQBVNQSMGBZMKD-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.1408688740176675,
+          "spearman": 0.12445043338233079,
+          "track": "limore"
+        },
+        {
+          "compound_id": "LQBVNQSMGBZMKD-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.14091813787548563,
+          "spearman": 0.12445043338233079,
+          "track": "limore"
+        },
+        {
+          "compound_id": "LQBVNQSMGBZMKD-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.14027317955913934,
+          "spearman": 0.12445043338233079,
+          "track": "limore"
+        },
+        {
+          "compound_id": "MCUJKPPARUPFJM-UWCCDQBKSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "MCUJKPPARUPFJM-UWCCDQBKSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.28806453847665014,
+          "spearman": 0.27556231989953955,
+          "track": "limore"
+        },
+        {
+          "compound_id": "MCUJKPPARUPFJM-UWCCDQBKSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.28630852586775024,
+          "spearman": 0.27719827570128297,
+          "track": "limore"
+        },
+        {
+          "compound_id": "MCUJKPPARUPFJM-UWCCDQBKSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.2858779490854991,
+          "spearman": 0.2735895496680255,
+          "track": "limore"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.4375164798678336,
+          "spearman": 0.22324129651860744,
+          "track": "limore"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.43594398498023307,
+          "spearman": 0.21575030012004803,
+          "track": "limore"
+        },
+        {
+          "compound_id": "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.4389309692297992,
+          "spearman": 0.21834333733493394,
+          "track": "limore"
+        },
+        {
+          "compound_id": "MUOKSQABCJCOPU-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "MUOKSQABCJCOPU-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.07439129265790424,
+          "spearman": -0.09298162496876775,
+          "track": "limore"
+        },
+        {
+          "compound_id": "MUOKSQABCJCOPU-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.07587211597758907,
+          "spearman": -0.08669581568850786,
+          "track": "limore"
+        },
+        {
+          "compound_id": "MUOKSQABCJCOPU-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.07377277063564064,
+          "spearman": -0.09249810117797853,
+          "track": "limore"
+        },
+        {
+          "compound_id": "NCNRHFGMJRPRSK-MDZDMXLPSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "NCNRHFGMJRPRSK-MDZDMXLPSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.4003569901104986,
+          "spearman": 0.2729193692653922,
+          "track": "limore"
+        },
+        {
+          "compound_id": "NCNRHFGMJRPRSK-MDZDMXLPSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.3812778288789006,
+          "spearman": 0.2556307940523812,
+          "track": "limore"
+        },
+        {
+          "compound_id": "NCNRHFGMJRPRSK-MDZDMXLPSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.38200038528038327,
+          "spearman": 0.23037026471337077,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ONIQOQHATWINJY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ONIQOQHATWINJY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.2518962278099371,
+          "spearman": 0.16233736602006546,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ONIQOQHATWINJY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.2545123742471594,
+          "spearman": 0.18568759294387077,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ONIQOQHATWINJY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.2523572742104651,
+          "spearman": 0.16776314489032726,
+          "track": "limore"
+        },
+        {
+          "compound_id": "OTSOOHRUMBRSHZ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "OTSOOHRUMBRSHZ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.6111777791531026,
+          "spearman": 0.6177338867910037,
+          "track": "limore"
+        },
+        {
+          "compound_id": "OTSOOHRUMBRSHZ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.6112450065942027,
+          "spearman": 0.6177338867910037,
+          "track": "limore"
+        },
+        {
+          "compound_id": "OTSOOHRUMBRSHZ-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.6114504152083103,
+          "spearman": 0.6184070614166032,
+          "track": "limore"
+        },
+        {
+          "compound_id": "OVPNQJVDAFNBDN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "OVPNQJVDAFNBDN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.41392208207912906,
+          "spearman": 0.3861191273688686,
+          "track": "limore"
+        },
+        {
+          "compound_id": "OVPNQJVDAFNBDN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.4840638853256072,
+          "spearman": 0.4750720598091155,
+          "track": "limore"
+        },
+        {
+          "compound_id": "OVPNQJVDAFNBDN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5213340382998755,
+          "spearman": 0.5069164411308669,
+          "track": "limore"
+        },
+        {
+          "compound_id": "PKCDDUHJAFVJJB-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "PKCDDUHJAFVJJB-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": -0.05995064708636492,
+          "spearman": -0.22692718963626946,
+          "track": "limore"
+        },
+        {
+          "compound_id": "PKCDDUHJAFVJJB-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": -0.05181280773910981,
+          "spearman": -0.2116444364782713,
+          "track": "limore"
+        },
+        {
+          "compound_id": "PKCDDUHJAFVJJB-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": -0.05510579087906174,
+          "spearman": -0.2261558203917017,
+          "track": "limore"
+        },
+        {
+          "compound_id": "PLHJCIYEEKOWNM-HHHXNRCGSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "PLHJCIYEEKOWNM-HHHXNRCGSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.22283707670124,
+          "spearman": 0.1564503349871113,
+          "track": "limore"
+        },
+        {
+          "compound_id": "PLHJCIYEEKOWNM-HHHXNRCGSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.22502153290329893,
+          "spearman": 0.18156498360536155,
+          "track": "limore"
+        },
+        {
+          "compound_id": "PLHJCIYEEKOWNM-HHHXNRCGSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.21421651310565987,
+          "spearman": 0.15990780095367732,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QFJCIRLUMZQUOT-HPLJOQBZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QFJCIRLUMZQUOT-HPLJOQBZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5312979837704643,
+          "spearman": 0.4658021267848349,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QFJCIRLUMZQUOT-HPLJOQBZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5299389571695451,
+          "spearman": 0.4595100997061781,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QFJCIRLUMZQUOT-HPLJOQBZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5308002515779789,
+          "spearman": 0.4635446819550878,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QQWUGDVOUVUTOY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QQWUGDVOUVUTOY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.37552610821446536,
+          "spearman": 0.4047636198914554,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QQWUGDVOUVUTOY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.4522936386298147,
+          "spearman": 0.471079737944617,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QQWUGDVOUVUTOY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.3967473879686451,
+          "spearman": 0.42594059893667213,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QYZOGCMHVIGURT-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QYZOGCMHVIGURT-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.030553795247052727,
+          "spearman": 0.08693983610723353,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QYZOGCMHVIGURT-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.033081902481679526,
+          "spearman": 0.09112102225501094,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QYZOGCMHVIGURT-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.032137053668177845,
+          "spearman": 0.09112102225501094,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RCINICONZNJXQF-MZXODVADSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RCINICONZNJXQF-MZXODVADSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5688880444032388,
+          "spearman": 0.4984513435132645,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RCINICONZNJXQF-MZXODVADSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.568758296918587,
+          "spearman": 0.4986434249558515,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RCINICONZNJXQF-MZXODVADSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5689145233045598,
+          "spearman": 0.49893154711973203,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RVAQIUULWULRNW-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RVAQIUULWULRNW-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.2168359273329898,
+          "spearman": 0.21234603477992825,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RVAQIUULWULRNW-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.24800050395640014,
+          "spearman": 0.2134024827141568,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RVAQIUULWULRNW-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.20977492266094983,
+          "spearman": 0.23746068339817852,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RYMZZMVNJRMUDD-HGQWONQESA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RYMZZMVNJRMUDD-HGQWONQESA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5476733464252088,
+          "spearman": 0.6687635054021608,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RYMZZMVNJRMUDD-HGQWONQESA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5473492541072533,
+          "spearman": 0.6687635054021608,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RYMZZMVNJRMUDD-HGQWONQESA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.547472585023645,
+          "spearman": 0.6706842737094838,
+          "track": "limore"
+        },
+        {
+          "compound_id": "TUVCWJQQGGETHL-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "TUVCWJQQGGETHL-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5940501377064203,
+          "spearman": 0.6119430255132142,
+          "track": "limore"
+        },
+        {
+          "compound_id": "TUVCWJQQGGETHL-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.59311166997404,
+          "spearman": 0.6124236216221541,
+          "track": "limore"
+        },
+        {
+          "compound_id": "TUVCWJQQGGETHL-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5934906925759387,
+          "spearman": 0.6119430255132142,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UBPYILGKFZZVDX-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UBPYILGKFZZVDX-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.4693132604174616,
+          "spearman": 0.44720288115246093,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UBPYILGKFZZVDX-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.4704548984138967,
+          "spearman": 0.44153661464585836,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UBPYILGKFZZVDX-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.46859540696422086,
+          "spearman": 0.44441776710684266,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UCEQXRCJXIVODC-PMACEKPBSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UCEQXRCJXIVODC-PMACEKPBSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5856535880735527,
+          "spearman": 0.5465197245206611,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UCEQXRCJXIVODC-PMACEKPBSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5805463475696209,
+          "spearman": 0.5531945546505594,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UCEQXRCJXIVODC-PMACEKPBSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5773602513992258,
+          "spearman": 0.5338423493099191,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UCFGDBYHRUNTLO-QHCPKHFHSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UCFGDBYHRUNTLO-QHCPKHFHSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.4297890944375871,
+          "spearman": 0.4022094256234489,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UCFGDBYHRUNTLO-QHCPKHFHSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.42981023038570915,
+          "spearman": 0.40192124117709827,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UCFGDBYHRUNTLO-QHCPKHFHSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.42943118405511593,
+          "spearman": 0.4022094256234489,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ULXXDDBFHOBEHA-CWDCEQMOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ULXXDDBFHOBEHA-CWDCEQMOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.10092554404809279,
+          "spearman": 0.066890756302521,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ULXXDDBFHOBEHA-CWDCEQMOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.09952748877076444,
+          "spearman": 0.062088835534213675,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ULXXDDBFHOBEHA-CWDCEQMOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.10066413119353707,
+          "spearman": 0.060168067226890755,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UWKQSNNFCGGAFS-XIFFEERXSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UWKQSNNFCGGAFS-XIFFEERXSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5052234983751068,
+          "spearman": 0.4716310897387289,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UWKQSNNFCGGAFS-XIFFEERXSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.505208245464527,
+          "spearman": 0.47259193539369215,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UWKQSNNFCGGAFS-XIFFEERXSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5046281642862286,
+          "spearman": 0.4712467514767436,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VABYUUZNAVQNPG-BQYQJAHWSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VABYUUZNAVQNPG-BQYQJAHWSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.3516950637561787,
+          "spearman": 0.20456829196151063,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VABYUUZNAVQNPG-BQYQJAHWSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.351137404354616,
+          "spearman": 0.2067575494414372,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VABYUUZNAVQNPG-BQYQJAHWSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.350759644672715,
+          "spearman": 0.2033463808099237,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VJJPUSNTGOMMGY-MRVIYFEKSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VJJPUSNTGOMMGY-MRVIYFEKSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5527223083459332,
+          "spearman": 0.5879629649544368,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VJJPUSNTGOMMGY-MRVIYFEKSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.552574386996588,
+          "spearman": 0.5870961180898959,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VJJPUSNTGOMMGY-MRVIYFEKSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.552441300391183,
+          "spearman": 0.5839176795865793,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VSJKWCGYPAHWDS-FQEVSTJZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VSJKWCGYPAHWDS-FQEVSTJZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.43233157621112156,
+          "spearman": 0.4538731231615733,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VSJKWCGYPAHWDS-FQEVSTJZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.4321358513048767,
+          "spearman": 0.4538731231615733,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VSJKWCGYPAHWDS-FQEVSTJZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.4319826602905468,
+          "spearman": 0.4538731231615733,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VUVUVNZRUGEAHB-CYBMUJFWSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VUVUVNZRUGEAHB-CYBMUJFWSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": -0.02775861727301467,
+          "spearman": -0.0467238109092877,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VUVUVNZRUGEAHB-CYBMUJFWSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": -0.02819467112761843,
+          "spearman": -0.049508991826799194,
+          "track": "limore"
+        },
+        {
+          "compound_id": "VUVUVNZRUGEAHB-CYBMUJFWSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": -0.02686372676912906,
+          "spearman": -0.0467238109092877,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WAEXFXRVDQXREF-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WAEXFXRVDQXREF-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.25839567904523414,
+          "spearman": 0.1696681561876879,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WAEXFXRVDQXREF-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.2581964325544264,
+          "spearman": 0.1668827746255917,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WAEXFXRVDQXREF-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.25890687984057437,
+          "spearman": 0.1698602514678325,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WINHZLLDWRZWRT-ATVHPVEESA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WINHZLLDWRZWRT-ATVHPVEESA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.37707035017387,
+          "spearman": 0.2628154338196625,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WINHZLLDWRZWRT-ATVHPVEESA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.3802383494173103,
+          "spearman": 0.24917765139598552,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WINHZLLDWRZWRT-ATVHPVEESA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.3749413328400546,
+          "spearman": 0.2510984658218555,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.4677948623315256,
+          "spearman": 0.2043164286548778,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.45195760164197757,
+          "spearman": 0.20865538065557132,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.46679788703504,
+          "spearman": 0.24134215239412893,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XAUDJQYHKZQPEU-KVQBGUIXSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XAUDJQYHKZQPEU-KVQBGUIXSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.31313153204983757,
+          "spearman": 0.1429001484491208,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XAUDJQYHKZQPEU-KVQBGUIXSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.3129943062478151,
+          "spearman": 0.1429001484491208,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XAUDJQYHKZQPEU-KVQBGUIXSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.31326718225037237,
+          "spearman": 0.1429001484491208,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XQVVPGYIWAGRNI-JOCHJYFZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XQVVPGYIWAGRNI-JOCHJYFZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.587812318835663,
+          "spearman": 0.5421409043880014,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XQVVPGYIWAGRNI-JOCHJYFZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5987891127836252,
+          "spearman": 0.5566440980389161,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XQVVPGYIWAGRNI-JOCHJYFZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5929971303874895,
+          "spearman": 0.5413725232674231,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XYFPWWZEPKGCCK-GOSISDBHSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XYFPWWZEPKGCCK-GOSISDBHSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": -0.06258217386050147,
+          "spearman": -0.08794428687801945,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XYFPWWZEPKGCCK-GOSISDBHSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": -0.0616875278261914,
+          "spearman": -0.0937079758050333,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XYFPWWZEPKGCCK-GOSISDBHSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": -0.062393739733822576,
+          "spearman": -0.08986551652035739,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZBNZXTGUTAYRHI-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZBNZXTGUTAYRHI-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.6591684814229272,
+          "spearman": 0.6810257919325227,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZBNZXTGUTAYRHI-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.6590515513013554,
+          "spearman": 0.680833696652378,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZBNZXTGUTAYRHI-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.6587723180640873,
+          "spearman": 0.6805455537321612,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZDZOTLJHXYCWBA-VCVYQWHSSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZDZOTLJHXYCWBA-VCVYQWHSSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.6328160676109353,
+          "spearman": 0.5770126535313475,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZDZOTLJHXYCWBA-VCVYQWHSSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.6324738338079892,
+          "spearman": 0.5770126535313475,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZDZOTLJHXYCWBA-VCVYQWHSSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.6327884280706136,
+          "spearman": 0.5770126535313475,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZLHFILGSQDJULK-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZLHFILGSQDJULK-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5659404444893374,
+          "spearman": 0.5779254451394045,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZLHFILGSQDJULK-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5104033158000888,
+          "spearman": 0.5349094308229756,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZLHFILGSQDJULK-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5615602093968941,
+          "spearman": 0.5757602095194501,
+          "track": "limore"
+        }
+      ],
+      "strata": {
+        "egfr": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.39188411537889584,
+            "spearman": 0.21627364205562374
+          },
+          "fitted_auc": {
+            "pearson": 0.3929429207997579,
+            "spearman": 0.2152548873142852
+          },
+          "reliable_raw": {
+            "pearson": 0.40675603708441616,
+            "spearman": 0.22265935840253248
+          }
+        },
+        "fgfr": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.5006996335461262,
+            "spearman": 0.1858945137293874
+          },
+          "fitted_auc": {
+            "pearson": 0.4951496817909525,
+            "spearman": 0.18534558965390135
+          },
+          "reliable_raw": {
+            "pearson": 0.5000892246554663,
+            "spearman": 0.1992586115602277
+          }
+        },
+        "hcc_tki": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.39192276248827623,
+            "spearman": 0.2192024642749783
+          },
+          "fitted_auc": {
+            "pearson": 0.3941283381839924,
+            "spearman": 0.22924600750550278
+          },
+          "reliable_raw": {
+            "pearson": 0.4142359704602787,
+            "spearman": 0.23502542396096998
+          }
+        },
+        "hdac": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.25612843770310206,
+            "spearman": 0.14757719435870975
+          },
+          "fitted_auc": {
+            "pearson": 0.24941325706992998,
+            "spearman": 0.14107795226440634
+          },
+          "reliable_raw": {
+            "pearson": 0.2500478378899887,
+            "spearman": 0.13365026809881644
+          }
+        },
+        "kinase_inhibitor": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.3344806077418317,
+            "spearman": 0.26273238899122797
+          },
+          "fitted_auc": {
+            "pearson": 0.33910390098329496,
+            "spearman": 0.2692053631333362
+          },
+          "reliable_raw": {
+            "pearson": 0.34288025739271644,
+            "spearman": 0.2708681752442259
+          }
+        },
+        "met": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.40432181403214695,
+            "spearman": 0.33787796256609304
+          },
+          "fitted_auc": {
+            "pearson": 0.4012135668021818,
+            "spearman": 0.34804954884152484
+          },
+          "reliable_raw": {
+            "pearson": 0.4008830415387631,
+            "spearman": 0.33954679043359326
+          }
+        },
+        "mtor": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.4534080706059906,
+            "spearman": 0.4217579372342375
+          },
+          "fitted_auc": {
+            "pearson": 0.4521292252503524,
+            "spearman": 0.4157300792314022
+          },
+          "reliable_raw": {
+            "pearson": 0.45287476129212845,
+            "spearman": 0.4190922311054936
+          }
+        },
+        "nonselective_cytotoxics": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.4350441377421319,
+            "spearman": 0.4169608967358503
+          },
+          "fitted_auc": {
+            "pearson": 0.43479048263110504,
+            "spearman": 0.4169485513781314
+          },
+          "reliable_raw": {
+            "pearson": 0.43470979109670194,
+            "spearman": 0.41632749408967107
+          }
+        },
+        "targeted_or_kinase": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.32812772909004284,
+            "spearman": 0.25339548131832107
+          },
+          "fitted_auc": {
+            "pearson": 0.33183168661194107,
+            "spearman": 0.25881665414396354
+          },
+          "reliable_raw": {
+            "pearson": 0.33535330446006284,
+            "spearman": 0.2597423989891927
+          }
+        }
+      }
+    },
+    "primary_14": {
+      "ci95": {
+        "equal_raw": {
+          "pearson": [
+            -0.0059794945964351765,
+            0.05130052720298951
+          ],
+          "spearman": [
+            -0.008239727909884342,
+            0.05625342139369506
+          ]
+        },
+        "fitted_auc": {
+          "pearson": [
+            -0.018559139883450076,
+            0.036029293016246904
+          ],
+          "spearman": [
+            -0.021822423787574027,
+            0.03940850772043826
+          ]
+        }
+      },
+      "drugs": 14,
+      "gate": {
+        "equal_raw": false,
+        "fitted_auc": false
+      },
+      "lineages": 50,
+      "matched_observations": 700,
+      "metrics": {
+        "across_cell_drug_only_intervals": [
+          {
+            "baseline": "fitted_auc",
+            "candidate": "reliable_raw",
+            "drug_bootstrap_ci95": [
+              -0.007250559670588405,
+              0.020973262667848522
+            ],
+            "drugs": 14,
+            "gain": 0.007470531940262003,
+            "metric": "spearman",
+            "track": "limore"
+          },
+          {
+            "baseline": "fitted_auc",
+            "candidate": "reliable_raw",
+            "drug_bootstrap_ci95": [
+              -0.00980934036855096,
+              0.023962733919296462
+            ],
+            "drugs": 14,
+            "gain": 0.007135657925446874,
+            "metric": "pearson",
+            "track": "limore"
+          },
+          {
+            "baseline": "equal_raw",
+            "candidate": "reliable_raw",
+            "drug_bootstrap_ci95": [
+              0.001723253990219527,
+              0.04369901317417193
+            ],
+            "drugs": 14,
+            "gain": 0.020938942193800242,
+            "metric": "spearman",
+            "track": "limore"
+          },
+          {
+            "baseline": "equal_raw",
+            "candidate": "reliable_raw",
+            "drug_bootstrap_ci95": [
+              -0.0022848809460662895,
+              0.04105512401662347
+            ],
+            "drugs": 14,
+            "gain": 0.017279409659805255,
+            "metric": "pearson",
+            "track": "limore"
+          }
+        ],
+        "across_cell_scores": [
+          {
+            "method": "drug_mean",
+            "n_drugs": 14,
+            "track": "limore",
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          {
+            "method": "equal_raw",
+            "n_drugs": 14,
+            "track": "limore",
+            "within_drug_pearson": 0.41531806154574974,
+            "within_drug_spearman": 0.36084439966417936
+          },
+          {
+            "method": "fitted_auc",
+            "n_drugs": 14,
+            "track": "limore",
+            "within_drug_pearson": 0.42546181328010807,
+            "within_drug_spearman": 0.3743128099177176
+          },
+          {
+            "method": "reliable_raw",
+            "n_drugs": 14,
+            "track": "limore",
+            "within_drug_pearson": 0.43259747120555503,
+            "within_drug_spearman": 0.3817833418579796
+          }
+        ],
+        "paired_contrasts": [
+          {
+            "baseline": "fitted_auc",
+            "candidate": "reliable_raw",
+            "ci95": [
+              -0.014513809253193597,
+              0.008360674017361904
+            ],
+            "gain": -0.0023455152322323647,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "limore"
+          },
+          {
+            "baseline": "fitted_auc",
+            "candidate": "reliable_raw",
+            "ci95": [
+              -0.028000000000000025,
+              0.01200000000000001
+            ],
+            "gain": -0.007999999999999896,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "limore"
+          },
+          {
+            "baseline": "fitted_auc",
+            "candidate": "reliable_raw",
+            "ci95": [
+              -0.003831821713405146,
+              0.013670056637450393
+            ],
+            "gain": 0.005151434719183612,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "limore"
+          },
+          {
+            "baseline": "equal_raw",
+            "candidate": "reliable_raw",
+            "ci95": [
+              -0.024631429921407193,
+              -0.0012284193004758878
+            ],
+            "gain": -0.012165338973628037,
+            "lineages": 50,
+            "metric": "ndcg_at_5",
+            "track": "limore"
+          },
+          {
+            "baseline": "equal_raw",
+            "candidate": "reliable_raw",
+            "ci95": [
+              -0.03600000000000003,
+              1.1102230246251565e-16
+            ],
+            "gain": -0.016000000000000014,
+            "lineages": 50,
+            "metric": "top5_overlap",
+            "track": "limore"
+          },
+          {
+            "baseline": "equal_raw",
+            "candidate": "reliable_raw",
+            "ci95": [
+              -0.0036421512529260123,
+              0.009564118539125713
+            ],
+            "gain": 0.0030639538175684655,
+            "lineages": 50,
+            "metric": "spearman",
+            "track": "limore"
+          }
+        ],
+        "scores": [
+          {
+            "cells": 50,
+            "common_rows": 700,
+            "covered_rows": 700,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.6965696546187006,
+            "macro_spearman": 0.37098739612153286,
+            "macro_top5_overlap": 0.504,
+            "method": "drug_mean",
+            "registered_rows": 700,
+            "track": "limore"
+          },
+          {
+            "cells": 50,
+            "common_rows": 700,
+            "covered_rows": 700,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.73059991198096,
+            "macro_spearman": 0.44003827429146547,
+            "macro_top5_overlap": 0.54,
+            "method": "equal_raw",
+            "registered_rows": 700,
+            "track": "limore"
+          },
+          {
+            "cells": 50,
+            "common_rows": 700,
+            "covered_rows": 700,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7207800882395641,
+            "macro_spearman": 0.43795079338985027,
+            "macro_top5_overlap": 0.5320000000000001,
+            "method": "fitted_auc",
+            "registered_rows": 700,
+            "track": "limore"
+          },
+          {
+            "cells": 50,
+            "common_rows": 700,
+            "covered_rows": 700,
+            "lineages": 50,
+            "macro_ndcg_at_5": 0.7184345730073316,
+            "macro_spearman": 0.4431022281090339,
+            "macro_top5_overlap": 0.524,
+            "method": "reliable_raw",
+            "registered_rows": 700,
+            "track": "limore"
+          }
+        ]
+      },
+      "pass": false,
+      "per_drug": [
+        {
+          "compound_id": "BSMCAPRUBJMWDF-KRWDZBQOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BSMCAPRUBJMWDF-KRWDZBQOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.027303520328698774,
+          "spearman": 0.07418967587034814,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BSMCAPRUBJMWDF-KRWDZBQOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.07391763385279182,
+          "spearman": 0.12384153661464585,
+          "track": "limore"
+        },
+        {
+          "compound_id": "BSMCAPRUBJMWDF-KRWDZBQOSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.108171398717366,
+          "spearman": 0.16235294117647062,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CXQHYVUVSFXTMY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CXQHYVUVSFXTMY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.4846680129938823,
+          "spearman": 0.40997935164854,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CXQHYVUVSFXTMY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.468042817074271,
+          "spearman": 0.40335206448355254,
+          "track": "limore"
+        },
+        {
+          "compound_id": "CXQHYVUVSFXTMY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.47860573421269065,
+          "spearman": 0.4195841156557683,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.4104834799438087,
+          "spearman": 0.2869147659063625,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.43409939186659957,
+          "spearman": 0.306890756302521,
+          "track": "limore"
+        },
+        {
+          "compound_id": "FNHKPVJBJVTLMP-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.49885775136581045,
+          "spearman": 0.3126530612244898,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HWGQMRYQVZSGDQ-HZPDHXFCSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HWGQMRYQVZSGDQ-HZPDHXFCSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.47674907957342444,
+          "spearman": 0.5704333950270541,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HWGQMRYQVZSGDQ-HZPDHXFCSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.46896738855030995,
+          "spearman": 0.5495327539597902,
+          "track": "limore"
+        },
+        {
+          "compound_id": "HWGQMRYQVZSGDQ-HZPDHXFCSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.4724747338363751,
+          "spearman": 0.5816060879478034,
+          "track": "limore"
+        },
+        {
+          "compound_id": "KPBNHDGDUADAGP-VAWYXSNFSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "KPBNHDGDUADAGP-VAWYXSNFSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5785693706322808,
+          "spearman": 0.4068034178505058,
+          "track": "limore"
+        },
+        {
+          "compound_id": "KPBNHDGDUADAGP-VAWYXSNFSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5790843870882075,
+          "spearman": 0.40660870519388237,
+          "track": "limore"
+        },
+        {
+          "compound_id": "KPBNHDGDUADAGP-VAWYXSNFSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.575466253211365,
+          "spearman": 0.4158575563834954,
+          "track": "limore"
+        },
+        {
+          "compound_id": "NCNRHFGMJRPRSK-MDZDMXLPSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "NCNRHFGMJRPRSK-MDZDMXLPSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.4003569901104986,
+          "spearman": 0.2729193692653922,
+          "track": "limore"
+        },
+        {
+          "compound_id": "NCNRHFGMJRPRSK-MDZDMXLPSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.3812778288789006,
+          "spearman": 0.2556307940523812,
+          "track": "limore"
+        },
+        {
+          "compound_id": "NCNRHFGMJRPRSK-MDZDMXLPSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.38200038528038327,
+          "spearman": 0.23037026471337077,
+          "track": "limore"
+        },
+        {
+          "compound_id": "OVPNQJVDAFNBDN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "OVPNQJVDAFNBDN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.41392208207912906,
+          "spearman": 0.3861191273688686,
+          "track": "limore"
+        },
+        {
+          "compound_id": "OVPNQJVDAFNBDN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.4840638853256072,
+          "spearman": 0.4750720598091155,
+          "track": "limore"
+        },
+        {
+          "compound_id": "OVPNQJVDAFNBDN-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5213340382998755,
+          "spearman": 0.5069164411308669,
+          "track": "limore"
+        },
+        {
+          "compound_id": "PLHJCIYEEKOWNM-HHHXNRCGSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "PLHJCIYEEKOWNM-HHHXNRCGSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.22283707670124,
+          "spearman": 0.1564503349871113,
+          "track": "limore"
+        },
+        {
+          "compound_id": "PLHJCIYEEKOWNM-HHHXNRCGSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.22502153290329893,
+          "spearman": 0.18156498360536155,
+          "track": "limore"
+        },
+        {
+          "compound_id": "PLHJCIYEEKOWNM-HHHXNRCGSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.21421651310565987,
+          "spearman": 0.15990780095367732,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QQWUGDVOUVUTOY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QQWUGDVOUVUTOY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.37552610821446536,
+          "spearman": 0.4047636198914554,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QQWUGDVOUVUTOY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.4522936386298147,
+          "spearman": 0.471079737944617,
+          "track": "limore"
+        },
+        {
+          "compound_id": "QQWUGDVOUVUTOY-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.3967473879686451,
+          "spearman": 0.42594059893667213,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RVAQIUULWULRNW-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RVAQIUULWULRNW-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.2168359273329898,
+          "spearman": 0.21234603477992825,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RVAQIUULWULRNW-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.24800050395640014,
+          "spearman": 0.2134024827141568,
+          "track": "limore"
+        },
+        {
+          "compound_id": "RVAQIUULWULRNW-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.20977492266094983,
+          "spearman": 0.23746068339817852,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UCEQXRCJXIVODC-PMACEKPBSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UCEQXRCJXIVODC-PMACEKPBSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5856535880735527,
+          "spearman": 0.5465197245206611,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UCEQXRCJXIVODC-PMACEKPBSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5805463475696209,
+          "spearman": 0.5531945546505594,
+          "track": "limore"
+        },
+        {
+          "compound_id": "UCEQXRCJXIVODC-PMACEKPBSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5773602513992258,
+          "spearman": 0.5338423493099191,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.4677948623315256,
+          "spearman": 0.2043164286548778,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.45195760164197757,
+          "spearman": 0.20865538065557132,
+          "track": "limore"
+        },
+        {
+          "compound_id": "WOSKHXYHFSIKNG-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.46679788703504,
+          "spearman": 0.24134215239412893,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XQVVPGYIWAGRNI-JOCHJYFZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XQVVPGYIWAGRNI-JOCHJYFZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.587812318835663,
+          "spearman": 0.5421409043880014,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XQVVPGYIWAGRNI-JOCHJYFZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5987891127836252,
+          "spearman": 0.5566440980389161,
+          "track": "limore"
+        },
+        {
+          "compound_id": "XQVVPGYIWAGRNI-JOCHJYFZSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5929971303874895,
+          "spearman": 0.5413725232674231,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZLHFILGSQDJULK-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "drug_mean",
+          "pearson": 0.0,
+          "spearman": 0.0,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZLHFILGSQDJULK-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "equal_raw",
+          "pearson": 0.5659404444893374,
+          "spearman": 0.5779254451394045,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZLHFILGSQDJULK-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "fitted_auc",
+          "pearson": 0.5104033158000888,
+          "spearman": 0.5349094308229756,
+          "track": "limore"
+        },
+        {
+          "compound_id": "ZLHFILGSQDJULK-UHFFFAOYSA-N",
+          "fold": 0,
+          "lineages": 50,
+          "method": "reliable_raw",
+          "pearson": 0.5615602093968941,
+          "spearman": 0.5757602095194501,
+          "track": "limore"
+        }
+      ],
+      "strata": {
+        "egfr": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.43913917113766715,
+            "spearman": 0.24561559728062016
+          },
+          "fitted_auc": {
+            "pearson": 0.44302849675428857,
+            "spearman": 0.25777306847904613
+          },
+          "reliable_raw": {
+            "pearson": 0.4828278192004252,
+            "spearman": 0.2769976068093094
+          }
+        },
+        "fgfr": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.4677948623315256,
+            "spearman": 0.2043164286548778
+          },
+          "fitted_auc": {
+            "pearson": 0.45195760164197757,
+            "spearman": 0.20865538065557132
+          },
+          "reliable_raw": {
+            "pearson": 0.46679788703504,
+            "spearman": 0.24134215239412893
+          }
+        },
+        "hcc_tki": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.43913917113766715,
+            "spearman": 0.24561559728062016
+          },
+          "fitted_auc": {
+            "pearson": 0.44302849675428857,
+            "spearman": 0.25777306847904613
+          },
+          "reliable_raw": {
+            "pearson": 0.4828278192004252,
+            "spearman": 0.2769976068093094
+          }
+        },
+        "hdac": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.4003569901104986,
+            "spearman": 0.2729193692653922
+          },
+          "fitted_auc": {
+            "pearson": 0.3812778288789006,
+            "spearman": 0.2556307940523812
+          },
+          "reliable_raw": {
+            "pearson": 0.38200038528038327,
+            "spearman": 0.23037026471337077
+          }
+        },
+        "kinase_inhibitor": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.43545604636556257,
+            "spearman": 0.3814298937098355
+          },
+          "fitted_auc": {
+            "pearson": 0.45045708272715523,
+            "spearman": 0.4037377354802749
+          },
+          "reliable_raw": {
+            "pearson": 0.4669368654203374,
+            "spearman": 0.413307154735021
+          }
+        },
+        "met": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.5351608005337175,
+            "spearman": 0.4782495380846006
+          },
+          "fitted_auc": {
+            "pearson": 0.5242945823219459,
+            "spearman": 0.478273309567056
+          },
+          "reliable_raw": {
+            "pearson": 0.5279829928059582,
+            "spearman": 0.4767132324828437
+          }
+        },
+        "targeted_or_kinase": {
+          "drug_mean": {
+            "pearson": 0.0,
+            "spearman": 0.0
+          },
+          "equal_raw": {
+            "pearson": 0.43194614074005616,
+            "spearman": 0.37057884126539115
+          },
+          "fitted_auc": {
+            "pearson": 0.44353915734232974,
+            "spearman": 0.38892704133748557
+          },
+          "reliable_raw": {
+            "pearson": 0.45844321740634203,
+            "spearman": 0.395013465732856
+          }
+        }
+      }
+    }
+  }
+}
