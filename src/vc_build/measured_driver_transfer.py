@@ -107,27 +107,22 @@ def permutation(query, indices):
     return shuffled
 
 
-def structured(args, train, query, fit, held, edges, targets):
+def structured_models(train, query, fit, held, edges, targets, auxiliary, blocks, groups):
     import torch
 
     from .structured_kernel import KernelGrid, dot_kernel, solve_residuals
-    from .v0plus_neural import load_auxiliary
-
     if not torch.cuda.is_available():
         raise RuntimeError("Measured-driver kernels require a G1 CUDA device")
     device = torch.device("cuda")
-    measurements, receipt = measured_drivers.read(args.genomics)
-    auxiliary, aux_receipt = load_auxiliary(args.auxiliary)
     _, anchors, rows, _ = panel_targets(train)
     grid = KernelGrid.prepare(rows, fit, held, edges, targets, auxiliary, device=device)
     cell, cross = grid.cell["full"]
     drug = grid.drug["structured"]
     target_fit, target_held, target_covered = target_feature(fit, held, grid.drugs, targets, device)
     measured, diagnostic = {}, {}
-    suffix = args.study.lower()
-    for name in ("coding", "copy") if args.study == "LIMORE" else ("coding",):
-        train_data = measurements[f"source_{name}"].reindex(fit.index)
-        test_data = measurements[f"{suffix}_{name}"].reindex(held.index)
+    for name, (fit_block, test_block) in blocks.items():
+        train_data = fit_block.reindex(fit.index)
+        test_data = test_block.reindex(held.index)
         if not test_data.notna().all(axis=None):
             raise ValueError("Registered evaluation must have the measured evidence used by the model")
         a, b, columns = normalized_block(train_data, test_data)
@@ -136,17 +131,9 @@ def structured(args, train, query, fit, held, edges, targets):
         diagnostic[name] = {"columns": columns, "fit_models": int(train_data.notna().any(axis=1).sum()),
                             "held_models": len(test_data)}
     arms = {"structured": (), "target_expression": (), "measured_coding": ("coding",)}
-    if args.study == "LIMORE":
+    if "copy" in blocks:
         arms |= {"measured_copy": ("copy",), "measured_genome": ("coding", "copy")}
-    primary = "measured_genome" if args.study == "LIMORE" else "measured_coding"
-    if args.study == "LICOB":
-        # The original RNA roster carries model-level groups and the audited grouping is cluster-level.
-        require_hash(args.patient_audit, DONORS_HASH)
-        patient_map = json.loads(args.patient_audit.read_text())["models"]
-        donors = pd.DataFrame(patient_map).set_index("cell_id").donor_id
-        groups = query.assign(lineage_group=query.cell_id.map(donors))
-    else:
-        groups = query
+    primary = "measured_genome" if "copy" in blocks else "measured_coding"
     shuffled = permutation(groups, grid.cells)
     key = (grid.cells.get_indexer(query.cell_id), grid.drugs.get_indexer(query.compound_id))
     anchor = query.compound_id.map(anchors).to_numpy()
@@ -166,9 +153,26 @@ def structured(args, train, query, fit, held, edges, targets):
             residual = reindexed @ coefficients @ drug + extra
             values.append(query[KEY].assign(method="genotype_permutation",
                                             predicted_value=anchor + residual.cpu().numpy()[key]))
-    return pd.concat(values, ignore_index=True), {"genomics_sha256": receipt,
-        "auxiliary": aux_receipt, "target_mapped_training_drugs": target_covered, "DNA": diagnostic,
+    return pd.concat(values, ignore_index=True), {"target_mapped_training_drugs": target_covered, "DNA": diagnostic,
         "permutation_moved_models": int(np.count_nonzero(shuffled != np.arange(len(shuffled)))), "solver": diagnostics}
+
+
+def structured(args, train, query, fit, held, edges, targets):
+    from .v0plus_neural import load_auxiliary
+
+    measurements, receipt = measured_drivers.read(args.genomics)
+    auxiliary, aux_receipt = load_auxiliary(args.auxiliary)
+    suffix = args.study.lower()
+    views = ("coding", "copy") if args.study == "LIMORE" else ("coding",)
+    blocks = {name: (measurements[f"source_{name}"], measurements[f"{suffix}_{name}"]) for name in views}
+    groups = query
+    if args.study == "LICOB":
+        require_hash(args.patient_audit, DONORS_HASH)
+        patient_map = json.loads(args.patient_audit.read_text())["models"]
+        donors = pd.DataFrame(patient_map).set_index("cell_id").donor_id
+        groups = query.assign(lineage_group=query.cell_id.map(donors))
+    prediction, report = structured_models(train, query, fit, held, edges, targets, auxiliary, blocks, groups)
+    return prediction, report | {"genomics_sha256": receipt, "auxiliary": aux_receipt}
 
 
 def expected_components(study):
@@ -186,31 +190,36 @@ def predict(args):
     if args.component == "structured":
         predictions, extra = structured(args, train, query, fit, held, edges, targets)
     else:
-        component = args.component
-        rna = pd.concat([fit, held], verify_integrity=True)
-        auxiliary = None
-        if component.startswith("cellhit-"):
-            shard = int(component.split("-")[1])
-            drugs = np.array_split(sorted(query.compound_id.unique()), SHARDS)[shard]
-            query = query[query.compound_id.isin(drugs)]
-            component = "cellhit"
-        if component in {"cellhit", "velodrome_inductive", "codeae_inductive"}:
-            verify_upstream(args.upstream)
-        if component == "v0plus_inductive":
-            from .v0plus_neural import load_auxiliary
-
-            auxiliary, _ = load_auxiliary(args.auxiliary)
-        config = json.loads(args.settings.read_text())["settings"][component]
-        locked = [tuple(item) for item in config if component != "linear" or item[0] in REFERENCES]
-        predictions, _ = candidate_forecasts(component, train, query, rna, edges, targets,
-                                              selected=locked, gpu=args.gpu, upstream=args.upstream,
-                                              auxiliary=auxiliary)
-        predictions.method = predictions.method.str.split("/").str[0]
+        predictions, query = fit_reference(args, train, query, fit, held, edges, targets)
     shared_support(predictions, query, predictions.method.unique())
     freeze_table(predictions.assign(track=args.study, fold=0), args.out, provenance={
         "component": args.component, "study": args.study, "core_sha256": RECEIPTS["core"],
         "settings_sha256": SETTINGS, **extra,
     })
+
+
+def fit_reference(args, train, query, fit, held, edges, targets):
+    component = args.component
+    rna = pd.concat([fit, held], verify_integrity=True)
+    auxiliary = None
+    if component.startswith("cellhit-"):
+        shard = int(component.split("-")[1])
+        drugs = np.array_split(sorted(query.compound_id.unique()), SHARDS)[shard]
+        query = query[query.compound_id.isin(drugs)]
+        component = "cellhit"
+    if component in {"cellhit", "velodrome_inductive", "codeae_inductive"}:
+        verify_upstream(args.upstream)
+    if component == "v0plus_inductive":
+        from .v0plus_neural import load_auxiliary
+
+        auxiliary, _ = load_auxiliary(args.auxiliary)
+    config = json.loads(args.settings.read_text())["settings"][component]
+    locked = [tuple(item) for item in config if component != "linear" or item[0] in REFERENCES]
+    predictions, _ = candidate_forecasts(component, train, query, rna, edges, targets,
+                                          selected=locked, gpu=args.gpu, upstream=args.upstream,
+                                          auxiliary=auxiliary)
+    predictions.method = predictions.method.str.split("/").str[0]
+    return predictions, query
 
 
 def merge(args):
