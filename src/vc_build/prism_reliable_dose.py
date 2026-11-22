@@ -284,7 +284,7 @@ def score(args):
                      for i, (_, _, labels) in enumerate(grouped_cases(name, fit, query, support["eligible"]))]
             data = pd.concat(parts, ignore_index=True)
             # Score assay-only labels, and separately describe adult HCC transfer.
-            results[name] = summary(data, fit, external=False)
+            results[name] = summary(data, query, external=False)
             adult = data[data.cell_id.isin(fit.loc[fit.lineage_role.eq("adult_hcc"), "cell_id"])]
             results[name]["adult_hcc"] = {
                 "lineages": adult.lineage_group.nunique(), "fold_centered": fold_centered_correlations(adult),
