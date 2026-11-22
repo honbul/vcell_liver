@@ -109,7 +109,7 @@ def curve_endpoints(dose_uM, viability, *, minimum, second, maximum):
     return float(emax), float(auc), float(potency)
 
 
-def measured(groups, axis, dcol, vcol, expected):
+def measured(groups, axis, dcol, vcol, expected, summary=curve_endpoints, columns=VALUES):
     assay = expected.set_index(KEY)
     rows = []
     for identity, group in groups.groupby(axis, sort=False):
@@ -119,14 +119,14 @@ def measured(groups, axis, dcol, vcol, expected):
         if dcol == "CONC" and not np.allclose([given.index[0], given.index[-1]],
                                              [meta.dose_min_uM, meta.dose_max_uM], rtol=.02):
             continue
-        value = curve_endpoints(given.index.to_numpy(), given.to_numpy(),
-                                minimum=meta.minimum, second=meta.second, maximum=meta.maximum)
-        if value:
+        value = summary(given.index.to_numpy(), given.to_numpy(),
+                        minimum=meta.minimum, second=meta.second, maximum=meta.maximum)
+        if value is not None:
             rows.append((*key, *value))
-    return pd.DataFrame(rows, columns=[*KEY, *VALUES]).groupby(KEY, as_index=False).median()
+    return pd.DataFrame(rows, columns=[*KEY, *columns]).groupby(KEY, as_index=False).median()
 
 
-def ctrp(source, raw, files):
+def ctrp(source, raw, files, summary=curve_endpoints, columns=VALUES):
     require_hash(raw, CTRP_QC)
     a = read_raw(files["ctrp_cells"]["path"], ["ccl_name", "master_ccl_id"], sep="\t")
     b = read_raw(files["depmap_models"]["path"], MODEL_COLS)
@@ -146,21 +146,22 @@ def ctrp(source, raw, files):
                       .merge(select, on=["cell_id", "master_cpd_id"], validate="many_to_one"))
     frame = pd.concat(frames, ignore_index=True)
     frame = frame[np.isfinite(frame.cpd_avg_pv) & np.isfinite(frame.cpd_conc_umol) & frame.cpd_conc_umol.gt(0)]
-    return measured(frame, [*KEY, "experiment_id"], "cpd_conc_umol", "cpd_avg_pv", source), {"selected_points": len(frame)}
+    return measured(frame, [*KEY, "experiment_id"], "cpd_conc_umol", "cpd_avg_pv",
+                    source, summary, columns), {"selected_points": len(frame)}
 
 
-def gdsc(source, archive, files):
+def gdsc(source, archive, files, summary=curve_endpoints, columns=VALUES):
     require_hash(archive, RAW_SHA256)
     ready = source_rows(source, files["depmap_models"]["path"])
     controls, wells, total = collect_wells(archive, ready)
     points, qc = normalize(controls, wells)
     points = points[points.DURATION.eq(4)].merge(ready[[*KEY, "DRUG_ID", "SANGER_MODEL_ID"]],
                          on=["DRUG_ID", "SANGER_MODEL_ID"], validate="many_to_one")
-    frame = measured(points, [*KEY, "BARCODE", "library"], "CONC", "viability", source)
+    frame = measured(points, [*KEY, "BARCODE", "library"], "CONC", "viability", source, summary, columns)
     return frame, {"archive_rows": total, "duration_days_field": 4, **qc}
 
 
-def prism(source, treatment, curve):
+def prism(source, treatment, curve, summary=curve_endpoints, columns=VALUES):
     require_hash(treatment, TREATMENTS_HASH)
     names = ["broad_id", "depmap_id", "screen_id"]
     match = source.rename(columns=dict(zip(["native_compound_id", "cell_id", "source_run"], names)))
@@ -183,14 +184,14 @@ def prism(source, treatment, curve):
         x = np.geomspace(row.min, row.max, 129)
         yy = row.lower_limit + (row.upper_limit - row.lower_limit) * expit(
             -row.slope * (np.log(x) - np.log(row.ec50)))
-        vals = curve_endpoints(x, yy, minimum=row.minimum, second=row.second, maximum=row.maximum)
+        vals = summary(x, yy, minimum=row.minimum, second=row.second, maximum=row.maximum)
         if vals is not None:
             records.append((row.depmap_id, row.compound_id, *vals))
-    result = pd.DataFrame(records, columns=[*KEY, *VALUES]).groupby(KEY, as_index=False).median()
+    result = pd.DataFrame(records, columns=[*KEY, *columns]).groupby(KEY, as_index=False).median()
     return result, {"verified_native_auc": int(valid.sum()), "dose_supported_curves": len(fit)}
 
 
-def extract(args):
+def extract_curves(args, summary, columns):
     digest = registration(args.inputs)
     require_hash(args.original / "receipt.json",
                  "663eb5717b30c6f03ea43c04c4bb076bd233ea0c05405450e17f0c9e85f7fa86")
@@ -200,12 +201,17 @@ def extract(args):
     rows = pd.read_parquet(args.inputs / "sources.parquet")
     rows = rows[rows.source_id.eq(args.assay)]
     f = {
-        "CTRPv2": lambda: ctrp(rows, args.ctrp, original),
-        "GDSC2": lambda: gdsc(rows, args.gdsc, original),
-        "PRISM20Q2": lambda: prism(rows, args.prism_treatments, original["prism_curves"]["path"]),
+        "CTRPv2": lambda: ctrp(rows, args.ctrp, original, summary, columns),
+        "GDSC2": lambda: gdsc(rows, args.gdsc, original, summary, columns),
+        "PRISM20Q2": lambda: prism(rows, args.prism_treatments, original["prism_curves"]["path"], summary, columns),
     }
     estimates, qc = f[args.assay]()
     result = rows.drop(columns="endpoint_value").merge(estimates, on=KEY, validate="one_to_one")
+    return result, digest, qc
+
+
+def extract(args):
+    result, digest, qc = extract_curves(args, curve_endpoints, VALUES)
     with new_output(args.out) as out:
         result.to_parquet(out / "curves.parquet", index=False)
         publish_json(out / "receipt.json", {"input_sha256": digest, "source": args.assay,
