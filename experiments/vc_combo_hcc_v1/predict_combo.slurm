@@ -47,19 +47,27 @@ if [[ $1 == prepare ]]; then
     shift
 fi
 
+forecast_panel() {
+    local panel=$1 name=${1##*/}
+    local extra=()
+    [[ -f "$panel/receipt.json" ]] || return 2
+    [[ ! -f "$out/predictions/$name/receipt.json" ]] || return 0
+    if [[ $name == lco_hcc-0 ]]; then
+        extra=(--screen "$work/virtual-screen")
+    fi
+    "$python" -m vc_combo_hcc.predict --panel "$panel" --context "$work/context" \
+        --embeddings "$emb" --hallmark "$hallmark" --output "$out/predictions/$name" "${extra[@]}"
+}
+
 for axis in "$@"; do
+    if [[ $axis =~ ^(lpo|ldo)-[0-4]$ ]]; then
+        forecast_panel "$work/panels/$axis"
+        continue
+    fi
     [[ $axis =~ ^(lco_hcc|lpo|ldo)$ ]] || exit 2
     panels=("$work/panels/$axis"-*)
     for panel in "${panels[@]}"; do
-        name=${panel##*/}
-        if [[ ! -f "$out/predictions/$name/receipt.json" ]]; then
-            extra=()
-            if [[ $axis == lco_hcc ]]; then
-                extra=(--screen "$work/virtual-screen")
-            fi
-            "$python" -m vc_combo_hcc.predict --panel "$panel" --context "$work/context" \
-                --embeddings "$emb" --hallmark "$hallmark" --output "$out/predictions/$name" "${extra[@]}"
-        fi
+        forecast_panel "$panel"
     done
     if [[ $axis == lco_hcc && ! -f "$out/screen/receipt.json" ]]; then
         "$python" -m vc_combo_hcc.screen rank --predictions "$out/predictions/lco_hcc-0" \
