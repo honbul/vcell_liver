@@ -23,7 +23,7 @@ def paired_tpm(sheet, fit_genes, pdo_ids):
     header = next(records)
     if header[0] != "Gene symbol" or len(set(pdo_ids)) != 10:
         raise ValueError("Unexpected Wong paired-sample or gene header")
-    tissue_ids = [cell.replace("PDTO_", "PDT_", 1) for cell in pdo_ids]
+    tissue_ids = [cell.replace("PDTO_", "PDT_", 1) + "_ParentalTissue" for cell in pdo_ids]
     if set(tissue_ids) != {name for name in header if str(name).startswith("PDT_")} or any(
         header.count(cell) != 1 for cell in tissue_ids
     ):
