@@ -1,0 +1,184 @@
+{
+  "allowed_formats": [
+    "bulk_tpm",
+    "bulk_counts",
+    "bulk_log2_tpm_plus_1"
+  ],
+  "auxiliary_priors": {
+    "data_release": "DepMap Public 25Q3",
+    "endpoints": {
+      "chronos": {
+        "features": 114,
+        "models_with_any": 754,
+        "observed": 85172,
+        "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+      },
+      "drivers": {
+        "features": 18,
+        "models_with_any": 1005,
+        "observed": 15706,
+        "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+      }
+    },
+    "fit_model_count": 1014,
+    "inputs": {
+      "chronos": {
+        "bytes": 432295412,
+        "file": "CRISPRGeneEffect.csv",
+        "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+      },
+      "copy": {
+        "bytes": 400701924,
+        "file": "OmicsCNGeneWGS.csv",
+        "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+      },
+      "mutations": {
+        "bytes": 6644955,
+        "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+        "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+      }
+    },
+    "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+  },
+  "calibration": [
+    {
+      "anchor_drugs": [
+        "AYUNIORJHRXIBJ-TXHRRWQRSA-N",
+        "CBPNZQVSJQDFBE-FUXHJELOSA-N",
+        "CXQHYVUVSFXTMY-UHFFFAOYSA-N",
+        "CYOHGALHFOKKQC-UHFFFAOYSA-N",
+        "FBOZXECLQNJBKD-ZDUSSCGKSA-N",
+        "FDLYAMZZIXQODN-UHFFFAOYSA-N",
+        "GXJABQQUPOEUTA-RDJZCZTQSA-N",
+        "HFNKQEVNSGCOJV-OAHLLOKOSA-N",
+        "HLXSCTYHLQHQDJ-UHFFFAOYSA-N",
+        "IAYGCINLNONXHY-LBPRGKRZSA-N",
+        "JLYAXFNOILIKPP-KXQOOQHDSA-N",
+        "JOGKUKXHTYWRGZ-UHFFFAOYSA-N",
+        "KPBNHDGDUADAGP-VAWYXSNFSA-N",
+        "KTEIFNKAUNYNJU-GFCCVEGCSA-N",
+        "LIRYPHYGHXZJBZ-UHFFFAOYSA-N",
+        "LQBVNQSMGBZMKD-UHFFFAOYSA-N",
+        "MLDQJTXFUGDVEO-UHFFFAOYSA-N",
+        "OTSOOHRUMBRSHZ-UHFFFAOYSA-N",
+        "PKCDDUHJAFVJJB-UHFFFAOYSA-N",
+        "QFJCIRLUMZQUOT-HPLJOQBZSA-N",
+        "UCFGDBYHRUNTLO-QHCPKHFHSA-N",
+        "ULXXDDBFHOBEHA-CWDCEQMOSA-N",
+        "VABYUUZNAVQNPG-BQYQJAHWSA-N",
+        "WAEXFXRVDQXREF-UHFFFAOYSA-N",
+        "XQVVPGYIWAGRNI-JOCHJYFZSA-N",
+        "XYFPWWZEPKGCCK-GOSISDBHSA-N",
+        "ZBNZXTGUTAYRHI-UHFFFAOYSA-N",
+        "ZLHFILGSQDJULK-UHFFFAOYSA-N"
+      ],
+      "anchor_pairs": 10187,
+      "endpoint_id": "CTRPv2_native_AUC",
+      "intercept": -0.25559825759220817,
+      "reference_endpoint": "GDSC2_native_AUC",
+      "reference_source": "GDSC2",
+      "slope": 0.05055269478039848,
+      "source_id": "CTRPv2"
+    },
+    {
+      "anchor_drugs": [],
+      "anchor_pairs": 0,
+      "endpoint_id": "GDSC2_native_AUC",
+      "intercept": 0.0,
+      "reference_endpoint": "GDSC2_native_AUC",
+      "reference_source": "GDSC2",
+      "slope": 1.0,
+      "source_id": "GDSC2"
+    },
+    {
+      "anchor_drugs": [
+        "CXQHYVUVSFXTMY-UHFFFAOYSA-N",
+        "HFNKQEVNSGCOJV-OAHLLOKOSA-N",
+        "HWGQMRYQVZSGDQ-HZPDHXFCSA-N",
+        "KPBNHDGDUADAGP-VAWYXSNFSA-N",
+        "XQVVPGYIWAGRNI-JOCHJYFZSA-N",
+        "ZLHFILGSQDJULK-UHFFFAOYSA-N"
+      ],
+      "anchor_pairs": 1845,
+      "endpoint_id": "PRISM20Q2_native_AUC",
+      "intercept": -0.19615906130705257,
+      "reference_endpoint": "GDSC2_native_AUC",
+      "reference_source": "GDSC2",
+      "slope": 0.8706664007432265,
+      "source_id": "PRISM20Q2"
+    }
+  ],
+  "clinical_response": false,
+  "cohort": "LIMORE50",
+  "comparator_settings": {
+    "drug_mean": [
+      0.0,
+      256,
+      1.0
+    ],
+    "drug_ridge": [
+      1000.0,
+      512,
+      1.0
+    ]
+  },
+  "data_revision": "single-agent-structured-68",
+  "default_model": "structured",
+  "drug_registry_sha256": "dc7f8db94ff9db8a3417b16ad364632aecb49f28026e921953b86c58cfce290a",
+  "endpoint": "screen_aligned_sensitivity_score_higher_is_more_sensitive",
+  "external_score_sha256": "ec9e064cc2413bbb72c5adbf3146a26f86d0acc69b81d4f3eefc2ddb36ed66fd",
+  "fit": {
+    "auxiliary_features": 130,
+    "gene_features": 17871,
+    "iterations": 45,
+    "penalty": 4.0,
+    "residual_norm": 0.0008514008950442076
+  },
+  "inductive_query": true,
+  "models": {
+    "drug_mean": {
+      "multiplier": 1.0,
+      "path": "drug_mean.joblib",
+      "sha256": "a598edfb78aa8c33076395c0cc04f4cc75f12b452b758fd10160dc44654defaf"
+    },
+    "drug_ridge": {
+      "multiplier": 1.0,
+      "path": "drug_ridge.joblib",
+      "sha256": "8ee91f90a3b98a00ed9af8724b93c28200de1435ea919ac83f2de8cccc0de44c"
+    },
+    "structured": {
+      "multiplier": 1.0,
+      "path": "structured.joblib",
+      "sha256": "6840a6a8413a5a948f33c74fc0f707dc2dd4bb18f19dcf466cec581a9d52ffea"
+    }
+  },
+  "prediction_freeze_sha256": "fe7f9e656801d63fd1263ec3e94093cad86b049130aa038d4f2e8fdd059b02bb",
+  "public_priors": {
+    "dorothea": {
+      "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+      "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+    },
+    "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+    "hallmark": {
+      "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+      "source": "MSigDB 2026.1.Hs h.all symbols"
+    },
+    "progeny": {
+      "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+      "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+    }
+  },
+  "registered_compounds": 68,
+  "schema_version": 1,
+  "settings_sha256": "9fb42665b3d5bce1757bab31f341c256bc2f9bcf5434e6239c48c47dd3be3474",
+  "source_input_sha256": "d0ab7d0dac5d3c886495d48420d7dc448df019dc3b9196de898bab3c8b05a5d6",
+  "source_models": 1014,
+  "source_panels": {
+    "CTRPv2": 31090,
+    "GDSC2": 24839,
+    "PRISM20Q2": 9749
+  },
+  "source_rows": 65678,
+  "supported_axis": "research cultures, pretreatment bulk RNA, exact parent",
+  "version": "V0+"
+}
