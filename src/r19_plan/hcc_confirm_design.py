@@ -58,6 +58,8 @@ def calibrate(points, paired):
 
 
 def required_parents(parent_sd, block_sd, blocks, effect):
+    if effect <= PRACTICAL:
+        return math.inf
     quantile = t.ppf(.995, blocks - 1)
     power_z = norm.ppf(MARGINAL_POWER)
     max_se = min((effect - PRACTICAL) / power_z, effect / (quantile + power_z))
