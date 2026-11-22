@@ -10,19 +10,20 @@ import torch
 from scipy.special import ndtri
 from scipy.stats import rankdata
 
-from .expanded_panel_cv import PENALTY, RECEIPTS, registered_inputs, same_split
+from .expanded_panel_cv import PENALTY, RECEIPTS, RIDGE as CORE_RIDGE, registered_inputs, same_split
 from .external import KEY, SOURCE, _validate, native_sensitivity
 from .io import freeze_table, sha256
 from .limore_corrected import shared_support
 from .paired_expression import auxiliary_cell_grams
 from .pdo_transfer_cv import device_cuda
 from .response_component_benchmark import (
-    BASELINES, EXTERNAL_TRACKS, FORECAST_SCHEMA, PUBLIC, external_inputs, external_reference, source_reference,
+    BASELINES, EXTERNAL_TRACKS, FORECAST_SCHEMA, PUBLIC, external_inputs, external_reference,
 )
 from .rna_state_projection import score_external, score_source
 from .structured_cv import ASSAYS, paired_intervals, with_assay
 from .structured_kernel import KernelGrid, drug_kernels, fit_cell_kernels, training_grid
 from .v0plus_cv import molecular_inputs, panel_targets, validation_roster
+from .v0plus_cv import candidate_forecasts as core_forecasts
 from .v0plus_neural import load_auxiliary
 from .v0plus_score import axis_metrics, crossed_patient_drug_ci
 from .yang_hcc_external import require_hash
@@ -144,7 +145,7 @@ def latent_geometry(train, query, targets, task_sources):
     return auxiliary_cell_grams(centered @ mapping, (query - train.mean(dim=0)) @ mapping)
 
 
-def candidate_forecasts(fit, query, rna, edges, targets, auxiliary, extra, protected):
+def candidate_forecasts(fit, query, rna, edges, targets, auxiliary, extra, protected, *, source):
     _validate(fit, query)
     device = device_cuda()
     training = rna.loc[sorted(fit.cell_id.unique())]
@@ -162,10 +163,17 @@ def candidate_forecasts(fit, query, rna, edges, targets, auxiliary, extra, prote
     weights, response = training_grid(rows, training.index, drugs, device=device)
     anchor = query.compound_id.map(anchors).to_numpy()
     parts, traces = [], {}
-    for name in ARMS:
-        train_extra, held_extra = extensions[name]
-        cell_kernel = ((1 - WEIGHT) * training_grams["full"] + WEIGHT * train_extra,
-                       (1 - WEIGHT) * cross["full"] + WEIGHT * held_extra)
+    kernels_by_arm = {
+        name: ((1 - WEIGHT) * training_grams["full"] + WEIGHT * train,
+               (1 - WEIGHT) * cross["full"] + WEIGHT * held)
+        for name, (train, held) in extensions.items()
+    }
+    if source:
+        kernels_by_arm["structured"] = (training_grams["full"], cross["full"])
+        parts.append(query[KEY].assign(method="drug_mean", predicted_value=anchor))
+        ridge, _ = core_forecasts("linear", fit, query, rna, edges, targets, selected=[CORE_RIDGE])
+        parts.append(ridge.assign(method="drug_ridge"))
+    for name, cell_kernel in kernels_by_arm.items():
         grid = KernelGrid(held.index, drugs, {"full": cell_kernel},
                           kernels, weights, response, basis.reference[-1].shape[1])
         residual, traces[name] = grid.forecast(query, "structured", PENALTY)
@@ -185,17 +193,16 @@ def predict(args):
     else:
         _, fit, check = same_split(old, clean, args.fold, args.mode)
         query = validation_roster(check)
-        previous, reference = source_reference(args.cv_archive, args.mode, args.fold)
         registered = RECEIPTS["core"]
+        reference = None
     new, diagnostics = candidate_forecasts(fit, query, rna, edges, targets, auxiliary, extra,
-                                            clean.compound_id.unique())
+                                            clean.compound_id.unique(), source=not external)
     compared = (*BASELINES, *ARMS)
     if external:
-        new = new.assign(track=args.mode, fold=0)
+        joined = pd.concat([previous, new.assign(track=args.mode, fold=0)], ignore_index=True)
         compared += PUBLIC
     else:
-        new = with_assay(new, check, args.fold)
-    joined = pd.concat([previous, new], ignore_index=True)
+        joined = with_assay(new, check, args.fold)
     matrix = joined.pivot(index=[*KEY, "track", "fold"], columns="method", values="predicted_value")
     expected_rows = len(query) if external else len(check)
     if len(matrix) != expected_rows or set(matrix) != set(compared) or not np.isfinite(matrix.to_numpy()).all():
@@ -226,7 +233,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     stages = parser.add_subparsers(dest="stage", required=True)
     inputs = {
-        "predict": ("extension", "gdsc-extension", "licob", "archive", "cv-archive",
+        "predict": ("extension", "gdsc-extension", "licob", "archive",
                     "priors", "hallmark", "targets", "auxiliary"),
         "source": ("forecasts",), "external": ("licob", "forecasts", "limore-labels", "licob-labels"),
     }
