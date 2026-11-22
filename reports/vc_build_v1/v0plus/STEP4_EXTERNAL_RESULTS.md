@@ -137,3 +137,5 @@ LICOB 코호트의 RNA 예측을 함께 써서 약물별 공통 이동만 적용
 Wong과 Yang의 HCC 오가노이드 RNA로 추정한 고정 절편은 LICOB 자체 예측에서 얻은 절편과 약물 간 Pearson −.556이었다. 새 공통 축에서 LICOB NDCG@5는 .6264→.6271로 구간이 0을 포함했다. 약물별 혼합은 LICOB에서 0/53약물에서 선택됐으며 두 외부의 공동 기준에 미달했다. [독립 HCC PDO 보정과 발현 척도 감사](INDEPENDENT_PDO_CALIBRATION_RESULTS.md)
 
 같은 세포의 RNA-seq·Affymetrix로 선택한 경로 내 유전자 쌍은 보류 측정에서 순서가 94.5% 일치했다. 이를 추가한 LICOB의 약물 내 Spearman 차이는 +.0201, NDCG@5 차이는 −.0069로 두 구간이 0을 포함했다. LIMORE의 약물 내 Pearson은 .3780→.3434였고, 두 외부의 공동 기준에 미달했다. [유전자 순서 재현성과 동결 성적](PAIRED_ORDINAL_RESULTS.md)
+
+유전자 쌍을 스크린 간 약물별 연관 방향의 일치로 다시 골랐다. 같은 RNA 축 기준 대비 약물 내 Spearman 차이는 LIMORE −.0148, LICOB −.0075로 두 구간이 0을 포함했다. 보류 스크린의 직접 지원은 5약물이며, GDSC1을 추가하고 GDSC 연구 계열을 묶어서 집계하면 5–6약물이었다. [약물별 선택과 스크린 지원 감사](DRUG_STABLE_ORDINAL_RESULTS.md)
