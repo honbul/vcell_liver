@@ -148,6 +148,8 @@ def predict_offline(args):
         )
     all_rows["model"] = method
     all_rows["version"] = card["version"]
+    if "data_revision" in card:
+        all_rows["data_revision"] = card["data_revision"]
     all_rows["presented_endpoint"] = card["endpoint"]
     all_rows["checkpoint_sha256"] = model_record["sha256"]
     all_rows["external_score_sha256"] = card["external_score_sha256"]
