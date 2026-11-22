@@ -81,3 +81,5 @@ LICOB 38약물의 공통 물리 농도에서 2D 곡선을 학습했다. IC50의 
 Oslo 대장암 간전이 자료의 91개 PDO·52명에서 기저 RNA와 웰별 농도 반응을 연결했다. 20개 동일 제품의 두 라이브러리 간 공여자 보류에서 RNA+경로 커널의 공동 기준은 미통과였다. LICOB와 이름이 같은 14개 중 전체 농도 범위를 덮는 후보는 1개였다. [공개 원자료 감사 및 보류 성적](OSLO_3D_CURVE_RESULTS.md)
 
 후속 화학 확인으로 Oslo–LICOB의 입체 구조를 지정한 13약물에서 3D RNA 반응을 기존 2D 모델에 추가했다. LICOB 38명의 AUC에서 추가 편차는 공동 개선 기준을 통과하지 못했다. 최고 물리 농도를 맞춘 Emax는 2약물에 비교 지지가 있었고 ceralasertib은 Oslo 단독 기술값을 보고했다. [Oslo–LICOB 전이](OSLO_LICOB_TRANSFER_RESULTS.md)
+
+새로 연결한 Singapore 치료 전 PDX RNA에서 sorafenib 구조 커널의 약물 내 두 상관은 양수였지만 10환자군의 사전 기준은 미통과였다. Vinorelbine 실측의 2023–2024 공통 11군에서 Spearman .782 [+.183, +.972]로 사전 재현 기준을 통과했다. PRISM의 같은 parent 반복 표기 처리도 바로잡아 vinorelbine과 everolimus의 학습 지지를 복원했다. [PDX 결과와 PRISM 감사](SHUEN_PDX_RESULTS.md)
