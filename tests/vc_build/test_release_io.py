@@ -1,4 +1,5 @@
 import json
+from types import SimpleNamespace
 
 import numpy as np
 import pandas as pd
@@ -78,6 +79,24 @@ def test_bulk_counts_gene_lengths_use_mapped_symbols_and_keep_missing(tmp_path):
     lengths.write_text("gene\tlength_bp\nA\t0\nB\t4000\n")
     with pytest.raises(ValueError, match="finite positive"):
         read_expression(counts, "bulk_counts", mapping, lengths)
+
+
+def test_signed_rank_input_requires_release_opt_in(tmp_path):
+    from vc_build.v0plus_cli import RANK_FORMAT, predict_offline, read_expression
+
+    path = tmp_path / "rank.tsv"
+    path.write_text("sample_id\tA\tB\tC\nx\t-0.125\t-3.5\t\n")
+    row = read_expression(path, RANK_FORMAT, None).loc["x"]
+    assert row[["A", "B"]].tolist() == [-0.125, -3.5]
+    assert pd.isna(row["C"])
+    with pytest.raises(ValueError, match="nonnegative"):
+        read_expression(path, "bulk_log2_tpm_plus_1", None)
+    (tmp_path / "release.json").write_text(json.dumps({"version": "V0+", "schema_version": 1}))
+    with pytest.raises(ValueError, match="not enabled"):
+        predict_offline(SimpleNamespace(package=tmp_path, scale=RANK_FORMAT))
+    path.write_text("sample_id\tA\nx\tinf\n")
+    with pytest.raises(ValueError, match="finite"):
+        read_expression(path, RANK_FORMAT, None)
 
 
 def test_pdx_repeat_distinguishes_reported_arm_weights_from_missing_values():

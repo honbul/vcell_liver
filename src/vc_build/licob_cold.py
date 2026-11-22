@@ -180,27 +180,31 @@ def double_cold(train, fold):
     return fit, labels
 
 
-def models(fit, query, rna, edges, targets, auxiliary, device):
+def fit_panel(fit, registry, rna, edges, targets, auxiliary, device):
     import torch
-    from .structured_kernel import cell_kernels, drug_kernels, solve_residuals, training_grid
+    from .structured_kernel import (
+        KernelExpressionSchema, PanelPredictor, drug_kernels, fit_cell_kernels, solve_residuals, training_grid,
+    )
 
     _, anchor, data, calibration = panel_targets(fit)
     structural_rows = pd.concat([fit[["compound_id", "isomeric_smiles"]],
-        query[["compound_id", "isomeric_smiles"]]], ignore_index=True).drop_duplicates("compound_id")
+        registry[["compound_id", "isomeric_smiles"]]], ignore_index=True).drop_duplicates("compound_id")
     ids, blocks = drug_kernels(structural_rows, targets, device=device)
     identity = torch.eye(len(ids), device=device)
     tanimoto = ((blocks["rna_chem_only"] - .75 * identity - .1) / .15).clamp(0, 1)
     shared_target = ((blocks["structured"] - .65 * identity - .15 * tanimoto - .1) / .1).clamp(0, 1)
-    fitted, held = pd.Index(sorted(fit.compound_id.unique())), pd.Index(sorted(query.compound_id.unique()))
+    fitted, held = pd.Index(sorted(fit.compound_id.unique())), pd.Index(sorted(registry.compound_id.unique()))
     fit_index = torch.as_tensor(ids.get_indexer(fitted), device=device)
     held_index = torch.as_tensor(ids.get_indexer(held), device=device)
 
     def blocks_for(matrix):
         return matrix[fit_index[:, None], fit_index], matrix[held_index[:, None], fit_index]
 
-    fit_cells, held_cells = (pd.Index(sorted(item.cell_id.unique())) for item in (fit, query))
-    cell_terms, features = cell_kernels(rna.loc[fit_cells], rna.loc[held_cells], edges, auxiliary, device=device)
-    cell, cross = cell_terms["full"]
+    fit_cells = pd.Index(sorted(fit.cell_id.unique()))
+    fit_rna = rna.loc[fit_cells]
+    basis, cell_terms = fit_cell_kernels(fit_rna, edges, auxiliary, device=device)
+    cell = cell_terms["full"]
+    schema = KernelExpressionSchema(basis.genes, basis.indices, np.median(fit_rna.to_numpy(), axis=0))
     weights, response = training_grid(data, fit_cells, fitted, device=device)
     _, sim = blocks_for(tanimoto)
     selected = sim.argsort(dim=1, descending=True, stable=True)[:, :5]
@@ -214,33 +218,44 @@ def models(fit, query, rna, edges, targets, auxiliary, device):
     base_train = torch.as_tensor(anchor.reindex(fitted).to_numpy(dtype=np.float32), device=device)
     overall = float(base_train.mean().item())
     base = torch.where(taper.sum(dim=1) > 0, taper @ base_train, overall)
-    indices = held_cells.get_indexer(query.cell_id), held.get_indexer(query.compound_id)
-    if (indices[0] < 0).any() or (indices[1] < 0).any():
-        raise ValueError("Failed to align query expression and chemistry")
-    preds = {"grand_mean": np.full(len(query), overall), "chemical_mean": base.cpu().numpy()[indices[1]]}
+    intercept = pd.Series(base.cpu().numpy(), index=held)
+    predictors = {"grand_mean": PanelPredictor(schema, basis, held, pd.Series(overall, index=held), None),
+                  "chemical_mean": PanelPredictor(schema, basis, held, intercept, None)}
     _, _, residue = orthogonal_parts(response.cpu().numpy(), weights.cpu().numpy())
-    c_centered, q_centered = centered_kernels(cell, cross)
+    c_centered, _ = centered_kernels(cell, cell)
+    center = cell.mean(dim=0, keepdim=True)
     residues = torch.as_tensor(residue, dtype=weights.dtype, device=device)
     notes = {}
     for name, gram in (("neighbor_transfer", identity), ("chemical_kernel", .35 * identity + .55 * tanimoto + .1),
                        ("molecular_kernel", .35 * identity + .35 * tanimoto + .2 * shared_target + .1),
                        (PRIMARY, .35 * identity + .35 * tanimoto + .2 * shared_target + .1)):
         drug_fit, drug_query = blocks_for(gram)
-        lhs, rhs, y = cell, cross, response
+        lhs, y = cell, response
         if name == PRIMARY:
             drug_fit, drug_query = centered_kernels(drug_fit, drug_query)
-            lhs, rhs, y = c_centered, q_centered, residues
+            lhs, y = c_centered, residues
         coef, steps, norm = solve_residuals(lhs, drug_fit, weights, y, PENALTY)
         if name == "neighbor_transfer":
             drug_query = taper
-        predicted = (rhs @ coef @ drug_query.T) + base
-        preds[name] = predicted.cpu().numpy()[indices]
+        predictors[name] = PanelPredictor(schema, basis, held, intercept, coef @ drug_query.T,
+                                          center if name == PRIMARY else None)
         notes[name] = {"iterations": steps, "residual": norm}
     sims = dict(zip(held, score[:, 0].cpu().tolist()))
-    result = pd.concat([query[KEY].assign(method=name, predicted_value=preds[name]) for name in ARMS], ignore_index=True)
-    return result, {"solves": notes, "fit_rows": len(fit), "fit_drugs": len(fitted), "calibration": calibration,
-                    "features": features, "nearest_tanimoto": sims,
-                    "target_annotated_query": sum(bool(targets.get(d)) for d in held)}
+    return predictors, {"solves": notes, "fit_rows": len(fit), "fit_drugs": len(fitted), "calibration": calibration,
+                        "features": int(basis.reference[-1].shape[1]), "nearest_tanimoto": sims,
+                        "target_annotated_query": sum(bool(targets.get(d)) for d in held)}
+
+
+def models(fit, query, rna, edges, targets, auxiliary, device):
+    registry = query[["compound_id", "isomeric_smiles"]].drop_duplicates()
+    predictors, notes = fit_panel(fit, registry, rna, edges, targets, auxiliary, device)
+    held_rna = rna.loc[sorted(query.cell_id.unique())]
+    cross = predictors[PRIMARY].basis.cross(held_rna)["full"]
+    forecasts = []
+    for name, model in predictors.items():
+        anchor, residual = model.predict(query, held_rna, cross=cross)
+        forecasts.append(query[KEY].assign(method=name, predicted_value=anchor + residual))
+    return pd.concat(forecasts, ignore_index=True), notes
 
 
 def predict(args):

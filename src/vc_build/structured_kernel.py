@@ -278,3 +278,28 @@ class StructuredPredictor:
         cross = self.basis.cross(rna)["full"]
         residual = (cross @ self.coefficients @ self.drug_kernel).numpy()
         return query.compound_id.map(self.anchor).to_numpy(), residual[cells, drugs]
+
+
+@dataclass
+class PanelPredictor:
+    features: KernelExpressionSchema
+    basis: CellKernelBasis
+    drugs: pd.Index
+    anchor: pd.Series
+    projection: torch.Tensor | None
+    cell_center: torch.Tensor | None = None
+
+    def predict(self, query, rna, *, cross=None):
+        rows = rna.index.get_indexer(query.cell_id)
+        columns = self.drugs.get_indexer(query.compound_id)
+        if (rows < 0).any() or (columns < 0).any():
+            raise ValueError("Query requires a matched expression profile and registered compound")
+        base = self.anchor.to_numpy()[columns]
+        if self.projection is None:
+            return base, np.zeros_like(base)
+        if cross is None:
+            cross = self.basis.cross(rna)["full"]
+        if self.cell_center is not None:
+            cross = cross - cross.mean(dim=1, keepdim=True) - self.cell_center + self.cell_center.mean()
+        estimates = (cross @ self.projection).cpu().numpy()
+        return base, estimates[rows, columns]

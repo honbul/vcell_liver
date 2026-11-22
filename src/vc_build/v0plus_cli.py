@@ -13,6 +13,9 @@ from .function_data import canonical_chemistry
 from .io import publish_json, sha256, verify_forecast
 from .v0plus_cv import training_inputs
 
+BULK_FORMATS = ("bulk_tpm", "bulk_counts", "bulk_log2_tpm_plus_1")
+RANK_FORMAT = "bulk_rank_preserving"
+
 
 def build_package(args):
     _, sealed = verify_forecast(args.forecast)
@@ -51,9 +54,12 @@ def build_package(args):
 
 
 def read_expression(path, scale, gene_map, gene_lengths=None):
+    if scale not in (*BULK_FORMATS, RANK_FORMAT):
+        raise ValueError(f"Unsupported RNA input scale: {scale}")
     if gene_lengths is not None and scale != "bulk_counts":
         raise ValueError("--gene-lengths requires --scale bulk_counts")
-    raw = pd.read_csv(path, sep="\t" if path.suffix == ".tsv" else ",")
+    raw = pd.read_csv(path, sep="\t" if path.suffix == ".tsv" else ",",
+                      float_precision="round_trip" if scale == RANK_FORMAT else None)
     if {"sample_id", "gene", "value"} <= set(raw):
         raw = raw.pivot(index="sample_id", columns="gene", values="value")
     else:
@@ -70,6 +76,10 @@ def read_expression(path, scale, gene_map, gene_lengths=None):
         if not raw.columns.is_unique:
             raise ValueError("Genes become ambiguous after symbol mapping")
     raw = raw.apply(pd.to_numeric, errors="raise")
+    if scale == RANK_FORMAT:
+        if np.isinf(raw.to_numpy()).any():
+            raise ValueError("Rank-preserving RNA requires finite values or missing measurements")
+        return raw
     if np.isinf(raw.to_numpy()).any() or (raw < 0).any().any():
         raise ValueError("RNA measurements must be nonnegative finite numbers or missing")
     if scale == "bulk_counts":
@@ -120,6 +130,8 @@ def predict_offline(args):
     card = json.loads(card_path.read_text())
     if card["schema_version"] != 1 or card["version"] != "V0+":
         raise ValueError("Unsupported predictor release")
+    if args.scale not in card.get("allowed_formats", BULK_FORMATS):
+        raise ValueError(f"RNA input scale {args.scale} is not enabled for this predictor release")
     method = args.model or card["default_model"]
     model_record = card["models"][method]
     checkpoint = Path(model_record["path"])
@@ -132,6 +144,8 @@ def predict_offline(args):
         raise ValueError("Compound registry changed")
     # Checkpoints are generated within this study and consumed from local trusted storage.
     model = joblib.load(checkpoint)
+    if "checkpoint_entry" in model_record:
+        model = model[model_record["checkpoint_entry"]]
     features = model.molecular.features if hasattr(model, "molecular") else model.features
     panel = requested_panel(pd.read_csv(registry, sep="\t", dtype=str), args.compounds)
     gene_lengths = getattr(args, "gene_lengths", None)
@@ -140,14 +154,17 @@ def predict_offline(args):
     complete = matched.notna()
     coverage = complete.mean(axis=1)
     selected_coverage = complete.iloc[:, features.indices].mean(axis=1)
-    measurable = coverage.ge(0.85) & selected_coverage.ge(0.85) & matched.max(axis=1).gt(0)
+    informative = matched.max(axis=1).gt(matched.min(axis=1)) if args.scale == RANK_FORMAT else matched.max(axis=1).gt(0)
+    measurable = coverage.ge(0.85) & selected_coverage.ge(0.85) & informative
     filled = matched.fillna(pd.Series(features.raw_median, index=features.genes))
     all_rows = pd.DataFrame({"cell_id": inputs.index}).merge(panel, how="cross")
     all_rows["rna_gene_coverage"] = all_rows.cell_id.map(coverage)
     all_rows["selected_gene_coverage"] = all_rows.cell_id.map(selected_coverage)
     all_rows["status"] = "predicted"
     all_rows.loc[~all_rows.cell_id.isin(measurable[measurable].index), "status"] = "insufficient_rna_coverage"
-    all_rows.loc[all_rows.isomeric_smiles.isna(), "status"] = "compound_outside_training_panel"
+    outside_status = ("compound_outside_registered_panel" if card.get("fixed_registry")
+                      else "compound_outside_training_panel")
+    all_rows.loc[all_rows.isomeric_smiles.isna(), "status"] = outside_status
     for name in ("sensitivity_score", "drug_mean_anchor", "personalization_delta"):
         all_rows[name] = np.nan
     eligible = all_rows.status.eq("predicted")
@@ -167,6 +184,8 @@ def predict_offline(args):
     all_rows["presented_endpoint"] = card["endpoint"]
     all_rows["checkpoint_sha256"] = model_record["sha256"]
     all_rows["external_score_sha256"] = card["external_score_sha256"]
+    if args.scale == RANK_FORMAT:
+        all_rows["rna_normalization"] = "within_sample_rank"
     if gene_lengths is not None:
         all_rows["rna_normalization"] = "counts_per_base_to_tpm"
         all_rows["gene_lengths_sha256"] = sha256(gene_lengths)
@@ -190,7 +209,7 @@ def main():
     predict.add_argument("--gene-lengths", type=Path,
                          help="Optional gene and length_bp TSV for bulk_counts, keyed after --gene-map")
     predict.add_argument("--model")
-    predict.add_argument("--scale", required=True, choices=("bulk_tpm", "bulk_counts", "bulk_log2_tpm_plus_1"))
+    predict.add_argument("--scale", required=True, choices=(*BULK_FORMATS, RANK_FORMAT))
     args = parser.parse_args()
     if args.command == "package":
         build_package(args)

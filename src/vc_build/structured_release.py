@@ -97,13 +97,16 @@ def pack(args):
         })
 
 
-def run_cli(package, expression, output, *, method=None, compounds=None, expected_error=None):
+def run_cli(package, expression, output, *, method=None, compounds=None, expected_error=None,
+            scale="bulk_log2_tpm_plus_1", gene_lengths=None):
     command = [sys.executable, "-m", "vc_build.v0plus_cli", "predict", "--package", str(package),
-               "--rna", str(expression), "--scale", "bulk_log2_tpm_plus_1", "--out", str(output)]
+               "--rna", str(expression), "--scale", scale, "--out", str(output)]
     if method is not None:
         command.extend(["--model", method])
     if compounds is not None:
         command.extend(["--compounds", str(compounds)])
+    if gene_lengths is not None:
+        command.extend(["--gene-lengths", str(gene_lengths)])
     started = perf_counter()
     try:
         subprocess.run(command, check=True, capture_output=True, text=True)
