@@ -20,7 +20,9 @@ KEY = ["row_id", "cell_id", "lineage_group", "compound_id"]
 
 def endpoint_ranks(frame):
     """Convert response only within each source, cell and native endpoint."""
-    direction = frame["endpoint_direction"].map({"higher": 1, "lower": -1})
+    direction = frame["endpoint_direction"].map({
+        "higher": 1, "lower": -1, "higher_is_more_sensitive": 1, "lower_is_more_sensitive": -1,
+    })
     value = frame["endpoint_value"].astype(float)
     if direction.isna().any() or not np.isfinite(value).all():
         raise ValueError("Every training observation needs a finite value and a declared endpoint direction")
@@ -188,6 +190,11 @@ def main():
     args = parser.parse_args()
     paths = {f"{role}/{name}": args.bundle / role / f"{name}.parquet"
              for role in ("train", "test_inputs") for name in ("rows", "rna")}
+    audit_path = args.bundle / "receipt.json"
+    audit = json.loads(audit_path.read_text())
+    for key, path in paths.items():
+        if sha256(path) != audit["artifacts"][key + ".parquet"]["sha256"]:
+            raise ValueError(f"External cohort input differs from its audit for {key}")
     train, query = (
         read_table(paths[f"{role}/rows"]).rename(columns={"record_id": "row_id", "cell_group": "lineage_group"})
         for role in ("train", "test_inputs")
@@ -199,6 +206,8 @@ def main():
     predictions, source_scores, counts = train_rankers(train, query, train_rna, query_rna, targets)
     args.out.mkdir(parents=True, exist_ok=False)
     metadata = {"scope": "pan_cancer_to_public_limore_rank", "training_eligibility": counts,
+                "cohort_audit_sha256": sha256(audit_path),
+                "registered_observations_sha256": audit["artifacts"]["test_labels/outcomes.parquet"]["sha256"],
                 "query_cells": int(query.cell_id.nunique()), "query_lineages": int(query.lineage_group.nunique()),
                 "query_compounds": int(query.compound_id.nunique()), "query_rows": len(query),
                 "input_sha256": {key: sha256(path) for key, path in paths.items()},

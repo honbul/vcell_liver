@@ -176,6 +176,10 @@ def main():
     if args.split not in set(forecasts.track):
         parser.error("split was not registered in forecast")
     which = forecasts[forecasts.track == args.split]
+    observation_hash = sha256(args.observations)
+    expected = receipt.get("provenance", {}).get("registered_observations_sha256")
+    if expected and expected != observation_hash:
+        raise ValueError("Scoring observations differ from their preregistered hash")
     observations = read_table(args.observations)
     joined = join_observations(which, observations)
     scores, cells = score(joined, endpoint_direction=args.endpoint_direction,
@@ -183,7 +187,7 @@ def main():
     output = {
         "split": args.split,
         "freeze_sha256": receipt["sha256"],
-        "observations_sha256": sha256(args.observations),
+        "observations_sha256": observation_hash,
         "endpoint_direction": args.endpoint_direction,
         "rank_only": args.rank_only,
         **scores,
