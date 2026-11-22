@@ -26,6 +26,12 @@ out="$run/$cell"
 orig="$reports/data/${prefix}_off_position"
 roles=(A B C)
 extra=()
+protocol=JHH_DONOR_AGREEMENT_GAIN_PROTOCOL.md
+if [[ ${4:-} == amplitude-fair ]]; then
+  protocol=JHH_DONOR_AMPLITUDE_FAIR_PROTOCOL.md
+  extra+=(--prior-amplitude "$root/jhh-agreement.Xh00o3mh/$cell"
+    --amplitude-pin "$reports/data/jhh_donor_agreement_gain/$cell/freeze.json")
+fi
 case "$phase" in
   predict) extra+=(--role "${roles[${SLURM_ARRAY_TASK_ID:?}]}") ;;
   freeze) ;;
@@ -36,7 +42,7 @@ esac
   --cell "$cell" --run "$out" --previous "$root/$previous" --previous-pin "$orig/freeze.json" \
   --previous-protocol "$reports/${cell}_OFF_POSITION_PROTOCOL.md" --access-pin "$orig/access/receipt.json" \
   --native-protocol "$reports/${cell}_OFF_POSITION_NATIVE_PROTOCOL.md" --previous-score-pin "$orig/score/receipt.json" \
-  --protocol "$reports/JHH_DONOR_AGREEMENT_GAIN_PROTOCOL.md" "${extra[@]}"
+  --protocol "$reports/$protocol" "${extra[@]}"
 if [[ "$phase" == freeze ]]; then
   sha256sum "$out/freeze.json" | cut -d' ' -f1 > "$out/freeze.sha256"
 fi

@@ -12,7 +12,7 @@ from src.r11_chemical_probe.common import read_json, sha256, write_json
 from src.r19_plan import jhh_donor_variance as lineage
 from src.r19_plan.hcc_lincs_24h_transfer import effect, group_means
 from src.r19_plan.jhh5_donor_attribution import shrink_consensus
-from src.r19_plan.jhh5_off_position import CALIBRATED, COUNT, SHRINK
+from src.r19_plan.jhh5_off_position import CALIBRATED, COUNT, SCALAR, SHRINK
 from src.r19_plan.t4_position import compare
 from src.r19_plan.t4_workflow import scalar
 
@@ -22,6 +22,12 @@ ENERGY = "source_norm_gain"
 SHUFFLE = "shuffled_agreement_gain"
 ARMS = (CALIBRATED, CANDIDATE, ENERGY, SHUFFLE)
 PAIRS = ((CANDIDATE, CALIBRATED), (CANDIDATE, ENERGY), (CANDIDATE, SHUFFLE), (ENERGY, CALIBRATED))
+MEAN_ENERGY = "mean_source_norm_gain"
+FAIR_ARMS = (CALIBRATED, SCALAR, ENERGY, MEAN_ENERGY)
+FAIR_PAIRS = (
+    (ENERGY, MEAN_ENERGY), (MEAN_ENERGY, SCALAR), (MEAN_ENERGY, CALIBRATED),
+    (ENERGY, CALIBRATED), (CALIBRATED, SCALAR), (ENERGY, "B0"), (MEAN_ENERGY, "B0"),
+)
 RIDGE = .05
 
 
@@ -33,6 +39,17 @@ def source_statistics(panels):
     i,j = np.triu_indices(COUNT,k=1)
     agreement = np.sum(unit[:,i]*unit[:,j], axis=2).mean(axis=1)
     return np.column_stack((log_rms, agreement))
+
+
+def locked_amplitude(args, role):
+    pin = read_json(args.amplitude_pin)
+    if (pin["cell"] != args.cell or sha256(args.prior_amplitude/"freeze.json") != sha256(args.amplitude_pin)
+            or pin["previous_freeze_sha256"] != sha256(args.previous_pin)):
+        raise ValueError("Prior amplitude freeze differs from the registered cell or original support")
+    path = args.prior_amplitude/"predictions"/role
+    if sha256(path/"receipt.json") != pin["roles"][role]:
+        raise ValueError("Prior amplitude prediction receipt changed")
+    return path, read_json(path/"receipt.json")["files"]
 
 
 def resampled_agreement(features, parents, identifier):
@@ -78,6 +95,7 @@ def predict(args, old, ref, genes, cols, prior, stamp):
     means = panels.mean(axis=1)
     shrink = shrink_consensus(panels,[COUNT]*len(panels),means)
     feature = source_statistics(panels)
+    previous_amplitude = locked_amplitude(args, role) if args.amplitude_pin else None
     root = args.run/"predictions"/role
     root.parent.mkdir(exist_ok=True)
     with TemporaryDirectory(dir=root.parent,prefix=".gain-") as work:
@@ -98,16 +116,31 @@ def predict(args, old, ref, genes, cols, prior, stamp):
             base = scalar(labels,shrink[i],y)
             np.testing.assert_array_equal((base*shrink[j]).astype("float32"),original[CALIBRATED])
             np.testing.assert_array_equal(shrink[j].astype("float32"),original[SHRINK])
-            shifted_fit = resampled_agreement(feature[i],labels.parent,f"{key}|fit")
-            shifted_query = resampled_agreement(feature[j],query.parent,f"{key}|query")
             arms = {CALIBRATED:original[CALIBRATED]}
-            for arm,train,test in ((CANDIDATE,feature[i],feature[j]),(ENERGY,feature[i,:1],feature[j,:1]),
-                                   (SHUFFLE,shifted_fit,shifted_query)):
-                gain,beta = model_gain(train,test,shrink[i],y,agreement=arm!=ENERGY)
-                arms[arm]=(gain[:,None]*shrink[j]).astype("float32")
+            size_fit, size_query = feature[i,:1], feature[j,:1]
+            if previous_amplitude:
+                scalar_mean = scalar(labels,means[i],y)
+                np.testing.assert_array_equal((scalar_mean*means[j]).astype("float32"),original[SCALAR])
+                arms[SCALAR] = original[SCALAR]
+                recipes = ((ENERGY,size_fit,size_query,shrink),(MEAN_ENERGY,size_fit,size_query,means))
+            else:
+                shifted_fit = resampled_agreement(feature[i],labels.parent,f"{key}|fit")
+                shifted_query = resampled_agreement(feature[j],query.parent,f"{key}|query")
+                recipes = ((CANDIDATE,feature[i],feature[j],shrink),(ENERGY,size_fit,size_query,shrink),
+                           (SHUFFLE,shifted_fit,shifted_query,shrink))
+            for arm,train,test,vector in recipes:
+                gain,beta = model_gain(train,test,vector[i],y,agreement=train.shape[1]==2)
+                arms[arm]=(gain[:,None]*vector[j]).astype("float32")
                 audit.append(dict(slice=key,arm=arm,fit_parents=len(i),query_wells=len(j),original_gain=base,
                     intercept=beta[0],norm_slope=beta[1],agreement_slope=beta[2] if len(beta)==3 else None,
                     query_gain_min=gain.min(),query_gain_median=np.median(gain),query_gain_max=gain.max()))
+            if previous_amplitude:
+                directory, hashes = previous_amplitude
+                archived = directory/(key+".npz")
+                if sha256(archived) != hashes[key]:
+                    raise ValueError("Archived amplitude forecast changed")
+                with np.load(archived,allow_pickle=False) as replay:
+                    np.testing.assert_array_equal(arms[ENERGY],replay[ENERGY])
             entry=stage/(key+".npz")
             np.savez_compressed(entry,**arms)
             entries[key]=sha256(entry)
@@ -122,7 +155,8 @@ def finish(args,old,ref,genes,cols,prior,stamp):
         raise ValueError("The gain comparison requires a separate frozen forecast")
     if not scoring and path.exists():
         raise FileExistsError(path)
-    manifest,rows,queries,estimates,audit=lineage.verified_forecasts(args,old,ref,genes,stamp,arms=ARMS,seedwise=())
+    arms, pairs = (FAIR_ARMS, FAIR_PAIRS) if args.amplitude_pin else (ARMS, PAIRS)
+    manifest,rows,queries,estimates,audit=lineage.verified_forecasts(args,old,ref,genes,stamp,arms=arms,seedwise=())
     if not scoring:
         write_json(path,manifest)
         return
@@ -137,7 +171,7 @@ def finish(args,old,ref,genes,cols,prior,stamp):
         ctl=plan["score_controls"] if args.cell=="JHH5" else plan["controls"]
         truth.append(effect(target,ctl,ref,genes,cols,"ABC"[("ABC".index(role)+2)%3]))
     y=np.concatenate(truth)
-    arrays={a:np.concatenate([v[a] for v in estimates.values()]) for a in ARMS}
+    arrays={a:np.concatenate([v[a] for v in estimates.values()]) for a in arms}
     absolute=args.previous/"score/paired.tsv"
     original=read_json(args.previous_score_pin)
     if (sha256(args.previous/"score/receipt.json")!=sha256(args.previous_score_pin)
@@ -147,11 +181,17 @@ def finish(args,old,ref,genes,cols,prior,stamp):
     base=registered.loc[registered.scope.eq("all")&registered.arm.eq(CALIBRATED)&registered.reference.eq("scalar")]
     values=compare(rows,y,{CALIBRATED:arrays[CALIBRATED],"B0":np.zeros_like(y)},((CALIBRATED,"B0"),),"all")
     np.testing.assert_allclose(base.arm_value,[row["arm_value"] for row in values],atol=1e-12,rtol=0)
-    full=compare(rows,y,arrays,PAIRS,"all")
+    if args.amplitude_pin:
+        arrays["B0"] = np.zeros_like(y)
+        expected = base[["arm_value", "reference_value"]].to_numpy()
+        replay = compare(rows,y,arrays,((CALIBRATED, SCALAR),),"all")
+        np.testing.assert_allclose(expected, [(r["arm_value"],r["reference_value"]) for r in replay],
+                                   atol=1e-12,rtol=0)
+    full=compare(rows,y,arrays,pairs,"all")
     folds=[]
     for k in range(3):
         keep=rows.fold.eq(k)
-        folds.extend(compare(rows.loc[keep],y[keep],{arm:v[keep] for arm,v in arrays.items()},PAIRS,k))
+        folds.extend(compare(rows.loc[keep],y[keep],{arm:v[keep] for arm,v in arrays.items()},pairs,k))
     with TemporaryDirectory(dir=args.run,prefix=".gain-score-") as work:
         stage=Path(work)
         for name,table in (("paired",full),("folds",folds),("gains",audit)):
@@ -169,7 +209,13 @@ if __name__=="__main__":
     parser.add_argument("--digest")
     for name in ("run","previous","previous-pin","previous-score-pin","access-pin","previous-protocol","native-protocol","protocol"):
         parser.add_argument("--"+name,type=Path,required=True)
+    parser.add_argument("--prior-amplitude",type=Path)
+    parser.add_argument("--amplitude-pin",type=Path)
     args=parser.parse_args()
+    if bool(args.prior_amplitude) != bool(args.amplitude_pin):
+        parser.error("The matched amplitude comparison needs both the old run and its frozen pin")
     *other,stamp=lineage.references(args)
     stamp.update(code_sha256=sha256(__file__),shared_access_code_sha256=sha256(lineage.__file__))
+    if args.amplitude_pin:
+        stamp["amplitude_freeze_sha256"] = sha256(args.amplitude_pin)
     (predict if args.phase=="predict" else finish)(args,*other,stamp)
