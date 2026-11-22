@@ -13,6 +13,15 @@ from src.r11_chemical_probe.common import sha256, write_json
 
 LINK = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 TABLE = (
+    *((f"{cell}, 10 µM", label, f"jhh_donor_amplitude_fair/{code}/score/paired.tsv", "scope",
+       "all", arm, ref, parents, wells, f"jhh_donor_amplitude_fair/{code}/freeze.json")
+      for cell, code, parents, wells in (("JHH-5", "JHH5", 305, 309), ("JHH-7", "JHH7", 88, 88))
+      for label, arm, ref in (
+          ("Adaptive vs. constant gain on donor mean", "mean_source_norm_gain", "scalar"),
+          ("Shrinkage vs. raw mean, both adaptive", "source_norm_gain", "mean_source_norm_gain"))),
+    *(("HEPG2, 6 to 24 h", label, "t4_mean_shift/score/paired.tsv", "scope", "parent",
+       "purged_operator", ref, 132, 268, "t4_mean_shift/freeze.json")
+      for label, ref in (("Centered scalar", "purged_mean_scalar"), ("Diagonal ridge", "purged_diagonal"))),
     ("HEPG2, 6 to 24 h", "Fit-only scalar", "t4_scaffold/score/paired.tsv", "scope", "parent",
      "purged_operator", "purged_scalar", 132, 268, "t4_scaffold/freeze.json"),
     ("HEPG2, 6 to 24 h", "Matched State", "t4_state/score/paired.tsv", "unit", "parent",
@@ -69,7 +78,32 @@ def score_rows(data):
             delta_r2_points=100*float(m["r2_pooled"]["difference"]),
             r2_low99_points=100*float(m["r2_pooled"]["low99"]),
             r2_high99_points=100*float(m["r2_pooled"]["high99"]),
-            source=source, score_sha256=digest, receipt_sha256=sha256(receipt_path))
+            source=source, score_sha256=digest, receipt_sha256=sha256(receipt_path),
+            absolute_rmse_reduction="", absolute_rmse_low99="", absolute_rmse_high99="", joint_gate="")
+
+    registry = data / "r18_confirmation"
+    path = registry / "score/paired.tsv"
+    receipt_path = path.parent / "receipt.json"
+    receipt = json.loads(receipt_path.read_text())
+    if sha256(path) != receipt["files"][path.name] or sha256(registry / "freeze.json") != receipt["freeze_sha256"]:
+        raise ValueError("R18 paired score or freeze changed")
+    with path.open(newline="") as handle:
+        r18 = [r for r in csv.DictReader(handle, delimiter="\t")
+               if r["scope"] == "C1" and r["arm"] == "blend_FiLM"]
+    for scenario in ("A", "B"):
+        rows = [r for r in r18 if r["scenario"] == scenario]
+        m = {r["metric"]: r for r in rows if r["reference"] == "R15"}
+        passed = sum(r["passes"] == "True" for r in rows)
+        if (passed, len(rows)) != {"A": (4, 12), "B": (13, 14)}[scenario]:
+            raise ValueError("R18 C1 gate differs from the verified registered decision")
+        rmse, r2 = m["rmse"], m["r2_pooled"]
+        yield dict(evaluation=f"R18 C1 {scenario}", comparator="R15 kernel", parents=int(rmse["parents"]),
+            wells=int(rmse["rows"]) // 3, relative_rmse_gain_pct="", rmse_low99_pct="", rmse_high99_pct="",
+            delta_r2_points=100*float(r2["difference"]), r2_low99_points=100*float(r2["low99"]),
+            r2_high99_points=100*float(r2["high99"]), source="r18_confirmation/score/paired.tsv",
+            score_sha256=sha256(path), receipt_sha256=sha256(receipt_path),
+            absolute_rmse_reduction=-float(rmse["difference"]), absolute_rmse_low99=-float(rmse["high99"]),
+            absolute_rmse_high99=-float(rmse["low99"]), joint_gate=f"{passed}/{len(rows)}, unmet")
 
 
 def clean(line, *, references=False):
@@ -113,6 +147,15 @@ def interval(row, point, lo, hi):
     return "{:+.3f} [{:+.3f}, {:+.3f}]".format(*(row[k] for k in (point, lo, hi)))
 
 
+def render_markdown_table(doc, block):
+    header, _, *body = [line.strip("|").split("|") for line in block.splitlines()]
+    table = doc.add_table(rows=0, cols=len(header))
+    table.style = "Table Grid"
+    for row in (header, *body):
+        for cell, value in zip(table.add_row().cells, row, strict=True):
+            cell.text = clean(value.strip())
+
+
 def build_word(path, root, title, contents, rows):
     from docx import Document
     from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -146,11 +189,17 @@ def build_word(path, root, title, contents, rows):
                 t.style = "Table Grid"
                 t.rows[0]._tr.get_or_add_trPr().append(OxmlElement("w:tblHeader"))
                 for cell, label in zip(t.rows[0].cells, ("Evaluation", "Comparator", "Parents / wells",
-                    "RMSE reduction %, 99% interval", "Pooled R² change, points, 99% interval"), strict=True):
+                    "RMSE reduction, 99% interval", "Pooled R² change, points, 99% interval"), strict=True):
                     cell.paragraphs[0].add_run(label).bold = True
                 for record in rows:
-                    values = (record["evaluation"], record["comparator"], f'{record["parents"]} / {record["wells"]}',
-                        interval(record, "relative_rmse_gain_pct", "rmse_low99_pct", "rmse_high99_pct"),
+                    evaluation = record["evaluation"]
+                    if record["joint_gate"]:
+                        evaluation += "\n" + record["joint_gate"]
+                        rmse = "{:+.5f} [{:+.5f}, {:+.5f}]".format(record["absolute_rmse_reduction"],
+                            record["absolute_rmse_low99"], record["absolute_rmse_high99"])
+                    else:
+                        rmse = interval(record, "relative_rmse_gain_pct", "rmse_low99_pct", "rmse_high99_pct") + "%"
+                    values = (evaluation, record["comparator"], f'{record["parents"]} / {record["wells"]}', rmse,
                         interval(record, "delta_r2_points", "r2_low99_points", "r2_high99_points"))
                     for c,value in zip(t.add_row().cells,values,strict=True):
                         c.text = value
@@ -162,7 +211,9 @@ def build_word(path, root, title, contents, rows):
                 doc.add_picture(str(stub.with_suffix(".png")), width=Inches(6.35))
             for block in text.strip().split("\n\n"):
                 for line in block.splitlines() if name=="References" else (block,):
-                    if line.startswith("### "):
+                    if line.startswith("|"):
+                        render_markdown_table(doc, line)
+                    elif line.startswith("### "):
                         doc.add_heading(line.removeprefix("### "), level=2)
                     else:
                         add_text(doc, clean(line, references=name=="References"))
@@ -183,12 +234,14 @@ def export(root, output, git_revision):
         with (stage/"table1.tsv").open("w", newline="") as handle:
             writer = csv.DictWriter(handle, fieldnames=list(rows[0]), delimiter="\t", lineterminator="\n")
             writer.writeheader()
-            writer.writerows(rows)
+            writer.writerows({key: value if value != "" else "NA" for key, value in row.items()} for row in rows)
         build_word(stage/"REVIEW.docx", root, title, contents, rows)
         names = ("REVIEW.docx", "table1.tsv")
         receipt = "review_receipt.json"
         write_json(stage/receipt, dict(mode="internal_review", source_git_revision=git_revision,
-            draft_sha256=sha256(draft), lengths=lengths, table_rows=len(rows), figures=3,
+            draft_sha256=sha256(draft), claims_sha256=sha256(root / "CLAIMS.md"),
+            supplementary_sha256=sha256(root / "SUPPLEMENTARY_TABLE_S1.md"),
+            lengths=lengths, table_rows=len(rows), figures=3,
             vector_sources={f"figure{n}.pdf":sha256(root/f"figure{n}.pdf") for n in (1, 2, 3)},
             artifacts={name:sha256(stage/name) for name in names}))
         for name in (*names, receipt):

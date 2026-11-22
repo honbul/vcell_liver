@@ -7,6 +7,7 @@ from pathlib import Path
 import matplotlib
 
 from src.r11_chemical_probe.common import read_json, sha256
+from src.r19_plan.manuscript_review import score_rows
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -23,24 +24,26 @@ def table(root, name):
 
 def temporal(ax, data):
     choices = (
-        ("t4", "ALL", "identity6", "Direct 6 h, n=132"),
-        ("t4", "ALL", "scalar6", "Scalar 6 h, n=132"),
-        ("t4", "ALL", "direct24", "Direct 24 h replicate, n=132"),
-        ("t4_repeat/HEPG2", "ALL", "direct24_scalar", "Scaled 24 h replicate, n=132"),
-        ("t4_attribution", "ALL", "mean24", "Fit mean 24 h, n=132"),
-        ("t4_attribution", "same_dose", "same_dose_swap6", "Wrong-parent 6 h, n=89"),
+        ("t4_mean_shift", "parent", "purged_operator", "purged_mean_scalar", "Centered scalar, n=132"),
+        ("t4_mean_shift", "parent", "purged_operator", "purged_diagonal", "Diagonal ridge, n=132"),
+        ("t4_mean_shift", "parent", "purged_operator", "purged_scalar", "Origin scalar, n=132"),
+        ("t4", "ALL", "operator6", "identity6", "Direct 6 h, n=132"),
+        ("t4", "ALL", "operator6", "direct24", "Direct 24 h replicate, n=132"),
+        ("t4_repeat/HEPG2", "ALL", "operator6", "direct24_scalar", "Scaled 24 h replicate, n=132"),
+        ("t4_attribution", "ALL", "operator6", "mean24", "Fit mean 24 h, n=132"),
+        ("t4_attribution", "same_dose", "operator6", "same_dose_swap6", "Wrong-parent 6 h, n=89"),
     )
     receipts = {study: table(data/study/"score", "paired.tsv") for study in {choice[0] for choice in choices}}
     positions = range(len(choices)-1, -1, -1)
     ax.axvline(0, lw=1, color="#8C929A", ls="--", zorder=0)
-    for y, (study, scope, baseline, _) in zip(positions, choices, strict=True):
+    for y, (study, scope, arm, baseline, _) in zip(positions, choices, strict=True):
         rows = [r for r in receipts[study] if (r.get("scope", "ALL"), r["metric"], r["arm"], r["reference"])
-                == (scope, "rmse", "operator6", baseline)]
+                == (scope, "rmse", arm, baseline)]
         if len(rows) != 1:
             raise ValueError(f"The figure requires one paired effect for {study} {scope} {baseline}")
         mean, lo, hi = (100*float(rows[0][k]) for k in ("relative_gain", "relative_low99", "relative_high99"))
         ax.errorbar(mean, y, xerr=[[mean-lo], [hi-mean]], fmt="o", ms=5, lw=1.4, capsize=2.5,
-                    color="#1F597D" if study=="t4" else "#5A596B", zorder=2)
+                    color="#1F597D" if study=="t4_mean_shift" else "#5A596B", zorder=2)
     ax.set_yticks(positions, [choice[-1] for choice in choices])
     ax.set_ylim(-.55, len(choices)-.45)
     ax.set_xlim(-9, 22)
@@ -82,11 +85,21 @@ def render(data, output):
     if output.suffix != ".pdf":
         raise ValueError("The manuscript figure is rendered as a vector PDF")
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10, "pdf.fonttype": 42})
-    fig, (left, right) = plt.subplots(1,2,figsize=(11.6,4.5),gridspec_kw={"width_ratios":[1.08,1]})
-    fig.subplots_adjust(left=.20,right=.985,top=.88,bottom=.24,wspace=.60)
+    fig, (left, right, bottom) = plt.subplots(1, 3, figsize=(14.1, 4.8),
+                                               gridspec_kw={"width_ratios": [1.18, 1, 1]})
+    fig.subplots_adjust(left=.17, right=.985, top=.88, bottom=.24, wspace=.83)
     temporal(left,data)
     cross_assay(right,data)
-    for ax in (left,right):
+    r18 = [row for row in score_rows(data) if row["joint_gate"]]
+    bottom.axvline(0, lw=1, color="#8C929A", ls="--")
+    for y, row in enumerate(r18):
+        point, lo, hi = (row[key] for key in ("delta_r2_points", "r2_low99_points", "r2_high99_points"))
+        bottom.errorbar(point, y, xerr=[[point-lo], [hi-point]], fmt="o", color="#1F597D", capsize=2.5)
+    bottom.set(yticks=range(len(r18)),
+               yticklabels=[row["evaluation"][-1] + " · " + row["joint_gate"] for row in r18],
+               ylim=(1.5, -.5), xlabel="Pooled R² gain vs R15 (points)")
+    bottom.set_title("c  R18 joint criterion", loc="left", weight="bold", pad=12)
+    for ax in (left,right,bottom):
         ax.spines[["top","right","left"]].set_visible(False)
         ax.spines["bottom"].set_color("#8C929A")
         ax.tick_params(axis="y",length=0,pad=8)

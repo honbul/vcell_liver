@@ -1,7 +1,6 @@
 """Render the paired off-position adult HCC results as a vector figure."""
 
 import argparse
-import csv
 from pathlib import Path
 
 import matplotlib
@@ -9,57 +8,37 @@ matplotlib.use("Agg")
 from matplotlib import pyplot as plt
 import numpy as np
 
-from src.r11_chemical_probe.common import read_json, sha256
-
-
-REFERENCES = {
-    "scalar": "Fitted scalar",
-    "eight_token_State": "Eight-token State",
-    "wrong_calibrated_shrink": "Different drug",
-    "B0": "No response",
-}
-BEST = "Best of five public adapters"
-
-
-def score_rows(folder, name):
-    path = folder / name
-    if sha256(path) != read_json(folder / "receipt.json")["files"][path.name]:
-        raise ValueError(f"Plot source differs from its score receipt: {path}")
-    with path.open(newline="") as handle:
-        return {(r["metric"], r["reference"]): r for r in csv.DictReader(handle, delimiter="\t")
-                if r["scope"] == "all" and r["arm"] == "calibrated_shrink"}
-
-
-def data(root, directory, n):
-    rows = score_rows(root / directory / "score", "paired.tsv")
-    best = score_rows(root / (directory + "_native") / "score", "best.tsv")
-    out = {}
-    for name, fields in (("rmse", ("relative_gain", "relative_low99", "relative_high99")),
-                         ("r2_pooled", ("difference", "low99", "high99"))):
-        selected = [best[name, "best_VC"], *(rows[name, reference] for reference in REFERENCES)]
-        if any(int(row["parents"]) != n for row in selected):
-            raise ValueError("A comparison no longer uses the registered paired support")
-        out[name] = 100 * np.asarray([[float(r[f]) for f in fields] for r in selected])
-    return out
+from src.r19_plan.manuscript_review import score_rows
 
 
 def render(root, output):
-    cohorts = (("jhh5_off_position", "JHH-5 (305)", 305, "#156C80", "o", -.13),
-               ("jhh7_off_position", "JHH-7 (88)", 88, "#B35421", "s", .13))
-    studies = [data(root, item[0], item[2]) for item in cohorts]
+    cohorts = (("JHH-5", 305, "#156C80", "o", -.13), ("JHH-7", 88, "#B35421", "s", .13))
+    fair = list(score_rows(root))
+    comparisons = ("Adaptive vs. constant gain on donor mean", "Shrinkage vs. raw mean, both adaptive",
+                   "Best public adaptation")
+    metrics = {
+        "rmse": ("relative_rmse_gain_pct", "rmse_low99_pct", "rmse_high99_pct"),
+        "r2_pooled": ("delta_r2_points", "r2_low99_points", "r2_high99_points"),
+    }
+    studies = []
+    for cohort, _, *_ in cohorts:
+        rows = {r["comparator"]: r for r in fair if r["evaluation"] == f"{cohort}, 10 µM"}
+        studies.append({metric: np.asarray([[rows[comparison][field] for field in fields]
+                                            for comparison in comparisons]) for metric, fields in metrics.items()})
     with plt.rc_context({"font.family":"DejaVu Sans", "font.size":9, "pdf.fonttype":42, "text.color":"#273442",
                          "axes.labelcolor":"#273442", "ytick.color":"#273442", "xtick.color":"#273442"}):
         fig, axes = plt.subplots(1, 2, figsize=(10.2, 3.9), sharey=True)
-        fig.subplots_adjust(left=.24, right=.98, top=.79, bottom=.22, wspace=.23)
-        names = (BEST, *REFERENCES.values())
+        fig.subplots_adjust(left=.29, right=.98, top=.79, bottom=.22, wspace=.23)
+        names = ("Adaptive vs. constant gain\non raw donor mean", "Shrinkage vs. raw mean\nwith matched adaptive gain",
+                 "Earlier fixed-gain benchmark\nvs. best matched adaptation")
         y = np.arange(len(names))
         labels = (("rmse", "a  Parent-macro RMSE", "Relative reduction (%)"),
                   ("r2_pooled", "b  Pooled R²", "Improvement (percentage points)"))
         handles = []
         for ax, (metric, title, label) in zip(axes, labels, strict=True):
-            for (_, cohort, _, color, marker, offset), values in zip(cohorts, studies, strict=True):
+            for (cohort, n, color, marker, offset), values in zip(cohorts, studies, strict=True):
                 point, lower, upper = values[metric].T
-                series = ax.errorbar(point, y + offset, xerr=(point - lower, upper - point), color=color, label=cohort,
+                series = ax.errorbar(point, y + offset, xerr=(point - lower, upper - point), color=color, label=f"{cohort} ({n})",
                             marker=marker, ls="none", markersize=4.5, elinewidth=1.3, capsize=2.2)
                 if metric == "rmse":
                     handles.append(series)
