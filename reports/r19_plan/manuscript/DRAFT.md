@@ -135,7 +135,7 @@ Planning scenarios based on the JHH scaffold intervals showed that pilot precisi
 5. Hetzel, L. et al. Predicting cellular responses to novel drug perturbations at a single-cell resolution. Adv. Neural Inf. Process. Syst. 35 (2022). [DOI](https://doi.org/10.52202/068431-1937)
 6. Tong, X. et al. Deep representation learning of chemical-induced transcriptional profile for phenotype-based drug discovery. Nat. Commun. 15, 5378 (2024). [DOI](https://doi.org/10.1038/s41467-024-49620-3)
 7. López-Terrada, D., Cheung, S. W., Finegold, M. J. & Knowles, B. B. Hep G2 is a hepatoblastoma-derived cell line. Hum. Pathol. 40, 1512–1515 (2009). [DOI](https://doi.org/10.1016/j.humpath.2009.07.003)
-8. Kaufmann, M. et al. A biological-response compound representation allows chemical perturbation prediction across cell lines. bioRxiv preprint (2026). [DOI](https://doi.org/10.64898/2026.09.28.755146)
+8. Kaufmann, L. et al. A biological-response compound representation allows chemical perturbation prediction across cell lines. bioRxiv preprint (2026). [DOI](https://doi.org/10.64898/2026.09.28.755146)
 9. Viñas Torné, R. et al. Systema: a framework for evaluating genetic perturbation response prediction beyond systematic variation. Nat. Biotechnol. 44, 1050–1059 (2026, published online 2025). [DOI](https://doi.org/10.1038/s41587-025-02777-8)
 10. Nicol, P. B. et al. Spurious correlation inflates performance in single-cell perturbation prediction. bioRxiv preprint (2026). [DOI](https://doi.org/10.64898/2026.05.07.723486)
 11. Broad Institute. Connectivity Map LINCS 2020 L1000 release, Level 3. [CLUE data portal](https://clue.io/)
