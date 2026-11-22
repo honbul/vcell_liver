@@ -89,3 +89,5 @@ Oslo 대장암 간전이 자료의 91개 PDO·52명에서 기저 RNA와 웰별 �
 Vinorelbine은 286개 동일 2D 계통에서 실제 농도를 일치시키면 두 스크린의 약물 내 Spearman이 .329에서 .104로 감소했다. 같은 구간으로 적합한 모델의 PDX 공동 기준도 미통과였다. LICOB에서 최고 두 농도가 지원되는 ispinesib 한 종은 별도 동결했다. PRISM 기술 반복의 Emax 순위 상관은 .874였으나 LICOB 38명의 같은 약물 내 예측은 .033으로 미통과였다. [Vinorelbine 원자료](VINORELBINE_RAW_DOSE_RESULTS.md) · [Ispinesib 최고 농도](LICOB_ISPINESIB_EMAX_RESULTS.md)
 
 PRISM 검출 반복이 높은 농도를 더 반영하도록 24약물·9,681개 곡선의 학습 표적을 바꿨다. 같은 지지에서 발행 AUC와 균등 원자료 두 조건을 대조했다. 2D 두 스크린 보류, LIMORE 독립 50계통, LICOB 성인 38명 모두의 공동 기준은 미통과였다. LIMORE에서 해당 14약물의 약물 내 상관은 소폭 높았고, LICOB 24약물에서는 세 개인화 모델 모두 0에 가까웠다. [반복 가중과 두 외부 코호트](PRISM_RELIABLE_DOSE_RESULTS.md)
+
+유전자별 RNA 분포를 평가 코호트에 맞추면 참조 분포의 극단 순위가 LIMORE 14.8%→8.0%, LICOB 33.1%→10.6%로 줄었다. 같은 약물에 대한 개인화의 공동 개선은 두 코호트 모두 사전 기준에 미달했다. [유전자별 보정의 전이 평가](GENE_CALIBRATION_RESULTS.md)
