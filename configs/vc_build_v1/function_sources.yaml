@@ -1,0 +1,111 @@
+# Raw public inputs and audited identity evidence. No derived forecast inputs.
+function_root: /mnt/S1/sdata/workbench/Virtual_Cell/gssong/vc_build_v1/function
+limore:
+  publication: https://pmc.ncbi.nlm.nih.gov/articles/PMC7505724/
+  table_s4:
+    path: ${function_root}/sources/LIMORE-CancerCell-2019-TableS4.xlsx
+    url: https://ars.els-cdn.com/content/image/1-s2.0-S1535610819303289-mmc5.xlsx
+    sha256: 3115710f1827a4c5183769fb5186c806b9e651fb8f54c49036cc73ebf6c9da2a
+  table_s1:
+    path: ${function_root}/sources/LIMORE-CancerCell-2019-TableS1.xlsx
+    url: https://ars.els-cdn.com/content/image/1-s2.0-S1535610819303289-mmc2.xlsx
+    sha256: c457a16d7bccb9cc7031e0511cc14800b955fed6cd1b201a468fbbcff5dce02d
+  drug_copy:
+    path: /mnt/S1/sdata/pubdata/LIMORE/drug.txt
+    url: https://www.picb.ac.cn/limore/
+    sha256: 041f3f827bb30e7b1b75c75f97de6a7b064eae166f7468b680bb8fe84317cbee
+  rna:
+    path: /mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1/raw/GSE97098/GSE97098_HCC81.genes.fpkm_table.log2.txt.gz
+    url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE97nnn/GSE97098/suppl/GSE97098_HCC81.genes.fpkm_table.log2.txt.gz
+    sha256: 3b6ecf05ff5baebfea4726af2a0d934672af14673166f79e073c3e8d46083728
+  chemistry: data_manifests/vc_build_v1/function/limore_chemistry.tsv
+  cell_registry: manifests/pathway_sensitivity_a1/model_registry.tsv
+  endpoint_id: LIMORE_Activity_Area
+  endpoint_unit: dimensionless_activity_area
+  time_h: 72
+  rna_assay: bulk_rnaseq_log2_fpkm_plus_one
+  source_protocol: Qiu_2019_LIMORE_72h_CTG_TableS4
+lccl:
+  publication: https://doi.org/10.1053/j.gastro.2019.05.001
+  auc:
+    path: /mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1/raw/LCCL/AUC.txt
+    url: https://lccl.zucmanlab.com/downloads/catalogue/AUC.txt
+    sha256: a035053bb976763e36a3b1f05a9e22a8790c9d870d5741fa83afe8240432c71f
+  rna:
+    path: /mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1/raw/LCCL/RNAseqFPKM.txt
+    url: https://lccl.zucmanlab.com/downloads/catalogue/RNAseqFPKM.txt
+    sha256: bfa155ca86432330e4754514e5978c35d5727544791798853647569609ccc9be
+  compounds:
+    path: /mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1/raw/LCCL/Screenedcompounds.txt
+    url: https://lccl.zucmanlab.com/downloads/catalogue/Screenedcompounds.txt
+    sha256: 99076e6c940c69b4f0d2a50e6eb59e67a7b6ade3fc950695aaaf177d665d6021
+  match_prior: configs/pathway_sensitivity_a1/drug_match_lccl.tsv
+  endpoint_id: LCCL_AUC
+  endpoint_unit: dimensionless_source_auc
+  # Share RNA assay family but retain source-specific protocol and feature distribution.
+  rna_assay: bulk_rnaseq_log2_fpkm_plus_one
+  source_protocol: Caruso_2019_LCCL_native_AUC
+cross:
+  cellosaurus: manifests/pathway_sensitivity_a1/cellosaurus_lookup.tsv
+  gdsc_pug_match: data_manifests/vc_build_v1/function/gdsc_pug_match.tsv
+  clean_families: 50
+  sources:
+    depmap_models:
+      path: /mnt/S1/sdata/pubdata/DepMap/25Q3/Model.csv
+      url: https://depmap.org/portal/data_page/
+      release: DepMap_Public_25Q3
+      sha256: 9dbb9de8805696c1345816ab07edd23fb4fd95e117739f3c5c3b1cf062c1233b
+      terms: https://depmap.org/portal/terms/
+    depmap_rna:
+      path: /mnt/S1/sdata/pubdata/DepMap/25Q3/OmicsExpressionTPMLogp1HumanProteinCodingGenes.csv
+      url: https://depmap.org/portal/data_page/
+      release: DepMap_Public_25Q3
+      sha256: 9d7e64ebbcb2811fa5e0ecf56d952ee96ca9f1f2b6ead00bb17480c1c01848d1
+      terms: https://depmap.org/portal/terms/
+    gdsc1:
+      path: /mnt/S1/sdata/pubdata/DepMap/DrugScreens/GDSC_rel8.5/GDSC1_fitted_dose_response_27Oct23.csv
+      url: https://cog.sanger.ac.uk/cancerrxgene/GDSC_release8.5/GDSC1_fitted_dose_response_27Oct23.xlsx
+      release: GDSC1_8.5_2023
+      sha256: 7f47b18eb73c22f870e69c87b682a07be289b043d648b55bf31e67c727ed500f
+    gdsc2:
+      path: /mnt/S1/sdata/pubdata/DepMap/DrugScreens/GDSC_rel8.5/GDSC2_fitted_dose_response_27Oct23.csv
+      url: https://cog.sanger.ac.uk/cancerrxgene/GDSC_release8.5/GDSC2_fitted_dose_response_27Oct23.xlsx
+      release: GDSC2_8.5_2023
+      sha256: dd3c6957f770f91f160cc018c8678ea0807d25016e7ea43dea2dac02074785fc
+    gdsc_labels:
+      path: /mnt/S1/sdata/pubdata/DepMap/DrugScreens/GDSC_rel8.5/screened_compounds_rel_8.5.csv
+      url: https://cog.sanger.ac.uk/cancerrxgene/GDSC_release8.5/screened_compounds_rel_8.5.csv
+      release: GDSC_8.5_2023
+      sha256: d3cbb8b595980b36bf92d54af1da1dd995d2e2ce624c7cc70aacf2a754dce782
+    ctrp_cells:
+      path: /mnt/S1/sdata/pubdata/DepMap/DrugScreens/CTRP_CTD2/v20.meta.per_cell_line.txt
+      url: https://ccgdata.cancer.gov/ctd2-data-project/broad-institute-screening-dependencies-cancer-cell-lines
+      release: CTRPv2.0_2015_ctd2_ExpandedDataset
+      sha256: 1ed4a596085691dce088cf0e20937960f38f5714d7c7fd01e46af4b3a23bb5b3
+    ctrp_compounds:
+      path: /mnt/S1/sdata/pubdata/DepMap/DrugScreens/CTRP_CTD2/v20.meta.per_compound.txt
+      url: https://ccgdata.cancer.gov/ctd2-data-project/broad-institute-screening-dependencies-cancer-cell-lines
+      release: CTRPv2.0_2015_ctd2_ExpandedDataset
+      sha256: c81c01949d3d1d79c8dfd5afbd4faa0f1f10db388074b38d2d6740184ef30bda
+    ctrp_experiments:
+      path: /mnt/S1/sdata/pubdata/DepMap/DrugScreens/CTRP_CTD2/v20.meta.per_experiment.txt
+      url: https://ccgdata.cancer.gov/ctd2-data-project/broad-institute-screening-dependencies-cancer-cell-lines
+      release: CTRPv2.0_2015_ctd2_ExpandedDataset
+      sha256: 6b4e60da8b75db8301c3448e0f2261be7295a5978da1bb17db3711a52ac0463f
+    ctrp_curves:
+      path: /mnt/S1/sdata/pubdata/DepMap/DrugScreens/CTRP_CTD2/v20.data.curves_post_qc.txt
+      url: https://ccgdata.cancer.gov/ctd2-data-project/broad-institute-screening-dependencies-cancer-cell-lines
+      release: CTRPv2.0_2015_ctd2_ExpandedDataset
+      sha256: b97bb9004f97ff7d5910c0f66c6d26163a2ce88529eaefc5df0e51624e5ac6a9
+    prism_cells:
+      path: /mnt/S1/sdata/pubdata/DepMap/DrugScreens/PRISM_Repurposing_20Q2/prism-repurposing-20q2-secondary-screen-cell-line-info.csv
+      url: https://doi.org/10.6084/m9.figshare.20564034.v1
+      release: PRISM_Repurposing_20Q2_secondary
+      sha256: 682ab554a9089833494b5b67549ccfcd27303c7d53f25e6a43099e066c924c82
+      license: CC-BY-4.0
+    prism_curves:
+      path: /mnt/S1/sdata/pubdata/DepMap/DrugScreens/PRISM_Repurposing_20Q2/prism-repurposing-20q2-secondary-screen-dose-response-curve-parameters.csv
+      url: https://doi.org/10.6084/m9.figshare.20564034.v1
+      release: PRISM_Repurposing_20Q2_secondary
+      sha256: 2ac69a21f1d681fe7447689262b82ca6e3dc90bfef0bd96eb5479b96f424e43d
+      license: CC-BY-4.0

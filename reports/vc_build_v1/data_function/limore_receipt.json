@@ -1,0 +1,110 @@
+{
+  "adult_age_documented": 77,
+  "all_source_compounds": 90,
+  "all_source_models": 81,
+  "artifacts": {
+    "cell_registry.tsv": {
+      "bytes": 16785,
+      "sha256": "0b95dcceb703c95461b12aa82c492954cc687c28dd7688cd9088f65475a039c6"
+    },
+    "compound_registry.tsv": {
+      "bytes": 81661,
+      "sha256": "ae3756148e11d05bc887fdf9b7e2baef3a2ba41aaf0db3c9a3588eb614728dca"
+    },
+    "genes.tsv": {
+      "bytes": 447517,
+      "sha256": "80e4b71e8dfef7fe4260b47566932b2a772452ff4334cafaead849e538017290"
+    },
+    "rna.parquet": {
+      "bytes": 15588640,
+      "sha256": "ab74542386e70b0d872d47fc145c66bb3fc1ec55c3a62cb2cb3942dae54715bd"
+    },
+    "rows.parquet": {
+      "bytes": 168988,
+      "sha256": "2e2d40c2c27232985512d3828955ae9b381632015bf7a99e0030fd300ee41555"
+    }
+  },
+  "biological_replicates": "Aggregate value per observed cell-compound pair, original rows have no replicate IDs",
+  "cell_exclusions": [
+    {
+      "exclusion_reason": "Pediatric HCC donor in LIMORE Table S1",
+      "source_name": "Hep3B"
+    },
+    {
+      "exclusion_reason": "source diagnosis: Hepatoblastoma; Cellosaurus: hepatoblastoma; Cellosaurus problematic: Misclassified. Originally thought to be a hepatocellular carcinoma cell line but shown to be from an hepatoblastoma (PubMed=19751877).",
+      "source_name": "HepG2"
+    },
+    {
+      "exclusion_reason": "source diagnosis: Hepatoblastoma; Cellosaurus: hepatoblastoma",
+      "source_name": "Huh6"
+    },
+    {
+      "exclusion_reason": "Adult donor age unconfirmed by LIMORE Table S1",
+      "source_name": "Mahlavu"
+    }
+  ],
+  "clinical_provenance": "Read-only Table S1 and public Cellosaurus/DepMap registry. Adult HCC donor age required.",
+  "compound_exclusions": [
+    {
+      "source_compound_label": "Cisplatin",
+      "structure_status": "unsupported_metal_coordination"
+    },
+    {
+      "source_compound_label": "Oxaliplatin",
+      "structure_status": "unsupported_metal_coordination"
+    }
+  ],
+  "inputs": {
+    "cell_registry": {
+      "bytes": 24911,
+      "path": "manifests/pathway_sensitivity_a1/model_registry.tsv",
+      "sha256": "e97acd2aba8a4a9356821179ed5515e789891b583512fdb0a71e98c47788bb70"
+    },
+    "chemistry": {
+      "bytes": 57055,
+      "path": "data_manifests/vc_build_v1/function/limore_chemistry.tsv",
+      "sha256": "f17d22d78e99e533c370416d5fa840224a7cd7a15b0fa68f7013c8104981ff83"
+    },
+    "drug_copy": {
+      "access": "Publicly accessible for research. The sources were used in place; raw source files and derived response matrices are retained in project storage. Individual data redistribution rights are unverified.",
+      "bytes": 336072,
+      "path": "/mnt/S1/sdata/pubdata/LIMORE/drug.txt",
+      "sha256": "041f3f827bb30e7b1b75c75f97de6a7b064eae166f7468b680bb8fe84317cbee",
+      "url": "https://www.picb.ac.cn/limore/"
+    },
+    "rna": {
+      "access": "Publicly accessible for research. The sources were used in place; raw source files and derived response matrices are retained in project storage. Individual data redistribution rights are unverified.",
+      "bytes": 5048218,
+      "path": "/mnt/S1/sdata/pubdata/Virtual_Cell/gssong/vcell_liver_pathway_sensitivity_a1/raw/GSE97098/GSE97098_HCC81.genes.fpkm_table.log2.txt.gz",
+      "sha256": "3b6ecf05ff5baebfea4726af2a0d934672af14673166f79e073c3e8d46083728",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE97nnn/GSE97098/suppl/GSE97098_HCC81.genes.fpkm_table.log2.txt.gz"
+    },
+    "table_s1": {
+      "access": "Publicly accessible for research. The sources were used in place; raw source files and derived response matrices are retained in project storage. Individual data redistribution rights are unverified.",
+      "bytes": 35807,
+      "path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vc_build_v1/function/sources/LIMORE-CancerCell-2019-TableS1.xlsx",
+      "sha256": "c457a16d7bccb9cc7031e0511cc14800b955fed6cd1b201a468fbbcff5dce02d",
+      "url": "https://ars.els-cdn.com/content/image/1-s2.0-S1535610819303289-mmc2.xlsx"
+    },
+    "table_s4": {
+      "access": "Publicly accessible for research. The sources were used in place; raw source files and derived response matrices are retained in project storage. Individual data redistribution rights are unverified.",
+      "bytes": 284561,
+      "path": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vc_build_v1/function/sources/LIMORE-CancerCell-2019-TableS4.xlsx",
+      "sha256": "3115710f1827a4c5183769fb5186c806b9e651fb8f54c49036cc73ebf6c9da2a",
+      "url": "https://ars.els-cdn.com/content/image/1-s2.0-S1535610819303289-mmc5.xlsx"
+    }
+  },
+  "legacy_copy_discrepant_rows_at_1e_8": 0,
+  "legacy_copy_max_abs_difference": 4.996529856526877e-10,
+  "n_cell_groups": 74,
+  "n_cells": 77,
+  "n_compounds": 88,
+  "n_rows": 6776,
+  "prior_exposure": "LIMORE expression and response were used in Pathway A1 and softprior studies.",
+  "publisher_missing_activity_area_rows": 0,
+  "publisher_observed_activity_area_rows": 7290,
+  "rna_axis": "Observed protein coding genes, unique symbol and Ensembl ID; no fitted transforms",
+  "rna_genes": 19739,
+  "rna_timing": "Independent deposited basal RNA; exact assay-matched 0h RNA unavailable",
+  "source_publication": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7505724/"
+}
