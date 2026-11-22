@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 from contextlib import nullcontext
 import json
+import os
 from pathlib import Path
 import platform
 import subprocess
@@ -46,7 +47,9 @@ def prepared_data(directory: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
     if rows.duplicated(subset=["cell_id", "compound_id"]).any():
         raise ValueError("Repeated responses require an explicit endpoint aggregation contract.")
     if "row_id" not in rows:
-        rows["row_id"] = rows["cell_id"].astype(str) + "::" + rows["compound_id"].astype(str)
+        rows["row_id"] = rows.get(
+            "record_id", rows["cell_id"].astype(str) + "::" + rows["compound_id"].astype(str),
+        )
     if rows["row_id"].duplicated().any() or rows["row_id"].isna().any():
         raise ValueError("Prepared response rows must have unique identities.")
     rows["chemical_group"] = chemical_groups(rows)
@@ -201,7 +204,7 @@ def endpoint_metadata(rows: pd.DataFrame, config: dict) -> dict:
             return value.item() if isinstance(value, np.generic) else value
         return config.get(column)
 
-    direction = constant("direction") or config.get("endpoint_direction", "higher")
+    direction = constant("endpoint_direction") or constant("direction") or config.get("endpoint_direction", "higher")
     return {
         "endpoint_id": constant("endpoint_id"),
         "predicted_unit": constant("endpoint_unit"),
@@ -287,7 +290,7 @@ def run(config_path: Path, data_dir: Path, run_dir: Path, tracks: list[str],
             ["git", "rev-parse", "HEAD"], text=True, stderr=subprocess.DEVNULL,
         ).strip()
     except (OSError, subprocess.CalledProcessError):
-        revision = None
+        revision = os.environ.get("VCB_CODE_COMMIT")
     endpoint = endpoint_metadata(rows, functional)
     run_dir.mkdir(parents=True, exist_ok=False)
     if smoke:
@@ -309,6 +312,8 @@ def run(config_path: Path, data_dir: Path, run_dir: Path, tracks: list[str],
             "scope": "real endpoint pipeline smoke; no comparative claim" if smoke else
             "existing public development data; outer targets excluded under this contract",
             "code_commit": revision, "config_sha256": sha256(config_path),
+            "code_sha256": {name: sha256(Path(__file__).with_name(name))
+                            for name in ("train.py", "functional.py", "splits.py", "io.py")},
             "rows_sha256": sha256(data_dir / "rows.parquet"),
             "rna_sha256": sha256(data_dir / "rna.parquet"),
             "splits_sha256": sha256(run_dir / "splits.parquet"),
