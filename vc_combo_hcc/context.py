@@ -70,7 +70,8 @@ def by_gene_columns(columns, approved):
 
 def expression_panels(rna_path, effect_path, cells, approved):
     rna = pd.read_csv(rna_path, low_memory=False)
-    mask = rna.IsDefaultEntryForModel.astype(str).str.lower().eq("true") & rna.ModelID.isin(cells)
+    defaults = rna.IsDefaultEntryForModel.astype(str).str.strip().str.lower().isin(("true", "yes", "1"))
+    mask = defaults & rna.ModelID.isin(cells)
     genes = by_gene_columns(rna.columns, approved)
     expr = rna.loc[mask].set_index("ModelID", verify_integrity=True)[list(genes.values())]
     expr.columns = pd.Index(genes, name="symbol")
