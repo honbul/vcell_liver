@@ -1,6 +1,6 @@
 """Regularize cell responses across registered chemicals with separable kernels."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 import numpy as np
 import pandas as pd
@@ -21,28 +21,75 @@ def radial(linear, row_energy, column_energy, width):
     return torch.exp(-distance / width)
 
 
-def cell_kernels(fit, query, signatures, auxiliary, *, device):
-    """Build blocked fit and cross Gram matrices with train-only scaling."""
+def ranked_expression(frame):
+    ranks = rankdata(frame.to_numpy(), axis=1)
+    return ((ranks - 0.5) / frame.shape[1] - 0.5).astype(np.float32)
+
+
+@dataclass
+class Standardization:
+    center: np.ndarray
+    spread: np.ndarray
+
+    @classmethod
+    def fit(cls, values, floor):
+        return cls(values.mean(axis=0), np.maximum(values.std(axis=0), floor))
+
+    def apply(self, values, device):
+        return torch.as_tensor(np.clip((values - self.center) / self.spread, -8, 8), device=device)
+
+
+@dataclass
+class CellKernelBasis:
+    genes: pd.Index
+    reference: tuple
+    reference_energy: torch.Tensor
+    reference_scale: float
+    sequence: Standardization
+    pathway: Standardization
+    auxiliary: Standardization
+    pathway_weights: sparse.csr_matrix
+    auxiliary_models: tuple
+    indices: np.ndarray
+
+    def cpu(self):
+        return replace(self, reference=tuple(x.cpu() for x in self.reference),
+                       reference_energy=self.reference_energy.cpu())
+
+    def cross(self, query):
+        x, p, u = self.reference
+        device = x.device
+        raw = ranked_expression(query[self.genes])
+        q = self.sequence.apply(raw, device)
+        s = self.pathway.apply(raw @ self.pathway_weights, device)
+        proxy = auxiliary_features(self.auxiliary_models, auxiliary_inputs(q, s, self.indices))
+        v = self.auxiliary.apply(proxy, device)
+        linear = dot_kernel(q, x) / self.reference_scale
+        energy = q.square().mean(dim=1) / self.reference_scale
+        rna = 0.5 * (linear + radial(linear, energy, self.reference_energy, 2.0))
+        return {"rna": rna, "full": 0.7 * rna + 0.2 * dot_kernel(s, p) + 0.1 * dot_kernel(v, u)}
+
+
+def auxiliary_inputs(x, pathway, selected):
+    ix = torch.as_tensor(selected, dtype=torch.long, device=x.device)
+    return torch.cat((x[:, ix], pathway), dim=1).cpu().numpy()
+
+
+def auxiliary_features(models, values):
+    return np.concatenate([model.predict(values).reshape(len(values), -1) for model in models], axis=1)
+
+
+def fit_cell_kernels(fit, signatures, auxiliary, *, device):
+    """Fit the reusable expression basis and return the training Gram matrices."""
     genes = fit.columns
-    fit_values, query_values = (
-        ((rankdata(frame[genes].to_numpy(), axis=1) - 0.5) / len(genes) - 0.5).astype(np.float32)
-        for frame in (fit, query)
-    )
-
-    def standardized(a, b, floor):
-        center, spread = a.mean(axis=0), np.maximum(a.std(axis=0), floor)
-        return tuple(torch.as_tensor(np.clip((value - center) / spread, -8, 8), device=device)
-                     for value in (a, b))
-
-    x, q = standardized(fit_values, query_values, 0.05)
-    linear = dot_kernel(x, x)
-    cross = dot_kernel(q, x)
-    scale = linear.diagonal().mean().item()
-    linear, cross = linear / scale, cross / scale
-    query_energy = q.square().mean(dim=1) / scale
-    nonlinear = radial(linear, linear.diagonal(), linear.diagonal(), 2.0)
-    nonlinear_cross = radial(cross, query_energy, linear.diagonal(), 2.0)
-    raw = (0.5 * (linear + nonlinear), 0.5 * (cross + nonlinear_cross))
+    raw = ranked_expression(fit)
+    sequence = Standardization.fit(raw, 0.05)
+    x = sequence.apply(raw, device)
+    rna_linear = dot_kernel(x, x)
+    scale = rna_linear.diagonal().mean().item()
+    rna_linear = rna_linear / scale
+    energy = rna_linear.diagonal().clone()
+    rna = 0.5 * (rna_linear + radial(rna_linear, energy, energy, 2.0))
 
     annotated = signatures[signatures.gene.isin(genes)].copy()
     support = annotated.groupby("signature").gene.nunique()
@@ -57,14 +104,14 @@ def cell_kernels(fit, query, signatures, auxiliary, *, device):
     )
     column_norm = np.sqrt(np.asarray(weights.power(2).sum(axis=0))).ravel()
     weights = weights @ sparse.diags(1.0 / column_norm)
-    p, s = standardized(fit_values @ weights, query_values @ weights, 0.05)
-    path = (dot_kernel(p, p), dot_kernel(s, p))
+    pathway_values = raw @ weights
+    pathway = Standardization.fit(pathway_values, 0.05)
+    p = pathway.apply(pathway_values, device)
 
     # Fit public Chronos and genomic annotations as auxiliary targets on fit cells only.
-    selected = x.var(dim=0).argsort(descending=True)[:768]
-    x_small = torch.cat((x[:, selected], p), dim=1).cpu().numpy()
-    q_small = torch.cat((q[:, selected], s), dim=1).cpu().numpy()
-    proxy_fit, proxy_query = [], []
+    selected = x.var(dim=0).argsort(descending=True)[:768].cpu().numpy()
+    x_small = auxiliary_inputs(x, p, selected)
+    models = []
     for table in auxiliary.values():
         measured = table.reindex(fit.index)
         by_support = {}
@@ -77,15 +124,23 @@ def cell_kernels(fit, query, signatures, auxiliary, *, device):
             values = measured.loc[valid, columns].to_numpy(dtype=np.float32)
             if not np.isfinite(values).all():
                 raise ValueError("Invalid public auxiliary target")
-            estimator = Ridge(alpha=1000).fit(x_small[valid], values)
-            proxy_fit.append(estimator.predict(x_small).reshape(len(x_small), len(columns)))
-            proxy_query.append(estimator.predict(q_small).reshape(len(q_small), len(columns)))
-    if not proxy_fit:
+            models.append(Ridge(alpha=1000).fit(x_small[valid], values))
+    if not models:
         raise ValueError("Insufficient fit-only support for biological auxiliaries")
-    u, v = standardized(np.concatenate(proxy_fit, axis=1), np.concatenate(proxy_query, axis=1), 0.005)
-    aux = (dot_kernel(u, u), dot_kernel(v, u))
-    enriched = tuple(0.7 * r + 0.2 * a + 0.1 * b for r, a, b in zip(raw, path, aux))
-    return {"full": enriched, "rna": raw}, u.shape[1]
+    proxy = auxiliary_features(models, x_small)
+    aux = Standardization.fit(proxy, 0.005)
+    u = aux.apply(proxy, device)
+    basis = CellKernelBasis(genes, (x, p, u), energy, scale, sequence, pathway, aux,
+                            weights, tuple(models), selected)
+    enriched = 0.7 * rna + 0.2 * dot_kernel(p, p) + 0.1 * dot_kernel(u, u)
+    return basis, {"rna": rna, "full": enriched}
+
+
+def cell_kernels(fit, query, signatures, auxiliary, *, device):
+    """Build blocked fit and cross Gram matrices with train-only scaling."""
+    basis, training = fit_cell_kernels(fit, signatures, auxiliary, device=device)
+    held = basis.cross(query)
+    return {name: (training[name], held[name]) for name in training}, basis.reference[-1].shape[1]
 
 
 def drug_kernels(rows, targets, *, device):
@@ -189,3 +244,29 @@ class KernelGrid:
         if any((index < 0).any() for index in indices):
             raise ValueError("Missing registered kernel cell or compound")
         return predictions[indices], {"iterations": steps, "solver_residual": error}
+
+
+@dataclass
+class KernelExpressionSchema:
+    genes: pd.Index
+    indices: np.ndarray
+    raw_median: np.ndarray
+
+
+@dataclass
+class StructuredPredictor:
+    features: KernelExpressionSchema
+    basis: CellKernelBasis
+    drugs: pd.Index
+    anchor: pd.Series
+    coefficients: torch.Tensor
+    drug_kernel: torch.Tensor
+
+    def predict(self, query, rna):
+        cells = rna.index.get_indexer(query.cell_id)
+        drugs = self.drugs.get_indexer(query.compound_id)
+        if (cells < 0).any() or (drugs < 0).any():
+            raise ValueError("Query requires a matched expression profile and compound")
+        cross = self.basis.cross(rna)["full"]
+        residual = (cross @ self.coefficients @ self.drug_kernel).numpy()
+        return query.compound_id.map(self.anchor).to_numpy(), residual[cells, drugs]
