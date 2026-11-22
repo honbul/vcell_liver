@@ -64,7 +64,8 @@ def aggregate(forecast, observations, track):
     if not anchors.nunique().eq(1).all():
         raise ValueError("Drug mean has accidental cell dependence")
     is_anchor = grouped.method.eq("drug_mean")
-    grouped.loc[is_anchor, "predicted_value"] = grouped.loc[is_anchor, "compound_id"].map(anchors.first())
+    if is_anchor.any():
+        grouped.loc[is_anchor, "predicted_value"] = grouped.loc[is_anchor, "compound_id"].map(anchors.first())
     return grouped.assign(cell_id=grouped.lineage_group, track=track, fold=0,
                           row_id=grouped.lineage_group + "|" + grouped.compound_id)
 
