@@ -57,7 +57,7 @@ def pack(args):
     require_hash(args.score, SCORE)
     if json.loads(args.score.read_text())["forecast_sha256"] != FORECAST:
         raise ValueError("Report does not correspond to the registered LIMORE comparison")
-    train, rna, original = training_inputs(args.core)
+    train, rna, _ = training_inputs(args.core)
     rna = rna.loc[sorted(train.cell_id.unique())]
     edges, targets, prior_hashes = molecular_inputs(args.priors, args.hallmark, args.targets)
     auxiliary, aux_hashes = load_auxiliary(args.auxiliary)
@@ -89,7 +89,7 @@ def pack(args):
             "allowed_formats": ["bulk_tpm", "bulk_counts", "bulk_log2_tpm_plus_1"],
             "cohort": "LIMORE50", "registered_compounds": len(compounds),
             "source_rows": len(train), "source_models": len(rna),
-            "source_panels": original["train_by_source"], "source_input_sha256": RECEIPTS["core"],
+            "source_panels": train.source_id.value_counts().to_dict(), "source_input_sha256": RECEIPTS["core"],
             "drug_registry_sha256": sha256(registry), "settings_sha256": SETTINGS,
             "prediction_freeze_sha256": FORECAST, "external_score_sha256": SCORE,
             "fit": fit_notes, "calibration": calibration, "public_priors": prior_hashes,
