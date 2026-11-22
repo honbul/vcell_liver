@@ -50,7 +50,7 @@ def prepare(depmap, cells, targets):
     mutation = default_profiles(files["mutations"], cells, set(MUTATION)).reindex(cells)
     drivers = pd.concat([mutation.add_prefix("hotspot_"), copy.add_prefix("copy_")], axis=1).sort_index(axis=1)
     if (drivers.filter(like="copy_") < 0).any().any():
-        raise ValueError("Expected nonnegative absolute gene copy number")
+        raise ValueError("Expected nonnegative linear gene copy number relative to ploidy")
     drivers.loc[:, drivers.columns.str.startswith("copy_")] = np.log1p(drivers.filter(like="copy_"))
     for result in (chronos, drivers):
         result.index.name = "cell_id"

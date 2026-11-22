@@ -1,0 +1,16 @@
+# 실측 유전체 입력의 LIMORE·LICOB 전이 비교
+
+정정한 GDSC2·CTRPv2·PRISM 단일 약물 65,678행으로 학습한다. 보류 대상은 이전과 동일한 LIMORE 성인 HCC 50계통·68약물, LICOB 성인 29명에서 유래한 34개 HCC 오가노이드·53약물이다. 두 코호트에는 이전 채점 이력이 있다. 이번 기술 평가에서만 실측 변이·복제 수의 입력 효과를 분리한다. 표본·약물·정답 등록은 기존 평가와 동일하다. [LIMORE 정정 평가](LIMORE_CORRECTED_RESULTS.md) · [LICOB 등록과 환자 분석](LICOB_AUTHOR_RESULTS.md)
+
+## 유전체와 표적 특징
+
+- 변이는 이전에 지정한 11개 HCC 관련 유전자에서 코딩 영향이 있는 소마틱 콜의 유전자별 존재 여부다. DepMap 25Q3 `OmicsSomaticMutations.csv`는 모델 기본 프로파일을 사용한다. LIMORE 발행사 Table S2의 81개 WGS 열, LICOB NODE의 D 시트 WES MAF를 사용한다. 세 소스에 대응하는 missense, stop gained/lost, frameshift, in-frame indel, splice donor/acceptor만 사용한다. 소스별 필터의 차이는 남아 있다. 명시된 코딩 유형만 맞추며 HBV 삽입, TERT promoter 등은 이번 블록에서 제외한다. 기본 프로파일의 변이 레코드가 한 건도 없는 DepMap 모델은 결측이다. [DepMap 25Q3 변이 문서](https://storage.googleapis.com/shared-portal-files/Tools/25Q3_Mutation_Pipeline_Documentation.pdf) · [LIMORE Table S2](https://www.ebi.ac.uk/biostudies/files/S-EPMC7505724/NIHMS1622926-supplement-4.xlsx) · [LICOB 원논문 및 데이터 접근](https://pmc.ncbi.nlm.nih.gov/articles/PMC10949980/)
+- LIMORE는 앞서 지정한 8개 CNA 유전자의 Table S3 `CN>4` 증폭과 `CN=0` 동형 결실을 사용한다. DepMap 24Q4의 모델별 `OmicsAbsoluteCNGene.csv`에서 같은 부등식을 적용한다. 24Q4 파일 238,808,692바이트의 발행 MD5는 `16afffb33230de2fd13e15e753e28a9b`이며 로컬 SHA-256은 입력 명세에 고정한다. LIMORE의 WGS 호출·수동 검토와 DepMap의 절대 복제 수 추정은 별개 파이프라인이다. LICOB E 시트의 CNV 값은 음수도 포함하며, 절대 정수 복제 수 범주를 매핑할 근거가 없어 이 회차에는 지원 감사만 포함한다. 손상 NODE 전체 파일의 배포 MD5 차이는 이전 감사에 남아 있다. D·E 단일 ZIP 멤버를 각각 EOF까지 읽어 CRC를 확인하고 다른 워크시트는 사용하지 않는다. 재배포 권리가 불명확한 LIMORE와 LICOB 원본은 G1에 보관한다. DepMap 24Q4는 CC BY 4.0이다. [LIMORE CN 판정](https://pmc.ncbi.nlm.nih.gov/articles/PMC7505724/#S20) · [DepMap 24Q4 절대 CN과 라이선스](https://plus.figshare.com/articles/dataset/DepMap_24Q4_Public/27993248) · [NODE 무결성 감사](STEP1_SCALE_AND_LICOB.md)
+- 기존 구조 커널은 RNA 순위·ECFP·경로·TF와 소스 Chronos/변이/CNV 보조 예측, 약물 표적 공유를 사용한다. 새 표적 발현 항은 각 샘플 내에서 순위화한 RNA의 해당 약물 표적 평균이다. 소스 평균·표준편차(최소 .05)로 표준화하고 약물별 별도 rank-one Gram 항으로 더한다. 유효 표적이 없는 약물에는 0을 적용한다. 실측 DNA 항은 fit에서 관측 ≥40, 양성·음성 각각 ≥5인 이진 특징만 선택한다. 소스 평균·표준편차(최소 .20)로 변환하고 소스 결측은 학습 평균으로 대체한다. 해당 등록 코호트의 직접 입력은 모두 측정되어야 한다. 표적 발현, 코딩 변이, 절대 CNA 블록의 Gram 가중은 각각 .10이며 구조 커널 벌점은 기존 4다. LIMORE와 LICOB의 RNA 유전자 교집합은 서로 독립적으로 결정한다. [기존 구조 커널 개발 평가](STRUCTURED_CV_RESULTS.md)
+
+## 동결 비교와 해석 기준
+
+- `structured`, `target_expression`, `measured_coding`, LIMORE의 `measured_copy`와 `measured_genome`을 동결한다. 표적 발현 항은 `structured`를 제외한 이 계열에 공통이다. 주 후보는 LIMORE의 코딩+절대 CNA 결합과 LICOB의 코딩 결합이다. 주 후보를 약물별 Ridge와 50:50 평균한 보조 후보 하나를 고정한다. DNA 순열 대조는 같은 적합 계수와 같은 RNA를 고정하고 보류 DNA만 공여자 묶음 크기 안에서 재배정한다. seed 37819를 사용한다.
+- 같은 정정 소스의 약물 평균, 약물별 Ridge, CellHit, Velodrome inductive, CODE-AE inductive, V0+ inductive를 같은 행에 비교한다. LIMORE의 여섯 비교군은 정확히 일치하는 정정 동결본에서 가져온다. LICOB는 소스 검증에서 이미 고른 설정으로 해당 RNA 축에서 같은 정정 학습표를 적합한다. LICOB는 환자 평균의 부동소수점 처리까지 원래 보정 규칙을 사용한다.
+- 실측 유전체 추가 이득은 각 주 후보에서 `target_expression`과 `genotype_permutation` 대비 약물 내 Spearman·Pearson의 환자·약물 교차 짝지은 95% 하한이 모두 0을 넘을 때 지지한다. 비교군 동시 개선은 약물 평균·Ridge·CellHit 각각 대비 두 약물 내 상관과 계통 내 Spearman·NDCG@5의 짝지은 하한이 모두 0을 넘을 때 기록한다. Precision@5와 간암 TKI, 표적·키나아제·HDAC 및 비특이 세포독성 하위군을 함께 보고한다. 작은 약물군은 기술값이다. 이는 사후 기술 평가이며 최초 과제의 외부 확인 판정은 별도 이력으로 보존한다.
+- 유전체 등록에는 RNA·변이·CNV·약물 메타데이터만 전달한다. 모델과 비교군 컴포넌트의 SHA-256 및 모든 예상 행을 확인해 공동 동결한 뒤 별도 채점에서 처음으로 이번 회차의 반응 파일을 전달한다. 평가 뒤 지지 수와 결과를 보고하고 외부 데이터의 원시·환자 단위 자료와 예측은 G1에 둔다.

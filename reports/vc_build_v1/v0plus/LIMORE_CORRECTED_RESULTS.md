@@ -4,7 +4,7 @@ LIMORE는 GDSC2·CTRPv2·PRISM20Q2 학습과 세포·환자 계통이 겹치지 
 
 CTRPv2에서 navitoclax 또는 rapamycin으로 잘못 연결된 혼합 처리 1,394행을 실제 단일 약물 1,387행으로 교체했다. 나머지 관측은 그대로 사용해 코어는 65,685행에서 65,678행이 됐다. 소스 검증에서 이미 고른 모델 설정과 17,871개 유전자 축을 유지했다. 구조 커널은 RNA·ECFP·약물 표적·경로·TF 서명에 DepMap Chronos와 HCC 변이/CNV에 대한 소스 학습 보조 예측을 결합한다. 이 커널의 외부 입력은 RNA이며, LIMORE의 실제 변이/CNV 표를 직접 넣는 분석은 별도의 LIMORE 내부 개발 회차에 있다. [학습표 정정](SOURCE_PANEL_EXTENSION.md) · [실측 변이/CNV 내부 개발 비교](../function/MOLECULAR_RESULTS.md)
 
-같은 외부 50계통의 등록 ID를 기존 발행사 Table S3에 연결했다. 50개 모두에 실측 변이·CNA 주석이 있고, 등록한 이진 특징 27개 중 서열 변화 11개와 CNV 5개가 계통 간 변이를 보였다. 이 연결 감사에는 반응을 사용하지 않았다. LIMORE의 서열 변화·증폭/결실 범주와 DepMap의 hotspot·절대 복제 수는 정의가 다르다. [주석 처리 규칙](../MOLECULAR_CONTEXT_PROTOCOL.md)
+같은 외부 50계통의 등록 ID를 기존 발행사 Table S3에 연결했다. 50개 모두에 실측 변이·CNA 주석이 있고, 등록한 이진 특징 27개 중 서열 변화 11개와 CNV 5개가 계통 간 변이를 보였다. 이 연결 감사에는 반응을 사용하지 않았다. LIMORE의 절대 복제 수 기반 증폭·결실 범주와 DepMap 25Q3의 배수성 대비 상대 복제 수는 정의가 다르다. 후속 원자료 감사에서 단위 표기를 교정했다. 당시 예측은 상대 복제 수 파일의 값을 사용했다. [주석 처리 규칙](../MOLECULAR_CONTEXT_PROTOCOL.md) · [DepMap 25Q3 복제 수 단위](https://depmap.org/portal/gene/METRN)
 
 ## 같은 3,400개 관측의 성적
 
