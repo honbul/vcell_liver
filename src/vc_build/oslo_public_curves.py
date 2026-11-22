@@ -3,6 +3,7 @@
 import argparse
 from contextlib import closing
 from itertools import combinations
+import json
 from pathlib import Path
 
 import numpy as np
@@ -13,10 +14,12 @@ from scipy.integrate import trapezoid
 from .function_data import alias_token, new_output
 from .io import publish_json, sha256
 from .licob_cold import checked as checked_licob
-from .licob_dose_sources import COLD
+from .licob_curves import DOSE_REGISTRATION
+from .licob_dose_sources import COLD, registration
 from .yang_hcc_external import require_hash
 
 ACCESSION = "10.17632/hr94h42xdc.3"
+OSLO_REGISTRATION = "4d6441a1126551ba5addd7cc4d5cecac7d6c25cfcda1be28100bbb5f292eeb58"
 CHECKSUMS = {
     "Data S1.xlsx": "d125c5b3a1144aab2b5406cf8f26fa3c5998426ff452b4a742e651f0b253fcc7",
     "Data S2.xlsx": "3a4dbd7c444311752bb0894a21704d92d0c181d21757ccb9e4f9091d24493393",
@@ -199,11 +202,58 @@ def register(args):
                                                              "rna_identity.parquet", "name_overlap.tsv")}})
 
 
+def bridge(args):
+    receipt = args.registered / "receipt.json"
+    require_hash(receipt, OSLO_REGISTRATION)
+    meta = json.loads(receipt.read_text())
+    for name in ("dose_points.parquet", "name_overlap.tsv"):
+        require_hash(args.registered / name, meta["outputs"][name])
+    if registration(args.dose) != DOSE_REGISTRATION:
+        raise ValueError("Unexpected LICOB concentration registration")
+    # Read dose and identity fields only. The bridge audit does not read viability.
+    key = [*CURVE, "lineage_group"]
+    grid = pd.read_parquet(args.registered / "dose_points.parquet", columns=[*key, "dose_uM"])
+    curves = grid.groupby(key).dose_uM.agg(["min", "max"]).reset_index()
+    doses = pd.read_parquet(args.dose / "dose.parquet", columns=["compound_id", "minimum", "maximum"])
+    matched = pd.read_csv(args.registered / "name_overlap.tsv", sep="\t")
+    linked = curves.merge(matched, on=["compound_name", "compound_fimm"], validate="many_to_one")
+    linked = linked.merge(doses, on="compound_id", validate="many_to_one")
+    linked = linked.assign(full_window=linked["min"].le(linked.minimum) & linked["max"].ge(linked.maximum),
+                           highest=linked["min"].le(linked.maximum) & linked["max"].ge(linked.maximum))
+    grouped = linked.groupby(["compound_id", "source_compound_label", "compound_fimm"], sort=True)
+    support = []
+    for (compound, name, code), group in grouped:
+        support.append({"compound_id": compound, "name": name, "oslo_product": code, "donors": group.lineage_group.nunique(),
+                        "oslo_curves": len(group), "full_window": int(group.full_window.sum()),
+                        "licob_highest_dose_in_support": int(group.highest.sum())})
+    lib = curves.groupby("library_id").agg(donors=("lineage_group", "nunique"),
+            samples=("sample_id", "nunique"), curves=("sample_id", "size"), products=("compound_fimm", "nunique"))
+    donors_per_product = curves.groupby(["compound_fimm", "library_id"]).lineage_group.nunique().unstack(fill_value=0)
+    if set(donors_per_product.columns) != {"lib1", "lib2"}:
+        raise ValueError("The registered comparison needs both published screening libraries")
+    across_libraries = donors_per_product[donors_per_product.ge(10).all(axis=1)].index
+    in_both = curves.groupby("sample_id").library_id.nunique().gt(1)
+    groups_both = curves.groupby("lineage_group").library_id.nunique().gt(1)
+    publish_json(args.out, {"oslo_registration_sha256": OSLO_REGISTRATION,
+        "licob_dose_registration_sha256": DOSE_REGISTRATION, "library_support": lib.to_dict("index"),
+        "samples_in_both_libraries": int(in_both.sum()), "donors_in_both_libraries": int(groups_both.sum()),
+        "exact_products_with_ten_donors_each_library": sorted(across_libraries),
+        "nominal_name_links": support, "full_window_nominal_drugs": linked.loc[linked.full_window, "compound_id"].nunique(),
+        "upper_dose_nominal_drugs": linked.loc[linked.highest, "compound_id"].nunique()})
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ("source", "licob", "out"):
-        parser.add_argument(f"--{name}", type=Path, required=True)
-    register(parser.parse_args())
+    parser.add_argument("--out", type=Path, required=True)
+    stages = parser.add_subparsers(dest="stage", required=True)
+    for name, function, fields in (("register", register, ("source", "licob")),
+                                   ("bridge", bridge, ("registered", "dose"))):
+        stage = stages.add_parser(name)
+        for field in fields:
+            stage.add_argument(f"--{field}", type=Path, required=True)
+        stage.set_defaults(execute=function)
+    args = parser.parse_args()
+    args.execute(args)
 
 
 if __name__ == "__main__":
