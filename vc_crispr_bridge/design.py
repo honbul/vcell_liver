@@ -87,7 +87,19 @@ def main():
     meta = pd.concat([x[0] for x in train_roles], ignore_index=True)
     y = np.concatenate([x[1] for x in train_roles])
     anchors = np.concatenate([x[2] for x in train_roles])
-    q, qy, qx = summarize_assay(test, common)
+    q, qy, _ = summarize_assay(test, common)
+    background_path = a.hepg2 / "features_cell_background.npy"
+    background_receipt = json.loads((a.hepg2 / "receipt.json").read_text())
+    if record(background_path) != background_receipt["files"][background_path.name]:
+        raise ValueError("Invalid HepG2 control-only reference")
+    reference = np.load(background_path, allow_pickle=False)
+    indices = test[0].index.get_indexer(common)
+    if reference.shape != (len(test[0]),):
+        raise ValueError("HepG2 control reference has incompatible output genes")
+    # Query conditions all get the same independently observed negative control.
+    # GEM coverage and cell counts of the treated observations remain scorer-side.
+    qx = np.broadcast_to(reference[indices], (len(q), len(common)))
+    external_identities = q[["id", "assay", "target_ensembl", "target_symbols"]]
 
     all_source = set(meta.target_ensembl)
     external_targets = set(q.target_ensembl)
@@ -111,13 +123,14 @@ def main():
         write_role(out, "validation", meta, y, anchors, meta.target_ensembl.isin(inner_valid).to_numpy())
         for name, targets in (("gene_cold", cold), ("same_gene", seen)):
             mask = q.target_ensembl.isin(targets).to_numpy()
-            write_role(out, "query_" + name, q, None, qx, mask)
+            write_role(out, "query_" + name, external_identities, None, qx, mask)
             labels = out / ("labels_" + name)
             labels.mkdir()
             np.save(labels / "delta.npy", qy[mask], allow_pickle=False)
-            q.loc[mask, ["id"]].to_parquet(labels / "identities.parquet", index=False)
+            q.loc[mask, ["id", "n_cells", "gem_groups"]].to_parquet(labels / "identities.parquet", index=False)
         receipt = {
             "source_assays": source_assays,
+            "external_context": {"assay_control_only": record(background_path)},
             "assays": {x.name: record(x / "receipt.json") for x in [*a.source, a.hepg2]},
             "identity_level": "Human Ensembl stable gene",
             "hcc_context": "HepG2 is a hepatoblastoma-derived line. Source-only supervised fit.",
