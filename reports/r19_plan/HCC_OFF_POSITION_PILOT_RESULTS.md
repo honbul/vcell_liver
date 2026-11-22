@@ -22,3 +22,21 @@
 다른 약물 대조도 96군의 일대일 순열을 고정해, 대체 원천 좌표와 해당 목표의 처리 좌표가 겹치지 않게 했다. 적합과 신규 평가의 정확한 parent 및 scaffold 중복은 모두 0이다. 예측 배열과 접근 명부의 SHA-256, 역할·슬롯·978유전자 순서 및 B0 배열을 검산했다. [대조 순열](data/hcc_off_position_pilot/forecast/access/wrong.tsv) · [독립 접근 검산](data/hcc_off_position_pilot/forecast/access/verified.json) · [동결 영수증](data/hcc_off_position_pilot/forecast/freeze.json)
 
 첫 접근 작업은 앞선 scaffold 차단 분할의 적합 명부를 합치면 305군 전부가 복원된다는 잘못된 가정으로 중단됐다. 기존에 채점한 개발 명부의 고정 전체 행에서 305군을 재구성해 교정했고 첫 시도의 모델 작업은 실행되지 않았다. 수정 후 접근 `31734` → 예측 `31735` → 동결 `31736`은 종료 코드 0이었다. 동결 SHA-256은 `e11da7d92124bf3a3e030c7a334cf79d15625cb050f48f3c23b5ff5ad7a24671`이다. 실제 물질·독립 배양·plate와 978개 표적 측정이 확보되면 별도 채점이 가능하다. 현재 정확도와 외부 확인 판정은 미측정이다. [재실행 원장](data/hcc_off_position_pilot/forecast/jobs.tsv) · [첫 접근 기록](data/hcc_off_position_pilot/forecast/first_attempt.tsv)
+
+## 별도 채점 경로 검증
+
+실험 인수 `31739`와 별도 채점 `31740`에서 원 동결 예측을 고정하고 표적 발현만 합성한 입력을 통과시켰다. 인수 단계는 발현을 열지 않았다. 채점은 순서를 뒤집은 두 축을 ID로 맞췄으며, 역할당 DMSO 3웰 조건을 적용해 539개 합성 처리 웰을 평가했다. SNU-423은 288웰·8개 합성 배양, HUH7은 251웰·7개 합성 배양이다. 합성 처리 웰 수는 실험 표본 수가 아니다. 순서와 인수 해시 검증 뒤 parent 및 배양을 함께 고려한 10,000회 재표집을 실행했다. [채점 명세](HCC_OFF_POSITION_PILOT_SCORE_PROTOCOL.md) · [합성 지원](data/hcc_off_position_pilot/score_smoke/score/support.tsv)
+
+합성 입력의 실측 모드 사용, 계획과 다른 화합물, 재사용 배양 시작 ID, 잘못된 인수 잠금 및 해시가 다른 발현 파일을 각각 거부했다. 이 검산으로 배치·측정 내보내기·동결 모델을 잇는 소프트웨어 경로를 확인했다. 실제 독립 배양, assay 호환성과 정확도는 실측 자료가 필요하다. [거부 검산](data/hcc_off_position_pilot/score_smoke/verification.json) · [합성 채점 영수증](data/hcc_off_position_pilot/score_smoke/score/receipt.json)
+
+## 실측 파일 인수 형식
+
+| 파일 | 필요한 내용 |
+|---|---|
+| `wells.tsv` | `plate_slot`, `well`, `specimen_id`, `actual_cell`, `plate_id`, `culture_id`, `canonical_parent`, `material_lot_id`, `actual_uM`, `actual_hours`, `qc_status`, `qc_reason`. 예정된 좌표 768개를 한 줄씩 기록한다. DMSO의 `canonical_parent`와 `actual_uM`은 빈 값이다. `FAIL`에는 이유를 쓴다. |
+| `cultures.tsv` | `cell`, `plate_id`, `culture_id`, `batch_id`, `independent_start_id`, `independence_record`. 16개 실제 plate와 배양의 연결 및 독립 시작의 근거를 기록한다. |
+| `qc_record` | 실제 plate와 배양 기록의 검토, 사용한 약물 lot·노출, 발현 스케일 정합 및 사전 QC 규칙을 기술한 실험 기록이다. |
+| `assay_receipt.json` | `mode`, `study_id`, `platform`, `target_scale`, `verified_by`, `wells_sha256`, `cultures_sha256`, `qc_record_sha256`, `measurements_sha256`. 실제 모드는 `measured`이며 등록 스케일 문자열은 `CMap2020_Level3_log2`다. |
+| `measurements.npz` | QC 통과 표본 전체의 고유 `specimen_id`, 978개 고유 `genes`, 표본×유전자 순의 유한 실수 `values`. 두 축은 표본·유전자 ID로 맞춘다. |
+
+G1의 원 예측 폴더를 `--forecast`에, 저장소의 동결 영수증을 `--forecast-pin`에 연결한다. `lock` 출력은 인수 명부와 지원을 기록한다. `score`에는 이 디렉터리와 `receipt.json`의 SHA-256, 공통 인수 인자 및 실측 파일을 제공한다. 합성 검산에만 `--synthetic`을 쓴다. [코드](../../src/r19_plan/hcc_off_position_pilot_score.py) · [원 예측 동결](data/hcc_off_position_pilot/forecast/freeze.json)
