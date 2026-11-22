@@ -1,0 +1,252 @@
+{
+  "artifact": "forecast.parquet",
+  "frozen_utc": "2026-11-22T14:35:02.491252+00:00",
+  "provenance": {
+    "auxiliary": {
+      "data_release": "DepMap Public 25Q3",
+      "endpoints": {
+        "chronos": {
+          "features": 114,
+          "models_with_any": 754,
+          "observed": 85172,
+          "sha256": "9977a13b02f8c2237641c58294d06ad4aa75049de2f1e5f6226c40b2239afc76"
+        },
+        "drivers": {
+          "features": 18,
+          "models_with_any": 1005,
+          "observed": 15706,
+          "sha256": "b82560face33f8c0ca2b43c59b5ae84e59edbe9aa8ad38b3d25060f1d635d491"
+        }
+      },
+      "fit_model_count": 1014,
+      "inputs": {
+        "chronos": {
+          "bytes": 432295412,
+          "file": "CRISPRGeneEffect.csv",
+          "sha256": "fa44b6a7cefe8748aaa2bef21bd49aa105f7ebfe819510da3022266d88f24d51"
+        },
+        "copy": {
+          "bytes": 400701924,
+          "file": "OmicsCNGeneWGS.csv",
+          "sha256": "11826bb3ac81926ac72994c0c58b9bdbc613f6f0fba276671878a121d98ce2c8"
+        },
+        "mutations": {
+          "bytes": 6644955,
+          "file": "OmicsSomaticMutationsMatrixHotspot.csv",
+          "sha256": "59a42910f1c8370f5d0bd09d08614ccd0767ed62ab4a5efa713b42752ee69b19"
+        }
+      },
+      "target_file_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e"
+    },
+    "auxiliary_features": 130,
+    "cold_sha256": "67c11aba490282e30be9ef6d3d4d28ad192a2f5620a9e0b84c978019a0ccdb9e",
+    "extracts": {
+      "CTRPv2": {
+        "compounds": 38,
+        "curve_sha256": "c45d21259d083fdf85846bac5ac64746b11228a82da11831ed7440bc7e3f9a5f",
+        "input_sha256": "61ebf8b95d4a12eb3a23619b5e67ba0a683c025185f8de4a35c615e4abf7f84b",
+        "quality": {
+          "selected_points": 430413
+        },
+        "rows": 23482,
+        "source": "CTRPv2"
+      },
+      "GDSC2": {
+        "compounds": 0,
+        "curve_sha256": "38c67971db5903679ddf2ae225c8ea29f4740460986c0afd5e50b0365e01a609",
+        "input_sha256": "61ebf8b95d4a12eb3a23619b5e67ba0a683c025185f8de4a35c615e4abf7f84b",
+        "quality": {
+          "archive_rows": 15069449,
+          "both_control_and_treatment_wells_excluded": 0,
+          "control_well_conflicts": 0,
+          "duration_days_field": 4,
+          "eligible_for_plate_control_check": 9814,
+          "fraction_clipped_viability": 0.24424964370197322,
+          "multiple_read_scans_excluded": 0,
+          "normalized_treatment_wells": 544488,
+          "treatment_well_conflicts": 1316,
+          "usable_treatment_plates": 9813,
+          "zprime_quantiles": [
+            0.49918803699959013,
+            0.6040717971124641,
+            0.6985548862210302
+          ]
+        },
+        "rows": 0,
+        "source": "GDSC2"
+      },
+      "PRISM20Q2": {
+        "compounds": 0,
+        "curve_sha256": "38c67971db5903679ddf2ae225c8ea29f4740460986c0afd5e50b0365e01a609",
+        "input_sha256": "61ebf8b95d4a12eb3a23619b5e67ba0a683c025185f8de4a35c615e4abf7f84b",
+        "quality": {
+          "dose_supported_curves": 0,
+          "verified_native_auc": 8474
+        },
+        "rows": 0,
+        "source": "PRISM20Q2"
+      }
+    },
+    "labels_sha256": "0e158e1129349e3e32dc6840104f92959b95788705edb9e191ffe47ac21fa906",
+    "priors": {
+      "dorothea": {
+        "sha256": "35cb15ae6cd32c536b3acba6914a6cecc4a2b5fbfafc18217ba194b8ab1e1324",
+        "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+      },
+      "drug_targets_sha256": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+      "hallmark": {
+        "sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+        "source": "MSigDB 2026.1.Hs h.all symbols"
+      },
+      "progeny": {
+        "sha256": "11b440e307e1f1d58a09462ec30b356f5f9a3442fef594512e6d203b68220ae8",
+        "source": "https://github.com/saezlab/ConservedFootprints/tree/b93ffed985ba4b83e93cae9dc52a0f76f1a45755"
+      }
+    },
+    "registration_sha256": "61ebf8b95d4a12eb3a23619b5e67ba0a683c025185f8de4a35c615e4abf7f84b",
+    "solver": {
+      "auc": {
+        "iterations": 25,
+        "residual_norm": 0.0007553200703114271
+      },
+      "curve_independent": {
+        "iterations": 25,
+        "residual_norm": 0.002951117930933833
+      },
+      "curve_joint": {
+        "iterations": 52,
+        "residual_norm": 0.003180781612172723
+      },
+      "emax": {
+        "iterations": 24,
+        "residual_norm": 0.001322010881267488
+      },
+      "ic50_bounded": {
+        "iterations": 25,
+        "residual_norm": 0.0031381980516016483
+      }
+    },
+    "sources": {
+      "CTRPv2": 23482
+    },
+    "support": {
+      "AOJJSUZBOXZQNB-TZSSRYMLSA-N": {
+        "CTRPv2": 705
+      },
+      "AYUNIORJHRXIBJ-TXHRRWQRSA-N": {
+        "CTRPv2": 660
+      },
+      "BKQFRNYHFIQEKN-UHFFFAOYSA-N": {
+        "CTRPv2": 684
+      },
+      "CBPNZQVSJQDFBE-FUXHJELOSA-N": {
+        "CTRPv2": 319
+      },
+      "CXQHYVUVSFXTMY-UHFFFAOYSA-N": {
+        "CTRPv2": 678
+      },
+      "CYOHGALHFOKKQC-UHFFFAOYSA-N": {
+        "CTRPv2": 680
+      },
+      "DNVXATUJJDPFDM-KRWDZBQOSA-N": {
+        "CTRPv2": 697
+      },
+      "FBOZXECLQNJBKD-ZDUSSCGKSA-N": {
+        "CTRPv2": 656
+      },
+      "FDLYAMZZIXQODN-UHFFFAOYSA-N": {
+        "CTRPv2": 689
+      },
+      "FNHKPVJBJVTLMP-UHFFFAOYSA-N": {
+        "CTRPv2": 521
+      },
+      "GHASVSINZRGABV-UHFFFAOYSA-N": {
+        "CTRPv2": 687
+      },
+      "HLXSCTYHLQHQDJ-UHFFFAOYSA-N": {
+        "CTRPv2": 686
+      },
+      "IAYGCINLNONXHY-LBPRGKRZSA-N": {
+        "CTRPv2": 702
+      },
+      "JLYAXFNOILIKPP-KXQOOQHDSA-N": {
+        "CTRPv2": 544
+      },
+      "KTEIFNKAUNYNJU-GFCCVEGCSA-N": {
+        "CTRPv2": 681
+      },
+      "LIRYPHYGHXZJBZ-UHFFFAOYSA-N": {
+        "CTRPv2": 347
+      },
+      "MLDQJTXFUGDVEO-UHFFFAOYSA-N": {
+        "CTRPv2": 638
+      },
+      "NCNRHFGMJRPRSK-MDZDMXLPSA-N": {
+        "CTRPv2": 354
+      },
+      "PKCDDUHJAFVJJB-UHFFFAOYSA-N": {
+        "CTRPv2": 645
+      },
+      "PLHJCIYEEKOWNM-HHHXNRCGSA-N": {
+        "CTRPv2": 362
+      },
+      "QFJCIRLUMZQUOT-HPLJOQBZSA-N": {
+        "CTRPv2": 609
+      },
+      "QQWUGDVOUVUTOY-UHFFFAOYSA-N": {
+        "CTRPv2": 676
+      },
+      "QYZOGCMHVIGURT-UHFFFAOYSA-N": {
+        "CTRPv2": 679
+      },
+      "RYMZZMVNJRMUDD-HGQWONQESA-N": {
+        "CTRPv2": 576
+      },
+      "SDUQYLNIPVEERB-QPPQHZFASA-N": {
+        "CTRPv2": 602
+      },
+      "TUVCWJQQGGETHL-UHFFFAOYSA-N": {
+        "CTRPv2": 585
+      },
+      "UCEQXRCJXIVODC-PMACEKPBSA-N": {
+        "CTRPv2": 349
+      },
+      "UCFGDBYHRUNTLO-QHCPKHFHSA-N": {
+        "CTRPv2": 698
+      },
+      "ULXXDDBFHOBEHA-CWDCEQMOSA-N": {
+        "CTRPv2": 608
+      },
+      "VABYUUZNAVQNPG-BQYQJAHWSA-N": {
+        "CTRPv2": 676
+      },
+      "VJJPUSNTGOMMGY-MRVIYFEKSA-N": {
+        "CTRPv2": 689
+      },
+      "VUVUVNZRUGEAHB-CYBMUJFWSA-N": {
+        "CTRPv2": 694
+      },
+      "WAEXFXRVDQXREF-UHFFFAOYSA-N": {
+        "CTRPv2": 676
+      },
+      "WINHZLLDWRZWRT-ATVHPVEESA-N": {
+        "CTRPv2": 678
+      },
+      "WOSKHXYHFSIKNG-UHFFFAOYSA-N": {
+        "CTRPv2": 684
+      },
+      "XQVVPGYIWAGRNI-JOCHJYFZSA-N": {
+        "CTRPv2": 703
+      },
+      "ZBNZXTGUTAYRHI-UHFFFAOYSA-N": {
+        "CTRPv2": 697
+      },
+      "ZLHFILGSQDJULK-UHFFFAOYSA-N": {
+        "CTRPv2": 668
+      }
+    }
+  },
+  "rows": 19608,
+  "schema_version": 1,
+  "sha256": "2278e41c2e87a7dc86265c907b3a8cb60a4672ad9fd12a140853095a42cabb5f"
+}
