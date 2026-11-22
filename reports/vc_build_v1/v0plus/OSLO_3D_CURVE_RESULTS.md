@@ -22,6 +22,8 @@ RNA가 있는 자료에서 동일 PDO·전체 FIMM 제품을 서로 다른 run�
 
 LICOB와 이름이 같은 약물 14개 중 S5의 전체 농도 범위를 포함한 후보는 **ceralasertib** 하나였고, 최고 농도를 포함한 후보는 ceralasertib·panobinostat·regorafenib 세 개였다. Regorafenib은 `FIMM100364-003`의 43곡선에서 최고 농도를 포함했고 `FIMM100364-001`에서는 없었다. 이 수치는 출판사 이름과 실제 투약 농도를 연결한 결과다. 제품 간 정확한 구조 확인과 다약물의 전체 농도 지원이 추가로 필요하다.
 
+후속 CAS·입체 구조 대조를 거쳐 parent 수준에서 13약물을 등록하고 기존 2D와 Oslo 3D를 결합해 LICOB에서 평가했다. [Oslo–LICOB 전이 성적](OSLO_LICOB_TRANSFER_RESULTS.md)
+
 등록 `5187b3f`의 G1 작업 `33684`가 RNA·약물 곡선을 만들었다. `ed9f703`의 `33685`가 생존율 열을 제외한 등록 정보로 두 라이브러리 및 LICOB 농도 지지를 확인했다. 두 작업 모두 종료 코드 0이다. 등록 SHA-256은 `4d6441a1126551ba5addd7cc4d5cecac7d6c25cfcda1be28100bbb5f292eeb58`, 농도 감사 SHA-256은 `935cd73545d42871fb8d757d28f6bb63ad0da88c0bc2a5ad378e3e4b76b48551`이다.
 
 ## 두 라이브러리의 공통 농도 예측
