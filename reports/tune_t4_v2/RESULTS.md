@@ -16,7 +16,7 @@ HEPG2 132개 화합물과 24시간 실측 웰 268개에서 T4 v2의 **RMSE는 0.
 - R3는 GSE92742 28,883쌍, GSE70138 9쌍, CMap 2020 935쌍을 합쳐 27개 비간 세포주, 6,101개 parent의 적격 조건 29,827쌍을 사용했다. HEPG2·PHH 평가군과 R18 예약군을 합친 915개 정규화 구조, 물리 plate 1,872개의 차단 목록을 적용했다. 세 자료 각각에서 보호군과 connectivity 및 scaffold 교집합은 0이었다. Pan-LINCS 검증 보류는 5,473쌍이었다.
 - R4는 내부에서만 모델 형태·잔차 크기·Pan-LINCS 혼합 비율을 정했다. HEPG2에서는 중심화된 Pan-LINCS를 비선형 보정한 선형 모델에 20% 또는 40% 섞은 설정이 84조각 중 66조각에서 선택되었다. HEPG2·PHH 18개 fold·DMSO 역할 묶음을 동결한 뒤 별도 CPU 프로세스에서 한 번 채점했다.
 
-[조각별 성적](evidence/internal_by_slice.tsv) · [내부 성적 그림](evidence/internal_trajectory.pdf) · [Pan-LINCS 쌍 영수증](evidence/source_pairs_receipt.json) · [사전학습 영수증](evidence/pretrain_receipt.json)
+[조각별 성적](evidence/internal_by_slice.tsv) · [R2 선형 대비 paired 99% 구간](evidence/nonlinear_paired_inner.tsv) · [내부 성적 그림](evidence/internal_trajectory.pdf) · [Pan-LINCS 쌍 영수증](evidence/source_pairs_receipt.json) · [사전학습 영수증](evidence/pretrain_receipt.json)
 
 ## 봉인된 HEPG2·PHH 결과
 
