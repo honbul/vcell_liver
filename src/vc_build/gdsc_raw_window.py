@@ -212,8 +212,10 @@ def score(args):
     plates = pd.read_parquet(paths["plates"])
     ctrp, prism = (train[train.source_id.eq(name)] for name in ("CTRPv2", "PRISM20Q2"))
     identity = train[["cell_id", "lineage_group"]].drop_duplicates()
-    a = measured_points(record["inputs"], ctrp.merge(gdsc[KEY], on=KEY), args.ctrp_post_qc)
-    b, prism_qc = published_curves(record["inputs"], prism.merge(gdsc[KEY], on=KEY), args.treatments)
+    for_ctrp = pd.concat([gdsc[KEY], prism[KEY]], ignore_index=True).drop_duplicates()
+    for_prism = pd.concat([gdsc[KEY], ctrp[KEY]], ignore_index=True).drop_duplicates()
+    a = measured_points(record["inputs"], ctrp.merge(for_ctrp, on=KEY), args.ctrp_post_qc)
+    b, prism_qc = published_curves(record["inputs"], prism.merge(for_prism, on=KEY), args.treatments)
     prepared = {
         "GDSC2": gdsc[[*KEY, *ENDPOINTS]],
         "CTRPv2": a.merge(ctrp[[*KEY, "endpoint_value"]], on=KEY).rename(columns={"endpoint_value": "native_auc"}),
