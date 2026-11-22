@@ -1,0 +1,501 @@
+{
+  "freeze": {
+    "artifact": "predictions.parquet",
+    "frozen_utc": "2026-11-22T05:10:21.544171+00:00",
+    "provenance": {
+      "code_sha256": "878fa6403ce54e5d0a7c06445e77dd3cbf17d19a4e23e25e8be8afa10ff96da6",
+      "config_sha256": "8fd174005a0d808f710db56bfdea41d795d04ff2b4d429f5c7b90360043d783e",
+      "driver_features": {
+        "gain_AXIN1": 0,
+        "gain_CDKN2A": 0,
+        "gain_FGF19": 10,
+        "gain_FGFR1": 1,
+        "gain_FGFR3": 3,
+        "gain_FGFR4": 3,
+        "gain_PTEN": 0,
+        "gain_RB1": 0,
+        "loss_AXIN1": 0,
+        "loss_CDKN2A": 7,
+        "loss_FGF19": 0,
+        "loss_FGFR1": 0,
+        "loss_FGFR3": 0,
+        "loss_FGFR4": 0,
+        "loss_PTEN": 4,
+        "loss_RB1": 1,
+        "seq_APC": 6,
+        "seq_ARID1A": 9,
+        "seq_ARID2": 6,
+        "seq_AXIN1": 14,
+        "seq_CTNNB1": 7,
+        "seq_KEAP1": 8,
+        "seq_NFE2L2": 1,
+        "seq_PTEN": 5,
+        "seq_RB1": 3,
+        "seq_TERT": 60,
+        "seq_TP53": 59
+      },
+      "driver_mapped_models": 77,
+      "driver_workbook_sha256": "931fcd83e9ce372d4f1de2c52324a9d3eea721e5dff5c160e0dc9c76b8958452",
+      "hallmark_gmt_sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+      "pathway_gene_counts": {
+        "APOPTOSIS": 160,
+        "DNA_REPAIR": 147,
+        "E2F_TARGETS": 195,
+        "G2M_CHECKPOINT": 189,
+        "KRAS_SIGNALING_UP": 197,
+        "MTORC1_SIGNALING": 194,
+        "PI3K_AKT_MTOR_SIGNALING": 103,
+        "WNT_BETA_CATENIN_SIGNALING": 42
+      },
+      "rna_sha256": "ab74542386e70b0d872d47fc145c66bb3fc1ec55c3a62cb2cb3942dae54715bd",
+      "rows_sha256": "2e2d40c2c27232985512d3828955ae9b381632015bf7a99e0030fd300ee41555",
+      "rows_with_unmatched_cell_drivers": 0,
+      "typed_compounds_with_mapped_targets": 79,
+      "typed_compounds_with_measured_targets": 79,
+      "unmatched_cell_driver_ids": []
+    },
+    "rows": 33880,
+    "schema_version": 1,
+    "sha256": "bd1c4b16dcf88b0013ab44e9ffc86d2c72fc50c006876ab0b0b29894ad03dc23"
+  },
+  "hashes": {
+    "fit/drug_targets.json": "7e1f65e1aa32b8a99f2de4b9d5b9c9a0e94a786d786534c278e1c8239d9f475e",
+    "fit/labels.parquet": "fb047b2f9e99f593882b8da8edd427a8f1e13c306aba608aa257dc030e52fc1b",
+    "fit/metrics-C.json": "7bf770b3fc3df4b7d50c79b638ff4ca3ba5ed0d04314c383c50d07be4d7baf93",
+    "fit/splits.parquet": "04d1f7d56d6c97fd687431a69c8791726b7a76c2f1fbb537d7beeaeb2132d4bb",
+    "fit/support.json": "11192ed53e91d682e3e12b6e8320ab51c09b597f210d69a791040574ea0af49b"
+  },
+  "metrics": {
+    "endpoint_direction": "higher",
+    "freeze_sha256": "bd1c4b16dcf88b0013ab44e9ffc86d2c72fc50c006876ab0b0b29894ad03dc23",
+    "observations_sha256": "fb047b2f9e99f593882b8da8edd427a8f1e13c306aba608aa257dc030e52fc1b",
+    "paired_contrasts": [
+      {
+        "baseline": "direct_ridge",
+        "candidate": "target_expression",
+        "ci95": [
+          -0.0009318922449471764,
+          0.002496750576167604
+        ],
+        "gain": 0.0007750929143867895,
+        "lineages": 74,
+        "metric": "mae",
+        "track": "C"
+      },
+      {
+        "baseline": "direct_ridge",
+        "candidate": "target_expression",
+        "ci95": [
+          -0.0017799775928161786,
+          0.0018020625381316938
+        ],
+        "gain": 1.0736000716216054e-06,
+        "lineages": 74,
+        "metric": "ndcg_at_5",
+        "track": "C"
+      },
+      {
+        "baseline": "direct_ridge",
+        "candidate": "target_expression",
+        "ci95": [
+          -0.0006303737823915329,
+          0.0007437270823896502
+        ],
+        "gain": 3.6660224212781145e-05,
+        "lineages": 74,
+        "metric": "spearman",
+        "track": "C"
+      },
+      {
+        "baseline": "direct_ridge",
+        "candidate": "hallmark_interaction",
+        "ci95": [
+          -0.0060698029604922795,
+          0.006100205164527854
+        ],
+        "gain": 1.3447566665154033e-05,
+        "lineages": 74,
+        "metric": "mae",
+        "track": "C"
+      },
+      {
+        "baseline": "direct_ridge",
+        "candidate": "hallmark_interaction",
+        "ci95": [
+          -0.00025995989362705694,
+          0.006194307819612888
+        ],
+        "gain": 0.0026247306250720692,
+        "lineages": 74,
+        "metric": "ndcg_at_5",
+        "track": "C"
+      },
+      {
+        "baseline": "direct_ridge",
+        "candidate": "hallmark_interaction",
+        "ci95": [
+          -0.0019289264124842608,
+          0.0009978177876241946
+        ],
+        "gain": -0.0004297171980581771,
+        "lineages": 74,
+        "metric": "spearman",
+        "track": "C"
+      },
+      {
+        "baseline": "direct_ridge",
+        "candidate": "driver_mutation_cna",
+        "ci95": [
+          -0.013226828002010159,
+          0.003328176089299495
+        ],
+        "gain": -0.004645411799502282,
+        "lineages": 74,
+        "metric": "mae",
+        "track": "C"
+      },
+      {
+        "baseline": "direct_ridge",
+        "candidate": "driver_mutation_cna",
+        "ci95": [
+          -0.005033214392125976,
+          0.0060539220854264756
+        ],
+        "gain": 7.7102381817018e-05,
+        "lineages": 74,
+        "metric": "ndcg_at_5",
+        "track": "C"
+      },
+      {
+        "baseline": "direct_ridge",
+        "candidate": "driver_mutation_cna",
+        "ci95": [
+          -0.0028970945582037803,
+          0.00044271628268274853
+        ],
+        "gain": -0.0012087270883039958,
+        "lineages": 74,
+        "metric": "spearman",
+        "track": "C"
+      },
+      {
+        "baseline": "direct_ridge",
+        "candidate": "all_context",
+        "ci95": [
+          -0.013841150251723715,
+          0.005275771325741598
+        ],
+        "gain": -0.004384253186456039,
+        "lineages": 74,
+        "metric": "mae",
+        "track": "C"
+      },
+      {
+        "baseline": "direct_ridge",
+        "candidate": "all_context",
+        "ci95": [
+          0.0001395600071887937,
+          0.00944916871187038
+        ],
+        "gain": 0.004385493203963975,
+        "lineages": 74,
+        "metric": "ndcg_at_5",
+        "track": "C"
+      },
+      {
+        "baseline": "direct_ridge",
+        "candidate": "all_context",
+        "ci95": [
+          -0.0031733447327758043,
+          0.0009579355893522635
+        ],
+        "gain": -0.0010651096578196961,
+        "lineages": 74,
+        "metric": "spearman",
+        "track": "C"
+      }
+    ],
+    "rank_only": false,
+    "scores": [
+      {
+        "cells": 77,
+        "common_rows": 6776,
+        "covered_rows": 6776,
+        "lineages": 74,
+        "macro_mae": 0.10930946854644387,
+        "macro_mse": 0.024508700705714148,
+        "macro_ndcg_at_5": 0.8736487916045059,
+        "macro_spearman": 0.746544978339237,
+        "macro_top5_overlap": 0.41038961038961036,
+        "method": "all_context",
+        "registered_rows": 6776,
+        "track": "C"
+      },
+      {
+        "cells": 77,
+        "common_rows": 6776,
+        "covered_rows": 6776,
+        "lineages": 74,
+        "macro_mae": 0.10886971664950006,
+        "macro_mse": 0.02423702634454602,
+        "macro_ndcg_at_5": 0.8692380695730725,
+        "macro_spearman": 0.7475728584751741,
+        "macro_top5_overlap": 0.4129870129870129,
+        "method": "direct_ridge",
+        "registered_rows": 6776,
+        "track": "C"
+      },
+      {
+        "cells": 77,
+        "common_rows": 6776,
+        "covered_rows": 6776,
+        "lineages": 74,
+        "macro_mae": 0.10931277818731946,
+        "macro_mse": 0.024447051953856862,
+        "macro_ndcg_at_5": 0.869381544405194,
+        "macro_spearman": 0.7465031117506394,
+        "macro_top5_overlap": 0.41038961038961036,
+        "method": "driver_mutation_cna",
+        "registered_rows": 6776,
+        "track": "C"
+      },
+      {
+        "cells": 77,
+        "common_rows": 6776,
+        "covered_rows": 6776,
+        "lineages": 74,
+        "macro_mae": 0.108870119362146,
+        "macro_mse": 0.024318799340959735,
+        "macro_ndcg_at_5": 0.8717904376923348,
+        "macro_spearman": 0.7471667696188062,
+        "macro_top5_overlap": 0.4181818181818181,
+        "method": "hallmark_interaction",
+        "registered_rows": 6776,
+        "track": "C"
+      },
+      {
+        "cells": 77,
+        "common_rows": 6776,
+        "covered_rows": 6776,
+        "lineages": 74,
+        "macro_mae": 0.1087963544723142,
+        "macro_mse": 0.02421705075815193,
+        "macro_ndcg_at_5": 0.8692391013445696,
+        "macro_spearman": 0.7476313297328914,
+        "macro_top5_overlap": 0.41558441558441556,
+        "method": "target_expression",
+        "registered_rows": 6776,
+        "track": "C"
+      }
+    ],
+    "split": "C"
+  },
+  "run": "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/vc_build_v1/function/molecular-context.PY2Y8mtE",
+  "support": {
+    "code_sha256": "878fa6403ce54e5d0a7c06445e77dd3cbf17d19a4e23e25e8be8afa10ff96da6",
+    "config_sha256": "8fd174005a0d808f710db56bfdea41d795d04ff2b4d429f5c7b90360043d783e",
+    "driver_features": {
+      "gain_AXIN1": 0,
+      "gain_CDKN2A": 0,
+      "gain_FGF19": 10,
+      "gain_FGFR1": 1,
+      "gain_FGFR3": 3,
+      "gain_FGFR4": 3,
+      "gain_PTEN": 0,
+      "gain_RB1": 0,
+      "loss_AXIN1": 0,
+      "loss_CDKN2A": 7,
+      "loss_FGF19": 0,
+      "loss_FGFR1": 0,
+      "loss_FGFR3": 0,
+      "loss_FGFR4": 0,
+      "loss_PTEN": 4,
+      "loss_RB1": 1,
+      "seq_APC": 6,
+      "seq_ARID1A": 9,
+      "seq_ARID2": 6,
+      "seq_AXIN1": 14,
+      "seq_CTNNB1": 7,
+      "seq_KEAP1": 8,
+      "seq_NFE2L2": 1,
+      "seq_PTEN": 5,
+      "seq_RB1": 3,
+      "seq_TERT": 60,
+      "seq_TP53": 59
+    },
+    "driver_mapped_models": 77,
+    "driver_workbook_sha256": "931fcd83e9ce372d4f1de2c52324a9d3eea721e5dff5c160e0dc9c76b8958452",
+    "hallmark_gmt_sha256": "eecaf6dad908334ae885406ec72bdc0646d8917588ed7c219fac92fc5363f596",
+    "pathway_gene_counts": {
+      "APOPTOSIS": 160,
+      "DNA_REPAIR": 147,
+      "E2F_TARGETS": 195,
+      "G2M_CHECKPOINT": 189,
+      "KRAS_SIGNALING_UP": 197,
+      "MTORC1_SIGNALING": 194,
+      "PI3K_AKT_MTOR_SIGNALING": 103,
+      "WNT_BETA_CATENIN_SIGNALING": 42
+    },
+    "rna_sha256": "ab74542386e70b0d872d47fc145c66bb3fc1ec55c3a62cb2cb3942dae54715bd",
+    "rows_sha256": "2e2d40c2c27232985512d3828955ae9b381632015bf7a99e0030fd300ee41555",
+    "rows_with_unmatched_cell_drivers": 0,
+    "scored_lineages": 74,
+    "scored_models": 77,
+    "scored_rows": 6776,
+    "selections": [
+      {
+        "inner_mean_macro_mae": 0.10866930487112914,
+        "method": "direct_ridge",
+        "outer_fold": 0,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10867524810493107,
+        "method": "target_expression",
+        "outer_fold": 0,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10929120891501158,
+        "method": "hallmark_interaction",
+        "outer_fold": 0,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10949486748248131,
+        "method": "driver_mutation_cna",
+        "outer_fold": 0,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.11008099834975497,
+        "method": "all_context",
+        "outer_fold": 0,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10836596100902622,
+        "method": "direct_ridge",
+        "outer_fold": 1,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.108324981675659,
+        "method": "target_expression",
+        "outer_fold": 1,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10844764646803325,
+        "method": "hallmark_interaction",
+        "outer_fold": 1,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10863315119963828,
+        "method": "driver_mutation_cna",
+        "outer_fold": 1,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10873067237169186,
+        "method": "all_context",
+        "outer_fold": 1,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10676787088025301,
+        "method": "direct_ridge",
+        "outer_fold": 2,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10664226707762692,
+        "method": "target_expression",
+        "outer_fold": 2,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10684480185414229,
+        "method": "hallmark_interaction",
+        "outer_fold": 2,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10694332033714704,
+        "method": "driver_mutation_cna",
+        "outer_fold": 2,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10706572428816735,
+        "method": "all_context",
+        "outer_fold": 2,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10978063698768026,
+        "method": "direct_ridge",
+        "outer_fold": 3,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10960897213348415,
+        "method": "target_expression",
+        "outer_fold": 3,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10967792284601041,
+        "method": "hallmark_interaction",
+        "outer_fold": 3,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.11070769788975439,
+        "method": "driver_mutation_cna",
+        "outer_fold": 3,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.11045906659171263,
+        "method": "all_context",
+        "outer_fold": 3,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10891697278827966,
+        "method": "direct_ridge",
+        "outer_fold": 4,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10881318406758876,
+        "method": "target_expression",
+        "outer_fold": 4,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10869506814176792,
+        "method": "hallmark_interaction",
+        "outer_fold": 4,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10931720696639573,
+        "method": "driver_mutation_cna",
+        "outer_fold": 4,
+        "penalty": 1000
+      },
+      {
+        "inner_mean_macro_mae": 0.10916162139642936,
+        "method": "all_context",
+        "outer_fold": 4,
+        "penalty": 1000
+      }
+    ],
+    "typed_compounds_with_mapped_targets": 79,
+    "typed_compounds_with_measured_targets": 79,
+    "unmatched_cell_driver_ids": []
+  }
+}
