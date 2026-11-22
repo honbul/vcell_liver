@@ -178,16 +178,21 @@ def export(root, output, git_revision):
     title, contents, lengths = sections(text)
     rows = list(score_rows(root.parent/"data"))
     output.mkdir(parents=True, exist_ok=True)
-    with (output/"table1.tsv").open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]), delimiter="\t", lineterminator="\n")
-        writer.writeheader()
-        writer.writerows(rows)
-    build_word(output/"REVIEW.docx", root, title, contents, rows)
-    names = ("REVIEW.docx", "table1.tsv")
-    write_json(output/"review_receipt.json", dict(mode="internal_review", source_git_revision=git_revision,
-        draft_sha256=sha256(draft), lengths=lengths, table_rows=len(rows), figures=3,
-        vector_sources={f"figure{n}.pdf":sha256(root/f"figure{n}.pdf") for n in (1, 2, 3)},
-        artifacts={name:sha256(output/name) for name in names}))
+    with TemporaryDirectory(dir=output, prefix=".review-") as temp:
+        stage = Path(temp)
+        with (stage/"table1.tsv").open("w", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=list(rows[0]), delimiter="\t", lineterminator="\n")
+            writer.writeheader()
+            writer.writerows(rows)
+        build_word(stage/"REVIEW.docx", root, title, contents, rows)
+        names = ("REVIEW.docx", "table1.tsv")
+        receipt = "review_receipt.json"
+        write_json(stage/receipt, dict(mode="internal_review", source_git_revision=git_revision,
+            draft_sha256=sha256(draft), lengths=lengths, table_rows=len(rows), figures=3,
+            vector_sources={f"figure{n}.pdf":sha256(root/f"figure{n}.pdf") for n in (1, 2, 3)},
+            artifacts={name:sha256(stage/name) for name in names}))
+        for name in (*names, receipt):
+            (stage/name).replace(output/name)
 
 
 if __name__ == "__main__":
