@@ -73,6 +73,55 @@ def rank_metrics(actual, forecast, k: int = 5) -> dict:
     return {"spearman": spearman, "ndcg_at_5": float(dcg / ideal), "top5_overlap": float(overlap)}
 
 
+def across_cell_metrics(group, *, min_lineages=5):
+    """One observation per independent patient/lineage and drug."""
+    values = group.groupby("lineage_group")[["endpoint_value", "predicted_value"]].mean()
+    result = {"lineages": len(values), "spearman": None, "pearson": None}
+    actual = values.endpoint_value.to_numpy()
+    forecast = values.predicted_value.to_numpy()
+    if len(values) < min_lineages or np.ptp(actual) == 0:
+        return result
+    if np.ptp(forecast) == 0:
+        return result | {"spearman": 0.0, "pearson": 0.0}
+    return result | {
+        "spearman": float(np.corrcoef(rankdata(actual), rankdata(forecast))[0, 1]),
+        "pearson": float(np.corrcoef(actual, forecast)[0, 1]),
+    }
+
+
+def score_across_cells(joined, *, min_lineages=5, comparisons=(), repeats=4000, seed=14822):
+    key = ["track", "fold", "compound_id", "method"]
+    rows, contrasts = [], []
+    for track, section in joined.groupby("track", sort=True):
+        methods = section.method.nunique()
+        eligible = section[np.isfinite(section.predicted_value)]
+        counts = eligible.groupby(["fold", "row_id"]).method.nunique()
+        common = counts[counts == methods].index.to_frame(index=False)
+        eligible = eligible.merge(common, on=["fold", "row_id"], validate="many_to_one")
+        for tag, group in eligible.groupby(key, sort=True):
+            drug_result = across_cell_metrics(group, min_lineages=min_lineages)
+            rows.append(dict(zip(key, tag)) | drug_result)
+    per_drug = pd.DataFrame(rows, columns=[*key, "lineages", "spearman", "pearson"])
+    for track, group in per_drug.groupby("track", sort=True):
+        for candidate, baseline in comparisons:
+            for metric in ("spearman", "pearson"):
+                index = ["fold", "compound_id"]
+                a = group[group.method == candidate].set_index(index)[metric].rename("candidate")
+                b = group[group.method == baseline].set_index(index)[metric].rename("baseline")
+                differences = pd.concat([a, b], axis=1).dropna()
+                deltas = (differences.candidate - differences.baseline).groupby(level="compound_id").mean().to_numpy()
+                if len(deltas) < 2:
+                    continue
+                rng = np.random.default_rng(seed)
+                draws = deltas[rng.integers(len(deltas), size=(repeats, len(deltas)))].mean(axis=1)
+                contrasts.append({
+                    "track": track, "candidate": candidate, "baseline": baseline, "metric": metric,
+                    "gain": float(deltas.mean()), "drug_bootstrap_ci95": np.quantile(draws, [0.025, 0.975]).tolist(),
+                    "drugs": len(deltas),
+                })
+    return per_drug, contrasts
+
+
 def _cell_metrics(group, endpoint_direction, rank_only):
     actual = group.endpoint_value.to_numpy()
     forecast = group.predicted_value.to_numpy()
@@ -184,6 +233,16 @@ def main():
     joined = join_observations(which, observations)
     scores, cells = score(joined, endpoint_direction=args.endpoint_direction,
                           rank_only=args.rank_only, comparisons=args.compare)
+    drugs, across_cell_contrasts = score_across_cells(joined, comparisons=args.compare)
+    across_cell_scores = []
+    for (track, method), group in drugs.groupby(["track", "method"], sort=True):
+        per_compound = group.groupby("compound_id")[["spearman", "pearson"]].mean().dropna()
+        if len(per_compound):
+            across_cell_scores.append({
+                "track": track, "method": method, "eligible_compounds": len(per_compound),
+                "macro_spearman": float(per_compound.spearman.mean()),
+                "macro_pearson": float(per_compound.pearson.mean()),
+            })
     output = {
         "split": args.split,
         "freeze_sha256": receipt["sha256"],
@@ -192,6 +251,9 @@ def main():
         "rank_only": args.rank_only,
         **scores,
         "cell_scores": cells.astype(object).where(pd.notna(cells), None).to_dict(orient="records"),
+        "across_cell_scores": across_cell_scores,
+        "paired_across_cell_contrasts": across_cell_contrasts,
+        "drug_scores": drugs.astype(object).where(pd.notna(drugs), None).to_dict(orient="records"),
     }
     publish_json(args.out, output)
 

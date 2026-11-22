@@ -1,4 +1,4 @@
-"""Train external response rankers on source-specific endpoints, then seal LIMORE forecasts."""
+"""Align native screening endpoints using fit-only anchors and seal external forecasts."""
 
 from __future__ import annotations
 
@@ -16,19 +16,66 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from .io import OUTCOME_COLUMNS, freeze_table, publish_json, read_table, sha256
 
 KEY = ["row_id", "cell_id", "lineage_group", "compound_id"]
+SOURCE = ["source_id", "endpoint_id"]
+ANCHOR = ["cell_id", "compound_id"]
 
 
-def endpoint_ranks(frame):
-    """Convert response only within each source, cell and native endpoint."""
+def native_sensitivity(frame):
+    """Orient measured endpoints so a larger value is always more sensitive."""
     direction = frame["endpoint_direction"].map({
         "higher": 1, "lower": -1, "higher_is_more_sensitive": 1, "lower_is_more_sensitive": -1,
     })
     value = frame["endpoint_value"].astype(float)
     if direction.isna().any() or not np.isfinite(value).all():
         raise ValueError("Every training observation needs a finite value and a declared endpoint direction")
-    frame = frame.assign(sensitivity=value * direction)
-    group = frame.groupby(["cell_id", "endpoint_id"], sort=False)["sensitivity"]
-    return (group.rank(method="average") - 0.5) / group.transform("size")
+    return value * direction
+
+
+def align_endpoints(frame, *, reference=None, min_drugs=3, min_pairs=60):
+    """Fit an affine calibration per native assay on exact common cell–drug pairs.
+
+    Every anchor drug contributes equally. Drug locations identify the shift;
+    pooled within-drug IQR ratios preserve the scale of individual differences.
+    The same positive transform then applies to all rows from that assay.
+    """
+    oriented = frame.assign(native_sensitivity=native_sensitivity(frame))
+    groups = {tag: group for tag, group in oriented.groupby(SOURCE, sort=True)}
+    if not groups:
+        raise ValueError("No training endpoints")
+    if reference is None:
+        reference = next((tag for tag in groups if tag[0] == "GDSC2"), next(iter(groups)))
+    reference_values = groups[reference].groupby(ANCHOR).native_sensitivity.median().rename("reference")
+    transformations = []
+    aligned = []
+    for tag, group in groups.items():
+        pairs = pd.DataFrame()
+        if tag == reference:
+            scale, offset, anchor_drugs = 1.0, 0.0, []
+        else:
+            source_values = group.groupby(ANCHOR).native_sensitivity.median().rename("source")
+            pairs = reference_values.to_frame().join(source_values, how="inner").reset_index()
+            supported = pairs.groupby("compound_id").filter(lambda part: len(part) >= 12)
+            anchor_drugs = sorted(supported.compound_id.unique())
+            if len(anchor_drugs) < min_drugs or len(supported) < min_pairs:
+                raise ValueError(f"Insufficient fit-only anchors for {tag}: "
+                                 f"{len(anchor_drugs)} drugs, {len(supported)} cell–drug pairs")
+            pairs = supported
+            by_drug = pairs.groupby("compound_id")[["reference", "source"]]
+            quartiles = by_drug.quantile([0.25, 0.75])
+            iqr = quartiles.xs(0.75, level=-1) - quartiles.xs(0.25, level=-1)
+            varying = iqr[(iqr.reference > 1e-8) & (iqr.source > 1e-8)]
+            if len(varying) < min_drugs:
+                raise ValueError(f"Insufficient variable fit-only anchors for {tag}")
+            scale = float(np.median(varying.reference / varying.source))
+            centers = by_drug.median()
+            offset = float(np.median(centers.reference - scale * centers.source))
+        aligned.append(group.assign(model_value=group.native_sensitivity * scale + offset))
+        transformations.append(dict(zip(SOURCE, tag)) | {
+            "reference_source": reference[0], "reference_endpoint": reference[1],
+            "slope": scale, "intercept": offset, "anchor_drugs": anchor_drugs,
+            "anchor_pairs": len(pairs),
+        })
+    return pd.concat(aligned).sort_index(), transformations
 
 
 def _prepare_expression(train_rna, query_rna, train_cells, query_cells):
@@ -107,7 +154,6 @@ def _validate(train, query):
 
 
 def _source_rank_scores(fit, query, fit_rep, query_rep, chemistry, fit_rna, query_rna, targets):
-    fit = fit.assign(model_value=endpoint_ranks(fit))
     y = fit.model_value.to_numpy()
     train_x = fit_rep.loc[fit.cell_id].to_numpy()
     test_x = query_rep.loc[query.cell_id].to_numpy()
@@ -140,12 +186,20 @@ def _source_rank_scores(fit, query, fit_rep, query_rep, chemistry, fit_rna, quer
     return pd.DataFrame(result, index=query.row_id)
 
 
-def train_rankers(train, query, train_rna, query_rna, targets):
+def train_rankers(train, query, train_rna, query_rna, targets, *, historical_rank_control=False):
     _validate(train, query)
+    if historical_rank_control:
+        sensitivities = train.assign(sensitivity=native_sensitivity(train))
+        local = sensitivities.groupby([*SOURCE, "cell_id"]).sensitivity
+        aligned = train.assign(model_value=(local.rank(method="average") - 0.5) / local.transform("size"))
+        calibration = {tag: {} for tag in aligned.groupby(SOURCE).groups}
+    else:
+        aligned, transforms = align_endpoints(train)
+        calibration = {(row["source_id"], row["endpoint_id"]): row for row in transforms}
     chemistry = _chemistry(pd.concat([train, query]))
     source_outputs = []
     source_counts = []
-    for (source, endpoint), group in train.groupby(["source_id", "endpoint_id"], sort=True):
+    for (source, endpoint), group in aligned.groupby(SOURCE, sort=True):
         rows = group[group.compound_id.isin(query.compound_id)]
         eligible = query[query.compound_id.isin(rows.compound_id)]
         if eligible.compound_id.nunique() < 5:
@@ -161,12 +215,13 @@ def train_rankers(train, query, train_rna, query_rna, targets):
         source_outputs.append(forecasts.reset_index())
         source_counts.append({"source_id": source, "endpoint_id": endpoint, "training_rows": len(rows),
                               "training_cells": len(fit_cells), "predicted_rows": len(eligible),
-                              "compounds": int(eligible.compound_id.nunique()), "common_rna_genes": genes})
+                              "compounds": int(eligible.compound_id.nunique()), "common_rna_genes": genes,
+                              "calibration": calibration[source, endpoint]})
     if not source_outputs:
         raise ValueError("No sufficiently supported training source in the registered public axis")
     source_values = pd.concat(source_outputs, ignore_index=True)
     methods = [name for name in source_values if name not in {"row_id", "source_id", "endpoint_id"}]
-    # Rank scores stay on a common sensitivity orientation, but have no LIMORE AA units.
+    # Predictions use one fit-anchored orientation and scale, with no implied LIMORE AA units.
     combined = source_values.groupby("row_id", as_index=False)[methods].mean()
     combined = query[KEY].merge(combined, on="row_id", how="left", validate="one_to_one")
     predictions = combined.melt(id_vars=KEY, var_name="method", value_name="predicted_value")
@@ -219,7 +274,7 @@ def main():
                 "query_cells": int(query.cell_id.nunique()), "query_lineages": int(query.lineage_group.nunique()),
                 "query_compounds": int(query.compound_id.nunique()), "query_rows": len(query),
                 "input_sha256": {key: sha256(path) for key, path in paths.items()},
-                "prediction_scale": "cross_source_sensitivity_rank", "requested_limore_model_count": 50}
+                "prediction_scale": "fit_only_anchor_aligned_native_sensitivity", "requested_limore_model_count": 50}
     source_scores.to_parquet(args.out / "source_forecasts.parquet", index=False)
     metadata["source_forecasts_sha256"] = sha256(args.out / "source_forecasts.parquet")
     freeze_table(predictions, args.out / "predictions.parquet", provenance=metadata)
