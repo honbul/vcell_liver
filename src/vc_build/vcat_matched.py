@@ -145,16 +145,27 @@ def train_response(model, x, cells, drugs, labels, weights, device):
 @torch.no_grad()
 def query_predictions(model, x, cells, drugs):
     model.eval()
-    example = drugs[:32]
-    using_cache = model.drug_encoder(example)
-    native = model.drug_encoder.encoder(model.drug_encoder.tokens[example])
-    difference = float((using_cache - native).abs().max())
-    if difference > 2e-5:
-        raise ValueError(f"Coalesced SMILES differs from upstream evaluation: {difference}")
-    scores = []
-    for selection in torch.arange(len(cells), device=cells.device).split(192):
-        pred = model(x[cells[selection]], drugs[selection]).logits
-        scores.append(pred.cpu().numpy())
+    cached = model.drug_encoder
+    precision = torch.get_float32_matmul_precision()
+    cudnn_tf32 = torch.backends.cudnn.allow_tf32
+    torch.set_float32_matmul_precision("highest")
+    torch.backends.cudnn.allow_tf32 = False
+    try:
+        example = drugs[:32]
+        using_cache = cached(example)
+        native = cached.encoder(cached.tokens[example])
+        difference = float((using_cache - native).abs().max())
+        if difference > 2e-5:
+            raise ValueError(f"Coalesced SMILES differs from upstream evaluation: {difference}")
+        model.drug_encoder = cached.encoder
+        scores = []
+        for selection in torch.arange(len(cells), device=cells.device).split(192):
+            pred = model(x[cells[selection]], cached.tokens[drugs[selection]]).logits
+            scores.append(pred.cpu().numpy())
+    finally:
+        model.drug_encoder = cached
+        torch.backends.cudnn.allow_tf32 = cudnn_tf32
+        torch.set_float32_matmul_precision(precision)
     return np.concatenate(scores) / 5, difference
 
 
