@@ -1,0 +1,58 @@
+{
+  "allowed_formats": [
+    "bulk_tpm",
+    "bulk_counts",
+    "bulk_log2_tpm_plus_1"
+  ],
+  "clinical_response": false,
+  "cohort": "LIMORE50",
+  "default_model": "v0plus_inductive",
+  "drug_registry_sha256": "5fd470442bc6ed497d304e870aaf5a2e33b94225954aa218b95539a6e8687236",
+  "endpoint": "screen_aligned_sensitivity_score_higher_is_more_sensitive",
+  "external_score_sha256": "74bc27fb39a7960e38111564ec20a0ea7b6b5c2d85e7351f1eff2a11b788895a",
+  "inductive_query": true,
+  "models": {
+    "drug_mean": {
+      "multiplier": 1.0,
+      "path": "drug_mean.joblib",
+      "sha256": "02ac01a720e26c81ff3f9044417d0f2b9687aed7d5a7a6973bdf175cd03af7fa"
+    },
+    "drug_ridge": {
+      "multiplier": 1.0,
+      "path": "drug_ridge.joblib",
+      "sha256": "07885a624b91992a45d97a2fb3436d718d40fd8825f1486c405028d8ba40b13f"
+    },
+    "v0plus_inductive": {
+      "multiplier": 0.5,
+      "path": "v0plus_inductive.joblib",
+      "sha256": "fc7e0ace7c6b9634b310c162fe3afea587618405c95f96359661a129ceaf1b89"
+    }
+  },
+  "patient_level_permission": "research culture prioritization",
+  "prediction_freeze_sha256": "894d5dc7a5fb7efdca49f261ba87aa58cf7b520595993a681fdb336175c17dba",
+  "schema_version": 1,
+  "source_panels": {
+    "CTRPv2": {
+      "adult_hcc_cells": 19,
+      "cells": 731,
+      "compounds": 49,
+      "rows": 31097
+    },
+    "GDSC2": {
+      "adult_hcc_cells": 12,
+      "cells": 714,
+      "compounds": 42,
+      "rows": 24839
+    },
+    "PRISM20Q2": {
+      "adult_hcc_cells": 18,
+      "cells": 717,
+      "compounds": 18,
+      "rows": 9749
+    }
+  },
+  "source_rows": 65685,
+  "supported_axis": "exact parent and pretreatment bulk RNA-seq from research cultures",
+  "three_dimensional_validation": "LICOB_RNA_distribution_invalid",
+  "version": "V0+"
+}

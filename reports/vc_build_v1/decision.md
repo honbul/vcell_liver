@@ -1,6 +1,6 @@
 # Practical HCC VC 구축 결과
 
-이 문서는 0단계 데이터 연결과 초기 소형 모델 점검을 기록한다. 공개 데이터 전용 V0+ 개발은 [V0+ 평가 명세](V0PLUS_PROTOCOL.md)와 [모델 등록](v0plus/MODEL_REGISTRATION.md)에서 이어진다. VCB-06 wet-lab 계획은 종료됐다.
+이 문서는 0단계 데이터 연결과 초기 소형 모델 점검을 기록한다. 공개 데이터 전용 V0+의 결과와 실행 방법은 [최종 외부 평가](v0plus/STEP4_EXTERNAL_RESULTS.md)와 [모델 카드](v0plus/V0PLUS_MODEL_CARD.md)에 있다. VCB-06 wet-lab 계획은 종료됐다.
 
 **이번에 만든 것** — 88약물의 LIMORE 72시간 Activity Area 감수성 예측기 V0, 체크포인트와 오프라인 CLI, 실제 상태 프로그램 모델, 공개 외부 평가와 보정, 로컬 교차 실험 승인안.
 
