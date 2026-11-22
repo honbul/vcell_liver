@@ -106,7 +106,7 @@ def predict(args, old, ref, genes, cols, prior, stamp):
                 gain,beta = model_gain(train,test,shrink[i],y,agreement=arm!=ENERGY)
                 arms[arm]=(gain[:,None]*shrink[j]).astype("float32")
                 audit.append(dict(slice=key,arm=arm,fit_parents=len(i),query_wells=len(j),original_gain=base,
-                    intercept=beta[0],norm_slope=beta[1],agreement_slope=beta[2] if len(beta)==3 else np.nan,
+                    intercept=beta[0],norm_slope=beta[1],agreement_slope=beta[2] if len(beta)==3 else None,
                     query_gain_min=gain.min(),query_gain_median=np.median(gain),query_gain_max=gain.max()))
             entry=stage/(key+".npz")
             np.savez_compressed(entry,**arms)
