@@ -117,3 +117,5 @@ RNA 이웃을 구조 커널의 적합 단계에 넣어 두 단계 그래프 확�
 저자 코드를 같은 정정 코어의 연속 반응에 적합한 VCAT-SMILES에서 LICOB Precision@5는 .216, 약물 내 Spearman은 .079였다. CODE-AE의 같은 두 지표는 .153과 .125였다. 구조 커널·VCAT 평균은 LIMORE 개인화 지표를 낮췄고 두 외부의 공동 기준에 미달했다. 논문의 LINCS 기반 VCAT 체크포인트에는 직접 접속하지 못했다. [정정 코어 동일 행 VCAT 비교](VCAT_MATCHED_RESULTS.md)
 
 정확한 parent 41약물의 비간계열 LINCS Level5 서명에서 처리 방향과 투여 전 경로 활성의 곱을 구조 커널에 추가했다. LIMORE 서명 보유 약물에서 약물 내 Spearman은 구조 .360, 보유 마스크 .388, 서명·경로 .360이었다. LICOB에서 같은 지표는 .029, .021, .031이었다. 두 코호트와 세 스크린의 사전 공동 기준에 미달했다. [LINCS 처리 서명과 경로 상호작용](LINCS_PATHWAY_RESULTS.md)
+
+공개 GSE298810 같은 HCC 계통의 2D·3D 발현으로 예측 일관성 제약을 실험했다. 같은 RNA 축에서 약물 내 Spearman 변화는 LIMORE +.00190, LICOB +.00079였고 두 구간이 0을 포함했다. 소스와 외부의 공동 승격 기준은 미달했다. [짝지은 배양 제약 성적](CULTURE_CONSISTENCY_RESULTS.md)
