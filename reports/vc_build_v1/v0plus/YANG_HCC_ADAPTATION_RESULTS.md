@@ -43,3 +43,5 @@
 이미 등록된 다른 두 3D 코호트와 exact parent를 대조하면 lenvatinib·regorafenib·sorafenib이 공통이다. LICOB의 성인 29명과 Wong의 10명에서 세 약물이 등록돼 있다. 이 회차에서 읽은 것은 두 코호트의 등록 메타데이터까지다. 같은 세 약물 범위에는 Top-5 선별의 분별력이 없다.
 
 `33251`이 적합 AUC와 보류 ID를 분리했다. `33252`의 GPU 배열이 fold별 예측을 동결했고 `33253`이 해시 검증 후 별도로 채점했다. `33256`에서 같은 환자 내 지역 일치도를 계산했다. 결과 SHA-256은 `a1cb4171709a9a7a94d1d96863626e0ba0748566382ea8c689b002917dcc303e`다. [작업 원장](RUN_LEDGER.tsv)
+
+후속 기술 평가에서 Yang 3D Ridge는 공통 3약물의 감수성 순위를 LICOB와 Wong에 재현하지 못했다. [별도 연구 간 동결 평가](HCC_3D_STUDY_TRANSFER_RESULTS.md)
