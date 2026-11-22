@@ -264,7 +264,7 @@ def predict(args):
     paired = same_cells(parts)
     source_audit(args, parts, paired)
     _, rna, _ = training_inputs(args.core)
-    roster = pd.Index(sorted(paired.cell_id))
+    roster = pd.Index(sorted(paired.cell_id), name="cell_id")
     fit_rna = rna.loc[roster]
     query = pd.concat(prepare_query(args.pdx, fit_rna), names=["track", "row_id"])
     signatures, _, priors = molecular_inputs(args.priors, args.hallmark, args.targets)
