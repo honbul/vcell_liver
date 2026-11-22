@@ -80,7 +80,7 @@ def drugcomb(path, cells, compounds, audit):
                   "excluded_studies": sorted(set(scans) - ONCOLOGY_STUDIES)})
 
 
-def sanger(files, cells, compounds, audit):
+def sanger(files, cells, compounds, audit, zip_scores):
     for path in files:
         source = "Sanger:" + path.stem.removesuffix("_matrix_results")
         data = pd.read_csv(path, usecols=SANGER_FIELDS, dtype={key: str for key in SANGER_FIELDS[:11]})
@@ -99,8 +99,11 @@ def sanger(files, cells, compounds, audit):
             "css": np.nan, "added_inhibition": efficacy * 100,
         })
         qp = qp.dropna(subset=["bliss", "added_inhibition"])
+        qp["zip"] = qp.id.map(zip_scores)
         out = map_assay(qp, cells, compounds)
         audit[source] = {"published_matrices": len(data), "resolved_matrices": len(out),
+                         "reconstructed_zip_matrices": int(out.zip.notna().sum()),
+                         "adult_hcc_zip_matrices": int(out.loc[out.adult_hcc, "zip"].notna().sum()),
                          "adult_hcc_matrices": int(out.adult_hcc.sum()),
                          "adult_hcc_models": out.loc[out.adult_hcc, "cell_id"].nunique()}
         yield out
@@ -120,8 +123,14 @@ def prepare(a):
     if any(record(f) != claimed["inputs"][f.name] for f in a.sanger):
         raise ValueError("Sanger compound registry is frozen against a different summary release")
     drugs.add_registered_sanger(pd.read_csv(structures, sep="\t", dtype=str))
+    zip_manifest = a.sanger_zip / "receipt.json"
+    reads = json.loads(zip_manifest.read_text())
+    zip_path = a.sanger_zip / "sanger_zip.parquet"
+    if record(zip_path) != reads["files"]["sanger_zip.parquet"]:
+        raise ValueError("Sanger ZIP reconstruction failed its recorded SHA-256")
+    reconstructed_zip = pd.read_parquet(zip_path).set_index("id", verify_integrity=True).zip
     audit_comb, audit_sanger = {}, {}
-    batches = [*drugcomb(a.drugcomb, cells, drugs, audit_comb), *sanger(a.sanger, cells, drugs, audit_sanger)]
+    batches = [*drugcomb(a.drugcomb, cells, drugs, audit_comb), *sanger(a.sanger, cells, drugs, audit_sanger, reconstructed_zip)]
     distinct = pd.concat(batches, ignore_index=True).drop_duplicates()
     validate_assays(distinct)
     test = distinct[distinct.adult_hcc]
@@ -137,12 +146,13 @@ def prepare(a):
         receipt = {
             "input_files": {p.name: record(p) for p in (a.drugcomb, a.depmap, a.drugs, a.cells, *a.sanger)},
             "sanger_compound_snapshot": record(structures_manifest),
+            "sanger_zip_reconstruction": record(zip_manifest),
             "drugcomb": audit_comb, "sanger": audit_sanger, "all_assays": len(distinct),
             "adult_hcc_assays": len(test), "adult_hcc_cell_groups": test.cell_group.nunique(),
             "registered_compounds": len(used), "failed_publisher_compound_records": drugs.rejected,
             "endpoint_sources": {
                 "DrugComb": "Published ZIP, Bliss, CSS_ri and matched-dose HSA increment",
-                "Sanger": "Published Bliss matrix and combo MaxE less max single-agent MaxE, in percentage points",
+                "Sanger": "Published Bliss and gain over strongest single agent, and reconstructed ZIP",
             },
             "files": {p.name: record(p) for p in sorted(staged.iterdir()) if p.is_file()},
         }
@@ -152,7 +162,7 @@ def prepare(a):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    for key in ("drugcomb", "depmap", "drugs", "cells", "sanger-structures", "output"):
+    for key in ("drugcomb", "depmap", "drugs", "cells", "sanger-structures", "sanger-zip", "output"):
         p.add_argument("--" + key, type=Path, required=True)
     p.add_argument("--sanger", nargs="+", type=Path, required=True)
     prepare(p.parse_args())
