@@ -39,6 +39,12 @@
 
 10 µM·24 h의 JHH-5·JHH-7 개발 구간으로 96군 배치의 정밀도를 점검했다. 개발 효과와 배양 표준편차 0.25를 가정한 두 지표 공동 통과확률 하한은 한 세포주에서 58–87%였다. 파일럿 자체가 제공해야 할 정보는 독립 배양 변동, 다른 위치 반복의 재현성, 공개 VC 대비 오차 차이다. 파일럿과 scaffold가 다른 정식 확인 후보 상한은 등록 단계에서 176군이다. [10 µM 규모 산정](HCC_OFF_POSITION_POWER_RESULTS.md)
 
+## 다른 위치 반복의 재현성 채점
+
+서로 다른 배양·plate·웰 좌표의 같은 약물 반복을 양방향으로 짝짓고 세 DMSO 역할의 오차를 합친다. 원 반복 복사와 다른 화합물 fold에서 배율을 적합한 반복 참조를 동결 후보·공개 VC·무반응과 같은 웰에서 비교한다. 두 반복의 코사인과 불일치 RMS를 계산하고, 양쪽 배양을 함께 가중하는 10,000회 재표집을 제공한다. [반복 명세](HCC_OFF_POSITION_PILOT_REPEAT_PROTOCOL.md) · [채점 코드](../../src/r19_plan/hcc_off_position_pilot_repeat.py)
+
+합성 작업 `31839`에서 SNU-423 288웰·288쌍, HUH7 251웰·214쌍을 검증했다. 기존의 동일 반복 지원에서 동결 후보와 공개 VC 5종의 점추정을 정확히 재현했다. 양방향 계산이나 세 역할을 실제 반복 수에 더하지 않았다. 실험 재현성과 모델 격차는 독립 배양 실측 후에 추정할 수 있다. [합성 지원](data/hcc_off_position_pilot/repeat_smoke/score/support.tsv) · [검증 영수증](data/hcc_off_position_pilot/repeat_smoke/score/receipt.json) · [실행 원장](data/hcc_off_position_pilot/repeat_smoke/launch.tsv)
+
 ## 실측 파일 인수 형식
 
 | 파일 | 필요한 내용 |
