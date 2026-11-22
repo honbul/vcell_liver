@@ -16,12 +16,12 @@ python=$root/runtime/bin/python
 cd "$root/code/vc_crispr_bridge_v1"
 export PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4
 
-if [[ ! -f "$work/bridge-panels-v1/receipt.json" ]]; then
+if [[ ! -f "$work/bridge-panels-native-v1/receipt.json" ]]; then
     "$python" -m vc_crispr_bridge.bridge_panels --panels "$root/prepared/track6-panels-v2" \
-        --targets "$root/preflight/bridge-targets-v1" --output "$work/bridge-panels-v1"
+        --targets "$root/preflight/bridge-targets-native-v1" --output "$work/bridge-panels-native-v1"
 fi
 if [[ ! -f "$results/bridge-predictions/receipt.json" ]]; then
-    "$python" -m vc_crispr_bridge.predict bridge --panel "$work/bridge-panels-v1" \
+    "$python" -m vc_crispr_bridge.predict bridge --panel "$work/bridge-panels-native-v1" \
         --output "$results/bridge-predictions" --chemistry "$root/fm_store_v1/chemistry-v1" \
         --context "$root/prepared/limore-rna-v1/rna.parquet" --hgnc "$data/Gene.csv" \
         --chronos "$data/CRISPRGeneEffect.csv" --depmap-models "$data/Model.csv" \
@@ -30,6 +30,6 @@ if [[ ! -f "$results/bridge-predictions/receipt.json" ]]; then
         --device cuda
 fi
 if [[ ! -f "$results/bridge-scores/receipt.json" ]]; then
-    "$python" -m vc_crispr_bridge.score bridge --panel "$work/bridge-panels-v1" \
+    "$python" -m vc_crispr_bridge.score bridge --panel "$work/bridge-panels-native-v1" \
         --predictions "$results/bridge-predictions" --output "$results/bridge-scores"
 fi
