@@ -16,7 +16,7 @@
 
 ## HRA004348 / 주 등 연구
 
-**공개 원시 서열 메타데이터와 약물 보충표가 있다. 로그인 없는 오가노이드 기저 RNA·반응 결합 자료는 확인되지 않았다.** 상세 반응은 초기 301약물 스크리닝과 별개인 64약물·21개 hepatobiliary 오가노이드의 5점 농도 측정이다. S4에는 약물 패널과 약물별 AUC 표준화 반응 점수가 포함된다. GSA에서 RNA run과 모델 ID 예를 확인했으나 공식 연구 페이지에 브라우저 확인 응답이 돌아와 이 accession의 원서열 접근 표시를 독립 확인하지 못했다. 원논문은 raw·분석 자료의 요청을 저자에게 보내고 공유 가능한 자료를 MTA로 제공한다고 안내한다. 공개 S4로 기저 RNA를 대체할 수 없다. 접근 승인과 실제 분석용 RNA 및 ID 대응표가 필요하다. [원논문·S4](https://pmc.ncbi.nlm.nih.gov/articles/PMC10897507/) · [공식 연구](https://ngdc.cncb.ac.cn/gsa-human/browse/HRA004348) · [공식 RNA run 카탈로그](https://ngdc.cncb.ac.cn/gsa-human/browse/runDetail/HRR1166768) · [NGDC 공식 접근 지침](https://ngdc.cncb.ac.cn/gsa-human/document/GSA-Human_Request_Guide_for_Users_us.pdf)
+**공개 원시 서열 메타데이터와 약물 보충표가 있다. 로그인 없는 오가노이드 기저 RNA·반응 결합 자료는 확인되지 않았다.** 상세 반응은 초기 301약물 스크리닝과 별개인 64약물·21개 hepatobiliary 오가노이드의 5점 농도 측정이다. S4에는 약물 패널과 약물별 AUC 표준화 반응 점수가 포함된다. GSA의 PRJCA016100 등록과 RNA run·모델 ID 예를 확인했으나 공식 연구 페이지에 브라우저 확인 응답이 돌아와 이 accession의 원서열 접근 표시를 독립 확인하지 못했다. 원논문은 raw·분석 자료의 요청을 저자에게 보내고 공유 가능한 자료를 MTA로 제공한다고 안내한다. 공개 S4로 기저 RNA를 대체할 수 없다. 접근 승인과 실제 분석용 RNA 및 ID 대응표가 필요하다. [원논문·S4](https://pmc.ncbi.nlm.nih.gov/articles/PMC10897507/) · [공식 연구](https://ngdc.cncb.ac.cn/gsa-human/browse/HRA004348) · [공식 RNA run 카탈로그](https://ngdc.cncb.ac.cn/gsa-human/browse/runDetail/HRR1166768) · [NGDC 공식 접근 지침](https://ngdc.cncb.ac.cn/gsa-human/document/GSA-Human_Request_Guide_for_Users_us.pdf)
 
 ## 선택적인 일차 간세포 확장
 

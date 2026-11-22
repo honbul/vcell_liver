@@ -50,8 +50,8 @@ Activate the Python environment pinned in the batch files and run from the Git r
 
 ```bash
 export PYTHONPATH="$PWD/src"
-python -m vc_build.prepare --config configs/vc_build_v1/contract.yaml --help
-python -m vc_build.train --config configs/vc_build_v1/contract.yaml --run-dir "$NEW_RUN"
+python -m vc_build.prepare --config configs/vc_build_v1/contract.yaml --bundle limore --output "$NEW_DATA"
+python -m vc_build.train --config configs/vc_build_v1/contract.yaml --data-dir "$NEW_DATA" --run-dir "$NEW_RUN"
 python -m vc_build.predict --model "$RUN/full/v0" --request "$RUN/full/sample_request.json" --benchmark
 python -m vc_build.evaluate --prediction "$RUN/full/predictions.parquet" \
   --observations "$RUN/full/labels.parquet" --split C --endpoint-direction higher \

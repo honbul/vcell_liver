@@ -8,8 +8,8 @@
 |---|---|---|
 | DEV01, DEV02 | Candidate authenticated HCC lines JHH-5 and JHH-7, development roles | Current stocks, identity, stability, baseline RNA, growth and assay qualification. Public prior-response exposure is expected. |
 | BLIND01, BLIND02 | Two independent adult HCC models with baseline RNA and no response-label exposure in training | Local inventory and STR or unique donor/lineage ID, linked alias/patient exclusion ledger, and independent target embargo. If exposed, label the evaluation as a new assay/site. |
-| P01–P24 | Fixed diverse development-selected single-agent slate | Exact assay identities, structural and target domains, authorization, measured dosing metadata and approval. |
-| P01–P12 | State subset of the same slate | Designation before blind results, target/pathway diversity and enough measurable 24h responses in development. |
+| P01–P24 | Provisional fixed diverse single-agent slate in the [candidate manifest](pilot/provisional_compound_slate.tsv) | Exact assay identities, structural and target domains, authorization, measured dosing metadata and approval. |
+| P01–P12 | State subset of the same slate | The planned P01–P12 have exact chemistry support in both public JHH state sources. Confirm relevance, availability and response QC before lock. |
 
 Each drug has the same five functional concentrations across models. Select two of those levels for the 12 RNA drugs. F2 and F4 are planning slots. Signed concentrations require the laboratory's approved solubility and assay configuration. Response at 72 h is a relative assay signal. An independent cell-count readout and the separate predose count can support a narrower interpretation and a future growth-rate analysis.
 
