@@ -1,5 +1,7 @@
 """Score one sealed TKI forecast against the published concentration endpoints."""
 
+import subprocess
+
 import numpy as np
 import pandas as pd
 from scipy.stats import rankdata
@@ -8,13 +10,44 @@ from .evaluate import join_observations, paired_gain, score_across_cells
 from .external import KEY
 from .io import publish_json, sha256, verify_forecast
 from .limore_corrected import shared_support
-from .tki_gr50 import ARTICLE, COMPONENTS, registration
+from .tki_gr50 import ARTICLE, COMPONENTS, PANEL, registration
 from .v0plus_score import crossed_patient_drug_ci
 from .yang_hcc_external import require_hash
 
 PRIMARY = "growth_adjusted"
 CONTROLS = ("structured", "growth_shuffled", "drug_ridge")
 COMPARISONS = tuple((PRIMARY, method) for method in CONTROLS)
+
+
+def extract_table(article, values, query):
+    document = subprocess.check_output(["pdftotext", "-layout", str(article), "-"], text=True)
+    caption = "Table 2 GR Values for Potency and Efficacy"
+    if document.count(caption) != 1:
+        raise ValueError("Expected one published Table 2")
+    section = document.split(caption)[1].split("Notes: This table", 1)[0]
+    header = next(line.split() for line in section.splitlines() if "RoS" in line)
+    if header != [*PANEL, "RoS"]:
+        raise ValueError("Unexpected published drug axis")
+    adult = set(query.published_cell)
+    entries = []
+    for words in map(str.split, section.splitlines()):
+        if not words or words[0] not in adult:
+            continue
+        if len(words) != 14 or not set(words[3:13:3]) <= {"0", "1"}:
+            raise ValueError("Unexpected published response table layout")
+        for i, drug in enumerate(PANEL):
+            a, b = words[1 + 3*i:3 + 3*i]
+            entries.append((words[0], drug, a, b.replace("−", "-")))
+    fields = ("published_cell", "source_compound_label", "gr50_uM", "grmax")
+    canonical = pd.DataFrame(entries, columns=fields).to_csv(sep="\t", index=False, lineterminator="\n")
+    if len(entries) != len(query):
+        raise ValueError("Published response table has incomplete adult support")
+    if values.exists():
+        if values.read_text() != canonical:
+            raise ValueError("Existing extraction differs from verified article")
+    else:
+        with values.open("x") as stream:
+            stream.write(canonical)
 
 
 def labels(query, values):
@@ -39,10 +72,10 @@ def labels(query, values):
         raise ValueError("Expected finite Table 2 GRmax")
     responses = {"GR50": table[KEY].assign(endpoint_value=-np.log10(clipped)),
                  "GRmax": table[KEY].assign(endpoint_value=-grmax)}
-    counts = (table.assign(left_censored=lower, right_censored=upper)
+    counts = (table.assign(left_censored=lower, right_censored=upper, at_upper_bound=clipped == high)
               .groupby("source_compound_label").agg(
                   measured=("grmax", "size"), left_censored=("left_censored", "sum"),
-                  right_censored=("right_censored", "sum"),
+                  right_censored=("right_censored", "sum"), at_upper_bound=("at_upper_bound", "sum"),
               ).to_dict("index"))
     return responses, counts
 
@@ -116,6 +149,7 @@ def score(args):
     query = pd.read_parquet(args.registration / "query.parquet")
     shared_support(rows, query, [item for values in COMPONENTS.values() for item in values])
     require_hash(args.article, ARTICLE)
+    extract_table(args.article, args.values, query)
     outcomes, bounds = labels(query, args.values)
     outcomes["LIMORE_AA"] = limore_labels(query, args.limore / "rows.parquet", doc["limore_response_sha256"])
     donor = {endpoint: aggregate(rows, gold, endpoint) for endpoint, gold in outcomes.items()}
