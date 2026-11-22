@@ -50,7 +50,9 @@ def build_package(args):
     })
 
 
-def read_expression(path, scale, gene_map):
+def read_expression(path, scale, gene_map, gene_lengths=None):
+    if gene_lengths is not None and scale != "bulk_counts":
+        raise ValueError("--gene-lengths requires --scale bulk_counts")
     raw = pd.read_csv(path, sep="\t" if path.suffix == ".tsv" else ",")
     if {"sample_id", "gene", "value"} <= set(raw):
         raw = raw.pivot(index="sample_id", columns="gene", values="value")
@@ -71,7 +73,18 @@ def read_expression(path, scale, gene_map):
     if np.isinf(raw.to_numpy()).any() or (raw < 0).any().any():
         raise ValueError("RNA measurements must be nonnegative finite numbers or missing")
     if scale == "bulk_counts":
+        if gene_lengths is not None:
+            lengths = pd.read_csv(gene_lengths, sep="\t", dtype={"gene": str})
+            if (set(lengths) != {"gene", "length_bp"} or lengths.empty or lengths.gene.isna().any()
+                    or not lengths.gene.is_unique or lengths.gene.str.strip().eq("").any()):
+                raise ValueError("Gene lengths need one row per gene with gene and length_bp columns")
+            size = pd.to_numeric(lengths.set_index("gene").length_bp, errors="raise")
+            if not np.isfinite(size).all() or not size.gt(0).all():
+                raise ValueError("Gene lengths must be finite positive values in bases")
+            raw = raw.div(size.reindex(raw.columns), axis=1)
         libsize = raw.sum(axis=1)
+        if not np.isfinite(libsize).all():
+            raise ValueError("RNA count normalization produced a nonfinite library size")
         raw = raw.div(libsize.replace(0., np.nan), axis=0) * 1e6
     if scale != "bulk_log2_tpm_plus_1":
         raw = np.log2(raw + 1)
@@ -121,7 +134,8 @@ def predict_offline(args):
     model = joblib.load(checkpoint)
     features = model.molecular.features if hasattr(model, "molecular") else model.features
     panel = requested_panel(pd.read_csv(registry, sep="\t", dtype=str), args.compounds)
-    inputs = read_expression(args.rna, args.scale, args.gene_map)
+    gene_lengths = getattr(args, "gene_lengths", None)
+    inputs = read_expression(args.rna, args.scale, args.gene_map, gene_lengths)
     matched = inputs.reindex(columns=features.genes)
     complete = matched.notna()
     coverage = complete.mean(axis=1)
@@ -153,6 +167,9 @@ def predict_offline(args):
     all_rows["presented_endpoint"] = card["endpoint"]
     all_rows["checkpoint_sha256"] = model_record["sha256"]
     all_rows["external_score_sha256"] = card["external_score_sha256"]
+    if gene_lengths is not None:
+        all_rows["rna_normalization"] = "counts_per_base_to_tpm"
+        all_rows["gene_lengths_sha256"] = sha256(gene_lengths)
     all_rows = all_rows.rename(columns={"cell_id": "sample_id"})
     with args.out.open("x") as stream:
         all_rows.to_csv(stream, sep="\t", index=False)
@@ -170,6 +187,8 @@ def main():
         predict.add_argument("--" + name, required=True, type=Path)
     predict.add_argument("--compounds", type=Path)
     predict.add_argument("--gene-map", type=Path)
+    predict.add_argument("--gene-lengths", type=Path,
+                         help="Optional gene and length_bp TSV for bulk_counts, keyed after --gene-map")
     predict.add_argument("--model")
     predict.add_argument("--scale", required=True, choices=("bulk_tpm", "bulk_counts", "bulk_log2_tpm_plus_1"))
     args = parser.parse_args()

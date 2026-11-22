@@ -55,3 +55,26 @@ def test_concentration_duplicate_genes_and_small_calibration(tmp_path):
     with pytest.raises(ValueError, match="Insufficient independent"):
         absolute_error_quantile([1], [2])
     assert absolute_error_quantile(np.arange(10), np.arange(10) + 1) == 1
+
+
+def test_bulk_counts_gene_lengths_use_mapped_symbols_and_keep_missing(tmp_path):
+    from vc_build.v0plus_cli import read_expression
+
+    counts = tmp_path / "counts.tsv"
+    counts.write_text("sample_id\tENSG1\tENSG2\tENSG3\ntumor\t50\t100\t10000\n")
+    mapping = tmp_path / "mapping.tsv"
+    mapping.write_text("input_id\tgene_symbol\nENSG1\tA\nENSG2\tB\nENSG3\tC\n")
+    lengths = tmp_path / "lengths.tsv"
+    lengths.write_text("gene\tlength_bp\nA\t1000\nB\t4000\n")
+
+    cpm = read_expression(counts, "bulk_counts", mapping).loc["tumor"]
+    adjusted = read_expression(counts, "bulk_counts", mapping, lengths).loc["tumor"]
+    assert cpm["A"] < cpm["B"] < cpm["C"]
+    assert 2 ** adjusted["A"] - 1 == pytest.approx(1e6 * 2 / 3)
+    assert 2 ** adjusted["B"] - 1 == pytest.approx(1e6 / 3)
+    assert adjusted.isna().to_dict() == {"A": False, "B": False, "C": True}
+    with pytest.raises(ValueError, match="requires --scale bulk_counts"):
+        read_expression(counts, "bulk_tpm", mapping, lengths)
+    lengths.write_text("gene\tlength_bp\nA\t0\nB\t4000\n")
+    with pytest.raises(ValueError, match="finite positive"):
+        read_expression(counts, "bulk_counts", mapping, lengths)
