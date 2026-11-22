@@ -16,12 +16,12 @@ IDENTITIES = ["cell_id", "lineage_group", "compound_id"]
 
 def join_observations(predictions, outcomes):
     required = {"row_id", "endpoint_value"}
-    if not required <= set(outcomes):
-        raise ValueError(f"Observations lack {sorted(required - set(outcomes))}")
-    if outcomes.row_id.isna().any() or outcomes.row_id.duplicated().any():
+    observations = outcomes.rename(columns={"record_id": "row_id", "cell_group": "lineage_group"}).copy()
+    if not required <= set(observations):
+        raise ValueError(f"Observations lack {sorted(required - set(observations))}")
+    if observations.row_id.isna().any() or observations.row_id.duplicated().any():
         raise ValueError("Observed row identifiers must be unique and present")
     forecasts = predictions.copy()
-    observations = outcomes.copy()
     forecasts["row_id"] = forecasts.row_id.astype(str)
     observations["row_id"] = observations.row_id.astype(str)
     observed_columns = list(required) + [key for key in IDENTITIES if key in observations]

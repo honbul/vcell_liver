@@ -173,9 +173,11 @@ def train_rankers(train, query, train_rna, query_rna, targets):
 
 def _rna(path):
     frame = read_table(path)
-    if frame.cell_id.isna().any() or frame.cell_id.duplicated().any():
+    if "cell_id" in frame.columns:
+        frame = frame.set_index("cell_id")
+    if frame.index.name != "cell_id" or frame.index.hasnans or not frame.index.is_unique:
         raise ValueError("RNA table needs unique cell identifiers")
-    return frame.set_index("cell_id")
+    return frame
 
 
 def main():
@@ -186,7 +188,10 @@ def main():
     args = parser.parse_args()
     paths = {f"{role}/{name}": args.bundle / role / f"{name}.parquet"
              for role in ("train", "test_inputs") for name in ("rows", "rna")}
-    train, query = (read_table(paths[f"{role}/rows"]) for role in ("train", "test_inputs"))
+    train, query = (
+        read_table(paths[f"{role}/rows"]).rename(columns={"record_id": "row_id", "cell_group": "lineage_group"})
+        for role in ("train", "test_inputs")
+    )
     train_rna, query_rna = (_rna(paths[f"{role}/rna"]) for role in ("train", "test_inputs"))
     targets = json.loads(args.targets.read_text()) if args.targets else {}
     if args.targets:
