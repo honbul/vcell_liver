@@ -33,4 +33,4 @@ IMPROVE의 `drug_info.tsv`에 원본 `GDSC.<DRUG_ID>`와 구조가 들어 있어
 
 57개 PDO는 대장암 36개, 두경부암 20개, 육종 1개다. 동일 PDO 5개가 서로 다른 스크린에 포함되므로 연구별 모델 수에 중복이 있다. 공개 Baseline RNA의 Ensembl·Entrez·symbol 헤더와 학습 발현의 유전자명을 교차 확인해 공통 유전자 17,830개를 등록했다. 공개 AUC의 공식 표와 연결하고 함께 실험된 세포주 480행은 PDO 평가에서 분리했다. 식별 및 화학 확인에서 구조 미매칭 33행과 한 PDO·스크린에서 같은 canonical parent로 충돌한 28행을 제외했다. [PDO 수치 영수증](improve_pdo_development_receipt.json)
 
-`33170`에서 선택 ZIP, RNA, AUC, 구조 등록을 마쳤다. 네 스크린의 공개 비간암 자료는 이후 3D 적응 방법을 개발하는 입력이다. LIMORE와 LICOB를 포함한 HCC 확인 성적은 이번 평가의 분모에 들어가지 않는다. [작업 원장](RUN_LEDGER.tsv)
+`33170`에서 선택 ZIP, RNA, AUC, 구조 등록을 마쳤다. 네 비간암 스크린으로 공여자와 연구를 함께 분리한 3D 전이 평가를 수행했다. HCC 자료는 미채점 약물의 구조 지원을 별도로 집계했다. [3D 전이 성적](PDO_TRANSFER_RESULTS.md) · [HCC 약물 지원 감사](HCC_UNSCORED_DRUG_SUPPORT.md) · [작업 원장](RUN_LEDGER.tsv)

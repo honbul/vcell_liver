@@ -1,0 +1,3778 @@
+{
+  "forecast_sha256": {
+    "IMPROVE dataset 1": "d8095d95c48b2264b9dd9fd77c584d8fcf23bcc8f3ac9ace3caec286614c456a",
+    "IMPROVE dataset 2": "ccac746e2953d1442b1ff32c02068b242f2ceb62ff34e31832e5ac41a06d4e26",
+    "IMPROVE dataset 3": "46f8c5b41e774eb17088a0ee029917c656d725dfb52b82931859c9b27044ce4a",
+    "Pilot 1": "04e3766e2422dc817a7a51ea627c01dcfc2c6418004cfb6f7252e99f9fb5d122"
+  },
+  "gate": {
+    "primary_both_within_drug_gains": false,
+    "primary_both_within_lineage_gains": true,
+    "secondary_top5_noninferior": false
+  },
+  "promoted": false,
+  "study_metrics": {
+    "IMPROVE dataset 1": {
+      "direct_3d_support": {
+        "drugs": 39,
+        "measured_rows": 156,
+        "metrics": {
+          "2d_mean": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.8979023482653496,
+            "macro_spearman": 0.6380645638186415,
+            "macro_top5_overlap": 0.6,
+            "method": "2d_mean",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "2d_ridge": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.8551291759076625,
+            "macro_spearman": 0.5630131548468039,
+            "macro_top5_overlap": 0.6,
+            "method": "2d_ridge",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": -0.015773695699524377,
+            "within_drug_spearman": -0.035897435897435895
+          },
+          "2d_structured": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.8869307850461028,
+            "macro_spearman": 0.5690856938114823,
+            "macro_top5_overlap": 0.6,
+            "method": "2d_structured",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": -0.47073050947932105,
+            "within_drug_spearman": -0.4974358974358974
+          },
+          "pdo_anchor_transfer": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.924195998185368,
+            "macro_spearman": 0.7924695544345812,
+            "macro_top5_overlap": 0.6,
+            "method": "pdo_anchor_transfer",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": -0.47073050947932116,
+            "within_drug_spearman": -0.4974358974358974
+          },
+          "pdo_mean": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.9149423986258601,
+            "macro_spearman": 0.7843466327309203,
+            "macro_top5_overlap": 0.6,
+            "method": "pdo_mean",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "pdo_only_residual": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.9231349286448651,
+            "macro_spearman": 0.8055513346175374,
+            "macro_top5_overlap": 0.6,
+            "method": "pdo_only_residual",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": -0.6103357350158711,
+            "within_drug_spearman": -0.5743589743589743
+          },
+          "pdo_residual_transfer": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.9439753898365728,
+            "macro_spearman": 0.8067155250612752,
+            "macro_top5_overlap": 0.7000000000000001,
+            "method": "pdo_residual_transfer",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": -0.60044981639153,
+            "within_drug_spearman": -0.5897435897435898
+          }
+        },
+        "pdo_models": 4,
+        "technical_four_donor_correlations": true,
+        "within_drug_contrasts": {},
+        "within_lineage_contrasts": [
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.017056731556392535,
+              0.035530568283644204
+            ],
+            "gain": 0.02629364992001837,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.13117408906882577,
+              0.17763589216305375
+            ],
+            "gain": 0.1544049906159397,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.0021479412516030028,
+              0.07238248502692757
+            ],
+            "gain": 0.03726521313926523,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.17500000000000004,
+              0.25486488723810075
+            ],
+            "gain": 0.2233838606230989,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.05931070635297453,
+              0.07720931655431928
+            ],
+            "gain": 0.06906682227770555,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.19504048582995948,
+              0.25313765182186243
+            ],
+            "gain": 0.2294563995877773,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.017378953126512275,
+              0.03308620763251868
+            ],
+            "gain": 0.02523258037951548,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.15066180070710344,
+              0.18431174089068836
+            ],
+            "gain": 0.16748677079889585,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              -0.0002964193995225184,
+              0.07270470659704731
+            ],
+            "gain": 0.03620414359876234,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.19344944647407103,
+              0.27641700404858305
+            ],
+            "gain": 0.23646564080605503,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.05564416537628625,
+              0.07720931655431928
+            ],
+            "gain": 0.06800575273720266,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.2108860761406569,
+              0.27958271418368885
+            ],
+            "gain": 0.24253817977073344,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.02624782111005064,
+              0.06589826203239546
+            ],
+            "gain": 0.04607304157122316,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.0,
+              0.20000000000000007
+            ],
+            "gain": 0.10000000000000009,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.1320344129554657,
+              0.19534412955465585
+            ],
+            "gain": 0.16865096124263368,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.02022139653832722,
+              0.09669306444462644
+            ],
+            "gain": 0.05704460479047002,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.0,
+              0.20000000000000007
+            ],
+            "gain": 0.10000000000000009,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.1715873211283353,
+              0.2867914979757086
+            ],
+            "gain": 0.23762983124979287,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.0609243280010916,
+              0.11676809985672865
+            ],
+            "gain": 0.08884621392891034,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.0,
+              0.20000000000000007
+            ],
+            "gain": 0.10000000000000009,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.19190283400809716,
+              0.2912732204169004
+            ],
+            "gain": 0.24370237021447128,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          }
+        ]
+      },
+      "full_panel": {
+        "drugs": 39,
+        "measured_rows": 156,
+        "metrics": {
+          "2d_mean": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.8979023482653496,
+            "macro_spearman": 0.6380645638186415,
+            "macro_top5_overlap": 0.6,
+            "method": "2d_mean",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "2d_ridge": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.8551291759076625,
+            "macro_spearman": 0.5630131548468039,
+            "macro_top5_overlap": 0.6,
+            "method": "2d_ridge",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": -0.015773695699524377,
+            "within_drug_spearman": -0.035897435897435895
+          },
+          "2d_structured": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.8869307850461028,
+            "macro_spearman": 0.5690856938114823,
+            "macro_top5_overlap": 0.6,
+            "method": "2d_structured",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": -0.47073050947932105,
+            "within_drug_spearman": -0.4974358974358974
+          },
+          "pdo_anchor_transfer": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.924195998185368,
+            "macro_spearman": 0.7924695544345812,
+            "macro_top5_overlap": 0.6,
+            "method": "pdo_anchor_transfer",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": -0.47073050947932116,
+            "within_drug_spearman": -0.4974358974358974
+          },
+          "pdo_mean": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.9149423986258601,
+            "macro_spearman": 0.7843466327309203,
+            "macro_top5_overlap": 0.6,
+            "method": "pdo_mean",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "pdo_only_residual": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.9231349286448651,
+            "macro_spearman": 0.8055513346175374,
+            "macro_top5_overlap": 0.6,
+            "method": "pdo_only_residual",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": -0.6103357350158711,
+            "within_drug_spearman": -0.5743589743589743
+          },
+          "pdo_residual_transfer": {
+            "cells": 4,
+            "common_rows": 156,
+            "covered_rows": 156,
+            "lineages": 4,
+            "macro_ndcg_at_5": 0.9439753898365728,
+            "macro_spearman": 0.8067155250612752,
+            "macro_top5_overlap": 0.7000000000000001,
+            "method": "pdo_residual_transfer",
+            "registered_rows": 156,
+            "track": "IMPROVE dataset 1",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": -0.60044981639153,
+            "within_drug_spearman": -0.5897435897435898
+          }
+        },
+        "pdo_models": 4,
+        "technical_four_donor_correlations": true,
+        "within_drug_contrasts": {},
+        "within_lineage_contrasts": [
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.017056731556392535,
+              0.035530568283644204
+            ],
+            "gain": 0.02629364992001837,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.13117408906882577,
+              0.17763589216305375
+            ],
+            "gain": 0.1544049906159397,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.0021479412516030028,
+              0.07238248502692757
+            ],
+            "gain": 0.03726521313926523,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.17500000000000004,
+              0.25486488723810075
+            ],
+            "gain": 0.2233838606230989,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.05931070635297453,
+              0.07720931655431928
+            ],
+            "gain": 0.06906682227770555,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.19504048582995948,
+              0.25313765182186243
+            ],
+            "gain": 0.2294563995877773,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.017378953126512275,
+              0.03308620763251868
+            ],
+            "gain": 0.02523258037951548,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.15066180070710344,
+              0.18431174089068836
+            ],
+            "gain": 0.16748677079889585,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              -0.0002964193995225184,
+              0.07270470659704731
+            ],
+            "gain": 0.03620414359876234,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.19344944647407103,
+              0.27641700404858305
+            ],
+            "gain": 0.23646564080605503,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.05564416537628625,
+              0.07720931655431928
+            ],
+            "gain": 0.06800575273720266,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "gain": 0.0,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.2108860761406569,
+              0.27958271418368885
+            ],
+            "gain": 0.24253817977073344,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.02624782111005064,
+              0.06589826203239546
+            ],
+            "gain": 0.04607304157122316,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.0,
+              0.20000000000000007
+            ],
+            "gain": 0.10000000000000009,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.1320344129554657,
+              0.19534412955465585
+            ],
+            "gain": 0.16865096124263368,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.02022139653832722,
+              0.09669306444462644
+            ],
+            "gain": 0.05704460479047002,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.0,
+              0.20000000000000007
+            ],
+            "gain": 0.10000000000000009,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.1715873211283353,
+              0.2867914979757086
+            ],
+            "gain": 0.23762983124979287,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.0609243280010916,
+              0.11676809985672865
+            ],
+            "gain": 0.08884621392891034,
+            "lineages": 4,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.0,
+              0.20000000000000007
+            ],
+            "gain": 0.10000000000000009,
+            "lineages": 4,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.19190283400809716,
+              0.2912732204169004
+            ],
+            "gain": 0.24370237021447128,
+            "lineages": 4,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 1"
+          }
+        ]
+      }
+    },
+    "IMPROVE dataset 2": {
+      "direct_3d_support": {
+        "drugs": 16,
+        "measured_rows": 80,
+        "metrics": {
+          "2d_mean": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.8480559083592324,
+            "macro_spearman": 0.5465537249241158,
+            "macro_top5_overlap": 0.6400000000000001,
+            "method": "2d_mean",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "2d_ridge": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.8584430476130965,
+            "macro_spearman": 0.51860756891227,
+            "macro_top5_overlap": 0.6400000000000001,
+            "method": "2d_ridge",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": -0.14474389570369325,
+            "within_drug_spearman": -0.0783685470507983
+          },
+          "2d_structured": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.8511889856028958,
+            "macro_spearman": 0.49478252398794875,
+            "macro_top5_overlap": 0.56,
+            "method": "2d_structured",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": -0.48409828130319066,
+            "within_drug_spearman": -0.41347418820319326
+          },
+          "pdo_anchor_transfer": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.9202572481971867,
+            "macro_spearman": 0.7171640434012018,
+            "macro_top5_overlap": 0.76,
+            "method": "pdo_anchor_transfer",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": -0.48409828130319077,
+            "within_drug_spearman": -0.41347418820319326
+          },
+          "pdo_mean": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.9474548796622135,
+            "macro_spearman": 0.7148102362175559,
+            "macro_top5_overlap": 0.8400000000000001,
+            "method": "pdo_mean",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "pdo_only_residual": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.932601656799141,
+            "macro_spearman": 0.7171618783832636,
+            "macro_top5_overlap": 0.8400000000000001,
+            "method": "pdo_only_residual",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": -0.7536366723416645,
+            "within_drug_spearman": -0.5450489176042577
+          },
+          "pdo_residual_transfer": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.9418849210885613,
+            "macro_spearman": 0.725398038508086,
+            "macro_top5_overlap": 0.8400000000000001,
+            "method": "pdo_residual_transfer",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": -0.6410594603804874,
+            "within_drug_spearman": -0.5420050999545237
+          }
+        },
+        "pdo_models": 5,
+        "technical_four_donor_correlations": false,
+        "within_drug_contrasts": {
+          "2d_ridge": {
+            "pearson": [
+              -0.9045610333905226,
+              0.1537262761686849
+            ],
+            "spearman": [
+              -0.9513888888888888,
+              0.3345486111111092
+            ]
+          },
+          "2d_structured": {
+            "pearson": [
+              -0.4058723359847273,
+              0.03325959068250632
+            ],
+            "spearman": [
+              -0.4013157894736842,
+              0.05479295112190938
+            ]
+          }
+        },
+        "within_lineage_contrasts": [
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.021605977671557808,
+              0.12240355704424699
+            ],
+            "gain": 0.07220133983795429,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.039999999999999925,
+              0.20000000000000007
+            ],
+            "gain": 0.11999999999999988,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.12180887224828935,
+              0.2411985537712037
+            ],
+            "gain": 0.17061031847708596,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.06261009588315458,
+              0.0755264293054273
+            ],
+            "gain": 0.06906826259429089,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.19999999999999984,
+              0.20000000000000018
+            ],
+            "gain": 0.19999999999999996,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.1988806858853296,
+              0.25764705882352934
+            ],
+            "gain": 0.22238151941325301,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.033346617152648354,
+              0.08882940761127933
+            ],
+            "gain": 0.06181420058409015,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.039999999999999925,
+              0.20000000000000007
+            ],
+            "gain": 0.11999999999999988,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.1485564744889316,
+              0.2485564744889318
+            ],
+            "gain": 0.19855647448893177,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.060888741846855554,
+              0.11306069607172431
+            ],
+            "gain": 0.08454574843990859,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.19999999999999984,
+              0.20000000000000018
+            ],
+            "gain": 0.19999999999999996,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.14770681331862,
+              0.19823529411764695
+            ],
+            "gain": 0.17060815345914782,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.051831517852724766,
+              0.11434930089745943
+            ],
+            "gain": 0.08141267119624518,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.19999999999999996,
+              0.3600000000000001
+            ],
+            "gain": 0.28,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.19890276906829774,
+              0.24529411764705866
+            ],
+            "gain": 0.22237935439531487,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.050160144931579276,
+              0.0953291203633242
+            ],
+            "gain": 0.07415860918604444,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.19999999999999984,
+              0.20000000000000018
+            ],
+            "gain": 0.19999999999999996,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.17004979541257548,
+              0.2514954859415818
+            ],
+            "gain": 0.19855430947099362,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.0648135469745198,
+              0.1260572660769128
+            ],
+            "gain": 0.09382901272932886,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.19999999999999984,
+              0.20000000000000018
+            ],
+            "gain": 0.19999999999999996,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.14472666652514665,
+              0.2235501959369115
+            ],
+            "gain": 0.17884431358397024,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.07349437152730631,
+              0.11536500265657046
+            ],
+            "gain": 0.09069593548566546,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.19999999999999996,
+              0.3600000000000001
+            ],
+            "gain": 0.28,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.2077288965015882,
+              0.24764705882352933
+            ],
+            "gain": 0.2306155145201373,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.07186168914816848,
+              0.09710268113939136
+            ],
+            "gain": 0.08344187347546472,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.19999999999999984,
+              0.20000000000000018
+            ],
+            "gain": 0.19999999999999996,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.16652211566222008,
+              0.2552941176470589
+            ],
+            "gain": 0.20679046959581604,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          }
+        ]
+      },
+      "full_panel": {
+        "drugs": 16,
+        "measured_rows": 80,
+        "metrics": {
+          "2d_mean": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.8480559083592324,
+            "macro_spearman": 0.5465537249241158,
+            "macro_top5_overlap": 0.6400000000000001,
+            "method": "2d_mean",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "2d_ridge": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.8584430476130965,
+            "macro_spearman": 0.51860756891227,
+            "macro_top5_overlap": 0.6400000000000001,
+            "method": "2d_ridge",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": -0.14474389570369325,
+            "within_drug_spearman": -0.0783685470507983
+          },
+          "2d_structured": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.8511889856028958,
+            "macro_spearman": 0.49478252398794875,
+            "macro_top5_overlap": 0.56,
+            "method": "2d_structured",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": -0.48409828130319066,
+            "within_drug_spearman": -0.41347418820319326
+          },
+          "pdo_anchor_transfer": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.9202572481971867,
+            "macro_spearman": 0.7171640434012018,
+            "macro_top5_overlap": 0.76,
+            "method": "pdo_anchor_transfer",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": -0.48409828130319077,
+            "within_drug_spearman": -0.41347418820319326
+          },
+          "pdo_mean": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.9474548796622135,
+            "macro_spearman": 0.7148102362175559,
+            "macro_top5_overlap": 0.8400000000000001,
+            "method": "pdo_mean",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "pdo_only_residual": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.932601656799141,
+            "macro_spearman": 0.7171618783832636,
+            "macro_top5_overlap": 0.8400000000000001,
+            "method": "pdo_only_residual",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": -0.7536366723416645,
+            "within_drug_spearman": -0.5450489176042577
+          },
+          "pdo_residual_transfer": {
+            "cells": 5,
+            "common_rows": 80,
+            "covered_rows": 80,
+            "lineages": 5,
+            "macro_ndcg_at_5": 0.9418849210885613,
+            "macro_spearman": 0.725398038508086,
+            "macro_top5_overlap": 0.8400000000000001,
+            "method": "pdo_residual_transfer",
+            "registered_rows": 80,
+            "track": "IMPROVE dataset 2",
+            "within_drug_eligible_drugs": 16,
+            "within_drug_pearson": -0.6410594603804874,
+            "within_drug_spearman": -0.5420050999545237
+          }
+        },
+        "pdo_models": 5,
+        "technical_four_donor_correlations": false,
+        "within_drug_contrasts": {
+          "2d_ridge": {
+            "pearson": [
+              -0.9045610333905226,
+              0.1537262761686849
+            ],
+            "spearman": [
+              -0.9513888888888888,
+              0.3345486111111092
+            ]
+          },
+          "2d_structured": {
+            "pearson": [
+              -0.4058723359847273,
+              0.03325959068250632
+            ],
+            "spearman": [
+              -0.4013157894736842,
+              0.05479295112190938
+            ]
+          }
+        },
+        "within_lineage_contrasts": [
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.021605977671557808,
+              0.12240355704424699
+            ],
+            "gain": 0.07220133983795429,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.039999999999999925,
+              0.20000000000000007
+            ],
+            "gain": 0.11999999999999988,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.12180887224828935,
+              0.2411985537712037
+            ],
+            "gain": 0.17061031847708596,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.06261009588315458,
+              0.0755264293054273
+            ],
+            "gain": 0.06906826259429089,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.19999999999999984,
+              0.20000000000000018
+            ],
+            "gain": 0.19999999999999996,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.1988806858853296,
+              0.25764705882352934
+            ],
+            "gain": 0.22238151941325301,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.033346617152648354,
+              0.08882940761127933
+            ],
+            "gain": 0.06181420058409015,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.039999999999999925,
+              0.20000000000000007
+            ],
+            "gain": 0.11999999999999988,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.1485564744889316,
+              0.2485564744889318
+            ],
+            "gain": 0.19855647448893177,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.060888741846855554,
+              0.11306069607172431
+            ],
+            "gain": 0.08454574843990859,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.19999999999999984,
+              0.20000000000000018
+            ],
+            "gain": 0.19999999999999996,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.14770681331862,
+              0.19823529411764695
+            ],
+            "gain": 0.17060815345914782,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.051831517852724766,
+              0.11434930089745943
+            ],
+            "gain": 0.08141267119624518,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.19999999999999996,
+              0.3600000000000001
+            ],
+            "gain": 0.28,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.19890276906829774,
+              0.24529411764705866
+            ],
+            "gain": 0.22237935439531487,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.050160144931579276,
+              0.0953291203633242
+            ],
+            "gain": 0.07415860918604444,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.19999999999999984,
+              0.20000000000000018
+            ],
+            "gain": 0.19999999999999996,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.17004979541257548,
+              0.2514954859415818
+            ],
+            "gain": 0.19855430947099362,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.0648135469745198,
+              0.1260572660769128
+            ],
+            "gain": 0.09382901272932886,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.19999999999999984,
+              0.20000000000000018
+            ],
+            "gain": 0.19999999999999996,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.14472666652514665,
+              0.2235501959369115
+            ],
+            "gain": 0.17884431358397024,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.07349437152730631,
+              0.11536500265657046
+            ],
+            "gain": 0.09069593548566546,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.19999999999999996,
+              0.3600000000000001
+            ],
+            "gain": 0.28,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.2077288965015882,
+              0.24764705882352933
+            ],
+            "gain": 0.2306155145201373,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.07186168914816848,
+              0.09710268113939136
+            ],
+            "gain": 0.08344187347546472,
+            "lineages": 5,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.19999999999999984,
+              0.20000000000000018
+            ],
+            "gain": 0.19999999999999996,
+            "lineages": 5,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 2"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.16652211566222008,
+              0.2552941176470589
+            ],
+            "gain": 0.20679046959581604,
+            "lineages": 5,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 2"
+          }
+        ]
+      }
+    },
+    "IMPROVE dataset 3": {
+      "direct_3d_support": {
+        "drugs": 11,
+        "measured_rows": 110,
+        "metrics": {
+          "2d_mean": {
+            "cells": 10,
+            "common_rows": 110,
+            "covered_rows": 110,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.8306527401965603,
+            "macro_spearman": 0.5346960483620846,
+            "macro_top5_overlap": 0.78,
+            "method": "2d_mean",
+            "registered_rows": 110,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "2d_ridge": {
+            "cells": 10,
+            "common_rows": 110,
+            "covered_rows": 110,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.7344089510858768,
+            "macro_spearman": 0.4059116883801222,
+            "macro_top5_overlap": 0.72,
+            "method": "2d_ridge",
+            "registered_rows": 110,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": 0.35788334185158016,
+            "within_drug_spearman": 0.26244208273349723
+          },
+          "2d_structured": {
+            "cells": 10,
+            "common_rows": 110,
+            "covered_rows": 110,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.7706990885108833,
+            "macro_spearman": 0.4392705418102712,
+            "macro_top5_overlap": 0.74,
+            "method": "2d_structured",
+            "registered_rows": 110,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": 0.10382439692077448,
+            "within_drug_spearman": 0.06809209656257283
+          },
+          "pdo_anchor_transfer": {
+            "cells": 10,
+            "common_rows": 110,
+            "covered_rows": 110,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.8681232162097704,
+            "macro_spearman": 0.6173499648402505,
+            "macro_top5_overlap": 0.8,
+            "method": "pdo_anchor_transfer",
+            "registered_rows": 110,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": 0.1038243969207746,
+            "within_drug_spearman": 0.06809209656257283
+          },
+          "pdo_mean": {
+            "cells": 10,
+            "common_rows": 110,
+            "covered_rows": 110,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.8828627303631766,
+            "macro_spearman": 0.6808552197442356,
+            "macro_top5_overlap": 0.8,
+            "method": "pdo_mean",
+            "registered_rows": 110,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "pdo_only_residual": {
+            "cells": 10,
+            "common_rows": 110,
+            "covered_rows": 110,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.9253448827787143,
+            "macro_spearman": 0.7346641415364727,
+            "macro_top5_overlap": 0.9400000000000001,
+            "method": "pdo_only_residual",
+            "registered_rows": 110,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": -0.0173478420102713,
+            "within_drug_spearman": -0.11933073613184121
+          },
+          "pdo_residual_transfer": {
+            "cells": 10,
+            "common_rows": 110,
+            "covered_rows": 110,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.8843617972631194,
+            "macro_spearman": 0.6551791099730051,
+            "macro_top5_overlap": 0.8400000000000001,
+            "method": "pdo_residual_transfer",
+            "registered_rows": 110,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": 0.04955860332943365,
+            "within_drug_spearman": -0.0663716334263469
+          }
+        },
+        "pdo_models": 10,
+        "technical_four_donor_correlations": false,
+        "within_drug_contrasts": {
+          "2d_ridge": {
+            "pearson": [
+              -0.6309815622199844,
+              0.034983035522843715
+            ],
+            "spearman": [
+              -0.6708791157601921,
+              0.06894933929054353
+            ]
+          },
+          "2d_structured": {
+            "pearson": [
+              -0.273227393478914,
+              0.1289446458352598
+            ],
+            "spearman": [
+              -0.38578656883784385,
+              0.1013295090876849
+            ]
+          }
+        },
+        "within_lineage_contrasts": [
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              -0.039913880792941274,
+              0.10765211043181402
+            ],
+            "gain": 0.03747047601320996,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              -0.040000000000000036,
+              0.08000000000000018
+            ],
+            "gain": 0.020000000000000018,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              -0.09443202421662497,
+              0.24952061517014937
+            ],
+            "gain": 0.082653916478166,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.017390543647196905,
+              0.17355684571957403
+            ],
+            "gain": 0.09742412769888709,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.0,
+              0.12
+            ],
+            "gain": 0.06000000000000005,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              -0.006100581232094723,
+              0.3500094314023474
+            ],
+            "gain": 0.1780794230299793,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.04976675455663007,
+              0.21133181410583032
+            ],
+            "gain": 0.1337142651238935,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.020000000000000018,
+              0.14
+            ],
+            "gain": 0.08000000000000007,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.02225181927147185,
+              0.3795527106966837
+            ],
+            "gain": 0.21143827646012825,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.025777220491324367,
+              0.15967374889114067
+            ],
+            "gain": 0.09469214258215386,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.1000000000000002,
+              0.20000000000000018
+            ],
+            "gain": 0.16000000000000014,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.06891541389046454,
+              0.32636397894533214
+            ],
+            "gain": 0.19996809317438813,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.08214590336082939,
+              0.22422271898721033
+            ],
+            "gain": 0.15464579426783098,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.14000000000000012,
+              0.26
+            ],
+            "gain": 0.20000000000000018,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.15629628145170785,
+              0.4263935397634899
+            ],
+            "gain": 0.29539359972620144,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.11512898777880058,
+              0.2643359808313558
+            ],
+            "gain": 0.1909359316928374,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.15999999999999992,
+              0.28000000000000025
+            ],
+            "gain": 0.2200000000000002,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.18826921594664991,
+              0.46005574212286016
+            ],
+            "gain": 0.3287524531563504,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              -0.013023262287066793,
+              0.11665186011543892
+            ],
+            "gain": 0.05370905706655893,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.0,
+              0.1200000000000001
+            ],
+            "gain": 0.060000000000000164,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              -0.03690778208225086,
+              0.268306866803411
+            ],
+            "gain": 0.1204830616109206,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.040655490168627045,
+              0.1814269841216442
+            ],
+            "gain": 0.11366270875223605,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.039999999999999925,
+              0.16000000000000014
+            ],
+            "gain": 0.1000000000000002,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.05172798932465127,
+              0.3692447911422459
+            ],
+            "gain": 0.2159085681627339,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.0751040201607672,
+              0.21838601000440974
+            ],
+            "gain": 0.14995284617724247,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.040000000000000036,
+              0.20000000000000018
+            ],
+            "gain": 0.12000000000000022,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.08151506342225565,
+              0.3972851015872979
+            ],
+            "gain": 0.24926742159288284,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          }
+        ]
+      },
+      "full_panel": {
+        "drugs": 39,
+        "measured_rows": 390,
+        "metrics": {
+          "2d_mean": {
+            "cells": 10,
+            "common_rows": 390,
+            "covered_rows": 390,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.9523283464188157,
+            "macro_spearman": 0.6260175007598903,
+            "macro_top5_overlap": 0.8,
+            "method": "2d_mean",
+            "registered_rows": 390,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "2d_ridge": {
+            "cells": 10,
+            "common_rows": 390,
+            "covered_rows": 390,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.8829470701690806,
+            "macro_spearman": 0.5545158009530922,
+            "macro_top5_overlap": 0.74,
+            "method": "2d_ridge",
+            "registered_rows": 390,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": 0.17373405686074642,
+            "within_drug_spearman": 0.17387061325714187
+          },
+          "2d_structured": {
+            "cells": 10,
+            "common_rows": 390,
+            "covered_rows": 390,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.9211348238134842,
+            "macro_spearman": 0.5768671251451728,
+            "macro_top5_overlap": 0.76,
+            "method": "2d_structured",
+            "registered_rows": 390,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": 0.12978016371621975,
+            "within_drug_spearman": 0.09019247958343392
+          },
+          "pdo_anchor_transfer": {
+            "cells": 10,
+            "common_rows": 390,
+            "covered_rows": 390,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.9163561681486767,
+            "macro_spearman": 0.664934434330205,
+            "macro_top5_overlap": 0.76,
+            "method": "pdo_anchor_transfer",
+            "registered_rows": 390,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": 0.12978016371621978,
+            "within_drug_spearman": 0.09019247958343392
+          },
+          "pdo_mean": {
+            "cells": 10,
+            "common_rows": 390,
+            "covered_rows": 390,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.9341461146207019,
+            "macro_spearman": 0.7097472046367196,
+            "macro_top5_overlap": 0.76,
+            "method": "pdo_mean",
+            "registered_rows": 390,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "pdo_only_residual": {
+            "cells": 10,
+            "common_rows": 390,
+            "covered_rows": 390,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.9403082648002427,
+            "macro_spearman": 0.7128902841681657,
+            "macro_top5_overlap": 0.76,
+            "method": "pdo_only_residual",
+            "registered_rows": 390,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": 0.09560337837669401,
+            "within_drug_spearman": 0.037329629336291484
+          },
+          "pdo_residual_transfer": {
+            "cells": 10,
+            "common_rows": 390,
+            "covered_rows": 390,
+            "lineages": 10,
+            "macro_ndcg_at_5": 0.940605271866772,
+            "macro_spearman": 0.6918078259807312,
+            "macro_top5_overlap": 0.76,
+            "method": "pdo_residual_transfer",
+            "registered_rows": 390,
+            "track": "IMPROVE dataset 3",
+            "within_drug_eligible_drugs": 39,
+            "within_drug_pearson": 0.11447442706225182,
+            "within_drug_spearman": 0.05226681215066168
+          }
+        },
+        "pdo_models": 10,
+        "technical_four_donor_correlations": false,
+        "within_drug_contrasts": {
+          "2d_ridge": {
+            "pearson": [
+              -0.26249384572073625,
+              0.11440877097229529
+            ],
+            "spearman": [
+              -0.2998619038199488,
+              0.07218508154078204
+            ]
+          },
+          "2d_structured": {
+            "pearson": [
+              -0.08225164357792458,
+              0.0373852300849417
+            ],
+            "spearman": [
+              -0.11721474342119301,
+              0.02671551225715017
+            ]
+          }
+        },
+        "within_lineage_contrasts": [
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              -0.07893587051022345,
+              0.008316289812063329
+            ],
+            "gain": -0.035972178270138766,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              -0.12000000000000022,
+              0.05999999999999994
+            ],
+            "gain": -0.04000000000000015,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              -0.012725086788197084,
+              0.08260323079290759
+            ],
+            "gain": 0.03891693357031489,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              -0.0566960112320624,
+              0.043042567024782145
+            ],
+            "gain": -0.004778655664807285,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              -0.07999999999999996,
+              0.07999999999999996
+            ],
+            "gain": -1.1102230246251565e-16,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.03206592071058552,
+              0.139598093236955
+            ],
+            "gain": 0.08806730918503236,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              -0.026456527526506964,
+              0.07953209523493514
+            ],
+            "gain": 0.03340909797959657,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              -0.040000000000000036,
+              0.08000000000000007
+            ],
+            "gain": 0.019999999999999907,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.055576827285334446,
+              0.1659169067824835
+            ],
+            "gain": 0.11041863337711288,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              -0.0541541078012928,
+              0.025814433577971977
+            ],
+            "gain": -0.012020081618573264,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              -0.12000000000000022,
+              0.05999999999999994
+            ],
+            "gain": -0.04000000000000015,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.042351298809463284,
+              0.11949589913228258
+            ],
+            "gain": 0.08687278340827542,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              -0.03310522407510007,
+              0.06569712373976172
+            ],
+            "gain": 0.019173440986758217,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              -0.07999999999999996,
+              0.07999999999999996
+            ],
+            "gain": -1.1102230246251565e-16,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.08542890683132615,
+              0.1787204804716799
+            ],
+            "gain": 0.1360231590229929,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              -0.0029581580044707673,
+              0.09631447388691698
+            ],
+            "gain": 0.05736119463116207,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              -0.040000000000000036,
+              0.08000000000000007
+            ],
+            "gain": 0.019999999999999907,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.1083942799162492,
+              0.20895636251495567
+            ],
+            "gain": 0.1583744832150734,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              -0.055183907711473884,
+              0.026572331548273393
+            ],
+            "gain": -0.01172307455204391,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              -0.12000000000000022,
+              0.05999999999999994
+            ],
+            "gain": -0.04000000000000015,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.014649889529511264,
+              0.10478774760329146
+            ],
+            "gain": 0.06579032522084094,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              -0.03409848144784618,
+              0.06617754110721474
+            ],
+            "gain": 0.01947044805328757,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              -0.07999999999999996,
+              0.07999999999999996
+            ],
+            "gain": -1.1102230246251565e-16,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.059308284626527014,
+              0.1615851952990994
+            ],
+            "gain": 0.11494070083555841,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              -0.004387766018514646,
+              0.09753723597970014
+            ],
+            "gain": 0.057658201697691425,
+            "lineages": 10,
+            "metric": "ndcg_at_5",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              -0.040000000000000036,
+              0.08000000000000007
+            ],
+            "gain": 0.019999999999999907,
+            "lineages": 10,
+            "metric": "top5_overlap",
+            "track": "IMPROVE dataset 3"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.08309387673122796,
+              0.19091399998482242
+            ],
+            "gain": 0.13729202502763893,
+            "lineages": 10,
+            "metric": "spearman",
+            "track": "IMPROVE dataset 3"
+          }
+        ]
+      }
+    },
+    "Pilot 1": {
+      "direct_3d_support": {
+        "drugs": 11,
+        "measured_rows": 383,
+        "metrics": {
+          "2d_mean": {
+            "cells": 47,
+            "common_rows": 383,
+            "covered_rows": 383,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.7693448302967177,
+            "macro_spearman": 0.32105130917270047,
+            "macro_top5_overlap": 0.7319148936170211,
+            "method": "2d_mean",
+            "registered_rows": 383,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "2d_ridge": {
+            "cells": 47,
+            "common_rows": 383,
+            "covered_rows": 383,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.7398122604106757,
+            "macro_spearman": 0.2419894030568168,
+            "macro_top5_overlap": 0.7191489361702127,
+            "method": "2d_ridge",
+            "registered_rows": 383,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": 0.19311368520821867,
+            "within_drug_spearman": 0.15008448856275886
+          },
+          "2d_structured": {
+            "cells": 47,
+            "common_rows": 383,
+            "covered_rows": 383,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.7685117174808014,
+            "macro_spearman": 0.2854527322391268,
+            "macro_top5_overlap": 0.727659574468085,
+            "method": "2d_structured",
+            "registered_rows": 383,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": 0.22052563210441994,
+            "within_drug_spearman": 0.2359642506026985
+          },
+          "pdo_anchor_transfer": {
+            "cells": 47,
+            "common_rows": 383,
+            "covered_rows": 383,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.857235472546927,
+            "macro_spearman": 0.6693355364227606,
+            "macro_top5_overlap": 0.7957446808510635,
+            "method": "pdo_anchor_transfer",
+            "registered_rows": 383,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": 0.22052563210441997,
+            "within_drug_spearman": 0.2359642506026985
+          },
+          "pdo_mean": {
+            "cells": 47,
+            "common_rows": 383,
+            "covered_rows": 383,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.8575785006823351,
+            "macro_spearman": 0.6787974830903748,
+            "macro_top5_overlap": 0.7957446808510635,
+            "method": "pdo_mean",
+            "registered_rows": 383,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "pdo_only_residual": {
+            "cells": 47,
+            "common_rows": 383,
+            "covered_rows": 383,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.8575785006823351,
+            "macro_spearman": 0.673829970402072,
+            "macro_top5_overlap": 0.7957446808510635,
+            "method": "pdo_only_residual",
+            "registered_rows": 383,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": -0.1153886222593667,
+            "within_drug_spearman": -0.10862611832151109
+          },
+          "pdo_residual_transfer": {
+            "cells": 47,
+            "common_rows": 383,
+            "covered_rows": 383,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.8574669330574315,
+            "macro_spearman": 0.6682717066355265,
+            "macro_top5_overlap": 0.7957446808510635,
+            "method": "pdo_residual_transfer",
+            "registered_rows": 383,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 11,
+            "within_drug_pearson": 0.13135911409697626,
+            "within_drug_spearman": 0.14797798631007744
+          }
+        },
+        "pdo_models": 47,
+        "technical_four_donor_correlations": false,
+        "within_drug_contrasts": {
+          "2d_ridge": {
+            "pearson": [
+              -0.31158587531370296,
+              0.18911823510131323
+            ],
+            "spearman": [
+              -0.2526373177265187,
+              0.2278289793461683
+            ]
+          },
+          "2d_structured": {
+            "pearson": [
+              -0.21480939595140813,
+              0.031198141083282296
+            ],
+            "spearman": [
+              -0.23067938996952853,
+              0.04168766693279351
+            ]
+          }
+        },
+        "within_lineage_contrasts": [
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.06795162076865341,
+              0.10899572322131522
+            ],
+            "gain": 0.08789064225020915,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.038297872340425254,
+              0.09361702127659521
+            ],
+            "gain": 0.06382978723404253,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.3048416699963917,
+              0.391377262149131
+            ],
+            "gain": 0.3482842272500601,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.0679182539075269,
+              0.11046488593416642
+            ],
+            "gain": 0.08872375506612551,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.04255319148936143,
+              0.0978723404255315
+            ],
+            "gain": 0.06808510638297882,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.321427320913534,
+              0.45030079441295007
+            ],
+            "gain": 0.3838828041836338,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.0869939681278713,
+              0.1491599815729617
+            ],
+            "gain": 0.11742321213625129,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.05106382978723367,
+              0.10638297872340374
+            ],
+            "gain": 0.07659574468085117,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.3566066593807625,
+              0.49951149133964845
+            ],
+            "gain": 0.42734613336594374,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.06844540393931264,
+              0.10925029183077975
+            ],
+            "gain": 0.08823367038561714,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.038297872340425254,
+              0.09361702127659521
+            ],
+            "gain": 0.06382978723404253,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.3097499742299779,
+              0.3969721978882682
+            ],
+            "gain": 0.35277866122937146,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.0683071557089003,
+              0.11090067065535783
+            ],
+            "gain": 0.0890667832015335,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.04255319148936143,
+              0.0978723404255315
+            ],
+            "gain": 0.06808510638297882,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.32462592445929545,
+              0.45591951956529525
+            ],
+            "gain": 0.38837723816294517,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.08716126193084878,
+              0.14956825007944682
+            ],
+            "gain": 0.11776624027165927,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.05106382978723367,
+              0.10638297872340374
+            ],
+            "gain": 0.07659574468085117,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.36078654585317427,
+              0.5049887152204071
+            ],
+            "gain": 0.4318405673452551,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.06829680250883809,
+              0.10917456267204007
+            ],
+            "gain": 0.08812210276071353,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.038297872340425254,
+              0.09361702127659521
+            ],
+            "gain": 0.06382978723404253,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.3048783945996557,
+              0.39037423620910167
+            ],
+            "gain": 0.3472203974628259,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.06799745940380589,
+              0.1108675033393375
+            ],
+            "gain": 0.08895521557662989,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.04255319148936143,
+              0.0978723404255315
+            ],
+            "gain": 0.06808510638297882,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.3205503508491396,
+              0.44852028051871906
+            ],
+            "gain": 0.3828189743963996,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.08711086665895705,
+              0.1495407609793609
+            ],
+            "gain": 0.11765467264675566,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.05106382978723367,
+              0.10638297872340374
+            ],
+            "gain": 0.07659574468085117,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.3561183386014817,
+              0.4979701706404437
+            ],
+            "gain": 0.42628230357870955,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          }
+        ]
+      },
+      "full_panel": {
+        "drugs": 17,
+        "measured_rows": 618,
+        "metrics": {
+          "2d_mean": {
+            "cells": 47,
+            "common_rows": 618,
+            "covered_rows": 618,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.7627767786380626,
+            "macro_spearman": 0.4253880007251972,
+            "macro_top5_overlap": 0.6297872340425533,
+            "method": "2d_mean",
+            "registered_rows": 618,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 17,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "2d_ridge": {
+            "cells": 47,
+            "common_rows": 618,
+            "covered_rows": 618,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.7219457458037095,
+            "macro_spearman": 0.31483333000441344,
+            "macro_top5_overlap": 0.5404255319148936,
+            "method": "2d_ridge",
+            "registered_rows": 618,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 17,
+            "within_drug_pearson": 0.16251427098567942,
+            "within_drug_spearman": 0.14094395935100032
+          },
+          "2d_structured": {
+            "cells": 47,
+            "common_rows": 618,
+            "covered_rows": 618,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.7029248893741487,
+            "macro_spearman": 0.31219322428521223,
+            "macro_top5_overlap": 0.5063829787234044,
+            "method": "2d_structured",
+            "registered_rows": 618,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 17,
+            "within_drug_pearson": 0.17190819650848824,
+            "within_drug_spearman": 0.19195048644080398
+          },
+          "pdo_anchor_transfer": {
+            "cells": 47,
+            "common_rows": 618,
+            "covered_rows": 618,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.8835696746212672,
+            "macro_spearman": 0.6862597370207573,
+            "macro_top5_overlap": 0.774468085106383,
+            "method": "pdo_anchor_transfer",
+            "registered_rows": 618,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 17,
+            "within_drug_pearson": 0.17190819650848826,
+            "within_drug_spearman": 0.19195048644080398
+          },
+          "pdo_mean": {
+            "cells": 47,
+            "common_rows": 618,
+            "covered_rows": 618,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.8809904236452001,
+            "macro_spearman": 0.6911942240287413,
+            "macro_top5_overlap": 0.7617021276595742,
+            "method": "pdo_mean",
+            "registered_rows": 618,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 17,
+            "within_drug_pearson": 0.0,
+            "within_drug_spearman": 0.0
+          },
+          "pdo_only_residual": {
+            "cells": 47,
+            "common_rows": 618,
+            "covered_rows": 618,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.8785313549181971,
+            "macro_spearman": 0.6853516845290316,
+            "macro_top5_overlap": 0.774468085106383,
+            "method": "pdo_only_residual",
+            "registered_rows": 618,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 17,
+            "within_drug_pearson": -0.045448085726903106,
+            "within_drug_spearman": -0.03101975227486103
+          },
+          "pdo_residual_transfer": {
+            "cells": 47,
+            "common_rows": 618,
+            "covered_rows": 618,
+            "lineages": 47,
+            "macro_ndcg_at_5": 0.8829916569317617,
+            "macro_spearman": 0.6985686649440919,
+            "macro_top5_overlap": 0.774468085106383,
+            "method": "pdo_residual_transfer",
+            "registered_rows": 618,
+            "track": "Pilot 1",
+            "within_drug_eligible_drugs": 17,
+            "within_drug_pearson": 0.11421221426837763,
+            "within_drug_spearman": 0.13501819778087273
+          }
+        },
+        "pdo_models": 47,
+        "technical_four_donor_correlations": false,
+        "within_drug_contrasts": {
+          "2d_ridge": {
+            "pearson": [
+              -0.23295866089701972,
+              0.13912958455791508
+            ],
+            "spearman": [
+              -0.19054082636969893,
+              0.17554068287482552
+            ]
+          },
+          "2d_structured": {
+            "pearson": [
+              -0.14447376027279696,
+              0.019784245512008913
+            ],
+            "spearman": [
+              -0.15422111667740473,
+              0.02904780637369596
+            ]
+          }
+        },
+        "within_lineage_contrasts": [
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.10113031983159208,
+              0.14022901193978174
+            ],
+            "gain": 0.12079289598320453,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.11914893617021238,
+              0.1702127659574464
+            ],
+            "gain": 0.14468085106382966,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.24072760047371639,
+              0.28099950169704063
+            ],
+            "gain": 0.2608717362955598,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.15735275016777808,
+              0.20417687134412868
+            ],
+            "gain": 0.18064478524711858,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.2297872340425534,
+              0.30212765957446847
+            ],
+            "gain": 0.2680851063829788,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.3418160280752416,
+              0.40604958790716905
+            ],
+            "gain": 0.3740665127355448,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.13126484781441153,
+              0.1936286373121661
+            ],
+            "gain": 0.16162392881755772,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.19148936170212771,
+              0.2765957446808512
+            ],
+            "gain": 0.23404255319148937,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_anchor_transfer",
+            "ci95": [
+              0.32941221874229115,
+              0.414866925741111
+            ],
+            "gain": 0.37142640701634366,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.09591451161367451,
+              0.13580533523730068
+            ],
+            "gain": 0.11575457628013441,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.11914893617021238,
+              0.1702127659574464
+            ],
+            "gain": 0.14468085106382966,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.23782532307158413,
+              0.2823809982707187
+            ],
+            "gain": 0.2599636838038346,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.15246896335746984,
+              0.19861707545610743
+            ],
+            "gain": 0.17560646554404846,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.2297872340425534,
+              0.30212765957446847
+            ],
+            "gain": 0.2680851063829788,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.33995167121794295,
+              0.4071923452904262
+            ],
+            "gain": 0.3731584602438196,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.12616211332176236,
+              0.18838594822923788
+            ],
+            "gain": 0.1565856091144876,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.19148936170212771,
+              0.2765957446808512
+            ],
+            "gain": 0.23404255319148937,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_only_residual",
+            "ci95": [
+              0.3270775240854053,
+              0.4172302114512711
+            ],
+            "gain": 0.37051835452461845,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.10088634155216067,
+              0.13969633418520747
+            ],
+            "gain": 0.12021487829369903,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.11914893617021238,
+              0.1702127659574464
+            ],
+            "gain": 0.14468085106382966,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_mean",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.2511882207211853,
+              0.29547061867960805
+            ],
+            "gain": 0.27318066421889475,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.15717300197350062,
+              0.20315902193475746
+            ],
+            "gain": 0.18006676755761308,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.2297872340425534,
+              0.30212765957446847
+            ],
+            "gain": 0.2680851063829788,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_structured",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.35202628629788774,
+              0.4215164805487418
+            ],
+            "gain": 0.38637544065887974,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.13052441531808326,
+              0.19284818131506992
+            ],
+            "gain": 0.16104591112805222,
+            "lineages": 47,
+            "metric": "ndcg_at_5",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.19148936170212771,
+              0.2765957446808512
+            ],
+            "gain": 0.23404255319148937,
+            "lineages": 47,
+            "metric": "top5_overlap",
+            "track": "Pilot 1"
+          },
+          {
+            "baseline": "2d_ridge",
+            "candidate": "pdo_residual_transfer",
+            "ci95": [
+              0.3386061925890689,
+              0.43056215396198705
+            ],
+            "gain": 0.3837353349396786,
+            "lineages": 47,
+            "metric": "spearman",
+            "track": "Pilot 1"
+          }
+        ]
+      }
+    }
+  },
+  "study_support": {
+    "IMPROVE dataset 1": {
+      "direct_3d_drugs": 39,
+      "direct_3d_rows": 156,
+      "fit_pdo": 53,
+      "fit_pdo_assays": [
+        "IMPROVE dataset 2",
+        "IMPROVE dataset 3",
+        "Pilot 1"
+      ],
+      "fit_pdo_rows": 868,
+      "held_drugs": 39,
+      "held_pdo": 4,
+      "held_pdo_rows": 156,
+      "pdo_receipt": "2db35388de8e6a7688c6d1d10842c0ef22be7b644ef65bacd1595048cf764f90",
+      "solver": {
+        "pdo_only_residual": {
+          "iterations": 19,
+          "residual": 0.00010235852823825553
+        },
+        "pdo_residual_transfer": {
+          "iterations": 19,
+          "residual": 9.671237785369158e-05
+        }
+      },
+      "study": "IMPROVE dataset 1",
+      "teacher_sha256": "827320cf937774b8643a4fb4bd177f12bd566dde9ddce74c7ea565254099fed6"
+    },
+    "IMPROVE dataset 2": {
+      "direct_3d_drugs": 16,
+      "direct_3d_rows": 80,
+      "fit_pdo": 52,
+      "fit_pdo_assays": [
+        "IMPROVE dataset 3",
+        "Pilot 1"
+      ],
+      "fit_pdo_rows": 813,
+      "held_drugs": 16,
+      "held_pdo": 5,
+      "held_pdo_rows": 80,
+      "pdo_receipt": "2db35388de8e6a7688c6d1d10842c0ef22be7b644ef65bacd1595048cf764f90",
+      "solver": {
+        "pdo_only_residual": {
+          "iterations": 18,
+          "residual": 0.00011901443940587342
+        },
+        "pdo_residual_transfer": {
+          "iterations": 18,
+          "residual": 9.161211346508935e-05
+        }
+      },
+      "study": "IMPROVE dataset 2",
+      "teacher_sha256": "827320cf937774b8643a4fb4bd177f12bd566dde9ddce74c7ea565254099fed6"
+    },
+    "IMPROVE dataset 3": {
+      "direct_3d_drugs": 11,
+      "direct_3d_rows": 110,
+      "fit_pdo": 47,
+      "fit_pdo_assays": [
+        "Pilot 1"
+      ],
+      "fit_pdo_rows": 618,
+      "held_drugs": 39,
+      "held_pdo": 10,
+      "held_pdo_rows": 390,
+      "pdo_receipt": "2db35388de8e6a7688c6d1d10842c0ef22be7b644ef65bacd1595048cf764f90",
+      "solver": {
+        "pdo_only_residual": {
+          "iterations": 15,
+          "residual": 5.1480630645528436e-05
+        },
+        "pdo_residual_transfer": {
+          "iterations": 14,
+          "residual": 0.0001161086474894546
+        }
+      },
+      "study": "IMPROVE dataset 3",
+      "teacher_sha256": "827320cf937774b8643a4fb4bd177f12bd566dde9ddce74c7ea565254099fed6"
+    },
+    "Pilot 1": {
+      "direct_3d_drugs": 11,
+      "direct_3d_rows": 383,
+      "fit_pdo": 10,
+      "fit_pdo_assays": [
+        "IMPROVE dataset 1",
+        "IMPROVE dataset 2",
+        "IMPROVE dataset 3"
+      ],
+      "fit_pdo_rows": 626,
+      "held_drugs": 17,
+      "held_pdo": 47,
+      "held_pdo_rows": 618,
+      "pdo_receipt": "2db35388de8e6a7688c6d1d10842c0ef22be7b644ef65bacd1595048cf764f90",
+      "solver": {
+        "pdo_only_residual": {
+          "iterations": 9,
+          "residual": 3.389907578821294e-05
+        },
+        "pdo_residual_transfer": {
+          "iterations": 9,
+          "residual": 4.356847784947604e-05
+        }
+      },
+      "study": "Pilot 1",
+      "teacher_sha256": "827320cf937774b8643a4fb4bd177f12bd566dde9ddce74c7ea565254099fed6"
+    }
+  },
+  "teacher_sha256": "827320cf937774b8643a4fb4bd177f12bd566dde9ddce74c7ea565254099fed6"
+}
