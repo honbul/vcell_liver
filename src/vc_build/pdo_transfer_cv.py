@@ -157,7 +157,7 @@ def adaptation_targets(train, teacher):
     return data.assign(source_id=data.source, endpoint_id="native_pdo_AUC"), shift, mean_teacher
 
 
-def domain_kernels(rna, fit_cells, query_cells, edges, targets, device):
+def domain_kernel_terms(rna, fit_cells, query_cells, edges, targets, device):
     import torch
 
     from .structured_kernel import dot_kernel, radial
@@ -173,8 +173,15 @@ def domain_kernels(rna, fit_cells, query_cells, edges, targets, device):
     linear, cross = linear / scale, cross / scale
     base_energy = linear.diagonal()
     query_energy = query.square().mean(dim=1) / scale
-    return (.6 * linear + .4 * radial(linear, base_energy, base_energy, 2.),
-            .6 * cross + .4 * radial(cross, query_energy, base_energy, 2.))
+    return {
+        "linear": (linear, cross),
+        "nonlinear": (.6 * linear + .4 * radial(linear, base_energy, base_energy, 2.),
+                      .6 * cross + .4 * radial(cross, query_energy, base_energy, 2.)),
+    }
+
+
+def domain_kernels(rna, fit_cells, query_cells, edges, targets, device):
+    return domain_kernel_terms(rna, fit_cells, query_cells, edges, targets, device)["nonlinear"]
 
 
 def adapt(args):

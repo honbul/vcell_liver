@@ -129,18 +129,27 @@ def training_grid(rows, cells, drugs, *, device, row_weight=None):
     return tuple(torch.as_tensor(value, device=device) for value in (total, response))
 
 
-def solve_residuals(cell, drug, weights, response, penalty, *, tolerance=5e-5, max_steps=220):
+def solve_residuals(cell, drug, weights, response, penalty, *, per_drug_prior=None, tolerance=5e-5, max_steps=220):
     """Solve weighted kernel ridge in the cell-by-drug grid without a dense pair Gram matrix."""
     root = weights.sqrt()
     rhs = root * response
-    diagonal = penalty + weights * cell.diagonal()[:, None] * drug.diagonal()[None, :]
+    kernel_diagonal = cell.diagonal()[:, None] * drug.diagonal()[None, :]
+    if per_drug_prior is not None:
+        if per_drug_prior.shape != weights.shape:
+            raise ValueError("The per-drug kernel feature must share the observation grid")
+        kernel_diagonal = kernel_diagonal + per_drug_prior.square()
+    diagonal = penalty + weights * kernel_diagonal
     coefficient = torch.zeros_like(rhs)
     residual = rhs.clone()
     direction = residual / diagonal
     energy = (direction * residual).sum()
     threshold = max(1e-7, tolerance * rhs.norm().item())
     for step in range(max_steps):
-        product = root * (cell @ (root * direction) @ drug) + penalty * direction
+        weighted = root * direction
+        kernel_product = cell @ weighted @ drug
+        if per_drug_prior is not None:
+            kernel_product = kernel_product + per_drug_prior * (per_drug_prior * weighted).sum(dim=0)
+        product = root * kernel_product + penalty * direction
         update = energy / (direction * product).sum().clamp_min(1e-20)
         coefficient += update * direction
         residual -= update * product
