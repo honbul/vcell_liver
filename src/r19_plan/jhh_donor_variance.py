@@ -157,7 +157,7 @@ def predict(args, old, ref, genes, cols, frozen, stamp):
         stage.rename(dest)
 
 
-def verified_forecasts(args, old, ref, genes, stamp):
+def verified_forecasts(args, old, ref, genes, stamp, *, arms=ARMS, seedwise=(SHUFFLE,)):
     queries, receipts, estimates, fits = {}, {}, {}, []
     for role in "ABC":
         directory = args.run / "predictions" / role
@@ -175,9 +175,9 @@ def verified_forecasts(args, old, ref, genes, stamp):
             if sha256(array) != record["files"][key]:
                 raise ValueError("A forecast payload changed")
             lead = (len(query),)
-            shape = {arm: lead+((N_SEEDS,) if arm == SHUFFLE else ())+(len(genes),) for arm in ARMS}
+            shape = {arm: lead+((N_SEEDS,) if arm in seedwise else ())+(len(genes),) for arm in arms}
             with np.load(array, allow_pickle=False) as values:
-                estimates[key] = {a: checked_array(values[a], shape[a], a) for a in ARMS}
+                estimates[key] = {a: checked_array(values[a], shape[a], a) for a in arms}
             queries[key] = (role, query)
     rows = checked_rows(pd.concat([q.assign(role=role) for role, q in queries.values()], ignore_index=True), None)
     n, well, plate = rows.parent.nunique(), rows.inst_id.nunique(), rows.rna_plate.nunique()
