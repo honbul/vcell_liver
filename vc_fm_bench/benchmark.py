@@ -1,5 +1,6 @@
 """Fit matched heads, freeze predictions and score in a separate invocation."""
 import argparse
+import errno
 import fcntl
 import hashlib
 import json
@@ -306,8 +307,16 @@ def run_exclusively(args):
         # reaches that panel. Run one fit or score per artifact directory.
         fcntl.flock(lock, fcntl.LOCK_EX)
         if not args.output.exists():
-            (predict if args.command == "predict" else score)(args)
-            return
+            try:
+                (predict if args.command == "predict" else score)(args)
+                return
+            except OSError as error:
+                # Shared storage can expose a peer's atomic publish after the
+                # initial existence check. Validate the published artifact below.
+                if not isinstance(error, FileExistsError) and error.errno != errno.ENOTEMPTY:
+                    raise
+                if not args.output.is_dir():
+                    raise
         receipt = json.loads((args.output / "receipt.json").read_text())
         if args.command == "predict":
             verify_record(args.panel / "receipt.json", receipt["panel"])
@@ -317,6 +326,7 @@ def run_exclusively(args):
                 raise ValueError("Existing predictions use a different representation set or seed")
         else:
             verify_record(args.predictions / "receipt.json", receipt["frozen_prediction_receipt"])
+            verify_record(args.predictions / "predictions.parquet", receipt["frozen_predictions"])
             labels = args.external or (args.panel / "outcomes.parquet")
             verify_record(labels, receipt["labels"])
             verify_record(args.output / "metrics.json", receipt["metrics"])
