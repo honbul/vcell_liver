@@ -1,0 +1,16 @@
+stage	job_ids	g1_subpath	code_commit	role
+source_scale	32338	v0plus-runs/scale-audit-9a2e9b9.json	9a2e9b9	source-only historical rank vs fit-only anchor
+initial_wrapper	32339-32341	logs/*-vcb-cv.log	27cd4a8	shell argument error before learning, superseded
+linear_lightgbm_catboost	32348:32349:32350	v0plus-runs/cv-778c6fa	778c6fa	three nested source folds per group
+cellhit_velodrome_codeae	32357:32358:32359:32360:32361	v0plus-runs/cv-2c90b62	2c90b62	native author-code adaptation on the same source groups
+depmap_priors	32376	v0plus-runs/depmap-25q3-bb8a47b	bb8a47b	gene effect, HCC driver hotspot and gene copy count
+molecular_initial_array	32377	logs/32377_*-vcb-molecule.log	bb8a47b	post-fit NumPy index error, superseded
+molecular_gpu_cv	32384	v0plus-runs/cv-7924f1a	7924f1a	27 grouped validation jobs including fitted feature ablations
+final_source_only_lock	32406	v0plus-runs/final-8e5d3f4/settings.json	8e5d3f4	after source benchmark and molecular CV
+final_arm_forecasts	32407:32408	v0plus-runs/final-8e5d3f4/predict	8e5d3f4	independent CPU and GPU arrays, query outcomes inaccessible to fitting
+initial_downstream	32409:32410:32411:32444	v0plus-runs/final-8e5d3f4	8e5d3f4	superseded while pending, before any external freeze or score
+final_merge_freeze	32466	v0plus-runs/final-8e5d3f4/final.parquet	999e529	merge hash-verified component forecasts and registered equal blend
+limore_one_score	32467	v0plus-runs/final-8e5d3f4/LIMORE50_score.json	999e529	separate joint multi-metric score, one label read for V0+
+release_and_cpu_replay	32468:32469	v0plus-runs/final-8e5d3f4/V0plus	999e529	offline package with independent frozen RNA replay
+licob_public_support	-	licob-v0plus	01e9f24	public S6-S8 valid, release archive RNA fails MD5 and both relevant ZIP checks
+broutier_technical_3d	32429:32430:32431	v0plus-runs/broutier-e67f953	e67f953	two-organoid registration, prediction freeze, separate technical score
