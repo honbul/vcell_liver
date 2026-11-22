@@ -39,7 +39,7 @@
 | 자료 | 실제 공개 범위와 적용 가능성 |
 |---|---|
 | GSE182593 | G1에서 GEO 공식 FTP 인덱스 및 FPKM/count 파일 링크 확인. 4환자의 sorafenib 민감·획득 내성 8배양 상태와 3회 라이브러리씩 24개 RNA다. 이 설계는 내성 비교에 쓸 수 있고, 독립 환자의 투여 전 다약물 계통 지표에는 부족하다. [GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE182593) |
-| GSE84073 / Broutier et al. | 출판사 S1 RPKM, S5 반응 XLSX를 실제 다운로드하고 ZIP 검사했다. 기저 RPKM과 약물 반응이 연결되는 독립 HCC는 HCC-1/HCC-3 2개, 29약물·배양물당 116회 측정이다. 약물 내 개인화의 최소 5환자 요건에 미달한다. [원논문과 보충 Dataset 1/5](https://www.nature.com/articles/nm.4438?error=cookies_not_supported) · [GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE84073) |
+| GSE84073 / Broutier et al. | 출판사 S1 RPKM, S5 반응 XLSX를 실제 다운로드하고 ZIP 검사했다. 기저 RPKM과 약물 반응이 연결되는 독립 HCC는 HCC-1/HCC-3 2개, 29약물·배양물당 116회 측정이다. 출판사 약물 ID와 등록 GDSC 구조를 함께 확인한 7개·공통 유전자 12,273개로 3D 기술 평가를 별도 동결한다. 약물 내 개인화의 최소 5환자 요건에 미달한다. [원논문과 보충 Dataset 1/5](https://www.nature.com/articles/nm.4438?error=cookies_not_supported) · [GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE84073) |
 | HRA004348 | 21개 간담도 오가노이드·64개 약물의 S4 및 run 메타데이터 확인. 무인증으로 연결 가능한 기저 RNA 행렬은 확인되지 않았다. [원논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC10897507/) · [GSA-Human](https://ngdc.cncb.ac.cn/gsa-human/browse/HRA004348) |
 | GSE191224 | Lenvatinib의 PDX 내성·민감 비교가 공개됐다. 한 약물의 획득 내성 실험으로 다약물 3D 외부 평가와 구분한다. [원논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC10838288/) |
 | Wong et al. | 100약물 오가노이드 연구. 논문이 보충표를 제공하며 식별자 단위의 투여 전 전사체·연속 반응 결합은 추가 확인 대상이다. [원논문](https://pmc.ncbi.nlm.nih.gov/articles/PMC12205652/) |
