@@ -251,7 +251,8 @@ def score(args):
             joined = join_observations(rows, pd.read_parquet(args.limore_labels))
         else:
             require_hash(args.licob_labels, ASSET_HASHES["supplement"])
-            joined = adult_donor_outcomes(joined_outcomes(query, rows, args.licob_labels))
+            joined = adult_donor_outcomes(joined_outcomes(query, rows, args.licob_labels),
+                                         constant_methods=("drug_mean", "same_offset_drug_mean"))
         results[mode] = {"full": assess(joined, query),
                          "direct": assess(joined[joined.compound_id.isin(direct)], query)}
     publish_json(args.out, {"forecast_sha256": seal["sha256"], "cohorts": results,

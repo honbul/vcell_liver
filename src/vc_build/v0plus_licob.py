@@ -300,16 +300,17 @@ def audit_patients(args):
     publish_json(args.out, cohort_metadata(args.cohort, args.supplement))
 
 
-def adult_donor_outcomes(joined):
+def adult_donor_outcomes(joined, *, constant_methods=("drug_mean",)):
     adult = joined[joined.adult_age_confirmed]
     axes = ["donor_id", "track", "fold", "compound_id", "method"]
     result = adult.groupby(axes, as_index=False)[["endpoint_value", "predicted_value"]].mean()
-    constant = adult[adult.method.eq("drug_mean")].groupby("compound_id").predicted_value
-    if not constant.nunique().eq(1).all():
-        raise ValueError("The sealed drug mean varies by organoid")
-    drug_mean = result.method.eq("drug_mean")
     # Reaveraging identical floating-point anchors with different group sizes can create spurious ranks.
-    result.loc[drug_mean, "predicted_value"] = result.loc[drug_mean, "compound_id"].map(constant.first())
+    for method in constant_methods:
+        constant = adult[adult.method.eq(method)].groupby("compound_id").predicted_value
+        if not constant.nunique().eq(1).all():
+            raise ValueError(f"The sealed {method} varies by organoid")
+        selected = result.method.eq(method)
+        result.loc[selected, "predicted_value"] = result.loc[selected, "compound_id"].map(constant.first())
     return result.assign(
         cell_id=lambda table: table.donor_id, lineage_group=lambda table: table.donor_id,
         row_id=lambda table: COHORT + "|donor|" + table.donor_id + "|" + table.compound_id,
