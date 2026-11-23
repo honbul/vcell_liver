@@ -9,18 +9,22 @@
 - **Assay-assisted drug-cold** 입력은 exact parent의 구조, 가용 표적 및 독립 assay에서 측정한 서명이다. 실제 LINCS 관측 724개와 자연 결측까지 포함한 혼합 배포 점수를 분리한다. DepMap 실측이 모두 없는 세포는 같은 약물 구성의 RNA 기반 모델로 정확히 복귀한다.
 - **Structure-only drug-cold**는 질의 단계에서 약물의 실측 LINCS, Cell Painting, Tahoe를 전부 가린다. C1 대조는 고정 화학·표적과 기존 세포 RNA 기반이다. 구조→가상 LINCS 후보는 source training 약물에서만 generator를 적합하고, 반응 적합 약물의 입력 서명도 scaffold 교차 적합으로 생성한다. 가상 서명으로 얻은 임상 의미를 추정하지 않는다.
 - LINCS와 Tahoe의 참조 세포는 비간계열로 제한한다. LIMORE·LICOB는 이전 결과 노출 자료이며 DepMap 직접 측정 융합에 필요한 데이터가 없다. GDSC1 신규 골격은 기존 반응과 세포를 공유하는 외부 스크린 기술 검증이다. [잠금](PLAN_LOCK.md)
+- Assay-assisted 승격은 DRP NDCG@5와 GDSC1 비열등을 충족했다. LIMORE Spearman은 v1보다 0.0357 하락했고, LICOB 계열의 짝 구간은 0을 포함했다. 구조 전용 가상 LINCS는 462개 자연 결측 평가에서 +.010 기준을 충족하지 못해 제품형 CLI의 기본값을 C1으로 결정했다. [봉인 점수와 코호트별 결과](RESULTS.md)
 
 ## 추론과 재생
 
 GBDT는 G1 전용 deps에 고정한 LightGBM 4.6.0을 사용한다. 설치된 lib_lightgbm.so의 SHA-256은 6a12e1a7b13824d14c252d2a4d2e36af467383331a114eb0e7448eecbf02d7b1이다. GPU 잔차와 구조 커널은 G1의 기존 PyTorch 환경에서 적합한다.
 
-봉인된 전체 H2-v2 모델의 네 예측 묶음은 G1의 `nextgen_v2/h2_v2/study/forecasts`에 있다. 각 묶음은 저장된 계수와 입력 표현으로 학습 없이 같은 예측을 다시 계산한다. 선형·RBF·Tanimoto Gram은 PSD이며, 정수 거듭제곱은 Schur 곱으로 구성한다. 가용성 마스크 `MKM`, 단일 지시자 외적, 비음수 가중합, 양의 대각 정규화와 약물·세포 분리 커널의 곱이 PSD를 보존한다. [수치와 재생 영수증](psd_and_replay_receipt.json)
+봉인된 전체 H2-v2 모델의 네 예측 묶음은 G1의 `nextgen_v2/h2_v2/study/forecasts`에 있다. 각 묶음은 저장된 계수와 입력 표현으로 학습 없이 같은 예측을 다시 계산한다. 선형·RBF·Tanimoto Gram은 PSD이며, 정수 거듭제곱은 Schur 곱으로 구성한다. 가용성 마스크 `MKM`, 단일 지시자 외적, 비음수 가중합, 양의 대각 정규화와 약물·세포 분리 커널의 곱이 PSD를 보존한다. 실측 적합 Gram의 최소 고유값은 0.0451708264였다. 네 묶음의 오프라인 재생 오차와 RNA 및 C1 복귀 오차는 모두 0이었다. [수치와 재생 영수증](psd_and_replay_receipt.json)
 
-임의 신규 SMILES의 CLI 프로토타입은 등록 기저 RNA에서 **H2-R1 커널 단계**를 실행한다. 이 인터페이스는 SMILES와 선택적 LINCS만 받으며, 물리적으로 입력한 해당 모델의 LINCS 축이 필요하다. LINCS를 생략하면 동일 패키지의 구조 전용 기준선을 실행한다. 등록 표적이 없는 신규 화합물의 표적 벡터는 0이다. TSV는 `feature`, `value` 열을 사용한다. 검증된 G1 파일에서 SHA-256을 확인한 뒤 다음 형식으로 실행한다.
+임의 신규 SMILES의 CLI 프로토타입은 등록 기저 RNA에서 **동결 H2-Kernel-Max의 커널 단계**를 실행한다. 선택적 LINCS TSV는 해당 모델의 978 landmark 축과 `feature`, `value` 열을 사용한다. LINCS를 생략하면 동일 패키지의 구조 전용 C1 커널을 실행한다. 등록 표적이 없는 신규 화합물의 표적 벡터는 0이다. G1 런타임의 작업 환경에서 다음 검증 명령을 실행한다. [실행 환경](../../experiments/nextgen_h2_v2/job.sbatch)
 
 ```bash
-python -m nextgen_h2_v2.portable G1_PACKAGE --sha256 PACKAGE_SHA256 \
-  --smiles CCO --cell-id ACH-000681 --lincs-tsv OPTIONAL_SIGNATURE_TSV
+G1_ROOT=/mnt/S1/sdata/workbench/Virtual_Cell/gssong/nextgen_v2/h2_v2
+python -m nextgen_h2_v2.portable "$G1_ROOT/study/forecasts/3/portable.pkl" \
+  --sha256 a643c8ef8b87e0591afa55b70b0d565b1a6be8920413825e42cf509c8c0b70e4 \
+  --smiles CCO --cell-id ACH-000001 ACH-000002 ACH-000004 ACH-000005 \
+  --lincs-tsv "$G1_ROOT/portable-cli/synthetic_lincs.tsv"
 ```
 
-별도의 CPU 계산 경로 검사에서 단일 질의 교차 커널과 전체 배치 계산의 최대 차이는 1.14e−5였다. 서로 다른 행렬 크기에서 누적 순서가 달라지는 검사를 fit-only 내부 역할에서 정답 없이 수행했다. 오프라인 재생의 판정은 봉인과 동일한 연산 경로에서 1e−6을 적용한다. [독립 교차식 검사](portable_inner_parity.json)
+위 입력은 적합 집합에 없는 exact parent와 추론 테스트용 합성 서명이다. TSV 인수 유무 두 경로의 CLI 재생 오차는 모두 0이었다. 별도의 CPU 계산 경로 검사에서 단일 질의 교차 커널과 전체 배치 계산의 최대 차이는 1.14e−5였다. 서로 다른 행렬 크기에서 누적 순서가 달라지는 검사를 fit-only 내부 역할에서 정답 없이 수행했다. 오프라인 재생의 판정은 봉인과 동일한 연산 경로에서 1e−6을 적용한다. [독립 교차식 검사](portable_inner_parity.json) · [CLI 재생 영수증](psd_and_replay_receipt.json)
