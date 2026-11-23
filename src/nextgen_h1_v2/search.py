@@ -81,6 +81,24 @@ DOMAINS = {
     "decay": (1e-7, .25), "rank_weight": (0., 4.), "rho_weight": (0., 2.), "epochs": (25, 400),
 }
 
+NEURAL_DOMAINS = {
+    "hidden": (1, 2048), "heads": (1, 64), "dropout": (0., 1.), "decay": (0., 16.),
+    "lr": (1e-7, 2.), "rank_weight": (0., 32.), "rho_weight": (0., 16.), "epochs": (1, 1600),
+}
+
+
+def neural_boundary_is_intrinsic(config, name, increasing):
+    value = config[name]
+    if name == "hidden":
+        return not increasing and value == config["heads"]
+    if name == "heads":
+        return value == (config["hidden"] if increasing else 1)
+    if name == "epochs":
+        return not increasing and value == 1
+    if name == "dropout":
+        return value == (1. if increasing else 0.)
+    return name in {"decay", "rank_weight", "rho_weight"} and not increasing and value == 0.
+
 
 def extrapolate(c, tested, dual):
     """Check both exposed edges around this specific method and objective."""
@@ -91,26 +109,31 @@ def extrapolate(c, tested, dual):
         subset += [cfg | {"objective": c["objective"], "blend": c["blend"]}
                    for cfg in tested if cfg.get("objective") == "dual"]
     rows, edges = [], []
-    for name, (mn, mx) in DOMAINS.items():
+    bounds = DOMAINS | NEURAL_DOMAINS if c["family"] == "C" else DOMAINS
+    for name, (mn, mx) in bounds.items():
         if name not in c or (name == "rna_weight" and not dual) or (
                 name == "blend" and c.get("objective") in {"l2", "huber", "rank"} and c["family"] == "B"):
             continue
         values = [cfg[name] for cfg in subset if name in cfg]
         value = c[name]
-        for target, is_edge in ((max(mn, value / 2), value <= min(values)),
-                                (min(mx, value * 2) if value else max(mn, .05), value >= max(values))):
+        for target, is_edge, increasing in ((max(mn, value / 2), value <= min(values), False),
+                                            (min(mx, value * 2) if value else max(mn, .05), value >= max(values), True)):
             if not is_edge:
                 continue
             if isinstance(value, int):
                 target = int(target)
             if name == "hidden":
-                target = max(c.get("heads", 1), round(target / c.get("heads", 1)) * c.get("heads", 1))
-            if name == "heads" and c["hidden"] % target:
-                pool = [h for h in range(1, 17) if c["hidden"] % h == 0]
-                target = min(pool, key=lambda h: abs(target - h))
+                heads = c["heads"]
+                target = min((mx // heads) * heads, max(heads, round(target / heads) * heads))
+            if name == "heads":
+                limit = min(c["hidden"], mx)
+                pool = [h for h in range(1, limit + 1) if c["hidden"] % h == 0
+                        and (h > value if increasing else h < value)]
+                target = min(pool, key=lambda h: abs(target - h), default=value)
             entry = {"parameter": name, "winner": value, "low": min(values), "high": max(values), "expanded_to": target}
             if target == value:
-                entry["status"] = "domain-limit"
+                entry["status"] = ("configured-limit" if c["family"] == "C"
+                                   and not neural_boundary_is_intrinsic(c, name, increasing) else "domain-limit")
             else:
                 entry["status"] = "expanded"
                 rows.append(c | {name: target})

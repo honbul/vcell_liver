@@ -10,6 +10,7 @@ import torch
 from nextgen_h1_anchor.metrics import batch_stats, sample_summaries
 from nextgen_h1_anchor.score import Task
 from nextgen_h1_v2.anchors import extend_reserve, greedy, restricted_order
+from nextgen_h1_v2.closure import clipped_neural_widths
 from nextgen_h1_v2.boost import region
 from nextgen_h1_v2.data import TASKS, partitions, training_context
 from nextgen_h1_v2.neural import SetProcess
@@ -82,6 +83,20 @@ class H1V2Contract(unittest.TestCase):
         self.assertIn(32., {c["width"] for c in candidates})
         self.assertIn(1., {c["rna_weight"] for c in candidates})
         self.assertTrue(any(e["parameter"] == "ridge" for e in edges))
+
+    def test_neural_width_doubles_past_the_old_cap(self):
+        config = template("C") | {"hidden": 256}
+        recipes = seed_grid("C", True) + [config]
+        candidates, _ = extrapolate(config, recipes, True)
+        self.assertIn(config | {"hidden": 512}, candidates)
+        largest = config | {"hidden": 2048}
+        _, edges = extrapolate(largest, recipes + [largest], True)
+        self.assertTrue(any(e["parameter"] == "hidden" and e["status"] == "configured-limit" for e in edges))
+        previous = {"saturation": [{"config": config | {"hidden": 192}, "edges": [
+            dict(parameter="hidden", winner=192, high=192, low=24, expanded_to=256, status="expanded"),
+        ]}]}
+        candidate, _ = next(clipped_neural_widths(previous))
+        self.assertEqual(candidate, config | {"hidden": 384})
 
     def test_fast_metrics_preserve_old_scoring_math(self):
         y = self.rng.normal(size=(19, 25))

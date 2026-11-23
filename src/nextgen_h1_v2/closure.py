@@ -7,7 +7,19 @@ from nextgen_h1_anchor.inputs import json_write
 from vc_build.io import sha256
 
 from .data import TASKS
-from .search import Search, budget_diagnostics, cache_read, extrapolate, key
+from .search import NEURAL_DOMAINS, Search, budget_diagnostics, cache_read, extrapolate, key
+
+
+def clipped_neural_widths(record):
+    for cycle in record["saturation"]:
+        config = cycle["config"]
+        for edge in cycle["edges"]:
+            if edge["parameter"] != "hidden" or edge["winner"] != edge["high"]:
+                continue
+            width = edge["winner"]
+            target = min(NEURAL_DOMAINS["hidden"][1], 2 * width)
+            if width <= edge["expanded_to"] < target:
+                yield config | {"hidden": target}, edge | {"expanded_to": target, "status": "expanded"}
 
 
 def close(task, family, result, r1, out, device):
@@ -24,6 +36,13 @@ def close(task, family, result, r1, out, device):
         search.curves = record["learning_curves"]
         initial = key(record["selected"]["config"])
         limits = []
+        if family == "C":
+            for candidate, edge in clipped_neural_widths(record):
+                if key(candidate) in search.evaluations:
+                    continue
+                search.score(candidate, "round3-final-boundary-clipped-width")
+                limits.append(dict(iteration=-1, edges=[edge], new_trials=1))
+                print(task, family, mode, "width", candidate["hidden"], "after prior cap", flush=True)
         for i in range(8):
             current = search.winner()["config"]
             proposals, edges = extrapolate(current, [r["config"] for r in search.evaluations.values()], search.dual)
@@ -38,13 +57,16 @@ def close(task, family, result, r1, out, device):
         remaining, last_edges = extrapolate(selected["config"], [e["config"]
                                               for e in search.evaluations.values()], search.dual)
         checked = [c for c in remaining if key(c) not in search.evaluations]
+        configured_limits = [edge for edge in last_edges if edge["status"] == "configured-limit"]
         record.update(selected=selected, grid=list(search.evaluations.values()), learning_curves=search.curves,
                       final_boundary=last_edges, additional_boundary_search=limits,
-                      remaining_numerical_boundary_trials=len({key(c) for c in checked}))
+                      remaining_numerical_boundary_trials=len({key(c) for c in checked}) + len(configured_limits))
         if key(selected["config"]) != initial:
             record["budget"], record["errors"] = budget_diagnostics(search, selected["config"], moa, names)
     payload["resume_sha256"] = sha256(source)
     json_write(output / "result.json", payload)
+    if family == "C" and any(mode["remaining_numerical_boundary_trials"] for mode in payload["modes"].values()):
+        raise RuntimeError(f"Family C has a winning search boundary to extend on {task}; see {output / 'result.json'}")
 
 
 if __name__ == "__main__":
