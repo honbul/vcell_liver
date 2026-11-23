@@ -1,0 +1,6783 @@
+{
+  "label_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+  "tasks": {
+    "CTRPv2-0": {
+      "actual_anchor_dose_points": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "artifacts": {
+        "inner.tsv": "4da2fbe3ed0495e3cad3e00b6e4e82c92e5e298ccb0299fe5115c15cc05f4b6f",
+        "model.npz": "27e09b5e09d6ff375cf7c27c694bb67f2f70eeac71d5ab90e73fd9a18bf58340"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B1",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 93,
+        "2": 130,
+        "3": 18
+      },
+      "cost_known": false,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 480,
+      "freeze_sha256": "283a6766f4b96eeb8d4644bc7f6bc1242bc8ceb6f995749de2bd73b09dd172ed",
+      "grid_rows": 2181,
+      "inner_primary_ndcg": 0.9459899568139227,
+      "inner_selected_baseline_ndcg": 0.9455837068392982,
+      "outer_groups": 240,
+      "policy": "chemistry",
+      "primary": {
+        "clip": 3.0,
+        "estimator": "sample",
+        "family": "cov",
+        "ridge": 0.05,
+        "robust": "huber",
+        "scale": true
+      },
+      "query_count": 60,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.9455837068392982,
+        "best_baseline": {
+          "family": "rna"
+        },
+        "best_linear": {
+          "estimator": "oas",
+          "family": "cov",
+          "rank": null,
+          "ridge": 0.03,
+          "scale": true
+        },
+        "gain": 0.0003513653178871534,
+        "linear_ndcg": 0.9459350721571852
+      },
+      "random_3seed_gain": 0.00039252151468370674,
+      "rna_control": {
+        "estimator": "lw",
+        "family": "rna_cov",
+        "ridge": 0.2,
+        "scale": true
+      },
+      "rna_inner_delta": 0.005229928577984322,
+      "rna_secondary": {
+        "estimator": "lw",
+        "family": "rna_cov",
+        "ridge": 0.2,
+        "scale": true
+      },
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.49177980920806097,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 2.428037154030674,
+          "mechanisms": {
+            "egfr": 1.0199764068741162,
+            "fgfr": 0.9540403013414458,
+            "hcc_tki": 1.0521959089047286,
+            "hdac": 1.0462998022543204,
+            "kinase_inhibitor": 1.2760449814098143,
+            "met": 0.9956470055183863,
+            "mtor": 1.4829123709885175,
+            "nonselective_cytotoxics": 1.615800969011289,
+            "targeted_or_kinase": 1.2559908884400517
+          },
+          "sample_constant_correction_variance": 1.2082968753723784,
+          "tissues": {
+            "ampulla of vater": {
+              "mae": 0.963508850678469,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 1.347853683585034,
+              "n": 4
+            },
+            "bone": {
+              "mae": 1.3203091357134185,
+              "n": 4
+            },
+            "bowel": {
+              "mae": 1.4190913881389302,
+              "n": 8
+            },
+            "breast": {
+              "mae": 1.389574906812753,
+              "n": 7
+            },
+            "cns/brain": {
+              "mae": 1.4261524173934066,
+              "n": 3
+            },
+            "esophagus/stomach": {
+              "mae": 1.4019640826976296,
+              "n": 16
+            },
+            "head and neck": {
+              "mae": 1.0940529924369558,
+              "n": 5
+            },
+            "kidney": {
+              "mae": 1.4600746624433736,
+              "n": 1
+            },
+            "liver": {
+              "mae": 1.1315770483218222,
+              "n": 6
+            },
+            "lung": {
+              "mae": 1.3588956727027472,
+              "n": 19
+            },
+            "lymphoid": {
+              "mae": 1.5365181551925327,
+              "n": 20
+            },
+            "myeloid": {
+              "mae": 1.5482414705321348,
+              "n": 1
+            },
+            "ovary/fallopian tube": {
+              "mae": 1.1037479926033902,
+              "n": 8
+            },
+            "pancreas": {
+              "mae": 1.2299659236374427,
+              "n": 7
+            },
+            "peripheral nervous system": {
+              "mae": 1.3730252949649413,
+              "n": 3
+            },
+            "pleura": {
+              "mae": 1.1372672002359308,
+              "n": 4
+            },
+            "prostate": {
+              "mae": 1.0056442152800005,
+              "n": 1
+            },
+            "skin": {
+              "mae": 1.1681119925289305,
+              "n": 7
+            },
+            "soft tissue": {
+              "mae": 1.0900116264650193,
+              "n": 1
+            },
+            "thyroid": {
+              "mae": 1.0807993118267027,
+              "n": 1
+            },
+            "uterus": {
+              "mae": 1.2499708809267707,
+              "n": 8
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.5918048457836599
+        },
+        {
+          "drug_differential_correction_variance": 0.5471641378376447,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.337066393013399,
+          "mechanisms": {
+            "egfr": 1.0203363025667485,
+            "fgfr": 0.9742708344775539,
+            "hcc_tki": 1.044530125160557,
+            "hdac": 1.105783073991842,
+            "kinase_inhibitor": 1.155794690285142,
+            "met": 1.036307207799205,
+            "mtor": 0.7860797828887196,
+            "nonselective_cytotoxics": 1.3707355434156678,
+            "targeted_or_kinase": 1.15154006511661
+          },
+          "sample_constant_correction_variance": 1.0948142679148805,
+          "tissues": {
+            "biliary tract": {
+              "mae": 0.788371773924676,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 1.1059599650804197,
+              "n": 5
+            },
+            "bone": {
+              "mae": 1.204222812696741,
+              "n": 3
+            },
+            "bowel": {
+              "mae": 1.4007591712609166,
+              "n": 7
+            },
+            "breast": {
+              "mae": 1.152258369089806,
+              "n": 8
+            },
+            "cns/brain": {
+              "mae": 1.117363861625738,
+              "n": 8
+            },
+            "esophagus/stomach": {
+              "mae": 1.1283464862474124,
+              "n": 9
+            },
+            "fibroblast": {
+              "mae": 1.1400227835040742,
+              "n": 2
+            },
+            "head and neck": {
+              "mae": 1.1899041142050146,
+              "n": 9
+            },
+            "kidney": {
+              "mae": 1.1830639658534714,
+              "n": 7
+            },
+            "liver": {
+              "mae": 1.2430479174315492,
+              "n": 3
+            },
+            "lung": {
+              "mae": 1.1677993942210965,
+              "n": 22
+            },
+            "lymphoid": {
+              "mae": 1.2964847976619596,
+              "n": 17
+            },
+            "myeloid": {
+              "mae": 1.388859632444827,
+              "n": 5
+            },
+            "ovary/fallopian tube": {
+              "mae": 1.2216558214296493,
+              "n": 12
+            },
+            "pancreas": {
+              "mae": 0.9931297317759067,
+              "n": 5
+            },
+            "peripheral nervous system": {
+              "mae": 1.220916151908137,
+              "n": 2
+            },
+            "pleura": {
+              "mae": 1.3509023180991895,
+              "n": 3
+            },
+            "prostate": {
+              "mae": 1.0895442376288726,
+              "n": 1
+            },
+            "skin": {
+              "mae": 1.0619585414727506,
+              "n": 7
+            },
+            "soft tissue": {
+              "mae": 1.3237506363700586,
+              "n": 1
+            },
+            "uterus": {
+              "mae": 1.2995134730295559,
+              "n": 5
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.6379090103240301
+        },
+        {
+          "drug_differential_correction_variance": 0.5343340841219476,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 2.2247529601336984,
+          "mechanisms": {
+            "egfr": 0.9805604228906231,
+            "fgfr": 0.7760359115325333,
+            "hcc_tki": 1.0410669158000867,
+            "hdac": 0.9705835517664714,
+            "kinase_inhibitor": 1.1473587919061219,
+            "met": 0.9590113323477176,
+            "mtor": 1.3903614909050421,
+            "nonselective_cytotoxics": 1.307310441111794,
+            "targeted_or_kinase": 1.1330692001840748
+          },
+          "sample_constant_correction_variance": 1.160971741381889,
+          "tissues": {
+            "biliary tract": {
+              "mae": 1.459640066182551,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 1.0270592223456834,
+              "n": 5
+            },
+            "bone": {
+              "mae": 1.223870158591999,
+              "n": 3
+            },
+            "bowel": {
+              "mae": 1.0352240226262346,
+              "n": 8
+            },
+            "breast": {
+              "mae": 1.3080106345465472,
+              "n": 4
+            },
+            "cervix": {
+              "mae": 1.2306514207702504,
+              "n": 2
+            },
+            "cns/brain": {
+              "mae": 1.081815498503736,
+              "n": 11
+            },
+            "esophagus/stomach": {
+              "mae": 1.1543294414079455,
+              "n": 8
+            },
+            "fibroblast": {
+              "mae": 1.2118587071776217,
+              "n": 2
+            },
+            "head and neck": {
+              "mae": 1.2415435783543896,
+              "n": 5
+            },
+            "kidney": {
+              "mae": 0.9159116054945536,
+              "n": 3
+            },
+            "liver": {
+              "mae": 1.1064857642892978,
+              "n": 3
+            },
+            "lung": {
+              "mae": 1.1387868080345036,
+              "n": 25
+            },
+            "lymphoid": {
+              "mae": 1.399184489023321,
+              "n": 17
+            },
+            "myeloid": {
+              "mae": 1.3883351206196581,
+              "n": 10
+            },
+            "ovary/fallopian tube": {
+              "mae": 1.1465282627886426,
+              "n": 8
+            },
+            "pancreas": {
+              "mae": 1.069178795176871,
+              "n": 6
+            },
+            "peripheral nervous system": {
+              "mae": 1.450846113508045,
+              "n": 2
+            },
+            "prostate": {
+              "mae": 0.7284237260090275,
+              "n": 1
+            },
+            "skin": {
+              "mae": 1.25883801557177,
+              "n": 7
+            },
+            "soft tissue": {
+              "mae": 1.305024933532721,
+              "n": 2
+            },
+            "thyroid": {
+              "mae": 0.9636754601414022,
+              "n": 3
+            },
+            "uterus": {
+              "mae": 1.0993576577390365,
+              "n": 4
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.6420462693359511
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.9459350721571852,
+          "recipe": {
+            "estimator": "oas",
+            "family": "cov",
+            "rank": null,
+            "ridge": 0.03,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.945850480327724,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.945643679368338,
+          "recipe": {
+            "alpha": 0.0,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 0.03,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.945643679368338,
+          "recipe": {
+            "alpha": 0.0,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 0.03,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.945223954391122,
+          "recipe": {
+            "clip": 1.5,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9446729205133967,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 1.0,
+            "width": 4.0
+          }
+        },
+        {
+          "ndcg": 0.9445947718406432,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9428783325011313,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 1.0
+          }
+        },
+        {
+          "ndcg": 0.9425384701576274,
+          "recipe": {
+            "family": "als",
+            "rank": 8,
+            "ridge": 3.0
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "estimator": "oas",
+          "family": "cov",
+          "rank": null,
+          "ridge": 0.03,
+          "scale": true
+        },
+        {
+          "clip": 3.0,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 0.1,
+          "robust": "huber",
+          "scale": true
+        }
+      ],
+      "task": "CTRPv2-0"
+    },
+    "CTRPv2-1": {
+      "actual_anchor_dose_points": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "artifacts": {
+        "inner.tsv": "1d4d86cf17ef0210ec1a29870eb55f6de910e937ded464212f712a877f7f412b",
+        "model.npz": "53be83faf1bd29fb43f6537c7bff2e6660e664f02e0117cd4db04cb5b8c5239a"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B1",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 93,
+        "2": 130,
+        "3": 19
+      },
+      "cost_known": false,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 479,
+      "freeze_sha256": "88b6e915da0c3faeba3c1d4f42654755365015927e24c96b0d13b6f5fea278bf",
+      "grid_rows": 2184,
+      "inner_primary_ndcg": 0.9472845179923549,
+      "inner_selected_baseline_ndcg": 0.9466775959343162,
+      "outer_groups": 241,
+      "policy": "chemistry",
+      "primary": {
+        "clip": 3.0,
+        "estimator": "sample",
+        "family": "cov",
+        "ridge": 0.05,
+        "robust": "winsor",
+        "scale": true
+      },
+      "query_count": 60,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.9466775959343162,
+        "best_baseline": {
+          "family": "rna"
+        },
+        "best_linear": {
+          "estimator": "oas",
+          "family": "cov",
+          "rank": null,
+          "ridge": 0.1,
+          "scale": false
+        },
+        "gain": 0.0003701351878369434,
+        "linear_ndcg": 0.9470477311221531
+      },
+      "random_3seed_gain": 0.0031526221497052667,
+      "rna_control": {
+        "family": "rna_mix",
+        "ridge": 1.0,
+        "weight": 0.5,
+        "width": 2.0
+      },
+      "rna_inner_delta": 0.006603465820390064,
+      "rna_secondary": {
+        "family": "rna_mix",
+        "ridge": 1.0,
+        "weight": 0.5,
+        "width": 2.0
+      },
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.5753015534344751,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 2.2448324651126654,
+          "mechanisms": {
+            "egfr": 0.9416176634669652,
+            "fgfr": 0.730458940752304,
+            "hcc_tki": 0.9454735348723514,
+            "hdac": 0.9932586035798616,
+            "kinase_inhibitor": 1.1142384601371353,
+            "met": 0.9545590843839633,
+            "mtor": 0.7717660579116755,
+            "nonselective_cytotoxics": 1.316282816002628,
+            "targeted_or_kinase": 1.103827730641109
+          },
+          "sample_constant_correction_variance": 1.0895195852320394,
+          "tissues": {
+            "bladder/urinary tract": {
+              "mae": 1.0903968953525756,
+              "n": 5
+            },
+            "bone": {
+              "mae": 1.1571616140616223,
+              "n": 3
+            },
+            "bowel": {
+              "mae": 1.1971222735709062,
+              "n": 8
+            },
+            "breast": {
+              "mae": 1.1451597440173666,
+              "n": 5
+            },
+            "cervix": {
+              "mae": 1.1314517491700697,
+              "n": 1
+            },
+            "cns/brain": {
+              "mae": 1.043079304667515,
+              "n": 8
+            },
+            "esophagus/stomach": {
+              "mae": 1.0406606255211892,
+              "n": 12
+            },
+            "head and neck": {
+              "mae": 1.0844525966367187,
+              "n": 6
+            },
+            "kidney": {
+              "mae": 0.8732495698112364,
+              "n": 6
+            },
+            "liver": {
+              "mae": 1.547241997984018,
+              "n": 7
+            },
+            "lung": {
+              "mae": 1.2109631943121286,
+              "n": 19
+            },
+            "lymphoid": {
+              "mae": 1.2975736866685568,
+              "n": 16
+            },
+            "myeloid": {
+              "mae": 1.4359643502091066,
+              "n": 8
+            },
+            "ovary/fallopian tube": {
+              "mae": 1.1187546280205338,
+              "n": 6
+            },
+            "pancreas": {
+              "mae": 1.0110468206404224,
+              "n": 7
+            },
+            "peripheral nervous system": {
+              "mae": 1.0297520908729412,
+              "n": 2
+            },
+            "pleura": {
+              "mae": 1.1977973582853916,
+              "n": 1
+            },
+            "prostate": {
+              "mae": 1.1624557042925001,
+              "n": 1
+            },
+            "skin": {
+              "mae": 1.1297376202283143,
+              "n": 6
+            },
+            "soft tissue": {
+              "mae": 0.8361096792716064,
+              "n": 1
+            },
+            "thyroid": {
+              "mae": 0.9420037719553876,
+              "n": 2
+            },
+            "uterus": {
+              "mae": 1.1218275773794304,
+              "n": 6
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.5913265576194433
+        },
+        {
+          "drug_differential_correction_variance": 0.5305724593865008,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.345939060164105,
+          "mechanisms": {
+            "egfr": 1.0527987169306245,
+            "fgfr": 0.9680659963447078,
+            "hcc_tki": 1.0952256100564592,
+            "hdac": 1.0654259440715668,
+            "kinase_inhibitor": 1.1806807224299385,
+            "met": 1.1101962343653993,
+            "mtor": 0.8349062650339568,
+            "nonselective_cytotoxics": 1.3069271134183054,
+            "targeted_or_kinase": 1.170685628881071
+          },
+          "sample_constant_correction_variance": 1.0510826349672358,
+          "tissues": {
+            "ampulla of vater": {
+              "mae": 0.7860974564156661,
+              "n": 1
+            },
+            "biliary tract": {
+              "mae": 1.970897034056238,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 1.1155979995920131,
+              "n": 5
+            },
+            "bone": {
+              "mae": 1.260420295873679,
+              "n": 3
+            },
+            "bowel": {
+              "mae": 1.2466918180997943,
+              "n": 6
+            },
+            "breast": {
+              "mae": 1.172990221719519,
+              "n": 3
+            },
+            "cns/brain": {
+              "mae": 0.9555690383418773,
+              "n": 7
+            },
+            "esophagus/stomach": {
+              "mae": 1.3537648425294253,
+              "n": 14
+            },
+            "fibroblast": {
+              "mae": 1.322905132522889,
+              "n": 2
+            },
+            "head and neck": {
+              "mae": 1.101368087261072,
+              "n": 5
+            },
+            "kidney": {
+              "mae": 1.2623830722108484,
+              "n": 5
+            },
+            "liver": {
+              "mae": 1.1582484731441165,
+              "n": 4
+            },
+            "lung": {
+              "mae": 1.1513225652254324,
+              "n": 22
+            },
+            "lymphoid": {
+              "mae": 1.3170762970706205,
+              "n": 16
+            },
+            "myeloid": {
+              "mae": 1.4978127948795168,
+              "n": 11
+            },
+            "ovary/fallopian tube": {
+              "mae": 1.098868713594949,
+              "n": 10
+            },
+            "pancreas": {
+              "mae": 0.984644883024789,
+              "n": 4
+            },
+            "peripheral nervous system": {
+              "mae": 1.5631361667912125,
+              "n": 2
+            },
+            "skin": {
+              "mae": 1.2164285926208895,
+              "n": 8
+            },
+            "soft tissue": {
+              "mae": 1.208681519050651,
+              "n": 4
+            },
+            "thyroid": {
+              "mae": 0.8895026816026627,
+              "n": 2
+            },
+            "uterus": {
+              "mae": 1.303215993824755,
+              "n": 6
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.5961483507839213
+        },
+        {
+          "drug_differential_correction_variance": 0.49383474673746736,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 2.14488735720599,
+          "mechanisms": {
+            "egfr": 0.8703681443796741,
+            "fgfr": 0.782046825976104,
+            "hcc_tki": 0.8931944320519071,
+            "hdac": 0.9324141933354817,
+            "kinase_inhibitor": 1.0427222300595167,
+            "met": 0.8401626577992835,
+            "mtor": 0.8699008236647882,
+            "nonselective_cytotoxics": 1.405637874376777,
+            "targeted_or_kinase": 1.0334589432460133
+          },
+          "sample_constant_correction_variance": 0.9670117316490257,
+          "tissues": {
+            "ampulla of vater": {
+              "mae": 0.934015398747746,
+              "n": 1
+            },
+            "biliary tract": {
+              "mae": 0.8981270779842034,
+              "n": 2
+            },
+            "bladder/urinary tract": {
+              "mae": 0.9823028940908354,
+              "n": 3
+            },
+            "bone": {
+              "mae": 1.1326937294804218,
+              "n": 1
+            },
+            "bowel": {
+              "mae": 1.0947055274911415,
+              "n": 6
+            },
+            "breast": {
+              "mae": 1.1420128448150115,
+              "n": 6
+            },
+            "cns/brain": {
+              "mae": 1.0256834714032146,
+              "n": 11
+            },
+            "esophagus/stomach": {
+              "mae": 1.2113472150220868,
+              "n": 9
+            },
+            "head and neck": {
+              "mae": 1.2120037491666655,
+              "n": 6
+            },
+            "kidney": {
+              "mae": 1.0942946990292635,
+              "n": 5
+            },
+            "liver": {
+              "mae": 0.9845710669660894,
+              "n": 3
+            },
+            "lung": {
+              "mae": 1.0984285903133975,
+              "n": 26
+            },
+            "lymphoid": {
+              "mae": 1.338282414471759,
+              "n": 16
+            },
+            "myeloid": {
+              "mae": 1.3950596324018119,
+              "n": 8
+            },
+            "ovary/fallopian tube": {
+              "mae": 1.1312589685511598,
+              "n": 8
+            },
+            "pancreas": {
+              "mae": 1.0540013069897152,
+              "n": 11
+            },
+            "peripheral nervous system": {
+              "mae": 1.4675027751628253,
+              "n": 2
+            },
+            "pleura": {
+              "mae": 1.1967431654031289,
+              "n": 3
+            },
+            "skin": {
+              "mae": 1.0680876113946884,
+              "n": 6
+            },
+            "thyroid": {
+              "mae": 0.9247458861989661,
+              "n": 2
+            },
+            "uterus": {
+              "mae": 0.9860389267211829,
+              "n": 3
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.6272326091650645
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.9471239859769932,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9470690454568658,
+          "recipe": {
+            "alpha": 0.1,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 0.1,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9470477311221531,
+          "recipe": {
+            "estimator": "oas",
+            "family": "cov",
+            "rank": null,
+            "ridge": 0.1,
+            "scale": false
+          }
+        },
+        {
+          "ndcg": 0.9470324211524965,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.946942826167385,
+          "recipe": {
+            "alpha": 0.0,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 0.1,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9469015952354042,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 0.1
+          }
+        },
+        {
+          "ndcg": 0.9468959278072516,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 1.0,
+            "width": 4.0
+          }
+        },
+        {
+          "ndcg": 0.9465418665639903,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9460216637485833,
+          "recipe": {
+            "family": "als",
+            "rank": 8,
+            "ridge": 3.0
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "clip": 3.0,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 0.1,
+          "robust": "winsor",
+          "scale": true
+        },
+        {
+          "alpha": 0.1,
+          "estimator": "sample",
+          "family": "cov",
+          "prior": "pan",
+          "ridge": 0.1,
+          "scale": true
+        }
+      ],
+      "task": "CTRPv2-1"
+    },
+    "CTRPv2-2": {
+      "actual_anchor_dose_points": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "artifacts": {
+        "inner.tsv": "65ab20c73b26f40c08e17deb5788acc4b3d995ac08ce87dda2e61c370fe53425",
+        "model.npz": "a039a1ebaae813307b59ba09cd41a289bda630a7aa79ee029a555c369b12ed0c"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B1",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 93,
+        "2": 130,
+        "3": 19
+      },
+      "cost_known": false,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 481,
+      "freeze_sha256": "18373ac893b0c1554e61b2b3d9ca46d126fffc25fc414f119b7932eab33371c4",
+      "grid_rows": 2184,
+      "inner_primary_ndcg": 0.9540183306604185,
+      "inner_selected_baseline_ndcg": 0.9549439168801642,
+      "outer_groups": 239,
+      "policy": "leverage",
+      "primary": {
+        "family": "rbf",
+        "ridge": 2.0,
+        "width": 4.0
+      },
+      "query_count": 60,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.9549439168801642,
+        "best_baseline": {
+          "family": "rna"
+        },
+        "best_linear": {
+          "estimator": "oas",
+          "family": "cov",
+          "rank": null,
+          "ridge": 0.1,
+          "scale": false
+        },
+        "gain": -0.0017577794215886493,
+        "linear_ndcg": 0.9531861374585756
+      },
+      "random_3seed_gain": 0.0005885977027237057,
+      "rna_control": {
+        "family": "rna_mix",
+        "ridge": 2.0,
+        "weight": 0.5,
+        "width": 2.0
+      },
+      "rna_inner_delta": 0.005906147601826913,
+      "rna_secondary": {
+        "family": "rna_mix",
+        "ridge": 2.0,
+        "weight": 0.5,
+        "width": 2.0
+      },
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.3854314318101632,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 2.6603142493481706,
+          "mechanisms": {
+            "egfr": 1.0519788561232406,
+            "fgfr": 0.8834836381364933,
+            "hcc_tki": 1.0655741652908635,
+            "hdac": 1.1309153984347133,
+            "kinase_inhibitor": 1.1746045929768825,
+            "met": 1.061548367483728,
+            "mtor": 0.7394534553978986,
+            "nonselective_cytotoxics": 1.6648997302194068,
+            "targeted_or_kinase": 1.1705827441782513
+          },
+          "sample_constant_correction_variance": 0.6373944193143836,
+          "tissues": {
+            "bladder/urinary tract": {
+              "mae": 1.2691460728022657,
+              "n": 5
+            },
+            "bone": {
+              "mae": 1.5959869108853666,
+              "n": 3
+            },
+            "bowel": {
+              "mae": 1.2517281488731806,
+              "n": 7
+            },
+            "breast": {
+              "mae": 1.2467748030847103,
+              "n": 12
+            },
+            "cns/brain": {
+              "mae": 1.2062742564296716,
+              "n": 8
+            },
+            "esophagus/stomach": {
+              "mae": 1.2765001041448965,
+              "n": 9
+            },
+            "head and neck": {
+              "mae": 1.1495831807828436,
+              "n": 8
+            },
+            "kidney": {
+              "mae": 1.3654439094688329,
+              "n": 5
+            },
+            "liver": {
+              "mae": 1.168333224496606,
+              "n": 5
+            },
+            "lung": {
+              "mae": 1.2536831961946284,
+              "n": 18
+            },
+            "lymphoid": {
+              "mae": 1.8961211596990104,
+              "n": 12
+            },
+            "myeloid": {
+              "mae": 1.9291065912011427,
+              "n": 9
+            },
+            "ovary/fallopian tube": {
+              "mae": 1.0533876046331316,
+              "n": 6
+            },
+            "pancreas": {
+              "mae": 1.1528160173034765,
+              "n": 8
+            },
+            "peripheral nervous system": {
+              "mae": 1.8424891282085327,
+              "n": 4
+            },
+            "pleura": {
+              "mae": 1.2967614837245613,
+              "n": 1
+            },
+            "prostate": {
+              "mae": 1.0372790829824403,
+              "n": 2
+            },
+            "skin": {
+              "mae": 1.1808278678871664,
+              "n": 8
+            },
+            "soft tissue": {
+              "mae": 1.1848029182956799,
+              "n": 4
+            },
+            "uterus": {
+              "mae": 0.9684228577936943,
+              "n": 3
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.5810317028637694
+        },
+        {
+          "drug_differential_correction_variance": 0.3885655360082212,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.284052374855352,
+          "mechanisms": {
+            "egfr": 0.9660251708693726,
+            "fgfr": 0.9025363326942653,
+            "hcc_tki": 1.0048669398705454,
+            "hdac": 1.101430746578397,
+            "kinase_inhibitor": 1.1695450355981332,
+            "met": 0.9594597270093059,
+            "mtor": 0.7797037661753744,
+            "nonselective_cytotoxics": 1.5464190996900107,
+            "targeted_or_kinase": 1.1636586155593904
+          },
+          "sample_constant_correction_variance": 0.72006881438564,
+          "tissues": {
+            "ampulla of vater": {
+              "mae": 0.7394158508109068,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 1.080254849366713,
+              "n": 4
+            },
+            "bone": {
+              "mae": 0.8639219727651982,
+              "n": 3
+            },
+            "bowel": {
+              "mae": 1.358897611855332,
+              "n": 8
+            },
+            "breast": {
+              "mae": 1.361565376179556,
+              "n": 5
+            },
+            "cervix": {
+              "mae": 1.347059797169054,
+              "n": 1
+            },
+            "cns/brain": {
+              "mae": 1.1585296752408374,
+              "n": 14
+            },
+            "esophagus/stomach": {
+              "mae": 1.3384635426716338,
+              "n": 9
+            },
+            "fibroblast": {
+              "mae": 1.2848064209826795,
+              "n": 3
+            },
+            "head and neck": {
+              "mae": 1.0479788887038044,
+              "n": 3
+            },
+            "kidney": {
+              "mae": 1.1656525175705517,
+              "n": 6
+            },
+            "liver": {
+              "mae": 1.680272936776004,
+              "n": 4
+            },
+            "lung": {
+              "mae": 1.2244640744642845,
+              "n": 18
+            },
+            "lymphoid": {
+              "mae": 1.518693152841125,
+              "n": 20
+            },
+            "myeloid": {
+              "mae": 1.7001712966445686,
+              "n": 7
+            },
+            "ovary/fallopian tube": {
+              "mae": 1.3240923081055413,
+              "n": 6
+            },
+            "pancreas": {
+              "mae": 1.2346027373328579,
+              "n": 10
+            },
+            "pleura": {
+              "mae": 1.0483104266171712,
+              "n": 1
+            },
+            "skin": {
+              "mae": 1.2759172507658247,
+              "n": 8
+            },
+            "soft tissue": {
+              "mae": 1.4497507436296895,
+              "n": 2
+            },
+            "thyroid": {
+              "mae": 0.9207332053740841,
+              "n": 3
+            },
+            "uterus": {
+              "mae": 1.0413432581565492,
+              "n": 2
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.5684865126251216
+        },
+        {
+          "drug_differential_correction_variance": 0.3272204080795118,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 2.1107861402184604,
+          "mechanisms": {
+            "egfr": 0.9722101852755565,
+            "fgfr": 0.8046112518862136,
+            "hcc_tki": 0.9775190156530172,
+            "hdac": 1.0443832713686299,
+            "kinase_inhibitor": 1.1471950463522385,
+            "met": 0.972566704399372,
+            "mtor": 1.298597474066668,
+            "nonselective_cytotoxics": 1.5831451475370126,
+            "targeted_or_kinase": 1.138493206361156
+          },
+          "sample_constant_correction_variance": 0.7263238089731687,
+          "tissues": {
+            "biliary tract": {
+              "mae": 1.2674788502727368,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 1.172549763051768,
+              "n": 2
+            },
+            "bone": {
+              "mae": 1.0662581236040862,
+              "n": 1
+            },
+            "bowel": {
+              "mae": 1.1952641485134525,
+              "n": 13
+            },
+            "breast": {
+              "mae": 1.4825938842272632,
+              "n": 4
+            },
+            "cns/brain": {
+              "mae": 1.0511613881661523,
+              "n": 6
+            },
+            "esophagus/stomach": {
+              "mae": 1.1533096583033706,
+              "n": 13
+            },
+            "fibroblast": {
+              "mae": 0.9361986155361031,
+              "n": 1
+            },
+            "head and neck": {
+              "mae": 1.066535184790101,
+              "n": 6
+            },
+            "kidney": {
+              "mae": 1.490309445474089,
+              "n": 4
+            },
+            "lung": {
+              "mae": 1.2973783222967659,
+              "n": 25
+            },
+            "lymphoid": {
+              "mae": 1.6381295543628869,
+              "n": 22
+            },
+            "myeloid": {
+              "mae": 1.5033596073083,
+              "n": 10
+            },
+            "ovary/fallopian tube": {
+              "mae": 1.0665906736715085,
+              "n": 5
+            },
+            "pancreas": {
+              "mae": 1.15594851713091,
+              "n": 9
+            },
+            "peripheral nervous system": {
+              "mae": 1.482876814839784,
+              "n": 1
+            },
+            "pleura": {
+              "mae": 1.260850194033114,
+              "n": 1
+            },
+            "prostate": {
+              "mae": 1.1035553149387387,
+              "n": 1
+            },
+            "skin": {
+              "mae": 1.085299643104417,
+              "n": 10
+            },
+            "soft tissue": {
+              "mae": 1.1460579378090958,
+              "n": 1
+            },
+            "thyroid": {
+              "mae": 0.8524091889880506,
+              "n": 1
+            },
+            "uterus": {
+              "mae": 1.3580416788667313,
+              "n": 5
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.5471358581478856
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.953884403156707,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9538703575309188,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 1.0,
+            "width": 4.0
+          }
+        },
+        {
+          "ndcg": 0.9537916649973176,
+          "recipe": {
+            "clip": 1.5,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9533075208677544,
+          "recipe": {
+            "clip": 1.5,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9531861374585756,
+          "recipe": {
+            "estimator": "oas",
+            "family": "cov",
+            "rank": null,
+            "ridge": 0.1,
+            "scale": false
+          }
+        },
+        {
+          "ndcg": 0.9530876149881294,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.9530785681445799,
+          "recipe": {
+            "alpha": 0.1,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 0.1,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9530738907155779,
+          "recipe": {
+            "alpha": 0.0,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 1.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9520616111844676,
+          "recipe": {
+            "family": "als",
+            "rank": 2,
+            "ridge": 3.0
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "clip": 3.0,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 0.1,
+          "robust": "rank",
+          "scale": true
+        },
+        {
+          "family": "rbf",
+          "ridge": 1.0,
+          "width": 4.0
+        }
+      ],
+      "task": "CTRPv2-2"
+    },
+    "GDSC2-0": {
+      "actual_anchor_dose_points": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "artifacts": {
+        "inner.tsv": "94787edbcc39c388de470253aba8470f3a84f9fde8ca8f2561bdd4d6cae2e605",
+        "model.npz": "3f1b749f0c53825feab8647a0aba63bb73b2b607fdcc5d00f04acbe9c6298a34"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B1",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 93,
+        "2": 120,
+        "3": 18
+      },
+      "cost_known": false,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 479,
+      "freeze_sha256": "d46fdf109b0b6bb36e929be10396e4b23946bb01fad16c40ac7750369b130b80",
+      "grid_rows": 2151,
+      "inner_primary_ndcg": 0.9368875843742975,
+      "inner_selected_baseline_ndcg": 0.9366697644160634,
+      "outer_groups": 235,
+      "policy": "logdet",
+      "primary": {
+        "estimator": "svd",
+        "family": "cov",
+        "rank": 16,
+        "ridge": 1.0,
+        "scale": true
+      },
+      "query_count": 60,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.9366697644160634,
+        "best_baseline": {
+          "family": "rna"
+        },
+        "best_linear": {
+          "estimator": "svd",
+          "family": "cov",
+          "rank": 16,
+          "ridge": 1.0,
+          "scale": true
+        },
+        "gain": 0.0002178199582342962,
+        "linear_ndcg": 0.9368875843742975
+      },
+      "random_3seed_gain": 0.0017181578637400898,
+      "rna_control": {
+        "estimator": "sample",
+        "family": "rna_cov",
+        "ridge": 0.15,
+        "scale": false
+      },
+      "rna_inner_delta": 0.004276988218823015,
+      "rna_secondary": {
+        "estimator": "sample",
+        "family": "rna_cov",
+        "ridge": 0.15,
+        "scale": false
+      },
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.0005004429142219257,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 2.4075694121265907,
+          "mechanisms": {
+            "egfr": 0.03791785891478,
+            "fgfr": 0.043162167685839664,
+            "hcc_tki": 0.04877440800362748,
+            "hdac": 0.0475390957612062,
+            "kinase_inhibitor": 0.05237407258624228,
+            "met": 0.08901887629432434,
+            "mtor": 0.06622577569417805,
+            "nonselective_cytotoxics": 0.11029945263209562,
+            "targeted_or_kinase": 0.0519003475530253
+          },
+          "sample_constant_correction_variance": 0.0002474120924613446,
+          "tissues": {
+            "biliary tract": {
+              "mae": 0.04116978208330788,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 0.04502260257107657,
+              "n": 6
+            },
+            "bone": {
+              "mae": 0.04925197663670165,
+              "n": 5
+            },
+            "bowel": {
+              "mae": 0.04133398830262842,
+              "n": 6
+            },
+            "breast": {
+              "mae": 0.05010284753658605,
+              "n": 9
+            },
+            "cervix": {
+              "mae": 0.040142157165515946,
+              "n": 5
+            },
+            "cns/brain": {
+              "mae": 0.037606219089263766,
+              "n": 8
+            },
+            "esophagus/stomach": {
+              "mae": 0.04610360962763605,
+              "n": 10
+            },
+            "head and neck": {
+              "mae": 0.04778705264260822,
+              "n": 6
+            },
+            "kidney": {
+              "mae": 0.05302564174667971,
+              "n": 3
+            },
+            "liver": {
+              "mae": 0.04321291121426673,
+              "n": 4
+            },
+            "lung": {
+              "mae": 0.04595008908934474,
+              "n": 35
+            },
+            "lymphoid": {
+              "mae": 0.07035579800213408,
+              "n": 19
+            },
+            "myeloid": {
+              "mae": 0.08381441684148672,
+              "n": 4
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.0400498964306315,
+              "n": 6
+            },
+            "pancreas": {
+              "mae": 0.04035484976022275,
+              "n": 4
+            },
+            "peripheral nervous system": {
+              "mae": 0.043168230652466257,
+              "n": 3
+            },
+            "pleura": {
+              "mae": 0.03960112758996815,
+              "n": 3
+            },
+            "prostate": {
+              "mae": 0.06449534434485853,
+              "n": 2
+            },
+            "skin": {
+              "mae": 0.053398853229557744,
+              "n": 8
+            },
+            "soft tissue": {
+              "mae": 0.03851808555653677,
+              "n": 2
+            },
+            "thyroid": {
+              "mae": 0.042303151837305784,
+              "n": 2
+            },
+            "uterus": {
+              "mae": 0.042103723405678486,
+              "n": 3
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.015405696057908468
+        },
+        {
+          "drug_differential_correction_variance": 0.0034712877771396777,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 3.057648014841241,
+          "mechanisms": {
+            "egfr": 0.04280754307399923,
+            "fgfr": 0.06370518067697216,
+            "hcc_tki": 0.051051317707383234,
+            "hdac": 0.03853915259023228,
+            "kinase_inhibitor": 0.05702051213898993,
+            "met": 0.10595036256838322,
+            "mtor": 0.07653490393004744,
+            "nonselective_cytotoxics": 0.10053021088368885,
+            "targeted_or_kinase": 0.0549709676610195
+          },
+          "sample_constant_correction_variance": 0.0014363824036082735,
+          "tissues": {
+            "bladder/urinary tract": {
+              "mae": 0.04247609810149071,
+              "n": 2
+            },
+            "bone": {
+              "mae": 0.04407542834676734,
+              "n": 5
+            },
+            "bowel": {
+              "mae": 0.04732899051805356,
+              "n": 11
+            },
+            "breast": {
+              "mae": 0.046515828007424986,
+              "n": 13
+            },
+            "cervix": {
+              "mae": 0.04017147227135181,
+              "n": 2
+            },
+            "cns/brain": {
+              "mae": 0.04232167448110312,
+              "n": 5
+            },
+            "esophagus/stomach": {
+              "mae": 0.0455132603032534,
+              "n": 11
+            },
+            "fibroblast": {
+              "mae": 0.043243989070100367,
+              "n": 1
+            },
+            "head and neck": {
+              "mae": 0.04652494307715031,
+              "n": 6
+            },
+            "kidney": {
+              "mae": 0.04297942658233824,
+              "n": 5
+            },
+            "liver": {
+              "mae": 0.0365739213483404,
+              "n": 3
+            },
+            "lung": {
+              "mae": 0.04491140305543001,
+              "n": 27
+            },
+            "lymphoid": {
+              "mae": 0.07091989706466056,
+              "n": 20
+            },
+            "myeloid": {
+              "mae": 0.14952946073637088,
+              "n": 6
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.03769678279267776,
+              "n": 7
+            },
+            "pancreas": {
+              "mae": 0.03370274178324803,
+              "n": 7
+            },
+            "peripheral nervous system": {
+              "mae": 0.05923857348022972,
+              "n": 5
+            },
+            "prostate": {
+              "mae": 0.037176321638150836,
+              "n": 1
+            },
+            "skin": {
+              "mae": 0.04354011456242216,
+              "n": 7
+            },
+            "soft tissue": {
+              "mae": 0.03274194832814677,
+              "n": 3
+            },
+            "testis": {
+              "mae": 0.04855936767632928,
+              "n": 1
+            },
+            "thyroid": {
+              "mae": 0.035613861944252354,
+              "n": 3
+            },
+            "uterus": {
+              "mae": 0.05085248877640205,
+              "n": 4
+            },
+            "vulva/vagina": {
+              "mae": 0.04770405489847049,
+              "n": 1
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.021534678666701165
+        },
+        {
+          "drug_differential_correction_variance": 0.0005693937097494048,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 2.466217268053198,
+          "mechanisms": {
+            "egfr": 0.03793200741043,
+            "fgfr": 0.03230005872942797,
+            "hcc_tki": 0.04607187265479704,
+            "hdac": 0.042743446639231214,
+            "kinase_inhibitor": 0.051538629948819484,
+            "met": 0.08317554427599695,
+            "mtor": 0.06598554239857565,
+            "nonselective_cytotoxics": 0.10298380728950798,
+            "targeted_or_kinase": 0.0507147183709931
+          },
+          "sample_constant_correction_variance": 0.00016267150757179227,
+          "tissues": {
+            "bladder/urinary tract": {
+              "mae": 0.04037501790785336,
+              "n": 3
+            },
+            "bone": {
+              "mae": 0.042687474491040336,
+              "n": 5
+            },
+            "bowel": {
+              "mae": 0.04050347390934518,
+              "n": 15
+            },
+            "breast": {
+              "mae": 0.048680007117616095,
+              "n": 11
+            },
+            "cervix": {
+              "mae": 0.039865974424519945,
+              "n": 3
+            },
+            "cns/brain": {
+              "mae": 0.04227958050076415,
+              "n": 5
+            },
+            "esophagus/stomach": {
+              "mae": 0.04147082903354178,
+              "n": 11
+            },
+            "head and neck": {
+              "mae": 0.03613538047817594,
+              "n": 6
+            },
+            "kidney": {
+              "mae": 0.03996831557892882,
+              "n": 3
+            },
+            "liver": {
+              "mae": 0.03776987293416944,
+              "n": 1
+            },
+            "lung": {
+              "mae": 0.04491270267193035,
+              "n": 28
+            },
+            "lymphoid": {
+              "mae": 0.06202781072587277,
+              "n": 20
+            },
+            "myeloid": {
+              "mae": 0.07975070806848265,
+              "n": 6
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.04048287009771622,
+              "n": 9
+            },
+            "pancreas": {
+              "mae": 0.03991858234118769,
+              "n": 3
+            },
+            "peripheral nervous system": {
+              "mae": 0.0533593859094773,
+              "n": 4
+            },
+            "pleura": {
+              "mae": 0.04177370801246865,
+              "n": 3
+            },
+            "prostate": {
+              "mae": 0.04910597337071912,
+              "n": 3
+            },
+            "skin": {
+              "mae": 0.04635799395969198,
+              "n": 6
+            },
+            "soft tissue": {
+              "mae": 0.048520642539414065,
+              "n": 1
+            },
+            "thyroid": {
+              "mae": 0.03575757745073766,
+              "n": 4
+            },
+            "uterus": {
+              "mae": 0.04229754637424147,
+              "n": 3
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.015284628877164983
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.9368875843742975,
+          "recipe": {
+            "estimator": "svd",
+            "family": "cov",
+            "rank": 16,
+            "ridge": 1.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9365540017052555,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9363239477095141,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9361529218362136,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 10.0,
+            "width": 1.0
+          }
+        },
+        {
+          "ndcg": 0.9359345041921632,
+          "recipe": {
+            "alpha": 0.25,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9357097328039737,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.9356294217815115,
+          "recipe": {
+            "alpha": 0.1,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9349668213869325,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9283539878613118,
+          "recipe": {
+            "family": "als",
+            "rank": 2,
+            "ridge": 3.0
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "estimator": "svd",
+          "family": "cov",
+          "rank": 16,
+          "ridge": 1.0,
+          "scale": true
+        },
+        {
+          "clip": 3.0,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 0.3,
+          "robust": "huber",
+          "scale": true
+        }
+      ],
+      "task": "GDSC2-0"
+    },
+    "GDSC2-1": {
+      "actual_anchor_dose_points": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "artifacts": {
+        "inner.tsv": "40dd9e9baebc666fd352ff516803797b50ed2fb5c6abdd854ac6a5b1d468a51c",
+        "model.npz": "baca0e3f352c13c624ff270d88c0c276607ac34ab9b012e212849b798aea09e7"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B1",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 93,
+        "2": 120,
+        "3": 17
+      },
+      "cost_known": false,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 468,
+      "freeze_sha256": "412074b80513c4969a977ce1e765faa196163cca8c4597cc6b6989a1ebe4b1a0",
+      "grid_rows": 2139,
+      "inner_primary_ndcg": 0.9559639669154286,
+      "inner_selected_baseline_ndcg": 0.9519234896720362,
+      "outer_groups": 246,
+      "policy": "chemistry",
+      "primary": {
+        "family": "cosine",
+        "ridge": 20.0
+      },
+      "query_count": 60,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.9519234896720362,
+        "best_baseline": {
+          "family": "rna"
+        },
+        "best_linear": {
+          "estimator": "sample",
+          "family": "cov",
+          "rank": null,
+          "ridge": 0.3,
+          "scale": true
+        },
+        "gain": 0.0018221778134648314,
+        "linear_ndcg": 0.9537456674855012
+      },
+      "random_3seed_gain": -0.00019699427927788457,
+      "rna_control": {
+        "estimator": "sample",
+        "family": "rna_cov",
+        "ridge": 0.3,
+        "scale": true
+      },
+      "rna_inner_delta": -0.00027693481164707084,
+      "rna_secondary": null,
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.0007355225727403027,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 3.234073649596883,
+          "mechanisms": {
+            "egfr": 0.030348979871913158,
+            "fgfr": 0.038154650552889,
+            "hcc_tki": 0.047237433538764216,
+            "hdac": 0.04037719210616781,
+            "kinase_inhibitor": 0.04929566936883508,
+            "met": 0.09446949241983378,
+            "nonselective_cytotoxics": 0.09603348700960235,
+            "targeted_or_kinase": 0.04841067949765866
+          },
+          "sample_constant_correction_variance": 0.0005713507249976881,
+          "tissues": {
+            "bladder/urinary tract": {
+              "mae": 0.0431098094104373,
+              "n": 5
+            },
+            "bone": {
+              "mae": 0.049013677305693414,
+              "n": 4
+            },
+            "bowel": {
+              "mae": 0.04590938409100469,
+              "n": 10
+            },
+            "breast": {
+              "mae": 0.0565914221140309,
+              "n": 9
+            },
+            "cervix": {
+              "mae": 0.0431877379425949,
+              "n": 3
+            },
+            "cns/brain": {
+              "mae": 0.03964485668475434,
+              "n": 8
+            },
+            "esophagus/stomach": {
+              "mae": 0.04625620146320755,
+              "n": 13
+            },
+            "fibroblast": {
+              "mae": 0.03898402186390454,
+              "n": 1
+            },
+            "head and neck": {
+              "mae": 0.037554355470647026,
+              "n": 7
+            },
+            "kidney": {
+              "mae": 0.04029444050864031,
+              "n": 7
+            },
+            "liver": {
+              "mae": 0.0425605992253706,
+              "n": 2
+            },
+            "lung": {
+              "mae": 0.044714721846776495,
+              "n": 23
+            },
+            "lymphoid": {
+              "mae": 0.06796676682331201,
+              "n": 13
+            },
+            "myeloid": {
+              "mae": 0.0850426221565139,
+              "n": 7
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.04433970323769304,
+              "n": 7
+            },
+            "pancreas": {
+              "mae": 0.030342935234540437,
+              "n": 7
+            },
+            "peripheral nervous system": {
+              "mae": 0.06039351020326859,
+              "n": 1
+            },
+            "pleura": {
+              "mae": 0.040008344413894247,
+              "n": 2
+            },
+            "prostate": {
+              "mae": 0.06588157176637734,
+              "n": 2
+            },
+            "skin": {
+              "mae": 0.04788837660646295,
+              "n": 9
+            },
+            "soft tissue": {
+              "mae": 0.028141982618652858,
+              "n": 2
+            },
+            "thyroid": {
+              "mae": 0.03611595567275085,
+              "n": 1
+            },
+            "uterus": {
+              "mae": 0.0406084092693127,
+              "n": 2
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.016294140983349508
+        },
+        {
+          "drug_differential_correction_variance": 0.0006456218313714058,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.4517164886933096,
+          "mechanisms": {
+            "egfr": 0.029314061055713242,
+            "fgfr": 0.028449066269986712,
+            "hcc_tki": 0.03914323193288736,
+            "hdac": 0.04043749785285677,
+            "kinase_inhibitor": 0.04547553358901003,
+            "met": 0.07926839456177875,
+            "mtor": 0.052936805561895166,
+            "nonselective_cytotoxics": 0.09751240702705928,
+            "targeted_or_kinase": 0.0449993013552443
+          },
+          "sample_constant_correction_variance": 0.0004986477922067665,
+          "tissues": {
+            "bladder/urinary tract": {
+              "mae": 0.03986991591251058,
+              "n": 4
+            },
+            "bone": {
+              "mae": 0.04126115410879069,
+              "n": 3
+            },
+            "bowel": {
+              "mae": 0.04579331613143716,
+              "n": 7
+            },
+            "breast": {
+              "mae": 0.04939060609338014,
+              "n": 8
+            },
+            "cervix": {
+              "mae": 0.03143583090304168,
+              "n": 3
+            },
+            "cns/brain": {
+              "mae": 0.03583812364803729,
+              "n": 12
+            },
+            "esophagus/stomach": {
+              "mae": 0.04145557948696986,
+              "n": 11
+            },
+            "head and neck": {
+              "mae": 0.04026394311261759,
+              "n": 3
+            },
+            "kidney": {
+              "mae": 0.04285964805000129,
+              "n": 3
+            },
+            "liver": {
+              "mae": 0.05207361442256199,
+              "n": 2
+            },
+            "lung": {
+              "mae": 0.04518504586516404,
+              "n": 37
+            },
+            "lymphoid": {
+              "mae": 0.05484889264362051,
+              "n": 15
+            },
+            "myeloid": {
+              "mae": 0.0712511130451195,
+              "n": 6
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.04005899361656648,
+              "n": 7
+            },
+            "pancreas": {
+              "mae": 0.03964481376786313,
+              "n": 7
+            },
+            "peripheral nervous system": {
+              "mae": 0.05275213391082649,
+              "n": 4
+            },
+            "prostate": {
+              "mae": 0.03506250983335311,
+              "n": 1
+            },
+            "skin": {
+              "mae": 0.047619411216734533,
+              "n": 6
+            },
+            "thyroid": {
+              "mae": 0.03969666988591278,
+              "n": 6
+            },
+            "uterus": {
+              "mae": 0.044774761829891416,
+              "n": 5
+            },
+            "vulva/vagina": {
+              "mae": 0.04090577940809888,
+              "n": 1
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.017595614548960286
+        },
+        {
+          "drug_differential_correction_variance": 0.0004579187362799538,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 2.2798213566009227,
+          "mechanisms": {
+            "egfr": 0.029720101655864573,
+            "fgfr": 0.0326544509474038,
+            "hcc_tki": 0.0408188442210146,
+            "hdac": 0.032945272249769474,
+            "kinase_inhibitor": 0.04481006196897915,
+            "met": 0.06988849521086751,
+            "mtor": 0.0565830134896046,
+            "nonselective_cytotoxics": 0.10288177814964838,
+            "targeted_or_kinase": 0.04370728311844746
+          },
+          "sample_constant_correction_variance": 0.0004330498658379266,
+          "tissues": {
+            "adrenal gland": {
+              "mae": 0.05675423624862282,
+              "n": 1
+            },
+            "biliary tract": {
+              "mae": 0.03710793728887829,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 0.03948028196670027,
+              "n": 2
+            },
+            "bone": {
+              "mae": 0.05249674678951326,
+              "n": 4
+            },
+            "bowel": {
+              "mae": 0.04533034097192646,
+              "n": 7
+            },
+            "breast": {
+              "mae": 0.043088787136922435,
+              "n": 6
+            },
+            "cervix": {
+              "mae": 0.03716814055845237,
+              "n": 4
+            },
+            "cns/brain": {
+              "mae": 0.04102155561185571,
+              "n": 9
+            },
+            "esophagus/stomach": {
+              "mae": 0.04016758948003391,
+              "n": 10
+            },
+            "head and neck": {
+              "mae": 0.03975450150647917,
+              "n": 6
+            },
+            "kidney": {
+              "mae": 0.043848596750976875,
+              "n": 5
+            },
+            "liver": {
+              "mae": 0.038776355087064514,
+              "n": 5
+            },
+            "lung": {
+              "mae": 0.04112457930437741,
+              "n": 26
+            },
+            "lymphoid": {
+              "mae": 0.06294906734371523,
+              "n": 14
+            },
+            "myeloid": {
+              "mae": 0.07179131707389388,
+              "n": 7
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.037413154661282096,
+              "n": 7
+            },
+            "pancreas": {
+              "mae": 0.03728691159192137,
+              "n": 4
+            },
+            "peripheral nervous system": {
+              "mae": 0.049882875966350534,
+              "n": 5
+            },
+            "pleura": {
+              "mae": 0.039811542473210004,
+              "n": 2
+            },
+            "prostate": {
+              "mae": 0.03770349796256852,
+              "n": 1
+            },
+            "skin": {
+              "mae": 0.04779328597540569,
+              "n": 8
+            },
+            "soft tissue": {
+              "mae": 0.03785888865805643,
+              "n": 3
+            },
+            "testis": {
+              "mae": 0.06084418806285852,
+              "n": 2
+            },
+            "thyroid": {
+              "mae": 0.037293294807668784,
+              "n": 4
+            },
+            "uterus": {
+              "mae": 0.04258933122340429,
+              "n": 6
+            },
+            "vulva/vagina": {
+              "mae": 0.052878470632106614,
+              "n": 1
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.016098440446199347
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.9551029286221872,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 10.0,
+            "width": 4.0
+          }
+        },
+        {
+          "ndcg": 0.9550069425312385,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.9549534852275775,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9545273979792412,
+          "recipe": {
+            "clip": 1.5,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9537456674855012,
+          "recipe": {
+            "estimator": "sample",
+            "family": "cov",
+            "rank": null,
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9537456674855012,
+          "recipe": {
+            "alpha": 0.0,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9537456674855012,
+          "recipe": {
+            "alpha": 0.0,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9535179188139482,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9518873014408177,
+          "recipe": {
+            "family": "als",
+            "rank": 2,
+            "ridge": 3.0
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "family": "rbf",
+          "ridge": 10.0,
+          "width": 4.0
+        },
+        {
+          "family": "cosine",
+          "ridge": 10.0
+        }
+      ],
+      "task": "GDSC2-1"
+    },
+    "GDSC2-2": {
+      "actual_anchor_dose_points": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "artifacts": {
+        "inner.tsv": "5e2f0f13447b57521f9eef449680403afb0255bf406c37c86dac1944cfb0b6e4",
+        "model.npz": "6a795848180926de0d8d92f89c6374eeccb57097700f9cf66c6a6edb4bf35268"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B1",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 93,
+        "2": 130,
+        "3": 19
+      },
+      "cost_known": false,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 481,
+      "freeze_sha256": "e83fb45e1d1d3721b13d377e845789a91ed6635d38bdc6b06b43f5f16f10c6ef",
+      "grid_rows": 2184,
+      "inner_primary_ndcg": 0.9529318207548917,
+      "inner_selected_baseline_ndcg": 0.954404395092487,
+      "outer_groups": 233,
+      "policy": "chemistry",
+      "primary": {
+        "clip": 1.5,
+        "estimator": "sample",
+        "family": "cov",
+        "ridge": 0.3,
+        "robust": "winsor",
+        "scale": true
+      },
+      "query_count": 60,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.954404395092487,
+        "best_baseline": {
+          "family": "rna"
+        },
+        "best_linear": {
+          "estimator": "svd",
+          "family": "cov",
+          "rank": 16,
+          "ridge": 3.0,
+          "scale": false
+        },
+        "gain": -0.0016386197535008435,
+        "linear_ndcg": 0.9527657753389862
+      },
+      "random_3seed_gain": -0.002686213067606056,
+      "rna_control": {
+        "estimator": "sample",
+        "family": "rna_cov",
+        "ridge": 1.0,
+        "scale": false
+      },
+      "rna_inner_delta": 0.004968342161207562,
+      "rna_secondary": {
+        "estimator": "sample",
+        "family": "rna_cov",
+        "ridge": 1.0,
+        "scale": false
+      },
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.0002528921557417484,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 2.164581833668364,
+          "mechanisms": {
+            "egfr": 0.02735062924861094,
+            "fgfr": 0.029721710814285124,
+            "hcc_tki": 0.043201889730657694,
+            "hdac": 0.043968177397621495,
+            "kinase_inhibitor": 0.045529322370607375,
+            "met": 0.07114980164018592,
+            "mtor": 0.054522508339481676,
+            "nonselective_cytotoxics": 0.10157550155585664,
+            "targeted_or_kinase": 0.045383109318586023
+          },
+          "sample_constant_correction_variance": 0.00021666950761956624,
+          "tissues": {
+            "biliary tract": {
+              "mae": 0.039298392934538705,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 0.04293006845644592,
+              "n": 4
+            },
+            "bone": {
+              "mae": 0.04320144546825696,
+              "n": 3
+            },
+            "bowel": {
+              "mae": 0.04538357033549875,
+              "n": 8
+            },
+            "breast": {
+              "mae": 0.05013471063223704,
+              "n": 11
+            },
+            "cervix": {
+              "mae": 0.05207843444088831,
+              "n": 1
+            },
+            "cns/brain": {
+              "mae": 0.037648172141136485,
+              "n": 7
+            },
+            "esophagus/stomach": {
+              "mae": 0.04480208103700927,
+              "n": 11
+            },
+            "head and neck": {
+              "mae": 0.03682409071709435,
+              "n": 6
+            },
+            "kidney": {
+              "mae": 0.04976341317254317,
+              "n": 7
+            },
+            "liver": {
+              "mae": 0.04177398693677448,
+              "n": 3
+            },
+            "lung": {
+              "mae": 0.04212162634117999,
+              "n": 34
+            },
+            "lymphoid": {
+              "mae": 0.07710877324563865,
+              "n": 13
+            },
+            "myeloid": {
+              "mae": 0.08081572830529624,
+              "n": 6
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.03926443415133532,
+              "n": 8
+            },
+            "pancreas": {
+              "mae": 0.039428707119206,
+              "n": 7
+            },
+            "peripheral nervous system": {
+              "mae": 0.04634421742622158,
+              "n": 6
+            },
+            "skin": {
+              "mae": 0.05424880496119836,
+              "n": 11
+            },
+            "soft tissue": {
+              "mae": 0.031071838709044945,
+              "n": 1
+            },
+            "thyroid": {
+              "mae": 0.03584034965515251,
+              "n": 2
+            },
+            "uterus": {
+              "mae": 0.038588631693595235,
+              "n": 3
+            },
+            "vulva/vagina": {
+              "mae": 0.03867123970271776,
+              "n": 1
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.010672171582564591
+        },
+        {
+          "drug_differential_correction_variance": 0.00024311510615190052,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.214655710925009,
+          "mechanisms": {
+            "egfr": 0.028124887702443594,
+            "fgfr": 0.03487667261483794,
+            "hcc_tki": 0.033345664766262856,
+            "hdac": 0.04092649969890731,
+            "kinase_inhibitor": 0.04852347451288717,
+            "met": 0.08033290308390466,
+            "nonselective_cytotoxics": 0.10084797018193847,
+            "targeted_or_kinase": 0.047771354361373836
+          },
+          "sample_constant_correction_variance": 0.0002203843939122968,
+          "tissues": {
+            "adrenal gland": {
+              "mae": 0.057580930729579066,
+              "n": 1
+            },
+            "bone": {
+              "mae": 0.044035712008828096,
+              "n": 5
+            },
+            "bowel": {
+              "mae": 0.04384564063487687,
+              "n": 9
+            },
+            "breast": {
+              "mae": 0.05395274695421159,
+              "n": 11
+            },
+            "cervix": {
+              "mae": 0.04234647524549209,
+              "n": 3
+            },
+            "cns/brain": {
+              "mae": 0.04508845338167696,
+              "n": 9
+            },
+            "esophagus/stomach": {
+              "mae": 0.03939527757787999,
+              "n": 4
+            },
+            "head and neck": {
+              "mae": 0.040969357153290274,
+              "n": 5
+            },
+            "kidney": {
+              "mae": 0.0446065327890655,
+              "n": 4
+            },
+            "liver": {
+              "mae": 0.04739516681020316,
+              "n": 4
+            },
+            "lung": {
+              "mae": 0.04744766769660937,
+              "n": 27
+            },
+            "lymphoid": {
+              "mae": 0.0664998757597371,
+              "n": 18
+            },
+            "myeloid": {
+              "mae": 0.07270580448707291,
+              "n": 5
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.04673662502776888,
+              "n": 7
+            },
+            "pancreas": {
+              "mae": 0.03861188774797798,
+              "n": 9
+            },
+            "peripheral nervous system": {
+              "mae": 0.07538107922704261,
+              "n": 2
+            },
+            "prostate": {
+              "mae": 0.044377329642433135,
+              "n": 2
+            },
+            "skin": {
+              "mae": 0.048049986172120446,
+              "n": 10
+            },
+            "soft tissue": {
+              "mae": 0.0337660143018344,
+              "n": 4
+            },
+            "testis": {
+              "mae": 0.05974638167655295,
+              "n": 1
+            },
+            "thyroid": {
+              "mae": 0.03715522007645479,
+              "n": 2
+            },
+            "uterus": {
+              "mae": 0.044614241394362694,
+              "n": 3
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.009050955623294565
+        },
+        {
+          "drug_differential_correction_variance": 0.0002138678825231904,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 2.702822659904487,
+          "mechanisms": {
+            "egfr": 0.028887874920174816,
+            "fgfr": 0.034800453579073784,
+            "hcc_tki": 0.041514982056033045,
+            "hdac": 0.04322721503107975,
+            "kinase_inhibitor": 0.050313421710241724,
+            "met": 0.07946372420946947,
+            "mtor": 0.07035158882687337,
+            "nonselective_cytotoxics": 0.10596243337687308,
+            "targeted_or_kinase": 0.049650466162240316
+          },
+          "sample_constant_correction_variance": 0.00017222076765633867,
+          "tissues": {
+            "biliary tract": {
+              "mae": 0.04289284563021696,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 0.041291270610517045,
+              "n": 6
+            },
+            "bone": {
+              "mae": 0.04716801950410589,
+              "n": 4
+            },
+            "bowel": {
+              "mae": 0.04429502304335857,
+              "n": 8
+            },
+            "breast": {
+              "mae": 0.048136220678956565,
+              "n": 11
+            },
+            "cns/brain": {
+              "mae": 0.03750499322789792,
+              "n": 7
+            },
+            "esophagus/stomach": {
+              "mae": 0.04412059290883529,
+              "n": 16
+            },
+            "head and neck": {
+              "mae": 0.04508624561667787,
+              "n": 7
+            },
+            "kidney": {
+              "mae": 0.04377781290033924,
+              "n": 3
+            },
+            "liver": {
+              "mae": 0.03942474302921461,
+              "n": 2
+            },
+            "lung": {
+              "mae": 0.044886608540856375,
+              "n": 25
+            },
+            "lymphoid": {
+              "mae": 0.07054288950655052,
+              "n": 22
+            },
+            "myeloid": {
+              "mae": 0.08220115884218086,
+              "n": 9
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.038350929578577005,
+              "n": 6
+            },
+            "pancreas": {
+              "mae": 0.038513375419865964,
+              "n": 4
+            },
+            "peripheral nervous system": {
+              "mae": 0.052156887911771414,
+              "n": 2
+            },
+            "pleura": {
+              "mae": 0.036170552319553746,
+              "n": 4
+            },
+            "prostate": {
+              "mae": 0.04977750294402366,
+              "n": 2
+            },
+            "skin": {
+              "mae": 0.04959254694963717,
+              "n": 7
+            },
+            "soft tissue": {
+              "mae": 0.05286856480530654,
+              "n": 2
+            },
+            "thyroid": {
+              "mae": 0.040187705169351357,
+              "n": 2
+            },
+            "uterus": {
+              "mae": 0.04448710692033227,
+              "n": 3
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.008649410383773
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.9529318207548917,
+          "recipe": {
+            "clip": 1.5,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9528538321683554,
+          "recipe": {
+            "clip": 1.5,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9527657753389862,
+          "recipe": {
+            "estimator": "svd",
+            "family": "cov",
+            "rank": 16,
+            "ridge": 3.0,
+            "scale": false
+          }
+        },
+        {
+          "ndcg": 0.9523834118751813,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 10.0,
+            "width": 4.0
+          }
+        },
+        {
+          "ndcg": 0.9521781519357572,
+          "recipe": {
+            "alpha": 0.25,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 3.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9521268338535069,
+          "recipe": {
+            "alpha": 0.5,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 3.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9516104534861037,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9496030284943954,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.9462715292478103,
+          "recipe": {
+            "family": "als",
+            "rank": 2,
+            "ridge": 3.0
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "clip": 1.5,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 0.3,
+          "robust": "winsor",
+          "scale": true
+        },
+        {
+          "clip": 1.5,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 0.3,
+          "robust": "huber",
+          "scale": true
+        }
+      ],
+      "task": "GDSC2-2"
+    },
+    "LICOB-0": {
+      "actual_anchor_dose_points": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "artifacts": {
+        "inner.tsv": "802faa2a6a90fb43f90573b05fdf76d0e4a8a535a1b000a44885717c40d5786c",
+        "model.npz": "287a2c9821828efa59cafb55ceb7fc02c6392ea60df93ac835d7cedcd6abddc4"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B0",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "mean",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "mean",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 81,
+        "2": 130,
+        "3": 17
+      },
+      "cost_known": true,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 25,
+      "freeze_sha256": "4118ffe8e84cc174da2e1929ccc93c594e089d3638e7fb7028be298cd83430f7",
+      "grid_rows": 1953,
+      "inner_primary_ndcg": 0.8902185462189878,
+      "inner_selected_baseline_ndcg": 0.879796307339264,
+      "outer_groups": 13,
+      "policy": "logdet",
+      "primary": {
+        "alpha": 0.1,
+        "estimator": "sample",
+        "family": "cov",
+        "prior": "chem",
+        "ridge": 1.0,
+        "scale": true
+      },
+      "query_count": 68,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.879796307339264,
+        "best_baseline": {
+          "family": "mean"
+        },
+        "best_linear": {
+          "estimator": "lw",
+          "family": "cov",
+          "rank": null,
+          "ridge": 0.03,
+          "scale": true
+        },
+        "gain": 0.008226408183798606,
+        "linear_ndcg": 0.8880227155230626
+      },
+      "random_3seed_gain": 0.005812506582392629,
+      "rna_control": {
+        "estimator": "lw",
+        "family": "rna_cov",
+        "ridge": 0.1,
+        "scale": false
+      },
+      "rna_inner_delta": 0.0003853097669846983,
+      "rna_secondary": null,
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.002870504108249688,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 3.013534641524193,
+          "mechanisms": {
+            "egfr": 0.16411588780338737,
+            "fgfr": 0.15714382704711588,
+            "hcc_tki": 0.17427722285825686,
+            "hdac": 0.2423668384772005,
+            "kinase_inhibitor": 0.16212529603030784,
+            "met": 0.18580907783326348,
+            "mtor": 0.15040866606670453,
+            "nonselective_cytotoxics": 0.1754870906684679,
+            "targeted_or_kinase": 0.16964794063470404
+          },
+          "sample_constant_correction_variance": 0.0006180198071103886,
+          "tissues": {
+            "Liver": {
+              "mae": 0.17539989657446622,
+              "n": 9
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.02498146669471266
+        },
+        {
+          "drug_differential_correction_variance": 0.002406845307929134,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 1.665677698569538,
+          "mechanisms": {
+            "egfr": 0.11841215090455862,
+            "fgfr": 0.11363343049766135,
+            "hcc_tki": 0.12346105038675181,
+            "hdac": 0.15683349880968891,
+            "kinase_inhibitor": 0.11327328906991738,
+            "met": 0.10933870079016156,
+            "mtor": 0.0724770415144734,
+            "nonselective_cytotoxics": 0.13431112333948442,
+            "targeted_or_kinase": 0.11735705873302094
+          },
+          "sample_constant_correction_variance": 0.0026972716863770353,
+          "tissues": {
+            "Liver": {
+              "mae": 0.1234168663509031,
+              "n": 8
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.055641238608559296
+        },
+        {
+          "drug_differential_correction_variance": 0.0019947379263592327,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 1.4708223690843727,
+          "mechanisms": {
+            "egfr": 0.12041554013141238,
+            "fgfr": 0.10780453951804092,
+            "hcc_tki": 0.12900603901579766,
+            "hdac": 0.12805207925536546,
+            "kinase_inhibitor": 0.10971804744588992,
+            "met": 0.07443206506160109,
+            "mtor": 0.10297661817884696,
+            "nonselective_cytotoxics": 0.19187312631605638,
+            "targeted_or_kinase": 0.1113847776103877
+          },
+          "sample_constant_correction_variance": 0.0012711371929911342,
+          "tissues": {
+            "Liver": {
+              "mae": 0.13165256398982497,
+              "n": 8
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.05221954401444466
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.8911357615017629,
+          "recipe": {
+            "alpha": 0.25,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 1.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8902185462189878,
+          "recipe": {
+            "alpha": 0.1,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 1.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8899602065149966,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8883625915059034,
+          "recipe": {
+            "clip": 1.5,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8880227155230626,
+          "recipe": {
+            "estimator": "lw",
+            "family": "cov",
+            "rank": null,
+            "ridge": 0.03,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8871290251894468,
+          "recipe": {
+            "family": "als",
+            "rank": 8,
+            "ridge": 3.0
+          }
+        },
+        {
+          "ndcg": 0.8837121458067991,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.8810967574133545,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 1.0,
+            "width": 4.0
+          }
+        },
+        {
+          "ndcg": 0.8806442442757959,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "rank",
+            "scale": true
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "alpha": 0.1,
+          "estimator": "sample",
+          "family": "cov",
+          "prior": "chem",
+          "ridge": 1.0,
+          "scale": true
+        },
+        {
+          "clip": 3.0,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 1.0,
+          "robust": "winsor",
+          "scale": true
+        }
+      ],
+      "task": "LICOB-0"
+    },
+    "LICOB-1": {
+      "actual_anchor_dose_points": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "artifacts": {
+        "inner.tsv": "c9a956870a048232a7c6324b79d25fddceef86934fa14ea478e8d3ab2202c5c0",
+        "model.npz": "9dd461716b350ed95dc9413d495aa43429566b930b1cddc274f9d5fb8294e3e4"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B1",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 81,
+        "2": 130,
+        "3": 16
+      },
+      "cost_known": true,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 25,
+      "freeze_sha256": "ce1be3eb0357fb5e4d52412c8f282b1f231a620742628debf01e395c71aecac0",
+      "grid_rows": 1950,
+      "inner_primary_ndcg": 0.8963614584840838,
+      "inner_selected_baseline_ndcg": 0.8840024700528631,
+      "outer_groups": 13,
+      "policy": "logdet",
+      "primary": {
+        "estimator": "svd",
+        "family": "cov",
+        "rank": 2,
+        "ridge": 3.0,
+        "scale": false
+      },
+      "query_count": 68,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.8840024700528631,
+        "best_baseline": {
+          "family": "rna"
+        },
+        "best_linear": {
+          "estimator": "svd",
+          "family": "cov",
+          "rank": 2,
+          "ridge": 3.0,
+          "scale": false
+        },
+        "gain": 0.012358988431220519,
+        "linear_ndcg": 0.8963614584840838
+      },
+      "random_3seed_gain": -0.005340076337668851,
+      "rna_control": {
+        "estimator": "sample",
+        "family": "rna_cov",
+        "ridge": 3.0,
+        "scale": false
+      },
+      "rna_inner_delta": 0.0019158245755115007,
+      "rna_secondary": null,
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.005566450515904184,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 1.693233171825062,
+          "mechanisms": {
+            "egfr": 0.13161141663303813,
+            "fgfr": 0.12854038833649764,
+            "hcc_tki": 0.12158586547504936,
+            "hdac": 0.10316254815092288,
+            "kinase_inhibitor": 0.14522031731038468,
+            "met": 0.14369370017650254,
+            "mtor": 0.17151019515517738,
+            "nonselective_cytotoxics": 0.12999878118711808,
+            "targeted_or_kinase": 0.14115021061753355
+          },
+          "sample_constant_correction_variance": 0.00296446276963498,
+          "tissues": {
+            "Liver": {
+              "mae": 0.1439559990525302,
+              "n": 9
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.055102054192119616
+        },
+        {
+          "drug_differential_correction_variance": 0.00904589938145079,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 3.3193507061081062,
+          "mechanisms": {
+            "egfr": 0.1566839760311432,
+            "fgfr": 0.14892759691519317,
+            "hcc_tki": 0.17463827315250646,
+            "hdac": 0.1719020985147234,
+            "kinase_inhibitor": 0.14904033858724877,
+            "met": 0.1010653303668136,
+            "mtor": 0.1885772450490097,
+            "nonselective_cytotoxics": 0.1766535299391605,
+            "targeted_or_kinase": 0.15111868039883739
+          },
+          "sample_constant_correction_variance": 0.0012067567072014942,
+          "tissues": {
+            "Liver": {
+              "mae": 0.15726679155882442,
+              "n": 8
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.049840982505318675
+        },
+        {
+          "drug_differential_correction_variance": 0.0045554255883664225,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 2.3354208326210055,
+          "mechanisms": {
+            "egfr": 0.1246150348816192,
+            "fgfr": 0.09044424076443101,
+            "hcc_tki": 0.13763425230146964,
+            "hdac": 0.1462476531904778,
+            "kinase_inhibitor": 0.11888052646712183,
+            "met": 0.08665225147116772,
+            "mtor": 0.10835010582364138,
+            "nonselective_cytotoxics": 0.16393250126782385,
+            "targeted_or_kinase": 0.12136844707833598
+          },
+          "sample_constant_correction_variance": 0.0015894440395555576,
+          "tissues": {
+            "Liver": {
+              "mae": 0.13526455674673293,
+              "n": 8
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.03726055004243758
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.8963614584840838,
+          "recipe": {
+            "estimator": "svd",
+            "family": "cov",
+            "rank": 2,
+            "ridge": 3.0,
+            "scale": false
+          }
+        },
+        {
+          "ndcg": 0.8903357216655642,
+          "recipe": {
+            "alpha": 0.75,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8894805873940985,
+          "recipe": {
+            "family": "als",
+            "rank": 4,
+            "ridge": 1.0
+          }
+        },
+        {
+          "ndcg": 0.883819823346495,
+          "recipe": {
+            "alpha": 0.1,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8833409724124985,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 1.0,
+            "width": 4.0
+          }
+        },
+        {
+          "ndcg": 0.8833227649835894,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8798786312463532,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8769986370626569,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.871080095898339,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "rank",
+            "scale": true
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "estimator": "svd",
+          "family": "cov",
+          "rank": 2,
+          "ridge": 3.0,
+          "scale": false
+        },
+        {
+          "alpha": 0.75,
+          "estimator": "sample",
+          "family": "cov",
+          "prior": "chem",
+          "ridge": 0.3,
+          "scale": true
+        }
+      ],
+      "task": "LICOB-1"
+    },
+    "LICOB-2": {
+      "actual_anchor_dose_points": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "artifacts": {
+        "inner.tsv": "159f15cb3ff272dc19b66b4817abcfe560680de0c90a6d8a3f2a3f99598db41e",
+        "model.npz": "3901f9c7a561605a373c34602b24c30fe659d0bc4000fbad69295073e1221c84"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B0",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "mean",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "mean",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 81,
+        "2": 130,
+        "3": 16
+      },
+      "cost_known": true,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 26,
+      "freeze_sha256": "cf0550bffc28e2db5afa244e7a272f428c131a864f3bc92821dd46c7ecacc111",
+      "grid_rows": 1950,
+      "inner_primary_ndcg": 0.8539701875719953,
+      "inner_selected_baseline_ndcg": 0.8459598380167787,
+      "outer_groups": 12,
+      "policy": "chemistry",
+      "primary": {
+        "estimator": "svd",
+        "family": "cov",
+        "rank": 4,
+        "ridge": 3.0,
+        "scale": false
+      },
+      "query_count": 68,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.8459598380167787,
+        "best_baseline": {
+          "family": "mean"
+        },
+        "best_linear": {
+          "estimator": "svd",
+          "family": "cov",
+          "rank": 4,
+          "ridge": 3.0,
+          "scale": false
+        },
+        "gain": 0.008010349555216881,
+        "linear_ndcg": 0.8539701875719953
+      },
+      "random_3seed_gain": -0.0023549267385140197,
+      "rna_control": {
+        "estimator": "oas",
+        "family": "rna_cov",
+        "ridge": 0.3,
+        "scale": false
+      },
+      "rna_inner_delta": -0.0008969338389831494,
+      "rna_secondary": null,
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.0023959308539787897,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 3.0120227799693793,
+          "mechanisms": {
+            "egfr": 0.13766868893285747,
+            "fgfr": 0.10787490543398179,
+            "hcc_tki": 0.127308688658677,
+            "hdac": 0.17507529763094254,
+            "kinase_inhibitor": 0.1288088743471009,
+            "met": 0.11697594391534778,
+            "mtor": 0.10461264580547326,
+            "nonselective_cytotoxics": 0.1955310567227271,
+            "targeted_or_kinase": 0.13314635152996104
+          },
+          "sample_constant_correction_variance": 0.003485576892002503,
+          "tissues": {
+            "Liver": {
+              "mae": 0.14309280868695048,
+              "n": 9
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.03457592875379927
+        },
+        {
+          "drug_differential_correction_variance": 0.001341214695838826,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.70032301668245,
+          "mechanisms": {
+            "egfr": 0.09149096070519994,
+            "fgfr": 0.10398068868633119,
+            "hcc_tki": 0.06787906215549842,
+            "hdac": 0.14829071445391048,
+            "kinase_inhibitor": 0.10176960127845534,
+            "met": 0.08830924112555222,
+            "mtor": 0.08520440630310455,
+            "nonselective_cytotoxics": 0.1923478337341301,
+            "targeted_or_kinase": 0.10613095563865427
+          },
+          "sample_constant_correction_variance": 0.0015631262683591877,
+          "tissues": {
+            "Liver": {
+              "mae": 0.12520165064014868,
+              "n": 9
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.03072876310351006
+        },
+        {
+          "drug_differential_correction_variance": 0.0012027957042686532,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 2.4425064952518216,
+          "mechanisms": {
+            "egfr": 0.11548849260216236,
+            "fgfr": 0.09393166169458138,
+            "hcc_tki": 0.14224023735298588,
+            "hdac": 0.12010285548333777,
+            "kinase_inhibitor": 0.1165489133651863,
+            "met": 0.08933708481500989,
+            "mtor": 0.11923734656777553,
+            "nonselective_cytotoxics": 0.15912702066293988,
+            "targeted_or_kinase": 0.11688209543876302
+          },
+          "sample_constant_correction_variance": 0.000583337693698285,
+          "tissues": {
+            "Liver": {
+              "mae": 0.1305587891825806,
+              "n": 8
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.0299736881630009
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.8539701875719953,
+          "recipe": {
+            "estimator": "svd",
+            "family": "cov",
+            "rank": 4,
+            "ridge": 3.0,
+            "scale": false
+          }
+        },
+        {
+          "ndcg": 0.8519210591178278,
+          "recipe": {
+            "alpha": 0.75,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 3.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8500655611188584,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 10.0,
+            "width": 0.25
+          }
+        },
+        {
+          "ndcg": 0.8458219733074236,
+          "recipe": {
+            "family": "als",
+            "rank": 2,
+            "ridge": 3.0
+          }
+        },
+        {
+          "ndcg": 0.8437481271562864,
+          "recipe": {
+            "alpha": 0.75,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 3.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8348519077058514,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8298509537966771,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8268790368105311,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.8186735386584258,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "rank",
+            "scale": true
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "estimator": "svd",
+          "family": "cov",
+          "rank": 4,
+          "ridge": 3.0,
+          "scale": false
+        },
+        {
+          "alpha": 0.75,
+          "estimator": "sample",
+          "family": "cov",
+          "prior": "chem",
+          "ridge": 3.0,
+          "scale": true
+        }
+      ],
+      "task": "LICOB-2"
+    },
+    "LIMORE-0": {
+      "actual_anchor_dose_points": [
+        10,
+        10,
+        7,
+        10,
+        7
+      ],
+      "artifacts": {
+        "inner.tsv": "eeeb7558e472b519496bbe367d696bb7dadbceb8092b0614a394ab7e3ac6c8b6",
+        "model.npz": "ee4d47c5afd6a38d606654ae2d48110c26d19acd575cd90e2e849326f08b3bc6"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B1",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 5
+        }
+      },
+      "candidate_counts": {
+        "1": 93,
+        "2": 129,
+        "3": 16
+      },
+      "cost_known": true,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 33,
+      "freeze_sha256": "2bf153b8ca97dafc5b097ac79c45b51cf88d8eb1cd82f927edeac4743bca6279",
+      "grid_rows": 2163,
+      "inner_primary_ndcg": 0.8817615341516142,
+      "inner_selected_baseline_ndcg": 0.8670172847318481,
+      "outer_groups": 17,
+      "policy": "logdet",
+      "primary": {
+        "estimator": "sample",
+        "family": "cov",
+        "rank": null,
+        "ridge": 0.3,
+        "scale": false
+      },
+      "query_count": 60,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.8670172847318481,
+        "best_baseline": {
+          "family": "rna"
+        },
+        "best_linear": {
+          "estimator": "sample",
+          "family": "cov",
+          "rank": null,
+          "ridge": 0.3,
+          "scale": false
+        },
+        "gain": 0.014744249419766006,
+        "linear_ndcg": 0.8817615341516142
+      },
+      "random_3seed_gain": 0.016760727019272486,
+      "rna_control": {
+        "estimator": "sample",
+        "family": "rna_cov",
+        "ridge": 1.0,
+        "scale": false
+      },
+      "rna_inner_delta": -0.0010715193457321674,
+      "rna_secondary": null,
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.0020918162072109925,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 1.8533424254701887,
+          "mechanisms": {
+            "egfr": 0.061409149843930866,
+            "fgfr": 0.03657866200071104,
+            "hcc_tki": 0.041557717665726496,
+            "hdac": 0.08851762891915696,
+            "kinase_inhibitor": 0.0923336875505889,
+            "met": 0.08881893676121604,
+            "mtor": 0.06356669599453359,
+            "nonselective_cytotoxics": 0.1042423440049024,
+            "targeted_or_kinase": 0.09199697649487433
+          },
+          "sample_constant_correction_variance": 0.002287153143821242,
+          "tissues": {
+            "liver": {
+              "mae": 0.10148335134226645,
+              "n": 11
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.03259632459038558
+        },
+        {
+          "drug_differential_correction_variance": 0.010135098908514458,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 4.213248699234542,
+          "mechanisms": {
+            "egfr": 0.057214479130575716,
+            "fgfr": 0.048679464895738954,
+            "hcc_tki": 0.038799545604116144,
+            "hdac": 0.11882147275920654,
+            "kinase_inhibitor": 0.09262377435038525,
+            "met": 0.10702308267224009,
+            "mtor": 0.08779608781266844,
+            "nonselective_cytotoxics": 0.10656285050808752,
+            "targeted_or_kinase": 0.09493533597469302
+          },
+          "sample_constant_correction_variance": 0.007431360003234431,
+          "tissues": {
+            "liver": {
+              "mae": 0.10442806536947678,
+              "n": 11
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.05728798457778841
+        },
+        {
+          "drug_differential_correction_variance": 0.004291780008747872,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 1.9200298178388633,
+          "mechanisms": {
+            "egfr": 0.03942366532034715,
+            "fgfr": 0.0301462565336062,
+            "hcc_tki": 0.032907689706636836,
+            "hdac": 0.10102824244314111,
+            "kinase_inhibitor": 0.08265613871873938,
+            "met": 0.06515592827171944,
+            "mtor": 0.082857217777646,
+            "nonselective_cytotoxics": 0.07395228693678114,
+            "targeted_or_kinase": 0.08437852344290203
+          },
+          "sample_constant_correction_variance": 0.003918758753277385,
+          "tissues": {
+            "liver": {
+              "mae": 0.08854571482546295,
+              "n": 11
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.052358417400707596
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.8817615341516142,
+          "recipe": {
+            "estimator": "sample",
+            "family": "cov",
+            "rank": null,
+            "ridge": 0.3,
+            "scale": false
+          }
+        },
+        {
+          "ndcg": 0.8774334799964137,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8757253265986327,
+          "recipe": {
+            "clip": 2.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8741509479423147,
+          "recipe": {
+            "alpha": 0.75,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8713297051515768,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 1.0,
+            "width": 4.0
+          }
+        },
+        {
+          "ndcg": 0.8712167620609484,
+          "recipe": {
+            "alpha": 0.75,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8710333805199427,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8708199036932974,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.8687772128017114,
+          "recipe": {
+            "family": "als",
+            "rank": 8,
+            "ridge": 1.0
+          }
+        }
+      ],
+      "round2_outliers": true,
+      "round3_retained": [
+        {
+          "estimator": "sample",
+          "family": "cov",
+          "rank": null,
+          "ridge": 0.3,
+          "scale": false
+        },
+        {
+          "clip": 3.0,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 1.0,
+          "robust": "winsor",
+          "scale": true
+        }
+      ],
+      "task": "LIMORE-0"
+    },
+    "LIMORE-1": {
+      "actual_anchor_dose_points": [
+        10,
+        7,
+        7,
+        7,
+        7
+      ],
+      "artifacts": {
+        "inner.tsv": "7b796d58d77f1702c5c6d6351c93a63300fa6cc7b043df075ac78ce875479e33",
+        "model.npz": "3874d36fc47801cca226aceaa8af8a41d54948237c00e11c8e86905b1ffddcdf"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B4",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 3
+        }
+      },
+      "candidate_counts": {
+        "1": 93,
+        "2": 129,
+        "3": 16
+      },
+      "cost_known": true,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 33,
+      "freeze_sha256": "07b0c243b231795810e6853bf95ce84e10a59bfcdede23b82ccb946d39f599dc",
+      "grid_rows": 2163,
+      "inner_primary_ndcg": 0.9175698998575107,
+      "inner_selected_baseline_ndcg": 0.8820019740672328,
+      "outer_groups": 17,
+      "policy": "chemistry",
+      "primary": {
+        "estimator": "svd",
+        "family": "cov",
+        "rank": 16,
+        "ridge": 0.3,
+        "scale": false
+      },
+      "query_count": 60,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.8820019740672328,
+        "best_baseline": {
+          "family": "knn",
+          "neighbors": 3
+        },
+        "best_linear": {
+          "estimator": "svd",
+          "family": "cov",
+          "rank": 16,
+          "ridge": 0.3,
+          "scale": false
+        },
+        "gain": 0.035567925790278045,
+        "linear_ndcg": 0.9175698998575107
+      },
+      "random_3seed_gain": 0.013142406060634944,
+      "rna_control": {
+        "estimator": "sample",
+        "family": "rna_cov",
+        "ridge": 0.3,
+        "scale": false
+      },
+      "rna_inner_delta": 0.002535644575858679,
+      "rna_secondary": null,
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.010150367832216066,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 4.736250811025322,
+          "mechanisms": {
+            "egfr": 0.06475147746217721,
+            "fgfr": 0.07222066641885473,
+            "hcc_tki": 0.05804866735462486,
+            "hdac": 0.11266722356504168,
+            "kinase_inhibitor": 0.0928719804167789,
+            "met": 0.08959706693914861,
+            "mtor": 0.06377717570329444,
+            "nonselective_cytotoxics": 0.10570516696427805,
+            "targeted_or_kinase": 0.09407169212273422
+          },
+          "sample_constant_correction_variance": 0.004000723085017053,
+          "tissues": {
+            "liver": {
+              "mae": 0.10344245514007123,
+              "n": 11
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.03239278215261028
+        },
+        {
+          "drug_differential_correction_variance": 0.009067675834060774,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.058812766761002,
+          "mechanisms": {
+            "egfr": 0.053832580564239486,
+            "fgfr": 0.042625663560101855,
+            "hcc_tki": 0.04035882372632729,
+            "hdac": 0.09629163417039054,
+            "kinase_inhibitor": 0.07968368089071366,
+            "met": 0.06643332197985845,
+            "mtor": 0.07321938152100613,
+            "nonselective_cytotoxics": 0.09442466437411709,
+            "targeted_or_kinase": 0.08069022351372439
+          },
+          "sample_constant_correction_variance": 0.006483308247678275,
+          "tissues": {
+            "liver": {
+              "mae": 0.08652356424295093,
+              "n": 11
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.0787608320840952
+        },
+        {
+          "drug_differential_correction_variance": 0.00399341427512152,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 1.9426906470623375,
+          "mechanisms": {
+            "egfr": 0.055253151191343754,
+            "fgfr": 0.05390884451343102,
+            "hcc_tki": 0.04895900578630095,
+            "hdac": 0.09907685946405854,
+            "kinase_inhibitor": 0.08007219070115716,
+            "met": 0.08273208081390898,
+            "mtor": 0.07854128701614314,
+            "nonselective_cytotoxics": 0.09160573999641704,
+            "targeted_or_kinase": 0.08122398880799966
+          },
+          "sample_constant_correction_variance": 0.004587292362463473,
+          "tissues": {
+            "liver": {
+              "mae": 0.08906846895752127,
+              "n": 11
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.06270594918310927
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.9175698998575107,
+          "recipe": {
+            "estimator": "svd",
+            "family": "cov",
+            "rank": 16,
+            "ridge": 0.3,
+            "scale": false
+          }
+        },
+        {
+          "ndcg": 0.9129350292817052,
+          "recipe": {
+            "alpha": 0.25,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9112476790275315,
+          "recipe": {
+            "alpha": 0.0,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9099027927307257,
+          "recipe": {
+            "clip": 2.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9092734084863393,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.907301984879548,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9069451577852442,
+          "recipe": {
+            "family": "als",
+            "rank": 8,
+            "ridge": 1.0
+          }
+        },
+        {
+          "ndcg": 0.9034631615814589,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 1.0,
+            "width": 4.0
+          }
+        },
+        {
+          "ndcg": 0.9024117960209264,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 1.0
+          }
+        }
+      ],
+      "round2_outliers": true,
+      "round3_retained": [
+        {
+          "estimator": "svd",
+          "family": "cov",
+          "rank": 16,
+          "ridge": 0.3,
+          "scale": false
+        },
+        {
+          "alpha": 0.25,
+          "estimator": "sample",
+          "family": "cov",
+          "prior": "pan",
+          "ridge": 0.3,
+          "scale": true
+        }
+      ],
+      "task": "LIMORE-1"
+    },
+    "LIMORE-2": {
+      "actual_anchor_dose_points": [
+        10,
+        7,
+        7,
+        7,
+        7
+      ],
+      "artifacts": {
+        "inner.tsv": "499a7ecf985a6189ae20cec15dd1ab056bec708b95a2747b9f9049c8cf6bc678",
+        "model.npz": "c3fbeea6aefd91482844ebdad15de205f6eb0cfaf5c07cabcc89cae1813a7443"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B1",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 5
+        }
+      },
+      "candidate_counts": {
+        "1": 93,
+        "2": 130,
+        "3": 16
+      },
+      "cost_known": true,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 34,
+      "freeze_sha256": "e734bf21a71a3d856502223cf42e9db3b45609a8e326a547cdfeafd7f2e65525",
+      "grid_rows": 2166,
+      "inner_primary_ndcg": 0.9159615682837763,
+      "inner_selected_baseline_ndcg": 0.8983842734904232,
+      "outer_groups": 16,
+      "policy": "chemistry",
+      "primary": {
+        "alpha": 0.75,
+        "estimator": "sample",
+        "family": "cov",
+        "prior": "pan",
+        "ridge": 0.05,
+        "scale": true
+      },
+      "query_count": 60,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.8983842734904232,
+        "best_baseline": {
+          "family": "rna"
+        },
+        "best_linear": {
+          "estimator": "svd",
+          "family": "cov",
+          "rank": 16,
+          "ridge": 0.1,
+          "scale": false
+        },
+        "gain": 0.01373106832649514,
+        "linear_ndcg": 0.9121153418169182
+      },
+      "random_3seed_gain": 0.006375380195863984,
+      "rna_control": {
+        "estimator": "sample",
+        "family": "rna_cov",
+        "ridge": 0.3,
+        "scale": true
+      },
+      "rna_inner_delta": -0.0030772753304064335,
+      "rna_secondary": null,
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.009835396724256188,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 2.2123255071369754,
+          "mechanisms": {
+            "egfr": 0.05282136756481382,
+            "fgfr": 0.06317026314608842,
+            "hcc_tki": 0.05100073459442734,
+            "hdac": 0.08131736763274564,
+            "kinase_inhibitor": 0.08823301981289253,
+            "met": 0.07652470730135608,
+            "mtor": 0.09819530894856543,
+            "nonselective_cytotoxics": 0.10088368455281466,
+            "targeted_or_kinase": 0.08781388937773213
+          },
+          "sample_constant_correction_variance": 0.007345697984891234,
+          "tissues": {
+            "liver": {
+              "mae": 0.09484973607746561,
+              "n": 12
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.06590931971469535
+        },
+        {
+          "drug_differential_correction_variance": 0.006307981340368132,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.1652909664125133,
+          "mechanisms": {
+            "egfr": 0.051693292694897,
+            "fgfr": 0.03633700072318276,
+            "hcc_tki": 0.049604362510248606,
+            "hdac": 0.10312626728644073,
+            "kinase_inhibitor": 0.0776621825261625,
+            "met": 0.08998107382554912,
+            "mtor": 0.09535354791732248,
+            "nonselective_cytotoxics": 0.09852018456809424,
+            "targeted_or_kinase": 0.0792054603904218
+          },
+          "sample_constant_correction_variance": 0.005133061681499914,
+          "tissues": {
+            "liver": {
+              "mae": 0.0888920793840887,
+              "n": 11
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.060853738787260754
+        },
+        {
+          "drug_differential_correction_variance": 0.007052922715929253,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 3.3036637914491154,
+          "mechanisms": {
+            "egfr": 0.05719768790862855,
+            "fgfr": 0.07390638910191663,
+            "hcc_tki": 0.05864101772399091,
+            "hdac": 0.12155173909295593,
+            "kinase_inhibitor": 0.09661970035140129,
+            "met": 0.11391811870699707,
+            "mtor": 0.11960733417936713,
+            "nonselective_cytotoxics": 0.08322980993108245,
+            "targeted_or_kinase": 0.09813073300240459
+          },
+          "sample_constant_correction_variance": 0.00949220037949857,
+          "tissues": {
+            "liver": {
+              "mae": 0.10054525097723645,
+              "n": 11
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.06468293106498772
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.9139974876110406,
+          "recipe": {
+            "alpha": 0.75,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 0.1,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9121153418169182,
+          "recipe": {
+            "estimator": "svd",
+            "family": "cov",
+            "rank": 16,
+            "ridge": 0.1,
+            "scale": false
+          }
+        },
+        {
+          "ndcg": 0.911846056229448,
+          "recipe": {
+            "alpha": 0.1,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 0.1,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9084513965555367,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9070794240829588,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.9065862510168835,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 1.0,
+            "width": 0.25
+          }
+        },
+        {
+          "ndcg": 0.9044923643930435,
+          "recipe": {
+            "clip": 1.5,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9035917827975747,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9030498472596316,
+          "recipe": {
+            "family": "als",
+            "rank": 8,
+            "ridge": 1.0
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "alpha": 0.75,
+          "estimator": "sample",
+          "family": "cov",
+          "prior": "pan",
+          "ridge": 0.1,
+          "scale": true
+        },
+        {
+          "estimator": "svd",
+          "family": "cov",
+          "rank": 16,
+          "ridge": 0.1,
+          "scale": false
+        }
+      ],
+      "task": "LIMORE-2"
+    },
+    "LIMORE_to_LICOB-0": {
+      "actual_anchor_dose_points": [
+        11,
+        11,
+        10,
+        11,
+        10
+      ],
+      "artifacts": {
+        "inner.tsv": "d3f72844218e4ca17c7c69ebfe8bfe5808f70cef7de772a3f1abec933e56d46c",
+        "model.npz": "57e2b1d8257b187ae07ab878af19dc7a2a751a17c7ad88945deaebf7f5b4f823"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.09612732177354,
+      "baseline": "B4",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B2": {
+          "base": "mean",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "mean",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 90,
+        "2": 79,
+        "3": 13
+      },
+      "cost_known": true,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 50,
+      "freeze_sha256": "37aa4902feff35dabb624923814e30a4e10dcef622933dfc9fbc6972da5c1ede",
+      "grid_rows": 1941,
+      "inner_primary_ndcg": 0.855684811792924,
+      "inner_selected_baseline_ndcg": 0.8418211462081006,
+      "outer_groups": 38,
+      "policy": "chemistry",
+      "primary": {
+        "alpha": 0.25,
+        "estimator": "sample",
+        "family": "cov",
+        "prior": "chem",
+        "ridge": 0.03,
+        "scale": true
+      },
+      "query_count": 45,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.8418211462081006,
+        "best_baseline": {
+          "family": "knn",
+          "neighbors": 10
+        },
+        "best_linear": {
+          "estimator": "oas",
+          "family": "cov",
+          "rank": null,
+          "ridge": 0.03,
+          "scale": true
+        },
+        "gain": 0.013255114424976807,
+        "linear_ndcg": 0.8550762606330773
+      },
+      "random_3seed_gain": 0.018215155329805482,
+      "rna_control": null,
+      "rna_inner_delta": null,
+      "rna_secondary": null,
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.003445003327650101,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 2.087009043607786,
+          "mechanisms": {
+            "egfr": 0.052437791354162724,
+            "fgfr": 0.04313794904454545,
+            "hcc_tki": 0.03366233901196408,
+            "hdac": 0.06468070222201318,
+            "kinase_inhibitor": 0.08403528875701008,
+            "met": 0.07639498794920734,
+            "mtor": 0.07753507501429917,
+            "nonselective_cytotoxics": 0.10774863824797892,
+            "targeted_or_kinase": 0.08248692183421036
+          },
+          "sample_constant_correction_variance": 0.005342547421230164,
+          "tissues": {
+            "liver": {
+              "mae": 0.0898818288796824,
+              "n": 17
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.06083995531034519
+        },
+        {
+          "drug_differential_correction_variance": 0.0028786893485233077,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.4810970093524496,
+          "mechanisms": {
+            "egfr": 0.06243228530190324,
+            "fgfr": 0.03391859017956645,
+            "hcc_tki": 0.03250689061225231,
+            "hdac": 0.07917426706240203,
+            "kinase_inhibitor": 0.0933611035987384,
+            "met": 0.10032789978489627,
+            "mtor": 0.0771106037483323,
+            "nonselective_cytotoxics": 0.1005580740866294,
+            "targeted_or_kinase": 0.0922261566758315
+          },
+          "sample_constant_correction_variance": 0.004590581285317513,
+          "tissues": {
+            "liver": {
+              "mae": 0.09396660916325357,
+              "n": 17
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.05137971053638035
+        },
+        {
+          "drug_differential_correction_variance": 0.006056025471688597,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 2.3418668975004406,
+          "mechanisms": {
+            "egfr": 0.06776902409309164,
+            "fgfr": 0.05672511443451106,
+            "hcc_tki": 0.039352470930427416,
+            "hdac": 0.11550902818162871,
+            "kinase_inhibitor": 0.10290619873268846,
+            "met": 0.08841490892123101,
+            "mtor": 0.08952173034780786,
+            "nonselective_cytotoxics": 0.11418933656810648,
+            "targeted_or_kinase": 0.10391442508860368
+          },
+          "sample_constant_correction_variance": 0.010817869445548701,
+          "tissues": {
+            "liver": {
+              "mae": 0.10632776993206032,
+              "n": 16
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.04824502940449176
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.8559065298096282,
+          "recipe": {
+            "alpha": 0.1,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 0.03,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.855684811792924,
+          "recipe": {
+            "alpha": 0.25,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 0.03,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8550762606330773,
+          "recipe": {
+            "estimator": "oas",
+            "family": "cov",
+            "rank": null,
+            "ridge": 0.03,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8535736832084941,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.849777798563016,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8461470892489746,
+          "recipe": {
+            "family": "als",
+            "rank": 8,
+            "ridge": 1.0
+          }
+        },
+        {
+          "ndcg": 0.8450075060308654,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8443427021610184,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.8433925504574934,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 1.0,
+            "width": 4.0
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "alpha": 0.25,
+          "estimator": "sample",
+          "family": "cov",
+          "prior": "chem",
+          "ridge": 0.03,
+          "scale": true
+        },
+        {
+          "family": "als",
+          "rank": 8,
+          "ridge": 1.0
+        }
+      ],
+      "task": "LIMORE_to_LICOB-0"
+    },
+    "LIMORE_to_Wong-0": {
+      "actual_anchor_dose_points": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "artifacts": {
+        "inner.tsv": "997748ca6bbee67bb05998c3d5fe4d981984c2a7322fed38ca6a9e9a41d4d58e",
+        "model.npz": "cc3509918ecc7304220fbe71777fe29552199b335ab219469c368cf2d682dc58"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.09612732177354,
+      "baseline": "B0",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B2": {
+          "base": "mean",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "mean",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 90,
+        "2": 78,
+        "3": 13
+      },
+      "cost_known": false,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 50,
+      "freeze_sha256": "2e2b9e7a538f61142039edc4a9403bcc2639654ab1d73bc7396eb14cae274ab0",
+      "grid_rows": 1938,
+      "inner_primary_ndcg": 0.8932113246428762,
+      "inner_selected_baseline_ndcg": 0.8796506356901993,
+      "outer_groups": 10,
+      "policy": "logdet",
+      "primary": {
+        "clip": 2.0,
+        "estimator": "sample",
+        "family": "cov",
+        "ridge": 0.05,
+        "robust": "winsor",
+        "scale": true
+      },
+      "query_count": 19,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.8796506356901993,
+        "best_baseline": {
+          "family": "mean"
+        },
+        "best_linear": {
+          "estimator": "svd",
+          "family": "cov",
+          "rank": 4,
+          "ridge": 0.3,
+          "scale": false
+        },
+        "gain": 0.010930900377581043,
+        "linear_ndcg": 0.8905815360677803
+      },
+      "random_3seed_gain": 0.010652686883505106,
+      "rna_control": null,
+      "rna_inner_delta": null,
+      "rna_secondary": null,
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.0020371654748124516,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 2.901797560142184,
+          "mechanisms": {
+            "egfr": 0.05296117767327457,
+            "fgfr": 0.04018868769127465,
+            "hcc_tki": 0.03394180206204098,
+            "hdac": 0.08386174554616843,
+            "kinase_inhibitor": 0.08099890694750864,
+            "met": 0.04955476963508821,
+            "mtor": 0.08851899721965048,
+            "nonselective_cytotoxics": 0.08222581520363295,
+            "targeted_or_kinase": 0.08163509330276636
+          },
+          "sample_constant_correction_variance": 0.004181496175621924,
+          "tissues": {
+            "liver": {
+              "mae": 0.07649227076916218,
+              "n": 17
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.03650551371860831
+        },
+        {
+          "drug_differential_correction_variance": 0.0032380738928821937,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.1422157171675043,
+          "mechanisms": {
+            "egfr": 0.05726574401019829,
+            "fgfr": 0.03150030471657465,
+            "hcc_tki": 0.04483460215972532,
+            "hdac": 0.1114321278001675,
+            "kinase_inhibitor": 0.06887763942819526,
+            "met": 0.07836616730187279,
+            "mtor": 0.10126505511875124,
+            "nonselective_cytotoxics": 0.10985698223873122,
+            "targeted_or_kinase": 0.07738853710258971
+          },
+          "sample_constant_correction_variance": 0.003698860159594655,
+          "tissues": {
+            "liver": {
+              "mae": 0.0871079034147514,
+              "n": 17
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.05324691436829169
+        },
+        {
+          "drug_differential_correction_variance": 0.005927001892883028,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 3.55940806624098,
+          "mechanisms": {
+            "egfr": 0.08028532858738954,
+            "fgfr": 0.051536724272898446,
+            "hcc_tki": 0.03637460737994125,
+            "hdac": 0.11452465215104721,
+            "kinase_inhibitor": 0.10690632219824416,
+            "met": 0.05328721056657869,
+            "mtor": 0.10466455634915393,
+            "nonselective_cytotoxics": 0.10327483278263658,
+            "targeted_or_kinase": 0.10859928440997817
+          },
+          "sample_constant_correction_variance": 0.01209219156430191,
+          "tissues": {
+            "liver": {
+              "mae": 0.10441581036887566,
+              "n": 16
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.0415494679916518
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.8926897292244657,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.891905122080561,
+          "recipe": {
+            "clip": 2.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8905815360677803,
+          "recipe": {
+            "estimator": "svd",
+            "family": "cov",
+            "rank": 4,
+            "ridge": 0.3,
+            "scale": false
+          }
+        },
+        {
+          "ndcg": 0.8899695077600027,
+          "recipe": {
+            "clip": 2.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8858793483064904,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 0.1
+          }
+        },
+        {
+          "ndcg": 0.8817653973223614,
+          "recipe": {
+            "alpha": 0.0,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 1.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8817653973223614,
+          "recipe": {
+            "alpha": 0.0,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 1.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.8799070551443036,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 1.0,
+            "width": 4.0
+          }
+        },
+        {
+          "ndcg": 0.8783679003731528,
+          "recipe": {
+            "family": "als",
+            "rank": 2,
+            "ridge": 3.0
+          }
+        }
+      ],
+      "round2_outliers": true,
+      "round3_retained": [
+        {
+          "clip": 3.0,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 1.0,
+          "robust": "rank",
+          "scale": true
+        },
+        {
+          "clip": 2.0,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 0.1,
+          "robust": "winsor",
+          "scale": true
+        }
+      ],
+      "task": "LIMORE_to_Wong-0"
+    },
+    "PRISM20Q2-0": {
+      "actual_anchor_dose_points": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "artifacts": {
+        "inner.tsv": "8db2b4bbf9879588c3e9a6c3dfa21d4d6097b04896b8906b62167c50d5818b0d",
+        "model.npz": "e085d1a701138620db70de5ad15fb54720bf361bd3cf6b1980ca6d53d3fc68b5"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B1",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 93,
+        "2": 120,
+        "3": 19
+      },
+      "cost_known": false,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 462,
+      "freeze_sha256": "0c9f68d74a9e3b5aace83a2ad2b56ff2a011d1c222f0d9f94eab1957ed89c488",
+      "grid_rows": 2154,
+      "inner_primary_ndcg": 0.9586815431554087,
+      "inner_selected_baseline_ndcg": 0.9556244831119396,
+      "outer_groups": 242,
+      "policy": "leverage",
+      "primary": {
+        "clip": 3.0,
+        "estimator": "sample",
+        "family": "cov",
+        "ridge": 0.1,
+        "robust": "winsor",
+        "scale": true
+      },
+      "query_count": 60,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.9556244831119396,
+        "best_baseline": {
+          "family": "rna"
+        },
+        "best_linear": {
+          "estimator": "sample",
+          "family": "cov",
+          "rank": null,
+          "ridge": 1.0,
+          "scale": false
+        },
+        "gain": 0.0027750870080421874,
+        "linear_ndcg": 0.9583995701199818
+      },
+      "random_3seed_gain": 0.0008761942004861615,
+      "rna_control": {
+        "family": "rna_mix",
+        "ridge": 1.0,
+        "weight": 0.5,
+        "width": 2.0
+      },
+      "rna_inner_delta": 0.005863722359432259,
+      "rna_secondary": {
+        "family": "rna_mix",
+        "ridge": 1.0,
+        "weight": 0.5,
+        "width": 2.0
+      },
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.00046108171732989054,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 2.24368027065495,
+          "mechanisms": {
+            "egfr": 0.07281451419254954,
+            "fgfr": 0.047100974263742754,
+            "hcc_tki": 0.047100974263742754,
+            "hdac": 0.06463041956564008,
+            "kinase_inhibitor": 0.06316683730531968,
+            "met": 0.05362132497141122,
+            "mtor": 0.045002060044680194,
+            "targeted_or_kinase": 0.06326185346572771
+          },
+          "sample_constant_correction_variance": 0.0009460651932103262,
+          "tissues": {
+            "bladder/urinary tract": {
+              "mae": 0.06449538035001542,
+              "n": 6
+            },
+            "bone": {
+              "mae": 0.05844162281156361,
+              "n": 3
+            },
+            "bowel": {
+              "mae": 0.06945407002068855,
+              "n": 3
+            },
+            "breast": {
+              "mae": 0.06328261927749516,
+              "n": 6
+            },
+            "cervix": {
+              "mae": 0.051046929610106005,
+              "n": 1
+            },
+            "cns/brain": {
+              "mae": 0.0562638581342502,
+              "n": 7
+            },
+            "esophagus/stomach": {
+              "mae": 0.07415630329046263,
+              "n": 5
+            },
+            "head and neck": {
+              "mae": 0.0634564966150531,
+              "n": 2
+            },
+            "kidney": {
+              "mae": 0.06023587016732955,
+              "n": 3
+            },
+            "liver": {
+              "mae": 0.05720707970238514,
+              "n": 5
+            },
+            "lung": {
+              "mae": 0.06025859758754634,
+              "n": 12
+            },
+            "lymphoid": {
+              "mae": 0.06493226745833275,
+              "n": 14
+            },
+            "myeloid": {
+              "mae": 0.07504607096379934,
+              "n": 3
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.05636819907392506,
+              "n": 4
+            },
+            "pancreas": {
+              "mae": 0.0657021368947192,
+              "n": 7
+            },
+            "peripheral nervous system": {
+              "mae": 0.052448190171733494,
+              "n": 3
+            },
+            "pleura": {
+              "mae": 0.06779559675772434,
+              "n": 1
+            },
+            "prostate": {
+              "mae": 0.06215592943755655,
+              "n": 1
+            },
+            "skin": {
+              "mae": 0.059301892693927424,
+              "n": 3
+            },
+            "soft tissue": {
+              "mae": 0.04743646845784576,
+              "n": 2
+            },
+            "thyroid": {
+              "mae": 0.0501207505939823,
+              "n": 2
+            },
+            "uterus": {
+              "mae": 0.06438799624752926,
+              "n": 2
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.01890342813587055
+        },
+        {
+          "drug_differential_correction_variance": 0.0002296325273663278,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.3501962069237488,
+          "mechanisms": {
+            "egfr": 0.06824414666129554,
+            "fgfr": 0.05029865797200955,
+            "hcc_tki": 0.04407415995655467,
+            "hdac": 0.05692324130295727,
+            "kinase_inhibitor": 0.06221720549581581,
+            "met": 0.06062545349890872,
+            "mtor": 0.04840245044900549,
+            "targeted_or_kinase": 0.061886332733762164
+          },
+          "sample_constant_correction_variance": 0.0006849730069745692,
+          "tissues": {
+            "ampulla of vater": {
+              "mae": 0.04615415520352039,
+              "n": 1
+            },
+            "biliary tract": {
+              "mae": 0.0601009222931589,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 0.05867672925825158,
+              "n": 3
+            },
+            "bone": {
+              "mae": 0.06088028818420084,
+              "n": 5
+            },
+            "bowel": {
+              "mae": 0.06981751106911262,
+              "n": 4
+            },
+            "breast": {
+              "mae": 0.06616170741912293,
+              "n": 6
+            },
+            "cns/brain": {
+              "mae": 0.07458121361125802,
+              "n": 5
+            },
+            "esophagus/stomach": {
+              "mae": 0.06475278520882033,
+              "n": 7
+            },
+            "head and neck": {
+              "mae": 0.06577495438497734,
+              "n": 3
+            },
+            "kidney": {
+              "mae": 0.05649628255096805,
+              "n": 3
+            },
+            "liver": {
+              "mae": 0.07464106271682219,
+              "n": 1
+            },
+            "lung": {
+              "mae": 0.06118923076373429,
+              "n": 12
+            },
+            "lymphoid": {
+              "mae": 0.04977324587491705,
+              "n": 8
+            },
+            "myeloid": {
+              "mae": 0.04268521452183793,
+              "n": 1
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.05890812923748188,
+              "n": 6
+            },
+            "pancreas": {
+              "mae": 0.08606016887261908,
+              "n": 1
+            },
+            "pleura": {
+              "mae": 0.06322737629146251,
+              "n": 1
+            },
+            "skin": {
+              "mae": 0.060829043583520814,
+              "n": 6
+            },
+            "soft tissue": {
+              "mae": 0.04712482483460871,
+              "n": 4
+            },
+            "uterus": {
+              "mae": 0.05538998347518929,
+              "n": 9
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.014385899838142641
+        },
+        {
+          "drug_differential_correction_variance": 0.0003583342323061868,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 2.516345891654295,
+          "mechanisms": {
+            "egfr": 0.0675022912142988,
+            "fgfr": 0.044704755808195516,
+            "hcc_tki": 0.04431224961236363,
+            "hdac": 0.0567361465494331,
+            "kinase_inhibitor": 0.0622942218196138,
+            "met": 0.057460292265232665,
+            "mtor": 0.053127027348297474,
+            "targeted_or_kinase": 0.06192982074945012
+          },
+          "sample_constant_correction_variance": 0.0009910824173877005,
+          "tissues": {
+            "biliary tract": {
+              "mae": 0.0642320771815516,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 0.08020906631621336,
+              "n": 1
+            },
+            "bone": {
+              "mae": 0.0619620073435799,
+              "n": 4
+            },
+            "bowel": {
+              "mae": 0.07089230200920404,
+              "n": 6
+            },
+            "breast": {
+              "mae": 0.06644502874113846,
+              "n": 5
+            },
+            "cns/brain": {
+              "mae": 0.06080388826005951,
+              "n": 6
+            },
+            "esophagus/stomach": {
+              "mae": 0.05709446858016634,
+              "n": 5
+            },
+            "fibroblast": {
+              "mae": 0.04489155363040246,
+              "n": 1
+            },
+            "head and neck": {
+              "mae": 0.07986527350687196,
+              "n": 8
+            },
+            "kidney": {
+              "mae": 0.049275241764439356,
+              "n": 3
+            },
+            "liver": {
+              "mae": 0.07170175431695647,
+              "n": 1
+            },
+            "lung": {
+              "mae": 0.057572266864665614,
+              "n": 19
+            },
+            "lymphoid": {
+              "mae": 0.056687749715232195,
+              "n": 10
+            },
+            "myeloid": {
+              "mae": 0.06603081208112106,
+              "n": 5
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.06992387410329802,
+              "n": 5
+            },
+            "pancreas": {
+              "mae": 0.06305694384646097,
+              "n": 4
+            },
+            "peripheral nervous system": {
+              "mae": 0.052119001495463335,
+              "n": 1
+            },
+            "pleura": {
+              "mae": 0.07262444718520565,
+              "n": 3
+            },
+            "prostate": {
+              "mae": 0.06355995512749617,
+              "n": 1
+            },
+            "skin": {
+              "mae": 0.06112643436008076,
+              "n": 3
+            },
+            "soft tissue": {
+              "mae": 0.06075247179196009,
+              "n": 3
+            },
+            "thyroid": {
+              "mae": 0.05543566712631291,
+              "n": 2
+            },
+            "uterus": {
+              "mae": 0.06790823147085237,
+              "n": 5
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.016249644613664814
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.9586815431554087,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9586766041142342,
+          "recipe": {
+            "clip": 1.5,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9586194272700723,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.3,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9585838460664217,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.9585544226759789,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 10.0,
+            "width": 1.0
+          }
+        },
+        {
+          "ndcg": 0.9583995701199818,
+          "recipe": {
+            "estimator": "sample",
+            "family": "cov",
+            "rank": null,
+            "ridge": 1.0,
+            "scale": false
+          }
+        },
+        {
+          "ndcg": 0.9582898610109005,
+          "recipe": {
+            "alpha": 0.75,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 1.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9581418977499395,
+          "recipe": {
+            "alpha": 0.25,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9570468712869477,
+          "recipe": {
+            "family": "als",
+            "rank": 4,
+            "ridge": 3.0
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "clip": 3.0,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 0.1,
+          "robust": "winsor",
+          "scale": true
+        },
+        {
+          "clip": 1.5,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 0.3,
+          "robust": "huber",
+          "scale": true
+        }
+      ],
+      "task": "PRISM20Q2-0"
+    },
+    "PRISM20Q2-1": {
+      "actual_anchor_dose_points": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "artifacts": {
+        "inner.tsv": "84b97cd143edb134e1480f45d5601241ed69def3f3cdad865b15c7299819eb4f",
+        "model.npz": "6ccd1d48ba4c46766855cf39b1935ba7b2ef9660d70786464ebde37afe655579"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B1",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 93,
+        "2": 130,
+        "3": 18
+      },
+      "cost_known": false,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 472,
+      "freeze_sha256": "ce947ff0b57216e4d2ed27d45c5a67a88830d740b8ad60a84f5babaf569e7b57",
+      "grid_rows": 2181,
+      "inner_primary_ndcg": 0.9647615258800587,
+      "inner_selected_baseline_ndcg": 0.961672244790261,
+      "outer_groups": 232,
+      "policy": "logdet",
+      "primary": {
+        "alpha": 0.25,
+        "estimator": "sample",
+        "family": "cov",
+        "prior": "chem",
+        "ridge": 0.1,
+        "scale": true
+      },
+      "query_count": 60,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.961672244790261,
+        "best_baseline": {
+          "family": "rna"
+        },
+        "best_linear": {
+          "estimator": "sample",
+          "family": "cov",
+          "rank": null,
+          "ridge": 0.1,
+          "scale": true
+        },
+        "gain": 0.003050209669319681,
+        "linear_ndcg": 0.9647224544595806
+      },
+      "random_3seed_gain": 0.0015349170737918554,
+      "rna_control": {
+        "estimator": "oas",
+        "family": "rna_cov",
+        "ridge": 0.1,
+        "scale": true
+      },
+      "rna_inner_delta": 0.0032871336062300083,
+      "rna_secondary": {
+        "estimator": "oas",
+        "family": "rna_cov",
+        "ridge": 0.1,
+        "scale": true
+      },
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.0004906774070953096,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 2.2523706652826703,
+          "mechanisms": {
+            "egfr": 0.07465768811580868,
+            "fgfr": 0.04671087910981863,
+            "hcc_tki": 0.044930834666920105,
+            "hdac": 0.0630762822837761,
+            "kinase_inhibitor": 0.06630499696989448,
+            "met": 0.060745772227143974,
+            "mtor": 0.05260154632831036,
+            "targeted_or_kinase": 0.06610109084808803
+          },
+          "sample_constant_correction_variance": 0.0010500940676780384,
+          "tissues": {
+            "bladder/urinary tract": {
+              "mae": 0.07477178965538593,
+              "n": 2
+            },
+            "bone": {
+              "mae": 0.058219590641570944,
+              "n": 2
+            },
+            "bowel": {
+              "mae": 0.11556570013418808,
+              "n": 1
+            },
+            "breast": {
+              "mae": 0.0729835309832189,
+              "n": 1
+            },
+            "cns/brain": {
+              "mae": 0.0576481936323992,
+              "n": 5
+            },
+            "esophagus/stomach": {
+              "mae": 0.06887353046727553,
+              "n": 8
+            },
+            "head and neck": {
+              "mae": 0.08974444075734471,
+              "n": 2
+            },
+            "kidney": {
+              "mae": 0.06325172739104955,
+              "n": 6
+            },
+            "liver": {
+              "mae": 0.056636321188070736,
+              "n": 3
+            },
+            "lung": {
+              "mae": 0.06114471954297508,
+              "n": 21
+            },
+            "lymphoid": {
+              "mae": 0.0620535290434774,
+              "n": 8
+            },
+            "myeloid": {
+              "mae": 0.060389567687014166,
+              "n": 7
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.06632294321131106,
+              "n": 3
+            },
+            "pancreas": {
+              "mae": 0.05822438664872258,
+              "n": 5
+            },
+            "peripheral nervous system": {
+              "mae": 0.05654407612422426,
+              "n": 5
+            },
+            "pleura": {
+              "mae": 0.07558686029454935,
+              "n": 1
+            },
+            "skin": {
+              "mae": 0.0677240628288767,
+              "n": 2
+            },
+            "soft tissue": {
+              "mae": 0.06559827658563956,
+              "n": 7
+            },
+            "uterus": {
+              "mae": 0.04908039448602307,
+              "n": 4
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.026043570443717193
+        },
+        {
+          "drug_differential_correction_variance": 0.0005365877377967934,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.4810310244149574,
+          "mechanisms": {
+            "egfr": 0.06917883634283342,
+            "fgfr": 0.04356694156856675,
+            "hcc_tki": 0.0441303427296853,
+            "hdac": 0.05425486847944146,
+            "kinase_inhibitor": 0.0657486528347112,
+            "met": 0.05305701604956056,
+            "mtor": 0.0787434654382186,
+            "targeted_or_kinase": 0.0650760329497606
+          },
+          "sample_constant_correction_variance": 0.0012005831609009083,
+          "tissues": {
+            "ampulla of vater": {
+              "mae": 0.06689046079784874,
+              "n": 1
+            },
+            "biliary tract": {
+              "mae": 0.0657471690199124,
+              "n": 2
+            },
+            "bladder/urinary tract": {
+              "mae": 0.05106910469454106,
+              "n": 4
+            },
+            "bone": {
+              "mae": 0.04853154448222758,
+              "n": 5
+            },
+            "bowel": {
+              "mae": 0.0676928006952715,
+              "n": 10
+            },
+            "breast": {
+              "mae": 0.06597194826196769,
+              "n": 5
+            },
+            "cervix": {
+              "mae": 0.04875258880621758,
+              "n": 1
+            },
+            "cns/brain": {
+              "mae": 0.06102570594140027,
+              "n": 10
+            },
+            "esophagus/stomach": {
+              "mae": 0.06779976387362045,
+              "n": 5
+            },
+            "head and neck": {
+              "mae": 0.046702130699572804,
+              "n": 6
+            },
+            "kidney": {
+              "mae": 0.0690797667580167,
+              "n": 2
+            },
+            "liver": {
+              "mae": 0.0622286711546903,
+              "n": 4
+            },
+            "lung": {
+              "mae": 0.06315935351909298,
+              "n": 13
+            },
+            "lymphoid": {
+              "mae": 0.06347118961473,
+              "n": 9
+            },
+            "myeloid": {
+              "mae": 0.06816130812123479,
+              "n": 4
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.06519164471790441,
+              "n": 5
+            },
+            "pancreas": {
+              "mae": 0.05895709401004359,
+              "n": 5
+            },
+            "peripheral nervous system": {
+              "mae": 0.047168315587148936,
+              "n": 2
+            },
+            "pleura": {
+              "mae": 0.053021819602601855,
+              "n": 1
+            },
+            "skin": {
+              "mae": 0.06365722364974719,
+              "n": 6
+            },
+            "soft tissue": {
+              "mae": 0.06408512180065376,
+              "n": 1
+            },
+            "thyroid": {
+              "mae": 0.04417049521377056,
+              "n": 1
+            },
+            "uterus": {
+              "mae": 0.060373893701613925,
+              "n": 3
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.02449928223353199
+        },
+        {
+          "drug_differential_correction_variance": 0.0006379298636127955,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 2.2795237669106583,
+          "mechanisms": {
+            "egfr": 0.07359490784759976,
+            "fgfr": 0.05024725096113145,
+            "hcc_tki": 0.04228588600319706,
+            "hdac": 0.048079834380045636,
+            "kinase_inhibitor": 0.06586339357079858,
+            "met": 0.058028234071055985,
+            "mtor": 0.06702868800870071,
+            "targeted_or_kinase": 0.06479565857678989
+          },
+          "sample_constant_correction_variance": 0.0013919473037879778,
+          "tissues": {
+            "bladder/urinary tract": {
+              "mae": 0.06515052443218772,
+              "n": 5
+            },
+            "bone": {
+              "mae": 0.04733511870034319,
+              "n": 1
+            },
+            "bowel": {
+              "mae": 0.07526730911074958,
+              "n": 5
+            },
+            "breast": {
+              "mae": 0.10081005262296817,
+              "n": 1
+            },
+            "cns/brain": {
+              "mae": 0.061477501795980945,
+              "n": 9
+            },
+            "esophagus/stomach": {
+              "mae": 0.06747474884866086,
+              "n": 11
+            },
+            "head and neck": {
+              "mae": 0.09067462155324324,
+              "n": 2
+            },
+            "kidney": {
+              "mae": 0.053910081649363124,
+              "n": 1
+            },
+            "liver": {
+              "mae": 0.06545481275104197,
+              "n": 2
+            },
+            "lung": {
+              "mae": 0.059342789285033185,
+              "n": 13
+            },
+            "lymphoid": {
+              "mae": 0.04977292923661649,
+              "n": 6
+            },
+            "myeloid": {
+              "mae": 0.05955023493108567,
+              "n": 4
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.06609172594970612,
+              "n": 2
+            },
+            "pancreas": {
+              "mae": 0.055497941529590686,
+              "n": 6
+            },
+            "pleura": {
+              "mae": 0.06493680173006212,
+              "n": 2
+            },
+            "skin": {
+              "mae": 0.08515746949416317,
+              "n": 3
+            },
+            "soft tissue": {
+              "mae": 0.05186004426222216,
+              "n": 2
+            },
+            "thyroid": {
+              "mae": 0.05891020118791926,
+              "n": 2
+            },
+            "uterus": {
+              "mae": 0.061036138910424004,
+              "n": 6
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.02884743996482036
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.9647615258800587,
+          "recipe": {
+            "alpha": 0.25,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 0.1,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9647224544595806,
+          "recipe": {
+            "estimator": "sample",
+            "family": "cov",
+            "rank": null,
+            "ridge": 0.1,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9647224544595806,
+          "recipe": {
+            "alpha": 0.0,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 0.1,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9646893354185235,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9642241905234595,
+          "recipe": {
+            "clip": 1.5,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9641274889212778,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 1.0,
+            "width": 4.0
+          }
+        },
+        {
+          "ndcg": 0.9641175291301906,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 0.1,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9632467138631209,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.962716210114059,
+          "recipe": {
+            "family": "als",
+            "rank": 4,
+            "ridge": 3.0
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "alpha": 0.25,
+          "estimator": "sample",
+          "family": "cov",
+          "prior": "chem",
+          "ridge": 0.1,
+          "scale": true
+        },
+        {
+          "estimator": "sample",
+          "family": "cov",
+          "rank": null,
+          "ridge": 0.1,
+          "scale": true
+        }
+      ],
+      "task": "PRISM20Q2-1"
+    },
+    "PRISM20Q2-2": {
+      "actual_anchor_dose_points": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "artifacts": {
+        "inner.tsv": "28ad323c100fba3ae87d10d5bcc7fefaf3679568f0ab8247e04a8a3494e4624b",
+        "model.npz": "869871fec3e41467dbf92f84b08aa49b2dc0dba67526f7e0720fd17979001975"
+      },
+      "assay_shift": 0.0,
+      "assay_span": 1.0,
+      "baseline": "B1",
+      "baselines": {
+        "B0": {
+          "family": "mean"
+        },
+        "B1": {
+          "family": "rna"
+        },
+        "B2": {
+          "base": "rna",
+          "family": "scalar"
+        },
+        "B3": {
+          "base": "rna",
+          "family": "affine"
+        },
+        "B4": {
+          "family": "knn",
+          "neighbors": 10
+        }
+      },
+      "candidate_counts": {
+        "1": 93,
+        "2": 120,
+        "3": 19
+      },
+      "cost_known": false,
+      "data_receipt_sha256": "68cdb2868b4a379c8830bf2610a6438f165a5a69313052ef5bf81f748d418c5b",
+      "fit_groups": 474,
+      "freeze_sha256": "69d4f13efe4efe37e0addce8e8599b66d62b8a7e071632be1c9f27c69a2a4abc",
+      "grid_rows": 2154,
+      "inner_primary_ndcg": 0.9677657136612593,
+      "inner_selected_baseline_ndcg": 0.9615087943523841,
+      "outer_groups": 230,
+      "policy": "chemistry",
+      "primary": {
+        "clip": 3.0,
+        "estimator": "sample",
+        "family": "cov",
+        "ridge": 1.0,
+        "robust": "rank",
+        "scale": true
+      },
+      "query_count": 60,
+      "r1_selected_policy": {
+        "baseline_ndcg": 0.9615087943523841,
+        "best_baseline": {
+          "family": "rna"
+        },
+        "best_linear": {
+          "estimator": "lw",
+          "family": "cov",
+          "rank": null,
+          "ridge": 1.0,
+          "scale": true
+        },
+        "gain": 0.005925705243052286,
+        "linear_ndcg": 0.9674344995954364
+      },
+      "random_3seed_gain": 0.0007062215000182621,
+      "rna_control": {
+        "estimator": "lw",
+        "family": "rna_cov",
+        "ridge": 0.1,
+        "scale": false
+      },
+      "rna_inner_delta": 0.002506714745505678,
+      "rna_secondary": {
+        "estimator": "lw",
+        "family": "rna_cov",
+        "ridge": 0.1,
+        "scale": false
+      },
+      "round1_diagnostics": [
+        {
+          "drug_differential_correction_variance": 0.0002184401525312882,
+          "inner_fold": 0,
+          "max_anchor_abs_z_p90": 2.25595129215048,
+          "mechanisms": {
+            "egfr": 0.06771968512610617,
+            "fgfr": 0.050985955002292804,
+            "hcc_tki": 0.04252549978683151,
+            "hdac": 0.04972906834287828,
+            "kinase_inhibitor": 0.06150023346582948,
+            "met": 0.05655479525802785,
+            "mtor": 0.0606540153398237,
+            "targeted_or_kinase": 0.06117847041007682
+          },
+          "sample_constant_correction_variance": 0.0004866991514721459,
+          "tissues": {
+            "biliary tract": {
+              "mae": 0.06761875384993331,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 0.054011840902628054,
+              "n": 5
+            },
+            "bone": {
+              "mae": 0.049947573804476654,
+              "n": 3
+            },
+            "bowel": {
+              "mae": 0.06782342995209972,
+              "n": 6
+            },
+            "breast": {
+              "mae": 0.05980018753901578,
+              "n": 7
+            },
+            "cns/brain": {
+              "mae": 0.06444494720869094,
+              "n": 9
+            },
+            "esophagus/stomach": {
+              "mae": 0.06168326622226879,
+              "n": 5
+            },
+            "head and neck": {
+              "mae": 0.06331075642869574,
+              "n": 5
+            },
+            "kidney": {
+              "mae": 0.05524816405264875,
+              "n": 4
+            },
+            "liver": {
+              "mae": 0.05994290135944785,
+              "n": 1
+            },
+            "lung": {
+              "mae": 0.05929727740817765,
+              "n": 21
+            },
+            "lymphoid": {
+              "mae": 0.056778662920388474,
+              "n": 6
+            },
+            "myeloid": {
+              "mae": 0.06232092182621286,
+              "n": 7
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.057367027259498514,
+              "n": 3
+            },
+            "pancreas": {
+              "mae": 0.061986991680554715,
+              "n": 5
+            },
+            "peripheral nervous system": {
+              "mae": 0.044281596521215216,
+              "n": 2
+            },
+            "prostate": {
+              "mae": 0.05620915032463979,
+              "n": 1
+            },
+            "skin": {
+              "mae": 0.0574276639919525,
+              "n": 6
+            },
+            "soft tissue": {
+              "mae": 0.06388923872551949,
+              "n": 2
+            },
+            "uterus": {
+              "mae": 0.05416257322552635,
+              "n": 2
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.01425727578603741
+        },
+        {
+          "drug_differential_correction_variance": 0.0001928351082641482,
+          "inner_fold": 1,
+          "max_anchor_abs_z_p90": 2.6331687257924052,
+          "mechanisms": {
+            "egfr": 0.07567276098105383,
+            "fgfr": 0.05507173367878648,
+            "hcc_tki": 0.044245979487868174,
+            "hdac": 0.044861338652722786,
+            "kinase_inhibitor": 0.06967831249234056,
+            "met": 0.059279152902334986,
+            "mtor": 0.08224474575460765,
+            "targeted_or_kinase": 0.06889674466795062
+          },
+          "sample_constant_correction_variance": 0.00048446789403802914,
+          "tissues": {
+            "biliary tract": {
+              "mae": 0.06876135013881597,
+              "n": 2
+            },
+            "bladder/urinary tract": {
+              "mae": 0.08331759921026485,
+              "n": 3
+            },
+            "bone": {
+              "mae": 0.06255458525389464,
+              "n": 3
+            },
+            "bowel": {
+              "mae": 0.07232801884822353,
+              "n": 4
+            },
+            "breast": {
+              "mae": 0.07335074485232337,
+              "n": 3
+            },
+            "cns/brain": {
+              "mae": 0.0630917487450853,
+              "n": 7
+            },
+            "esophagus/stomach": {
+              "mae": 0.07072217498108799,
+              "n": 7
+            },
+            "fibroblast": {
+              "mae": 0.053711567373404434,
+              "n": 1
+            },
+            "head and neck": {
+              "mae": 0.05960662653266845,
+              "n": 6
+            },
+            "kidney": {
+              "mae": 0.06320504333521362,
+              "n": 2
+            },
+            "liver": {
+              "mae": 0.06155261349744133,
+              "n": 2
+            },
+            "lung": {
+              "mae": 0.06280471860111342,
+              "n": 16
+            },
+            "lymphoid": {
+              "mae": 0.060665868615783526,
+              "n": 12
+            },
+            "myeloid": {
+              "mae": 0.06554572559926283,
+              "n": 2
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.06258311350739473,
+              "n": 4
+            },
+            "pancreas": {
+              "mae": 0.05876143262296298,
+              "n": 6
+            },
+            "peripheral nervous system": {
+              "mae": 0.0735073888381296,
+              "n": 1
+            },
+            "pleura": {
+              "mae": 0.0725785531739314,
+              "n": 2
+            },
+            "prostate": {
+              "mae": 0.0410209535669678,
+              "n": 1
+            },
+            "skin": {
+              "mae": 0.06764501972131734,
+              "n": 3
+            },
+            "soft tissue": {
+              "mae": 0.07508403518974056,
+              "n": 3
+            },
+            "thyroid": {
+              "mae": 0.054193908097238605,
+              "n": 1
+            },
+            "uterus": {
+              "mae": 0.06499360547774444,
+              "n": 4
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.014262855048393563
+        },
+        {
+          "drug_differential_correction_variance": 0.00019944881463212317,
+          "inner_fold": 2,
+          "max_anchor_abs_z_p90": 2.2379157694018446,
+          "mechanisms": {
+            "egfr": 0.06569615118933149,
+            "fgfr": 0.05890446996807246,
+            "hcc_tki": 0.05022172157313378,
+            "hdac": 0.04900911390622803,
+            "kinase_inhibitor": 0.06455817757694361,
+            "met": 0.06704467225335799,
+            "mtor": 0.06756096517929162,
+            "targeted_or_kinase": 0.06365042640167716
+          },
+          "sample_constant_correction_variance": 0.0005461895479077092,
+          "tissues": {
+            "biliary tract": {
+              "mae": 0.03714076762532873,
+              "n": 1
+            },
+            "bladder/urinary tract": {
+              "mae": 0.07138933688472765,
+              "n": 2
+            },
+            "bone": {
+              "mae": 0.05352688114755593,
+              "n": 5
+            },
+            "bowel": {
+              "mae": 0.055935571395828,
+              "n": 4
+            },
+            "breast": {
+              "mae": 0.05836832418977219,
+              "n": 4
+            },
+            "cns/brain": {
+              "mae": 0.04619009217063203,
+              "n": 3
+            },
+            "esophagus/stomach": {
+              "mae": 0.0733591163076101,
+              "n": 10
+            },
+            "head and neck": {
+              "mae": 0.08010656868603315,
+              "n": 2
+            },
+            "kidney": {
+              "mae": 0.055747791247320634,
+              "n": 5
+            },
+            "liver": {
+              "mae": 0.05931972540799363,
+              "n": 4
+            },
+            "lung": {
+              "mae": 0.059094498342247156,
+              "n": 15
+            },
+            "lymphoid": {
+              "mae": 0.056150245825017917,
+              "n": 6
+            },
+            "myeloid": {
+              "mae": 0.09692040782970016,
+              "n": 3
+            },
+            "ovary/fallopian tube": {
+              "mae": 0.05795812206969337,
+              "n": 4
+            },
+            "pancreas": {
+              "mae": 0.06217239897290736,
+              "n": 9
+            },
+            "peripheral nervous system": {
+              "mae": 0.051403676529352633,
+              "n": 2
+            },
+            "pleura": {
+              "mae": 0.061909201095171534,
+              "n": 2
+            },
+            "skin": {
+              "mae": 0.055273468190984006,
+              "n": 8
+            },
+            "soft tissue": {
+              "mae": 0.056755181081104465,
+              "n": 4
+            },
+            "thyroid": {
+              "mae": 0.05701944033682623,
+              "n": 2
+            },
+            "uterus": {
+              "mae": 0.06193643505330324,
+              "n": 3
+            }
+          },
+          "two_sd_anchor_noise_mean_abs_query_change": 0.01394866568071141
+        }
+      ],
+      "round2_family_winners": [
+        {
+          "ndcg": 0.9677657136612593,
+          "recipe": {
+            "clip": 3.0,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "rank",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9674906932784753,
+          "recipe": {
+            "clip": 1.5,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "huber",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9674468489822686,
+          "recipe": {
+            "clip": 1.5,
+            "estimator": "sample",
+            "family": "cov",
+            "ridge": 1.0,
+            "robust": "winsor",
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9674344995954364,
+          "recipe": {
+            "estimator": "lw",
+            "family": "cov",
+            "rank": null,
+            "ridge": 1.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9669747166849727,
+          "recipe": {
+            "alpha": 0.25,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "chem",
+            "ridge": 0.3,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9666534094916158,
+          "recipe": {
+            "alpha": 0.0,
+            "estimator": "sample",
+            "family": "cov",
+            "prior": "pan",
+            "ridge": 1.0,
+            "scale": true
+          }
+        },
+        {
+          "ndcg": 0.9665216712987471,
+          "recipe": {
+            "family": "cosine",
+            "ridge": 10.0
+          }
+        },
+        {
+          "ndcg": 0.9661612554893169,
+          "recipe": {
+            "family": "rbf",
+            "ridge": 10.0,
+            "width": 4.0
+          }
+        },
+        {
+          "ndcg": 0.9661339351055308,
+          "recipe": {
+            "family": "als",
+            "rank": 8,
+            "ridge": 3.0
+          }
+        }
+      ],
+      "round2_outliers": false,
+      "round3_retained": [
+        {
+          "clip": 3.0,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 1.0,
+          "robust": "rank",
+          "scale": true
+        },
+        {
+          "clip": 1.5,
+          "estimator": "sample",
+          "family": "cov",
+          "ridge": 1.0,
+          "robust": "huber",
+          "scale": true
+        }
+      ],
+      "task": "PRISM20Q2-2"
+    }
+  },
+  "used_held_labels": false
+}
