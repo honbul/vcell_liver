@@ -25,8 +25,14 @@ STATS = {"drug": DRUG, "cell": CELL}
 
 def validate(work, decision):
     selected = sha256(decision / "champion.json")
-    if read_json(decision / "receipt.json")["selection_sha256"] != selected:
+    selection = read_json(decision / "receipt.json")
+    if selection["selection_sha256"] != selected or selection["query_outcomes_opened"]:
         raise ValueError("H2-v2 selection mismatch")
+    cli_path = work.parent / "portable-cli" / "receipt.json"
+    cli = read_json(cli_path)
+    if (cli["fit_parent_member"] or not cli["structural_max_abs_diff"] < 1e-6
+            or not cli["assisted_max_abs_diff"] < 1e-6):
+        raise ValueError("Verified inference on a novel exact parent is required before scoring")
     registry, _ = registries()
     data, proof = [], []
     for part in range(4):
@@ -43,20 +49,23 @@ def validate(work, decision):
             raise ValueError(f"Forecast registration or C1/H2-v1 replay changed in partition {part}")
         if not np.array_equal(f["Structure-C1"], f.C1):
             raise ValueError("Structure-only baseline changed")
-        if (replay["forecast_sha256"] != note["files"]["forecast.parquet"] or replay["network_allowed"]
-                or replay["max_abs_diff"] >= 1e-6 or replay["RNA_fallback_max_diff"] != 0.):
+        if (replay["part"] != part or replay["forecast_sha256"] != note["files"]["forecast.parquet"]
+                or replay["network_allowed"] or not replay["max_abs_diff"] < 1e-6
+                or replay["RNA_fallback_max_diff"] != 0. or replay["structure_fallback_max_diff"] != 0.):
             raise ValueError("Offline replay must pass before outcomes are opened")
         if sha256(base / "bundle.pkl") != note["files"]["bundle.pkl"]:
             raise ValueError("Checked prediction package differs")
         if part != 3 and not f[META].equals(response(subfold(registry, part)[1], False)):
             raise ValueError("Frozen outer scaffold query differs")
+        if part == 3 and cli["package_sha256"] != note["files"]["portable.pkl"]:
+            raise ValueError("Verified novel SMILES CLI package differs")
         proof.append({"forecast_receipt_sha256": sha256(base / "receipt.json"),
                       "offline_receipt": replay, "v1_sha256": V1_SHA[part],
                       "frozen_forecast_sha256": note["files"]["forecast.parquet"]})
         data.append(f)
     if sum(len(x) for x in data[:3]) != 670830:
         raise ValueError("Outer response denominator differs from v1")
-    return data, proof, registry, selected
+    return data, proof, registry, selected, sha256(cli_path)
 
 
 def scopes(frame, groups, fold, name, interaction=True):
@@ -120,12 +129,13 @@ def gate(effects):
 
 
 def run(work, chosen):
-    parts, sealed, registry, digest = validate(work, chosen)
-    current = work / "score"
-    current.mkdir(exist_ok=False)
-    publish_json(current / "outcome_access.json", {"score_passes": 1, "proofs": sealed})
+    parts, sealed, registry, digest, cli_sha = validate(work, chosen)
     asset = read_json(V1_ASSETS / "data_receipt.json")
     cells = parquet_lock(V1_ASSETS / "cells.parquet", asset["files"]["cells.parquet"])
+    current = work / "score"
+    current.mkdir(exist_ok=False)
+    publish_json(current / "outcome_access.json", {"score_passes": 1, "proofs": sealed,
+                                                    "portable_cli_receipt_sha256": cli_sha})
     groups = registry.scaffold_block
     assessments, tissues = [], []
     for idx, predictions in enumerate(parts[:3]):
@@ -141,16 +151,21 @@ def run(work, chosen):
     ext = parts[3].merge(y, on="row_id", validate="one_to_one", how="left")
     if set(y.row_id) != set(ext.row_id) or not np.isfinite(ext.truth).all():
         raise ValueError("External outcome support differs from the v1 sealed registration")
+    external_support = {}
     for scope, block in ext.groupby("source_id", sort=True):
         if scope == "LICOB":
             block = adult_licob(block, licob)
             novel = block[~block.in_source & block.remaining_unspecified_stereo.eq(0)]
             assert novel[KEY].nunique() == 18 and block[KEY].nunique() == 76 and block.cell_id.nunique() == 38
             assessments.extend(scopes(novel, ext_chem, 0, "LICOB18"))
+            external_support["LICOB18"] = support_counts(novel)
         assessments.extend(scopes(block, ext_chem, 0, scope))
+        external_support[scope] = support_counts(block)
         print(f"Scored {scope}", flush=True)
     d, c = stack(assessments)
     td, tc = stack(tissues)
+    for name, frame in (("drug", d), ("cell", c), ("tissue_drug", td), ("tissue_cell", tc)):
+        frame.to_parquet(current / f"unit_{name}.parquet", index=False)
     scores = pd.concat([summary(d, DRUG).assign(axis="drug"), summary(c, CELL).assign(axis="cell")])
     tissue = pd.concat([summary(td, DRUG).assign(axis="drug"), summary(tc, CELL).assign(axis="cell")])
     paired = contrasts(d, c)
@@ -162,9 +177,16 @@ def run(work, chosen):
         frame.to_csv(current / (name + ".tsv"), sep="\t", index=False, na_rep="NA")
     publish_json(current / "score_receipt.json", {"score_passes": 1, "selection_sha256": digest,
         "source_rows": sum(len(x) for x in parts[:3]), "source_parents": len(registry),
+        "source_support": support_counts(pd.concat(parts[:3], ignore_index=True)),
         "tissues": sorted(tissue.scope.unique()), "external_rows": ext.groupby("source_id").size().to_dict(),
+        "external_support": external_support, "portable_cli_receipt_sha256": cli_sha,
         "result": gate(paired), "forecasts": sealed,
         "files": {f.name: sha256(f) for f in sorted(current.iterdir())}})
+
+
+def support_counts(rows):
+    return {"rows": len(rows), "parents": rows[KEY].nunique(), "cells": rows.cell_id.nunique(),
+            "LINCS_parents": rows.loc[rows.lincs_observed, KEY].nunique()}
 
 
 if __name__ == "__main__":
