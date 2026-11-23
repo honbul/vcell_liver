@@ -13,5 +13,6 @@ export OPENBLAS_NUM_THREADS=6 OMP_NUM_THREADS=6 MKL_NUM_THREADS=6
 export PYTHONDONTWRITEBYTECODE=1
 export XDG_CACHE_HOME="$root/deps/cache"
 export TMPDIR="$root/deps/tmp"
-mkdir -p "$TMPDIR"
+export MPLCONFIGDIR="$root/deps/cache/matplotlib"
+mkdir -p "$TMPDIR" "$MPLCONFIGDIR"
 exec "$base/vcell_liver_r11_chemical_probe/assets/study-env/bin/python" -m "nextgen_h2_v2.$1" "${@:2}"

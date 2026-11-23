@@ -7,6 +7,7 @@ import pandas as pd
 from nextgen_h2.run import read_json
 from vc_build.io import publish_json, sha256
 
+from .residual_run import STAGE
 from .search import stage_input
 
 
@@ -35,7 +36,7 @@ def compile_curves(work, out, sources):
             for rec in block.to_dict("records"):
                 key = rec["arm"]
                 by_fold = settings[int(rec["outer_fit"])]
-                tap = key.rsplit("/", 1)[0] if stage == "resid" else key
+                tap = key.rsplit("/", 1)[0] if stage == STAGE else key
                 meta = by_fold.get(tap, {})
                 design = meta.get("design", meta.get("kernel", {}))
                 lincs = design.get("lincs", {})
@@ -62,11 +63,13 @@ def compile_curves(work, out, sources):
     learning = []
     for f in range(3):
         for i in range(3):
-            file = work / "resid" / f"{f}-{i}" / "learning.json"
+            file = work / STAGE / f"{f}-{i}" / "learning.json"
             report = read_json(file)
             evidence[str(file)] = sha256(file)
-            if report["inner_query_labels_available_to_estimator"] != 0:
-                raise ValueError("H2 nonlinear learning curve exposed held inner query outcomes")
+            if (report["inner_query_labels_available_to_estimator"] != 0
+                    or report["early_stop_used_to_fit_residual_preprocessors"]
+                    or report["early_stop_labels_available_to_crossfit_base"] != 0):
+                raise ValueError("H2 nonlinear learning curve exposed held outcomes")
             for curve in report["curve"]:
                 dims = {"round_stage": "resid_learning", "outer_fit": f, "inner_fold": i,
                         "axis": "learning", "arm": curve["name"], "support": "OOF inner-fit early stop",

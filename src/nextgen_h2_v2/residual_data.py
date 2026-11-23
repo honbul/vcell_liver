@@ -13,14 +13,24 @@ from vc_build.structured_kernel import ranked_expression
 from .kernel import Engine
 
 
-def kernel_oof(engine, params, seed):
+def kernel_oof(engine, params, seed, stopping):
     groups = engine.reg.loc[engine.fit_drugs, "scaffold_block"]
-    assignment = fold_ids(groups)
-    frames = []
+    selection = engine.fit[stopping]
+    training = engine.fit[~stopping]
+    stop_drugs = pd.Index(selection[KEY].unique())
+    stop_scaffolds = groups.loc[stop_drugs]
+    fitting_scaffolds = groups[~groups.index.isin(stop_drugs)]
+    if set(stop_scaffolds) & set(fitting_scaffolds):
+        raise ValueError("Residual stopping scaffolds must be disjoint from training")
+    assignment = fold_ids(fitting_scaffolds)
+    splits = []
     for f in range(3):
-        held = list(assignment.index[assignment.eq(f)])
-        test = engine.fit[engine.fit[KEY].isin(held)]
-        train = engine.fit[~engine.fit[KEY].isin(held)]
+        held = assignment.index[assignment.eq(f)]
+        select = training[KEY].isin(held)
+        splits.append((training[~select], training[select]))
+    splits.append((training, selection))
+    frames = []
+    for f, (train, test) in enumerate(splits):
         sub = Engine(engine.data, engine.assets, train, test[META], engine.reg)
         prediction = sub.extract_rows(sub.solve(params, seed + f))
         by_assay = pd.DataFrame(sub.calibration).set_index(SOURCE)
@@ -29,7 +39,8 @@ def kernel_oof(engine, params, seed):
         y = native * offsets.slope + offsets.intercept
         frames.append(test[META].assign(oof=prediction, aligned=y, inner_crossfit=f))
     result = pd.concat(frames, ignore_index=True).set_index("row_id").reindex(engine.fit.row_id).reset_index()
-    if (len(result) != len(engine.fit) or not result.row_id.is_unique or result.oof.isna().any()):
+    if (len(result) != len(engine.fit) or not result.row_id.is_unique or result.oof.isna().any()
+            or not np.array_equal(result.inner_crossfit.eq(3).to_numpy(), stopping)):
         raise ValueError("Scaffold-cross-fitted prediction keys differ from the fit cohort")
     return result
 
@@ -60,9 +71,9 @@ class Projector:
         return self.model.transform(x).astype(np.float32) if self.model is not None else x
 
 
-def transform(a, n, dim=0, *, floor=.75):
+def transform(a, fit_rows, dim=0, *, floor=.75):
     ok = np.isfinite(a).mean(axis=1) >= floor
-    fit = a[:n][ok[:n]]
+    fit = a[fit_rows & ok]
     if len(fit) < 5:
         return np.zeros((len(a), dim or 1), np.float32), ok & False, None
     projector = Projector.fit(fit, dim)
@@ -84,20 +95,20 @@ def target_mean(values, active):
     return np.nan_to_num(values) @ weights.T
 
 
-def basal_paths(engine, base_ranks):
+def basal_paths(engine, base_ranks, fitting_cells, fitting_drugs):
     data = engine.data
     projection = data.pathway
     pos = data.rna.columns.get_indexer(projection.index)
     common = pos >= 0
     x = base_ranks[:, pos[common]] @ projection.to_numpy(dtype=np.float32)[common]
     drug = data.profiles["paths_modz24"].reindex(engine.drugs).to_numpy(dtype=np.float32)
-    c, _, _ = transform(x, engine.nfit_cells)
-    d, mask, _ = transform(drug, engine.stop)
+    c, _, _ = transform(x, fitting_cells)
+    d, mask, _ = transform(drug, fitting_drugs)
     return c, d, mask
 
 
 class ResidualFeatures:
-    def __init__(self, engine, params):
+    def __init__(self, engine, params, training):
         data = engine.data
         self.cells = engine.all_cells
         self.drugs = engine.drugs
@@ -106,20 +117,25 @@ class ResidualFeatures:
         self.query_cells = engine.query_cells
         self.fit_drugs = engine.fit_drugs
         self.query_drugs = engine.query_drugs
-        rna = data.expression(self.cells, engine.medians)
+        fitted_cells = pd.Index(sorted(training.cell_id.unique()))
+        fitted_drugs = pd.Index(sorted(training[KEY].unique()))
+        cell_rows = self.cells.isin(fitted_cells) & (np.arange(len(self.cells)) < self.cn)
+        drug_rows = self.drugs.isin(fitted_drugs) & (np.arange(len(self.drugs)) < self.dn)
+        rna = data.expression(self.cells, data.expression(fitted_cells).median())
         ranked = ranked_expression(rna)
-        seq, _, _ = transform(ranked, self.cn, 40)
-        path, drug_path, drug_seen = basal_paths(engine, ranked)
+        seq, _, _ = transform(ranked, cell_rows, 40)
+        path, drug_path, drug_seen = basal_paths(engine, ranked, cell_rows, drug_rows)
         lincs = data.profiles["modz24"].reindex(engine.drugs).to_numpy(np.float32)
-        ln, _, _ = transform(lincs, self.dn, 40)
-        chemistry = engine.drug.explicit.cpu().numpy()
-        ch, _, _ = transform(chemistry[:, :2052], self.dn, 48)
-        tg, _, _ = transform(chemistry[:, 2052:], self.dn, 24)
+        ln, _, _ = transform(lincs, drug_rows, 40)
+        order = np.argsort(~drug_rows, kind="stable")
+        chemistry = data.make_chemistry(self.drugs[order], int(drug_rows.sum())).explicit.cpu().numpy()[np.argsort(order)]
+        ch, _, _ = transform(chemistry[:, :2052], drug_rows, 48)
+        tg, _, _ = transform(chemistry[:, 2052:], drug_rows, 24)
         parts = []
         for view in ("mut", "cnv", "fusion", "sig"):
             frame = engine.assets.read("omics", view)
             x = frame.reindex(engine.all_cells).to_numpy(dtype=np.float32)
-            z, seen, _ = transform(x, self.cn, 12)
+            z, seen, _ = transform(x, cell_rows, 12)
             parts.append(np.c_[z, seen].astype(np.float32))
         omics = np.concatenate(parts, axis=1)
         self.cell = (seq, path, omics)
@@ -130,11 +146,11 @@ class ResidualFeatures:
             self.drug_seen = self.drug_seen | frame.notna().mean(axis=1).ge(.75).to_numpy()
         self.cell_path = path
         self.drug_path = drug_path
-        self.target_pairs = self.target_features(engine, ranked)
+        self.target_pairs = self.target_features(engine, ranked, fitted_drugs)
 
-    def target_features(self, engine, ranked):
+    def target_features(self, engine, ranked, fitted_drugs):
         data = engine.data
-        target_genes = sorted(set().union(*(data.targets.get(drug, ()) for drug in self.fit_drugs)))
+        target_genes = sorted(set().union(*(data.targets.get(drug, ()) for drug in fitted_drugs)))
         m = targets_for(data, self.drugs, target_genes)
         ix = data.rna.columns.get_indexer(target_genes)
         basis = np.zeros((len(self.cells), len(ix)), np.float32)

@@ -20,7 +20,8 @@ from .nonlinear import Candidate, fit_boost, fit_neural, search_space, stop_hold
 from .residual_data import ResidualFeatures, kernel_oof
 from .search import common_score, ranker, score_index, stage_input, write_manifest
 
-SCALES = (0., .0625, .125, .25, .5, 1., 2., 4., 8., 16.)
+SCALES = (0., .00390625, .015625, .03125, .0625, .125, .25, .5, 1., 2., 4., 8., 16.)
+STAGE = "resid_strict"
 
 
 def manifest(kernel, target):
@@ -39,9 +40,9 @@ class FittedResidual:
         self.engine = engine
         self.params = params
         self.seed = seed
-        self.training = kernel_oof(engine, params, seed)
-        self.feature = ResidualFeatures(engine, params)
-        self.keep = stop_holdout(self.training, engine.reg.scaffold_block)
+        self.keep = stop_holdout(engine.fit, engine.reg.scaffold_block)
+        self.training = kernel_oof(engine, params, seed, self.keep)
+        self.feature = ResidualFeatures(engine, params, engine.fit[~self.keep])
         self.query = engine.query
         self.reference = engine.extract_rows(engine.solve(params, seed))
         self.train_matrix, self.query_matrix = None, None
@@ -95,10 +96,13 @@ def measure(work, root, manifest_path, index):
         if spec.family == "gbdt":
             record["backend"] = model.backend
         curves.append(record)
-    save_evidence(work, "resid", f, i, fit, test, pairs, engine, manifest_path)
-    path = work / "resid" / f"{f}-{i}"
+    save_evidence(work, STAGE, f, i, fit, test, pairs, engine, manifest_path)
+    path = work / STAGE / f"{f}-{i}"
     publish_json(path / "learning.json", {"fit_pool_oof_rows": len(apparatus.training),
                  "early_stop_rows": int(apparatus.keep.sum()),
+                 "early_stop_parent_count": apparatus.training.loc[apparatus.keep, KEY].nunique(),
+                 "early_stop_labels_available_to_crossfit_base": 0,
+                 "early_stop_used_to_fit_residual_preprocessors": False,
                  "inner_query_labels_available_to_estimator": 0,
                  "curve": curves})
 
@@ -109,7 +113,7 @@ def decide(work, contracts, kernel, virtual, out):
     chosen, stages, score_rows = {}, [], []
     flags = {"gbdt": [], "neural": []}
     for outer in range(3):
-        specs, unit, summary = stage_input(work, contracts, "resid", outer)
+        specs, unit, summary = stage_input(work, contracts, STAGE, outer)
         scores = score_index(summary)
         ranking = {}
         for family in ("gbdt", "neural"):
@@ -140,6 +144,7 @@ def decide(work, contracts, kernel, virtual, out):
     publish_json(out / "champion.json", chosen)
     publish_json(out / "receipt.json", {"selection_sha256": sha256(out / "champion.json"),
                   "final_family": family, "promotion_by_outer_fit": flags, "query_outcomes_opened": False,
+                  "strict_stage": STAGE, "stage_manifest_sha256": sha256(contracts / (STAGE + ".json")),
                   "kernel_recipe_sha256": sha256(kernel), "virtual_recipe_sha256": sha256(virtual)})
 
 

@@ -65,7 +65,7 @@ def train_generator(x, y, spec, seed):
 class VirtualLibrary:
     def __init__(self, engine, seed):
         self.engine, self.seed = engine, seed
-        columns = engine.data.profiles["modz24"].reindex(engine.drugs)
+        columns = engine.data.profiles["modz24"].reindex(engine.fit_drugs)
         self.observed = torch.as_tensor(columns.notna().all(axis=1).to_numpy(),
                                         device=engine.device)
         self.target = torch.as_tensor(columns.fillna(0.).to_numpy(dtype=np.float32), device=engine.device)
@@ -78,7 +78,7 @@ class VirtualLibrary:
             return self.cache[params]
         source, y, engine = self.source, self.target, self.engine
         n = engine.stop
-        matrix = torch.empty_like(y)
+        matrix = y.new_empty((len(source), y.shape[1]))
         for t in range(3):
             left = torch.as_tensor(self.assign.eq(t).to_numpy(), device=engine.device)
             known = ~left & self.observed[:n]
