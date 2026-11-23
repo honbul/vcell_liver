@@ -34,8 +34,6 @@ def close(task, family, result, r1, out, device):
             for candidate in unseen.values():
                 search.score(candidate, f"round3-final-boundary-{i+1}")
             print(task, family, mode, "boundary cycle", i, len(unseen), flush=True)
-            if key(search.winner()["config"]) == key(current):
-                break
         selected = search.winner()
         remaining, last_edges = extrapolate(selected["config"], [e["config"]
                                               for e in search.evaluations.values()], search.dual)
