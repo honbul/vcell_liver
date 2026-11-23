@@ -11,9 +11,12 @@ import numpy as np
 import pandas as pd
 import torch
 
-from nextgen_h2.assets import canonical_chemistry
-from nextgen_h2.run import read_json
+from nextgen_h2.assets import KEY, canonical_chemistry
+from nextgen_h2.run import read_json, response, subfold
 from vc_build.io import publish_json, sha256
+
+from .kernel import Engine, context, design
+from .portable import create_kit
 
 
 def test(work, out):
@@ -52,10 +55,52 @@ def test(work, out):
                 "explicit_cli_fallback": "no LINCS TSV invokes the registered structure-only kernel"})
 
 
+def inner_parity(root, selection, out):
+    device = torch.device("cpu")
+    data, assets, reg, _, _ = context(root, device)
+    checks = []
+    approved = read_json(selection)
+    for role in (0, 1):
+        cfg = design(approved[str(role)]["design"])
+        fit, query = subfold(reg, role, 0)
+        train, held = response(fit, True), response(query, False)
+        engine = Engine(data, assets, train, held, reg)
+        kit = create_kit(engine, cfg, 59187)
+        registered = engine.view_data(cfg.lincs)
+        with_lincs = sorted(set(engine.query_drugs) & set(registered.index))
+        no_lincs = sorted(set(engine.query_drugs) - set(registered.index))
+        examples = [(with_lincs[0], registered.loc[[with_lincs[0]]].to_numpy(np.float32)),
+                    (no_lincs[0], None)]
+        cache = engine.solve(cfg, 59187).cpu().numpy()
+        for key, values in examples:
+            ident = str(reg.loc[key, "smiles"])
+            group = list(engine.query_cells[:8])
+            resolved, portable = kit.predict(ident, group, values)
+            if resolved != key:
+                raise ValueError("Portable chemistry changed fitted identities")
+            rx = engine.query_cells.get_indexer(group)
+            dx = engine.query_drugs.get_loc(key)
+            expected = cache[rx, dx]
+            diff = float(np.abs(portable - expected).max())
+            # Single-column BLAS and a full frozen batch differ in float32 accumulation.
+            # This agreement check is separate from the exact same-path package replay.
+            tolerance = 5e-5 * max(1., float(np.max(np.abs(expected))))
+            if diff >= tolerance:
+                raise AssertionError(f"Portable cross-kernel parity failure in role {role}: {diff}")
+            checks.append({"outer_fit": role, "branch": "assisted" if values is not None else "structure",
+                           "parity_max_abs_diff": diff, "cross_shape_tolerance": tolerance,
+                           "query_response_columns_read": []})
+    publish_json(out, {"checks": checks})
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("work", type=Path)
     parser.add_argument("out", type=Path)
+    parser.add_argument("--inner-selection", type=Path)
     a = parser.parse_args()
     torch.set_num_threads(int(os.environ.get("OMP_NUM_THREADS", "6")))
-    test(a.work, a.out)
+    if a.inner_selection:
+        inner_parity(a.work, a.inner_selection, a.out)
+    else:
+        test(a.work, a.out)

@@ -1,0 +1,1101 @@
+{
+  "0": {
+    "cnv": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 128,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "cnv",
+            "recipe": "default",
+            "transform": "white",
+            "weight": 0.0
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "cnv/default/white/128/0",
+      "support": [
+        "cnv",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 128,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "cnv",
+        "recipe": "default",
+        "transform": "white",
+        "weight": 0.0
+      }
+    },
+    "crispr": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 128,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "crispr",
+            "recipe": "default",
+            "transform": "white",
+            "weight": 0.025
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "crispr/default/white/128/0.025",
+      "support": [
+        "crispr",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 128,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "crispr",
+        "recipe": "default",
+        "transform": "white",
+        "weight": 0.025
+      }
+    },
+    "fusion": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 64,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "fusion",
+            "recipe": "default",
+            "transform": "white",
+            "weight": 0.0
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "fusion/default/white/64/0",
+      "support": [
+        "fusion",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 64,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "fusion",
+        "recipe": "default",
+        "transform": "white",
+        "weight": 0.0
+      }
+    },
+    "mut": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 0,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "mut",
+            "recipe": "default",
+            "transform": "raw",
+            "weight": 0.025
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "mut/default/raw/0/0.025",
+      "support": [
+        "mut",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "mut",
+        "recipe": "default",
+        "transform": "raw",
+        "weight": 0.025
+      }
+    },
+    "painting": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [],
+        "drug_views": [
+          {
+            "control": "real",
+            "dimension": 0,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "painting",
+            "recipe": "cache",
+            "transform": "raw",
+            "weight": 0.05
+          }
+        ],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "painting/cache/raw/0/0.05",
+      "support": [
+        "painting",
+        "cache",
+        "drug"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "painting",
+        "recipe": "cache",
+        "transform": "raw",
+        "weight": 0.05
+      }
+    },
+    "sig": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 0,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "sig",
+            "recipe": "default",
+            "transform": "raw",
+            "weight": 0.0
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "sig/default/raw/0/0",
+      "support": [
+        "sig",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "sig",
+        "recipe": "default",
+        "transform": "raw",
+        "weight": 0.0
+      }
+    },
+    "tahoe": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [],
+        "drug_views": [
+          {
+            "control": "real",
+            "dimension": 32,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "tahoe",
+            "recipe": "mean",
+            "transform": "white",
+            "weight": 0.1
+          }
+        ],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "tahoe/mean/white/32/0.1",
+      "support": [
+        "tahoe",
+        "mean",
+        "drug"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 32,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "tahoe",
+        "recipe": "mean",
+        "transform": "white",
+        "weight": 0.1
+      }
+    }
+  },
+  "1": {
+    "cnv": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 1.0,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 128,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "cnv",
+            "recipe": "default",
+            "transform": "white",
+            "weight": 0.025
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "krr",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 1.0,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.4
+      },
+      "id": "cnv/default/white/128/0.025",
+      "support": [
+        "cnv",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 128,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "cnv",
+        "recipe": "default",
+        "transform": "white",
+        "weight": 0.025
+      }
+    },
+    "crispr": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 1.0,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 128,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "crispr",
+            "recipe": "default",
+            "transform": "white",
+            "weight": 0.025
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "krr",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 1.0,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.4
+      },
+      "id": "crispr/default/white/128/0.025",
+      "support": [
+        "crispr",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 128,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "crispr",
+        "recipe": "default",
+        "transform": "white",
+        "weight": 0.025
+      }
+    },
+    "fusion": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 1.0,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 64,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "fusion",
+            "recipe": "default",
+            "transform": "white",
+            "weight": 0.0
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "krr",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 1.0,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.4
+      },
+      "id": "fusion/default/white/64/0",
+      "support": [
+        "fusion",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 64,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "fusion",
+        "recipe": "default",
+        "transform": "white",
+        "weight": 0.0
+      }
+    },
+    "mut": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 1.0,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 0,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "mut",
+            "recipe": "default",
+            "transform": "raw",
+            "weight": 0.025
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "krr",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 1.0,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.4
+      },
+      "id": "mut/default/raw/0/0.025",
+      "support": [
+        "mut",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "mut",
+        "recipe": "default",
+        "transform": "raw",
+        "weight": 0.025
+      }
+    },
+    "painting": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [
+          {
+            "control": "real",
+            "dimension": 32,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "painting",
+            "recipe": "cache",
+            "transform": "pca",
+            "weight": 0.05
+          }
+        ],
+        "identity": 0.7,
+        "intercept": "krr",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 1.0,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.4
+      },
+      "id": "painting/cache/pca/32/0.05",
+      "support": [
+        "painting",
+        "cache",
+        "drug"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 32,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "painting",
+        "recipe": "cache",
+        "transform": "pca",
+        "weight": 0.05
+      }
+    },
+    "sig": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 1.0,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 0,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "sig",
+            "recipe": "default",
+            "transform": "raw",
+            "weight": 0.05
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "krr",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 1.0,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.4
+      },
+      "id": "sig/default/raw/0/0.05",
+      "support": [
+        "sig",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "sig",
+        "recipe": "default",
+        "transform": "raw",
+        "weight": 0.05
+      }
+    },
+    "tahoe": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [
+          {
+            "control": "real",
+            "dimension": 0,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "tahoe",
+            "recipe": "dose",
+            "transform": "raw",
+            "weight": 0.1
+          }
+        ],
+        "identity": 0.7,
+        "intercept": "krr",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 1.0,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.4
+      },
+      "id": "tahoe/dose/raw/0/0.1",
+      "support": [
+        "tahoe",
+        "dose",
+        "drug"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "tahoe",
+        "recipe": "dose",
+        "transform": "raw",
+        "weight": 0.1
+      }
+    }
+  },
+  "2": {
+    "cnv": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 10,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 128,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "cnv",
+            "recipe": "default",
+            "transform": "white",
+            "weight": 0.0
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "v1",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.8
+      },
+      "id": "cnv/default/white/128/0",
+      "support": [
+        "cnv",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 128,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "cnv",
+        "recipe": "default",
+        "transform": "white",
+        "weight": 0.0
+      }
+    },
+    "crispr": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 10,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 128,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "crispr",
+            "recipe": "default",
+            "transform": "white",
+            "weight": 0.0
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "v1",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.8
+      },
+      "id": "crispr/default/white/128/0",
+      "support": [
+        "crispr",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 128,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "crispr",
+        "recipe": "default",
+        "transform": "white",
+        "weight": 0.0
+      }
+    },
+    "fusion": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 10,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 64,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "fusion",
+            "recipe": "default",
+            "transform": "white",
+            "weight": 0.0
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "v1",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.8
+      },
+      "id": "fusion/default/white/64/0",
+      "support": [
+        "fusion",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 64,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "fusion",
+        "recipe": "default",
+        "transform": "white",
+        "weight": 0.0
+      }
+    },
+    "mut": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 10,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 0,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "mut",
+            "recipe": "default",
+            "transform": "raw",
+            "weight": 0.0
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "v1",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.8
+      },
+      "id": "mut/default/raw/0/0",
+      "support": [
+        "mut",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "mut",
+        "recipe": "default",
+        "transform": "raw",
+        "weight": 0.0
+      }
+    },
+    "painting": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 10,
+        "cell_views": [],
+        "drug_views": [
+          {
+            "control": "real",
+            "dimension": 128,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "painting",
+            "recipe": "cache",
+            "transform": "select",
+            "weight": 0.1
+          }
+        ],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "v1",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.8
+      },
+      "id": "painting/cache/select/128/0.1",
+      "support": [
+        "painting",
+        "cache",
+        "drug"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 128,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "painting",
+        "recipe": "cache",
+        "transform": "select",
+        "weight": 0.1
+      }
+    },
+    "sig": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 10,
+        "cell_views": [
+          {
+            "control": "real",
+            "dimension": 0,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "sig",
+            "recipe": "default",
+            "transform": "raw",
+            "weight": 0.0
+          }
+        ],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "v1",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.8
+      },
+      "id": "sig/default/raw/0/0",
+      "support": [
+        "sig",
+        "default",
+        "cell"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "sig",
+        "recipe": "default",
+        "transform": "raw",
+        "weight": 0.0
+      }
+    },
+    "tahoe": {
+      "axis": "view",
+      "design": {
+        "anchor_penalty": 10,
+        "cell_views": [],
+        "drug_views": [
+          {
+            "control": "real",
+            "dimension": 32,
+            "kernel": "cos",
+            "mask": 0.15,
+            "name": "tahoe",
+            "recipe": "dose",
+            "transform": "white",
+            "weight": 0.25
+          }
+        ],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "v1",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.8
+      },
+      "id": "tahoe/dose/white/32/0.25",
+      "support": [
+        "tahoe",
+        "dose",
+        "drug"
+      ],
+      "view": {
+        "control": "real",
+        "dimension": 32,
+        "kernel": "cos",
+        "mask": 0.15,
+        "name": "tahoe",
+        "recipe": "dose",
+        "transform": "white",
+        "weight": 0.25
+      }
+    }
+  },
+  "settled": true
+}

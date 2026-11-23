@@ -183,7 +183,7 @@ def create_kit(engine, params, seed):
     anchors = torch.as_tensor(engine.anchor.reindex(registry).to_numpy(np.float32))
     values = engine.view_data(params.lincs).reindex(registry)
     projector = MeasurementProjection.fit(values, params.lincs)
-    _, mask = engine.prepare(params.lincs, seed)
+    _, availability = engine.prepare(params.lincs, seed)
     key = ("drug", params.lincs.name, params.lincs.recipe, params.lincs.transform, params.lincs.dimension)
     fit_values = engine._features[key][0][:engine.stop].cpu()
 
@@ -196,16 +196,16 @@ def create_kit(engine, params, seed):
             adjust = torch.linalg.solve(state["dfit"] + policy.anchor_penalty * torch.eye(len(registry)),
                                         anchors - anchors.mean())
         return KernelRow(policy, state["coef"], target, diagonal, support,
-                         mask[:engine.stop].cpu() if support is not None else None, adjust)
+                         availability[:engine.stop].cpu() if support is not None else None, adjust)
 
     along = list(projector.columns)
     if params.lincs.recipe != "v1":
         axis, representation = params.lincs.recipe.split("_", 1)
         spec = pd.read_csv(LINCS / "geneinfo_beta.txt", sep="\t")
-        mask = {"landmark": spec.feature_space.eq("landmark"),
+        admitted = {"landmark": spec.feature_space.eq("landmark"),
                 "bing": spec.feature_space.isin(["landmark", "best inferred"]),
                 "full": np.ones(len(spec), dtype=bool)}[axis]
-        identifiers = spec.loc[mask, "gene_symbol"].to_list()
+        identifiers = spec.loc[admitted, "gene_symbol"].to_list()
         if len(identifiers) == len(along) and len(set(identifiers)) == len(identifiers):
             along = identifiers
     return Portable(engine.basis.cpu(), engine.data.expression(engine.all_cells.unique(), engine.medians), registry,

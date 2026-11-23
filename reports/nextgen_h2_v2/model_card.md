@@ -10,6 +10,8 @@
 
 ## 추론과 재생
 
+GBDT는 G1 전용 deps에 고정한 LightGBM 4.6.0을 사용한다. 설치된 lib_lightgbm.so의 SHA-256은 6a12e1a7b13824d14c252d2a4d2e36af467383331a114eb0e7448eecbf02d7b1이다. GPU 잔차와 구조 커널은 G1의 기존 PyTorch 환경에서 적합한다.
+
 봉인된 전체 H2-v2 모델의 네 예측 묶음은 G1의 `nextgen_v2/h2_v2/study/forecasts`에 있다. 각 묶음은 저장된 계수와 입력 표현으로 학습 없이 같은 예측을 다시 계산한다. SHA-256, 네트워크 차단 재생 허용 오차 1e−6, C1/RNA 복귀의 영 오차를 확인한다. [수치와 재생 영수증](psd_and_replay_receipt.json)
 
 임의 신규 SMILES의 CLI 프로토타입은 등록 기저 RNA에서 **H2-R1 커널 단계**를 실행한다. 이 인터페이스는 SMILES와 선택적 LINCS만 받으며, 물리적으로 입력한 해당 모델의 LINCS 축이 필요하다. LINCS를 생략하면 동일 패키지의 구조 전용 기준선을 실행한다. 등록 표적이 없는 신규 화합물의 표적 벡터는 0이다. TSV는 `feature`, `value` 열을 사용한다. 검증된 G1 파일에서 SHA-256을 확인한 뒤 다음 형식으로 실행한다.
@@ -18,3 +20,5 @@
 python -m nextgen_h2_v2.portable G1_PACKAGE --sha256 PACKAGE_SHA256 \
   --smiles CCO --cell-id ACH-000681 --lincs-tsv OPTIONAL_SIGNATURE_TSV
 ```
+
+별도의 계산 경로 검사에서 단일 질의 CUDA/CPU용 교차 커널과 전체 배치 CPU 계산은 float32 연산 순서 차이를 포함했다. 이 검사는 fit-only 내부 역할에서 정답 없이 수행했다. [독립 교차식 검사](portable_inner_parity.json)
