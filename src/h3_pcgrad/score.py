@@ -40,6 +40,7 @@ class WeightedRanking:
 
     def __init__(self, vector):
         self.order = np.argsort(vector, kind="stable")
+        self.inverse = np.argsort(self.order)
         sorted_v = vector[self.order]
         self.starts = np.r_[0, np.flatnonzero(sorted_v[1:] != sorted_v[:-1]) + 1]
         self.groups = np.cumsum(np.r_[True, sorted_v[1:] != sorted_v[:-1]]) - 1
@@ -47,17 +48,17 @@ class WeightedRanking:
     def ranks(self, counts):
         tied = np.add.reduceat(counts[:, self.order], self.starts, axis=1)
         ascending = np.cumsum(tied, axis=1) - .5 * tied + .5
-        return ascending[:, self.groups[:, None].ravel()][:, np.argsort(self.order)]
+        return ascending[:, self.groups][:, self.inverse]
 
 
-def weighted_association(y, p, counts, raw_y_variable, minimum=5):
+def weighted_association(y, p, counts, minimum=5):
     n = counts.sum(axis=1).clip(min=1)
     yy = y - (y * counts).sum(axis=1)[:, None] / n[:, None]
     pp = p - (p * counts).sum(axis=1)[:, None] / n[:, None]
     sy, sp = (counts * yy**2).sum(axis=1), (counts * pp**2).sum(axis=1)
     covariance = (counts * yy * pp).sum(axis=1)
     corr = np.divide(covariance, np.sqrt(sy * sp), out=np.zeros(len(sy)), where=(sy > 1e-24) & (sp > 1e-24))
-    ok = (n >= minimum) & (sy > 1e-24) & raw_y_variable
+    ok = (n >= minimum) & (sy > 1e-24)
     return np.where(ok, corr, np.nan)
 
 
@@ -73,13 +74,15 @@ def screen_scores(frame, models, reweights=None, *, minimum=5):
                        for rank in (True, False)]
             point = dict(zip(AXES, (float(mean(v)) for v in (*by_drug, *c))))
             point[RESIDUAL] = residual_association(y, prediction)
+            point_weights = {axis: len(lineages) for axis in ALL_METRICS}
+            for axis, per_line in zip(("ndcg_at_5", "precision_at_k", "within_cell_spearman"), c):
+                point_weights[axis] = np.isfinite(per_line).sum()
             boot = None
             if weights is not None:
                 boot = {}
                 for key, per_line in zip(("ndcg_at_5", "precision_at_k"), c[:2]):
                     available = np.isfinite(per_line)
-                    boot[key] = (weights[:, available] @ per_line[available]) / weights[:, available].sum(
-                        axis=1).clip(min=1)
+                    boot[key] = (weights[:, available] @ per_line[available], weights[:, available].sum(axis=1))
                 spearmans = []
                 for drug in range(y.shape[1]):
                     idx = np.isfinite(y[:, drug])
@@ -88,22 +91,25 @@ def screen_scores(frame, models, reweights=None, *, minimum=5):
                     w = weights[:, idx]
                     yr = WeightedRanking(y[idx, drug]).ranks(w)
                     pr = WeightedRanking(prediction[idx, drug]).ranks(w)
-                    spearmans.append(weighted_association(yr, pr, w, True, minimum))
-                boot["within_drug_spearman"] = mean(np.asarray(spearmans).T)
-            store[model].append((len(lineages), point, boot))
+                    spearmans.append(weighted_association(yr, pr, w, minimum))
+                drug_average = mean(np.asarray(spearmans).T)
+                count = np.where(np.isfinite(drug_average), weights.sum(axis=1), 0)
+                boot["within_drug_spearman"] = (np.nan_to_num(drug_average) * count, count)
+            store[model].append((point_weights, point, boot))
 
     def aggregate(block_values):
         ns, points, resamples = zip(*block_values)
-        weight = np.asarray(ns)
         point = {}
         for axis in ALL_METRICS:
             val = np.array([r[axis] for r in points])
-            ok = np.isfinite(val)
+            weight = np.array([w[axis] for w in ns])
+            ok = np.isfinite(val) & (weight > 0)
             point[axis] = np.average(val[ok], weights=weight[ok]) if ok.any() else np.nan
         boot = {}
         if reweights is not None:
-            boot = {axis: np.average(np.stack([r[axis] for r in resamples]), weights=weight, axis=0)
-                    for axis in CORE_METRICS}
+            for axis in CORE_METRICS:
+                numer, denom = np.sum([r[axis] for r in resamples], axis=0)
+                boot[axis] = numer / denom.clip(min=1)
         return point, boot
 
     return {screen: {model: aggregate(parts) for model, parts in shelf.items()}
