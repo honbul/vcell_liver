@@ -319,7 +319,8 @@ def results(root):
                 continue
             r = [interval(get(s, arm, metric=metric)) for metric in (NDCG, RHO, INTER, PRECISION)]
             lines.append(f"| {s} | {first['independent_groups']} | {first['min_q']} | {arm} | {' | '.join(r)} |")
-    lines += ["", "v1에 보조 모델이 채택된 연구의 v1-RNA+Anchor 값은 동결 예측에서 가져왔다. "
+    lines += ["", "Bsimple은 각 외부 폴드 안쪽에서 미리 고른 단순 기준선이다. 외부 성적은 B0–B4 각각과도 비교했다. "
+              "v1에 보조 모델이 채택된 연구의 v1-RNA+Anchor 값은 동결 예측에서 가져왔다. "
               "ungated 행은 당시 N2에 사용한 RNA 모델의 순열 전 참조로, v1에 공개된 보조 성적이 없는 연구에 표시했다.",
               "", "## 판정 근거", "",
               "| 연구 | 후속 모델 | 대조 | ΔNDCG@5 | Δ 약물 내 Spearman | Δ 상호작용 Spearman | ΔPrecision@5 |",
@@ -362,6 +363,26 @@ def results(root):
             aux = get(s, arm, 12, panel="Q12")
             vals.append(f"{fmt(aux['value'])} / {fmt(get(s, arm, 12, RHO, 'Q12')['value'])}" if aux else "—")
             lines.append(f"| {s} / {arm} | {' | '.join(vals)} | {aux['independent_groups'] if aux else '—'} |")
+    pan_gain = field(get("Tier1-macro", DUAL, 8), "value") - field(get("Tier1-macro", DUAL), "value")
+    local_gain = field(get("LICOB", ANCHOR, 8), "value") - field(get("LICOB", ANCHOR), "value")
+    size_rows = [row for row in load(root, "H1V2_LICOB_SAMPLE_SIZE.tsv") if row["modality"] == "anchor"]
+    half, full = ([row for row in size_rows if num(row["training_fraction"]) == f] for f in (.5, 1.))
+    lines += ["", "## 관측된 성능 한계", "",
+              f"- **범암** Q8에서 RNA+Anchor의 K=5→8 NDCG@5 증가는 `{pan_gain:+.5f}`였다. "
+              "이 범위에서 추가 앵커의 순위 이득은 작았다.",
+              f"- **LIMORE** 50계통에서 RNA-only 대비 ΔNDCG@5는 {interval(p('LIMORE', DUAL, 'B1'), 'delta')}였다. "
+              f"Precision@5 차이는 {interval(p('LIMORE', DUAL, 'B1', PRECISION), 'delta')}로, "
+              "보호 기준을 충족할 만큼 정밀하지 않았다.",
+              f"- **LICOB** 38공여자에서 B3 대비 상호작용 Spearman 차이는 "
+              f"{interval(p('LICOB', ANCHOR, 'B3', INTER), 'delta')}, "
+              f"NDCG@5 차이는 {interval(p('LICOB', ANCHOR, 'B3'), 'delta')}였다. "
+              f"고정 후보의 Inner 적합 공여자를 평균 {average(half, 'fit_groups'):.1f}명에서 "
+              f"{average(full, 'fit_groups'):.1f}명으로 늘리면 NDCG@5와 약물 내 Spearman이 각각 "
+              f"`{average(full, 'ndcg') - average(half, 'ndcg'):+.4f}`와 "
+              f"`{average(full, 'rho') - average(half, 'rho'):+.4f}` 높아졌다. "
+              "수치 경계 검증을 마친 모델에서도 적합 표본 수가 성적에 영향을 줬다. "
+              f"Q8에서 K=5→8의 NDCG@5 차이는 `{local_gain:+.4f}`였고, K=8은 6농도 설계에서도 108웰을 쓴다. "
+              "[네 패밀리 포화 검증과 학습곡선](ROUND1_TO_3_CEILING_TUNING.md)"]
     tissues = load(root, "H1V2_PANCANCER_BY_TISSUE.tsv")
     lines += ["", f"범암 조직 표는 등록 라벨 {len(set(t['tissue'] for t in tissues))}개를 포함한다. "
               "조직별 9개 지표와 짝지은 신뢰구간을 함께 제공한다. [범암 조직별](H1V2_PANCANCER_BY_TISSUE.tsv)", "",
