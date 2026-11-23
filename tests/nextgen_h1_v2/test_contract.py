@@ -10,7 +10,7 @@ import torch
 from nextgen_h1_anchor.metrics import batch_stats, sample_summaries
 from nextgen_h1_anchor.score import Task
 from nextgen_h1_v2.anchors import extend_reserve, greedy, restricted_order
-from nextgen_h1_v2.closure import clipped_neural_widths
+from nextgen_h1_v2.closure import clipped_neural_edges
 from nextgen_h1_v2.boost import region
 from nextgen_h1_v2.data import TASKS, partitions, training_context
 from nextgen_h1_v2.neural import SetProcess
@@ -95,8 +95,17 @@ class H1V2Contract(unittest.TestCase):
         previous = {"saturation": [{"config": config | {"hidden": 192}, "edges": [
             dict(parameter="hidden", winner=192, high=192, low=24, expanded_to=256, status="expanded"),
         ]}]}
-        candidate, _ = next(clipped_neural_widths(previous))
+        candidate, _ = next(clipped_neural_edges(previous))
         self.assertEqual(candidate, config | {"hidden": 384})
+
+    def test_revisits_clipped_learning_rate_and_epoch_ranges(self):
+        config = template("C") | {"lr": .000075, "epochs": 300}
+        previous = {"saturation": [{"config": config, "edges": [
+            dict(parameter="lr", winner=.000075, high=.003, low=.000075, expanded_to=.00004, status="expanded"),
+            dict(parameter="epochs", winner=300, high=300, low=50, expanded_to=400, status="expanded"),
+        ]}]}
+        results = {edge["parameter"]: candidate for candidate, edge in clipped_neural_edges(previous)}
+        self.assertEqual(results, {"lr": config | {"lr": .0000375}, "epochs": config | {"epochs": 600}})
 
     def test_fast_metrics_preserve_old_scoring_math(self):
         y = self.rng.normal(size=(19, 25))

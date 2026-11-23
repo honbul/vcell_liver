@@ -7,19 +7,22 @@ from nextgen_h1_anchor.inputs import json_write
 from vc_build.io import sha256
 
 from .data import TASKS
-from .search import NEURAL_DOMAINS, Search, budget_diagnostics, cache_read, extrapolate, key
+from .search import NEURAL_DOMAINS, Search, boundary_target, budget_diagnostics, cache_read, extrapolate, key
 
 
-def clipped_neural_widths(record):
+def clipped_neural_edges(record):
     for cycle in record["saturation"]:
         config = cycle["config"]
         for edge in cycle["edges"]:
-            if edge["parameter"] != "hidden" or edge["winner"] != edge["high"]:
-                continue
-            width = edge["winner"]
-            target = min(NEURAL_DOMAINS["hidden"][1], 2 * width)
-            if width <= edge["expanded_to"] < target:
-                yield config | {"hidden": target}, edge | {"expanded_to": target, "status": "expanded"}
+            name, value, previous = edge["parameter"], edge["winner"], edge["expanded_to"]
+            directions = ((False, edge["low"] == value and previous <= value),
+                          (True, edge["high"] == value and previous >= value))
+            for increasing, same_side in directions:
+                if same_side:
+                    target = boundary_target(config, name, NEURAL_DOMAINS[name], increasing)
+                    extends = target > previous if increasing else target < previous
+                    if extends:
+                        yield config | {name: target}, edge | {"expanded_to": target, "status": "expanded"}
 
 
 def close(task, family, result, r1, out, device):
@@ -37,12 +40,12 @@ def close(task, family, result, r1, out, device):
         initial = key(record["selected"]["config"])
         limits = []
         if family == "C":
-            for candidate, edge in clipped_neural_widths(record):
+            for candidate, edge in clipped_neural_edges(record):
                 if key(candidate) in search.evaluations:
                     continue
-                search.score(candidate, "round3-final-boundary-clipped-width")
+                search.score(candidate, "round3-final-boundary-clipped")
                 limits.append(dict(iteration=-1, edges=[edge], new_trials=1))
-                print(task, family, mode, "width", candidate["hidden"], "after prior cap", flush=True)
+                print(task, family, mode, edge["parameter"], edge["expanded_to"], "after prior cap", flush=True)
         for i in range(8):
             current = search.winner()["config"]
             proposals, edges = extrapolate(current, [r["config"] for r in search.evaluations.values()], search.dual)
