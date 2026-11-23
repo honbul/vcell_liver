@@ -9,6 +9,7 @@ from nextgen_h2.assets import AUXILIARY, COLD, HALLMARK, PRIOR, STORAGE, TARGET,
 from nextgen_h2.model import Inputs, molecular_features
 from nextgen_h2.run import META, TRAIN, read_json
 from nextgen_h2_v2.assets import ROOT as V2, V1_ASSETS, V1_RUN, V1_TARGETS, registries
+from nextgen_h2_v2.kernel import Engine
 from vc_build.io import sha256
 from vc_build.v0plus_cv import molecular_inputs
 from vc_build.v0plus_neural import load_auxiliary
@@ -17,6 +18,13 @@ ROOT = STORAGE / "followup_20261124/h2_e1e3"
 CELLOSAURUS = COLD.parents[2] / "function/sources/Cellosaurus-57.0.txt.gz"
 ARCHIVE = COLD.parent
 V2_FORECAST = V2 / "study/forecasts"
+
+
+class ModzEngine(Engine):
+    def view_data(self, view):
+        if view.name != "lincs":
+            raise ValueError("Follow-up kernels admit the registered LINCS view only")
+        return self.data.profiles["modz24" if view.recipe == "v1" else view.recipe]
 
 
 def device():

@@ -16,11 +16,11 @@ from nextgen_h2.model import Fit
 from nextgen_h2.replay import network_deny
 from nextgen_h2.run import META, read_json, subfold
 from nextgen_h2_v2 import freeze
-from nextgen_h2_v2.kernel import Engine, V1, design
+from nextgen_h2_v2.kernel import V1, design
 from vc_build.external import native_sensitivity
 from vc_build.io import publish_json, sha256
 
-from .common import V1_RUN, V2, V2_FORECAST, context, device, native_rows, panel_hash
+from .common import ModzEngine, V1_RUN, V2, V2_FORECAST, context, device, native_rows, panel_hash
 
 FIXED_V2 = V2 / "run-final-strict/champion.json"
 CHEM_GRID = (("chem", 1.), *(("krr", a) for a in (.01, .10, 1., 10.)),
@@ -219,7 +219,7 @@ def chem_freeze(parts, decision, out, part):
     combined = panel.assign(**arms(panel), **{"Cchem-int": panel.rc.to_numpy(np.float64)+chemistry})
     if external:
         limore = panel[panel.source_id.eq("LIMORE")]
-        v2 = Engine(data, data.assets, fit, limore[META], reg)
+        v2 = ModzEngine(data, None, fit, limore[META], reg)
         spec = design(read_json(FIXED_V2)["3"]["R2b"]["design"])
         if spec.drug_views or spec.cell_views:
             raise ValueError("The LIMORE lambda diagnostic must use the frozen one-view kernel")
