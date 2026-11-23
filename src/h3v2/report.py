@@ -1,5 +1,6 @@
 """Verify the completed H3-v2 experiment and assemble versionable aggregate artifacts."""
 from datetime import datetime,timezone
+import json
 import os
 from pathlib import Path
 import shutil
@@ -149,7 +150,8 @@ def inner_results(lock):
                 key={"split":split,"family":family,"round":row["stage"],"config_id":row["id"]}
                 grid.append(key | row["point"] | {"utility":row["utility"],"budget":row["selected_budget"],
                             "branch_budgets":row["selected_branch_budgets"],"frozen":row["id"]==picked,
-                            "max_budget_pressure_iteration":row["max_budget_pressure_iteration"]} | config)
+                            "max_budget_pressure_iteration":row["max_budget_pressure_iteration"],
+                            "configuration":json.dumps(config, sort_keys=True)} | config)
                 for i in range(3):
                     root=ROOT/"fits"/row["stage"]/split/f"inner-{i}"/family/row["id"]
                     meta=read_json(root/"receipt.json")
@@ -199,7 +201,27 @@ def error_diagnosis(root):
     return rows
 
 
-def report_docs(root,points,ci,curves,grid,evidence,score,replays,lock):
+def tissue_deltas(root, roster):
+    table = pd.read_csv(root / "H3V2_PANCANCER_BY_TISSUE.tsv", sep="\t")
+    selected = table[table.screen.eq("macro") & table.support.eq("all") & table.metric.isin(AXES)]
+    refs = selected[selected.model.eq("H2") & selected.seed.eq("fixed")].set_index(["tissue", "metric"])
+    champ = selected[selected.model.eq("Champion") & selected.seed.eq("mean")].set_index(["tissue", "metric"])
+    paired = refs[["value", "unit_count"]].join(champ[["value"]], how="inner", lsuffix="_h2", rsuffix="_champ")
+    paired["delta"] = paired.value_champ - paired.value_h2
+    rows = []
+    for tissue in roster:
+        effects = []
+        support = []
+        for metric in AXES:
+            key = (tissue, metric)
+            valid = key in paired.index and np.isfinite(paired.loc[key, "delta"])
+            effects.append(f"{paired.loc[key, 'delta']:+.4f}" if valid else "미추정")
+            support.append(int(paired.loc[key, "unit_count"]) if valid else 0)
+        rows.append((tissue, *effects, support[0], support[-1]))
+    return rows
+
+
+def report_docs(root,points,ci,curves,grid,score,lock):
     axis=points[(points.seed.isin(["fixed","mean"])) & points.screen.eq("macro")]
     statuses=score["verdicts"]
     primary=axis[axis.scope.eq("drug")&axis.support.eq("all")]
@@ -216,12 +238,18 @@ def report_docs(root,points,ci,curves,grid,evidence,score,replays,lock):
                     ci.support.eq(support) & ci.screen.eq("macro") & ci.metric.isin(AXES)]
         return [(x.metric,f"{x.delta:+.5f}",f"[{x.lower:+.5f}, {x.upper:+.5f}]",x.cluster_axis)
                 for x in selected.itertuples()]
+    labels = dict(zip(DISPLAY, LABELS))
+    summary_effects = ", ".join(f"{labels[axis]} {delta}" for axis,delta,_,_ in compare("Champion"))
+    verdict = statuses["Champion"]["verdict"]
+    promoted = [name for name in (*FAMILIES, "Champion") if statuses[name]["verdict"] == "GO-MODEL"]
+    next_decision = ("승격 기준 충족 모델은 " + ", ".join(promoted) + "이다." if promoted else
+                     "현재 패널과 동결된 탐색 범위에서 승격 기준을 충족한 모델이 없었다.")
     raw=[
         "- **가설** 같은 전체 관측으로 현대적 모델 다섯 패밀리와 구조 커널의 세 평가축을 비교했다.",
         "- **달라진 점** 1,186 exact parent, 전체 RNA 및 결측 인식 멀티뷰, 분할 내 포화 탐색을 적용했다.",
-        f"- **결과** 전체 비교는 {score['overall']}, 챔피언 정책은 {statuses['Champion']['verdict']}이며 외부 단일 계열은 {checkpoint['champion']}이다.",
+        f"- **결과** 신규 골격 전체에서 Champion의 H2 대비 변화는 {summary_effects}다. 전체 판정은 {score['overall']}, Champion은 {verdict}다.",
         "- **판정** " + " · ".join(f"{k} {v['verdict']}" for k,v in statuses.items())+".",
-        "- **다음 결정** 합동 보호 기준을 통과한 단일 모델만 승격 대상으로 분류했다.",
+        f"- **다음 결정** {next_decision}",
         "", "# H3-v2 모델 패밀리 비교", "",
         f"3개 seed의 개별 모델 성적 평균과 표본 SD를 표에 표시했다. score_passes = {score['score_passes']}. "
         "Champion은 한 outer 분할 안에서 한 패밀리다. 외부에는 전체 패널에 적합한 하나의 고정 설정을 썼다. "
@@ -239,8 +267,10 @@ def report_docs(root,points,ci,curves,grid,evidence,score,replays,lock):
     best_scope=axis[axis.model.isin(FAMILIES)&axis.scope.eq("drug")&axis.metric.isin(AXES)]
     raw.extend([
         "## 암종과 모델링 범위", "",
-        "등록된 28개 암종의 지표, 실측 지지 및 빈 지지를 별도 표에 기록했다. "
+        "신규 골격 비교에서 암종별 Champion − H2 점수 차이다. 지지 열은 각 지표 계산에 포함된 고유 약물과 세포 수다. "
         "LIMORE와 LICOB은 기노출 기술 확인이다. GDSC1은 신규 골격 공개 패널이며 일부 세포는 소스와 공유된다.", "",
+        *md_table(["암종", "Δ약물 내 ρ", "Δ상호작용 ρ", "ΔNDCG@5", "약물 지지", "세포 지지"],
+                  tissue_deltas(root, score["tissue_roster"])),
         *md_table(["LINCS 지원","지표","최고 단일 패밀리","점수"],[
             (scope,key,group.loc[group.value.idxmax(),"model"],f"{group.value.max():.5f}")
             for (scope,key),group in best_scope.groupby(["support","metric"])]),
@@ -273,15 +303,20 @@ def report_docs(root,points,ci,curves,grid,evidence,score,replays,lock):
         "어텐션을 사용했다. GNN은 GINE/GATv2/AttentiveFP와 등록된 CLAMP·Uni-Mol 서브암을 포함했다. "
         "하이브리드는 H2 OOF를 기본값으로 고정하고 두 단계 트리 또는 공동 손실 신경망으로 보정했다.", "",
         "학습곡선은 같은 iteration의 train 및 validation을 병기한다. Validation 모델은 best iteration으로 재적합했다. "
-        "포화점 주위의 설정, 실제 검증점 및 라운드별 동결 여부는 설정 TSV에 있다.",
-        "[학습 곡선](H3V2_FAMILY_LEARNING_CURVES.tsv) · [학습 곡선 그림](H3V2_FAMILY_LEARNING_CURVES.png) · [포화 탐색](H3V2_GRID_SATURATION.tsv) · [최종 동결](final_lock.json)",
+        "포화 그림은 Drug-Cold fold 0에서 동결 설정의 폭 또는 깊이만 바꾼 내측 비교다. 다른 축과 분할의 측정값은 설정 TSV에 있다.",
+        "[학습 곡선](H3V2_FAMILY_LEARNING_CURVES.tsv) · [학습 곡선 그림](H3V2_FAMILY_LEARNING_CURVES.png) · [포화 탐색](H3V2_GRID_SATURATION.tsv) · [포화 그림](H3V2_GRID_SATURATION.png) · [최종 동결](final_lock.json)",
     ])
     put(root/"model_card.md",[
        "# H3-v2 연구용 감수성 모델", "",
        f"외부 단일 모델은 {checkpoint['champion']}, 설정 {checkpoint['operating_point']['id']}이다. "
        "모델 checkpoint와 fit-only 특징 정의는 G1 final 및 features에 보관했다.", "",
-       f"등록 seed는 {', '.join(map(str,SEEDS))}다. 생체 밖 공개 스크린의 감수성 순위와 상호작용 점수를 평가했다. "
-       "환자 치료 선택·용량·현장 효용 평가는 범위 밖이다. 데스크톱 배포 모델과 임상 성능을 보고하는 문서는 별도다.", "",
+       "## 사용 목적과 입력", "",
+       "생체 밖 암 모델의 약물 감수성 순위와 상호작용을 연구한다. 세포 기저 RNA, 경로·TF, 정확 parent의 구조와 ChEMBL 타깃, "
+       "관측 시 LINCS 변화를 사용한다. 모델 출력은 스크린 감수성 점수다.", "",
+       "## 평가 범위", "",
+       f"독립 seed는 {', '.join(map(str,SEEDS))}다. 신규 골격, 신규 세포, 스크린 동시 보류, GDSC1·LIMORE·LICOB에서 평가했다. "
+       "GDSC1에 소스와 공유하는 세포가 있고 LIMORE와 LICOB은 기노출 코호트다. 지원과 성능 차이는 결과표에 기록했다.", "",
+       "환자 치료 선택, 용량 산정과 임상 효용은 평가 범위 밖이다. 결측 LINCS 지원과 생물학적 플랫폼 차이에서 불확실성이 달라진다.", "",
        "[데이터와 지원](DATA_SUPPORT_AND_EXPOSURE.md) · [결과](RESULTS.md) · [동결](final_lock.json)",
     ])
 
@@ -307,7 +342,7 @@ def main():
     previous.to_csv(OUTPUT/"H3V2_H2_REPLAY.tsv",sep="\t",index=False)
     held=prior_held_points(metrics)
     held.to_csv(OUTPUT/"H3V2_H3V1_REPLAY.tsv",sep="\t",index=False)
-    report_docs(OUTPUT,metrics,ic,curves,progress,audit,score,previous,lock)
+    report_docs(OUTPUT,metrics,ic,curves,progress,score,lock)
     plotter=Path(__file__).resolve().parents[2]/"experiments/nextgen_h3_v2/plot_curves.py"
     environment=dict(os.environ,MPLCONFIGDIR=str(ROOT/"tmp/matplotlib"))
     run(["/usr/bin/python3",str(plotter),str(OUTPUT)],check=True,env=environment)
