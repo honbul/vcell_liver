@@ -1,6 +1,9 @@
 """Verify the completed H3-v2 experiment and assemble versionable aggregate artifacts."""
 from datetime import datetime,timezone
+import os
+from pathlib import Path
 import shutil
+from subprocess import run
 
 import numpy as np
 import pandas as pd
@@ -46,6 +49,9 @@ def evidence(lock,score):
         raise ValueError("Independent seal verification differs from the scored set")
     source=read_json(ROOT/"splits/manifest.json")
     sha=sha256(ROOT/"splits/manifest.json")
+    step0=read_json(ROOT/"step0_verification.json")
+    if (step0["audited_atlas_count"],step0["full_partition_sha256"],step0["query_outcomes_for_outer_consumed"]) != (60,sha,False):
+        raise ValueError("The parity and group audit must precede the final report")
     if sha!=score["source_manifest_sha256"]:
         raise ValueError("Source fold registry drifted")
     when=[sum(len(frames[f"{track}-{fold}"]) for fold in range(3)) for track in ("drug","cell")]
@@ -75,7 +81,7 @@ def evidence(lock,score):
         "minimum_full_round_hyperparameter_brackets":len(registered),
         "forecast_supports":{name:len(frame) for name,frame in frames.items()},
         "score_sha256":sha256(SCORED/"score_receipt.json"),
-        "partition_manifest_sha256":sha,"frozen_sha256":sha256(ROOT/"locks/frozen.json"),
+        "partition_manifest_sha256":sha,"step0_sha256":sha256(ROOT/"step0_verification.json"),"frozen_sha256":sha256(ROOT/"locks/frozen.json"),
     }
 
 
@@ -244,7 +250,7 @@ def report_docs(root,points,ci,curves,grid,evidence,score,replays,lock):
         "하이브리드는 H2 OOF를 기본값으로 고정하고 두 단계 트리 또는 공동 손실 신경망으로 보정했다.", "",
         "학습곡선은 같은 iteration의 train 및 validation을 병기한다. Validation 모델은 best iteration으로 재적합했다. "
         "포화점 주위의 설정, 실제 검증점 및 라운드별 동결 여부는 설정 TSV에 있다.",
-        "[학습 곡선](H3V2_FAMILY_LEARNING_CURVES.tsv) · [포화 탐색](H3V2_GRID_SATURATION.tsv) · [최종 동결](final_lock.json)",
+        "[학습 곡선](H3V2_FAMILY_LEARNING_CURVES.tsv) · [학습 곡선 그림](H3V2_FAMILY_LEARNING_CURVES.png) · [포화 탐색](H3V2_GRID_SATURATION.tsv) · [최종 동결](final_lock.json)",
     ])
     put(root/"model_card.md",[
        "# H3-v2 연구용 감수성 모델", "",
@@ -275,6 +281,9 @@ def main():
     held=prior_held_points(metrics)
     held.to_csv(OUTPUT/"H3V2_H3V1_REPLAY.tsv",sep="\t",index=False)
     report_docs(OUTPUT,metrics,ic,curves,progress,audit,score,previous,lock)
+    plotter=Path(__file__).resolve().parents[2]/"experiments/nextgen_h3_v2/plot_curves.py"
+    environment=dict(os.environ,MPLCONFIGDIR=str(ROOT/"tmp/matplotlib"))
+    run(["/usr/bin/python3",str(plotter),str(OUTPUT)],check=True,env=environment)
     publish_json(OUTPUT/"verification.json",audit|{
         "registered_replay_metrics":len(previous),"family_learning_curve_rows":len(curves),
         "historical_held_metric_replays":len(held),"saturation_grid_rows":len(progress),"first_pass_verification_utc":datetime.now(timezone.utc).isoformat(),
