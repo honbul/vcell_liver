@@ -29,7 +29,7 @@ def audit():
     if any(sha256(out / name) != digest for name, digest in scored["output_sha256"].items()):
         raise ValueError("Score table differs from its sealed hash")
 
-    summary_counts, audit_rows = {}, 0
+    summary_counts, audit_rows, budgets = {}, 0, {}
     for stage in STAGES:
         book = read_json(ROOT / f"analysis/{stage}-summary.json")
         counts = []
@@ -42,6 +42,9 @@ def audit():
             fits = [row for row in fit["runs"] if "seed" in row and not row.get("timing_replay")]
             counts.append(len(fits))
             for row in fits:
+                budget = (row["observed_cell_drug_pairs"], row["pair_exposures"], row["updates"])
+                if budgets.setdefault((split, row["inner"]), budget) != budget:
+                    raise ValueError("H3 methods differ in observed data or update budget")
                 if row["observed_cell_drug_pairs"] * conf["epochs"] != row["pair_exposures"]:
                     raise ValueError("An arm used a different observation budget")
                 if row["updates"] != conf["epochs"] * conf["updates_per_epoch"] or row["shared_params"] <= 0:
@@ -70,6 +73,7 @@ def audit():
         "outer_forecasts": len(groups), "outer_seed_models": layout,
         "checkpoint_count": sum(len(s["checkpoints"]) for s in checks.values()),
         "round1_and_2_fits": summary_counts, "raw_batch_pair_records": audit_rows,
+        "inner_folds_with_same_exposures_across_all_stages": len(budgets),
         "score_passes": scored["score_passes"], "score_receipt_sha256": sha256(out / "score_receipt.json"),
         "verification_loaded_outer_outcomes": False,
     })
