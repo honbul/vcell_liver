@@ -49,7 +49,7 @@ def initial(family):
     raise ValueError(f"Unknown family {family}")
 
 
-def nearby(config, *, intensive):
+def nearby(config, *, intensive, diagnosis):
     cfg=config.copy()
     if cfg["backend"]=="gbdt":
         return [cfg|{"depth":max(2,cfg["depth"]+direction*2),
@@ -59,11 +59,12 @@ def nearby(config, *, intensive):
                      "min_child":max(20,int(cfg["min_child"]*child)),
                      "lambda_l2":cfg["lambda_l2"]*child}
                 for direction,rate,child in ((-1,1.4,1.5),(1,.7,.7))]
-    regularized=cfg|{"dropout":min(.65,cfg["dropout"]+.12),"weight_decay":cfg["weight_decay"]*3,
+    regularized=cfg|{"dropout":min(.65,cfg["dropout"]+(.15 if diagnosis=="overfit" else .05)),
+                     "weight_decay":cfg["weight_decay"]*(4 if diagnosis=="overfit" else 2),
                      "loss":list(PEARSON),"balance":True}
     higher_width=cfg["width"]*2
     bigger=cfg|{"width":higher_width,"depth":cfg["depth"]+1,
-                "epochs":min(192,cfg["epochs"]+24),"loss":list(JOINT),"balance":True}
+                "epochs":min(192,cfg["epochs"]+(16 if diagnosis=="overfit" else 36)),"loss":list(JOINT),"balance":True}
     if cfg["arch"]=="attention" or cfg["family"]=="gnn":
         bigger["batch"]=(48,64)
         bigger["eval_batch"]=4096

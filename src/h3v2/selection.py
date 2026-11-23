@@ -3,6 +3,8 @@ import argparse
 from collections import Counter
 from statistics import mean, median
 
+import pandas as pd
+
 from vc_build.io import publish_json, sha256
 from nextgen_h2.run import read_json
 from .data import ROOT, SPLITS
@@ -52,6 +54,20 @@ def compact(row):
         "receipt_sha256":[x["receipt_sha256"] for x in row["folds"]]}
 
 
+def fit_gap(split, family, winner):
+    gaps=[]
+    if winner["config"]["backend"]!="torch":
+        return {"diagnosis":"tree_grid","validation_train_relative_gap":None}
+    for part,d in enumerate(winner["folds"]):
+        path=ROOT/"fits"/winner["stage"]/split/f"inner-{part}"/family/winner["id"]/"curves.parquet"
+        frame=pd.read_parquet(path)
+        record=frame[frame.iteration.eq(d["training"]["best_iteration"])].iloc[0]
+        gaps.append(float((record.val_huber-record.train_huber)/max(1e-6,record.train_huber)))
+    gap=median(gaps)
+    return {"diagnosis":"overfit" if gap>.15 else "capacity_or_objective",
+            "validation_train_relative_gap":gap,"individual_inner_gaps":gaps}
+
+
 def select(stages):
     scores={}
     for split in SPLITS:
@@ -66,14 +82,17 @@ def select(stages):
         next_round="boundary-"+str(int(label.split("-")[-1])+1)
     pending={}
     boundary_status={}
+    diagnostics={}
     for split,results in scores.items():
-        pending[split],boundary_status[split]={},{}
+        pending[split],boundary_status[split],diagnostics[split]={},{},{}
         top=sorted(winners[split],key=lambda f:-winners[split][f]["utility"])[:3]
         for family, variants in results.items():
             chosen=winners[split][family]
             explored=[row["config"] for row in variants]
             if label=="r1":
-                candidates=nearby(chosen["config"],intensive=family in top)
+                diagnosis=fit_gap(split,family,chosen)
+                diagnostics[split][family]=diagnosis
+                candidates=nearby(chosen["config"],intensive=family in top,diagnosis=diagnosis["diagnosis"])
             else:
                 candidates=boundary_neighbors(chosen["config"],explored,chosen["max_best_iteration"])
             pending[split][family]=list({identify(c):c for c in candidates
@@ -85,7 +104,7 @@ def select(stages):
         "stages":stages,"no_outer_scores_loaded":True,
         "points":{split:{f:[compact(row) for row in rows] for f,rows in res.items()} for split,res in scores.items()},
         "winners":{split:{f:compact(row) for f,row in res.items()} for split,res in winners.items()},
-        "open_neighbors":boundary_status,
+        "open_neighbors":boundary_status, "curve_diagnoses":diagnostics,
         "next":next_round if has_work else None,
     })
     if has_work:
