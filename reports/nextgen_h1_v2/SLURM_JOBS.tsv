@@ -21,10 +21,10 @@ job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
 35064	ng2-h1-score	outer_score	cpu	0	0	CANCELLED	Replaced while pending, runtime zero, no scoring claim
 35065	ng2-h1-replay-final	replay_final	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
 35122	ng2-h1-licob-size	inner_licob_sample_sensitivity	gpu	1	1	COMPLETED	108 rows under nested 50/75/100 percent reference sizes with the same held inner donors; SHA verified
-35147	ng2-h1-prelabel-sealed	verify_scoring_paths	cpu	0	0	DEPENDENT	After repaired CPU replay 35464; verifies synthetic auxiliary predictions and matched v1 arms before opening held outcomes
+35147	ng2-h1-prelabel-sealed	verify_scoring_paths	cpu	0	0	COMPLETED	All 16 tasks verified using synthetic Q12 forecast inputs, with matching v1 arms and no held Q responses opened
 35148	ng2-h1-score-sealed	outer_score	cpu	0	0	CANCELLED	Replaced while pending by the complete tissue analysis, runtime zero, no scoring claim
 35149	ng2-h1-replay-final-sealed	replay_final	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
-35168	ng2-h1-score-all-tissues	outer_score	cpu	0	0	DEPENDENT	Verifies prelabel and forecast hashes before the exclusive claim and scores nine metric axes in 28 tissues
+35168	ng2-h1-score-all-tissues	outer_score	cpu	0	0	RUNNING	Exclusive claim with one start matches the model, prediction and prelabel SHA-256 digests
 35169	ng2-h1-replay-release	replay_final	cpu	0	0	CANCELLED	Replaced while pending to use the frozen RNA readout implementation; runtime zero
 35182	ng2-h1-refit-smoke	blind_four_family_refit_and_replay	cpu	0	0	COMPLETED	GDSC2-0 sealed blind refit, batch forecasts and both champion CLIs across five budgets; max absolute difference 4.440892098500626e-16
 35195	ng2-h1-score-shape	blind_bootstrap_and_tissue_integration	cpu	0	0	COMPLETED	2,000 paired group draws on 220 groups and 18 arms with simulated query outcomes; nine metric axes across 26 tissues
@@ -34,9 +34,9 @@ job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
 35359	ng2-h1-release-wide	verify_release	cpu	0	0	CANCELLED	Replaced while pending to package the full numerical boundary audit; runtime zero
 35376	ng2-h1-boundary-neural-full	inner_boundary_c	gpu	1	2	COMPLETED	17 additional Family C boundary probes; all 31 task-modality incumbents have zero unresolved numerical boundaries
 35377	ng2-h1-release-full	verify_release	cpu	0	0	CANCELLED	Replaced while pending to incorporate the corrected RNA replay and final receipts; runtime zero
-35460	ng2-h1-seal-rna-readouts	fit_frozen_models	cpu	0	0	DEPENDENT	Repackages the existing estimators with reusable fit-only RNA readout coefficients and retains their tuning receipt hashes
-35461	ng2-h1-seal-offline-models	seal_models	cpu	0	0	DEPENDENT	Seals the new model packages and verifies all 15 dual RNA readouts
-35462	ng2-h1-forecast-offline-models	predict_primary	cpu	0	0	DEPENDENT	Regenerates label-blind forecasts using the sealed readouts
-35463	ng2-h1-seal-offline-forecasts	seal_predictions	cpu	0	0	DEPENDENT	Signs every final Q8 forecast manifest
-35464	ng2-h1-replay-offline-primary	replay_primary	cpu	0	0	DEPENDENT	Requires CPU replay below 1e-6 before any held Q access
+35460	ng2-h1-seal-rna-readouts	fit_frozen_models	cpu	0	0	COMPLETED	Prior recipes, anchors, query panels and inner receipt hashes preserved across all tasks
+35461	ng2-h1-seal-offline-models	seal_models	cpu	0	0	COMPLETED	16 sealed packages and 15 fit-only RNA readouts verified
+35462	ng2-h1-forecast-offline-models	predict_primary	cpu	0	0	COMPLETED	Regenerated label-blind forecasts using the sealed readouts
+35463	ng2-h1-seal-offline-forecasts	seal_predictions	cpu	0	0	COMPLETED	16 signed Q8 forecast manifests match the model seal
+35464	ng2-h1-replay-offline-primary	replay_primary	cpu	0	0	COMPLETED	Q8 CPU replay passed on all 16 tasks with max absolute difference 1.9584334154387761e-13
 35473	ng2-h1-replay-offline-final	replay_final	cpu	0	0	DEPENDENT	Verifies Q8 and Q12 CPU replay after the single held score
