@@ -128,11 +128,11 @@ class Queue:
         return selected
 
     def residual(self, kernel, virtual):
-        manifest = self.contracts / "resid.json"
+        manifest = self.contracts / "resid_strict.json"
         reg = self.submit("r3-reg", "residual_run", "manifest", manifest, "--kernel", kernel)
         fit = self.submit("r3-nonlinear", "residual_run", "measure", self.root, "--work", self.study,
                           "--root", self.root, "--manifest", manifest, gpu=True, after=reg)
-        result = self.root / "run-final-selection"
+        result = self.root / "run-final-strict"
         chosen = self.submit("r3-select", "residual_run", "decide", result, "--work", self.study,
                              "--contracts", self.contracts, "--kernel", kernel, "--virtual", virtual, after=fit)
         self.check(chosen, [result / "champion.json", result / "receipt.json"])
