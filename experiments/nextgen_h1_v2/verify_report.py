@@ -39,6 +39,15 @@ def verify(root, v1):
     prelabel, replay = read("prelabel_receipt.json"), read("replay_receipt.json")
     claim = read("outer_score_claim.json")
     old = json.loads((v1 / "score_receipt.json").read_text())
+    cost = read("cost_receipt.json")
+    v1_support = json.loads((v1 / "data_support_receipt.json").read_text())
+    need(cost["source_sha256"] == v1_support["file_sha256"][cost["source"]]
+         and len(cost["response_sheet_titles"]) == 6 and not cost["sheet_data_read"],
+         "Cost evidence must use the signed LICOB workbook layout")
+    expected_wells = {(k, n): (2 * k * n + 12, 2 * k * n + 12 <= 96) for k in (0, 1, 3, 5, 8, 12)
+                      for n in (6, 7, 8, 11)}
+    need({(r["anchors"], r["concentrations"]): (r["wells"], r["one_plate"]) for r in cost["plans"]} == expected_wells,
+         "Incomplete practical 96-well accounting")
     for rec in (score, inner):
         for name, value in rec["outputs"].items():
             need(digest(root / name) == value, f"Corrupt release output {name}")

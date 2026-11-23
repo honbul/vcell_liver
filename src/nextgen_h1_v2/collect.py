@@ -2,6 +2,7 @@
 import argparse
 import json
 from pathlib import Path
+import posixpath
 from zipfile import ZipFile
 
 import numpy as np
@@ -9,7 +10,7 @@ import pandas as pd
 
 from nextgen_h1_anchor.inputs import LICOB_LABEL, json_write
 from vc_build.io import sha256
-from .data import ROOT, TASKS, V1
+from .data import STUDY, TASKS, V1
 from .freeze import FAMILIES, load_results
 from .search import key
 
@@ -67,20 +68,55 @@ def inner(r1, result, kernel, final, out):
                "selected_candidates": len(winners)})
 
 
-def cost(out):
+def workbook_layout(path):
     from xml.etree import ElementTree
-    with ZipFile(LICOB_LABEL) as workbook:
+    with ZipFile(path) as workbook:
         manifest = ElementTree.fromstring(workbook.read("xl/workbook.xml"))
-    sheets = [s.attrib["name"] for s in manifest.iter() if s.tag.endswith("}sheet")]
+        entries = {s.attrib["name"]: next(v for k, v in s.attrib.items() if k.endswith("}id"))
+                   for s in manifest.iter() if s.tag.endswith("}sheet")}
+        relations = ElementTree.fromstring(workbook.read("xl/_rels/workbook.xml.rels"))
+        paths = {r.attrib["Id"]: r.attrib["Target"] for r in relations}
+        strings = []
+        if "xl/sharedStrings.xml" in workbook.namelist():
+            strings = ["".join(t.text or "" for t in item.iter() if t.tag.endswith("}t"))
+                       for item in ElementTree.fromstring(workbook.read("xl/sharedStrings.xml"))]
+        titles = {}
+        for sheet, relation in entries.items():
+            if not sheet.startswith(("S5.", "S6.", "S7.", "S8.", "S9.", "S10.")):
+                continue
+            part = paths[relation]
+            member = part.lstrip("/") if part.startswith("/") else posixpath.join("xl", part)
+            with workbook.open(member) as stream:
+                for _, element in ElementTree.iterparse(stream, events=("end",)):
+                    if not element.tag.endswith("}row"):
+                        continue
+                    for cell in element:
+                        value = next((x.text for x in cell.iter() if x.tag.endswith(("}v", "}t"))), None)
+                        kind = cell.attrib.get("t")
+                        if value and kind in {"s", "inlineStr", "str"}:
+                            titles[sheet] = strings[int(value)] if kind == "s" else value
+                            break
+                    break
+    return list(entries), titles
+
+
+def cost(out):
+    register = V1 / "support.json"
+    expected = json.loads((STUDY / "receipt.json").read_text())["support_sha256"]
+    actual = sha256(LICOB_LABEL)
+    if sha256(register) != expected or json.loads(register.read_text())["file_sha256"][str(LICOB_LABEL)] != actual:
+        raise ValueError("LICOB cost analysis requires the signed response workbook")
+    sheets, titles = workbook_layout(LICOB_LABEL)
     options = []
     for k in (0, 1, 3, 5, 8, 12):
         for concentration in (11, 8, 7, 6):
             wells = 2 * k * concentration + 12
             options.append(dict(anchors=k, concentrations=concentration, wells=wells, one_plate=wells <= 96))
     prior = V1 / "summary-v1/inner_freeze_summary.json"
-    donor_budget = json.loads(prior.read_text())
     json_write(out, {"workbook_sheets": sheets, "sheet_data_read": False,
-                     "source": str(LICOB_LABEL), "assumptions": {"replicates_per_dose": 2, "control_wells": 12},
+                     "source": str(LICOB_LABEL), "source_sha256": actual, "registry_sha256": expected,
+                     "response_sheet_titles": titles, "scope": "registered LICOB response workbook; title rows only",
+                     "assumptions": {"replicates_per_dose": 2, "control_wells": 12},
                      "dose_specific_responses_registered": False, "plans": options,
                      "sensitivity": "iid additive anchor noise 0.10/0.25/0.50 inner-fit SD; distinct from empirical concentration downsampling",
                      "reference_counts": {"LICOB": 38, "LIMORE": 50, "Tier4_local": 0},

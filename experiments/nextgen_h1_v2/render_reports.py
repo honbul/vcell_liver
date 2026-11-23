@@ -154,6 +154,18 @@ def inner(root):
         fixed_seeds = [r for r in fixed if r["modality"] == mode and r["policy"].startswith("random")]
         metrics = [fmt(str(mean(num(x[key]) for x in fixed_seeds))) for key in ("delta_ndcg", "delta_rho")]
         lines.append(f"| random-3seed mean | {mode} | {' | '.join(metrics)} | — | — | 0 |")
+    random_cases = []
+    for (task, mode), rows in sorted(grouped(fixed, ("task", "modality")).items()):
+        weight = .12 if study(task) == "LICOB" else .06
+        utilities = {policy: average(matches, "ndcg_at_5") + weight * average(matches, "within_drug_spearman")
+                     for (policy,), matches in grouped(rows, ("policy",)).items()}
+        reference = mean(v for policy, v in utilities.items() if policy.startswith("random"))
+        locked = max(v for policy, v in utilities.items() if not policy.startswith("random"))
+        if reference > locked:
+            random_cases.append(f"{task} {mode} ({reference - locked:+.4f})")
+    lines += ["", "The policy lock used the non-random methods. The three random seeds estimated the performance of random ordering. "
+              f"The random mean exceeded the locked policy utility in {len(random_cases)} task–modality combinations"
+              + (f" ({', '.join(random_cases)})." if random_cases else ".")]
     lines += ["", "The primary comparison preserves the complete-case denominator and one fit-reserved Q8 per inner split. "
               "The exploratory LICOB 16-candidate reserve holds a common Q fixed across all three supervised policies. "
               "The anchor table includes mechanism counts and per-fold diagnostics. [Round 1 table](H1V2_INNER_ANCHORS.tsv)",
