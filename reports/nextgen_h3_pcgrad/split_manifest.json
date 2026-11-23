@@ -1,0 +1,611 @@
+{
+  "contract": {
+    "base": "5ec8ed231ee88c6ae578d0e1cb30d7591c792392",
+    "bootstrap_seed": 629137,
+    "bootstraps": 1200,
+    "epochs": 32,
+    "go": {
+      "improved_screens": 2,
+      "ndcg_delta": 0.01,
+      "protection": -0.01,
+      "screen_floor": -0.02
+    },
+    "minimum_validation_lineages_per_drug": 5,
+    "pilot_conflict_floor": 0.05,
+    "prior_revisions": [
+      "9ed87a1a50e301dd4c90078e3d1bd32103f27468",
+      "1912b5d100a36778dfef3650b96707178adb6885"
+    ],
+    "screens": [
+      "CTRPv2",
+      "GDSC2",
+      "PRISM20Q2"
+    ],
+    "seeds": [
+      11711,
+      11729,
+      11743
+    ],
+    "source_rna_sha256": "ced61eceb5aac91defcd592819d01a67ef5d6ed89c3ac76cada348f8d319588e",
+    "source_rows_sha256": "1edd32ef38be60a742efe0dcc376e15910623c1da8cc27d923291bee8a4a38cc",
+    "updates_per_epoch": 12,
+    "weights": [
+      [
+        1.0,
+        0.08,
+        0.035
+      ],
+      [
+        1.0,
+        0.16,
+        0.035
+      ],
+      [
+        1.0,
+        0.08,
+        0.07
+      ]
+    ]
+  },
+  "files": {
+    "data/outer-labels/CTRPv2-0.parquet": "bcd70a53474b83532b03f950b8fc278f74651fa43d8bda7ed1d0c450bc555982",
+    "data/outer-labels/CTRPv2-1.parquet": "7a57eaaff7e4f134eeefa86b8743a0cc89de7829f6a01e22e30d61c5a73222c6",
+    "data/outer-labels/CTRPv2-2.parquet": "b0646010b664c26a5b27e8e0fd23fd264d98f5c83c90443699fa8ac1fb39015a",
+    "data/outer-labels/GDSC2-0.parquet": "00ac149de3811e80cd9a544f6141028b0ef0cfdc52a803fe18f2d3ce44115e86",
+    "data/outer-labels/GDSC2-1.parquet": "7e506d87e7d427d0a1040412cda2fd61469800f9b0c8e5296859c953b52be2d0",
+    "data/outer-labels/GDSC2-2.parquet": "7b1a9e6b2a9d5a4c85e48660aee9dc073dae9a904940f12bbb8dc519ff73bb82",
+    "data/outer-labels/PRISM20Q2-0.parquet": "f313b6085647965f48c58dc3a5e85117213e72386f90581b90a72a768df93663",
+    "data/outer-labels/PRISM20Q2-1.parquet": "59ed1cc1a05b6db9692952dbe5086095814a81f2862a4d4f9929fb40e7ead647",
+    "data/outer-labels/PRISM20Q2-2.parquet": "cc316af25c8f3f5b6737d3e8ae810aab08eff7283d6acd2914da2de51f7c0c34",
+    "data/splits/CTRPv2-0/fit.parquet": "fb8d6a539d25522bb7885f5eb0450af800c24532c340129124c2df6e92a4b108",
+    "data/splits/CTRPv2-0/inner0-fit.parquet": "6a152120805dc3efebd0631efe748b4c0c5e07cf4eb068d45bfab5c0b018b5e0",
+    "data/splits/CTRPv2-0/inner0-valid.parquet": "f801147d92a5a123205f3a63f0079794fcab5d8be61abddef3c015ddc5e08138",
+    "data/splits/CTRPv2-0/inner1-fit.parquet": "f801147d92a5a123205f3a63f0079794fcab5d8be61abddef3c015ddc5e08138",
+    "data/splits/CTRPv2-0/inner1-valid.parquet": "6a152120805dc3efebd0631efe748b4c0c5e07cf4eb068d45bfab5c0b018b5e0",
+    "data/splits/CTRPv2-0/query.parquet": "90241368608c3c8bee44d82d162d7196dc599b709347e3a840b33f8728ed91cf",
+    "data/splits/CTRPv2-1/fit.parquet": "702de1f89d63a03c7f0db8dba583e16a6519645720b86e7f2ec1c6dcf5a40752",
+    "data/splits/CTRPv2-1/inner0-fit.parquet": "4d6b6ffc9888248f4cc70d908e55be02ff186dae3e764f9ace1f84e4d0227662",
+    "data/splits/CTRPv2-1/inner0-valid.parquet": "1ea91ea2735170568ef3c84223326d38739bfd12f8ab2b9c834834424920ca4a",
+    "data/splits/CTRPv2-1/inner1-fit.parquet": "1ea91ea2735170568ef3c84223326d38739bfd12f8ab2b9c834834424920ca4a",
+    "data/splits/CTRPv2-1/inner1-valid.parquet": "4d6b6ffc9888248f4cc70d908e55be02ff186dae3e764f9ace1f84e4d0227662",
+    "data/splits/CTRPv2-1/query.parquet": "abfbe1ba012f9e8520835fc090d7f509d620cb824d7dba31bbd9c13b0328a4c7",
+    "data/splits/CTRPv2-2/fit.parquet": "6f4d5e09e31b83d6a2bd0046b5725b308b8db14c95e8041baf5236caf107b512",
+    "data/splits/CTRPv2-2/inner0-fit.parquet": "3b0a3586a0ec5003739f5a14debb95c255237a63b58fcca179ca24af67a3d69c",
+    "data/splits/CTRPv2-2/inner0-valid.parquet": "2dfd2b30285bce2e5685bb45cc79321d34e551a04ed11c0035e0a085a08f9471",
+    "data/splits/CTRPv2-2/inner1-fit.parquet": "2dfd2b30285bce2e5685bb45cc79321d34e551a04ed11c0035e0a085a08f9471",
+    "data/splits/CTRPv2-2/inner1-valid.parquet": "3b0a3586a0ec5003739f5a14debb95c255237a63b58fcca179ca24af67a3d69c",
+    "data/splits/CTRPv2-2/query.parquet": "b5448bb112c51c048b21e07b01c49f9d65feb3ae555025834524fc50dd266c68",
+    "data/splits/GDSC2-0/fit.parquet": "b1f55799d9d9a48a9b1e8c1eb33845e7d132eb23cdf969760799131cf3eeb0d9",
+    "data/splits/GDSC2-0/inner0-fit.parquet": "2230418a88e401f0bcb4cb525c79bcac87e93c66d553bab9cca15a7d89761195",
+    "data/splits/GDSC2-0/inner0-valid.parquet": "ca35141915c8f9642dbc2b565b08ec4c489bbcf5f1f20b19a340b648aaf3eb52",
+    "data/splits/GDSC2-0/inner1-fit.parquet": "ca35141915c8f9642dbc2b565b08ec4c489bbcf5f1f20b19a340b648aaf3eb52",
+    "data/splits/GDSC2-0/inner1-valid.parquet": "2230418a88e401f0bcb4cb525c79bcac87e93c66d553bab9cca15a7d89761195",
+    "data/splits/GDSC2-0/query.parquet": "519ccefaa3c7d2e715b8085dcb6357c4009944eb9860c509f467eaf904bc0ef6",
+    "data/splits/GDSC2-1/fit.parquet": "bb7f68b499f305db62d5450822b1b82bc299d80353a916224308cd74d0075b09",
+    "data/splits/GDSC2-1/inner0-fit.parquet": "a454b365fa1c5882ca8c65a7fe385b3adc604c482d080eb11d70e87dde035c16",
+    "data/splits/GDSC2-1/inner0-valid.parquet": "175049f7efb8dab0de10652080f667f4e4515cc1cd054f598603fccfff173aaa",
+    "data/splits/GDSC2-1/inner1-fit.parquet": "175049f7efb8dab0de10652080f667f4e4515cc1cd054f598603fccfff173aaa",
+    "data/splits/GDSC2-1/inner1-valid.parquet": "a454b365fa1c5882ca8c65a7fe385b3adc604c482d080eb11d70e87dde035c16",
+    "data/splits/GDSC2-1/query.parquet": "e00e3ba6c9f8dcbac30161d6aa12587980e5c1ea8b6305e1e4a494bbece5af0c",
+    "data/splits/GDSC2-2/fit.parquet": "1d4464fd63b68473afd1341ac86e3e01c1affc55cb3d84465c524b95fb7406bb",
+    "data/splits/GDSC2-2/inner0-fit.parquet": "45393fbadc9fc1f08176a2e91006f63556229ad0b2a23f3b0ae6ae70ac0470e9",
+    "data/splits/GDSC2-2/inner0-valid.parquet": "4764fcc068d436c0c73cdc05f86f34d10ea83ba28501a8ada1afb9801956685b",
+    "data/splits/GDSC2-2/inner1-fit.parquet": "4764fcc068d436c0c73cdc05f86f34d10ea83ba28501a8ada1afb9801956685b",
+    "data/splits/GDSC2-2/inner1-valid.parquet": "45393fbadc9fc1f08176a2e91006f63556229ad0b2a23f3b0ae6ae70ac0470e9",
+    "data/splits/GDSC2-2/query.parquet": "7a1b20d9657b3d0e86d3ed3bd71b02163749060851a62b03164feef68f62c152",
+    "data/splits/PRISM20Q2-0/fit.parquet": "154d9a6f14a32d4b3255feb0ce5310c888c587920c3b65965c26271ffe18e8d9",
+    "data/splits/PRISM20Q2-0/inner0-fit.parquet": "a15a7131cab5f48e65434a44598de82e31a1ec8dea1a9114462d0f9aa7e68dd4",
+    "data/splits/PRISM20Q2-0/inner0-valid.parquet": "0702b3cdcdad4814966a3efaacc91390cc6fb48c3a1483d0b8c5f397bdc3fc1c",
+    "data/splits/PRISM20Q2-0/inner1-fit.parquet": "0702b3cdcdad4814966a3efaacc91390cc6fb48c3a1483d0b8c5f397bdc3fc1c",
+    "data/splits/PRISM20Q2-0/inner1-valid.parquet": "a15a7131cab5f48e65434a44598de82e31a1ec8dea1a9114462d0f9aa7e68dd4",
+    "data/splits/PRISM20Q2-0/query.parquet": "7d29a765899d1a07f8bfa2cbdb9fdf95587aba2a2dfcdf9bacedcda7b562c181",
+    "data/splits/PRISM20Q2-1/fit.parquet": "d89b08161bd79708bf6bea48f9a5a9bd00d5ab58aabd0641688ba033d15b666d",
+    "data/splits/PRISM20Q2-1/inner0-fit.parquet": "18c67d035a2161f783dd7a0377053844f7c902198f4dfee3bbddfc64bdc0dc9a",
+    "data/splits/PRISM20Q2-1/inner0-valid.parquet": "afc93a34a6a177b048bea1416d091a66d265cffd8575187453ba88fcdf3dfcb4",
+    "data/splits/PRISM20Q2-1/inner1-fit.parquet": "afc93a34a6a177b048bea1416d091a66d265cffd8575187453ba88fcdf3dfcb4",
+    "data/splits/PRISM20Q2-1/inner1-valid.parquet": "18c67d035a2161f783dd7a0377053844f7c902198f4dfee3bbddfc64bdc0dc9a",
+    "data/splits/PRISM20Q2-1/query.parquet": "d66d4ec33a33f757f10c01a6a416802eb12864018840457ffe86f58b540f3d6d",
+    "data/splits/PRISM20Q2-2/fit.parquet": "d452325f0dfd518323c2a3f2b2f53f66f03a509274a70a33229b396a05f63659",
+    "data/splits/PRISM20Q2-2/inner0-fit.parquet": "28597b8a8abd86126c0d505d4fcb274f5efe5f6ebc5652449baa735f6835e06f",
+    "data/splits/PRISM20Q2-2/inner0-valid.parquet": "c50ca4dc08c2e7c01b13f02faca7302122595981800ed7cc9c38ba602ac81529",
+    "data/splits/PRISM20Q2-2/inner1-fit.parquet": "c50ca4dc08c2e7c01b13f02faca7302122595981800ed7cc9c38ba602ac81529",
+    "data/splits/PRISM20Q2-2/inner1-valid.parquet": "28597b8a8abd86126c0d505d4fcb274f5efe5f6ebc5652449baa735f6835e06f",
+    "data/splits/PRISM20Q2-2/query.parquet": "5dc02db54fa21c88bff78a9270e26e773d6bb2454f898c434469570eb226d197"
+  },
+  "native_endpoints": "{('CTRPv2', 'CTRPv2_native_AUC'): 31090, ('GDSC2', 'GDSC2_native_AUC'): 24839, ('PRISM20Q2', 'PRISM20Q2_native_AUC'): 9749}",
+  "native_rows": {
+    "CTRPv2": 31090,
+    "GDSC2": 24839,
+    "PRISM20Q2": 9749
+  },
+  "rna_genes": 17871,
+  "sklearn": "1.6.1",
+  "split_support": [
+    {
+      "check_drugs": 54,
+      "check_lineages": 311,
+      "check_rows": 11544,
+      "check_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 310,
+      "fit_rows": 11543,
+      "fit_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "inner": 0,
+      "overlap": 0,
+      "split": "CTRPv2-0"
+    },
+    {
+      "check_drugs": 54,
+      "check_lineages": 310,
+      "check_rows": 11543,
+      "check_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 311,
+      "fit_rows": 11544,
+      "fit_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "inner": 1,
+      "overlap": 0,
+      "split": "CTRPv2-0"
+    },
+    {
+      "check_drugs": 35,
+      "check_lineages": 242,
+      "check_rows": 7175,
+      "check_screens": [
+        "CTRPv2"
+      ],
+      "fit_lineages": 621,
+      "fit_rows": 23087,
+      "fit_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "inner": "outer",
+      "overlap": 0,
+      "split": "CTRPv2-0",
+      "structure_forecast_sha256": "d751346d5690faae1e9305a822e13647e74536d781cef0606935875e3ed47caa"
+    },
+    {
+      "check_drugs": 54,
+      "check_lineages": 309,
+      "check_rows": 11443,
+      "check_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 308,
+      "fit_rows": 11441,
+      "fit_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "inner": 0,
+      "overlap": 0,
+      "split": "CTRPv2-1"
+    },
+    {
+      "check_drugs": 54,
+      "check_lineages": 308,
+      "check_rows": 11441,
+      "check_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 309,
+      "fit_rows": 11443,
+      "fit_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "inner": 1,
+      "overlap": 0,
+      "split": "CTRPv2-1"
+    },
+    {
+      "check_drugs": 35,
+      "check_lineages": 235,
+      "check_rows": 7044,
+      "check_screens": [
+        "CTRPv2"
+      ],
+      "fit_lineages": 617,
+      "fit_rows": 22884,
+      "fit_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "inner": "outer",
+      "overlap": 0,
+      "split": "CTRPv2-1",
+      "structure_forecast_sha256": "1418cff57250af80a24f9376e05b0d9e3da27c27a31b651678bcf0b1c9e3d7af"
+    },
+    {
+      "check_drugs": 54,
+      "check_lineages": 310,
+      "check_rows": 11603,
+      "check_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 310,
+      "fit_rows": 11602,
+      "fit_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "inner": 0,
+      "overlap": 0,
+      "split": "CTRPv2-2"
+    },
+    {
+      "check_drugs": 54,
+      "check_lineages": 310,
+      "check_rows": 11602,
+      "check_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 310,
+      "fit_rows": 11603,
+      "fit_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "inner": 1,
+      "overlap": 0,
+      "split": "CTRPv2-2"
+    },
+    {
+      "check_drugs": 35,
+      "check_lineages": 241,
+      "check_rows": 7239,
+      "check_screens": [
+        "CTRPv2"
+      ],
+      "fit_lineages": 620,
+      "fit_rows": 23205,
+      "fit_screens": [
+        "GDSC2",
+        "PRISM20Q2"
+      ],
+      "inner": "outer",
+      "overlap": 0,
+      "split": "CTRPv2-2",
+      "structure_forecast_sha256": "5cf1a88cd567d5221ab0ae01c2eb86587a5a528345320a717a901fe19be336e4"
+    },
+    {
+      "check_drugs": 55,
+      "check_lineages": 287,
+      "check_rows": 13617,
+      "check_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 287,
+      "fit_rows": 13617,
+      "fit_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "inner": 0,
+      "overlap": 0,
+      "split": "GDSC2-0"
+    },
+    {
+      "check_drugs": 55,
+      "check_lineages": 287,
+      "check_rows": 13617,
+      "check_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 287,
+      "fit_rows": 13617,
+      "fit_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "inner": 1,
+      "overlap": 0,
+      "split": "GDSC2-0"
+    },
+    {
+      "check_drugs": 29,
+      "check_lineages": 235,
+      "check_rows": 5664,
+      "check_screens": [
+        "GDSC2"
+      ],
+      "fit_lineages": 574,
+      "fit_rows": 27234,
+      "fit_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "inner": "outer",
+      "overlap": 0,
+      "split": "GDSC2-0",
+      "structure_forecast_sha256": "b246fdf0473b7fd9f7bba9255ceac073300acd698e4e4c6a4fbfe0e0a93cf48a"
+    },
+    {
+      "check_drugs": 55,
+      "check_lineages": 287,
+      "check_rows": 13675,
+      "check_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 287,
+      "fit_rows": 13674,
+      "fit_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "inner": 0,
+      "overlap": 0,
+      "split": "GDSC2-1"
+    },
+    {
+      "check_drugs": 55,
+      "check_lineages": 287,
+      "check_rows": 13674,
+      "check_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 287,
+      "fit_rows": 13675,
+      "fit_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "inner": 1,
+      "overlap": 0,
+      "split": "GDSC2-1"
+    },
+    {
+      "check_drugs": 29,
+      "check_lineages": 243,
+      "check_rows": 5779,
+      "check_screens": [
+        "GDSC2"
+      ],
+      "fit_lineages": 574,
+      "fit_rows": 27349,
+      "fit_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "inner": "outer",
+      "overlap": 0,
+      "split": "GDSC2-1",
+      "structure_forecast_sha256": "bcdf5390f6d00306f0a7709f9fbd2c39f55350182ac64b832d7a759977213390"
+    },
+    {
+      "check_drugs": 55,
+      "check_lineages": 286,
+      "check_rows": 13548,
+      "check_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 286,
+      "fit_rows": 13547,
+      "fit_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "inner": 0,
+      "overlap": 0,
+      "split": "GDSC2-2"
+    },
+    {
+      "check_drugs": 55,
+      "check_lineages": 286,
+      "check_rows": 13547,
+      "check_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 286,
+      "fit_rows": 13548,
+      "fit_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "inner": 1,
+      "overlap": 0,
+      "split": "GDSC2-2"
+    },
+    {
+      "check_drugs": 29,
+      "check_lineages": 235,
+      "check_rows": 5588,
+      "check_screens": [
+        "GDSC2"
+      ],
+      "fit_lineages": 572,
+      "fit_rows": 27095,
+      "fit_screens": [
+        "CTRPv2",
+        "PRISM20Q2"
+      ],
+      "inner": "outer",
+      "overlap": 0,
+      "split": "GDSC2-2",
+      "structure_forecast_sha256": "bdb0b0fca4bcb7becbec98fc499d9365e921d818d8fabc44220a7ee39c428af9"
+    },
+    {
+      "check_drugs": 63,
+      "check_lineages": 307,
+      "check_rows": 18623,
+      "check_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "fit_lineages": 305,
+      "fit_rows": 18622,
+      "fit_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "inner": 0,
+      "overlap": 0,
+      "split": "PRISM20Q2-0"
+    },
+    {
+      "check_drugs": 63,
+      "check_lineages": 305,
+      "check_rows": 18622,
+      "check_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "fit_lineages": 307,
+      "fit_rows": 18623,
+      "fit_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "inner": 1,
+      "overlap": 0,
+      "split": "PRISM20Q2-0"
+    },
+    {
+      "check_drugs": 13,
+      "check_lineages": 231,
+      "check_rows": 2290,
+      "check_screens": [
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 612,
+      "fit_rows": 37245,
+      "fit_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "inner": "outer",
+      "overlap": 0,
+      "split": "PRISM20Q2-0",
+      "structure_forecast_sha256": "06cb413e4473b75afa109e8bca416b6f4993cb79217633dd7122a8ecd81893d7"
+    },
+    {
+      "check_drugs": 63,
+      "check_lineages": 306,
+      "check_rows": 18667,
+      "check_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "fit_lineages": 306,
+      "fit_rows": 18670,
+      "fit_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "inner": 0,
+      "overlap": 0,
+      "split": "PRISM20Q2-1"
+    },
+    {
+      "check_drugs": 63,
+      "check_lineages": 306,
+      "check_rows": 18670,
+      "check_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "fit_lineages": 306,
+      "fit_rows": 18667,
+      "fit_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "inner": 1,
+      "overlap": 0,
+      "split": "PRISM20Q2-1"
+    },
+    {
+      "check_drugs": 13,
+      "check_lineages": 237,
+      "check_rows": 2350,
+      "check_screens": [
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 612,
+      "fit_rows": 37337,
+      "fit_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "inner": "outer",
+      "overlap": 0,
+      "split": "PRISM20Q2-1",
+      "structure_forecast_sha256": "448d6b07e64858330c66f9e1a0ce0c02121e97994125a4d6ab757978dbce3985"
+    },
+    {
+      "check_drugs": 63,
+      "check_lineages": 306,
+      "check_rows": 18641,
+      "check_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "fit_lineages": 306,
+      "fit_rows": 18635,
+      "fit_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "inner": 0,
+      "overlap": 0,
+      "split": "PRISM20Q2-2"
+    },
+    {
+      "check_drugs": 63,
+      "check_lineages": 306,
+      "check_rows": 18635,
+      "check_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "fit_lineages": 306,
+      "fit_rows": 18641,
+      "fit_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "inner": 1,
+      "overlap": 0,
+      "split": "PRISM20Q2-2"
+    },
+    {
+      "check_drugs": 13,
+      "check_lineages": 234,
+      "check_rows": 2299,
+      "check_screens": [
+        "PRISM20Q2"
+      ],
+      "fit_lineages": 612,
+      "fit_rows": 37276,
+      "fit_screens": [
+        "CTRPv2",
+        "GDSC2"
+      ],
+      "inner": "outer",
+      "overlap": 0,
+      "split": "PRISM20Q2-2",
+      "structure_forecast_sha256": "bc17a4bf493667203d1e24b3a9e8c353fa7d3b37e6e873780f721bb59646516b"
+    }
+  ]
+}
