@@ -1,0 +1,21 @@
+{
+  "base_h1_v2": "fa64b590a40b4d4c34a9b7b234a3a76c363ae322",
+  "p0_commit": "1912b5d",
+  "curves_commit": "5ec8ed2",
+  "screens": ["CTRPv2", "GDSC2"],
+  "outer_folds": [0, 1, 2],
+  "budget": 5,
+  "holds": "Use the original H1-v2 Q8 exact-parent panel, lineage rosters, arm-specific K5 prefixes, model parameters and reference atlas. Start from the original Q8 eligibility. Restrict to common complete K5 curve measurements for the union of both arms using registered identities and technical QC only. No replacements, refits or candidate deletion.",
+  "design": "Use the first fit partition of the already registered h1v2-anchor-selector inner split. Per exact parent, choose the most frequently supported complete physical dose grid across distinct fit lineages with lexical grid tiebreak. Use only strictly increasing designs of at least six doses. Match near-identical physical concentrations within 2% relative tolerance on the entire grid. Use the relative native log-dose positions closest to equally spaced target fractions, with both endpoints and earliest index as tie-break. When a full grid is below eight points, R8 is unavailable. If a full grid has exactly eight points, the eight-point condition obtains no compression. Use the measured point nearest 2/3 of the log-interval for the single-dose condition. Apply these rules once without comparing held performance.",
+  "endpoint": "Use clipped viability and normalized trapezoid integration on log10 actual measured uM, oriented as negative AUC. For each drug, fit one constrained nonnegative-slope affine calibration from full reconstructed points to the native frozen summary using paired inner-fit lineage data. Apply that single calibration to all curve conditions. For single dose, fit a nonnegative affine mapping to reconstructed full AUC using inner-fit measurements only before native scale conversion. Require at least 20 nonconstant paired fit lineages per calibration. Independent validation lineages are untouched by endpoint mapping.",
+  "technical_repeat": "CTRPv2 selects the first two qualifying well observations per concentration ordered by barcode and source row, with independent assay plate barcodes required at each concentration. Use their unweighted viability average and a single first-well observation, with the identical lineage population for each paired contrast. A singleton curve when only one qualifying well exists at any concentration uses one well for every point. GDSC2 1-versus-2 sensitivity requires two distinct normalized wells at each dose within a single same-duration physical curve; separate experiments or dates are audited but are not a verified technical well duplicate. If such support is inadequate, report the repeat analysis as infeasible.",
+  "curve_qc": "Require positive finite physical concentrations, exact sample/drug identity, verified assay time and full registered grid, and matched controls or experiment QC. CTRPv2 uses SNP-matched-reference and matched per-dose post-QC keys, with raw background-subtracted well viability and published plate metadata. GDSC2 uses the vc_build_v1 raw Glo normalization and DURATION=4 day release field, exact registered native endpoints when supplied. Replicates never fill missing physical levels from another experiment.",
+  "bootstrap_draws": 2000,
+  "e2_seed": 765213,
+  "p0_seed": 734042,
+  "minimum_held_lineages": 20,
+  "loss_bounds": {"ndcg_at_5": -0.01, "precision_at_5": -0.02},
+  "cost": {"anchors": "sum over K5 of number of measured points times wells per point", "control_wells": 12, "plate_wells": 96, "compression_min_fraction": 0.2},
+  "utility": "NDCG@5 lower paired limit >0 for B0 and additionally B1 for RNA+Anchor. Report the separate within-drug Spearman improvement with NDCG noninferiority alternative for each comparator. Both arms report both controls on the same denominator.",
+  "p0": "Reuse identical archived predictions and verify published point estimates and original crossed intervals before fixed-panel draws. Resample only distinct lineages/donors; reuse cohort donor multiplicities across each of the 100 original splits and all K; preserve split membership, panel, tie handling and equal split weighting. Only LIMORE N=50 and LICOB N=29 are in scope. P0 does not replace either original inferential contract."
+}
