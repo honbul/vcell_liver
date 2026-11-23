@@ -136,6 +136,8 @@ def forecast(frozen, anchors, output):
     receipt = json.loads((anchors / "anchors_receipt.json").read_text())
     output.mkdir()
     files = {}
+    seals = {task: json.loads((frozen / task / "freeze.json").read_text()) for task in receipt["tasks"]}
+    dual_studies = {task.rsplit("-", 1)[0] for task, seal in seals.items() if seal["rna_secondary"] is not None}
     for task, record in receipt["tasks"].items():
         if record["eligible"] < 2:
             continue
@@ -159,16 +161,17 @@ def forecast(frozen, anchors, output):
             if seal["rna_control"] is not None:
                 setting = seal["rna_control"]
                 predictions[f"N2/{k}"] = fit.predict(obs, k, setting, rna_index=indices[permutation_rna])[:, q]
-            if seal["rna_secondary"] is not None:
-                predictions[f"H1-RNA+Anchor-Best/{k}"] = fit.predict(
-                    obs, k, seal["rna_secondary"], rna_index=indices)[:, q]
+            if task.rsplit("-", 1)[0] in dual_studies:
+                predictions[f"H1-RNA+Anchor-Best/{k}"] = (pred if seal["rna_secondary"] is None else fit.predict(
+                    obs, k, seal["rna_secondary"], rna_index=indices)[:, q])
             if not np.isfinite(pred).all():
                 raise ValueError("Nonfinite point forecast")
         file = output / f"{task}.npz"
         np.savez_compressed(file, **predictions, group=packed["group"], index=indices, q=q)
         files[task] = sha256(file)
     json_write(output / "forecast_receipt.json", {"input_sha256": sha256(anchors / "anchors_receipt.json"),
-                                                 "files": files, "prediction_has_read_Q_truth": False})
+                                                 "files": files, "rna_fold_gates": {t: s["rna_secondary"] is not None for t, s in seals.items()},
+                                                 "prediction_has_read_Q_truth": False})
 
 
 if __name__ == "__main__":
