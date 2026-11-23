@@ -315,7 +315,7 @@ def predict(task, source_dir, out):
 
     use = eligible(mapped, "Full-curve")
     rep = eligible(pair_map, "Full-curve-2rep")
-    out.mkdir()
+    out.mkdir(parents=True)
     saved = {}
     main_kinds = {k: k for k in CONDITIONS}
     if primary_reps == 2:
