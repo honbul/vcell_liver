@@ -8,7 +8,7 @@ import pandas as pd
 from nextgen_h2.run import read_json
 from vc_build.io import publish_json,sha256
 
-from .data import ROOT,SPLITS,STUDY
+from .data import ROOT,SPLITS,STUDY,V1
 from .grid import FAMILIES,SEEDS
 from .quality import AXES
 from .score import preflight
@@ -102,6 +102,28 @@ def previous_metrics(points):
                 raise ValueError(f"H2 same-row replay mismatch on {support}/{reference}/{metric}")
             values.append({"support":support,"model":reference,"metric":metric,"historical":past,"replay":p})
     return pd.DataFrame(values)
+
+
+def prior_held_points(points):
+    root=V1/"outer-score"
+    receipt=read_json(root/"score_receipt.json")
+    file=root/"H3_METRICS.tsv"
+    if sha256(file)!=receipt["output_sha256"][file.name]:
+        raise ValueError("H3-v1 control metrics changed")
+    previous=pd.read_csv(file,sep="\t")
+    previous=previous[previous.screen.eq("macro")]
+    mapping={"ndcg_at_5":"ndcg_at_5","precision_at_k":"precision_at_5","within_drug_spearman":"spearman"}
+    comparisons=[]
+    for source,reference,seed in (("structured","structured_v1","fixed"),
+                                  ("drug_ridge","drug_ridge_v1","fixed"),("G2","H3v1","mean")):
+        for axis,new in mapping.items():
+            value=previous[previous.model.eq(source)&previous.seed.eq(seed)&previous.metric.eq(axis)].value.iloc[0]
+            actual=points[points.scope.eq("held")&points.model.eq(reference)&points.screen.eq("macro")&
+                           points.seed.eq(seed)&points.metric.eq(new)].value.iloc[0]
+            if not np.isclose(actual,value,atol=2e-10,rtol=0):
+                raise ValueError(f"Historical held-screen formula drifted for {reference}/{new}")
+            comparisons.append({"model":reference,"metric":new,"historical":value,"replay":actual})
+    return pd.DataFrame(comparisons)
 
 
 def inner_results(lock):
@@ -250,10 +272,12 @@ def main():
     jobs().to_csv(OUTPUT/"SLURM_JOBS.tsv",sep="\t",index=False)
     previous=previous_metrics(metrics)
     previous.to_csv(OUTPUT/"H3V2_H2_REPLAY.tsv",sep="\t",index=False)
+    held=prior_held_points(metrics)
+    held.to_csv(OUTPUT/"H3V2_H3V1_REPLAY.tsv",sep="\t",index=False)
     report_docs(OUTPUT,metrics,ic,curves,progress,audit,score,previous,lock)
     publish_json(OUTPUT/"verification.json",audit|{
         "registered_replay_metrics":len(previous),"family_learning_curve_rows":len(curves),
-        "saturation_grid_rows":len(progress),"first_pass_verification_utc":datetime.now(timezone.utc).isoformat(),
+        "historical_held_metric_replays":len(held),"saturation_grid_rows":len(progress),"first_pass_verification_utc":datetime.now(timezone.utc).isoformat(),
         "deliverables":{p.name:sha256(p) for p in OUTPUT.iterdir()},
     })
     print("Verified final H3-v2 artifact assembly", flush=True)

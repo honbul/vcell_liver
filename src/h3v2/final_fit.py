@@ -28,8 +28,12 @@ def external_query():
     licob=parquet_lock(COLD/"query.parquet",lc["files"]["query.parquet"]).assign(source_id="LICOB",endpoint_id="AUC")
     gdsc=parquet_lock(ASSETS/"gdsc_query.parquet",h2["files"]["gdsc_query.parquet"])
     columns=[*META,"isomeric_smiles"]
-    query=pd.concat([limore[columns],licob[columns],gdsc[columns]],ignore_index=True).sort_values("row_id",ignore_index=True)
-    if query.row_id.duplicated().any() or len(query)!=46213:
+    query=pd.concat([limore[columns],licob[columns],gdsc[columns]],ignore_index=True)
+    repeated=query[query.row_id.duplicated(keep=False)]
+    if len(repeated) and repeated.groupby("row_id")[META[1:]].nunique().gt(1).any().any():
+        raise ValueError("Native GDSC1 registrations disagree on a canonical query identity")
+    query=query.drop_duplicates("row_id").sort_values("row_id",ignore_index=True)
+    if query.source_id.value_counts().to_dict()!={"GDSC1":39545,"LICOB":3268,"LIMORE":3400}:
         raise ValueError("Unexpected H2 external query identities")
     return query
 
