@@ -19,7 +19,7 @@ from .grid import FAMILIES, SEEDS
 from .kernel import oof_fit, read_bank
 
 
-def external_data():
+def external_query():
     h2=read_json(ASSETS/"data_receipt.json")
     lc=read_json(COLD/"receipt.json")
     lim=read_json(LIMORE/"receipt.json")["artifacts"]
@@ -31,8 +31,13 @@ def external_data():
     query=pd.concat([limore[columns],licob[columns],gdsc[columns]],ignore_index=True).sort_values("row_id",ignore_index=True)
     if query.row_id.duplicated().any() or len(query)!=46213:
         raise ValueError("Unexpected H2 external query identities")
+    return query
+
+
+def external_data():
+    lc=read_json(COLD/"receipt.json")
     source=parquet_lock(COLD/"train.parquet",lc["files"]["train.parquet"]).sort_values("row_id")
-    return source, query
+    return source, external_query()
 
 
 def prepare_external():
