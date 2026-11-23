@@ -72,6 +72,8 @@ class Contracts(unittest.TestCase):
         self.assertTrue(decision["upgrade_pass"])
         self.assertTrue(decision["structure_462_pass"])
         self.assertFalse((frame.support.str.startswith("structure") & frame.candidate.eq("H2-v2")).any())
+        tissue_drug, _ = stack(scopes(panel, groups, 0, "Liver", interaction=False, source_panel=True))
+        self.assertIn("structure/462_support", set(tissue_drug.support))
 
     def test_nonlinear_losses_and_isolated_lightgbm(self):
         rng = np.random.default_rng(9)

@@ -76,13 +76,13 @@ def scopes_by_track(scope):
             ("structure/462_support" if scope == "DRP" else "structure/lincs_unobserved", STRUCTURE))
 
 
-def scopes(frame, groups, fold, name, interaction=True):
+def scopes(frame, groups, fold, name, interaction=True, *, source_panel=False):
     frame = frame.reset_index(drop=True)
     ev = Evaluator(frame, groups, fold, scope=name, interaction=interaction)
     measured = frame.lincs_observed.astype(bool)
     selections = (measured, None, ~measured, None, ~measured)
     results = []
-    for (mode, arms), use in zip(scopes_by_track(name), selections):
+    for (mode, arms), use in zip(scopes_by_track("DRP" if source_panel else name), selections):
         for arm in arms:
             results.extend(ev.score(arm, frame[arm].to_numpy(), use, support=mode))
     return results
@@ -132,6 +132,21 @@ def gate(effects):
             "structure_462_pass": bool(virtual.delta >= .01 and virtual.lo95 > 0)}
 
 
+def tissue_summary(tissue_drug, tissue_cell, tissue_support):
+    tissue = pd.concat([summary(tissue_drug, DRUG).assign(axis="drug"), summary(tissue_cell, CELL).assign(axis="cell")])
+    reported = set(tissue.loc[tissue.screen.eq("macro"), ["scope", "support", "arm", "axis"]].itertuples(
+        index=False, name=None))
+    empty = []
+    for label in tissue_support:
+        for support, arms in scopes_by_track("DRP"):
+            for arm in arms:
+                for axis in STATS:
+                    if (label, support, arm, axis) not in reported:
+                        empty.append({"scope": label, "support": support, "arm": arm, "axis": axis,
+                                      "screen": "macro", "fold": "all", "units": 0})
+    return pd.concat([tissue, pd.DataFrame(empty)], ignore_index=True)
+
+
 def run(work, chosen):
     parts, sealed, registry, digest, cli_sha = validate(work, chosen)
     asset = read_json(V1_ASSETS / "data_receipt.json")
@@ -154,7 +169,7 @@ def run(work, chosen):
         frame = predictions.assign(truth=native_sensitivity(targets), tissue=predictions.cell_id.map(cells.tissue))
         assessments.extend(scopes(frame, groups, idx, "DRP"))
         for label, block in frame.groupby("tissue", sort=True):
-            tissues.extend(scopes(block, groups, idx, label, interaction=False))
+            tissues.extend(scopes(block, groups, idx, label, interaction=False, source_panel=True))
         print(f"Scored DRP outer {idx}", flush=True)
     y, licob, ext_chem = external_labels(V1_ASSETS, asset)
     ext = parts[3].merge(y, on="row_id", validate="one_to_one", how="left")
@@ -176,19 +191,7 @@ def run(work, chosen):
     for name, frame in (("drug", d), ("cell", c), ("tissue_drug", td), ("tissue_cell", tc)):
         frame.to_parquet(current / f"unit_{name}.parquet", index=False)
     scores = pd.concat([summary(d, DRUG).assign(axis="drug"), summary(c, CELL).assign(axis="cell")])
-    tissue = pd.concat([summary(td, DRUG).assign(axis="drug"), summary(tc, CELL).assign(axis="cell")])
-    # Keep small lineages visible even when the native metric eligibility filter is empty.
-    reported = set(tissue.loc[tissue.screen.eq("macro"), ["scope", "support", "arm", "axis"]].itertuples(
-        index=False, name=None))
-    empty = []
-    for label in tissue_support:
-        for support, arms in scopes_by_track("DRP"):
-            for arm in arms:
-                for axis in STATS:
-                    if (label, support, arm, axis) not in reported:
-                        empty.append({"scope": label, "support": support, "arm": arm, "axis": axis,
-                                      "screen": "macro", "fold": "all", "units": 0})
-    tissue = pd.concat([tissue, pd.DataFrame(empty)], ignore_index=True)
+    tissue = tissue_summary(td, tc, tissue_support)
     paired = contrasts(d, c)
     ladder = paired.merge(scores[scores.screen.eq("macro")].drop(columns=["screen", "fold"]),
                           left_on=["scope", "support", "axis", "candidate"],
