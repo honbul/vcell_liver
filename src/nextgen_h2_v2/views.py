@@ -79,7 +79,10 @@ def program_variants(work, contracts, out, anchor_file, stages):
             vals = [x["view"]["weight"] for x in candidates if
                     (x["view"]["recipe"], x["view"]["transform"], x["view"]["dimension"]) ==
                     (view.recipe, view.transform, view.dimension)]
-            for weight in expand_axis(vals, view.weight):
+            # Zero is the mask-only limit. A positive optimum at the lowest measured
+            # positive setting still needs smaller positive neighbors under the study contract.
+            smaller_bracket = expand_axis([v for v in vals if v > 0], view.weight) if view.weight > 0 else []
+            for weight in smaller_bracket:
                 next_phase.append(entry(base, replace(view, weight=weight)))
             selected[name] = best
             for control in ("real", "mask", "shuffle"):
