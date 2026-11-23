@@ -25,3 +25,5 @@ For H1-v2-Dual-Best add `--rna ranked_rna.npy`. The array must contain the singl
 The main evidence uses previously exposed v1 cohorts and fixed independent lineage or donor folds. Cases outside the complete v1 A8 comparison cohort lack matched evidence. K=12 adds eligibility requirements and reduces Q, so its scores are reported on separate support. The B3 arm uses the corrected shrinkage shift. The strongest v2 simple comparator is selected by inner NDCG@5, and the archived v1 strongest comparator is marked separately.
 
 Offline replay checks both champion roles against archived batch predictions and exercises the TSV command and invalid-input handling. RNA shuffle preserves anchor observations. Anchor shuffle preserves each entire measured packet and RNA. For the 96-well audit, the simulated anchor perturbation is an endpoint-level sensitivity analysis.
+
+The release records the fold package and forecast seals, paired scoring receipts and budget-level CLI replay checks. [Model seal](frozen_receipt.json) · [Final scoring](score_receipt.json) · [CPU replay](replay_receipt.json)
