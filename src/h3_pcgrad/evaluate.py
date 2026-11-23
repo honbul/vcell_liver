@@ -28,6 +28,9 @@ def check_forecasts():
     models |= {name: [name] for name in REFERENCES}
     columns = [name for members in models.values() for name in members]
     groups, references = [], {}
+    manifest = read_json(ROOT / "data/manifest.json")
+    registered = {row["split"]: row["structure_forecast_sha256"]
+                  for row in manifest["split_support"] if row["inner"] == "outer"}
     for index in range(9):
         tag = split_id(index)
         path = ROOT / f"outer-forecast/{tag}/forecast.parquet"
@@ -35,6 +38,8 @@ def check_forecasts():
         prov = seal["provenance"]
         if (prov["split"], prov["lock_sha256"], prov["labels_loaded"]) != (tag, sha256(lock_file), False):
             raise ValueError("The outcome-free fit seal or lock differs")
+        if prov["historical_reference_sha256"] != registered[tag]:
+            raise ValueError("Comparator forecast differs from the pre-fit registration")
         if set(raw.method) != set(columns) or sorted(raw.fold.unique()) != [index % 3]:
             raise ValueError("Frozen methods or historical fold changed")
         for stamp in prov["runs"]:
@@ -62,6 +67,8 @@ def check_forecasts():
                 or not np.isfinite(forecast.to_numpy()).all()):
             raise ValueError(f"Frozen evaluation support differs: {tag}")
         aligned = q[["tissue_origin"]].join(forecast, validate="one_to_one")
+        if not checks.updates.eq(contract()["epochs"] * contract()["updates_per_epoch"]).all():
+            raise ValueError("An outer arm used a different update budget")
         groups.append((tag, aligned.reset_index()))
         references[tag] = {
             "forecast_sha256": seal["sha256"], "rows_per_method": len(q), "methods": len(columns),
