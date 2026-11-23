@@ -102,6 +102,18 @@ def inner(root):
         "[Selected recipes](H1V2_INNER_WINNERS.tsv) · [Train and validation curves](H1V2_LEARNING_CURVES.tsv) · "
         "[Tissue, mechanism and TKI errors](H1V2_INNER_ERRORS.tsv) · [Budget and noise sensitivity](H1V2_INNER_BUDGET.tsv)", "",
     ]
+    size = root / "H1V2_LICOB_SAMPLE_SIZE.tsv"
+    if size.is_file():
+        lines += ["### LICOB reference sample size", "",
+                  "| Modality | Fraction | Mean fit donors | Mean NDCG@5 | Mean within-drug Spearman |",
+                  "|---|---:|---:|---:|---:|"]
+        for (mode, fraction), values in sorted(grouped(load(root, size.name),
+                                                       ("modality", "training_fraction")).items()):
+            f, n, rho = (mean(num(x[k]) for x in values) for k in ("fit_groups", "ndcg", "rho"))
+            lines.append(f"| {mode} | {fraction} | {f:.1f} | {n:.4f} | {rho:.4f} |")
+        lines += ["", "The two leading families retained their fixed inner recipes, anchor ordering and validation donors "
+                  "while reference fit sizes varied. This estimates sample-size sensitivity conditional on the chosen strategy. "
+                  "[Sample-size results](H1V2_LICOB_SAMPLE_SIZE.tsv)", ""]
     (root / "ROUND1_TO_3_CEILING_TUNING.md").write_text("\n".join(lines))
 
 
