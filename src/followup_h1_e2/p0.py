@@ -1,5 +1,6 @@
 """Reproduce the archived HCC recommendation evidence and change only the resampling unit."""
 import argparse
+from ast import literal_eval
 from functools import lru_cache
 from hashlib import sha256 as digest
 from pathlib import Path
@@ -143,14 +144,18 @@ def limore(out, draws, seed):
     table = pd.DataFrame([contrast_row("LIMORE", "LIMORE_adult_HCC_cell_cold", 0, len(y), truth.columns, legacy_n,
         r, fixed[r.model_id][r.metric] - fixed[r.baseline][r.metric], group_hash, draws)
         for r in original_ci[original_ci.metric.isin(RANK_METRICS)].itertuples()])
+    oof_name = "SOURCE_OOF_MACRO.tsv"
+    oof = read_tsv(checked(ORIGINAL_REPORTS / oof_name, old["files"][oof_name])).set_index("model_id")
+    oof_axes = ["ndcg_at_5", "within_drug_spearman"]
     original_gate = read_json(ORIGINAL_REPORTS / "reference_decision.json")
     gates = []
     for m in original_gate["model_specific_evidence"]:
         model = m["model_id"]
         comp = table[(table.model_id == model) & table.baseline.isin(["additive", "drug_mean"]) &
                      table.metric.eq("ndcg_at_5")]
-        unchanged = (m["top5_sets"] > 1 and m["residual_lower_95ci"] > 0 and
-                     all(v > 0 for v in m["oof_gain_vs_additive"].values()) and
+        oof_pass = all((oof.loc[model, oof_axes] - oof.loc[b, oof_axes]).gt(0).all()
+                       for b in ("additive", "drug_mean"))
+        unchanged = (m["top5_sets"] > 1 and m["residual_lower_95ci"] > 0 and oof_pass and
                      all((v["within_drug_spearman"] or 0) > 0 for v in m["limore_lower_bounds"].values()))
         legacy_gate = bool(len(comp) == 2 and unchanged and comp.original_low.gt(0).all())
         new_gate = bool(len(comp) == 2 and unchanged and comp.fixed_low.gt(0).all())
@@ -189,7 +194,7 @@ def licob(k, out, draws, seed):
     registered_files = read_json(registered)["artifacts"]
     ppoint_file, pci_file = "FEWSHOT_3D_METRICS.tsv", "FEWSHOT_3D_PAIRED_95CI.tsv"
     pp, pc = (read_tsv(checked(ORIGINAL_REPORTS / name, history["files"][name])) for name in (ppoint_file, pci_file))
-    points, intervals, replay_stats, inputs = [], [], [], []
+    points, replay_stats, inputs = [], [], []
     for track, frame in forecast.groupby("track", sort=True):
         panel = pd.Index(sorted(frame.compound_id.unique()))
         truth = metrics.pivot(label_rows, "endpoint_value").loc[:, panel]
@@ -239,7 +244,6 @@ def licob(k, out, draws, seed):
         replay_stats.append({"track": track, "original_point_replay": replay_point,
                              "original_crossed_replay": replay_ci, "splits": len(splits)})
         points.append(est)
-        intervals.append(jj)
 
     # The 3D markdown table presents D minus C for both models and metrics of interest.
     source_md = (ORIGINAL_REPORTS / "FEWSHOT_3D_CONFIRM.md").read_text()
@@ -252,7 +256,6 @@ def licob(k, out, draws, seed):
     original_points = points[0]
     for i, model in enumerate(fewshot.D, start=3):
         r = jj[(jj.model_id == model) & (jj.baseline == fewshot.C) & jj.metric.eq("ndcg_at_5")].iloc[0]
-        from ast import literal_eval
         delta, ci = terms[i].strip().split(" ", 1)
         if not np.allclose([float(delta), *literal_eval(ci)], [r.delta, r.ci95_low, r.ci95_high],
                            atol=5e-5 + 1e-12, rtol=0):
