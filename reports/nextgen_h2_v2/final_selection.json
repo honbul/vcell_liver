@@ -1,0 +1,675 @@
+{
+  "0": {
+    "R1": {
+      "axis": "baseline",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "R1"
+    },
+    "R2a": {
+      "axis": "baseline",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "R1"
+    },
+    "R2b": {
+      "axis": "baseline",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "R1"
+    },
+    "R3": {
+      "gbdt": {
+        "ndcg": {
+          "delta": 0.00795740473467058,
+          "hi": 0.008793501188699005,
+          "lo": 0.0071136927712914634,
+          "n_clusters": 991
+        },
+        "pass": false,
+        "rho": {
+          "delta": 7.734420609275394e-05,
+          "hi": 0.00016751960965798922,
+          "lo": -2.589385303862607e-05,
+          "n_clusters": 672
+        },
+        "scale": 0.25,
+        "spec": {
+          "depth": 7,
+          "dropout": 0.0,
+          "family": "gbdt",
+          "objective": "huber",
+          "rate": 0.035,
+          "trees": 700,
+          "width": 63
+        },
+        "zero_residual_point_rho": 0.3135142553040076
+      },
+      "neural": {
+        "ndcg": {
+          "delta": 0.008792521107851647,
+          "hi": 0.00974111616961181,
+          "lo": 0.007875765044224162,
+          "n_clusters": 991
+        },
+        "pass": false,
+        "rho": {
+          "delta": 0.00028606316402406145,
+          "hi": 0.0007145502953702907,
+          "lo": -0.0001455201475322496,
+          "n_clusters": 672
+        },
+        "scale": 0.125,
+        "spec": {
+          "depth": 3,
+          "dropout": 0.1,
+          "family": "neural",
+          "objective": "joint",
+          "rate": 0.0012,
+          "trees": 24,
+          "width": 256
+        },
+        "zero_residual_point_rho": 0.3135142553040076
+      }
+    },
+    "final_family": "kernel",
+    "virtual": {
+      "paired": {
+        "C1": {
+          "delta": 0.0051168627777567035,
+          "hi": 0.008808407658707598,
+          "lo": 0.0017065745630873454,
+          "n_clusters": 275
+        },
+        "V/mask": {
+          "delta": 0.0026663429116839904,
+          "hi": 0.00622472853234238,
+          "lo": -0.0005587577391652317,
+          "n_clusters": 275
+        },
+        "V/shuffle": {
+          "delta": 0.008522565235347748,
+          "hi": 0.01467422631719716,
+          "lo": 0.004054823819593171,
+          "n_clusters": 275
+        }
+      },
+      "pass": false,
+      "spec": {
+        "control": "real",
+        "generator": {
+          "method": "ridge",
+          "regularization": 4.8,
+          "width": 256
+        },
+        "id": "V/real",
+        "weight": 0.125
+      }
+    }
+  },
+  "1": {
+    "R1": {
+      "axis": "baseline",
+      "design": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "krr",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 1.0,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.4
+      },
+      "id": "R1"
+    },
+    "R2a": {
+      "axis": "baseline",
+      "design": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "krr",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 1.0,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.4
+      },
+      "id": "R1"
+    },
+    "R2b": {
+      "axis": "baseline",
+      "design": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "krr",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 1.0,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.4
+      },
+      "id": "R1"
+    },
+    "R3": {
+      "gbdt": {
+        "ndcg": {
+          "delta": 0.0016622715527258513,
+          "hi": 0.003094642939342663,
+          "lo": 0.000264475012357378,
+          "n_clusters": 991
+        },
+        "pass": false,
+        "rho": {
+          "delta": 0.00014508766919934214,
+          "hi": 0.0004949370112014285,
+          "lo": -0.00027797062196805925,
+          "n_clusters": 665
+        },
+        "scale": 0.125,
+        "spec": {
+          "depth": 5,
+          "dropout": 0.0,
+          "family": "gbdt",
+          "objective": "rank",
+          "rate": 0.035,
+          "trees": 700,
+          "width": 31
+        },
+        "zero_residual_point_rho": 0.29750425993017876
+      },
+      "neural": {
+        "ndcg": {
+          "delta": 0.002197220792885458,
+          "hi": 0.0030077384215801135,
+          "lo": 0.0013656536852475589,
+          "n_clusters": 991
+        },
+        "pass": false,
+        "rho": {
+          "delta": 0.00039666462691215323,
+          "hi": 0.0010012823318016973,
+          "lo": -0.00019548037036029445,
+          "n_clusters": 665
+        },
+        "scale": 0.125,
+        "spec": {
+          "depth": 3,
+          "dropout": 0.25,
+          "family": "neural",
+          "objective": "joint",
+          "rate": 0.0012,
+          "trees": 24,
+          "width": 512
+        },
+        "zero_residual_point_rho": 0.29750425993017876
+      }
+    },
+    "final_family": "kernel",
+    "virtual": {
+      "paired": {
+        "C1": {
+          "delta": 0.007546273295981347,
+          "hi": 0.01319720443176436,
+          "lo": 0.002348509798020202,
+          "n_clusters": 288
+        },
+        "V/mask": {
+          "delta": 0.005111239854809532,
+          "hi": 0.010695906373836502,
+          "lo": -0.00010318009456145323,
+          "n_clusters": 288
+        },
+        "V/shuffle": {
+          "delta": 0.016859096009865734,
+          "hi": 0.02451255245427535,
+          "lo": 0.010323701949852345,
+          "n_clusters": 288
+        }
+      },
+      "pass": false,
+      "spec": {
+        "control": "real",
+        "generator": {
+          "method": "ridge",
+          "regularization": 2.4,
+          "width": 256
+        },
+        "id": "V/real",
+        "weight": 0.25
+      }
+    }
+  },
+  "2": {
+    "R1": {
+      "axis": "baseline",
+      "design": {
+        "anchor_penalty": 10,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "v1",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.8
+      },
+      "id": "R1"
+    },
+    "R2a": {
+      "axis": "baseline",
+      "design": {
+        "anchor_penalty": 10,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "v1",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.8
+      },
+      "id": "R1"
+    },
+    "R2b": {
+      "axis": "baseline",
+      "design": {
+        "anchor_penalty": 10,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "v1",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.8
+      },
+      "id": "R1"
+    },
+    "R3": {
+      "gbdt": {
+        "ndcg": {
+          "delta": 0.015000103481002029,
+          "hi": 0.016076169979659646,
+          "lo": 0.013924674186376064,
+          "n_clusters": 991
+        },
+        "pass": false,
+        "rho": {
+          "delta": 0.000522987932930002,
+          "hi": 0.0010328814939331563,
+          "lo": -0.0001245718695013237,
+          "n_clusters": 665
+        },
+        "scale": 0.25,
+        "spec": {
+          "depth": 7,
+          "dropout": 0.0,
+          "family": "gbdt",
+          "objective": "huber",
+          "rate": 0.035,
+          "trees": 700,
+          "width": 63
+        },
+        "zero_residual_point_rho": 0.31562229297201033
+      },
+      "neural": {
+        "ndcg": {
+          "delta": 0.018717291301730794,
+          "hi": 0.019931530049620384,
+          "lo": 0.017450583173143314,
+          "n_clusters": 991
+        },
+        "pass": true,
+        "rho": {
+          "delta": 0.000933178118276999,
+          "hi": 0.0017482586997412564,
+          "lo": 0.0001729055484488372,
+          "n_clusters": 665
+        },
+        "scale": 0.25,
+        "spec": {
+          "depth": 4,
+          "dropout": 0.4,
+          "family": "neural",
+          "objective": "joint",
+          "rate": 0.0012,
+          "trees": 24,
+          "width": 512
+        },
+        "zero_residual_point_rho": 0.31562229297201033
+      }
+    },
+    "final_family": "kernel",
+    "virtual": {
+      "paired": {
+        "C1": {
+          "delta": 0.009759384483392716,
+          "hi": 0.016620179866170932,
+          "lo": 0.003625649546876219,
+          "n_clusters": 271
+        },
+        "V/mask": {
+          "delta": 0.007115594949178349,
+          "hi": 0.013864544163297231,
+          "lo": 0.0012686096063965846,
+          "n_clusters": 271
+        },
+        "V/shuffle": {
+          "delta": 0.00928839061250696,
+          "hi": 0.019013768618292928,
+          "lo": 0.002073466049722569,
+          "n_clusters": 271
+        }
+      },
+      "pass": false,
+      "spec": {
+        "control": "real",
+        "generator": {
+          "method": "mlp",
+          "regularization": 0.3,
+          "width": 512
+        },
+        "id": "V/real",
+        "weight": 0.25
+      }
+    }
+  },
+  "3": {
+    "R1": {
+      "axis": "baseline",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "R1"
+    },
+    "R2a": {
+      "axis": "baseline",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "R1"
+    },
+    "R2b": {
+      "axis": "baseline",
+      "design": {
+        "anchor_penalty": 5,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "neighbors",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 0.25
+        },
+        "normalization": "sum",
+        "penalty": 0.5,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "id": "R1"
+    },
+    "R3": {
+      "gbdt": {
+        "ndcg": {
+          "delta": 0.00795740473467058,
+          "hi": 0.008793501188699005,
+          "lo": 0.0071136927712914634,
+          "n_clusters": 991
+        },
+        "pass": false,
+        "rho": {
+          "delta": 7.734420609275394e-05,
+          "hi": 0.00016751960965798922,
+          "lo": -2.589385303862607e-05,
+          "n_clusters": 672
+        },
+        "scale": 0.25,
+        "spec": {
+          "depth": 7,
+          "dropout": 0.0,
+          "family": "gbdt",
+          "objective": "huber",
+          "rate": 0.035,
+          "trees": 700,
+          "width": 63
+        },
+        "zero_residual_point_rho": 0.3135142553040076
+      },
+      "neural": {
+        "ndcg": {
+          "delta": 0.008792521107851647,
+          "hi": 0.00974111616961181,
+          "lo": 0.007875765044224162,
+          "n_clusters": 991
+        },
+        "pass": false,
+        "rho": {
+          "delta": 0.00028606316402406145,
+          "hi": 0.0007145502953702907,
+          "lo": -0.0001455201475322496,
+          "n_clusters": 672
+        },
+        "scale": 0.125,
+        "spec": {
+          "depth": 3,
+          "dropout": 0.1,
+          "family": "neural",
+          "objective": "joint",
+          "rate": 0.0012,
+          "trees": 24,
+          "width": 256
+        },
+        "zero_residual_point_rho": 0.3135142553040076
+      }
+    },
+    "external_policy_from_outer_fit": 0,
+    "final_family": "kernel",
+    "virtual": {
+      "paired": {
+        "C1": {
+          "delta": 0.0051168627777567035,
+          "hi": 0.008808407658707598,
+          "lo": 0.0017065745630873454,
+          "n_clusters": 275
+        },
+        "V/mask": {
+          "delta": 0.0026663429116839904,
+          "hi": 0.00622472853234238,
+          "lo": -0.0005587577391652317,
+          "n_clusters": 275
+        },
+        "V/shuffle": {
+          "delta": 0.008522565235347748,
+          "hi": 0.01467422631719716,
+          "lo": 0.004054823819593171,
+          "n_clusters": 275
+        }
+      },
+      "pass": false,
+      "spec": {
+        "control": "real",
+        "generator": {
+          "method": "ridge",
+          "regularization": 4.8,
+          "width": 256
+        },
+        "id": "V/real",
+        "weight": 0.125
+      }
+    }
+  }
+}

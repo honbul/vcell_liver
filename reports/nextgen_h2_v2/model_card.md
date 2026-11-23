@@ -4,6 +4,8 @@
 
 모델은 등록 basal RNA와 exact chemical parent로 스크린 내 상대적 단일제 감수성 순위를 예측한다. 모든 단계는 CTRPv2·GDSC2·PRISM20Q2 670,830행과 v1의 scaffold 분할, 소스별 감수성 방향, 가중치, RNA 커널을 공유한다. 약물 절편에는 fit-only 화학 및 선택적 LINCS 이웃 또는 KRR을 사용한다. 환자 약물 선택용으로 검증된 결과는 없다. [데이터와 노출](DATA_SUPPORT_AND_EXPOSURE.md)
 
+동결 H2-v2는 **H2-Kernel-Max**다. 세 outer-fit의 LINCS 가중은 .25/1/.25, ridge 벌점은 .5/1/.5, 마스크 가중은 .60이었다. 각 역할의 선택은 978 landmark 24시간 평균을 사용했다. 외부 코호트에는 inner에서 동일 정책 최다 조건과 역할 번호 타이브레이크로 정한 outer-fit 0 설정을 적용했다. GBDT와 FiLM/Cross-Attention은 각각 0/3, 1/3 역할의 승격 기준을 통과해 비교군으로 동결했다. [정책과 설정](final_selection.json) · [선택 영수증](final_selection_receipt.json)
+
 - **Assay-assisted drug-cold** 입력은 exact parent의 구조, 가용 표적 및 독립 assay에서 측정한 서명이다. 실제 LINCS 관측 724개와 자연 결측까지 포함한 혼합 배포 점수를 분리한다. DepMap 실측이 모두 없는 세포는 같은 약물 구성의 RNA 기반 모델로 정확히 복귀한다.
 - **Structure-only drug-cold**는 질의 단계에서 약물의 실측 LINCS, Cell Painting, Tahoe를 전부 가린다. C1 대조는 고정 화학·표적과 기존 세포 RNA 기반이다. 구조→가상 LINCS 후보는 source training 약물에서만 generator를 적합하고, 반응 적합 약물의 입력 서명도 scaffold 교차 적합으로 생성한다. 가상 서명으로 얻은 임상 의미를 추정하지 않는다.
 - LINCS와 Tahoe의 참조 세포는 비간계열로 제한한다. LIMORE·LICOB는 이전 결과 노출 자료이며 DepMap 직접 측정 융합에 필요한 데이터가 없다. GDSC1 신규 골격은 기존 반응과 세포를 공유하는 외부 스크린 기술 검증이다. [잠금](PLAN_LOCK.md)
