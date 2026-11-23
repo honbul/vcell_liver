@@ -259,8 +259,10 @@ def train(task, family, r1, out, device):
     answer = {}
     for mode, policy in policies.items():
         search = Search(states, mode, policy, device)
-        for cfg in seed_grid(family, search.dual):
+        for step, cfg in enumerate(seed_grid(family, search.dual), 1):
             search.score(cfg, "round2")
+            if family == "C" and step % 4 == 0:
+                print(task, family, mode, "candidates", step, flush=True)
         start = search.winner()
         print(task, family, mode, "round2", round(start["objective"], 6), flush=True)
         boundaries = []
@@ -301,6 +303,17 @@ def train(task, family, r1, out, device):
             gap = None
             extra = cfg | {"clip": 2.5}
         search.score(extra, "round3-error-refinement")
+        for iteration in range(3, 6):
+            current = search.winner()["config"]
+            candidates, bound = extrapolate(current, [r["config"] for r in search.evaluations.values()], search.dual)
+            unique = {key(v): v for v in candidates if key(v) not in search.evaluations}
+            boundaries.append(dict(iteration=iteration, config=current, edges=bound))
+            if not unique:
+                break
+            for config in unique.values():
+                search.score(config, f"round3-closure-{iteration-2}")
+            if key(search.winner()["config"]) == key(current):
+                break
         selected = search.winner()
         budgets, errors = budget_diagnostics(search, selected["config"], moa, names)
         answer[mode] = dict(policy=policy, round2=start, selected=selected, grid=list(search.evaluations.values()),

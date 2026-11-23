@@ -49,13 +49,13 @@ class SetProcess(nn.Module):
         return self.decode(hidden).squeeze(-1) + bilinear
 
 
-def tensors(ctx, packet, order, dual, prior, pc, device):
+def tensors(ctx, packet, order, dual, prior, pc, device, dtype=torch.float32):
     good = np.isfinite(packet)
     standardized = np.nan_to_num((packet - ctx.mean[order]) / ctx.sd[order])
     residual = np.nan_to_num((packet - prior[:, order]) / ctx.sd[order])
-    return (torch.as_tensor(ctx.embedding, dtype=torch.float32, device=device),
-            torch.as_tensor(np.clip(pc, -8, 8), dtype=torch.float32, device=device),
-            torch.as_tensor(np.stack((standardized, residual), axis=-1), dtype=torch.float32, device=device),
+    return (torch.as_tensor(ctx.embedding, dtype=dtype, device=device),
+            torch.as_tensor(np.clip(pc, -8, 8), dtype=dtype, device=device),
+            torch.as_tensor(np.stack((standardized, residual), axis=-1), dtype=dtype, device=device),
             torch.as_tensor(good, device=device), torch.as_tensor(order, device=device), dual)
 
 
@@ -102,13 +102,16 @@ class NeuralModel:
             self._net = SetProcess(self.ctx.embedding.shape[1], self.config["hidden"],
                                    self.config["heads"], self.config["dropout"]).to(device)
             self._net.load_state_dict(self.state)
+            if torch.device(device).type == "cpu":
+                self._net.double()
             self._net.eval()
         prior = base(self.ctx, self.dual, training)
         pc = self.ctx.pc_fit if training else self.ctx.pc_valid
         if scramble is not None and self.dual:
             prior, pc = prior[scramble], pc[scramble]
         with torch.no_grad():
-            output = self._net(*tensors(self.ctx, packet, self.order[:k], self.dual, prior, pc, device))
+            output = self._net(*tensors(self.ctx, packet, self.order[:k], self.dual, prior, pc, device,
+                                       dtype=next(self._net.parameters()).dtype))
         return prior + output.cpu().numpy() * self.ctx.sd
 
 
@@ -129,24 +132,33 @@ def fit_neural(ctx, order, dual, cfg, device, *, epochs=None):
     schedule = torch.optim.lr_scheduler.CosineAnnealingLR(opt, count, eta_min=.05 * cfg["lr"])
     priors = base(ctx, dual, True)
     truth = (ctx.train - priors) / ctx.sd
-    data = [(k, region(order, k, len(ctx.mean))) for k in BUDGETS]
+    scale = max(float(np.median(ctx.sd)), 1e-8)
+    data = []
+    for k in BUDGETS:
+        codes, q = order[:k], region(order, k, len(ctx.mean))
+        drug, pcs, packet, observed, drug_codes, _ = tensors(
+            ctx, ctx.train[:, codes], codes, dual, priors, ctx.pc_fit, device)
+        data.append((drug, pcs, packet, observed, drug_codes, q,
+                     torch.as_tensor(np.nan_to_num(truth[:, q]), device=device, dtype=torch.float32),
+                     torch.as_tensor(np.isfinite(truth[:, q]), device=device),
+                     torch.as_tensor(ctx.sd[q] / scale, device=device, dtype=torch.float32),
+                     torch.as_tensor(priors[:, q] / scale, device=device, dtype=torch.float32)))
     curves, epoch_best, best_score, best, stale = [], 0, -np.inf, None, 0
     for epoch in range(1, count + 1):
         net.train()
         groups = rng.permutation(len(ctx.train))
-        for batch in np.array_split(groups, max(1, len(groups) // 16)):
-            k, q = data[int(rng.choice(len(data), p=[.05, .08, .12, .48, .17, .10]))]
-            codes = order[:k]
-            packet = ctx.train[batch][:, codes].copy()
+        for batch in np.array_split(groups, max(1, math.ceil(len(groups) / 64))):
+            d, pc, packet, obs, a, q, yy, mask, drug_scale, intercept = data[
+                int(rng.choice(len(data), p=[.05, .08, .12, .48, .17, .10]))]
+            i = torch.as_tensor(batch, device=device)
+            observed = obs[i]
+            values = packet[i]
             if cfg.get("noise", 0.):
-                packet += rng.normal(0, cfg["noise"], packet.shape) * ctx.sd[codes]
-            y = torch.as_tensor(np.nan_to_num(truth[batch][:, q]), device=device, dtype=torch.float32)
-            valid = torch.as_tensor(np.isfinite(truth[batch][:, q]), device=device)
-            output = net(*tensors(ctx, packet, codes, dual, priors[batch], ctx.pc_fit[batch], device))
-            global_scale = max(float(np.median(ctx.sd)), 1e-8)
-            scale = torch.as_tensor(ctx.sd[q] / global_scale, device=device, dtype=torch.float32)
-            b = torch.as_tensor(priors[batch][:, q] / global_scale, device=device, dtype=torch.float32)
-            loss = joint_loss(output[:, q], y, output[:, q] * scale + b, y * scale + b, valid, cfg)
+                jitter = torch.randn_like(values[:, :, :1]) * cfg["noise"]
+                values = values + jitter * observed[:, :, None]
+            y, b = yy[i], intercept[i]
+            pred = net(d, pc[i], values, observed, a, dual)[:, q]
+            loss = joint_loss(pred, y, pred * drug_scale + b, y * drug_scale + b, mask[i], cfg)
             opt.zero_grad()
             loss.backward()
             nn.utils.clip_grad_norm_(net.parameters(), 5.)

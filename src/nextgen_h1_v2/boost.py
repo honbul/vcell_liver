@@ -119,6 +119,8 @@ def lightgbm_head(kind, train, valid, cfg):
                   bagging_fraction=cfg["subsample"], bagging_freq=1, feature_fraction=cfg["cols"])
     if rank:
         params.update(eval_at=[5], lambdarank_truncation_level=5, label_gain=list(range(31)))
+    if cfg.get("refit_epochs"):
+        return lgb.train(params, ds, num_boost_round=cfg["refit_epochs"]), {}
     ev = lgb.Dataset(valid.features, label=getattr(valid, label), group=valid.group if rank else None, reference=ds)
     history = {}
     model = lgb.train(params, ds, num_boost_round=cfg["rounds"], valid_sets=[ds, ev],
