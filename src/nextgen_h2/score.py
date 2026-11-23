@@ -43,6 +43,14 @@ def split_files(root, assets):
         receipts.append(receipt)
     if sum(len(part) for part in forecasts[:3]) != 670830:
         raise ValueError("Source outer forecasts must cover the full registered response panel once")
+    replay = read_json(root / "offline_replay.json")
+    if replay["network_connections_allowed"] or len(replay["partitions"]) != 4:
+        raise ValueError("The four sealed prediction packages require offline replay")
+    for compared, receipt in zip(replay["partitions"], receipts):
+        if (compared["partition"] != receipt["partition"] or compared["rows"] != receipt["query_rows"]
+                or not compared["max_abs_diff"] < 1e-6 or compared["missing_fallback_max_abs_diff"] != 0.
+                or compared["structure_only_fallback_max_abs_diff"] != 0.):
+            raise ValueError(f"Offline replay receipt failed for partition {receipt['partition']}")
     return forecasts, receipts, registry, asset
 
 
@@ -237,6 +245,7 @@ def run(root, assets):
         data.to_parquet(score / f"{name}.parquet", index=False)
     publish_json(score / "score_receipt.json", {"score_passes": 1, "forecasts": receipts,
         "champion_sha256": sha256(root / "champion.json"), "score_guard_sha256": sha256(lock),
+        "offline_replay_sha256": sha256(root / "offline_replay.json"),
         "source_rows": sum(len(part) for part in frames[:3]), "source_unique_parents": len(registry),
         "external_rows": external.groupby("source_id").size().to_dict(),
         "external_rows_missing_native_response": external_unavailable,
