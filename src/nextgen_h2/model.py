@@ -194,7 +194,8 @@ class Fit:
                     dtype=self.weights.dtype, device=self.device)
             target = self._interaction_y
         if cache not in self._solutions:
-            solution = solve_residuals(cell, fit, self.weights, target, base.penalty, shared_prior=prior)
+            solution = solve_residuals(cell, fit, self.weights, target, base.penalty,
+                                       shared_prior=prior, max_steps=700)
             if cache is not None:
                 self._solutions[cache] = solution
         else:
@@ -320,7 +321,7 @@ class Fit:
             prior = None if shared is None else (shared[0][:len(self.fit_cells)], shared[1][:self.stop])
             if cache not in self._solutions:
                 self._solutions[cache] = solve_residuals(self.cell, extra[:self.stop, :self.stop], weights, y,
-                                                        base.penalty, shared_prior=prior)
+                                                        base.penalty, shared_prior=prior, max_steps=700)
             coeff, steps, error = self._solutions[cache]
             effect = None
             if shared is not None:

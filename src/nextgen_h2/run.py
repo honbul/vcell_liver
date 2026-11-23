@@ -28,6 +28,12 @@ R1_VIEWS = ("painting", "lincs")
 
 
 def read_json(path):
+    # Slurm dependencies can resolve before another host's latest NFS directory entry appears.
+    for _ in range(20):
+        try:
+            return json.loads(path.read_text())
+        except FileNotFoundError:
+            time.sleep(2)
     return json.loads(path.read_text())
 
 
