@@ -136,10 +136,11 @@ def final_candidate(split,family,seed):
     model=root/"state.pkl"
     with model.open("xb") as stream:
         pickle.dump({"model":state,"config":config,"seed":seed,"scale":float(atlas["scale"]),
-                     "source_atlas_sha256":meta["atlas_sha256"],"kernel_base_sha256":kernel_stamp},stream,protocol=5)
+                     "source_atlas_sha256":meta["atlas_sha256"],"model_input_sha256":meta["model_input_sha256"],"kernel_base_sha256":kernel_stamp},stream,protocol=5)
     publish_json(root/"receipt.json",{
         "split":split,"family":family,"seed":seed,"training":stamp,"operating_point":point["id"],
         "lock_sha256":sha256(ROOT/"locks/frozen.json"),"atlas_sha256":meta["atlas_sha256"],
+        "model_input_sha256":meta["model_input_sha256"],"lincs_full_unclipped":meta["lincs_full_unclipped"],
         "forecast_sha256":sha256(file),"checkpoint_sha256":sha256(model),"query_id_sha256":table_hash(query),
         "query_rows":len(query),"outer_labels_loaded":False,"schema_sha256":meta["schema_sha256"],
         "kernel_base_sha256":kernel_stamp,

@@ -18,3 +18,5 @@
 H2의 상호작용 ρ 약 .2737은 LINCS 관측 지원이다. 혼합 배포 전체 지원의 상호작용 ρ는 약 .2304다. 기존 H2의 동일 행·동일 산식을 통해 두 지원을 각각 대조한다. [H2 동결 비교](../nextgen_h2_multiview/RESULTS.md) · [H3-v2 잠금](PLAN_LOCK.md)
 
 GDSC1의 66 신규 골격은 이전 H2에 등록됐고 소스 세포와 일부 공유된다. LIMORE 50계통·68약물 및 LICOB 성인 38공여자·76약물은 과거 평가에 노출된 기술 확인이다. PUB LINCS 프로필은 H2 등록의 비간계열 MODZ를 사용하고 반응 실측은 모델 선택에 넣지 않는다. [H2 자료 등록](../nextgen_h2_multiview/DATA_SUPPORT_AND_EXPOSURE.md)
+
+첫 R1 연동에서 정정 RNA의 H2 span을 재구성한 Gram 최대 차이는 4.81e−8이었다. Drug-Cold 0의 첫 inner fold에서 LINCS 478,242개 관측 좌표 중 94개는 표준화 절댓값이 8을 넘었다. 따라서 두 LINCS 원자료 뷰의 정규화 좌표는 모두 절단 없이 제공하며, 최초 제한형 실행은 후보 선정에서 제외했다. H2 고정 입력을 재현하려는 목적의 수정으로, 정정 반응 파일과 분할, PCA 및 구조 자산은 그대로 사용했다. [입력 loader](../../src/h3v2/atlas.py)

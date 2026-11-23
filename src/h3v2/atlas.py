@@ -1,5 +1,6 @@
 """Materialize a common fold-local atlas for tree, neural and hybrid training."""
 import argparse
+from hashlib import sha256 as digest_bytes
 from time import perf_counter
 import pickle
 
@@ -7,8 +8,8 @@ import numpy as np
 
 from vc_build.io import publish_json, sha256
 from nextgen_h2.run import read_json
-from .data import ROOT, SPLITS, nested, read_data, table_hash
-from .features import SourceFeatures, build_atlas, checked_embedding, positions, normalize_fit
+from .data import ASSETS, ROOT, SPLITS, nested, read_data, table_hash
+from .features import SourceFeatures, active_scores, build_atlas, checked_embedding, load_registered, positions, normalize_fit
 from .graphs import make_graphs
 
 
@@ -65,7 +66,21 @@ def read(root, fit, query):
     ):
         raise ValueError("Training feature parity seal drifted")
     with np.load(path,allow_pickle=False) as reader:
-        return dict(reader), record
+        atlas=dict(reader)
+    ids=atlas["drug_ids"]
+    fit_drugs=np.unique(atlas["fit_drugs"])
+    measured=atlas["lincs_mask"]
+    source=read_json(ASSETS/"data_receipt.json")["files"]
+    digests=[]
+    for dataset, key in (("lincs_modz24.parquet","lincs"),("paths_modz24.parquet","perturb_paths")):
+        raw=load_registered(dataset).reindex(ids).to_numpy(np.float32)
+        if not np.array_equal(np.isfinite(raw).all(1),measured):
+            raise ValueError("LINCS reattachment cannot change natural measurement support")
+        atlas[key],_=active_scores(raw,measured,fit_drugs)
+        digests.append(source[dataset])
+    exact=record["atlas_sha256"]+"|"+"|".join(digests)+"|lincs_full_unclipped"
+    return atlas, record | {"model_input_sha256":digest_bytes(exact.encode()).hexdigest(),
+                           "lincs_full_unclipped":True}
 
 
 if __name__=="__main__":

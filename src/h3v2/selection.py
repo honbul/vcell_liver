@@ -23,7 +23,7 @@ def receipt(stage, split, family, config, inner):
     data=read_json(path/"receipt.json")
     if (data["stage"],data["split"],data["family"],data["inner"],data["config_id"],data["seed"]) != (
         stage,split,family,inner,identity,SEEDS[0]
-    ) or data["query_has_outer_labels"]:
+    ) or data["query_has_outer_labels"] or not data.get("lincs_full_unclipped"):
         raise ValueError("A submission did not match the registered inner arm")
     if (sha256(path/"curves.parquet"),sha256(path/"predictions.parquet")) != (
         data["curve_sha256"],data["forecast_sha256"]

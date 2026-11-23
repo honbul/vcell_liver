@@ -36,17 +36,20 @@ def checked_embedding(name, ids):
     return array, np.isfinite(array).all(axis=1), report["output"]["sha256"]
 
 
-def normalize_fit(x, fit, floor=.05):
+def normalize_fit(x, fit, floor=.05, clip=True):
     ref = np.asarray(x[fit], dtype=np.float64)
     if not np.isfinite(ref).all() or len(ref) == 0:
         raise ValueError("Normalization requires finite fitting covariates")
     center, scale = ref.mean(0).astype(np.float32), ref.std(0).clip(min=floor).astype(np.float32)
-    return ((x - center) / scale).clip(-8., 8.).astype(np.float32), (center, scale)
+    standardized=(x-center)/scale
+    if clip:
+        standardized=standardized.clip(-8.,8.)
+    return standardized.astype(np.float32), (center,scale)
 
 
 def active_scores(raw, present, fitted):
     """The stored value for an absent public view stays NaN until the branch is masked."""
-    out, stamp = normalize_fit(raw, fitted[present[fitted]])
+    out, stamp = normalize_fit(raw, fitted[present[fitted]], clip=False)
     if np.isfinite(out[~present]).any():
         raise ValueError("An unobserved pharmacology profile gained numeric features")
     return out, stamp

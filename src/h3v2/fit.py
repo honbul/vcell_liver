@@ -85,7 +85,8 @@ def fold_fit(stage, split, family, inner, backend, *, smoke=False):
         publish_json(dest/"receipt.json", {
             "stage":folder,"split":split,"inner":inner,"family":family,"config":config,"config_id":identity,
             "seed":SEEDS[0],"score":score,"utility":utility(score),
-            "atlas_sha256":receipt["atlas_sha256"],"query_has_outer_labels":False,"training":stamp,
+            "atlas_sha256":receipt["atlas_sha256"],"model_input_sha256":receipt["model_input_sha256"],
+            "lincs_full_unclipped":receipt["lincs_full_unclipped"],"query_has_outer_labels":False,"training":stamp,
             "curve_sha256":sha256(dest/"curves.parquet"),"forecast_sha256":sha256(dest/"predictions.parquet"),
             "finished":datetime.now(timezone.utc).isoformat(),
         })

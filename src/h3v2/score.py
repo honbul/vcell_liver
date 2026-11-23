@@ -50,7 +50,7 @@ def preflight():
                 receipt=read_json(part/"receipt.json")
                 if (receipt["split"],receipt["family"],receipt["seed"],receipt["operating_point"],
                     receipt["query_rows"],receipt["outer_labels_loaded"],receipt["lock_sha256"])!=(
-                      split,family,seed,chosen["id"],len(expected),False,sha256(lock_path)):
+                      split,family,seed,chosen["id"],len(expected),False,sha256(lock_path)) or not receipt.get("lincs_full_unclipped"):
                     raise ValueError("Frozen model evidence disagrees with the winning inner operating point")
                 frame_seed=parquet_lock(part/"forecast.parquet",receipt["forecast_sha256"]).set_index("row_id")
                 exact_join(expected,frame_seed)
