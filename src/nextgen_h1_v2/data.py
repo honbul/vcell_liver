@@ -124,8 +124,9 @@ def build(study, dev, tr, xvalid, valid_groups, tissue, drug, valid=None, *, pca
     ids = dev["groups"][tr]
     zero_pc = (np.zeros((len(y), 16)), np.zeros((len(xvalid), 16)))
     if not transfer and use_rna:
-        bval, bfit, cross, gram = rna_oof(y, dev["x"][tr], xvalid, chem, ids)
-        px, pv = rna_projection(dev["x"][tr], xvalid) if pca else zero_pc
+        training_rna, query_rna = dev["x"][tr].astype(float), xvalid.astype(float)
+        bval, bfit, cross, gram = rna_oof(y, training_rna, query_rna, chem, ids)
+        px, pv = rna_projection(training_rna, query_rna) if pca else zero_pc
     else:
         bfit = np.broadcast_to(mu, y.shape).copy()
         bval = np.broadcast_to(mu, (len(xvalid), len(mu))).copy()
