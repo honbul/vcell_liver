@@ -1,0 +1,155 @@
+{
+  "0": {
+    "v1": {
+      "base": {
+        "penalty": 16.0,
+        "style": "molecular"
+      },
+      "geometry": {
+        "configs": [
+          {
+            "dimension": 0,
+            "kernel": "cos",
+            "recipe": "modz24",
+            "transform": "raw",
+            "view": "lincs"
+          }
+        ],
+        "spec": {
+          "match": 0.0,
+          "method": "psd",
+          "protected": true,
+          "shuffle": false,
+          "stress": 0.0,
+          "weight": 0.5
+        }
+      }
+    },
+    "v1_candidate": "v1/0.5/16/chem/1",
+    "v2": {
+      "anchor_penalty": 5.0,
+      "cell_views": [],
+      "drug_views": [],
+      "identity": 0.7,
+      "intercept": "neighbors",
+      "lincs": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "cos",
+        "mask": 0.6,
+        "name": "lincs",
+        "recipe": "landmark_mean",
+        "transform": "raw",
+        "weight": 0.5
+      },
+      "normalization": "sum",
+      "penalty": 1.0,
+      "properties": 0.025,
+      "tanimoto": 0.175,
+      "target": 0.4
+    },
+    "v2_candidate": "v2/0.5/1/neighbors/5"
+  },
+  "1": {
+    "v1": {
+      "base": {
+        "penalty": 4.0,
+        "style": "molecular"
+      },
+      "geometry": {
+        "configs": [
+          {
+            "dimension": 0,
+            "kernel": "cos",
+            "recipe": "modz24",
+            "transform": "raw",
+            "view": "lincs"
+          }
+        ],
+        "spec": {
+          "match": 0.0,
+          "method": "psd",
+          "protected": true,
+          "shuffle": false,
+          "stress": 0.0,
+          "weight": 0.5
+        }
+      }
+    },
+    "v1_candidate": "v1/0.5/4/chem/1",
+    "v2": {
+      "anchor_penalty": 1.0,
+      "cell_views": [],
+      "drug_views": [],
+      "identity": 0.7,
+      "intercept": "krr",
+      "lincs": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "rbf_wide",
+        "mask": 0.6,
+        "name": "lincs",
+        "recipe": "landmark_mean",
+        "transform": "raw",
+        "weight": 1.0
+      },
+      "normalization": "sum",
+      "penalty": 2.0,
+      "properties": 0.025,
+      "tanimoto": 0.0875,
+      "target": 0.4
+    },
+    "v2_candidate": "v2/1/2/krr/1"
+  },
+  "2": {
+    "v1": {
+      "base": {
+        "penalty": 4.0,
+        "style": "molecular"
+      },
+      "geometry": {
+        "configs": [
+          {
+            "dimension": 0,
+            "kernel": "cos",
+            "recipe": "modz24",
+            "transform": "raw",
+            "view": "lincs"
+          }
+        ],
+        "spec": {
+          "match": 0.0,
+          "method": "psd",
+          "protected": true,
+          "shuffle": false,
+          "stress": 0.0,
+          "weight": 0.5
+        }
+      }
+    },
+    "v1_candidate": "v1/0.5/4/chem/1",
+    "v2": {
+      "anchor_penalty": 10.0,
+      "cell_views": [],
+      "drug_views": [],
+      "identity": 0.7,
+      "intercept": "neighbors",
+      "lincs": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "cos",
+        "mask": 0.6,
+        "name": "lincs",
+        "recipe": "v1",
+        "transform": "raw",
+        "weight": 0.125
+      },
+      "normalization": "sum",
+      "penalty": 1.0,
+      "properties": 0.025,
+      "tanimoto": 0.0875,
+      "target": 0.8
+    },
+    "v2_candidate": "v2/0.125/1/neighbors/10"
+  }
+}
