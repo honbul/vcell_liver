@@ -1,0 +1,121 @@
+"""LightGBM regression and LambdaRank with fit-only alignment and OOF offsets."""
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from time import perf_counter
+import os
+
+import lightgbm as lgb
+import numpy as np
+import pandas as pd
+
+from vc_build.external import native_sensitivity
+from .features import tabular
+from .fit_neural import aligned_values
+from .quality import quality, utility
+
+
+def ranking(rows):
+    n=len(rows)
+    codes=pd.factorize(rows.source_id.astype(str)+"/"+rows.endpoint_id.astype(str)+"/"+rows.cell_id.astype(str),sort=True)[0]
+    order=np.argsort(codes,kind="stable")
+    groups=np.bincount(codes)
+    y=native_sensitivity(rows).to_numpy()
+    starts=np.r_[0,np.cumsum(groups)[:-1]]
+    lo=np.minimum.reduceat(y[order],starts)
+    hi=np.maximum.reduceat(y[order],starts)
+    relevance=np.rint(63*(y-lo[codes])/(hi[codes]-lo[codes]).clip(min=1e-12)).astype(np.int32)
+    if groups.sum()!=n:
+        raise ValueError("Ranking groups must cover all observed rows")
+    return order,groups,relevance
+
+
+def train(atlas,schema,fit,query,registry,config,seed,*,train_base=None,val_base=None,
+          fixed_epochs=None,progress=None):
+    start=perf_counter()
+    train_a,train_b=atlas["fit_cells"],atlas["fit_drugs"]
+    check_a,check_b=atlas["query_cells"],atlas["query_drugs"]
+    scale=float(atlas["scale"])
+    fit_offset=atlas["mu"][train_b] if train_base is None else np.asarray(train_base,np.float32)
+    val_offset=atlas["mu"][check_b] if val_base is None else np.asarray(val_base,np.float32)
+    fit_y=atlas["labels"]/scale
+    val_y=None if fixed_epochs else aligned_values(query,scale,schema)
+    params={
+        "max_depth":config["depth"],"num_leaves":config["leaves"],"learning_rate":config["learning_rate"],
+        "feature_fraction":config["colsample"],"min_data_in_leaf":config["min_child"],
+        "lambda_l2":config["lambda_l2"],"max_bin":63,"bagging_fraction":.90,"bagging_freq":1,
+        "num_threads":int(os.environ.get("SLURM_CPUS_PER_TASK","8")),"seed":seed,
+        "verbosity":-1,"force_col_wise":True,"deterministic":True,"feature_pre_filter":False,
+    }
+    requested=config["objective"]
+    stages=("l2","lambdarank") if requested=="l2_lambdarank" else (requested,)
+    limit=int(config["trees"] if not fixed_epochs else fixed_epochs)
+    curves=[]
+    boosters=[]
+    with TemporaryDirectory(prefix="tree-map-") as temp:
+        path=Path(temp)
+        for stage in stages:
+            rank=stage=="lambdarank"
+            train_order,valid_order=np.arange(len(fit)),np.arange(len(query))
+            group_train=group_val=None
+            if rank:
+                train_order,group_train,y=ranking(fit)
+                if not fixed_epochs:
+                    valid_order,group_val,v=ranking(query)
+            else:
+                y=fit_y-fit_offset/scale
+                v=None if fixed_epochs else val_y-val_offset/scale
+            train_x=tabular(atlas,train_a[train_order],train_b[train_order],
+                            base=None if train_base is None else train_base[train_order],out=path/"train")
+            valid_x=tabular(atlas,check_a[valid_order],check_b[valid_order],
+                            base=None if val_base is None else val_base[valid_order],out=path/"valid")
+            treedata=lgb.Dataset(train_x,label=y[train_order],group=group_train,
+                                 init_score=fit_offset[train_order]/scale if rank else None,
+                                 free_raw_data=True)
+            preddata=None if fixed_epochs else lgb.Dataset(valid_x,label=v[valid_order],group=group_val,
+                                              init_score=val_offset[valid_order]/scale if rank else None,
+                                              reference=treedata,free_raw_data=True)
+            metric={"l2":"l2","huber":"huber","lambdarank":"ndcg"}[stage]
+            choice=params|{"objective":stage,"metric":metric}
+            if rank:
+                choice|={"ndcg_eval_at":[5],"lambdarank_truncation_level":5,"label_gain":list(range(64))}
+            watch={}
+            checks=[lgb.record_evaluation(watch)]
+            if preddata is not None:
+                checks.append(lgb.early_stopping(130,first_metric_only=True,verbose=False))
+            train_sets=[treedata] if preddata is None else [treedata,preddata]
+            this_limit=limit if len(stages)==1 else max(160,limit//2)
+            model=lgb.train(choice,treedata,num_boost_round=this_limit,valid_sets=train_sets,
+                           valid_names=["train","inner_val"][:len(train_sets)],callbacks=checks)
+            best=model.best_iteration or model.current_iteration()
+            p=model.predict(valid_x,num_iteration=best).astype(np.float32)
+            ordered=np.empty(len(query),np.float32)
+            ordered[valid_order]=p
+            applied=1.
+            if rank and len(stages)==2:
+                # Additive ranking residual on top of the fold-local L2-corrected kernel.
+                pt=model.predict(train_x,num_iteration=best).astype(np.float32)
+                factor=float(np.clip(np.std(fit_y-fit_offset/scale)/max(np.std(pt),.1),.03,1.))
+                applied=factor*.35
+                ordered*=applied
+            val_offset=val_offset+ordered*scale
+            if len(stages)==2 and not rank:
+                pt=model.predict(train_x,num_iteration=best).astype(np.float32)
+                fit_offset=fit_offset+pt*scale
+            metric_name=next(iter(watch["train"]))
+            for i,m in enumerate(watch["train"][metric_name],1):
+                if i==1 or i%25==0 or i==best or i==model.current_iteration():
+                    stats={"iteration":i,"branch":stage,"train_objective":m,"metric":metric_name,
+                           "validation_objective":None if preddata is None else watch["inner_val"][metric_name][i-1],
+                           "seconds":perf_counter()-start}
+                    curves.append(stats)
+            boosters.append({"objective":stage,"iteration":best,"multiplier":applied,"model":model.model_to_string(num_iteration=best)})
+            if progress is not None:
+                progress({"branch":stage,"iteration":best,"seconds":perf_counter()-start})
+            del model,treedata,preddata,train_x,valid_x
+    if not fixed_epochs:
+        record=quality(query,val_offset,registry)
+        curves.append({"iteration":sum(b["iteration"] for b in boosters),"branch":"selected",
+                        "seconds":perf_counter()-start,"utility":utility(record)}|record)
+    info={"best_iteration":sum(b["iteration"] for b in boosters),"branch_iterations":[b["iteration"] for b in boosters],
+          "wall_seconds":perf_counter()-start,"train_rows":len(fit),"device":"cpu","library":lgb.__version__}
+    return val_offset,boosters,curves,info

@@ -120,6 +120,7 @@ class MoleculeNet(nn.Module):
         self.norm=nn.ModuleList([nn.LayerNorm(width) for _ in range(depth)])
         self.readout=nn.Linear(width,1)
         self.dropout=nn.Dropout(dropout)
+        self.kind=kind
 
     def forward(self,bank,ids):
         atoms, mask=bank["atoms"][ids],bank["node_mask"][ids]
@@ -128,6 +129,9 @@ class MoleculeNet(nn.Module):
         src,dst=edge[valid].unbind(1)
         bond=bank["bonds"][ids][valid]
         x=self.atom(atoms).flatten(0,1)
+        if self.kind=="gine":
+            other=src.ne(dst)
+            src,dst,bond=src[other],dst[other],bond[other]
         for conv,norm in zip(self.convs,self.norm):
             x=norm(x+self.dropout(conv(x,bond,src,dst)))
         x=x.reshape(len(ids),atoms.shape[1],-1)
