@@ -4,13 +4,33 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
+from sklearn.model_selection import GroupKFold
 
 from nextgen_h2.assets import KEY, fold_ids
 from nextgen_h2.run import META
-from vc_build.external import SOURCE, native_sensitivity
+from vc_build.external import ANCHOR, SOURCE, native_sensitivity
 from vc_build.structured_kernel import ranked_expression
 
 from .kernel import Engine
+
+
+def stopping_role(panel, groups):
+    groups = groups.loc[sorted(panel[KEY].unique())]
+    rosters = {tag: frame[ANCHOR].drop_duplicates() for tag, frame in panel.groupby(SOURCE, sort=True)}
+    reference = next((tag for tag in rosters if tag[0] == "GDSC2"), next(iter(rosters)))
+    overlap = [frame.merge(rosters[reference], on=ANCHOR, validate="one_to_one").groupby(KEY).size()
+               for tag, frame in rosters.items() if tag != reference]
+    overlap = [counts[counts.ge(12)] for counts in overlap]
+    for n in (3, 4, 5, 6, 9):
+        for _, check in GroupKFold(n).split(groups, groups=groups):
+            hold = groups.index[check]
+            fit_groups = groups.drop(hold)
+            assignment = fold_ids(fit_groups)
+            counts = [pairs.reindex(fit_groups.index[assignment.ne(f)]).dropna()
+                      for f in range(3) for pairs in overlap]
+            if all(len(pairs) >= 3 and pairs.sum() >= 60 for pairs in counts):
+                return panel[KEY].isin(hold).to_numpy(), n
+    raise ValueError("No outcome-free residual split supports all fit-only endpoint anchors")
 
 
 def kernel_oof(engine, params, seed, stopping):

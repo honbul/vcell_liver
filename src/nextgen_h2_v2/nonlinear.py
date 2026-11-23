@@ -6,8 +6,6 @@ import pandas as pd
 import torch
 from torch import nn
 
-from nextgen_h2.assets import KEY, fold_ids
-
 
 @dataclass(frozen=True)
 class Candidate:
@@ -47,12 +45,6 @@ class FilmAttention(nn.Module):
             c = c + self.dropout(delta)
             c = c + ffn(c)
         return self.head(torch.cat([c.mean(dim=1), joint], dim=1)).flatten()
-
-
-def stop_holdout(panel, group_map):
-    r = group_map.loc[sorted(panel[KEY].unique())]
-    fold = fold_ids(r)
-    return panel[KEY].map(fold).eq(0).to_numpy()
 
 
 def group_key(panel):

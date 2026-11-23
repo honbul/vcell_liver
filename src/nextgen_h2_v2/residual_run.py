@@ -16,8 +16,8 @@ from vc_build.io import publish_json, sha256
 
 from .inner import save_evidence
 from .kernel import Engine, context, design
-from .nonlinear import Candidate, fit_boost, fit_neural, search_space, stop_holdout
-from .residual_data import ResidualFeatures, kernel_oof
+from .nonlinear import Candidate, fit_boost, fit_neural, search_space
+from .residual_data import ResidualFeatures, kernel_oof, stopping_role
 from .search import common_score, ranker, score_index, stage_input, write_manifest
 
 SCALES = (0., .00390625, .015625, .03125, .0625, .125, .25, .5, 1., 2., 4., 8., 16.)
@@ -40,7 +40,7 @@ class FittedResidual:
         self.engine = engine
         self.params = params
         self.seed = seed
-        self.keep = stop_holdout(engine.fit, engine.reg.scaffold_block)
+        self.keep, self.stopping_partition_count = stopping_role(engine.fit[META], engine.reg.scaffold_block)
         self.training = kernel_oof(engine, params, seed, self.keep)
         self.feature = ResidualFeatures(engine, params, engine.fit[~self.keep])
         self.query = engine.query
@@ -101,6 +101,7 @@ def measure(work, root, manifest_path, index):
     publish_json(path / "learning.json", {"fit_pool_oof_rows": len(apparatus.training),
                  "early_stop_rows": int(apparatus.keep.sum()),
                  "early_stop_parent_count": apparatus.training.loc[apparatus.keep, KEY].nunique(),
+                 "early_stop_partition_count": apparatus.stopping_partition_count,
                  "early_stop_labels_available_to_crossfit_base": 0,
                  "early_stop_used_to_fit_residual_preprocessors": False,
                  "inner_query_labels_available_to_estimator": 0,
