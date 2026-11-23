@@ -13,19 +13,19 @@ job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
 35083	ng2-h1-publish-boundary	inner_boundary_publish	cpu	0	0	COMPLETED	Final PRISM20Q2-2 B receipt linked and predecessor preserved
 35057	ng2-h1-collect-inner	inner_evidence	cpu	0	0	COMPLETED	Seven SHA-verified inner tables, including 3,313 recipes and 124 selected configurations
 35058	ng2-h1-fit-outer	fit_frozen_models	cpu	0	0	COMPLETED	All 16 fold-local packages written and model seal job started afterok
-35059	ng2-h1-seal-models	seal_models	cpu	0	0	DEPENDENT	Precedes primary forecast and scorer
-35060	ng2-h1-predict	predict_primary	cpu	0	0	DEPENDENT	Uses the immutable model receipts and v1 released anchors
-35061	ng2-h1-seal-predictions	seal_predictions	cpu	0	0	DEPENDENT	Seals primary predictions before Q access
-35062	ng2-h1-replay-primary	replay_primary	cpu	0	0	DEPENDENT	Checks CPU CLI and Q8 primary parity before any held scoring
+35059	ng2-h1-seal-models	seal_models	cpu	0	0	COMPLETED	Preserved first prelabel model seal in prelabel-attempt-a
+35060	ng2-h1-predict	predict_primary	cpu	0	0	COMPLETED	First set of label-blind primary forecasts preserved in prelabel-attempt-a
+35061	ng2-h1-seal-predictions	seal_predictions	cpu	0	0	COMPLETED	Preserved first prelabel prediction seal in prelabel-attempt-a
+35062	ng2-h1-replay-primary	replay_primary	cpu	0	0	FAILED	PRISM20Q2-2 extrapolation mismatch from repeated numerical RNA fitting, maximum absolute difference 1.5168190863001918e-05; held Q unopened
 35063	ng2-h1-prelabel	verify_scoring_paths	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
 35064	ng2-h1-score	outer_score	cpu	0	0	CANCELLED	Replaced while pending, runtime zero, no scoring claim
 35065	ng2-h1-replay-final	replay_final	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
 35122	ng2-h1-licob-size	inner_licob_sample_sensitivity	gpu	1	1	COMPLETED	108 rows under nested 50/75/100 percent reference sizes with the same held inner donors; SHA verified
-35147	ng2-h1-prelabel-sealed	verify_scoring_paths	cpu	0	0	DEPENDENT	Verifies synthetic auxiliary predictions and matched v1 arms before opening held outcomes
+35147	ng2-h1-prelabel-sealed	verify_scoring_paths	cpu	0	0	DEPENDENT	After repaired CPU replay 35464; verifies synthetic auxiliary predictions and matched v1 arms before opening held outcomes
 35148	ng2-h1-score-sealed	outer_score	cpu	0	0	CANCELLED	Replaced while pending by the complete tissue analysis, runtime zero, no scoring claim
 35149	ng2-h1-replay-final-sealed	replay_final	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
 35168	ng2-h1-score-all-tissues	outer_score	cpu	0	0	DEPENDENT	Verifies prelabel and forecast hashes before the exclusive claim and scores nine metric axes in 28 tissues
-35169	ng2-h1-replay-release	replay_final	cpu	0	0	DEPENDENT	CPU replay on Q8 and Q12 after the single held score
+35169	ng2-h1-replay-release	replay_final	cpu	0	0	CANCELLED	Replaced while pending to use the frozen RNA readout implementation; runtime zero
 35182	ng2-h1-refit-smoke	blind_four_family_refit_and_replay	cpu	0	0	COMPLETED	GDSC2-0 sealed blind refit, batch forecasts and both champion CLIs across five budgets; max absolute difference 4.440892098500626e-16
 35195	ng2-h1-score-shape	blind_bootstrap_and_tissue_integration	cpu	0	0	COMPLETED	2,000 paired group draws on 220 groups and 18 arms with simulated query outcomes; nine metric axes across 26 tissues
 35220	ng2-h1-cost-registry	cost_workbook_registry_audit	cpu	0	0	COMPLETED	Signed workbook hash and six descriptive sheet titles verified; cost registry receipt
@@ -33,3 +33,10 @@ job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
 35355	ng2-h1-boundary-neural-wide	inner_boundary_c	gpu	1	2	CANCELLED	Replaced while pending when the completed Inner traces also showed clipped learning-rate and epoch probes; runtime zero
 35359	ng2-h1-release-wide	verify_release	cpu	0	0	CANCELLED	Replaced while pending to package the full numerical boundary audit; runtime zero
 35376	ng2-h1-boundary-neural-full	inner_boundary_c	gpu	1	2	COMPLETED	17 additional Family C boundary probes; all 31 task-modality incumbents have zero unresolved numerical boundaries
+35377	ng2-h1-release-full	verify_release	cpu	0	0	CANCELLED	Replaced while pending to incorporate the corrected RNA replay and final receipts; runtime zero
+35460	ng2-h1-seal-rna-readouts	fit_frozen_models	cpu	0	0	DEPENDENT	Repackages the existing estimators with reusable fit-only RNA readout coefficients and retains their tuning receipt hashes
+35461	ng2-h1-seal-offline-models	seal_models	cpu	0	0	DEPENDENT	Seals the new model packages and verifies all 15 dual RNA readouts
+35462	ng2-h1-forecast-offline-models	predict_primary	cpu	0	0	DEPENDENT	Regenerates label-blind forecasts using the sealed readouts
+35463	ng2-h1-seal-offline-forecasts	seal_predictions	cpu	0	0	DEPENDENT	Signs every final Q8 forecast manifest
+35464	ng2-h1-replay-offline-primary	replay_primary	cpu	0	0	DEPENDENT	Requires CPU replay below 1e-6 before any held Q access
+35473	ng2-h1-replay-offline-final	replay_final	cpu	0	0	DEPENDENT	Verifies Q8 and Q12 CPU replay after the single held score
