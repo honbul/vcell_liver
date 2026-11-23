@@ -19,7 +19,7 @@ from .assets import V1_RUN
 from .kernel import Engine, context, design
 from .nonlinear import Candidate
 from .portable import create_kit
-from .residual_run import FittedResidual, STAGE
+from .residual_run import FittedResidual, SCALES, STAGE
 from .virtual import Generator, VirtualLibrary
 
 ARMS = ("C1", "H2-v1", "H2-R1", "H2-R2a", "H2-R2b", "H2-R3-GBDT", "H2-R3-Neural",
@@ -89,11 +89,15 @@ class Bundle:
 
 
 def freeze(work, root, decision, index):
-    policy = read_json(decision / "champion.json")[str(index)]
+    policies = read_json(decision / "champion.json")
+    policy = policies[str(index)]
     lock = sha256(decision / "champion.json")
     selected = read_json(decision / "receipt.json")
-    if selected["selection_sha256"] != lock or selected.get("strict_stage") != STAGE:
+    if (selected["selection_sha256"] != lock or selected["query_outcomes_opened"]
+            or selected.get("strict_stage") != STAGE):
         raise ValueError("Unregistered H2-v2 champion")
+    if any(family["scale"] == SCALES[-1] for p in policies.values() for family in p["R3"].values()):
+        raise ValueError("A selected residual weight reaches the upper search bound")
     device = torch.device("cuda")
     data, assets, reg, coverage, external = context(root, device, external=index == 3)
     if index == 3:
