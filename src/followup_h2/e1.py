@@ -89,6 +89,9 @@ def replay(out, part):
     assert old_proof["query_outcomes_loaded"] == new_proof["query_outcomes_loaded"] == 0
     old = parquet_lock(old_dir/"predictions.parquet", freeze.V1_SHA[part])
     new = parquet_lock(recent/"forecast.parquet", new_proof["files"]["forecast.parquet"])
+    native_replay = read_json(recent/"replay.json")
+    assert native_replay["forecast_sha256"] == new_proof["files"]["forecast.parquet"]
+    assert native_replay["max_abs_diff"] < 1e-6 and not native_replay["network_allowed"]
     assert new[META].equals(old[META]) and np.array_equal(new["H2-v1"], old.champion)
     assert np.array_equal(new.C1, old.C1) and np.array_equal(new.lincs_observed, old.champion_observed)
     older = load_pinned(old_dir/"predictor.pkl", old_proof["predictor_sha256"])
@@ -103,6 +106,7 @@ def replay(out, part):
     i0, r0 = (v[cr, dr].numpy() for v in v1_parts(older["models"]["champion"], raw, older["center"]))
     ci, rc = (v[cr, dr].numpy() for v in v1_parts(older["models"]["C1"], raw, older["center"]))
     pinned_delta = checked_delta(ci.astype(float) + rc, old.C1)
+    v1_forward_delta = checked_delta(i0.astype(float) + r0, old.champion)
     state, _ = newer.checkpoints[newer.final]
     if state["extra_drug"] is not None or state["cell_coverage"] is not None:
         raise ValueError("E1 registration expected the selected single-view v2 kernel")
@@ -113,7 +117,15 @@ def replay(out, part):
     measured = new.lincs_observed.to_numpy()
     assert state["apply_c1"] and np.array_equal(state["active"].numpy()[index[1]], measured)
     i1 = np.where(measured, anchor, ci)
-    r1 = np.where(measured, residual, rc)
+    direct = i1.astype(float) + np.where(measured, residual, rc)
+    cross_device_delta = float(np.abs(direct - new["H2-v2"]).max())
+    if cross_device_delta >= 1e-5:
+        raise ValueError(f"Cross-device forward check exceeds roundoff envelope {cross_device_delta:g}")
+    # The saved FP32 score is the registered result of the native forward pass.
+    # Removing its recorded scalar yields the effective residual after FP32 rounding.
+    r0 = old.champion.to_numpy(np.float64) - i0
+    r1 = new["H2-v2"].to_numpy(np.float64) - i1
+    rc = old.C1.to_numpy(np.float64) - ci
     panel = new[META].assign(lincs_observed=measured, i0=i0, i1=i1, r0=r0, r1=r1, ci=ci, rc=rc)
     for key in ("i0", "i1", "ci"):
         if panel.groupby(KEY)[key].nunique().max() != 1:
@@ -129,7 +141,11 @@ def replay(out, part):
         "part": part, "rows": len(panel), "roster_sha256": panel_hash(panel),
         "components_sha256": sha256(dest/"components.parquet"), "query_outcomes_loaded": 0,
         "F00_max_abs_diff": d0, "F11_max_abs_diff": d1, "C1_max_abs_diff": pinned_delta,
-        "aggregate_arithmetic": "FP64 sum of frozen FP32 components",
+        "aggregate_arithmetic": "FP64 recorded anchor plus effective residual from the sealed FP32 prediction",
+        "v1_independent_forward_max_abs_diff": v1_forward_delta,
+        "v2_cross_device_forward_max_abs_diff": cross_device_delta,
+        "v2_native_replay_sha256": sha256(recent/"replay.json"),
+        "v2_native_replay_max_abs_diff": native_replay["max_abs_diff"],
         "rank_groups_checked": check, "F01_minus_F00_within_drug_spearman": 0.,
         "F11_minus_F10_within_drug_spearman": 0., "network_allowed": False,
         "v1_package_sha256": old_proof["predictor_sha256"],
@@ -224,10 +240,11 @@ def chem_freeze(parts, decision, out, part):
         if spec.drug_views or spec.cell_views:
             raise ValueError("The LIMORE lambda diagnostic must use the frozen one-view kernel")
         proposal = replace(spec, penalty=4.)
-        forecast = v2.extract_rows(v2.solve(proposal, seed=75204))
-        # Preserve the v2 anchor and the exact C1 fallback on natural LINCS missingness.
-        old_base = v2.extract_rows(v2._c1)
-        combined.loc[limore.index, "LIMORE-v2-lambda4"] = np.where(limore.lincs_observed, forecast, old_base)
+        _, state = v2.solve(proposal, seed=75204, retain=True)
+        cross, coef, drug = (state[k].to(on) for k in ("cell_cross", "coef", "dcross"))
+        residual = v2.extract_rows((cross @ coef) @ drug.T)
+        combined.loc[limore.index, "LIMORE-v2-lambda4"] = limore.i1 + np.where(
+            limore.lincs_observed, residual, limore.rc)
     dest = out/str(part)
     dest.mkdir(exist_ok=False, parents=True)
     combined.to_parquet(dest/"forecast.parquet", index=False)
