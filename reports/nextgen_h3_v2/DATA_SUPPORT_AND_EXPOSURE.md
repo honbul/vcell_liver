@@ -24,3 +24,5 @@ GDSC1의 66 신규 골격은 이전 H2에 등록됐고 소스 세포와 일부 �
 세 외부 입력의 동일 행 검증은 실측 개봉 전에 진행했다. GDSC1의 exact parent·connectivity·모든 골격 표현 교집합은 각각 0이다. 등록된 LICOB의 43 PDO와 성인 38공여자를 구분했다. LIMORE·GDSC1 발현은 17,871개, LICOB 발현은 14,421개 유전자의 측정 지지를 가진다. 이후 모델의 플랫폼 결측 유전자 보완은 해당 소스 적합의 유전자별 중앙 순위만 사용한다. [외부 입력 영수증](external_roster_verification.json) · [분할 명세](split_manifest.json) · [실제 feature/OOF 검사](step0_verification.json)
 
 C1 및 H2의 16개 비교 로스터와 교차스크린 9개의 H3-v1 고정 예측을 정확 행 키로 대조했다. Drug-Cold 670,830행, Cell-Cold 670,830행, 68약물 교차스크린 45,428행을 재확인했다. 실측 개봉 없이 수행한 검사다. [비교군 로스터 영수증](reference_roster_verification.json)
+
+외부 전처리 사전 검증에서 1,186개 parent의 소스 관측 670,830행으로 적합하고, 3개 외부 코호트의 입력 46,213행을 변환했다. 512개 RNA 주성분, 978개 LINCS landmark와 44개 경로, 정확 행과 정렬된 유한 H2 OOF·외부 기준값을 확인했다. LICOB의 3,268행은 성인 공여자 단위 집계 전 입력이다. [외부 전처리 영수증](external_atlas_preflight.json)
