@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 import numpy as np
-from scipy.linalg import solve
+from scipy.linalg import eigh, solve
 from scipy.spatial.distance import cdist
 
 from nextgen_h1_anchor.models import masked_krr
@@ -33,6 +33,26 @@ def eb_predict(ctx, packet, order, dual, config, prior=None):
     weights = solve(covariance[np.ix_(order, order)] + config["ridge"] * np.eye(len(order)),
                     covariance[order], assume_a="pos")
     return prior + (residual_packet(ctx, packet, order, prior, config.get("clip")) @ weights) * ctx.sd
+
+
+
+def product_ridge(gram, cross, structure, residual, ridge, rank=16):
+    """Separable Nyström ridge on measured assay pairs."""
+    def factors(matrix):
+        start = max(0, len(matrix) - rank)
+        val, vectors = eigh(matrix, subset_by_index=(start, len(matrix) - 1))
+        keep = val > 1e-8
+        return vectors[:, keep], np.sqrt(val[keep])
+
+    uc, sc = factors(gram)
+    ud, sd = factors(structure)
+    c, d = uc * sc, ud * sd
+    i, j = np.where(np.isfinite(residual))
+    design = (c[i, :, None] * d[j, None, :]).reshape(len(i), -1)
+    lhs = design.T @ design
+    lhs.flat[::len(lhs) + 1] += ridge
+    coefficients = solve(lhs, design.T @ residual[i, j], assume_a="pos").reshape(c.shape[1], d.shape[1])
+    return ((cross @ (uc / sc)) @ coefficients) @ d.T
 
 
 @dataclass
@@ -68,13 +88,5 @@ class KernelModel:
         if cfg["method"] == "rbf":
             prediction = masked_krr(gram, cross, residual, cfg["ridge"])
         else:
-            import torch
-            from vc_build.structured_kernel import solve_residuals
-            # Cell kernel already combines anchors and RNA. Its product with the
-            # structural/target drug kernel is fitted only on measured entries.
-            t = lambda a: torch.as_tensor(a, dtype=torch.float64)
-            observed = np.isfinite(residual)
-            solved, _, _ = solve_residuals(t(gram), t(ctx.chem), t(observed), t(np.nan_to_num(residual)),
-                                            cfg["ridge"], tolerance=1e-5, max_steps=350)
-            prediction = (cross @ solved.numpy()) @ ctx.chem
+            prediction = product_ridge(gram, cross, ctx.chem, residual, cfg["ridge"])
         return prior + prediction * ctx.sd
