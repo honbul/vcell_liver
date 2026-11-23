@@ -52,7 +52,7 @@ def v1_parts(model, raw, center):
         i0, r0 = v1_parts(model.baseline, raw, center)
         intercept = torch.where(model.present[None], intercept, i0)
         residual = torch.where(model.present[None], residual, r0)
-    return intercept.numpy(), residual.numpy()
+    return intercept, residual
 
 
 def checked_delta(a, b):
@@ -100,8 +100,8 @@ def replay(out, part):
     raw = older["basis"].cross(rna)["full"]
     cr = cells.get_indexer(old.cell_id)
     dr = older["drug_ids"].get_indexer(old[KEY])
-    i0, r0 = (v[cr, dr] for v in v1_parts(older["models"]["champion"], raw, older["center"]))
-    ci, rc = (v[cr, dr] for v in v1_parts(older["models"]["C1"], raw, older["center"]))
+    i0, r0 = (v[cr, dr].numpy() for v in v1_parts(older["models"]["champion"], raw, older["center"]))
+    ci, rc = (v[cr, dr].numpy() for v in v1_parts(older["models"]["C1"], raw, older["center"]))
     pinned_delta = checked_delta(ci.astype(float) + rc, old.C1)
     state, _ = newer.checkpoints[newer.final]
     if state["extra_drug"] is not None or state["cell_coverage"] is not None:
