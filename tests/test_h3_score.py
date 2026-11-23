@@ -86,9 +86,22 @@ def test_source_metrics_are_invariant_under_axis_constants():
         assert original[metric] == row_moved[metric]
 
 
+def test_exact_additive_prediction_has_zero_pure_interaction():
+    from h3_pcgrad.score import residual_association
+
+    rng = np.random.default_rng(923)
+    y = rng.normal(size=(70, 12))
+    p = rng.normal(size=(70, 1)) + rng.normal(size=(1, 12))
+    mask = rng.uniform(size=y.shape) > .16
+    y[~mask] = np.nan
+    p[~mask] = np.nan
+    assert residual_association(y, p) == 0.
+
+
 if __name__ == "__main__":
     test_bootstrap_average_ties_equal_literal_lineage_replication()
     test_exact_gates_for_tie_boundaries_and_screen_harm()
     test_three_screens_one_scoring_contract_on_synthetic_data()
     test_source_metrics_are_invariant_under_axis_constants()
-    print("4 H3 score tests passed")
+    test_exact_additive_prediction_has_zero_pure_interaction()
+    print("5 H3 score tests passed")

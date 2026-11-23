@@ -31,7 +31,12 @@ def blocks(frame, models):
 
 def residual_association(y, p):
     mask = np.isfinite(y)
-    parts = [orthogonal_parts(v, mask.astype(float))[2][mask] for v in (y, p)]
+    parts = []
+    for values in (y, p):
+        component = orthogonal_parts(values, mask.astype(float))[2][mask]
+        # Exact additive surfaces can leave roundoff at the eigensolver scale.
+        tolerance = 1e-12 * max(1., np.abs(values[mask]).max())
+        parts.append(np.where(np.abs(component) <= tolerance, 0., component))
     return float(association(*parts, axis=-1, minimum=5, rank=True))
 
 
