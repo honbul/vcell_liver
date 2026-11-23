@@ -114,7 +114,7 @@ def decide(work, contracts, kernel, virtual, out):
         ranking = {}
         for family in ("gbdt", "neural"):
             candidates = [(entry, weight) for entry in specs if entry["parameters"]["family"] == family
-                          for weight in SCALES]
+                          for weight in SCALES if weight > 0]
             entry, weight = max(candidates, key=lambda x: ranker(scores, x[0]["id"] + f"/{x[1]:g}", "all"))
             name = entry["id"] + f"/{weight:g}"
             effect = common_score(unit, "H2-Kernel-Max", name, "all")
@@ -122,7 +122,8 @@ def decide(work, contracts, kernel, virtual, out):
             win = effect["lo"] > 0 and guard["lo"] >= -.005
             flags[family].append(bool(win))
             ranking[family] = {"spec": entry["parameters"], "scale": weight, "rho": effect,
-                               "ndcg": guard, "pass": bool(win)}
+                               "ndcg": guard, "pass": bool(win),
+                               "zero_residual_point_rho": ranker(scores, "H2-Kernel-Max", "all")[0]}
         stages.append(ranking)
         score_rows.append(summary)
         chosen[str(outer)] = canonical[str(outer)] | {"R3": ranking, "virtual": synthetic[str(outer)]}
