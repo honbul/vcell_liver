@@ -32,6 +32,12 @@ V1_SHA = (
 )
 
 
+def gram_receipt(matrix):
+    values = matrix.detach().cpu().double()
+    return {"size": len(values), "minimum_eigenvalue": float(torch.linalg.eigvalsh((values + values.T) * .5)[0]),
+            "max_abs_asymmetry": float((values - values.T).abs().max()), "assembled_dtype": str(matrix.dtype)}
+
+
 class Bundle:
     def __init__(self, engine, exact):
         self.query = engine.query.reset_index(drop=True)
@@ -103,14 +109,18 @@ def freeze(work, root, decision, index):
     engine._c1[engine.selector] = pinned
     model = Bundle(engine, frozen.champion.to_numpy(np.float32))
     seed = 75201 + index
+    geometries = {}
     for name, upstream in (("R1", None), ("R2a", "H2-R1"), ("R2b", "H2-R2a")):
         params = design(policy[name]["design"])
         _, state = engine.solve(params, seed, retain=True)
         model.checkpoints["H2-" + name] = (state, upstream)
+        geometries[name] = {"cell": gram_receipt(engine.cell_geometry(params, seed)[0]),
+                            "drug": gram_receipt(state["dfit"])}
     g = VirtualLibrary(engine, seed)
     v = policy["virtual"]["spec"]
     _, state = g.arm(Generator(**v["generator"]), v["weight"], "real", retain=True)
     model.checkpoints["H2-StructOnly"] = (state, None)
+    geometries["Structure-only"] = {"cell": geometries["R1"]["cell"], "drug": gram_receipt(state["dfit"])}
     kernel = design(policy["R2b"]["design"])
     common = FittedResidual(engine, kernel, seed)
     for family in ("gbdt", "neural"):
@@ -140,6 +150,7 @@ def freeze(work, root, decision, index):
     publish_json(dest / "receipt.json", {"part": index, "query_outcomes_loaded": 0, "rows": len(panel),
                 "source_rows": len(fit), "v1_sha256": V1_SHA[index], "selection_sha256": lock,
                 "family": policy["final_family"], "all_rows_structure_policy": "no measured perturbation",
+                "fit_gram_psd": geometries,
                 "files": {f.name: sha256(f) for f in sorted(dest.iterdir())}})
 
 

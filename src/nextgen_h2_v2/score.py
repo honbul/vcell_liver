@@ -68,17 +68,19 @@ def validate(work, decision):
     return data, proof, registry, selected, sha256(cli_path)
 
 
+def scopes_by_track(scope):
+    return (("assisted/lincs_observed", ASSAY), ("assisted/mixed_deployment", ASSAY),
+            ("assisted/lincs_unobserved", ASSAY), ("structure/all_masked", STRUCTURE),
+            ("structure/462_support" if scope == "DRP" else "structure/lincs_unobserved", STRUCTURE))
+
+
 def scopes(frame, groups, fold, name, interaction=True):
     frame = frame.reset_index(drop=True)
     ev = Evaluator(frame, groups, fold, scope=name, interaction=interaction)
     measured = frame.lincs_observed.astype(bool)
-    support = [("assisted/lincs_observed", measured, ASSAY),
-               ("assisted/mixed_deployment", None, ASSAY),
-               ("assisted/lincs_unobserved", ~measured, ASSAY),
-               ("structure/all_masked", None, STRUCTURE),
-               ("structure/462_support" if name == "DRP" else "structure/lincs_unobserved", ~measured, STRUCTURE)]
+    selections = (measured, None, ~measured, None, ~measured)
     results = []
-    for mode, use, arms in support:
+    for (mode, arms), use in zip(scopes_by_track(name), selections):
         for arm in arms:
             results.extend(ev.score(arm, frame[arm].to_numpy(), use, support=mode))
     return results
@@ -132,6 +134,11 @@ def run(work, chosen):
     parts, sealed, registry, digest, cli_sha = validate(work, chosen)
     asset = read_json(V1_ASSETS / "data_receipt.json")
     cells = parquet_lock(V1_ASSETS / "cells.parquet", asset["files"]["cells.parquet"])
+    source = pd.concat([x[[KEY, "cell_id", "lincs_observed"]] for x in parts[:3]], ignore_index=True)
+    source["tissue"] = source.cell_id.map(cells.tissue)
+    if source.tissue.isna().any() or source.tissue.nunique() != 28:
+        raise ValueError("The 28 registered tissue lineages must be present before scoring")
+    tissue_support = {label: support_counts(block) for label, block in source.groupby("tissue", sort=True)}
     current = work / "score"
     current.mkdir(exist_ok=False)
     publish_json(current / "outcome_access.json", {"score_passes": 1, "proofs": sealed,
@@ -168,6 +175,18 @@ def run(work, chosen):
         frame.to_parquet(current / f"unit_{name}.parquet", index=False)
     scores = pd.concat([summary(d, DRUG).assign(axis="drug"), summary(c, CELL).assign(axis="cell")])
     tissue = pd.concat([summary(td, DRUG).assign(axis="drug"), summary(tc, CELL).assign(axis="cell")])
+    # Keep small lineages visible even when the native metric eligibility filter is empty.
+    reported = set(tissue.loc[tissue.screen.eq("macro"), ["scope", "support", "arm", "axis"]].itertuples(
+        index=False, name=None))
+    empty = []
+    for label in tissue_support:
+        for support, arms in scopes_by_track("DRP"):
+            for arm in arms:
+                for axis in STATS:
+                    if (label, support, arm, axis) not in reported:
+                        empty.append({"scope": label, "support": support, "arm": arm, "axis": axis,
+                                      "screen": "macro", "fold": "all", "units": 0})
+    tissue = pd.concat([tissue, pd.DataFrame(empty)], ignore_index=True)
     paired = contrasts(d, c)
     ladder = paired.merge(scores[scores.screen.eq("macro")].drop(columns=["screen", "fold"]),
                           left_on=["scope", "support", "axis", "candidate"],
@@ -177,8 +196,8 @@ def run(work, chosen):
         frame.to_csv(current / (name + ".tsv"), sep="\t", index=False, na_rep="NA")
     publish_json(current / "score_receipt.json", {"score_passes": 1, "selection_sha256": digest,
         "source_rows": sum(len(x) for x in parts[:3]), "source_parents": len(registry),
-        "source_support": support_counts(pd.concat(parts[:3], ignore_index=True)),
-        "tissues": sorted(tissue.scope.unique()), "external_rows": ext.groupby("source_id").size().to_dict(),
+        "source_support": support_counts(source), "tissue_support": tissue_support,
+        "tissues": list(tissue_support), "external_rows": ext.groupby("source_id").size().to_dict(),
         "external_support": external_support, "portable_cli_receipt_sha256": cli_sha,
         "result": gate(paired), "forecasts": sealed,
         "files": {f.name: sha256(f) for f in sorted(current.iterdir())}})
