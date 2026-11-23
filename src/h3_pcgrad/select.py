@@ -28,6 +28,15 @@ def options(stage, split):
     return [Arm(**x) for x in read_json(ROOT / f"{stage}-lock.json")["splits"][split]["arms"]]
 
 
+def publish_tsv(frame, path):
+    content = frame.to_csv(sep="\t", index=False)
+    if path.exists():
+        if path.read_text() != content:
+            raise ValueError(f"Partial inner evidence does not reproduce: {path}")
+    else:
+        _publish(path, lambda target: target.write_text(content))
+
+
 def measure(stage):
     metrics, hashes, runs, diag, settings = [], {}, [], [], {}
     for index in range(9):
@@ -70,10 +79,9 @@ def measure(stage):
         raise ValueError("Unexpected unsupported inner aggregate")
     aggregates = scores.groupby("arm")[list(ALL_METRICS)].mean().to_dict(orient="index")
     output = ROOT / "analysis"
-    _publish(output / f"{stage}-metrics.tsv", lambda path: scores.to_csv(path, sep="\t", index=False))
+    publish_tsv(scores, output / f"{stage}-metrics.tsv")
     run_frame = pd.DataFrame(runs)
-    _publish(output / f"{stage}-runs.tsv", lambda path: run_frame.drop(
-        columns="arm").to_csv(path, sep="\t", index=False))
+    publish_tsv(run_frame.drop(columns="arm"), output / f"{stage}-runs.tsv")
     diag_summary = {}
     if diag:
         all_diag = pd.concat(diag, ignore_index=True)
@@ -91,13 +99,17 @@ def measure(stage):
                          mean_eligible_cell_share=("eligible_cell_share", "mean"))
         by_epoch = kept.groupby([*groups, "epoch"], as_index=False).agg(**aggregate)
         by_arm = kept.groupby(groups, as_index=False).agg(**aggregate)
-        _publish(output / f"{stage}-gradient-by-epoch.tsv", lambda path: by_epoch.to_csv(path, sep="\t", index=False))
-        _publish(output / f"{stage}-gradient-summary.tsv", lambda path: by_arm.to_csv(path, sep="\t", index=False))
+        publish_tsv(by_epoch, output / f"{stage}-gradient-by-epoch.tsv")
+        publish_tsv(by_arm, output / f"{stage}-gradient-summary.tsv")
+        baseline_prefix = "G1" if stage == "round1" else "B_sum"
+        reference = kept.loc[kept.arm.str.startswith(baseline_prefix)]
+        if reference.empty:
+            raise ValueError("No weighted-sum reference in gradient diagnostics")
         diag_summary = {
             "valid_pair_batches": len(kept),
             "all_pair_batches": len(all_diag),
-            "g1_negative_cosine_frequency": float(kept.loc[kept.arm.str.startswith("G1"), "conflict"].mean()),
-            "g1_frequency_by_split": kept.loc[kept.arm.str.startswith("G1")].groupby("split").conflict.mean().to_dict(),
+            "g1_negative_cosine_frequency": float(reference.conflict.mean()),
+            "g1_frequency_by_split": reference.groupby("split").conflict.mean().to_dict(),
         }
 
     if stage == "round1":
