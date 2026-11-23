@@ -2,7 +2,7 @@
 
 ## 고정 분모
 
-H2-v1과 동일한 1,186 exact parents·1,001 대표 골격·670,830 native 관측과 1,014개 기저 RNA 세포를 사용한다. 이전에 봉인한 네 C1/H2-v1 예측 파일의 해시·행 순서·예측값을 최종 채점에서 각각 대조한다. Outer scaffold와 nested inner fold를 재분할하지 않았다. GDSC1은 신규 66골격·713세포·39,545관측의 v1 보류 명부다. GDSC1과 DRP는 세포를 공유한다. LIMORE 50성인 계통·68약물과 LICOB 38성인 공여자·76약물 및 소스 미포함 18약물은 이전 결과 노출 자료다. [공통 분할과 노출](../nextgen_h2_multiview/DATA_SUPPORT_AND_EXPOSURE.md)
+H2-v1과 동일한 1,186 exact parents·1,001 대표 골격·670,830 native 관측과 1,014개 기저 RNA 세포를 사용한다. 이전에 봉인한 네 C1/H2-v1 예측 파일의 해시·행 순서·예측값을 최종 채점에서 각각 대조한다. Outer scaffold와 nested inner fold를 재분할하지 않았다. GDSC1은 신규 66골격·713세포·39,545관측의 v1 보류 명부다. GDSC1과 DRP는 세포를 공유한다. LIMORE 50성인 계통·68약물과 LICOB 38성인 공여자·76약물 및 소스 미포함 18약물은 이전 결과 노출 자료다. [공통 분할과 노출](../nextgen_h2_multiview/DATA_SUPPORT_AND_EXPOSURE.md) · [정답 없이 확인한 네 로스터](v1_registration_replay.json)
 
 ## 약물 뷰
 
