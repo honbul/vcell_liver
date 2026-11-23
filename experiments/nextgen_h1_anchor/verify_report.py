@@ -31,6 +31,12 @@ def verify(root):
     controls = json.loads((root / "inner_control_receipt.json").read_text())
     inner = json.loads((root / "inner_freeze_summary.json").read_text())
     support = json.loads((root / "data_support_receipt.json").read_text())
+    fit = json.loads((root / "fold_integrity_receipt.json").read_text())
+    need(not fit["held_labels_read"] and fit["worst_tier1_group_fold_count"] == 1
+         and fit["data_receipt_sha256"] == score["input_sha256"], "Independent outer fold audit")
+    need(all(t["fit_test_intersection"] == 0 and ("_to_" not in task or t["rna_features"] == 0)
+             for task, t in fit["tasks"].items()), "Fit/test overlap or transfer RNA")
+
     for file, expected in score["outputs"].items():
         need(digest(root / file) == expected, f"Score output hash mismatch: {file}")
     need(score["score_passes"] == 1 and score["paired_bootstrap_draws"] == 2000, "Single held-score contract")
@@ -38,6 +44,10 @@ def verify(root):
          "Training, audit and score input receipts disagree")
     need(score["forecast_receipt_sha256"] == replay["forecast_receipt_sha256"], "CLI used a different forecast")
     need(replay["replay_passed"] and replay["cpu_only"] and replay["max_abs_diff"] < 1e-6, "CPU replay gate")
+    need(replay["tasks"]["LIMORE_to_Wong-0"]["rows_outside_cli_envelope"] == 10, "Wong envelope audit")
+    need(all(t["tested_rows"] > 0 for name, t in replay["tasks"].items() if "Wong" not in name),
+         "Supported packages need a quantitative CLI replay")
+
     need(sum(1 for s in score["masks"] if s.startswith("LIMORE_to_LICOB-")) == 1, "Tier 4 must be one source transfer")
     need(score["masks"]["LIMORE_to_LICOB-0"]["eligible"] == 38, "Tier 4 must cover all LICOB donors")
     need(score["masks"]["LIMORE_to_Wong-0"]["minimum_measured_q"] >= 15, "Wong eligibility")

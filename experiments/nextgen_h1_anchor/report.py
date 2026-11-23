@@ -88,7 +88,7 @@ def render(root):
         "",
         "# H1 기능측정 보조 스크리닝",
         "",
-        "17개 외부 적합 단위의 챔피언·비교군·앵커를 동결했다. " 
+        "17개 외부 적합 단위의 챔피언·비교군·앵커를 동결했다. "
         "동결 뒤 앵커 입력을 추출하고 Q 예측을 생성한 뒤 별도 프로세스에서 채점했다. "
         f"Outer 3-fold와 Tier 4 및 보조 Wong을 동일한 단일 채점 패스에서 처리했다. "
         f"`score_passes = {receipt['score_passes']}`. 95% 구간은 동일 독립 계통·공여자 2,000회 짝지은 재표집이다. "
@@ -151,7 +151,7 @@ def render(root):
             outputs.append(f"| {s} | {m} | " + " | ".join(fields) + " |")
     outputs += ["", "구간과 전체 K 비교는 [절대 성능](H1_METRICS.tsv)과 [짝지은 차이](H1_PAIRED_95CI.tsv)에 있다. "
                 "약물 내 상관과 이중 중심화 상호작용 상관은 폴드 내부에서 계산했다. "
-                "MAE/RMSE는 동일 assay 안에서 해석한다.",
+                "MAE/RMSE는 동일 assay 안에서 해석한다. 범암 macro의 원척도 오차는 assay 간 단위가 달라 본문에서 생략했다.",
                 "", "| RNA 보조 비교 | K=5 ΔNDCG@5 vs anchor-only |",
                 "|---|---:|"]
     for s in STUDIES[:4]:
@@ -169,7 +169,7 @@ def render(root):
             outputs.append(f"| {t['study']} | {t['tissue']} | {t['n_groups']} | {point(t)} | {value} |")
     outputs += ["", "## HCC TKI 및 기전군", "",
                 "K=5에서 적합 후보의 약물 내 Spearman·Pearson을 표에 제시한다. "
-                "앵커로 선정된 약물은 해당 폴드의 Q에서 제외된다. "
+                "앵커로 선정된 약물은 해당 폴드의 Q에서 제외된다. LICOB 등록 패널에는 Cabozantinib이 없다. "
                 "폴드별 전체 분해와 단순 기준선은 [TKI·기전 집계](H1_HCC_TKI_AND_MECHANISMS.tsv)에 있다.",
                 "", "| 연구 | 약물 또는 기전군 | Q에 있는 폴드 | 관측 행 | macro Spearman | macro Pearson |",
                 "|---|---|---:|---:|---:|---:|"]
@@ -198,12 +198,12 @@ def render(root):
                 "", f"오프라인 CPU CLI의 최대 절대 오차는 `{replay['max_abs_diff']:.3g}`였고 "
                 f"`1e-6` 기준을 충족했다. {sum(bool(x['tested_rows']) for x in replay['tasks'].values())}개 모델 패키지에서 단일/배치 결과를 비교하고 "
                 "앵커 누락, 미측정값, 허용 범위 초과를 거절했다. Wong 시료 10명의 앵커는 모두 입력 범위를 벗어나 CLI에서 거절됐다. "
-                "Wong 점수는 외삽을 포함한 기술값이다. "
+                "Tier 4의 LICOB에서는 K=5 범위가 37/38명에서 충족됐다. Wong 점수는 외삽을 포함한 기술값이다. "
                 "예측 구간과 입력 계약은 [모델 카드](model_card.md)에 있다.",
                 "", "[계획 잠금](PLAN_LOCK.md) · [데이터 및 노출](DATA_SUPPORT_AND_EXPOSURE.md) · "
                 "[Inner CV](ROUND1_TO_3_INNER_TUNING.md) · [채점 영수증](score_receipt.json) · "
                 "[CPU 재생 영수증](cli_replay_receipt.json) · [Slurm 원장](SLURM_JOBS.tsv)", ""]
-    outputs[:4] = [line + "  " for line in outputs[:4]]
+    outputs[:4] = [line + "<br>" for line in outputs[:4]]
     (root / "RESULTS.md").write_text("\n".join(outputs))
 
 

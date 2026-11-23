@@ -1,0 +1,12 @@
+job_id	job_name	stage	partition	gpus	state	exit_code	artifact_or_log	evidence
+34522	ng-h1-preflight	identity_preflight	cpu	0	FAILED	1:0	logs/34522-preflight.log	Identity gate found fewer than 40 dense three-screen parents. No labels decoded.
+34523	ng-h1-support	identity_support	cpu	0	COMPLETED	0:0	support.json	Verified source hashes and fixed three within-screen panels.
+34528	ng-h1-prepare	custodian	cpu	0	COMPLETED	0:0	study-v1/receipt.json	17 development packets, query rosters and separate held outcome packets.
+34532_0–16	ng-h1-tune	inner_rounds_1_to_3	cpu	0	COMPLETED	0:0	freeze-v1/	17 model freezes, immutable inner grids and logs.
+34557	ng-h1-calibrate	fit_only_intervals	cpu	0	COMPLETED	0:0	deploy-v1/calibration_receipt.json	17 uncertainty calibrations linked to frozen model hashes.
+34569	ng-h1-anchors	held_anchor_extraction	cpu	0	COMPLETED	0:0	anchors-v1/anchors_receipt.json	Verified all freezes before exporting A8 packets.
+34570	ng-h1-forecast	outer_forecast	cpu	0	COMPLETED	0:0	forecast-v1/forecast_receipt.json	Predictions on frozen Q emitted without Q outcome inputs.
+34572	ng-h1-replay	cli_initial	cpu	0	FAILED	1:0	logs/34572-replay.log	Wong packets all exceeded the original fixed input envelope. The retry tests rejection explicitly.
+34585	ng-h1-summary	inner_and_cost_summary	cpu	0	COMPLETED	0:0	summary-v1/inner_freeze_summary.json	Extracted aggregate inner CV and registered doses.
+34605	ng-h1-inner-audit	inner_controls	cpu	0	COMPLETED	0:0	inner-controls-v1/inner_control_receipt.json	Checked the 51 inner splits, all K, and common A8/Q across eligible comparison arms.
+34629	ng-h1-replay-fixed	cli_replay	cpu	0	COMPLETED	0:0	cli_replay_receipt.json	Verified accepted input predictions and explicit refusal for unsupported Wong inputs.
