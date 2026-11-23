@@ -1,0 +1,137 @@
+"""Common-row scoring with global-lineage paired resampling across held screens."""
+
+import numpy as np
+import pandas as pd
+
+from vc_build.response_components import orthogonal_parts
+
+from .reference_metrics import AXES, association, mean, within_cell
+
+RESIDUAL = "residual_spearman"
+CORE_METRICS = ("ndcg_at_5", "within_drug_spearman", "precision_at_k")
+ALL_METRICS = (*AXES, RESIDUAL)
+
+
+def matrix(group, drugs, values):
+    collapsed = group.groupby(["lineage_group", "compound_id"], sort=True)[values].mean()
+    return {key: collapsed[key].unstack().reindex(columns=drugs) for key in values}
+
+
+def blocks(frame, models):
+    values = ["observed", *models]
+    for name, group in frame.groupby(["source_id", "endpoint_id", "fold"], sort=True):
+        mats = matrix(group, sorted(group.compound_id.unique()), values)
+        truth = mats["observed"]
+        obs = truth.to_numpy()
+        preds = {name: mats[name].to_numpy() for name in models}
+        if any(not np.array_equal(np.isfinite(obs), np.isfinite(p)) for p in preds.values()):
+            raise ValueError("Model and target support differ after lineage aggregation")
+        yield name, truth.index, obs, preds
+
+
+def residual_association(y, p):
+    mask = np.isfinite(y)
+    parts = [orthogonal_parts(v, mask.astype(float))[2][mask] for v in (y, p)]
+    return float(association(*parts, axis=-1, minimum=5, rank=True))
+
+
+class WeightedRanking:
+    """Average tied ranks of literal lineage multiplicities without expanding repeated records."""
+
+    def __init__(self, vector):
+        self.order = np.argsort(vector, kind="stable")
+        sorted_v = vector[self.order]
+        self.starts = np.r_[0, np.flatnonzero(sorted_v[1:] != sorted_v[:-1]) + 1]
+        self.groups = np.cumsum(np.r_[True, sorted_v[1:] != sorted_v[:-1]]) - 1
+
+    def ranks(self, counts):
+        tied = np.add.reduceat(counts[:, self.order], self.starts, axis=1)
+        ascending = np.cumsum(tied, axis=1) - .5 * tied + .5
+        return ascending[:, self.groups[:, None].ravel()][:, np.argsort(self.order)]
+
+
+def weighted_association(y, p, counts, raw_y_variable, minimum=5):
+    n = counts.sum(axis=1).clip(min=1)
+    yy = y - (y * counts).sum(axis=1)[:, None] / n[:, None]
+    pp = p - (p * counts).sum(axis=1)[:, None] / n[:, None]
+    sy, sp = (counts * yy**2).sum(axis=1), (counts * pp**2).sum(axis=1)
+    covariance = (counts * yy * pp).sum(axis=1)
+    corr = np.divide(covariance, np.sqrt(sy * sp), out=np.zeros(len(sy)), where=(sy > 1e-24) & (sp > 1e-24))
+    ok = (n >= minimum) & (sy > 1e-24) & raw_y_variable
+    return np.where(ok, corr, np.nan)
+
+
+def screen_scores(frame, models, reweights=None, *, minimum=5):
+    """Use equal lineages for cell metrics and lineage-weighted mean across disjoint folds."""
+    result = {}
+    for (screen, _, _), lineages, y, p in blocks(frame, models):
+        store = result.setdefault(screen, {name: [] for name in models})
+        weights = None if reweights is None else reweights[1][:, reweights[0].get_indexer(lineages)]
+        for model, prediction in p.items():
+            c = within_cell(y, prediction, 5, 5)
+            by_drug = [association(y, prediction, axis=0, minimum=minimum, rank=rank)
+                       for rank in (True, False)]
+            point = dict(zip(AXES, (float(mean(v)) for v in (*by_drug, *c))))
+            point[RESIDUAL] = residual_association(y, prediction)
+            boot = None
+            if weights is not None:
+                boot = {}
+                for key, per_line in zip(("ndcg_at_5", "precision_at_k"), c[:2]):
+                    available = np.isfinite(per_line)
+                    boot[key] = (weights[:, available] @ per_line[available]) / weights[:, available].sum(
+                        axis=1).clip(min=1)
+                spearmans = []
+                for drug in range(y.shape[1]):
+                    idx = np.isfinite(y[:, drug])
+                    if idx.sum() < minimum:
+                        continue
+                    w = weights[:, idx]
+                    yr = WeightedRanking(y[idx, drug]).ranks(w)
+                    pr = WeightedRanking(prediction[idx, drug]).ranks(w)
+                    spearmans.append(weighted_association(yr, pr, w, True, minimum))
+                boot["within_drug_spearman"] = mean(np.asarray(spearmans).T)
+            store[model].append((len(lineages), point, boot))
+
+    def aggregate(block_values):
+        ns, points, resamples = zip(*block_values)
+        weight = np.asarray(ns)
+        point = {}
+        for axis in ALL_METRICS:
+            val = np.array([r[axis] for r in points])
+            ok = np.isfinite(val)
+            point[axis] = np.average(val[ok], weights=weight[ok]) if ok.any() else np.nan
+        boot = {}
+        if reweights is not None:
+            boot = {axis: np.average(np.stack([r[axis] for r in resamples]), weights=weight, axis=0)
+                    for axis in CORE_METRICS}
+        return point, boot
+
+    return {screen: {model: aggregate(parts) for model, parts in shelf.items()}
+            for screen, shelf in result.items()}
+
+
+def inner_scores(frame, models):
+    results = screen_scores(frame, models)
+    return {model: {axis: np.nanmean([content[model][0][axis] for content in results.values()])
+                    for axis in ALL_METRICS} for model in models}
+
+
+def shared_draws(frame, count, seed):
+    lineages = pd.Index(sorted(frame.lineage_group.unique()))
+    rng = np.random.default_rng(seed)
+    weights = rng.multinomial(len(lineages), np.ones(len(lineages)) / len(lineages), size=count)
+    return lineages, weights
+
+
+def gate(points, ci, conf):
+    cfg = conf["go"]
+    screens = conf["screens"]
+    floor = min(points[screen][name] for screen in screens for name in CORE_METRICS)
+    return {
+        "ndcg_gain": bool(points["macro"]["ndcg_at_5"] >= cfg["ndcg_delta"]),
+        "ndcg_ci_positive": bool(ci["ndcg_at_5"][0] > 0),
+        "drug_spearman_noninferior": bool(ci["within_drug_spearman"][0] >= cfg["protection"]),
+        "precision_noninferior": bool(ci["precision_at_k"][0] >= cfg["protection"]),
+        "screens_positive": sum(points[screen]["ndcg_at_5"] > 0 for screen in screens) >= cfg["improved_screens"],
+        "no_severe_loss": bool(floor >= cfg["screen_floor"]),
+    }
