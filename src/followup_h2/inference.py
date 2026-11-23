@@ -59,7 +59,7 @@ def lineage_rank_samples(truth, prediction, eligible, lineage_weights):
         previous = {}
         for a, pred in enumerate(prediction):
             score = pred[known, drug]
-            order = rankdata(score).astype(np.int16).tobytes()
+            order = (2 * rankdata(score)).astype(np.int16).tobytes()
             if order not in previous:
                 rank_x = weighted_midrank(score, w)
                 x_norm = np.einsum("rc,rc->r", w, rank_x**2)
@@ -70,14 +70,13 @@ def lineage_rank_samples(truth, prediction, eligible, lineage_weights):
     return out
 
 
-def panel_values(layout, name, prediction, interaction, profile_weights):
+def panel_values(layout, name, prediction, interaction):
     matrix = layout.wide(prediction)
     if not np.isfinite(prediction).all():
         raise ValueError(f"Scored column contains nonfinite values: {name}")
     personal = matrix if interaction is None else layout.wide(interaction)
     centered = center_interactions(personal)
     rank = correlation(layout.truth_rank, rankdata(matrix, axis=0, nan_policy="omit"))
-    truth_centered = layout.residual
     joint = correlation(layout.residual_rank, rankdata(centered, axis=0, nan_policy="omit"))
     top = np.argsort(-np.where(np.isfinite(matrix), matrix, -np.inf), axis=1, kind="stable")[:, :5]
     ndcg = np.take_along_axis(layout.relevance, top, axis=1) @ layout.discount[:top.shape[1]]
@@ -85,7 +84,7 @@ def panel_values(layout, name, prediction, interaction, profile_weights):
     precision = (top[:, :, None] == layout.actual_top[:, None, :]).sum((1,2)) / 5
     point = {"spearman": rank, "interaction_spearman": joint}
     retrieval = {"ndcg_at_5": ndcg[valid]/layout.ideal[valid], "precision_at_5": precision[valid]}
-    return matrix, centered, point, retrieval, top[valid], truth_centered
+    return matrix, centered, point, retrieval, top[valid]
 
 
 def diversity_bundle(tops, lineages, counts=None):
@@ -115,14 +114,13 @@ def measure_block(frame, groups, fold, screen, cols, random, *, crossed=False, c
     drugs = np.flatnonzero(layout.drug_eligible)
     cells = np.flatnonzero(layout.cell_eligible)
     point, draws = defaultdict(dict), defaultdict(dict)
-    panels, interactions, stats = [], [], []
+    panels, interactions = [], []
     components = components or {}
     for arm in cols:
         extra = frame[components[arm]].to_numpy() if arm in components else None
-        p, i, r, scores, top, _ = panel_values(layout, arm, frame[arm].to_numpy(), extra, lin_w)
+        p, i, r, scores, top = panel_values(layout, arm, frame[arm].to_numpy(), extra)
         panels.append(p)
         interactions.append(i)
-        stats.append(r)
         if len(cells):
             for name, score in scores.items():
                 point[name][arm] = float(score.mean())
