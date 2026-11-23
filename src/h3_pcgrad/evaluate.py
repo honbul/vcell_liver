@@ -48,6 +48,9 @@ def check_forecasts():
         expected = {row["name"]: row for row in lock["folds"][tag]["arms"]}
         if any(expected[entry["arm"]["name"]] != entry["arm"] for entry in prov["runs"]):
             raise ValueError("Outer fit used a different inner fold operating point")
+        matched = checks.loc[checks.arm.map(lambda arm: arm["name"] in {"G1_best", "G1_matched", "G2"})]
+        if not matched.explicit_task_vectors.all():
+            raise ValueError("Matched H3a runs require identical task-gradient evaluation")
         for metric in ("initial_sha256", "batch_order_sha256"):
             native = checks.loc[checks.arm.map(lambda arm: arm["batch"] == "pairs" and arm["head"] == "native")]
             if not native.groupby("seed")[metric].nunique().eq(1).all():
@@ -154,7 +157,9 @@ def calculate(frame, layout, columns, lock, conf):
                               "stage": "outer", "candidate": required_items[0]["candidate"]}
         else:
             decisions[key] = {"verdict": "NO-GO", "stage": "inner", "candidate": None}
-    return pd.DataFrame(rows), pd.DataFrame(intervals), gates, decisions
+    interval_columns = ["hypothesis", "candidate", "baseline", "required", "screen", "metric",
+                        "delta", "lower", "upper", "replicates", "bootstrap_unit"]
+    return pd.DataFrame(rows), pd.DataFrame(intervals, columns=interval_columns), gates, decisions
 
 
 def tissue_table(frame, layout, decisions):

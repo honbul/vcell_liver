@@ -70,8 +70,25 @@ def test_three_screens_one_scoring_contract_on_synthetic_data():
     assert gates[0]["criteria"]["no_severe_loss"]
 
 
+def test_source_metrics_are_invariant_under_axis_constants():
+    from h3_pcgrad.reference_metrics import metrics
+
+    rng = np.random.default_rng(33)
+    y = rng.normal(size=(12, 8))
+    p = rng.normal(size=(12, 8))
+    y[0, 0] = np.nan
+    p[0, 0] = np.nan
+    original = metrics(y, p, residuals=False)
+    column_moved = metrics(y, p + rng.normal(size=8), residuals=False)
+    row_moved = metrics(y, p + rng.normal(size=(12, 1)), residuals=False)
+    assert original["within_drug_spearman"] == column_moved["within_drug_spearman"]
+    for metric in ("ndcg_at_5", "precision_at_k", "within_cell_spearman"):
+        assert original[metric] == row_moved[metric]
+
+
 if __name__ == "__main__":
     test_bootstrap_average_ties_equal_literal_lineage_replication()
     test_exact_gates_for_tie_boundaries_and_screen_harm()
     test_three_screens_one_scoring_contract_on_synthetic_data()
-    print("3 H3 score tests passed")
+    test_source_metrics_are_invariant_under_axis_constants()
+    print("4 H3 score tests passed")

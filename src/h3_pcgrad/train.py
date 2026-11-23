@@ -223,7 +223,7 @@ def weight_stamp(model):
     return sha256(b"".join(value.detach().cpu().numpy().tobytes() for value in model.state_dict().values())).hexdigest()
 
 
-def train(view, arm, config, seed, *, device, diagnostics=False):
+def train(view, arm, config, seed, *, device, diagnostics=False, task_vectors=False):
     if device == "cuda":
         if not torch.cuda.is_available():
             raise RuntimeError("No assigned CUDA device")
@@ -257,6 +257,7 @@ def train(view, arm, config, seed, *, device, diagnostics=False):
         alpha, _, interaction = orthogonal_parts(view["y"], mask.astype(float))
         alpha, interaction = float_tensor(alpha), float_tensor(interaction)
 
+    use_task_vectors = diagnostics or task_vectors or arm.method not in ("sum", "smooth", "alternating")
     audits, gradient_events, timings = [], [], []
     steps, covered = 0, 0
     batch_hash = sha256()
@@ -277,7 +278,7 @@ def train(view, arm, config, seed, *, device, diagnostics=False):
                 before = torch.cuda.Event(enable_timing=True)
                 after = torch.cuda.Event(enable_timing=True)
                 before.record()
-            if diagnostics or arm.method not in ("sum", "smooth", "alternating"):
+            if use_task_vectors:
                 gradients = vector_grads(loss, params)
                 update = task_update(gradients, weights, arm.method, orders, steps, shared, loss, gradnorm)
                 for param, part in zip(params, update.split([p.numel() for p in params])):
@@ -334,7 +335,8 @@ def train(view, arm, config, seed, *, device, diagnostics=False):
         "shared_params": len(shared), "trainable_params": sum(p.numel() for p in params),
         "initial_sha256": initial, "state_sha256": weight_stamp(model), "batch_order_sha256": batch_hash.hexdigest(),
         "wall_seconds": runtime, "gpu_hours": runtime / 3600 if device == "cuda" else 0.,
-        "diagnostics": diagnostics, "device": torch.cuda.get_device_name() if device == "cuda" else device,
+        "diagnostics": diagnostics, "explicit_task_vectors": use_task_vectors,
+        "device": torch.cuda.get_device_name() if device == "cuda" else device,
     }, records
 
 

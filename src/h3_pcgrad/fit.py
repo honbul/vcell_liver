@@ -100,7 +100,7 @@ def outer(index):
             key = (arm.method, arm.weight, arm.batch, arm.head, seed)
             reused = key in cache
             if not reused:
-                fitted, stamp, _ = train(view, arm, conf, seed, device="cuda")
+                fitted, stamp, _ = train(view, arm, conf, seed, device="cuda", task_vectors=arm.name in {"G1_best", "G1_matched", "G2"})
                 cache[key] = fitted, stamp, predict(fitted, view, "cuda")
             fitted, stamp, prediction = cache[key]
             stamp = stamp | {"arm": arm.record(), "reused_matched_fit": reused}
