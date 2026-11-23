@@ -8,11 +8,14 @@ import numpy as np
 import torch
 
 from nextgen_h1_anchor.metrics import batch_stats, sample_summaries
+from nextgen_h1_anchor.models import rna_kernel
 from nextgen_h1_anchor.score import Task
 from nextgen_h1_v2.anchors import extend_reserve, greedy, restricted_order
 from nextgen_h1_v2.closure import clipped_neural_edges
 from nextgen_h1_v2.boost import region
+from nextgen_h1_v2.cli import single
 from nextgen_h1_v2.data import TASKS, partitions, training_context
+from nextgen_h1_v2.freeze import DUAL, freeze_rna_readout
 from nextgen_h1_v2.neural import SetProcess
 from nextgen_h1_v2.score import TISSUE_ARMS, fit_metrics, fit_tissues, restrict_tissue, tissue_table, verify_prelabel
 from nextgen_h1_v2.search import extrapolate, fit_model, seed_grid, template
@@ -149,6 +152,19 @@ class H1V2Contract(unittest.TestCase):
             self.assertEqual(len([row for row in reported if row["tissue"] == label]), 9 * len(TISSUE_ARMS))
         row = next(row for row in reported if row["arm"] == "Bsimple" and row["metric"] == "ndcg_at_5")
         self.assertEqual(row["delta_vs_bsimple"], 0.)
+
+    def test_frozen_rna_coefficients_equal_the_batch_readout(self):
+        train_rna = self.rng.uniform(-.45, .45, size=(len(self.ctx.train), 48))
+        query_rna = self.rng.uniform(-.45, .45, size=(len(self.ctx.valid), 48))
+        self.ctx.rna_fit_kernel, self.ctx.rna_valid_kernel = rna_kernel(train_rna, query_rna)
+        model = fit_model(self.ctx, self.nested, self.a12, True, template("A"), "cpu", {})
+        package = {"models": {DUAL: model}, "train_rna": train_rna}
+        freeze_rna_readout(package)
+        for k in (0, 1, 3, 5, 8, 12):
+            measurements = self.ctx.valid[:, self.a12[:k]]
+            batch = model.predict(measurements, k)
+            q, offline = single(package, DUAL, k, measurements[-1:], query_rna[-1])
+            np.testing.assert_allclose(offline, batch[-1, q], atol=1e-10, rtol=1e-10)
 
 
 if __name__ == "__main__":

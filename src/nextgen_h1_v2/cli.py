@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from nextgen_h1_anchor.cli import read_anchors
-from nextgen_h1_anchor.models import rna_forecast
+from nextgen_h1_anchor.models import rna_forecast, rna_kernel
 
 from .boost import region
 from .data import BUDGETS, rna_projection
@@ -33,7 +33,11 @@ def single(package, name, k, values, rna=None):
             raise ValueError("RNA must be ranked on the registered gene axis with range [-0.5, 0.5]")
         x = package["train_rna"].astype(float)
         rna = rna.astype(float)[None]
-        p, cross, _ = rna_forecast(ctx.train, x, rna, ctx.chem)
+        if "rna_readout" in package:
+            _, cross = rna_kernel(x, rna)
+            p = ctx.mean + cross @ package["rna_readout"]
+        else:
+            p, cross, _ = rna_forecast(ctx.train, x, rna, ctx.chem)
         _, pc = rna_projection(x, rna)
     else:
         p, pc, cross = np.array([ctx.mean]), np.zeros((1, 16)), np.zeros((1, len(ctx.train)))

@@ -18,7 +18,7 @@ PYTHONPATH=src python -m nextgen_h1_v2.cli \
 
 The TSV has `compound_id` and `response` columns. Use the exact prefix printed in the relevant package manifest. For K=0, use a header-only TSV. LICOB local values use negative native S6 AUC. LIMORE uses native Activity Area. Pan-cancer studies use negative fitted AUC. Tier 4 uses 1 minus AUC on the target and the registered fitted source scale. The CLI rejects missing, duplicate, nonfinite and out-of-envelope inputs. It returns an ordered query list, scores and ranks.
 
-For H1-v2-Dual-Best add `--rna ranked_rna.npy`. The array must contain the single-sample rank-normalized values on the original registered fit gene axis. Rank normalization matches v1, `(average_rank - 0.5) / number_of_genes - 0.5`. The CPU CLI derives its RNA structure-kernel prediction and PCA projection from the registered fit rows.
+For H1-v2-Dual-Best add `--rna ranked_rna.npy`. The array must contain the single-sample rank-normalized values on the original registered fit gene axis. Rank normalization matches v1, `(average_rank - 0.5) / number_of_genes - 0.5`. The CPU CLI uses the saved fit-only RNA structure-kernel coefficients for the response readout and the registered fit rows for the PCA projection.
 
 ## Comparability and monitoring
 

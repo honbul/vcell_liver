@@ -71,6 +71,7 @@ def verify(root, v1):
     need(len(task_names) == freeze["task_count"] == inner["tasks"] == 16
          and task_names == set(prelabel["tasks"]) == set(replay["tasks"]) == set(freeze["packages"]),
          "Frozen task coverage mismatch")
+    need(freeze["rna_readout_packages"] == 15, "Frozen RNA readouts must cover all RNA-supported tasks")
     for task, record in score["support"].items():
         base = old["masks"][task]
         need(record["primary_groups"] == base["eligible"] and record["primary_q"] == base["q_drugs"]

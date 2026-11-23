@@ -40,6 +40,36 @@ def choose(choices):
     return max(choices, key=lambda k: (choices[k]["selected"]["objective"], choices[k]["selected"]["ndcg_at_5"], k))
 
 
+def freeze_rna_readout(package):
+    """Use one trained RNA coefficient matrix for batch and offline inference."""
+    if DUAL not in package["models"]:
+        return
+    import torch
+    from vc_build.structured_kernel import solve_residuals
+
+    ctx = package["models"][DUAL].ctx
+    available = np.isfinite(ctx.train)
+    residual = np.where(available, ctx.train - ctx.mean, 0.)
+    gram, chem, weight, response = (torch.as_tensor(a, dtype=torch.float64)
+                                   for a in (ctx.rna_fit_kernel, ctx.chem, available, residual))
+    coeff, _, _ = solve_residuals(gram, chem, weight, response, 4.)
+    readout = coeff.numpy() @ ctx.chem
+    if any(model.ctx is not ctx for model in package["models"].values()):
+        raise ValueError("Frozen estimators must share the same assay context")
+    ctx.bvalid = ctx.mean + ctx.rna_valid_kernel @ readout
+    package["rna_readout"] = readout
+
+
+def write_package(out, package, manifest):
+    state = out / "package.pkl"
+    with state.open("xb") as handle:
+        pickle.dump(package, handle, protocol=5)
+    manifest.update(package_sha256=sha256(state),
+                    model_code={p.name: sha256(p) for p in Path(__file__).parent.glob("*.py")},
+                    frozen_rna_readout="rna_readout" in package)
+    json_write(out / "freeze.json", manifest)
+
+
 def fit_package(task, result, kernel, out, alternative=None, r1=ROOT / "round1-a"):
     entries, stamps = load_results(task, result, kernel, alternative)
     if any(m.get("remaining_numerical_boundary_trials", -1) != 0
@@ -95,19 +125,17 @@ def fit_package(task, result, kernel, out, alternative=None, r1=ROOT / "round1-a
                 models[key], configs[key] = model, cfg
     inner, policies, _, _, _ = cache_read(r1 / task)
     simple = inner_choices(inner, policies["anchor"], "dual" in modes)
-    state = out / "package.pkl"
     train_rna = dev["x"] if "dual" in modes else None
-    with state.open("xb") as handle:
-        pickle.dump(dict(models=models, train_rna=train_rna, panel=dev["panel"], groups=held["groups"],
-                         q8=q8, extension=extended[8:], orders=orders, v1=orig, simple=simple), handle, protocol=5)
-    json_write(out / "freeze.json", {"task": task, "study": study, "a8": list(dev["panel"][a8]),
-                                     "a12": list(dev["panel"][extended]), "q8": list(dev["panel"][q8]),
-                                     "q12": list(dev["panel"][np.setdiff1d(np.arange(len(meta)), extended)]),
-                                     "choices": choices, "orders": orders, "configs": configs, "simple": simple,
-                                     "fit_groups": len(ctx.train), "held_group_count": len(held["groups"]),
-                                     "package_sha256": sha256(state), "inner_receipts": stamps,
-                                     "old_freeze_sha256": old_freeze_hash, "outer_labels_opened": False,
-                                     "model_code": {p.name: sha256(p) for p in Path(__file__).parent.glob("*.py")}})
+    package = dict(models=models, train_rna=train_rna, panel=dev["panel"], groups=held["groups"],
+                   q8=q8, extension=extended[8:], orders=orders, v1=orig, simple=simple)
+    freeze_rna_readout(package)
+    write_package(out, package, {"task": task, "study": study, "a8": list(dev["panel"][a8]),
+                                "a12": list(dev["panel"][extended]), "q8": list(dev["panel"][q8]),
+                                "q12": list(dev["panel"][np.setdiff1d(np.arange(len(meta)), extended)]),
+                                "choices": choices, "orders": orders, "configs": configs, "simple": simple,
+                                "fit_groups": len(ctx.train), "held_group_count": len(held["groups"]),
+                                "inner_receipts": stamps, "old_freeze_sha256": old_freeze_hash,
+                                "outer_labels_opened": False})
     print(task, choices, flush=True)
 
 
@@ -120,14 +148,35 @@ def read_package(path):
         return freeze, pickle.load(file)
 
 
+def repack(task, original, gate, out):
+    receipt = json.loads(gate.read_text())
+    predecessor = original / task
+    stamp = sha256(predecessor / "freeze.json")
+    if receipt["outer_labels_opened"] or receipt["packages"][task] != stamp:
+        raise ValueError("Cannot repack an unverified model freeze")
+    manifest, package = read_package(predecessor)
+    freeze_rna_readout(package)
+    manifest["prior_v2_freeze_sha256"] = stamp
+    out.mkdir(parents=True)
+    write_package(out, package, manifest)
+
+
 def seal(directory, out):
     packages = {}
+    rna_readouts = 0
     for task in TASKS:
         fold, data = read_package(directory / task)
         if fold["task"] != task or fold["held_group_count"] != len(data["groups"]):
             raise ValueError("Freeze package identity mismatch")
+        if DUAL in data["models"]:
+            ctx = data["models"][DUAL].ctx
+            weights = data.get("rna_readout")
+            if weights is None or weights.shape != ctx.train.shape or not np.isfinite(weights).all():
+                raise ValueError("Invalid frozen RNA readout")
+            rna_readouts += 1
         packages[task] = sha256(directory / task / "freeze.json")
     json_write(out, {"packages": packages, "task_count": len(packages), "v1_study_sha256": sha256(STUDY / "receipt.json"),
+                     "rna_readout_packages": rna_readouts,
                      "anchor_policy_uses_held_outcomes": False, "outer_labels_opened": False})
 
 
@@ -140,6 +189,11 @@ if __name__ == "__main__":
     fit.add_argument("out", type=Path)
     fit.add_argument("--task")
     fit.add_argument("--alternative", type=Path)
+    reuse = sub.add_parser("repack")
+    reuse.add_argument("original", type=Path)
+    reuse.add_argument("gate", type=Path)
+    reuse.add_argument("out", type=Path)
+    reuse.add_argument("--task")
     bundle = sub.add_parser("seal")
     bundle.add_argument("directory", type=Path)
     bundle.add_argument("out", type=Path)
@@ -149,4 +203,7 @@ if __name__ == "__main__":
     else:
         from os import environ
         task = args.task if args.task else TASKS[int(environ["SLURM_ARRAY_TASK_ID"])]
-        fit_package(task, args.result, args.kernel, args.out / task, args.alternative)
+        if args.stage == "repack":
+            repack(task, args.original, args.gate, args.out / task)
+        else:
+            fit_package(task, args.result, args.kernel, args.out / task, args.alternative)
