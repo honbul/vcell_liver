@@ -20,3 +20,4 @@ job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
 35063	ng2-h1-prelabel	verify_scoring_paths	cpu	0	0	DEPENDENT	Uses synthetic auxiliary anchors before held scoring
 35064	ng2-h1-score	outer_score	cpu	0	0	DEPENDENT	Single held score dependency after all prelabel checks
 35065	ng2-h1-replay-final	replay_final	cpu	0	0	DEPENDENT	Full forced CPU replay including Q12 after scoring
+35122	ng2-h1-licob-size	inner_licob_sample_sensitivity	gpu	1	1	DEPENDENT	Starts after the two-GPU closure array; verifies nested 50/75/100 percent reference sizes before scoring
