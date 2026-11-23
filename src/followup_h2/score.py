@@ -182,7 +182,7 @@ def e3_validate(root):
 
 def e3_policy(d):
     possible = d[(d.cohort.eq("DRP")) & (d.support.eq(OBSERVED)) & (d.context.eq("within_policy"))
-                 & d.mode.eq("E3-Nested") & d.reference.eq("REF-EXCLUDED")]
+                 & d["mode"].eq("E3-Nested") & d.reference.eq("REF-EXCLUDED")]
     def effect(contrast, metric, unit):
         found = possible[possible.contrast.eq(contrast) & possible.metric.eq(metric) & possible.resampling.eq(unit)]
         return found.iloc[0] if len(found)==1 else None
