@@ -53,6 +53,55 @@ def average(rows, key):
     return mean(values) if values else float("nan")
 
 
+def flat_recipe(row):
+    recipe = json.loads(row["recipe"])
+    stage = recipe.pop("stage", {})
+    return recipe | {f"stage.{key}": value for key, value in stage.items()}
+
+
+def boundary_summary(grid, winners, records):
+    tested = grouped(grid, ("task", "modality", "family"))
+    probes = defaultdict(list)
+    for winner in winners:
+        cfg = flat_recipe(winner)
+        key = tuple(winner[k] for k in ("task", "modality", "family"))
+        neighbors = defaultdict(dict)
+        for row in tested[key]:
+            comparison = flat_recipe(row)
+            fields = [n for n in cfg.keys() | comparison.keys() if cfg.get(n) != comparison.get(n)]
+            if len(fields) != 1:
+                continue
+            name = fields[0]
+            value = comparison.get(name)
+            if isinstance(cfg.get(name), (int, float)) and isinstance(value, (int, float)):
+                neighbors[name][value] = num(row["objective"]) - num(winner["objective"])
+        for name, trials in neighbors.items():
+            lower = max((v for v in trials if v < cfg[name]), default=None)
+            upper = min((v for v in trials if v > cfg[name]), default=None)
+            probes[key[-1], name].append((trials.get(lower), trials.get(upper)))
+    lines = ["### Matched numerical turnover", "",
+             "| Family | Parameter | Lower probes | Median lower Δ utility | Upper probes | Median upper Δ utility | Two-sided brackets |",
+             "|---|---|---:|---:|---:|---:|---:|"]
+    for (family, name), pairs in sorted(probes.items()):
+        lower, upper = ([pair[i] for pair in pairs if pair[i] is not None] for i in (0, 1))
+        limits = [len(lower), fmt(str(median(lower)), True) if lower else "—",
+                  len(upper), fmt(str(median(upper)), True) if upper else "—"]
+        two_sided = sum(lo is not None and hi is not None for lo, hi in pairs)
+        lines.append(f"| {family} | {name} | {' | '.join(map(str, limits))} | {two_sided} |")
+    lines += ["", "Each probe fixes all other recipe fields and uses the nearest tested value on its side. "
+              "Each reported median uses the probe-minus-winner utility differences for that parameter and direction. "
+              "One-sided rows show the side tested. The complete grid also records joint recipe changes. "
+              "[Grid scores](H1V2_INNER_GRID.tsv) · [Boundary trace](H1V2_INNER_BOUNDARIES.tsv)", ""]
+    limits = [r for r in records if r["phase"] == "final" and r["status"] == "domain-limit"]
+    if limits:
+        lines += ["| Family | Parameter at its tested limit | Value | Selected fold-modality recipes |",
+                  "|---|---|---:|---:|"]
+        for (family, name, value), rows in sorted(grouped(limits, ("family", "parameter", "winner")).items()):
+            lines.append(f"| {family} | {name} | {value} | {len(rows)} |")
+        lines.append("")
+    return lines
+
+
 def learning_summary(root):
     rows = load(root, "H1V2_LEARNING_CURVES.tsv")
     traces = []
@@ -143,7 +192,7 @@ def inner(root):
         gains = [num(r["objective"]) - num(r["round2"]) for r in winners if r["family"] == family]
         wins = sum(r["winner"].casefold() == "true" for r in refined)
         lines.append(f"| {family} | {expanded} | {len(refined)} | {wins} | {median(gains):+.4f} |")
-    lines += ["", *learning_summary(root)]
+    lines += ["", *boundary_summary(grid, winners, load(root, "H1V2_INNER_BOUNDARIES.tsv")), *learning_summary(root)]
     leaders = {
         (task, mode, r["family"]) for (task, mode), fits in grouped(winners, ("task", "modality")).items()
         for r in sorted(fits, key=lambda item: num(item["round2"]), reverse=True)[:2]
@@ -159,7 +208,8 @@ def inner(root):
         if typ != "drug":
             ranked = sorted((r for r in ranked if r[1] >= 10), key=lambda r: (-r[2], r[0]))[:2]
         for name, n, error in sorted(ranked, key=lambda row: -row[2]):
-            lines.append(f"| {s} | {mode} | {typ} | {name} | {n} | {error:.4f} |")
+            group_label = name.replace("|", "\\|").replace("\n", " ")
+            lines.append(f"| {s} | {mode} | {typ} | {group_label} | {n} | {error:.4f} |")
     lines += ["", "The counts sum across family and fold evaluations. Each outcome can contribute to both families. "
               "The table lists the two highest-error supported tissue and mechanism groups per study and modality, "
               "plus all observed HCC TKIs. MAE uses the study-specific response scale.", ""]
