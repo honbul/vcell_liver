@@ -14,6 +14,7 @@ from vc_build.io import publish_json, sha256
 
 from .assets import V1_ASSETS, V1_RUN, registries
 from .freeze import ARMS, V1_SHA
+from .residual_run import STAGE
 
 ASSAY = ARMS[:8]
 STRUCTURE = ARMS[8:]
@@ -26,7 +27,8 @@ STATS = {"drug": DRUG, "cell": CELL}
 def validate(work, decision):
     selected = sha256(decision / "champion.json")
     selection = read_json(decision / "receipt.json")
-    if selection["selection_sha256"] != selected or selection["query_outcomes_opened"]:
+    if (selection["selection_sha256"] != selected or selection["query_outcomes_opened"]
+            or selection["strict_stage"] != STAGE):
         raise ValueError("H2-v2 selection mismatch")
     cli_path = work.parent / "portable-cli" / "receipt.json"
     cli = read_json(cli_path)

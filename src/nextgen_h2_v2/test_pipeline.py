@@ -1,8 +1,9 @@
 """Small reproducibility contracts for PSD, exact gating, and both ranking learners."""
 import argparse
-import json
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
@@ -12,6 +13,7 @@ from nextgen_h2.kernels import normalized_gram, psd_sum
 from .kernel import complete_fallback, kernel_function
 from .nonlinear import Candidate, FilmAttention, fit_boost, listnet
 from .portable import view_cross
+from .residual_data import kernel_oof, transform
 from .score import ASSAY, STRUCTURE, contrasts, gate, scopes
 from nextgen_h2.metrics import stack
 from vc_build.io import publish_json
@@ -90,6 +92,40 @@ class Contracts(unittest.TestCase):
         sample = listnet(y, torch.randn_like(y), torch.arange(14) // 2)
         sample.backward()
         self.assertTrue(float(sample.detach()) > 0)
+
+    def test_residual_stopping_scaffolds_are_excluded_from_out_of_fold_fits(self):
+        drugs = pd.Index([f"d{i:02}" for i in range(20)])
+        registry = pd.DataFrame({"scaffold_block": [f"s{i // 2}" for i in range(20)]}, index=drugs)
+        panel = pd.DataFrame({"row_id": np.arange(20), "compound_id": drugs, "cell_id": "c",
+                              "lineage_group": "l", "source_id": "s", "endpoint_id": "a",
+                              "sensitivity": np.arange(20)})
+        stop = panel.compound_id.isin(drugs[:4]).to_numpy()
+        root = SimpleNamespace(reg=registry, fit_drugs=drugs, fit=panel, data=None, assets=None)
+        folds = []
+
+        def fitted(_data, _assets, train, test, _registry):
+            scaffold = set(registry.loc[train.compound_id, "scaffold_block"])
+            checking = set(registry.loc[test.compound_id, "scaffold_block"])
+            self.assertFalse(scaffold & checking)
+            self.assertTrue(scaffold.isdisjoint({"s0", "s1"}))
+            folds.append(set(test.compound_id))
+            calibration = [{"source_id": "s", "endpoint_id": "a", "slope": 1., "intercept": 0.}]
+            return SimpleNamespace(calibration=calibration, solve=lambda *_: np.zeros(len(test)),
+                                   extract_rows=lambda pred: pred)
+
+        with patch("nextgen_h2_v2.residual_data.Engine", fitted), patch(
+                "nextgen_h2_v2.residual_data.native_sensitivity", lambda part: part.sensitivity):
+            result = kernel_oof(root, None, 4, stop)
+        self.assertEqual(len(folds), 4)
+        self.assertEqual(folds[-1], set(drugs[:4]))
+        self.assertTrue(np.array_equal(result.inner_crossfit.eq(3), stop))
+
+        covariates = np.arange(40).reshape(20, 2).astype(float)
+        _, _, before = transform(covariates, ~stop)
+        covariates[stop] = -1e8
+        _, _, after = transform(covariates, ~stop)
+        np.testing.assert_array_equal(before.location, after.location)
+        np.testing.assert_array_equal(before.spread, after.spread)
 
 
 if __name__ == "__main__":

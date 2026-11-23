@@ -49,7 +49,8 @@ def test(work, out):
             or structural["mode"] != "Structure-only" or assisted["mode"] != "Assay-assisted"):
         raise ValueError("CLI did not reproduce the portable predictor")
     publish_json(out / "receipt.json", {"package_sha256": digest, "novel_parent": structural["parent"],
-                "fit_parent_member": False, "query_cells": len(names), "LINCS_recipe": model.assay.params.lincs.recipe,
+                "smiles": smiles, "fit_parent_member": False, "query_cells": len(names), "cell_ids": names,
+                "LINCS_recipe": model.assay.params.lincs.recipe,
                 "synthetic_signature": True, "signature_sha256": sha256(feature),
                 "structural_max_abs_diff": float(structure_error), "assisted_max_abs_diff": float(view_error),
                 "explicit_cli_fallback": "no LINCS TSV invokes the registered structure-only kernel"})
