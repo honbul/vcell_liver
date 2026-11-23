@@ -1,6 +1,7 @@
 """Render the H3 reports using sealed summaries and score outputs."""
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -55,6 +56,15 @@ def pull_summary(src, dst):
                 bucket.append(frame)
     for name, parts in (("INNER_TUNING", all_metrics), ("INNER_RUNTIME", all_runs), ("GRADIENT_BY_EPOCH", epochs)):
         pd.concat(parts).to_csv(dst / f"H3_{name}.tsv", sep="\t", index=False)
+    receipts = {
+        stage: {
+            "summary_sha256": hashlib.sha256((src / f"{stage}-summary.json").read_bytes()).hexdigest(),
+            "input_forecast_and_gradient_sha256": book["inputs_sha256"],
+            "settings_by_split": book["settings_by_split"],
+        }
+        for stage, book in books.items()
+    }
+    (dst / "inner_analysis_receipts.json").write_text(json.dumps(receipts, sort_keys=True, indent=2) + "\n")
     return books, pd.concat(all_runs)
 
 
@@ -96,7 +106,7 @@ def gradient(dst, src, books, runs):
         "동일한 목적별 역전파를 썼다. [에포크 요약](H3_GRADIENT_BY_EPOCH.tsv) · [실행 원장](H3_INNER_RUNTIME.tsv)", "",
         "원시 배치별 epoch/update, cosine, 양쪽 norm, 두 norm 비율, 충돌 및 CUDA 이벤트 시간은 G1 H3 루트의 "
         "round1/<split>/gradients-inner*.parquet와 round2-block/<split>/gradients-inner*.parquet에 있다. "
-        "배치 파일 해시는 inner 분석 영수증에 기록했다. [동결과 결과](ROUND1_TO_3_INNER_TUNING.md)",
+        "배치 파일 해시는 inner 분석 영수증에 기록했다. [Inner 분석 영수증](inner_analysis_receipts.json) · [동결과 결과](ROUND1_TO_3_INNER_TUNING.md)",
     ]
     write(dst, "GRADIENT_DIAGNOSTICS.md", lines)
 
@@ -137,7 +147,9 @@ def inner(dst, books, frozen):
         f"H3b의 완전 지지 동결 기준 충족은 {b['qualified_folds']}/9 분할이다. "
         "네 지표의 모든 비교와 설정·입력 해시는 동결 원장에 있다.", "", "## Round 3", "",
         "동결 조건을 11711, 11729, 11743에서 재적합했다. H3a의 G2, G1 matched, G1 best를 각각 보존했다. "
-        "[Inner 점수 TSV](H3_INNER_TUNING.tsv) · [최종 잠금](final_lock.json) · [Outer 결과](RESULTS.md)",
+        "[Inner 점수 TSV](H3_INNER_TUNING.tsv) · [최종 잠금](final_lock.json) · [Outer 결과](RESULTS.md)", "",
+        "블록 단계 첫 집계는 진단 대조군 이름을 잘못 조회해 설정 동결 전에 중단됐다. 집계만 재실행했고 기존 9개 "
+        "블록 학습 예측과 이미 저장된 네 TSV를 해시와 바이트로 대조했다. [복구 및 실행 기록](SLURM_JOBS.tsv)",
     ])
     write(dst, "ROUND1_TO_3_INNER_TUNING.md", lines)
 
