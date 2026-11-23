@@ -164,7 +164,7 @@ def fit_bridge(fit, query, rna, zhu_rna, assays, edges, targets, auxiliary):
         count = 1 + single.columns.isin(parts["auc"].columns).astype(int)
         return single.add(parts["auc"].reindex(columns=single.columns, fill_value=0)).div(count, axis=1)
 
-    locus = held.get_indexer(query.cell_id), compounds.get_indexer(query.compound_id)
+    locus = held.index.get_indexer(query.cell_id), compounds.get_indexer(query.compound_id)
     if min(locus[0].min(), locus[1].min()) < 0:
         raise ValueError("Unmatched recipient response identities")
     delta = {BOTH: dual(changes), AUC: changes["auc"], DOSE: changes["single_dose"], NULL: dual(controls)}
