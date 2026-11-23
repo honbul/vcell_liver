@@ -7,7 +7,6 @@ import numpy as np
 
 from nextgen_h1_anchor.cli import bundle as v1_package
 from nextgen_h1_anchor.inputs import json_write
-from nextgen_h1_anchor.models import AFFINE_SHIFT_PENALTY
 from nextgen_h1_anchor.outer import derange
 from vc_build.io import sha256
 
@@ -42,25 +41,25 @@ def v1_reference(task, stamp):
 
 def controls(task, packet, k, q, index, package, historical):
     seal, old = v1_package(V1 / f"freeze-v1/{task}")
-    settings = seal["baselines"]
     a8 = old.anchors
-    if k == 12:
-        old.anchors = np.r_[a8, package["extension"]]
-    # The signed v1 forecasts are directly reused where the budget existed in v1.
-    # K=1/K=12 use the same archived estimator and the declared new budget.
     can_reuse = k in {0, 3, 5, 8}
-    b3 = settings["B3"] | {"shift_penalty": AFFINE_SHIFT_PENALTY}
-    controls = {name: historical[f"{name}/{k}"] if can_reuse and name != "B3" else
-                old.predict(packet[index][:, old.anchors[:k]], k, b3 if name == "B3" else cfg,
-                            rna_index=index)[:, q] for name, cfg in settings.items()}
-    past = {"v1-Anchor-Best": seal["primary"],
-            "Bsimple": settings[seal["baseline"]]}
+    simple = package["simple"]
+    # RNA-only and drug mean are identical on the matched archived support.
+    # The anchor-consuming simple baselines use the v2 anchor-only order.
+    old.anchors = np.asarray(package["orders"]["anchor"])
+    controls = {name: historical[f"{name}/{k}"] if can_reuse and name in {"B0", "B1"} else
+                old.predict(packet[index][:, old.anchors[:k]], k, cfg, rna_index=index)[:, q]
+                for name, cfg in simple["configs"].items()}
+    controls["Bsimple"] = controls[simple["strongest"]]
+    old.anchors = np.r_[a8, package["extension"]] if k == 12 else a8
     if can_reuse:
-        controls.update({"v1-Anchor-Best": historical[f"H1-Anchor-Best/{k}"],
-                         "Bsimple": historical[f"Bsimple/{k}"]})
+        controls["v1-Anchor-Best"] = historical[f"H1-Anchor-Best/{k}"]
+        controls["v1-Bsimple"] = historical[f"Bsimple/{k}"]
     else:
-        controls.update({arm: old.predict(packet[index][:, old.anchors[:k]], k, cfg, rna_index=index)[:, q]
-                         for arm, cfg in past.items()})
+        controls["v1-Anchor-Best"] = old.predict(packet[index][:, old.anchors[:k]], k, seal["primary"],
+                                                rna_index=index)[:, q]
+        settings = seal["baselines"][seal["baseline"]]
+        controls["v1-Bsimple"] = old.predict(packet[index][:, old.anchors[:k]], k, settings, rna_index=index)[:, q]
     if seal["rna_control"] is not None:
         historical_dual = f"H1-RNA+Anchor-Best/{k}"
         if "H1-RNA+Anchor-Best/5" in historical:

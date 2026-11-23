@@ -1,0 +1,11 @@
+job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
+34800	ng2-h1-preflight	preflight	cpu	0	0	COMPLETED	preflight.json and confirmed Round 1 dependency
+34801	ng2-h1-r1	inner_anchor_search	cpu	0	0	PARTIAL_FAILURE	13 completed and three node-level TypeIs import failures
+34823	ng2-h1-r1-retry	inner_anchor_recovery	cpu	0	0	COMPLETED	Completed the last three Round 1 tasks using isolated typing_extensions
+34834	ng2-h1-r23-cpu	inner_initial_abd	cpu	0	0	PARTIAL_FAILURE	All B/D completed and nine initial product solves failed; A replaced by 34873
+34835	ng2-h1-r23-gpu	inner_initial_neural	gpu	1	2	CANCELLED	Stopped the H1-v2-only array before any formal receipt to switch to vectorized batches
+34873	ng2-h1-r23-kernel	inner_stable_product	cpu	0	0	COMPLETED	All 16 Family A receipts using measured-pair ridge
+34955	ng2-h1-r23-neural	inner_neural_search	gpu	1	2	RUNNING	Canonical C array
+34984	ng2-h1-boundary-cpu	inner_boundary_abd	cpu	0	0	COMPLETED	48 signed A/B/D final search receipts
+34985	ng2-h1-boundary-neural	inner_boundary_c	gpu	1	2	DEPENDENT	Eligible only after job 34955 completes
+34986	ng2-h1-cost	cost_registry	cpu	0	0	COMPLETED	Workbook sheet metadata only and registered budget scenarios

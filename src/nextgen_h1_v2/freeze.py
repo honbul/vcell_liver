@@ -11,8 +11,9 @@ from nextgen_h1_anchor.inputs import json_write
 from vc_build.io import sha256
 
 from .anchors import extend_reserve, nested_contexts, order_policy
+from .baselines import inner_choices
 from .data import ROOT, STUDY, TASKS, V1, build, drug_features, source
-from .search import fit_model
+from .search import cache_read, fit_model
 
 ANCHOR = "H1-v2-AnchorOnly-Best"
 DUAL = "H1-v2-Dual-Best"
@@ -39,8 +40,11 @@ def choose(choices):
     return max(choices, key=lambda k: (choices[k]["selected"]["objective"], choices[k]["selected"]["ndcg_at_5"], k))
 
 
-def fit_package(task, result, kernel, out, alternative=None):
+def fit_package(task, result, kernel, out, alternative=None, r1=ROOT / "round1-a"):
     entries, stamps = load_results(task, result, kernel, alternative)
+    if any(m.get("remaining_numerical_boundary_trials", -1) != 0
+           for family in entries.values() for m in family["modes"].values()):
+        raise ValueError(f"Unresolved numerical grid boundaries for {task}")
     out.mkdir(parents=True)
     study, dev, meta, held = source(task, query=True)
     orig, orig_fit = opener(V1 / "freeze-v1" / task)
@@ -89,15 +93,17 @@ def fit_package(task, result, kernel, out, alternative=None):
             if family == champion:
                 key = DUAL if mode == "dual" else ANCHOR
                 models[key], configs[key] = model, cfg
+    inner, policies, _, _, _ = cache_read(r1 / task)
+    simple = inner_choices(inner, policies["anchor"], "dual" in modes)
     state = out / "package.pkl"
     train_rna = dev["x"] if "dual" in modes else None
     with state.open("xb") as handle:
         pickle.dump(dict(models=models, train_rna=train_rna, panel=dev["panel"], groups=held["groups"],
-                         q8=q8, extension=extended[8:], orders=orders, v1=orig), handle, protocol=5)
+                         q8=q8, extension=extended[8:], orders=orders, v1=orig, simple=simple), handle, protocol=5)
     json_write(out / "freeze.json", {"task": task, "study": study, "a8": list(dev["panel"][a8]),
                                      "a12": list(dev["panel"][extended]), "q8": list(dev["panel"][q8]),
                                      "q12": list(dev["panel"][np.setdiff1d(np.arange(len(meta)), extended)]),
-                                     "choices": choices, "orders": orders, "configs": configs,
+                                     "choices": choices, "orders": orders, "configs": configs, "simple": simple,
                                      "fit_groups": len(ctx.train), "held_group_count": len(held["groups"]),
                                      "package_sha256": sha256(state), "inner_receipts": stamps,
                                      "old_freeze_sha256": old_freeze_hash, "outer_labels_opened": False,

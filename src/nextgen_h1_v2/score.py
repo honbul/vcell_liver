@@ -137,7 +137,7 @@ def study_axes(batch, axis):
 
 def contrasted(k, values):
     options = {v.split("/")[0] for v in values if v.endswith(f"/{k}")}
-    refs = ("Bsimple", "B0", "B1", "B2", "B3", "B4", "v1-Anchor-Best", "v1-RNA+Anchor",
+    refs = ("Bsimple", "B0", "B1", "B2", "B3", "B4", "v1-Bsimple", "v1-Anchor-Best", "v1-RNA+Anchor",
             "v1-RNA+Anchor-ungated", "N1", "N1-Dual", "N2")
     for model in (ANCHOR, DUAL):
         if model in options:
