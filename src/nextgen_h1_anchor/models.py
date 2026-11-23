@@ -12,6 +12,7 @@ RIDGES = (.03, .1, .3, 1., 3., 10.)
 ALPHAS = (0., .1, .25, .5, .75)
 POLICIES = ("logdet", "leverage", "chemistry", "random-971", "random-972", "random-973")
 BASELINES = ("B0", "B1", "B2", "B3", "B4")
+AFFINE_SHIFT_PENALTY = 5.
 
 
 def positive_semidefinite(matrix, rank=None):
@@ -247,6 +248,11 @@ class Fit:
             shifts = delta.mean(axis=1, keepdims=True)
             if name == "scalar":
                 return base + shifts
+            # Old frozen affine recipes omit this field and retain their original shift.
+            shift_penalty = settings.get("shift_penalty", 0.)
+            if not np.isfinite(shift_penalty) or shift_penalty < 0:
+                raise ValueError("The affine shift penalty must be finite and nonnegative")
+            shifts *= k / (k + shift_penalty)
             x = base[:, a] - base[:, a].mean(axis=1, keepdims=True)
             penalty = k * np.median(self.sd[a] ** 2)
             scale = np.clip(1 + np.sum(x * delta, axis=1) / (np.sum(x ** 2, axis=1) + penalty), .25, 4.)

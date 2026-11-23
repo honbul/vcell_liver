@@ -13,7 +13,7 @@ from vc_build.v0plus_score import compound_strata
 
 from .inputs import PAN, fold_order, json_write
 from .metrics import Retrieval
-from .models import (ALPHAS, BASELINES, KS, POLICIES, RIDGES, Fit, assay_prior, chemistry,
+from .models import (AFFINE_SHIFT_PENALTY, ALPHAS, KS, POLICIES, RIDGES, Fit, assay_prior, chemistry,
                      config, mean_scale, rna_oof, select_anchors)
 from .prepare import AUXILIARY, TRANSFER
 
@@ -34,7 +34,8 @@ def baseline_grid(rna):
         "B0": [config("mean")],
         "B1": [config("rna")] if rna else [],
         "B2": [config("scalar", base=b) for b in (("mean", "rna") if rna else ("mean",))],
-        "B3": [config("affine", base=b) for b in (("mean", "rna") if rna else ("mean",))],
+        "B3": [config("affine", base=b, shift_penalty=AFFINE_SHIFT_PENALTY)
+               for b in (("mean", "rna") if rna else ("mean",))],
         "B4": [config("knn", neighbors=k) for k in (3, 5, 10)],
     }
 

@@ -110,9 +110,14 @@ def render(root):
                        f"{interval(d(s, 'B2/5', candidate='B4/5'))} |")
     outputs += ["", "Bsimple은 각 외부 폴드의 Inner CV에서 정한 최강 B0–B4 비교군이다. "
                 "B0는 약물 평균, B1은 RNA-only, B2는 scalar, B3은 양의 affine, B4는 kNN이다. "
-                "B3 구현은 scale을 수축하고 shift에는 앵커 평균 잔차를 그대로 썼다. 이 차이는 절대 오차나 약물 내 상관에 영향을 줄 수 있다. "
+                "동결해 채점한 B3는 scale을 수축하고 shift에는 앵커 평균 잔차를 그대로 썼다. "
                 "N1은 앵커 패킷 전체를 순열하고, N2는 이중 결합 후보의 RNA만 순열한다. "
                 "보조 RNA 추정에는 Inner CV 기준을 통과한 폴드에서 RNA를 추가하고, 나머지 폴드에서는 동결한 anchor-only 예측을 사용했다.",
+                "",
+                "후속 B3 구현은 shift에 `K/(K+5)`를 적용한다. 기존 앵커와 동결 예측만 비교한 감사에서 "
+                "17개 작업 모두 K=0/3/5/8의 Q 순위와 동점이 일치했다. 수정된 B3의 Outer MAE/RMSE와 "
+                "약물 내 상관은 평가되지 않았으며, 이 표에는 최초 단일 채점 수치가 남아 있다. "
+                "[Inner 보정 감사](H1_B3_INNER_CORRECTION.tsv) · [동결 예측 순위 감사](b3_forecast_rank_receipt.json)",
                 "", "## Tier 1–4 및 Wong", "",
                 "| 연구 범위 | 독립 그룹 | Q 약물 수 | K=0 NDCG@5 | K=3 | K=5 | K=8 | K=5 ΔNDCG@5 vs Bsimple |",
                 "|---|---:|---:|---:|---:|---:|---:|---:|"]
@@ -155,7 +160,8 @@ def render(root):
     outputs += ["", "구간과 전체 K 비교는 [절대 성능](H1_METRICS.tsv)과 [짝지은 차이](H1_PAIRED_95CI.tsv)에 있다. "
                 "약물 내 상관과 이중 중심화 상호작용 상관은 폴드 내부에서 계산했다. "
                 "MAE/RMSE는 동일 assay 안에서 해석한다. 범암 macro의 원척도 오차는 assay 간 단위가 달라 본문에서 생략했다. "
-                "B0의 이중 중심화 예측은 이론상 0이다. 부동소수점 수준의 잔차에 순위를 매기면서 일부 B0 상호작용 Spearman에 작은 수치가 남았다.",
+                "B0의 이중 중심화 예측은 이론상 0이다. 최초 점수에는 부동소수점 잔차에서 발생한 "
+                "일부 B0 상호작용 Spearman 수치가 남아 있다. 후속 구현은 수치적으로 퇴화한 잔차를 0으로 처리한다.",
                 "", "| RNA 보조 비교 | K=5 ΔNDCG@5 vs anchor-only |",
                 "|---|---:|"]
     for s in STUDIES[:4]:

@@ -55,16 +55,19 @@ class Retrieval:
 def center2(values):
     """Two-way residuals on observed entries by alternating projections."""
     mask = np.isfinite(values)
-    result = np.where(mask, values, 0.)
+    result = np.where(mask, values, 0.).astype(float, copy=False)
     rows = np.maximum(mask.sum(axis=-1, keepdims=True), 1)
     cols = np.maximum(mask.sum(axis=-2, keepdims=True), 1)
+    # Use each draw's magnitude to identify a degenerate interaction after projection.
+    tolerance = 64 * np.finfo(result.dtype).eps * np.max(np.abs(result), axis=(-2, -1), keepdims=True)
     for _ in range(24):
         result -= mask * (result.sum(axis=-1, keepdims=True) / rows)
         change = result.sum(axis=-2, keepdims=True) / cols
         result -= mask * change
-        if np.max(np.abs(change)) < 1e-10:
+        if np.all(np.max(np.abs(change), axis=(-2, -1), keepdims=True) <= tolerance):
             break
-    return np.where(mask, result, np.nan)
+    degenerate = np.max(np.abs(result), axis=(-2, -1), keepdims=True) <= 8 * tolerance
+    return np.where(mask, np.where(degenerate, 0., result), np.nan)
 
 
 def mean_valid(a, axis):

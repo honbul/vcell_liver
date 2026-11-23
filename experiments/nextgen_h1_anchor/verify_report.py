@@ -96,7 +96,43 @@ def verify(root):
     need(sum(r["stage"] == "outer_score" for r in jobs) == 1, "Find exactly one outer score job in ledger")
     need(all(r["partition"] == "cpu" and r["job_name"].startswith("ng-h1-") and r["gpus"] == "0" for r in jobs),
          "Job resource contract")
+    lock = json.loads((root / "outer_score_claim_receipt.json").read_text())
+    need(lock["score_passes_started"] == 1
+         and lock["legacy_score_claim_sha256"] == score["score_claim_sha256"]
+         and lock["input_sha256"] == score["input_sha256"]
+         and lock["forecast_sha256"] == score["forecast_receipt_sha256"]
+         and lock["completed_score_receipt_sha256"] == digest(root / "score_receipt.json"),
+         "Study-wide lock must bind the original score")
+    affine_inner = json.loads((root / "b3_inner_correction_receipt.json").read_text())
+    affine_forecasts = json.loads((root / "b3_forecast_rank_receipt.json").read_text())
+    need(not affine_inner["outer_outcomes_opened"] and not affine_forecasts["outer_outcomes_opened"],
+         "B3 implementation audit used a held outcome")
+    need(digest(root / "H1_B3_INNER_CORRECTION.tsv") == affine_inner["table_sha256"]
+         and affine_inner["data_receipt_sha256"] == score["input_sha256"]
+         and affine_inner["freeze_sha256"] == controls["freeze_sha256"]
+         and affine_inner["shift_penalty"] == affine_forecasts["shift_penalty"] == 5.0,
+         "B3 inner correction provenance mismatch")
+    need(affine_forecasts["forecast_receipt_sha256"] == score["forecast_receipt_sha256"]
+         and affine_forecasts["anchor_receipt_sha256"] == score["anchor_receipt_sha256"]
+         and set(affine_forecasts["tasks"]) == set(score["masks"]), "B3 forecast audit provenance mismatch")
+    affine_table = rows(root, "H1_B3_INNER_CORRECTION.tsv")
+    actual = {(r["task"], r["inner_fold"], r["k"]) for r in affine_table}
+    expected = {(t, fold, k) for t, fold in inner_support for k in ("0", "3", "5", "8")}
+    need(len(affine_table) == len(actual) == affine_inner["rows"] and actual == expected,
+         "B3 correction must cover each original inner fold and budget")
+    for row in affine_table:
+        ref = inner_support[(row["task"], row["inner_fold"])][0]
+        need((row["a8"], row["q_size"], row["samples"]) == (ref["A8"], ref["q"], ref["n"])
+             and float(row["max_inner_rank_metric_change"]) <= 1e-12, "B3 inner rank audit or Q mismatch")
+    for task, by_k in affine_forecasts["tasks"].items():
+        target = score["masks"][task]
+        need(set(by_k) == {"0", "3", "5", "8"}
+             and all(item["query_drugs"] == target["q_drugs"]
+                     and item["samples"] == target["eligible"]
+                     and item["samples_with_any_rank_change"] == 0 for item in by_k.values()),
+             f"B3 forecast rank equivalence or support failed for {task}")
     print(f"Verified {len(REQUIRED)} required deliverables, {score['task_count']} frozen tasks and one held score pass")
+    print("Verified the separate B3 inner correction and frozen-forecast rank equivalence")
 
 
 if __name__ == "__main__":

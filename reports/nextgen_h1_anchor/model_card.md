@@ -31,4 +31,11 @@ Intervals use the 90th percentile absolute error across inner validation predict
 - LIMORE, LICOB and Wong had prior evaluation exposure. LICOB has only 38 independent donors, and the same donors appear in the distinct Tier 3 and Tier 4 analyses. LICOB transfer retains the same drug and response support across valid arms.
 - Biologically plausible improvement in a retrospective ranking is a development result. The model card and results report the observed evidence and assays used for that result.
 
-The implemented B3 baseline uses an unpenalized mean anchor residual for the shift and a ridge-shrunk positive scale. The lock names shrinkage affine; the shift itself retains unit weight. This detail preserves each sample's rank and can affect absolute errors or within-drug comparisons.
+
+## Historical B3 and the corrected implementation
+
+The signed outer evaluation used the frozen B3 recipes with an unpenalized anchor-mean shift and a ridge-shrunk positive slope. New recipes explicitly record a penalty of five pseudo-anchors and use `K/(K+5)` times the mean anchor residual. The five-pseudo-anchor penalty is fixed at the primary anchor budget. Historical recipes without the penalty field retain their stored behavior. The fold-specific base choice and positive slope formula are preserved.
+
+On all 51 inner folds, the corrected recipe and the archived recipe had identical NDCG@5, Precision@5 and within-sample Spearman. The forecast audit reproduced the archived B3 values and verified identical Q ranks and ties for all 1,868 eligible observations per budget using anchor packets and forecasts alone. This establishes the rank-metric equivalence on any observed subset of Q. The archived outer MAE, RMSE and within-drug correlations remain estimates for the originally scored B3. The corrected code also clears near-zero numerical residuals when an interaction projection is degenerate. [Inner correction](H1_B3_INNER_CORRECTION.tsv) · [Forecast rank audit](b3_forecast_rank_receipt.json)
+
+The study-level score claim protects the completed pass across output directories and records its original receipt. [Single-pass claim](outer_score_claim_receipt.json)

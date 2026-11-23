@@ -69,3 +69,8 @@ Round 3 began with the Round 1 linear winner and kept at most two Round 2 anchor
 LICOB selected chemical EB in one fold and SVD covariance in two. The pan-cancer response prior was tested in all LICOB folds and did not make their final selection. LIMORE retained the pan-cancer prior in one fold. Nonlinear candidates cleared the anchor-only selection gate in two of the pan-cancer folds. ALS was tested but did not survive the final paired validation. All three HCC RNA gates missed in LICOB, and all three missed in LIMORE. Eight of nine pan-cancer folds qualified for the secondary RNA procedure. Exact winning configurations and the candidates advanced from Round 2 are recorded in the [freeze summary](inner_freeze_summary.json).
 
 [동결 후 Inner 비교군 검사](H1_INNER_LOCKED_CONTROLS.tsv)는 각 task의 세 Inner validation fold에서 모든 K와 비교군을 재생했다. 같은 폴드의 A8·Q·평가 분모가 모든 팔에서 일치한다. N1은 앵커 패킷 전체를, N2는 RNA만 이동한다. 이 검사는 보류된 Outer 결과를 입력으로 사용하지 않았고 챔피언 선택을 바꾸지 않았다. [검사 영수증](inner_control_receipt.json)
+
+
+## Post-score B3 implementation audit
+
+The corrected B3 uses a fixed five-pseudo-anchor penalty and retains the original fold-local base and scale. Against the archived B3, all 204 fold-budget combinations returned identical retrieval and within-sample rank statistics. The table records measured-entry MAE and RMSE on each development validation fold. At K=5, the mean inner MAE across LICOB folds was 0.14438 for the archived B3 and 0.14022 for the corrected recipe. These are same-Q development diagnostics. [Per-fold and per-budget results](H1_B3_INNER_CORRECTION.tsv) · [Inner audit receipt](b3_inner_correction_receipt.json)

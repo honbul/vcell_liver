@@ -263,10 +263,26 @@ def mechanism_rows(tasks):
     return rows
 
 
-def run(root, anchor_dir, forecast_dir, out):
+def claim_score(root, forecast_dir, out):
+    """Reserve the single pass for this registered study before touching labels."""
+    lock = root / "outer_score_claim.json"
+    if lock.exists():
+        raise FileExistsError(f"Outer scoring already claimed for {root}")
+    record = {"score_passes_started": 1, "input_sha256": sha256(root / "receipt.json"),
+              "forecast_sha256": sha256(forecast_dir / "forecast_receipt.json")}
     out.mkdir()
+    try:
+        json_write(lock, record)
+    except FileExistsError:
+        out.rmdir()
+        raise
     claim = out / "score_claim.json"
-    json_write(claim, {"score_passes_started": 1, "forecast_sha256": sha256(forecast_dir / "forecast_receipt.json")})
+    json_write(claim, record)
+    return claim
+
+
+def run(root, anchor_dir, forecast_dir, out):
+    claim = claim_score(root, forecast_dir, out)
     tasks, anchor = read_tasks(root, anchor_dir, forecast_dir)
     tasks = bootstrap(tasks)
     n_workers = int(os.environ.get("SLURM_CPUS_PER_TASK", "2"))
