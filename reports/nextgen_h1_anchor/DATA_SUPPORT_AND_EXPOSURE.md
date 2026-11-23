@@ -14,3 +14,5 @@ The [identity and SHA-256 receipt](data_support_receipt.json) was generated on G
 | Excluded | Yang | — | 5 | — | Prior exposure. Fewer than 15 query drugs |
 
 The three-screen exact chemical intersection is 24 even with no density threshold and four at 80% coverage. A single dense 40-drug three-screen panel is infeasible using these exact-parent registrations. H1 uses 68-drug panels fixed independently within each screen. The same exact structure key remains mandatory for pooling source covariance or evaluating transfer. The 2D→LICOB support at ≥80% within-source coverage is 20 GDSC2, 36 CTRPv2, nine PRISM20Q2 and 53 LIMORE.
+
+The pairwise identity audit found 22 exact CTRPv2–PRISM20Q2 shared parents at 80% lineage coverage in each screen. This bounds three-screen dense support below 40 even if additional GDSC2 identities are resolved against these same registered assays. [Pairwise support receipt](pan_pairwise_support.json)

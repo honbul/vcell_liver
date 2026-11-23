@@ -67,3 +67,5 @@ Round 3 began with the Round 1 linear winner and kept at most two Round 2 anchor
 | PRISM20Q2-2 | chemistry | 0.9674 | rank 0.9678 | rank | 0.9678 | B1 0.9615 | Pass (+0.0025) |
 
 LICOB selected chemical EB in one fold and SVD covariance in two. The pan-cancer response prior was tested in all LICOB folds and did not make their final selection. LIMORE retained the pan-cancer prior in one fold. Nonlinear candidates cleared the anchor-only selection gate in two of the pan-cancer folds. ALS was tested but did not survive the final paired validation. All three HCC RNA gates missed in LICOB, and all three missed in LIMORE. Eight of nine pan-cancer folds qualified for the secondary RNA procedure. Exact winning configurations and the candidates advanced from Round 2 are recorded in the [freeze summary](inner_freeze_summary.json).
+
+[동결 후 Inner 비교군 검사](H1_INNER_LOCKED_CONTROLS.tsv)는 각 task의 세 Inner validation fold에서 모든 K와 비교군을 재생했다. 같은 폴드의 A8·Q·평가 분모가 모든 팔에서 일치한다. N1은 앵커 패킷 전체를, N2는 RNA만 이동한다. 이 검사는 보류된 Outer 결과를 입력으로 사용하지 않았고 챔피언 선택을 바꾸지 않았다. [검사 영수증](inner_control_receipt.json)

@@ -110,6 +110,7 @@ def render(root):
                        f"{interval(d(s, 'B2/5', candidate='B4/5'))} |")
     outputs += ["", "Bsimple은 각 외부 폴드의 Inner CV에서 정한 최강 B0–B4 비교군이다. "
                 "B0는 약물 평균, B1은 RNA-only, B2는 scalar, B3은 양의 affine, B4는 kNN이다. "
+                "B3 구현은 scale을 수축하고 shift에는 앵커 평균 잔차를 그대로 썼다. 이 차이는 절대 오차나 약물 내 상관에 영향을 줄 수 있다. "
                 "N1은 앵커 패킷 전체를 순열하고, N2는 이중 결합 후보의 RNA만 순열한다. "
                 "보조 RNA 추정에는 Inner CV 기준을 통과한 폴드에서 RNA를 추가하고, 나머지 폴드에서는 동결한 anchor-only 예측을 사용했다.",
                 "", "## Tier 1–4 및 Wong", "",
@@ -195,12 +196,14 @@ def render(root):
     outputs += ["", "LICOB Tier 4의 아틀라스 50개는 LIMORE 계통이다. 현지 LICOB 아틀라스 공여자 수는 0명이다. "
                 "아틀라스 비용은 연구용 재사용 자료의 규모다. 같은 실험 재현에 필요한 신규 아틀라스 규모나 실제 임상 적중률을 추정하지 않았다.",
                 "", f"오프라인 CPU CLI의 최대 절대 오차는 `{replay['max_abs_diff']:.3g}`였고 "
-                f"`1e-6` 기준을 충족했다. {len(replay['tasks'])}개 모델 패키지에서 단일/배치 결과를 비교하고 "
-                "앵커 누락, 미측정값, 허용 범위 초과를 거절했다. "
+                f"`1e-6` 기준을 충족했다. {sum(bool(x['tested_rows']) for x in replay['tasks'].values())}개 모델 패키지에서 단일/배치 결과를 비교하고 "
+                "앵커 누락, 미측정값, 허용 범위 초과를 거절했다. Wong 시료 10명의 앵커는 모두 입력 범위를 벗어나 CLI에서 거절됐다. "
+                "Wong 점수는 외삽을 포함한 기술값이다. "
                 "예측 구간과 입력 계약은 [모델 카드](model_card.md)에 있다.",
                 "", "[계획 잠금](PLAN_LOCK.md) · [데이터 및 노출](DATA_SUPPORT_AND_EXPOSURE.md) · "
                 "[Inner CV](ROUND1_TO_3_INNER_TUNING.md) · [채점 영수증](score_receipt.json) · "
                 "[CPU 재생 영수증](cli_replay_receipt.json) · [Slurm 원장](SLURM_JOBS.tsv)", ""]
+    outputs[:4] = [line + "  " for line in outputs[:4]]
     (root / "RESULTS.md").write_text("\n".join(outputs))
 
 

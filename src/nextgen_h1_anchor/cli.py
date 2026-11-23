@@ -46,8 +46,8 @@ def read_anchors(path, identifiers, bounds):
     return obs[None, :]
 
 
-def infer(path, anchors, k):
-    meta, fit, info = calibration(path)
+def infer_from_bundle(loaded, anchors, k):
+    meta, fit, info = loaded
     obs = read_anchors(anchors, meta["anchors"][:k], info["bounds"][:k])
     pred = fit.predict(obs, k, meta["primary"])[0]
     q = np.setdiff1d(np.arange(len(pred)), fit.anchors)
@@ -56,6 +56,10 @@ def infer(path, anchors, k):
                           "interval_lower": pred[q] - spread, "interval_upper": pred[q] + spread})
             .sort_values(["score", "compound_id"], ascending=[False, True], kind="stable")
             .assign(rank=np.arange(1, len(q) + 1)))
+
+
+def infer(path, anchors, k):
+    return infer_from_bundle(calibration(path), anchors, k)
 
 
 def main():
