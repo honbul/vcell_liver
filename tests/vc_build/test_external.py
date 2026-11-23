@@ -4,6 +4,7 @@ import pytest
 
 from vc_build.evaluate import across_cell_metrics
 from vc_build.external import align_endpoints, train_rankers
+from vc_build.v0plus_licob import adult_donor_outcomes
 
 
 def test_external_fit_only_curves_and_prediction_roster():
@@ -60,3 +61,16 @@ def test_across_cell_uses_independent_lineages_and_drug_mean_is_zero():
     assert across_cell_metrics(group.assign(predicted_value=0))["spearman"] == 0
     constant = pd.concat([group, group.iloc[:1]], ignore_index=True).assign(predicted_value=0.1)
     assert across_cell_metrics(constant) == {"lineages": 5, "spearman": 0.0, "pearson": 0.0}
+
+
+def test_licob_donor_aggregation_preserves_shifted_drug_mean():
+    method = "same_offset_drug_mean"
+    group = pd.DataFrame({
+        "donor_id": ["a", "b", "b", "b", "c", "d", "e"], "track": "LICOB", "fold": 0,
+        "compound_id": "drug", "method": method, "adult_age_confirmed": True,
+        "endpoint_value": [0., 1., 2., 3., 4., 5., 6.], "predicted_value": 0.1,
+    })
+    result = adult_donor_outcomes(group, constant_methods=("drug_mean", method))
+    assert result.predicted_value.eq(0.1).all()
+    assert result.endpoint_value.tolist() == [0., 2., 4., 5., 6.]
+    assert across_cell_metrics(result) == {"lineages": 5, "spearman": 0.0, "pearson": 0.0}

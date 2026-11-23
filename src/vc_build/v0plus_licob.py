@@ -306,10 +306,12 @@ def adult_donor_outcomes(joined, *, constant_methods=("drug_mean",)):
     result = adult.groupby(axes, as_index=False)[["endpoint_value", "predicted_value"]].mean()
     # Reaveraging identical floating-point anchors with different group sizes can create spurious ranks.
     for method in constant_methods:
+        selected = result.method.eq(method)
+        if not selected.any():
+            continue
         constant = adult[adult.method.eq(method)].groupby("compound_id").predicted_value
         if not constant.nunique().eq(1).all():
             raise ValueError(f"The sealed {method} varies by organoid")
-        selected = result.method.eq(method)
         result.loc[selected, "predicted_value"] = result.loc[selected, "compound_id"].map(constant.first())
     return result.assign(
         cell_id=lambda table: table.donor_id, lineage_group=lambda table: table.donor_id,
