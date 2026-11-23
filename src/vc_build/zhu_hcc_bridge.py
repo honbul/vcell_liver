@@ -78,6 +78,9 @@ def development(args):
         rows = pd.read_parquet(path)
         if not rows[KEY].equals(rosters[label][KEY]) or not np.isfinite(rows.endpoint_value).all():
             raise ValueError("The fit rows disagree with the fixed public endpoint")
+        if label == "single_dose":
+            # Zhu reports inhibition on a percent scale. The affine bounds assume fractional responses.
+            rows = rows.assign(endpoint_value=rows.endpoint_value / 100.)
         records[label] = rows.pivot(index="cell_id", columns="compound_id", values="endpoint_value")
     a, b = records["auc"], records["single_dose"]
     if not set(a.index) <= set(b.index) or not set(a.columns) <= set(b.columns):
