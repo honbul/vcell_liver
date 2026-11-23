@@ -80,7 +80,7 @@ def identify(config):
 
 
 def boundary_neighbors(config, fitted, max_iteration):
-    """Expand any still-winning exterior point without reading outer labels."""
+    """Bracket the winning setting on each axis using matched inner fits."""
     cfg=config
     keys=("depth","leaves","learning_rate","colsample","min_child","lambda_l2") if cfg["backend"]=="gbdt" else (
         "width","depth","dropout","weight_decay","learning_rate")
@@ -88,7 +88,11 @@ def boundary_neighbors(config, fitted, max_iteration):
     targets=[]
     for key in keys:
         x=cfg[key]
-        axis={c[key] for c in seen}
+        except_keys = {key}
+        if key == "width" and cfg.get("arch") == "attention":
+            except_keys.update(("batch", "eval_batch"))
+        matched = identify({k: v for k, v in cfg.items() if k not in except_keys})
+        axis = {c[key] for c in seen if identify({k: v for k, v in c.items() if k not in except_keys}) == matched}
         for direction in (-1,1):
             if not ((direction<0 and x==min(axis)) or (direction>0 and x==max(axis))):
                 continue

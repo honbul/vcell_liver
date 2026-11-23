@@ -125,9 +125,10 @@ def final_candidate(split,family,seed):
     train_base=val_base=kernel_stamp=None
     if family=="hybrid":
         train_base,val_base,kernel_stamp=fixed_kernel(split,fit,query)
+    budget = point["selected_branch_budgets"] or point["selected_budget"]
     prediction,state,curve,stamp=run_fit(config,atlas,schema,fit,query,register(),seed,
                                       base_fit=train_base,base_valid=val_base,
-                                      fixed=point["selected_budget"],
+                                      fixed=budget,
                                       progress=lambda d:print(split,family,seed,d,flush=True))
     if not np.isfinite(prediction).all() or len(prediction)!=len(query):
         raise ValueError("Final package did not forecast the entire registered test roster")
@@ -139,6 +140,7 @@ def final_candidate(split,family,seed):
                      "source_atlas_sha256":meta["atlas_sha256"],"model_input_sha256":meta["model_input_sha256"],"kernel_base_sha256":kernel_stamp},stream,protocol=5)
     publish_json(root/"receipt.json",{
         "split":split,"family":family,"seed":seed,"training":stamp,"operating_point":point["id"],
+        "selected_budget":budget,
         "lock_sha256":sha256(ROOT/"locks/frozen.json"),"atlas_sha256":meta["atlas_sha256"],
         "model_input_sha256":meta["model_input_sha256"],"lincs_full_unclipped":meta["lincs_full_unclipped"],
         "forecast_sha256":sha256(file),"checkpoint_sha256":sha256(model),"query_id_sha256":table_hash(query),

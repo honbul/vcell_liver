@@ -48,12 +48,18 @@ def train(atlas,schema,fit,query,registry,config,seed,*,train_base=None,val_base
     }
     requested=config["objective"]
     stages=("l2","lambdarank") if requested=="l2_lambdarank" else (requested,)
-    limit=int(config["trees"] if not fixed_epochs else fixed_epochs)
+    if fixed_epochs is None:
+        limit = config["trees"] if len(stages) == 1 else max(160, config["trees"] // 2)
+        budgets = [limit] * len(stages)
+    else:
+        budgets = [fixed_epochs] if isinstance(fixed_epochs, int) else fixed_epochs
+        if len(budgets) != len(stages) or any(budget < 1 for budget in budgets):
+            raise ValueError("Frozen tree budgets do not match the boosting stages")
     curves=[]
     boosters=[]
     with TemporaryDirectory(prefix="tree-map-") as temp:
         path=Path(temp)
-        for stage in stages:
+        for stage, this_limit in zip(stages, budgets):
             rank=stage=="lambdarank"
             train_order,valid_order=np.arange(len(fit)),np.arange(len(query))
             group_train=group_val=None
@@ -83,7 +89,6 @@ def train(atlas,schema,fit,query,registry,config,seed,*,train_base=None,val_base
             if preddata is not None:
                 checks.append(lgb.early_stopping(130,first_metric_only=True,verbose=False))
             train_sets=[treedata] if preddata is None else [treedata,preddata]
-            this_limit=limit if len(stages)==1 else max(160,limit//2)
             model=lgb.train(choice,treedata,num_boost_round=this_limit,valid_sets=train_sets,
                            valid_names=["train","inner_val"][:len(train_sets)],callbacks=checks)
             best=model.best_iteration or model.current_iteration()

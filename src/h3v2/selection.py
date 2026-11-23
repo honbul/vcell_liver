@@ -38,11 +38,25 @@ def evaluated(split, family, stages):
         for cfg in stage_options(split,family,stage):
             rows=[receipt(stage,split,family,cfg,inner) for inner in range(3)]
             scores={key:mean([x["score"][key] for x in rows]) for key in rows[0]["score"]}
+            branch_selection = branch_budgets(cfg, rows)
+            observed = [x["training"]["best_iteration"] for x in rows]
+            if branch_selection is not None:
+                observed = [2 * max(x["training"]["branch_iterations"]) for x in rows]
             sweep.append({"stage":stage,"id":identify(cfg),"config":cfg,"point":scores,
                           "utility":mean([x["utility"] for x in rows]),"folds":rows,
                           "selected_budget":int(median([x["training"]["best_iteration"] for x in rows])),
-                          "max_best_iteration":max(x["training"]["best_iteration"] for x in rows)})
+                          "selected_branch_budgets":branch_selection,
+                          "max_budget_pressure_iteration":max(observed)})
     return sweep
+
+
+def branch_budgets(config, rows):
+    if config.get("objective") != "l2_lambdarank":
+        return None
+    budgets = [row["training"]["branch_iterations"] for row in rows]
+    if any(len(parts) != 2 or min(parts) < 1 for parts in budgets):
+        raise ValueError("Expected a measured L2 budget and a measured LambdaRank budget")
+    return [int(median(part)) for part in zip(*budgets)]
 
 
 def best(rows):
@@ -94,7 +108,7 @@ def select(stages):
                 diagnostics[split][family]=diagnosis
                 candidates=nearby(chosen["config"],intensive=family in top,diagnosis=diagnosis["diagnosis"])
             else:
-                candidates=boundary_neighbors(chosen["config"],explored,chosen["max_best_iteration"])
+                candidates=boundary_neighbors(chosen["config"],explored,chosen["max_budget_pressure_iteration"])
             pending[split][family]=list({identify(c):c for c in candidates
                                          if identify(c) not in {r["id"] for r in variants}}.values())
             boundary_status[split][family]=[identify(c) for c in pending[split][family]]

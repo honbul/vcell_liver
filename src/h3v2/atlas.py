@@ -12,6 +12,14 @@ from .data import ASSETS, ROOT, SPLITS, nested, read_data, table_hash
 from .features import SourceFeatures, active_scores, build_atlas, checked_embedding, load_registered, positions, normalize_fit
 from .graphs import make_graphs
 
+LINCS_VIEWS = (("lincs_modz24.parquet", "lincs"), ("paths_modz24.parquet", "perturb_paths"))
+
+
+def model_input_digest(atlas_sha256):
+    source = read_json(ASSETS / "data_receipt.json")["files"]
+    stamps = [atlas_sha256, *(source[dataset] for dataset, _ in LINCS_VIEWS), "lincs_full_unclipped"]
+    return digest_bytes("|".join(stamps).encode()).hexdigest()
+
 
 def save(fit, query, data, dest):
     begin = perf_counter()
@@ -70,9 +78,7 @@ def read(root, fit, query):
     ids=atlas["drug_ids"]
     fit_drugs=np.unique(atlas["fit_drugs"])
     measured=atlas["lincs_mask"]
-    source=read_json(ASSETS/"data_receipt.json")["files"]
-    digests=[]
-    for dataset, key in (("lincs_modz24.parquet","lincs"),("paths_modz24.parquet","perturb_paths")):
+    for dataset, key in LINCS_VIEWS:
         observed=load_registered(dataset).reindex(ids)
         if key=="perturb_paths":
             observed=observed.reindex(columns=load_registered("pathway_weights.parquet").columns)
@@ -80,9 +86,7 @@ def read(root, fit, query):
         if not np.array_equal(np.isfinite(raw).all(1),measured):
             raise ValueError("LINCS reattachment cannot change natural measurement support")
         atlas[key],_=active_scores(raw,measured,fit_drugs)
-        digests.append(source[dataset])
-    exact=record["atlas_sha256"]+"|"+"|".join(digests)+"|lincs_full_unclipped"
-    return atlas, record | {"model_input_sha256":digest_bytes(exact.encode()).hexdigest(),
+    return atlas, record | {"model_input_sha256":model_input_digest(record["atlas_sha256"]),
                            "lincs_full_unclipped":True}
 
 

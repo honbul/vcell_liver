@@ -12,6 +12,7 @@ from nextgen_h2.score import adult_licob, external_labels
 from vc_build.io import _publish, publish_json, sha256
 
 from . import core_score
+from .atlas import model_input_digest
 from .data import ASSETS, ROOT, SCREENS, SPLITS, register, read_data
 from .error_components import decompose
 from .final_fit import exact_join, external_query, external_operating_point
@@ -42,6 +43,13 @@ def preflight():
         reference=parquet_lock(path,meta["forecast_sha256"])
         exact_join(expected,reference.set_index("row_id"))
         frame=reference.copy()
+        atlas_dir = ROOT / "features" / split
+        if not ext:
+            atlas_dir /= "outer"
+        atlas = read_json(atlas_dir / "receipt.json")
+        if sha256(atlas_dir / "schema.pkl") != atlas["schema_sha256"]:
+            raise ValueError(f"Final feature schema changed for {split}")
+        input_stamp = model_input_digest(atlas["atlas_sha256"])
         hashes[split]={"reference":meta["forecast_sha256"],"forecasts":{},"checkpoints":{}}
         for family in FAMILIES:
             chosen=(external_operating_point(lock,family) if ext else lock["splits"][split]["families"][family])
@@ -52,6 +60,12 @@ def preflight():
                     receipt["query_rows"],receipt["outer_labels_loaded"],receipt["lock_sha256"])!=(
                       split,family,seed,chosen["id"],len(expected),False,sha256(lock_path)) or not receipt.get("lincs_full_unclipped"):
                     raise ValueError("Frozen model evidence disagrees with the winning inner operating point")
+                if (receipt["schema_sha256"], receipt["model_input_sha256"], receipt["atlas_sha256"]) != (
+                    atlas["schema_sha256"], input_stamp, atlas["atlas_sha256"]
+                ):
+                    raise ValueError(f"Final fitting inputs changed for {split}/{family}/{seed}")
+                if receipt["selected_budget"] != (chosen["selected_branch_budgets"] or chosen["selected_budget"]):
+                    raise ValueError(f"Final tree or epoch budget changed for {split}/{family}/{seed}")
                 frame_seed=parquet_lock(part/"forecast.parquet",receipt["forecast_sha256"]).set_index("row_id")
                 exact_join(expected,frame_seed)
                 name=f"{family}__{seed}"
