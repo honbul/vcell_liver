@@ -188,6 +188,18 @@ def record_inner(stage, data, registry, coverage, outer, inner, root):
                 modes = {"lincs_path_observed": coverage_for(coverage, config), "lincs_path_all": None}
                 for name, spec in (("C2", Fusion("mask")), ("C3", Fusion(shuffle=True)), ("C4", Fusion())):
                     evaluate(engine.fusion(base, [config], spec, seed=seed), "path_diag/" + name, modes)
+                observed = coverage_for(coverage, config)
+                _, mask, _ = engine.representations(config)
+                for fraction in (0., .25, .50):
+                    live = stress_mask(mask, engine.stop, fraction, seed)
+                    kept = pd.Series(live[engine.stop:].cpu().numpy(), index=engine.query_drugs)
+                    tag = f"path/{fraction:g}"
+                    subsets = {tag + "/all": None, tag + "/originally_observed": observed,
+                               tag + "/retained": kept, tag + "/masked": observed & ~kept.reindex(
+                                   observed.index, fill_value=False)}
+                    evaluate(engine.baseline(base), tag + "/C1", subsets)
+                    evaluate(engine.fusion(base, [config], Fusion(stress=fraction), seed=seed),
+                             tag + "/path_psd/0.25", subsets)
             else:
                 fit_r2(engine, base, passed, coverage, seed, evaluate)
         elif stage == "r3":
@@ -202,6 +214,9 @@ def record_inner(stage, data, registry, coverage, outer, inner, root):
                 geometry = spec_dict(chosen["spec"])
             supported = coverage_for(coverage, config)
             modes = {"match_observed": supported, "match_all": None}
+            if chosen:
+                incumbent = engine.fusion(base, config_dict(chosen["configs"]), spec_dict(chosen["spec"]), seed=seed)
+                evaluate(incumbent, "match/incumbent", modes)
             for method, model in {
                 "match/C2": engine.fusion(base, trial, Fusion("mask"), seed=seed),
                 "match/C3": engine.fusion(base, trial, replace(geometry, shuffle=True), seed=seed),
@@ -286,7 +301,10 @@ def forecast_arms(engine, policy, seed):
 def offline_forecast(package, query, raw_rna):
     basis = package["basis"]
     cells = pd.Index(sorted(query.cell_id.unique()))
-    rna = raw_rna.reindex(index=cells, columns=basis.genes).fillna(package["medians"])
+    rna = raw_rna.reindex(index=cells, columns=basis.genes)
+    if rna.isna().all(axis=1).any():
+        raise ValueError("Query cell requires measured basal RNA")
+    rna = rna.fillna(package["medians"])
     raw = basis.cross(rna)["full"]
     context = None
     if package["pathway"] is not None:

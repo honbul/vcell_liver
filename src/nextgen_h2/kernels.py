@@ -61,7 +61,7 @@ class View:
 
 
 def view_geometry(raw, stop, transform, dimension, kind, device):
-    values = raw.astype(np.float32, copy=True)
+    values = raw.astype(np.float64, copy=True)
     present = np.isfinite(values).mean(axis=1) >= .75
     fit_rows = present & (np.arange(len(present)) < stop)
     if fit_rows.sum() < 10:
@@ -82,14 +82,14 @@ def view_geometry(raw, stop, transform, dimension, kind, device):
         raise ValueError("No varying fitting features")
     if transform == "select":
         ranked = np.argsort(-spread, kind="stable")[:min(768, keep.sum())]
-        standardized = (fit[:, ranked] - location[ranked]) / spread[ranked]
+        standardized = ((fit[:, ranked] - location[ranked]) / spread[ranked]).astype(np.float32)
         _, tri, pivots = qr(standardized, pivoting=True, mode="economic")
         accepted = np.abs(np.diag(tri)) > .2 * np.sqrt(len(fit))
         selected = ranked[pivots[:len(accepted)][accepted][:dimension]]
         keep = np.isin(np.arange(values.shape[1]), selected)
-    known = ((values[present][:, keep] - location[keep]) / spread[keep]).clip(-12, 12)
+    known = ((values[present][:, keep] - location[keep]) / spread[keep]).clip(-12, 12).astype(np.float32)
     if transform in {"pca", "white", "zca"}:
-        fitted = ((fit[:, keep] - location[keep]) / spread[keep]).clip(-12, 12)
+        fitted = ((fit[:, keep] - location[keep]) / spread[keep]).clip(-12, 12).astype(np.float32)
         count = min(dimension, fitted.shape[1], fitted.shape[0] - 1)
         pca = PCA(n_components=count, svd_solver="randomized", random_state=9171, iterated_power=4)
         pca.fit(fitted)
@@ -100,7 +100,7 @@ def view_geometry(raw, stop, transform, dimension, kind, device):
             # residual, so the compared geometries are not rotation-equivalent.
             known = known / np.sqrt(pca.explained_variance_ + .10)
         if transform == "zca":
-            native = ((values[present][:, keep] - location[keep]) / spread[keep]).clip(-12, 12)
+            native = ((values[present][:, keep] - location[keep]) / spread[keep]).clip(-12, 12).astype(np.float32)
             native -= pca.mean_
             truncated = (native @ pca.components_.T) @ pca.components_
             known = known @ pca.components_ + .10 * (native - truncated)

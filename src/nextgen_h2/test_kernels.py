@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from .kernels import guarded, normalized_gram, psd_sum, rbf, shuffled, stress_mask
+from .kernels import guarded, normalized_gram, psd_sum, rbf, shuffled, stress_mask, view_geometry
 from vc_build.structured_kernel import solve_residuals
 
 
@@ -56,6 +56,17 @@ class KernelInvariants(unittest.TestCase):
                                       s * y.ravel()).reshape(y.shape) * weights.sqrt()
         coefficients, _, _ = solve_residuals(cell_x, drug_x, weights, y, 4., tolerance=1e-10)
         torch.testing.assert_close(cell_x @ coefficients @ drug_x, cell_x @ expected @ drug_x, atol=1e-8, rtol=0)
+
+    def test_finite_geometry_with_large_cached_features(self):
+        rng = np.random.default_rng(43)
+        raw = rng.normal(size=(15, 12))
+        raw[:, 2] *= 1e19
+        raw[2, 3] = np.nan
+        raw[-1] *= 100
+        primary = view_geometry(raw, 12, "white", 8, "rbf", "cpu")
+        induced = view_geometry(raw[:12], 12, "white", 8, "rbf", "cpu")
+        self.assertTrue(torch.isfinite(primary.gram).all())
+        torch.testing.assert_close(primary.gram[:12, :12], induced.gram, atol=1e-6, rtol=0)
 
     def test_gating_mask_and_permutation(self):
         base = torch.arange(12, dtype=torch.float64).reshape(2, 6) / 7

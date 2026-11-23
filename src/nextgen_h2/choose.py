@@ -97,8 +97,14 @@ def select_fusion(frames, registered):
     dual = None
     if len(all_selected) == 2:
         dual_rho = scored(drug, "dual/norm/.25", "dual/all")
-        dual = {"natural_rho": dual_rho, "best_single_natural_rho": all_selected[best]["natural_rho"]}
-        if dual_rho >= dual["best_single_natural_rho"] + .02:
+        spec = all_selected[best]["champion"]["spec"]
+        single = f"{best}/0/{spec['method']}/{spec['weight']:g}"
+        joint_cell = pd.concat([cell[cell.support.eq("dual/all")],
+                                cell[cell.support.eq(f"{best}/0/all") & cell.arm.eq(single)].assign(support="dual/all")])
+        protection = diff(joint_cell, "dual/norm/.25", single, "dual/all", "ndcg_at_5")
+        dual = {"natural_rho": dual_rho, "best_single_natural_rho": all_selected[best]["natural_rho"],
+                "ndcg": protection}
+        if dual_rho >= dual["best_single_natural_rho"] + .02 and protection["lo"] >= -.01:
             configs = [Representation(**registered[view]["config"]) for view in sorted(all_selected)]
             champion = candidate(configs, Fusion("norm"), naive=all_selected[best]["naive"])
             dual["selected"] = True
@@ -125,19 +131,17 @@ def select_matching(drug, plan):
         geom = diff(drug, arm, "match/geometry", support)
         mask = diff(drug, arm, "match/C2", support)
         shuffled = diff(drug, arm, f"match/shuffled/{strength:g}", support)
-        scores[strength] = {"geometry": geom, "mask": mask, "shuffle": shuffled,
-                           "pass": geom["delta"] > 0 and geom["lo"] > 0 and h2a(mask, shuffled),
+        incumbent = (diff(drug, arm, "match/incumbent", support)
+                     if "match/incumbent" in set(drug.arm) else None)
+        clears_incumbent = incumbent is None or (incumbent["delta"] > 0 and incumbent["lo"] > 0)
+        scores[strength] = {"geometry": geom, "mask": mask, "shuffle": shuffled, "incumbent": incumbent,
+                           "pass": geom["delta"] > 0 and geom["lo"] > 0 and h2a(mask, shuffled) and clears_incumbent,
                            "all_rho": scored(drug, arm, "match_all")}
     best = max((x for x in scores if scores[x]["pass"]), key=lambda x: scores[x]["all_rho"], default=None)
     champ = plan["champion"]
     if best is not None:
         if champ is None or settings_key(champ) == ("painting",):
-            # A second view cannot join an individually supported view unless both clear Round 1.
-            # Painting selection is retained unless a like-for-like comparison is available.
-            if champ is None:
-                champ = candidate([Representation(**plan["path_config"])], Fusion(match=best))
-            else:
-                best = None
+            champ = candidate([Representation(**plan["path_config"])], Fusion(match=best))
         else:
             champ = champ | {"spec": champ["spec"] | {"match": best}}
     return champ, {"strengths": scores, "selected_strength": best}
