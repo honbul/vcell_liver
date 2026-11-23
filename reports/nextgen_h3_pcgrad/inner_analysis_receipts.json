@@ -1,0 +1,1371 @@
+{
+  "round1": {
+    "input_forecast_and_gradient_sha256": {
+      "CTRPv2-0": "2c91d967eb6bc0097932b0e87f78cf37bfda5317e160546b99c635fb8c4c15a3",
+      "CTRPv2-0/gradients-inner0": "3d32103e0c0195014a007dea26c56f7df86b194225d5ea6428f6236884aee427",
+      "CTRPv2-0/gradients-inner1": "d10af8411cfdacf3b7786c4b31a701809241dda20c31041788d378d2f699dc32",
+      "CTRPv2-1": "5e093c4d3a4c93deb1ea80fc41de0f23dd19cbf0ed492f3a1053d0abe3058e0f",
+      "CTRPv2-1/gradients-inner0": "0d364e37e3008864263ebcb836d813e606b44e2f8344ce5d76ec2b5cba9a17aa",
+      "CTRPv2-1/gradients-inner1": "d31868959e10de648b059e629ee78dafa3c31ab80397c3535c9e6adfd62d1fd8",
+      "CTRPv2-2": "c4f2ef93056f5820f09567ffa905d24cadf3aa7f0c438e9835ebfc609b75b4a3",
+      "CTRPv2-2/gradients-inner0": "047c40ef38ebb776b4972f97b54fe4defcc156bc508d1dc24acb6a98578b1866",
+      "CTRPv2-2/gradients-inner1": "d4a5a2829ade1d1beb83c14c1a37d4a1900e44b125c7b7b06486444bd5dc74fc",
+      "GDSC2-0": "103aad5b4013905cd9eb939f3ac6a26c391a537668121d33ca122064418a845e",
+      "GDSC2-0/gradients-inner0": "1f2ad5e12cea64e601ba6be424adef47b4e2a00913f48429c5a2b42c94ffa66c",
+      "GDSC2-0/gradients-inner1": "3f5a0ad1d6edbdf3a807a8ddf817705212b2864aac26ce35e81c3b810f74870d",
+      "GDSC2-1": "67ededfc337e3f0651cb846f8722cc327d48b4bedefc9f7b3a5cd840d03b2e35",
+      "GDSC2-1/gradients-inner0": "275a7242e1c87e4dfedca6e53dd78771f7bc21367a31e5f3a40bd2d4858b3251",
+      "GDSC2-1/gradients-inner1": "831dbb9443d918d131bf7deceb0edd23e9c4201b11b654354f71f28c9ca90578",
+      "GDSC2-2": "2ad1d50494549d5af6c5f5645726ee19a5bfc57cdbb030b3bee98e2678f5fcb0",
+      "GDSC2-2/gradients-inner0": "0441ec5c08cd1a3dda4f7b85a9b70090841b7ad7e9b12449d6e3cdeba91ef6e4",
+      "GDSC2-2/gradients-inner1": "23cb44e2ba7899819989a20288f7c762aec66e908fc84c1718d80223025937d6",
+      "PRISM20Q2-0": "a58d3a3d1239a839c6aa98c626abfc1433576898c05b06f7365b22fccca91c77",
+      "PRISM20Q2-0/gradients-inner0": "47af465885692369940f9d4f7d1ecd11c3190a3babf7014e4455e3573d009661",
+      "PRISM20Q2-0/gradients-inner1": "ae71f2906b258cae34db239aabbc8c2c975bcbc32017bd3183d0c21ab7341b55",
+      "PRISM20Q2-1": "8a2c199108dca8211addebdf99e077a296f9183b14854728a6e77411e2516c38",
+      "PRISM20Q2-1/gradients-inner0": "dc9d1abf7feee11fcda2d90d75e1e04a43169e8c3a8b654ee336cfd1bc9620d2",
+      "PRISM20Q2-1/gradients-inner1": "6e231c920085c20ba3289614601ad4015c4c0584f838db52dbee5295cb844cde",
+      "PRISM20Q2-2": "4abb819b56b193628d67492db43049135e3774c7360460c9a5c01236f7442871",
+      "PRISM20Q2-2/gradients-inner0": "fa166692426f8a88a12c7ed58b58463612ca217e579ebefb32ff0e9e659da10b",
+      "PRISM20Q2-2/gradients-inner1": "25a01bd1b6cc4bcb3a7fec594e10343ae4573527977ac8fc1a747c2aca2d8860"
+    },
+    "settings_by_split": {
+      "CTRPv2-0": {
+        "G0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "smooth",
+          "name": "G0",
+          "weight": 0
+        },
+        "G1_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w0",
+          "weight": 0
+        },
+        "G1_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w1",
+          "weight": 1
+        },
+        "G1_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w2",
+          "weight": 2
+        },
+        "G2_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w0",
+          "weight": 0
+        },
+        "G2_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w1",
+          "weight": 1
+        },
+        "G2_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w2",
+          "weight": 2
+        },
+        "G3": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "alternating",
+          "name": "G3",
+          "weight": 0
+        }
+      },
+      "CTRPv2-1": {
+        "G0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "smooth",
+          "name": "G0",
+          "weight": 0
+        },
+        "G1_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w0",
+          "weight": 0
+        },
+        "G1_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w1",
+          "weight": 1
+        },
+        "G1_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w2",
+          "weight": 2
+        },
+        "G2_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w0",
+          "weight": 0
+        },
+        "G2_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w1",
+          "weight": 1
+        },
+        "G2_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w2",
+          "weight": 2
+        },
+        "G3": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "alternating",
+          "name": "G3",
+          "weight": 0
+        }
+      },
+      "CTRPv2-2": {
+        "G0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "smooth",
+          "name": "G0",
+          "weight": 0
+        },
+        "G1_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w0",
+          "weight": 0
+        },
+        "G1_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w1",
+          "weight": 1
+        },
+        "G1_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w2",
+          "weight": 2
+        },
+        "G2_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w0",
+          "weight": 0
+        },
+        "G2_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w1",
+          "weight": 1
+        },
+        "G2_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w2",
+          "weight": 2
+        },
+        "G3": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "alternating",
+          "name": "G3",
+          "weight": 0
+        }
+      },
+      "GDSC2-0": {
+        "G0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "smooth",
+          "name": "G0",
+          "weight": 0
+        },
+        "G1_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w0",
+          "weight": 0
+        },
+        "G1_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w1",
+          "weight": 1
+        },
+        "G1_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w2",
+          "weight": 2
+        },
+        "G2_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w0",
+          "weight": 0
+        },
+        "G2_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w1",
+          "weight": 1
+        },
+        "G2_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w2",
+          "weight": 2
+        },
+        "G3": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "alternating",
+          "name": "G3",
+          "weight": 0
+        }
+      },
+      "GDSC2-1": {
+        "G0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "smooth",
+          "name": "G0",
+          "weight": 0
+        },
+        "G1_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w0",
+          "weight": 0
+        },
+        "G1_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w1",
+          "weight": 1
+        },
+        "G1_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w2",
+          "weight": 2
+        },
+        "G2_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w0",
+          "weight": 0
+        },
+        "G2_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w1",
+          "weight": 1
+        },
+        "G2_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w2",
+          "weight": 2
+        },
+        "G3": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "alternating",
+          "name": "G3",
+          "weight": 0
+        }
+      },
+      "GDSC2-2": {
+        "G0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "smooth",
+          "name": "G0",
+          "weight": 0
+        },
+        "G1_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w0",
+          "weight": 0
+        },
+        "G1_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w1",
+          "weight": 1
+        },
+        "G1_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w2",
+          "weight": 2
+        },
+        "G2_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w0",
+          "weight": 0
+        },
+        "G2_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w1",
+          "weight": 1
+        },
+        "G2_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w2",
+          "weight": 2
+        },
+        "G3": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "alternating",
+          "name": "G3",
+          "weight": 0
+        }
+      },
+      "PRISM20Q2-0": {
+        "G0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "smooth",
+          "name": "G0",
+          "weight": 0
+        },
+        "G1_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w0",
+          "weight": 0
+        },
+        "G1_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w1",
+          "weight": 1
+        },
+        "G1_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w2",
+          "weight": 2
+        },
+        "G2_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w0",
+          "weight": 0
+        },
+        "G2_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w1",
+          "weight": 1
+        },
+        "G2_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w2",
+          "weight": 2
+        },
+        "G3": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "alternating",
+          "name": "G3",
+          "weight": 0
+        }
+      },
+      "PRISM20Q2-1": {
+        "G0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "smooth",
+          "name": "G0",
+          "weight": 0
+        },
+        "G1_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w0",
+          "weight": 0
+        },
+        "G1_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w1",
+          "weight": 1
+        },
+        "G1_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w2",
+          "weight": 2
+        },
+        "G2_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w0",
+          "weight": 0
+        },
+        "G2_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w1",
+          "weight": 1
+        },
+        "G2_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w2",
+          "weight": 2
+        },
+        "G3": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "alternating",
+          "name": "G3",
+          "weight": 0
+        }
+      },
+      "PRISM20Q2-2": {
+        "G0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "smooth",
+          "name": "G0",
+          "weight": 0
+        },
+        "G1_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w0",
+          "weight": 0
+        },
+        "G1_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w1",
+          "weight": 1
+        },
+        "G1_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "sum",
+          "name": "G1_w2",
+          "weight": 2
+        },
+        "G2_w0": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w0",
+          "weight": 0
+        },
+        "G2_w1": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w1",
+          "weight": 1
+        },
+        "G2_w2": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "G2_w2",
+          "weight": 2
+        },
+        "G3": {
+          "batch": "pairs",
+          "head": "native",
+          "method": "alternating",
+          "name": "G3",
+          "weight": 0
+        }
+      }
+    },
+    "summary_sha256": "7615a4b1567d4cb540ceeab36de1dc7ad40a8eb671452b02607719218aa993fc"
+  },
+  "round2-block": {
+    "input_forecast_and_gradient_sha256": {
+      "CTRPv2-0": "5ba56d4f959f841f93797a0fda269174cbfbdd966b1c8c2adca248f87205a598",
+      "CTRPv2-0/gradients-inner0": "9948ed9085987d8affa8cb9d6f247dc1df19c8ebd52e2e4caad18a93a7993293",
+      "CTRPv2-0/gradients-inner1": "ca995abab6fe2c75701bdcdc58627db8017999e96f3eee8345c8a242f007adbe",
+      "CTRPv2-1": "3d37f4d9c1d62fc06a81b836805f90fbc406f6b02dcdc278e3e8450a341355c7",
+      "CTRPv2-1/gradients-inner0": "8bd100e82164dbdef07210a07614a91131b114b302cbc286bad729bdcceeed83",
+      "CTRPv2-1/gradients-inner1": "7521b4c68074c105a97451aba502f9045f01be023e57be378334de8434f83d86",
+      "CTRPv2-2": "374d7abba2b33094afbd6cd64baccc0c2148dc6399481d99bff0b0d05a7f4191",
+      "CTRPv2-2/gradients-inner0": "4069e8f65f7d7e44dc61834484ecdfebae43f78c2c3b0ef6419a7613fbeee49e",
+      "CTRPv2-2/gradients-inner1": "d8a2529643e5562923ecbbf596cb34b8a8a644c4d86efe5f17be6ed6c8ee98c7",
+      "GDSC2-0": "1a5a17656636e14c72a3079a85b46329d22021c6c47122e41ce4e230152da980",
+      "GDSC2-0/gradients-inner0": "f8c06550b15620cfed2cb905f282b8238119c07a27b7ce0313dc1fbf46cfb2f0",
+      "GDSC2-0/gradients-inner1": "166f6a1ce864b42fd0489ffe4e1ace3af1e200203f30b6669e6e116a90b78e00",
+      "GDSC2-1": "5539f786ac9f83484f32dcc4274b89b48ab8fa9a25db12ef4b3c9021786c32d9",
+      "GDSC2-1/gradients-inner0": "174d49fc8ebca6c0681934acf53747fa9c4b9428a6098d9f7bfe5c151bea436c",
+      "GDSC2-1/gradients-inner1": "9399c42cc1d45d00a21a3c927634d8c50e954d30a27cc42f7c26284e8f2fd0d7",
+      "GDSC2-2": "f8ab7d792d650b6c8e789f0ef2a0988eb3dea6f14eee3263c900eba106bbdef1",
+      "GDSC2-2/gradients-inner0": "2335dbed32233e1c84d196724f5fb04783e2cd84fe3959888983f43166361c76",
+      "GDSC2-2/gradients-inner1": "739df90eb2ccfaac8f4b4005f7bb51f8780d94df9c76c8633821cfa843ce0eb4",
+      "PRISM20Q2-0": "0d2aa7a9f79e6186857eea15d447fddf6c25525972d16ced7d3087d02a8ba968",
+      "PRISM20Q2-0/gradients-inner0": "39420d6a510d1b89666072240b14bffe7cfbe6fc2943eb5207e1e6d8ee154ab5",
+      "PRISM20Q2-0/gradients-inner1": "6e3232b0721262a6e8b4dbce9f0360d20c849c33d762a5b6b1940e6245b992a8",
+      "PRISM20Q2-1": "1a013204aa52de2291471c0f049365d3ee01e038d0934b8781711dfa490b4043",
+      "PRISM20Q2-1/gradients-inner0": "e93c770ecef2820f51f771b130fe7c3e9c0c5a595c57a592a68934ce6f080b4c",
+      "PRISM20Q2-1/gradients-inner1": "2ac7fe6b2b8fcb999fbf2315dc7e327a7a5540cf6ea5b1d077ff2201972f00c4",
+      "PRISM20Q2-2": "460079a5999c338a674b4d47c00ced6a655f8196eb29fb50495851b7ecb6b965",
+      "PRISM20Q2-2/gradients-inner0": "2bf198203eb0e7b6076c0f53379314bef915e7260c310706a9e2957973967593",
+      "PRISM20Q2-2/gradients-inner1": "441fde1fb997625d4daa0403895266fac0b58d9a0915525ce7ecbb595d518490"
+    },
+    "settings_by_split": {
+      "CTRPv2-0": {
+        "B_pcgrad_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block4x3",
+          "weight": 1
+        },
+        "B_pcgrad_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block6x2",
+          "weight": 1
+        },
+        "B_sum_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block4x3",
+          "weight": 1
+        },
+        "B_sum_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block6x2",
+          "weight": 1
+        }
+      },
+      "CTRPv2-1": {
+        "B_pcgrad_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block4x3",
+          "weight": 0
+        },
+        "B_pcgrad_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block6x2",
+          "weight": 0
+        },
+        "B_sum_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block4x3",
+          "weight": 1
+        },
+        "B_sum_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block6x2",
+          "weight": 1
+        }
+      },
+      "CTRPv2-2": {
+        "B_pcgrad_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block4x3",
+          "weight": 0
+        },
+        "B_pcgrad_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block6x2",
+          "weight": 0
+        },
+        "B_sum_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block4x3",
+          "weight": 0
+        },
+        "B_sum_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block6x2",
+          "weight": 0
+        }
+      },
+      "GDSC2-0": {
+        "B_pcgrad_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block4x3",
+          "weight": 2
+        },
+        "B_pcgrad_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block6x2",
+          "weight": 2
+        },
+        "B_sum_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block4x3",
+          "weight": 0
+        },
+        "B_sum_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block6x2",
+          "weight": 0
+        }
+      },
+      "GDSC2-1": {
+        "B_pcgrad_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block4x3",
+          "weight": 1
+        },
+        "B_pcgrad_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block6x2",
+          "weight": 1
+        },
+        "B_sum_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block4x3",
+          "weight": 1
+        },
+        "B_sum_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block6x2",
+          "weight": 1
+        }
+      },
+      "GDSC2-2": {
+        "B_pcgrad_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block4x3",
+          "weight": 0
+        },
+        "B_pcgrad_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block6x2",
+          "weight": 0
+        },
+        "B_sum_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block4x3",
+          "weight": 0
+        },
+        "B_sum_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block6x2",
+          "weight": 0
+        }
+      },
+      "PRISM20Q2-0": {
+        "B_pcgrad_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block4x3",
+          "weight": 2
+        },
+        "B_pcgrad_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block6x2",
+          "weight": 2
+        },
+        "B_sum_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block4x3",
+          "weight": 2
+        },
+        "B_sum_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block6x2",
+          "weight": 2
+        }
+      },
+      "PRISM20Q2-1": {
+        "B_pcgrad_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block4x3",
+          "weight": 0
+        },
+        "B_pcgrad_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block6x2",
+          "weight": 0
+        },
+        "B_sum_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block4x3",
+          "weight": 0
+        },
+        "B_sum_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block6x2",
+          "weight": 0
+        }
+      },
+      "PRISM20Q2-2": {
+        "B_pcgrad_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block4x3",
+          "weight": 1
+        },
+        "B_pcgrad_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "pcgrad",
+          "name": "B_pcgrad_block6x2",
+          "weight": 1
+        },
+        "B_sum_block4x3": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block4x3",
+          "weight": 2
+        },
+        "B_sum_block6x2": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "sum",
+          "name": "B_sum_block6x2",
+          "weight": 2
+        }
+      }
+    },
+    "summary_sha256": "bb8cf7481df9f74eb5b460564063165420c747050e13ee2d46ec78d3aff4be73"
+  },
+  "round2-head": {
+    "input_forecast_and_gradient_sha256": {
+      "CTRPv2-0": "4b467de4c3d48a27e9c3f280603fafe10440e6948757fbc71518e4413b67c6f5",
+      "CTRPv2-1": "d819cf9b4d144dc0e491580e447788933a3101f251e8f00be1368d376e1f2845",
+      "CTRPv2-2": "4fbda3e93a59f7a1728aee9654851b861a054732c22d03e92bc849a9cf222fc5",
+      "GDSC2-0": "52965e4d38d1c959bc1c1d6b81fc8e73646c7ef355284ab4d98c7dd303bc8d10",
+      "GDSC2-1": "1112fdec500e0666393e3c0f5f190a56e8acbf42aaa03ae86eb3160d8ffbc66b",
+      "GDSC2-2": "89e19ac358a01bb3a702f2be7deff8a6f3475d4a89a1aac18439b1cedfb267e1",
+      "PRISM20Q2-0": "06f0041bcd5771151bd9ff0ff4d754fe0e8ee163f0ce4a74a61459b97643acee",
+      "PRISM20Q2-1": "ff1bf435c6bbbe57c6aa4c92802a59a567a7fbab18be0a62d7bc57e4d7fa89be",
+      "PRISM20Q2-2": "333e697d91e4c38938ad94b829dd2ee661e245c7b66f6db3233c1871ca65cee2"
+    },
+    "settings_by_split": {
+      "CTRPv2-0": {
+        "D_separate_adaptive": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "normalized",
+          "name": "D_separate_adaptive",
+          "weight": 1
+        },
+        "D_separate_sum": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "sum",
+          "name": "D_separate_sum",
+          "weight": 1
+        },
+        "D_shared_adaptive": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "normalized",
+          "name": "D_shared_adaptive",
+          "weight": 1
+        },
+        "D_shared_sum": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "sum",
+          "name": "D_shared_sum",
+          "weight": 1
+        }
+      },
+      "CTRPv2-1": {
+        "D_separate_adaptive": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "gradnorm",
+          "name": "D_separate_adaptive",
+          "weight": 1
+        },
+        "D_separate_sum": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "sum",
+          "name": "D_separate_sum",
+          "weight": 1
+        },
+        "D_shared_adaptive": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "gradnorm",
+          "name": "D_shared_adaptive",
+          "weight": 1
+        },
+        "D_shared_sum": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "sum",
+          "name": "D_shared_sum",
+          "weight": 1
+        }
+      },
+      "CTRPv2-2": {
+        "D_separate_adaptive": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "gradnorm",
+          "name": "D_separate_adaptive",
+          "weight": 0
+        },
+        "D_separate_sum": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "sum",
+          "name": "D_separate_sum",
+          "weight": 0
+        },
+        "D_shared_adaptive": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "gradnorm",
+          "name": "D_shared_adaptive",
+          "weight": 0
+        },
+        "D_shared_sum": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "sum",
+          "name": "D_shared_sum",
+          "weight": 0
+        }
+      },
+      "GDSC2-0": {
+        "D_separate_adaptive": {
+          "batch": "block6x2",
+          "head": "separate",
+          "method": "gradnorm",
+          "name": "D_separate_adaptive",
+          "weight": 0
+        },
+        "D_separate_sum": {
+          "batch": "block6x2",
+          "head": "separate",
+          "method": "sum",
+          "name": "D_separate_sum",
+          "weight": 0
+        },
+        "D_shared_adaptive": {
+          "batch": "block6x2",
+          "head": "shared",
+          "method": "gradnorm",
+          "name": "D_shared_adaptive",
+          "weight": 0
+        },
+        "D_shared_sum": {
+          "batch": "block6x2",
+          "head": "shared",
+          "method": "sum",
+          "name": "D_shared_sum",
+          "weight": 0
+        }
+      },
+      "GDSC2-1": {
+        "D_separate_adaptive": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "normalized",
+          "name": "D_separate_adaptive",
+          "weight": 1
+        },
+        "D_separate_sum": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "sum",
+          "name": "D_separate_sum",
+          "weight": 1
+        },
+        "D_shared_adaptive": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "normalized",
+          "name": "D_shared_adaptive",
+          "weight": 1
+        },
+        "D_shared_sum": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "sum",
+          "name": "D_shared_sum",
+          "weight": 1
+        }
+      },
+      "GDSC2-2": {
+        "D_separate_adaptive": {
+          "batch": "block6x2",
+          "head": "separate",
+          "method": "gradnorm",
+          "name": "D_separate_adaptive",
+          "weight": 0
+        },
+        "D_separate_sum": {
+          "batch": "block6x2",
+          "head": "separate",
+          "method": "sum",
+          "name": "D_separate_sum",
+          "weight": 0
+        },
+        "D_shared_adaptive": {
+          "batch": "block6x2",
+          "head": "shared",
+          "method": "gradnorm",
+          "name": "D_shared_adaptive",
+          "weight": 0
+        },
+        "D_shared_sum": {
+          "batch": "block6x2",
+          "head": "shared",
+          "method": "sum",
+          "name": "D_shared_sum",
+          "weight": 0
+        }
+      },
+      "PRISM20Q2-0": {
+        "D_separate_adaptive": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "cagrad",
+          "name": "D_separate_adaptive",
+          "weight": 2
+        },
+        "D_separate_sum": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "sum",
+          "name": "D_separate_sum",
+          "weight": 2
+        },
+        "D_shared_adaptive": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "cagrad",
+          "name": "D_shared_adaptive",
+          "weight": 2
+        },
+        "D_shared_sum": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "sum",
+          "name": "D_shared_sum",
+          "weight": 2
+        }
+      },
+      "PRISM20Q2-1": {
+        "D_separate_adaptive": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "cagrad",
+          "name": "D_separate_adaptive",
+          "weight": 0
+        },
+        "D_separate_sum": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "sum",
+          "name": "D_separate_sum",
+          "weight": 0
+        },
+        "D_shared_adaptive": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "cagrad",
+          "name": "D_shared_adaptive",
+          "weight": 0
+        },
+        "D_shared_sum": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "sum",
+          "name": "D_shared_sum",
+          "weight": 0
+        }
+      },
+      "PRISM20Q2-2": {
+        "D_separate_adaptive": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "gradnorm",
+          "name": "D_separate_adaptive",
+          "weight": 2
+        },
+        "D_separate_sum": {
+          "batch": "block4x3",
+          "head": "separate",
+          "method": "sum",
+          "name": "D_separate_sum",
+          "weight": 2
+        },
+        "D_shared_adaptive": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "gradnorm",
+          "name": "D_shared_adaptive",
+          "weight": 2
+        },
+        "D_shared_sum": {
+          "batch": "block4x3",
+          "head": "shared",
+          "method": "sum",
+          "name": "D_shared_sum",
+          "weight": 2
+        }
+      }
+    },
+    "summary_sha256": "bb5461769c0f85b78f75cec7a5b069a5a1f36e47658809c8c74efc569ea5fefc"
+  },
+  "round2-opt": {
+    "input_forecast_and_gradient_sha256": {
+      "CTRPv2-0": "32057b6762fde2a56213a918ef5f567a5978948c4fa86ee96389fd38a97fe372",
+      "CTRPv2-1": "60d334ff4bdce1175f31db754dcc5bd7f2a6cdd7793b40748102bb4b6ff0e4f6",
+      "CTRPv2-2": "67b1329d2fcde82bc80cb6688747e05eddc090fb449bacbbcac55011673832b2",
+      "GDSC2-0": "f2242780806f3cf00f25f7af04ad79058bd0a66779a1e59a1dac3775d717637d",
+      "GDSC2-1": "4d7b87984a9ce9086625610635c0c02d580bc7f1c7577f38394222fe36fede2a",
+      "GDSC2-2": "6661e19f8330f81432c1bd0ba9f56da36ebaa8d24b51a17ccd5158d46ce168f1",
+      "PRISM20Q2-0": "c3e227d1cc591ca74b49f9c656ea8dbaa8167a81e9e8e05ad4e160b922932893",
+      "PRISM20Q2-1": "0121f33b8fa615ab062f1154f5dfcc2b91e554bb33b1c279c371b1d1c422b895",
+      "PRISM20Q2-2": "f89f171c50db321a1bf9096877e4f412f30de7800b4db90549d5f8c0e8b21f4b"
+    },
+    "settings_by_split": {
+      "CTRPv2-0": {
+        "O_cagrad": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "cagrad",
+          "name": "O_cagrad",
+          "weight": 1
+        },
+        "O_gradnorm": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "gradnorm",
+          "name": "O_gradnorm",
+          "weight": 1
+        },
+        "O_normalized": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "normalized",
+          "name": "O_normalized",
+          "weight": 1
+        }
+      },
+      "CTRPv2-1": {
+        "O_cagrad": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "cagrad",
+          "name": "O_cagrad",
+          "weight": 1
+        },
+        "O_gradnorm": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "gradnorm",
+          "name": "O_gradnorm",
+          "weight": 1
+        },
+        "O_normalized": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "normalized",
+          "name": "O_normalized",
+          "weight": 1
+        }
+      },
+      "CTRPv2-2": {
+        "O_cagrad": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "cagrad",
+          "name": "O_cagrad",
+          "weight": 0
+        },
+        "O_gradnorm": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "gradnorm",
+          "name": "O_gradnorm",
+          "weight": 0
+        },
+        "O_normalized": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "normalized",
+          "name": "O_normalized",
+          "weight": 0
+        }
+      },
+      "GDSC2-0": {
+        "O_cagrad": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "cagrad",
+          "name": "O_cagrad",
+          "weight": 0
+        },
+        "O_gradnorm": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "gradnorm",
+          "name": "O_gradnorm",
+          "weight": 0
+        },
+        "O_normalized": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "normalized",
+          "name": "O_normalized",
+          "weight": 0
+        }
+      },
+      "GDSC2-1": {
+        "O_cagrad": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "cagrad",
+          "name": "O_cagrad",
+          "weight": 1
+        },
+        "O_gradnorm": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "gradnorm",
+          "name": "O_gradnorm",
+          "weight": 1
+        },
+        "O_normalized": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "normalized",
+          "name": "O_normalized",
+          "weight": 1
+        }
+      },
+      "GDSC2-2": {
+        "O_cagrad": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "cagrad",
+          "name": "O_cagrad",
+          "weight": 0
+        },
+        "O_gradnorm": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "gradnorm",
+          "name": "O_gradnorm",
+          "weight": 0
+        },
+        "O_normalized": {
+          "batch": "block6x2",
+          "head": "native",
+          "method": "normalized",
+          "name": "O_normalized",
+          "weight": 0
+        }
+      },
+      "PRISM20Q2-0": {
+        "O_cagrad": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "cagrad",
+          "name": "O_cagrad",
+          "weight": 2
+        },
+        "O_gradnorm": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "gradnorm",
+          "name": "O_gradnorm",
+          "weight": 2
+        },
+        "O_normalized": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "normalized",
+          "name": "O_normalized",
+          "weight": 2
+        }
+      },
+      "PRISM20Q2-1": {
+        "O_cagrad": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "cagrad",
+          "name": "O_cagrad",
+          "weight": 0
+        },
+        "O_gradnorm": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "gradnorm",
+          "name": "O_gradnorm",
+          "weight": 0
+        },
+        "O_normalized": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "normalized",
+          "name": "O_normalized",
+          "weight": 0
+        }
+      },
+      "PRISM20Q2-2": {
+        "O_cagrad": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "cagrad",
+          "name": "O_cagrad",
+          "weight": 2
+        },
+        "O_gradnorm": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "gradnorm",
+          "name": "O_gradnorm",
+          "weight": 2
+        },
+        "O_normalized": {
+          "batch": "block4x3",
+          "head": "native",
+          "method": "normalized",
+          "name": "O_normalized",
+          "weight": 2
+        }
+      }
+    },
+    "summary_sha256": "1b8c18162ad66c26940275491449e7af13d0a6d665302fc9b89cbd7cbde468cd"
+  }
+}

@@ -1,0 +1,276 @@
+{
+  "actual_input_hashes": {
+    "CTRPv2-0": "bcd70a53474b83532b03f950b8fc278f74651fa43d8bda7ed1d0c450bc555982",
+    "CTRPv2-1": "7a57eaaff7e4f134eeefa86b8743a0cc89de7829f6a01e22e30d61c5a73222c6",
+    "CTRPv2-2": "b0646010b664c26a5b27e8e0fd23fd264d98f5c83c90443699fa8ac1fb39015a",
+    "GDSC2-0": "00ac149de3811e80cd9a544f6141028b0ef0cfdc52a803fe18f2d3ce44115e86",
+    "GDSC2-1": "7e506d87e7d427d0a1040412cda2fd61469800f9b0c8e5296859c953b52be2d0",
+    "GDSC2-2": "7b1a9e6b2a9d5a4c85e48660aee9dc073dae9a904940f12bbb8dc519ff73bb82",
+    "PRISM20Q2-0": "f313b6085647965f48c58dc3a5e85117213e72386f90581b90a72a768df93663",
+    "PRISM20Q2-1": "59ed1cc1a05b6db9692952dbe5086095814a81f2862a4d4f9929fb40e7ead647",
+    "PRISM20Q2-2": "cc316af25c8f3f5b6737d3e8ae810aab08eff7283d6acd2914da2de51f7c0c34"
+  },
+  "claimed_utc": "2026-11-23T04:32:39.611814+00:00",
+  "data_manifest_sha256": "c187394659dac68c12a3c246a9da3a39675a0c84dd57c364af594bc00222a914",
+  "decisions": {
+    "H3a": {
+      "candidate": "G2",
+      "stage": "outer",
+      "verdict": "NO-GO"
+    },
+    "H3b": {
+      "candidate": null,
+      "stage": "inner",
+      "verdict": "NO-GO"
+    }
+  },
+  "final_lock_sha256": "e3b8842f386512b579a2a6fb88efa26808e4365d664ce7788903b088b933a98c",
+  "finished_utc": "2026-11-23T04:33:12.044886+00:00",
+  "gates": [
+    {
+      "baseline": "G1_matched",
+      "candidate": "G2",
+      "criteria": {
+        "drug_spearman_noninferior": true,
+        "ndcg_ci_positive": false,
+        "ndcg_gain": false,
+        "no_severe_loss": true,
+        "precision_noninferior": true,
+        "screens_positive": true
+      },
+      "hypothesis": "H3a",
+      "pass": false,
+      "required": true
+    },
+    {
+      "baseline": "G1_best",
+      "candidate": "G2",
+      "criteria": {
+        "drug_spearman_noninferior": true,
+        "ndcg_ci_positive": false,
+        "ndcg_gain": false,
+        "no_severe_loss": true,
+        "precision_noninferior": true,
+        "screens_positive": false
+      },
+      "hypothesis": "H3a",
+      "pass": false,
+      "required": true
+    },
+    {
+      "baseline": "structured",
+      "candidate": "G2",
+      "criteria": {
+        "drug_spearman_noninferior": false,
+        "ndcg_ci_positive": false,
+        "ndcg_gain": false,
+        "no_severe_loss": false,
+        "precision_noninferior": false,
+        "screens_positive": false
+      },
+      "hypothesis": "H3a",
+      "pass": false,
+      "required": false
+    },
+    {
+      "baseline": "drug_ridge",
+      "candidate": "G2",
+      "criteria": {
+        "drug_spearman_noninferior": false,
+        "ndcg_ci_positive": false,
+        "ndcg_gain": false,
+        "no_severe_loss": false,
+        "precision_noninferior": false,
+        "screens_positive": false
+      },
+      "hypothesis": "H3a",
+      "pass": false,
+      "required": false
+    },
+    {
+      "baseline": "drug_mean",
+      "candidate": "G2",
+      "criteria": {
+        "drug_spearman_noninferior": true,
+        "ndcg_ci_positive": true,
+        "ndcg_gain": false,
+        "no_severe_loss": false,
+        "precision_noninferior": true,
+        "screens_positive": false
+      },
+      "hypothesis": "H3a",
+      "pass": false,
+      "required": false
+    }
+  ],
+  "global_lineages": 990,
+  "native_observations": 45428,
+  "output_sha256": {
+    "H3_METRICS.tsv": "a86781d489f66098f7a22a203bab4675404bae8f01949da1a3fc28541738ebdd",
+    "H3_PAIRED_95CI.tsv": "a3fa8489b43ed9b2f968a2448577fc02c91d27703c6dad7eaf55f501a9a02edc",
+    "H3_PANCANCER_BY_TISSUE.tsv": "2237af457c2ab9017e160831c6a011ff1468ce2619dd079f455ad21b31f5e96b"
+  },
+  "predictions": {
+    "CTRPv2-0": {
+      "archived_comparator_sha256": "d751346d5690faae1e9305a822e13647e74536d781cef0606935875e3ed47caa",
+      "checkpoints": {
+        "G1_best__11711.pt": "6fbc9b88ae47f8f8a89631a26ce3881efc5f3db4fdd4707f5776689415316110",
+        "G1_best__11729.pt": "e0327e6a0f6e09cc9f137dea6bc8358a430de67e79eb3290154e319216ec6d3f",
+        "G1_best__11743.pt": "a68b6a0633124e16dbd673c23c6298c9316ccbec6fd3afa274038c828ef1580f",
+        "G1_matched__11711.pt": "2aba9bc6bee56d0077061de70d5d404a98bf3ff49c426119fc02056ca3368170",
+        "G1_matched__11729.pt": "247f76e603eef8fc86db80f614a191ba8e371a4b194c0e2c34fcb1369b4d3ddb",
+        "G1_matched__11743.pt": "38b2e0130dc494ae13acb3faa0ded73b3c652dbf3f8b58d02005c09e45aed269",
+        "G2__11711.pt": "3c40df8c433f729030eb763784bbc7c2e1a97fb01c8e842af09cd105b96b5939",
+        "G2__11729.pt": "ec768ddafcdd91ad39a1df3a6a6b73c70fcfad3afa25d4f98f31c5f11198328c",
+        "G2__11743.pt": "4a5a9326ac25638d6461fd40f74dbe4280d748192a74efdaa31c8431af6e6c9b"
+      },
+      "forecast_sha256": "e57380569a2c4d47306493c39676271021188efaa498b4fde94b68cf663790bc",
+      "methods": 12,
+      "rows_per_method": 7175
+    },
+    "CTRPv2-1": {
+      "archived_comparator_sha256": "1418cff57250af80a24f9376e05b0d9e3da27c27a31b651678bcf0b1c9e3d7af",
+      "checkpoints": {
+        "G1_best__11711.pt": "0836f9945a051995c9ac268fdb49dcd9ac22c2cd1fbe66dcd6ef1b7653e47d6e",
+        "G1_best__11729.pt": "b6bc983263a7751b083b3ba041f9000068770ab0d67cecea7e79bf0106c1c952",
+        "G1_best__11743.pt": "704ea1f09eb01190f744815529b5fbaf04de7a2bd30c3b4e4ee156334d5c8f57",
+        "G1_matched__11711.pt": "af5863c2f6002eaae21175c53425dfb9f6d8cec9d6b2329ce68b4070ff27544d",
+        "G1_matched__11729.pt": "ed714f531d8e92952eaec83e36b35220e79afb1560e36bb731afba9851a7586b",
+        "G1_matched__11743.pt": "084894888d921ca93c553ef7492a278da49d9075ffaa38cc18caa27088469b13",
+        "G2__11711.pt": "eae1dfbccfe8a0da18ea02c747ee88e9b29ca402c7829a37ec512fa76ebc8fcb",
+        "G2__11729.pt": "45a2e78225e3b25ccaeec707cc3a1a7a050ed69109cdbc2e7d23a602cd2ba5e1",
+        "G2__11743.pt": "8ce1d3164cdec66f6c388a87ecf76ed8e4b8920f920395d916cfe54734fce3fe"
+      },
+      "forecast_sha256": "f054ea438bd0d13a35e45a4f4f2d7d51241061ce29406cbd8c30832e0c879407",
+      "methods": 12,
+      "rows_per_method": 7044
+    },
+    "CTRPv2-2": {
+      "archived_comparator_sha256": "5cf1a88cd567d5221ab0ae01c2eb86587a5a528345320a717a901fe19be336e4",
+      "checkpoints": {
+        "G1_best__11711.pt": "6c7b11bf21aa7227518464c8bbc922f437981c28a8c77ea6f1ef533c8b7c79b5",
+        "G1_best__11729.pt": "fa775b38c9078da4a13d58c82f32d1982ed9842fd7fda3179817f995933aa83d",
+        "G1_best__11743.pt": "eaa8a4b68e0540e1bb949bc59e3d753754a889dd1fc07775cfd0aef056ed91f5",
+        "G1_matched__11711.pt": "6675e1ca3fd4d46635c4be70dd721364fe96998a469bb8fd65b987d0048cb1b8",
+        "G1_matched__11729.pt": "38be6f167bc7713b0a8df323f3ebeb182ad0acec8ef0db8e93d15bad81f44db0",
+        "G1_matched__11743.pt": "482722ac2fff4cfcdee343f9d45be77484ecd55b3396668432fc961f374068d7",
+        "G2__11711.pt": "7d6078a9d5e91e0435dce2df4dc901691217a414cdb118d911e225d47c30b2bc",
+        "G2__11729.pt": "fa1e931a8c92f8e5ac8ac046c53f9bb42b5cdfdfb31e200fd4d79bd2e6e70515",
+        "G2__11743.pt": "7a1996454a69045af19634a1e17d53a9e62642947ce150ec00017d5f4175e623"
+      },
+      "forecast_sha256": "edaea025462299dd06c514314ba0fc2a1bcf475d8d3dcbc988ea6f00f7b0c2c3",
+      "methods": 12,
+      "rows_per_method": 7239
+    },
+    "GDSC2-0": {
+      "archived_comparator_sha256": "b246fdf0473b7fd9f7bba9255ceac073300acd698e4e4c6a4fbfe0e0a93cf48a",
+      "checkpoints": {
+        "G1_best__11711.pt": "3d4759964f71c83ee5553f6ad67ef49f780329102dbd46bba3a0e58f960363d7",
+        "G1_best__11729.pt": "2dcc447f7cdc4e9a130640538a0b9d193e345332e6ab0adc0dbde142e118554e",
+        "G1_best__11743.pt": "ad97614a723bf33917364db5acd452193911b9ebccff12f5f8ab0e2272ee2cfa",
+        "G1_matched__11711.pt": "375770664b7bbbb24daa30452349b2f2db03b36daa9256f1e5c1d0e2efc11195",
+        "G1_matched__11729.pt": "a4085598f0de7e6a81ced5ccab445a84dc4a3155abd36c095718984cc979a450",
+        "G1_matched__11743.pt": "ee1eb34c195e2a1559aab838a904b2b7a01ec5fd13d9f779ec1cfe63c358bda9",
+        "G2__11711.pt": "bfdc81c51a4e5c00fa746e99f5e57801cea07471a326f1cd3ae5f9277cda144b",
+        "G2__11729.pt": "cc07e20c52696713c465a9429b1dd11e1ae5278123bd34850237038ec19e3d8b",
+        "G2__11743.pt": "6dc81e82003fba84edf0e88227bf3886ccc22ae18550a34e51ac512ba08cc15a"
+      },
+      "forecast_sha256": "537cdb8804708565e69f403c8aedf0e1421db8265bc56f687611391aec0d67b6",
+      "methods": 12,
+      "rows_per_method": 5664
+    },
+    "GDSC2-1": {
+      "archived_comparator_sha256": "bcdf5390f6d00306f0a7709f9fbd2c39f55350182ac64b832d7a759977213390",
+      "checkpoints": {
+        "G1_best__11711.pt": "e9e5793dba29051aed371273f660d1220d844ffb34a2720209e7fb2e1755a608",
+        "G1_best__11729.pt": "7f400a94d63cbfd8ed949dc0b714e05a695fda5c6c785cd41910a9e1cee7cc46",
+        "G1_best__11743.pt": "b6f3b8509a4d4fbe3293adf7240bca91bcd5b5a0861acbc19c18bb12aa083664",
+        "G1_matched__11711.pt": "c10fa8568ed8b643b6c55134916fa184207d5f3e77536d8ed0632d914cb74d3b",
+        "G1_matched__11729.pt": "c57bd53e3a0627e485ee857ecce98c8d7b6f3a5ee4bb47d256add21c85084915",
+        "G1_matched__11743.pt": "357213b24b915b1199abe54c9b9f71eafd9b93a97f810c27ff60151fcd84ea79",
+        "G2__11711.pt": "4fcd17ac911816bf789826ca6abeedc7d8eacbe51cd85dda77ba85576b4a2906",
+        "G2__11729.pt": "abd3d78f697289675aa4e789071b232aec479d664880a6f3c7f772f62bab106b",
+        "G2__11743.pt": "c9c432eff57b859fdd198c25b87c3aeff2ec55a933c4fea4b58de2356b429420"
+      },
+      "forecast_sha256": "6494c56f931face185986d1ff562fe62bac3c6b04ed3f0c54a494b157fde1884",
+      "methods": 12,
+      "rows_per_method": 5779
+    },
+    "GDSC2-2": {
+      "archived_comparator_sha256": "bdb0b0fca4bcb7becbec98fc499d9365e921d818d8fabc44220a7ee39c428af9",
+      "checkpoints": {
+        "G1_best__11711.pt": "23c65734f06ed416fb798701b599b0a2743c6ca3e3ac9967ff07dd866dde93c0",
+        "G1_best__11729.pt": "206e57a964d52bd716885ff293ff56c1cd665b7797c60cd7b75d08d248b1c72b",
+        "G1_best__11743.pt": "0305b2894d4d08d82f25886277b6e6f84e561c0ac651c20bf1a42ea0d311d575",
+        "G1_matched__11711.pt": "5f73813e9e5b1c42e5b0e52e7bd2797bf9622f1a9b7ccba76f94df6ec9d432ad",
+        "G1_matched__11729.pt": "fb6ab167e3dc09e00dec12bd693c59f6b7faf33eb8719fd81bfddb5ec0cb54f1",
+        "G1_matched__11743.pt": "096f01177d59cb6d9ae3101b1ec5ee113d35190d373ee5a49ca3d606f9911b09",
+        "G2__11711.pt": "e8f5861436a9cd83b0ff388376a83f714113652fd0d722c74bdc10633a339732",
+        "G2__11729.pt": "1039fec0669cf8100373ae95845d9f782b2fe4b52a1cc5aa99189bf49a69bca5",
+        "G2__11743.pt": "7dab28e015c58b3f56c00bea45d1b493c4c00ca9aa96486547141eb0858025c5"
+      },
+      "forecast_sha256": "11bbf12e91ddccde3a624535439e5f4a9696b5f800d4c0aaa18e056d7b58dd07",
+      "methods": 12,
+      "rows_per_method": 5588
+    },
+    "PRISM20Q2-0": {
+      "archived_comparator_sha256": "06cb413e4473b75afa109e8bca416b6f4993cb79217633dd7122a8ecd81893d7",
+      "checkpoints": {
+        "G1_best__11711.pt": "11227738a3e7946c90e999500c85ee38de5cc2ae3d094f7f83a3304fafdea8c5",
+        "G1_best__11729.pt": "f6545aae483a6421c31c92ade0e64ba91b4c20543a1e581a48bb412b09805750",
+        "G1_best__11743.pt": "3d464ca8a36d2c794b2c415ad172524068a4330f54dedc46ce5b33ce6f598dcd",
+        "G1_matched__11711.pt": "624e10ee03be538b4056275059e1fb116d166ce8d42195f23ebd2c459a930b84",
+        "G1_matched__11729.pt": "cb9b0aab6b00454fe9f8e8fa139b0bfd81c098ff49f1a8eaec7654e6885997e1",
+        "G1_matched__11743.pt": "c2e0d6093654865e241dc27efea95dc076afb229d25d7dc7143d4961df1559a1",
+        "G2__11711.pt": "fe0509f755e5bc4a8869f2ee01f2ddecb9846e7299fd485eb5665256fdc45de7",
+        "G2__11729.pt": "9996f236e6f7df89628381883e8f444276af77079fe2769bb6e9abddd973f3da",
+        "G2__11743.pt": "222de008996e9dd8c7f3a2c0ce9288cd22809111cb3ee12b6df8a0069cfcc965"
+      },
+      "forecast_sha256": "68273e44edfe97cc120188edf43ce76e7fff1c51f3bcaa3e28a967511218cbab",
+      "methods": 12,
+      "rows_per_method": 2290
+    },
+    "PRISM20Q2-1": {
+      "archived_comparator_sha256": "448d6b07e64858330c66f9e1a0ce0c02121e97994125a4d6ab757978dbce3985",
+      "checkpoints": {
+        "G1_best__11711.pt": "4e1eb2fa9d9263d2ec8ba9f8b6f3f9d09f15adb7059362e46fc4d1b2fe38536a",
+        "G1_best__11729.pt": "fc1dddc5f1f339ab6ce43dc9560a928bf1f9519dfc212570958fe2548af9ed90",
+        "G1_best__11743.pt": "0bc61639e98ffddfeb01d403c9092fcaa8a86de641113583d6cf7fcb08bf80ca",
+        "G1_matched__11711.pt": "a96ab55a3782f8470f15aa9c9e629897b450d2e00ed6aa30cb300bd4500fa479",
+        "G1_matched__11729.pt": "ab20ba4980b4b3a03529d1a6088b246ac3e33545bce9b2acb668473a0b54f13a",
+        "G1_matched__11743.pt": "4ff4fa33422984e28b2c5f4651fb806ed1632a012ff04a0f53150cd72e855107",
+        "G2__11711.pt": "55a5d17d41e2a5d2d266a5cde4e20537a7d0982f99d8a7ce02d49fde7acedf50",
+        "G2__11729.pt": "daa38551b0466649a8cd209f3a831bf2deda386b347cc55c509aaafdb3ef2099",
+        "G2__11743.pt": "e260835cf0d8635fb3be6768cde2757164739fe14b089245c8efbde69da325a7"
+      },
+      "forecast_sha256": "3b5bb9badc22a30c695ca39dc57fdab27a10beb483a213d1c7719a2759399196",
+      "methods": 12,
+      "rows_per_method": 2350
+    },
+    "PRISM20Q2-2": {
+      "archived_comparator_sha256": "bc17a4bf493667203d1e24b3a9e8c353fa7d3b37e6e873780f721bb59646516b",
+      "checkpoints": {
+        "G1_best__11711.pt": "8b4d5c24a0206583bcfd27825a6320e21d0d3f045e0d0fcb78489c013e484a3c",
+        "G1_best__11729.pt": "16a3a25572442166a1c4737b52ff2ea6b994a1cff1574136c17e43371c382df0",
+        "G1_best__11743.pt": "b6437fe879e5a8161aa8fca74cc7181f460bbe04808ac7575fed1da9ec53fa4b",
+        "G1_matched__11711.pt": "505a73e9b4520602b852717adbe16a34a41670e022b868d16769c14dca72cca1",
+        "G1_matched__11729.pt": "89d5225a37cc7c11e63b5581b7665e1d23e21cec828b948669e2a1180ece0a85",
+        "G1_matched__11743.pt": "d9c1ff992dca9f0e0c21224ec8277f1e2a69e1ce6004ea5ab221a4f94b101ceb",
+        "G2__11711.pt": "49e0cd409d6d3bd3b1cf992cc9f39a231d266d4bd985f4218cd22116d36e9df9",
+        "G2__11729.pt": "0cb4bc265b09af4db4ef7158316befec7eb2ed65973f6c7f14eceb66c4e26b22",
+        "G2__11743.pt": "8ce0395e24171ad0901c72d3b4f3dcc7b7a734d9a6adf95cbdf13b2590aeb17e"
+      },
+      "forecast_sha256": "e8a1963dd30ad51ab08d3e452feed55117e4734cf81c671b6e2dff86a7e2a993",
+      "methods": 12,
+      "rows_per_method": 2299
+    }
+  },
+  "score_claim_sha256": "8d4a30ad4251d3e94db5dbb3773105aa43b165174115fb1d3947abaec2ef41c6",
+  "score_passes": 1,
+  "screen_score_passes": {
+    "CTRPv2": 1,
+    "GDSC2": 1,
+    "PRISM20Q2": 1
+  },
+  "seed_use": "mean of seed-level scores, sample SD; one common lineage draw per bootstrap and no seed as N"
+}
