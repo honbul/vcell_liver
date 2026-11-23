@@ -5,14 +5,14 @@ job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
 34834	ng2-h1-r23-cpu	inner_initial_abd	cpu	0	0	PARTIAL_FAILURE	All B/D completed and nine initial product solves failed; A replaced by 34873
 34835	ng2-h1-r23-gpu	inner_initial_neural	gpu	1	2	CANCELLED	Stopped the H1-v2-only array before any formal receipt to switch to vectorized batches
 34873	ng2-h1-r23-kernel	inner_stable_product	cpu	0	0	COMPLETED	All 16 Family A receipts using measured-pair ridge
-34955	ng2-h1-r23-neural	inner_neural_search	gpu	1	2	RUNNING	Canonical C array
+34955	ng2-h1-r23-neural	inner_neural_search	gpu	1	2	COMPLETED	16 signed initial Family C tasks, 712 recipes on three held inner folds
 34984	ng2-h1-boundary-cpu	inner_boundary_abd	cpu	0	0	COMPLETED	48 signed A/B/D final search receipts
 34985	ng2-h1-boundary-neural	inner_boundary_c	gpu	1	2	CANCELLED	Replaced while pending after the LIMORE width incumbent hit the preliminary upper bound; runtime zero
 34986	ng2-h1-cost	cost_registry	cpu	0	0	COMPLETED	Workbook sheet metadata only and registered budget scenarios
 35072	ng2-h1-boundary-resolve	inner_boundary_prism_b	cpu	0	0	COMPLETED	13 newly applicable L2 ranges examined in the PRISM20Q2-2 anchor task
 35083	ng2-h1-publish-boundary	inner_boundary_publish	cpu	0	0	COMPLETED	Final PRISM20Q2-2 B receipt linked and predecessor preserved
-35057	ng2-h1-collect-inner	inner_evidence	cpu	0	0	DEPENDENT	Waits for both boundary arrays and the PRISM B publication job
-35058	ng2-h1-fit-outer	fit_frozen_models	cpu	0	0	DEPENDENT	Waits for both boundary arrays and the PRISM B publication job
+35057	ng2-h1-collect-inner	inner_evidence	cpu	0	0	COMPLETED	Seven SHA-verified inner tables, including 3,313 recipes and 124 selected configurations
+35058	ng2-h1-fit-outer	fit_frozen_models	cpu	0	0	COMPLETED	All 16 fold-local packages written and model seal job started afterok
 35059	ng2-h1-seal-models	seal_models	cpu	0	0	DEPENDENT	Precedes primary forecast and scorer
 35060	ng2-h1-predict	predict_primary	cpu	0	0	DEPENDENT	Uses the immutable model receipts and v1 released anchors
 35061	ng2-h1-seal-predictions	seal_predictions	cpu	0	0	DEPENDENT	Seals primary predictions before Q access
@@ -20,7 +20,7 @@ job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
 35063	ng2-h1-prelabel	verify_scoring_paths	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
 35064	ng2-h1-score	outer_score	cpu	0	0	CANCELLED	Replaced while pending, runtime zero, no scoring claim
 35065	ng2-h1-replay-final	replay_final	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
-35122	ng2-h1-licob-size	inner_licob_sample_sensitivity	gpu	1	1	DEPENDENT	Starts after the revised two-GPU closure array 35376; verifies nested 50/75/100 percent reference sizes before scoring
+35122	ng2-h1-licob-size	inner_licob_sample_sensitivity	gpu	1	1	COMPLETED	108 rows under nested 50/75/100 percent reference sizes with the same held inner donors; SHA verified
 35147	ng2-h1-prelabel-sealed	verify_scoring_paths	cpu	0	0	DEPENDENT	Verifies synthetic auxiliary predictions and matched v1 arms before opening held outcomes
 35148	ng2-h1-score-sealed	outer_score	cpu	0	0	CANCELLED	Replaced while pending by the complete tissue analysis, runtime zero, no scoring claim
 35149	ng2-h1-replay-final-sealed	replay_final	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
@@ -32,4 +32,4 @@ job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
 35270	ng2-h1-release-verify	verify_release	cpu	0	0	CANCELLED	Replaced while pending to use the ledger of the extended neural search; runtime zero
 35355	ng2-h1-boundary-neural-wide	inner_boundary_c	gpu	1	2	CANCELLED	Replaced while pending when the completed Inner traces also showed clipped learning-rate and epoch probes; runtime zero
 35359	ng2-h1-release-wide	verify_release	cpu	0	0	CANCELLED	Replaced while pending to package the full numerical boundary audit; runtime zero
-35376	ng2-h1-boundary-neural-full	inner_boundary_c	gpu	1	2	DEPENDENT	After 34955; completes all clipped numerical doublings and halvings; required by collection, model freeze and sample-size analysis
+35376	ng2-h1-boundary-neural-full	inner_boundary_c	gpu	1	2	COMPLETED	17 additional Family C boundary probes; all 31 task-modality incumbents have zero unresolved numerical boundaries
