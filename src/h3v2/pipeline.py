@@ -8,7 +8,7 @@ from nextgen_h2.run import read_json
 from vc_build.io import publish_json,sha256
 from .data import ROOT,SPLITS
 from .final_fit import external_operating_point
-from .grid import FAMILIES,SEEDS
+from .grid import FAMILIES,SEEDS,identify,initial
 from .selection import select
 
 
@@ -17,9 +17,11 @@ def slurm(snap):
 
 
 def submit(name, script, arguments, *, deps=(), gpu=False,
-           array=None, limit="1-12:00:00", threads=None, memory=None):
+           array=None, limit="1-12:00:00", threads=None, memory=None, dependency="afterok"):
     if not all(str(x).isdecimal() for x in deps):
         raise ValueError("Unexpected Slurm dependency")
+    if dependency not in {"afterok", "afterany"}:
+        raise ValueError("Unsupported Slurm dependency condition")
     n=threads or (8 if gpu else 12)
     reserve=memory or ("32G" if gpu else "52G")
     log=ROOT/"logs"/(f"{name}-%A_%a.log" if array else f"{name}-%j.log")
@@ -30,7 +32,7 @@ def submit(name, script, arguments, *, deps=(), gpu=False,
     if array is not None:
         command.append(f"--array={array}")
     if deps:
-        command.extend(["--kill-on-invalid-dep=yes","--dependency=afterok:"+":".join(map(str,deps))])
+        command.extend(["--kill-on-invalid-dep=yes", f"--dependency={dependency}:" + ":".join(map(str,deps))])
     result=check_output([*command,str(script),*map(str,arguments)],cwd=ROOT,text=True).strip().split(";")[0]
     if not result.isdecimal():
         raise ValueError(f"Unexpected Slurm submission result: {result}")
@@ -39,24 +41,64 @@ def submit(name, script, arguments, *, deps=(), gpu=False,
     return result
 
 
-def schedule_inner(stages,snap,label):
-    planned=read_json(ROOT/"locks"/(label+".json"))["splits"]
-    selection=slurm(snap)
-    arrays={}
+def inner_tasks(stage):
+    if stage == "r1":
+        planned = {part: {family: initial(family) for family in FAMILIES} for part in SPLITS}
+    else:
+        planned = read_json(ROOT / "locks" / f"{stage}.json")["splits"]
+    tasks={}
     for backend,families in (("gbdt",("gbdt","hybrid")),("torch",("film","attention","gnn","hybrid"))):
         n=len(families)
-        needed=[str(o*3*n+i*n+k) for o,split in enumerate(SPLITS) for i in range(3)
-                for k,f in enumerate(families) if any(c["backend"]==backend for c in planned[split][f])]
-        if needed:
-            concurrent=3 if backend=="torch" else 5
-            arrays[backend]=",".join(needed)+f"%{concurrent}"
-    jobs=[submit(f"{label}-{backend}",selection/"inner.sbatch",[snap,label,backend],
-                 gpu=backend=="torch",array=array) for backend,array in arrays.items()]
+        tasks[backend] = {}
+        for outer, split in enumerate(SPLITS):
+            for inner in range(3):
+                for offset, family in enumerate(families):
+                    bucket = ROOT / "fits" / stage / split / f"inner-{inner}" / family
+                    receipts = [bucket / identify(cfg) / "receipt.json" for cfg in planned[split][family]
+                                if cfg["backend"] == backend]
+                    if receipts:
+                        tasks[backend][outer * 3 * n + inner * n + offset] = receipts
+    return tasks
+
+
+def schedule_inner(stages, snap, *, retry=False, tasks=None):
+    stage = stages[-1]
+    planned = inner_tasks(stage) if tasks is None else tasks
+    suffix = "-retry" if retry else ""
+    helpers = slurm(snap)
+    jobs = []
+    for backend, indexed in planned.items():
+        if indexed:
+            concurrent = 3 if backend == "torch" else 5
+            array = ",".join(map(str, indexed)) + f"%{concurrent}"
+            jobs.append(submit(f"{stage}-{backend}{suffix}", helpers / "inner.sbatch", [snap, stage, backend],
+                               gpu=backend == "torch", array=array))
     if not jobs:
         raise ValueError("An inner round was selected with no fits")
-    return submit(f"{label}-select",selection/"job.sbatch",
-                  [snap,"-m","h3v2.pipeline","advance","--snapshot",snap,*stages,label],
-                  deps=tuple(jobs),threads=6,memory="18G",limit="04:00:00")
+    arguments = [snap, "-m", "h3v2.pipeline", "settle", "--snapshot", snap, *stages]
+    if retry:
+        arguments.append("--retried")
+    return submit(f"{stage}-select{suffix}", helpers / "job.sbatch", arguments,
+                  deps=tuple(jobs), threads=6, memory="18G", limit="04:00:00", dependency="afterany")
+
+
+def settle_inner(stages, snapshot, *, retried):
+    """Run only after this phase's CPU and GPU arrays are terminal."""
+    if (ROOT / "score/consumed.json").exists():
+        raise ValueError("Inner tuning is closed after the outer release")
+    stage = stages[-1]
+    missing = {backend: {index: files for index, files in tasks.items() if not all(p.is_file() for p in files)}
+               for backend, tasks in inner_tasks(stage).items()}
+    if any(missing.values()):
+        indices = {backend: list(tasks) for backend, tasks in missing.items() if tasks}
+        if retried:
+            raise RuntimeError(f"{stage} still has incomplete trials after the registered retry: {indices}")
+        marker = ROOT / "locks" / f"{stage}-missing-fit-retry.json"
+        publish_json(marker, {"stage":stage, "array_indices":indices})
+        retry_job = schedule_inner(stages, snapshot, retry=True, tasks=missing)
+        print("Resubmitted incomplete inner array elements", stage, indices, retry_job, flush=True)
+        return
+    advance(stages, snapshot, dispatch_only=False)
 
 
 def schedule_final(snap):
@@ -102,19 +144,22 @@ def advance(stages,snapshot,*,dispatch_only):
     if marker.exists():
         raise FileExistsError("Already submitted the next wave for this phase")
     publish_json(marker,{"input_sha256":sha256(file),"stage":stage})
-    successor=schedule_inner(stages,snapshot,choice["next"]) if choice["next"] else schedule_final(snapshot)
+    successor=schedule_inner([*stages,choice["next"]],snapshot) if choice["next"] else schedule_final(snapshot)
     print("Next phase will be handled by",successor,flush=True)
 
 
 if __name__=="__main__":
     p=argparse.ArgumentParser()
-    p.add_argument("command",choices=("advance","dispatch","fit-task","references-task"))
+    p.add_argument("command",choices=("advance","dispatch","settle","fit-task","references-task"))
     p.add_argument("stages",nargs="*")
     p.add_argument("--snapshot",type=Path)
     p.add_argument("--backend",choices=("gbdt","torch"))
+    p.add_argument("--retried", action="store_true")
     args=p.parse_intermixed_args()
     if args.command in ("advance","dispatch"):
         advance(args.stages,args.snapshot,dispatch_only=args.command=="dispatch")
+    elif args.command=="settle":
+        settle_inner(args.stages,args.snapshot,retried=args.retried)
     else:
         from .final_fit import final_candidate,final_references
         index=int(os.environ["SLURM_ARRAY_TASK_ID"])
