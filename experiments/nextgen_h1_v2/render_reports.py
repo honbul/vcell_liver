@@ -272,13 +272,13 @@ def results(root):
     def delta(s, x, b, metric=NDCG):
         return field(p(s, x, b, metric), "delta")
 
-    def gate_a(s):
-        old = p(s, DUAL, "v1-RNA+Anchor")
+    def gate_a(s, old_arm="v1-RNA+Anchor"):
+        old = p(s, DUAL, old_arm)
         if old is None:
             return "비교군 지원 없음"
         cond = (delta(s, DUAL, "B1") >= .005 and delta(s, DUAL, "B1", RHO) >= .05
                 and max(lower(s, DUAL, "B1"), lower(s, DUAL, "B1", RHO)) > 0
-                and max(lower(s, DUAL, "v1-RNA+Anchor"), lower(s, DUAL, "v1-RNA+Anchor", RHO)) > 0
+                and max(lower(s, DUAL, old_arm), lower(s, DUAL, old_arm, RHO)) > 0
                 and lower(s, DUAL, "B1", PRECISION) >= -.005
                 and lower(s, DUAL, "N1-Dual") > 0 and lower(s, DUAL, "N2") > 0)
         return "GO-DEV" if cond else "NO-GO"
@@ -293,6 +293,7 @@ def results(root):
 
     a = {s: gate_a(s) for s in ("Tier1-macro", "LIMORE")}
     b_loc = gate_b("LICOB", ANCHOR)
+    b_loc_dual = gate_b("LICOB", DUAL)
     b_transfer = gate_b("LIMORE_to_LICOB", ANCHOR)
     remaining = sum(max(0, int(r["remaining"])) for r in inner_winners)
     top = interval(p("Tier1-macro", DUAL, "B1"), "delta")
@@ -325,13 +326,18 @@ def results(root):
               "|---|---|---|---:|---:|---:|---:|"]
     for s in ("Tier1-macro", "LIMORE", "LICOB", "LIMORE_to_LICOB"):
         for model in ((DUAL,) if s in a else (ANCHOR, DUAL) if s == "LICOB" else (ANCHOR,)):
-            for control in ("Bsimple", "B1", "B2", "B3", "v1-Anchor-Best", "v1-RNA+Anchor", "N1-Dual", "N1", "N2"):
+            for control in ("Bsimple", "B1", "B2", "B3", "v1-Anchor-Best", "v1-RNA+Anchor",
+                            "v1-RNA+Anchor-ungated", "N1-Dual", "N1", "N2"):
                 row = p(s, model, control)
                 if row is None:
                     continue
                 diffs = [interval(p(s, model, control, m), "delta") for m in (NDCG, RHO, INTER, PRECISION)]
                 lines.append(f"| {s} | {model} | {control} | {' | '.join(diffs)} |")
-    lines += ["", "Tier 4는 현지 공여자 0명·RNA 0의 전이다. 원 측정 척도가 다른 절대오차는 생략했다. "
+    if a["LIMORE"] == "비교군 지원 없음":
+        lines += ["", "LIMORE의 공식 Track A 판정에는 v1 공개 보조 팔이 필요하다. "
+                  f"동결된 v1 순열 전 모델을 대조한 보조 판정은 {gate_a('LIMORE', 'v1-RNA+Anchor-ungated')}다."]
+    lines += ["", f"RNA가 있는 LICOB의 보조 분석에서 RNA+Anchor의 순위는 {b_loc_dual[0]}, 층화는 {b_loc_dual[1]}다.",
+              "Tier 4는 현지 공여자 0명·RNA 0의 전이다. 원 측정 척도가 다른 절대오차는 생략했다. "
               "전체 지표와 비교는 집계표에 있다. [지표](H1V2_METRICS.tsv) · [짝지은 차이](H1V2_PAIRED_95CI.tsv)",
               "", "## 모델 패밀리", "",
               "| 연구 | A NDCG / rho | B NDCG / rho | C NDCG / rho | D NDCG / rho |",
