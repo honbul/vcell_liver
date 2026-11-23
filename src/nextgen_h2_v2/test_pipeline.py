@@ -12,6 +12,8 @@ from nextgen_h2.kernels import normalized_gram, psd_sum
 from .kernel import complete_fallback, kernel_function
 from .nonlinear import Candidate, FilmAttention, fit_boost, listnet
 from .portable import view_cross
+from .score import ASSAY, STRUCTURE, contrasts, gate, scopes
+from nextgen_h2.metrics import stack
 from vc_build.io import publish_json
 
 METRICS = {}
@@ -52,6 +54,23 @@ class Contracts(unittest.TestCase):
         self.assertEqual(float((together[~cells] - base[~cells]).abs().max()), 0.)
         self.assertEqual(float((together[:, ~drugs] - base[:, ~drugs]).abs().max()), 0.)
 
+    def test_both_score_tracks_build_ladder_and_gate(self):
+        panel = pd.MultiIndex.from_product([list("abcdef"), list("ABCDEFGH")],
+            names=["cell_id", "compound_id"]).to_frame(index=False)
+        panel["truth"] = np.random.default_rng(17).normal(size=len(panel))
+        panel["lineage_group"] = panel.cell_id
+        panel["source_id"] = "synthetic"
+        panel["lincs_observed"] = panel.compound_id.isin(list("ABCDEF"))
+        for name in (*ASSAY, *STRUCTURE):
+            panel[name] = panel.truth if name in ("H2-v2", "H2-StructOnly") else -panel.truth
+        groups = pd.Series({k: k for k in panel.compound_id.unique()})
+        d, c = stack(scopes(panel, groups, 0, "DRP") + scopes(panel, groups, 0, "GDSC1"))
+        frame = contrasts(d, c)
+        decision = gate(frame)
+        self.assertTrue(decision["upgrade_pass"])
+        self.assertTrue(decision["structure_462_pass"])
+        self.assertFalse((frame.support.str.startswith("structure") & frame.candidate.eq("H2-v2")).any())
+
     def test_nonlinear_losses_and_isolated_lightgbm(self):
         rng = np.random.default_rng(9)
         features = rng.standard_normal((1600, 12), dtype=np.float32)
@@ -70,7 +89,7 @@ class Contracts(unittest.TestCase):
         y = seq(c, d, torch.randn(14, 6))
         sample = listnet(y, torch.randn_like(y), torch.arange(14) // 2)
         sample.backward()
-        self.assertTrue(float(sample) > 0)
+        self.assertTrue(float(sample.detach()) > 0)
 
 
 if __name__ == "__main__":

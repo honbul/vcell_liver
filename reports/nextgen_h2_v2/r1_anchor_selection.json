@@ -1,0 +1,87 @@
+{
+  "0": {
+    "all_ndcg": 0.6372996740951216,
+    "axis": "intercept",
+    "design": {
+      "anchor_penalty": 5,
+      "cell_views": [],
+      "drug_views": [],
+      "identity": 0.7,
+      "intercept": "neighbors",
+      "lincs": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "cos",
+        "mask": 0.6,
+        "name": "lincs",
+        "recipe": "landmark_mean",
+        "transform": "raw",
+        "weight": 0.25
+      },
+      "normalization": "sum",
+      "penalty": 0.5,
+      "properties": 0.025,
+      "tanimoto": 0.175,
+      "target": 0.4
+    },
+    "id": "anchor/neighbors/5",
+    "value": "neighbors"
+  },
+  "1": {
+    "all_ndcg": 0.6881375841964622,
+    "axis": "intercept",
+    "design": {
+      "anchor_penalty": 1.0,
+      "cell_views": [],
+      "drug_views": [],
+      "identity": 0.7,
+      "intercept": "krr",
+      "lincs": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "rbf_wide",
+        "mask": 0.6,
+        "name": "lincs",
+        "recipe": "landmark_mean",
+        "transform": "raw",
+        "weight": 1.0
+      },
+      "normalization": "sum",
+      "penalty": 1.0,
+      "properties": 0.025,
+      "tanimoto": 0.0875,
+      "target": 0.4
+    },
+    "id": "anchor/krr/1",
+    "value": "krr"
+  },
+  "2": {
+    "all_ndcg": 0.6418666282983008,
+    "axis": "intercept",
+    "design": {
+      "anchor_penalty": 10,
+      "cell_views": [],
+      "drug_views": [],
+      "identity": 0.7,
+      "intercept": "neighbors",
+      "lincs": {
+        "control": "real",
+        "dimension": 0,
+        "kernel": "cos",
+        "mask": 0.6,
+        "name": "lincs",
+        "recipe": "v1",
+        "transform": "raw",
+        "weight": 0.25
+      },
+      "normalization": "sum",
+      "penalty": 0.5,
+      "properties": 0.025,
+      "tanimoto": 0.0875,
+      "target": 0.8
+    },
+    "id": "anchor/neighbors/10",
+    "value": "neighbors"
+  },
+  "settled": true
+}

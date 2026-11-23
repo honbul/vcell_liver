@@ -20,6 +20,8 @@ from .nonlinear import Candidate, fit_boost, fit_neural, search_space, stop_hold
 from .residual_data import ResidualFeatures, kernel_oof
 from .search import common_score, ranker, score_index, stage_input, write_manifest
 
+SCALES = (0., .0625, .125, .25, .5, 1., 2., 4., 8., 16.)
+
 
 def manifest(kernel, target):
     selections = read_json(kernel)
@@ -87,7 +89,7 @@ def measure(work, root, manifest_path, index):
         print(f"{f}-{i}: {entry['id']}", flush=True)
         model, curve = apparatus.train(spec)
         delta = apparatus.predict(model, spec.family)
-        for weight in (.25, .5, 1.):
+        for weight in SCALES:
             score(entry["id"] + f"/{weight:g}", apparatus.reference + weight * delta)
         record = {"name": entry["id"], "family": spec.family, "data": curve}
         if spec.family == "gbdt":
@@ -112,7 +114,7 @@ def decide(work, contracts, kernel, virtual, out):
         ranking = {}
         for family in ("gbdt", "neural"):
             candidates = [(entry, weight) for entry in specs if entry["parameters"]["family"] == family
-                          for weight in (.25, .5, 1.)]
+                          for weight in SCALES]
             entry, weight = max(candidates, key=lambda x: ranker(scores, x[0]["id"] + f"/{x[1]:g}", "all"))
             name = entry["id"] + f"/{weight:g}"
             effect = common_score(unit, "H2-Kernel-Max", name, "all")

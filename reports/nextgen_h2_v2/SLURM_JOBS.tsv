@@ -1,0 +1,22 @@
+job_id	name	resources	state	g1_subpath	evidence
+34797	ng2-h2-lincs	CPU	COMPLETE	assets-lincs	Locked nonhepatic Level 5 signatures and 15 gene-space/context feature sets
+34798	ng2-h2-omics	CPU	FAILED	logs	Chronos exact model ID column required an explicit string dtype
+34821	ng2-h2-tahoe-id	CPU	COMPLETE	tahoe-registration	Exact structures, nonhepatic model IDs, 3,388 raw expression shards
+34822	ng2-h2-omics	CPU	COMPLETE	assets-omics-v2	Four separately masked assay views and independent Chronos reference
+34826_0–15	ng2-h2-tahoe-map	CPU array	COMPLETE	tahoe-moments	Single-cell count and log-expression moments by sample and cell line
+34827	ng2-h2-tahoe-join	CPU	COMPLETE	assets-tahoe	DMSO-matched mean, cell heterogeneity and dose-slope views
+34866_0–8	ng2-h2-r1-core	A100 array max 3	COMPLETE	study/core	Seven LINCS weights by eight penalties with nine inner folds
+34919	ng2-h2-r1-select	CPU	COMPLETE	run-core-01	Lower boundary triggered on two outer-fit partitions
+34935_0–8	ng2-h2-r1-expand	A100 array max 3	COMPLETE	study/core2	Extended lower weight and penalty domains
+34936	ng2-h2-r1-select	CPU	COMPLETE	run-core-02	Initial grid winners interior after expansion
+34969_0–8	ng2-h2-r1-fine	A100 array max 3	COMPLETE	study/fine	Seventy settings per partition across chemistry, shape and LINCS representation
+34970	ng2-h2-r1-refine	CPU	COMPLETE	run-fine	Coordinate proposal and positive weight brackets
+35045_0–8	ng2-h2-r1-polish	A40/A100 array max 3	COMPLETE	study/polish	Combined coordinate candidates and simultaneous re-bracketing
+35046	ng2-h2-r1-bracket	CPU	COMPLETE	run-polish-01	All required Round 1 kernel axes settled
+35066	ng2-h2-tests	CPU	COMPLETE	tests.json	Six PSD kernel shapes and two learners tested
+35073_0–8	ng2-h2-r1-anchors	A40/A100 array max 3	COMPLETE	study/anchors	Fit-only chemical, KRR and combined neighbor intercept
+35074	ng2-h2-anchor-select	CPU	COMPLETE	run-anchors-01	NDCG-selected source-only intercepts
+35095_0–8	ng2-h2-r1-controls	A40/A100 array max 3	COMPLETE	study/r1controls	Separate C2 and train/query C3 and v1 matched comparisons
+35096	ng2-h2-r1-gate	CPU	COMPLETE	run-r1-controls	Paired C2/C3, interaction and retrieval scores
+35099	ng2-h2-tests	CPU	FAILED	logs	Python 3.10 rejected starred NumPy subscript syntax
+35117	ng2-h2-tests	CPU	COMPLETE	tests-v3.json	Four passing PSD, fallback, nonlinear and held scoring tests

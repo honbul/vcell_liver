@@ -11,14 +11,14 @@ import torch
 from torch import nn
 
 from nextgen_h2.assets import KEY, fold_ids
-from nextgen_h2.metrics import Evaluator, stack
+from nextgen_h2.metrics import Evaluator
 from nextgen_h2.run import META, response, subfold
 from vc_build.external import native_sensitivity
-from vc_build.io import publish_json, sha256
+from vc_build.io import publish_json
 
 from .inner import save_evidence
 from .kernel import Design, Engine, View, context
-from .search import common_score, expand_axis, points, ranker, score_index, stage_input, write_manifest
+from .search import common_score, expand_axis, ranker, score_index, stage_input, write_manifest
 
 
 @dataclass(frozen=True)
@@ -152,6 +152,11 @@ def vary(work, contracts, out, stages):
         g = Generator(**winner["generator"])
         had = [r["weight"] for r in candidates if r["generator"] == winner["generator"]]
         new = [row(g, w) for w in expand_axis(had, winner["weight"])]
+        if g.method == "ridge":
+            grid = [x["generator"]["regularization"] for x in candidates if x["generator"]["method"] == "ridge"
+                    and x["weight"] == winner["weight"]]
+            new.extend(row(replace(g, regularization=alpha), winner["weight"])
+                       for alpha in expand_axis(grid, g.regularization))
         next_plan.append(new)
         controls.append([row(g, winner["weight"], control, "V/" + control) for control in
                          ("real", "mask", "shuffle")])

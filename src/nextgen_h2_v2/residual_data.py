@@ -169,7 +169,7 @@ class ResidualFeatures:
     def joint(self, ci, di, base):
         direct = [arr[ci, di] for arr in self.target_pairs]
         linked = self.cell_path[ci] * self.drug_path[di]
-        return np.c_[base, self.drug_seen[di], linked, linked.mean(axis=1), *direct].astype(np.float32)
+        return np.column_stack([base, self.drug_seen[di], linked, linked.mean(axis=1), *direct]).astype(np.float32)
 
     def tabular(self, panel, base, fitting):
         ci, di = self.coordinates(panel, fitting)

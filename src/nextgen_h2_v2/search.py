@@ -270,14 +270,26 @@ def polish(work, contracts, out, stages):
         write_manifest(out / "anchors.json", anchor_fits)
 
 
-def select_anchors(work, contracts, out):
-    rows, final, control = [], {}, []
+def select_anchors(work, contracts, out, stages):
+    rows, final, control, following = [], {}, [], []
     for outer in range(3):
-        spec, _, table = stage_input(work, contracts, "anchors", outer)
-        scores = score_index(table)
+        spec, tables = [], []
+        for stage in stages:
+            options, _, table = stage_input(work, contracts, stage, outer)
+            spec.extend(x for x in options if x["axis"] == "intercept")
+            tables.append(table)
+        table = pd.concat(tables, ignore_index=True)
+        scores = score_index(table.drop_duplicates(["support", "axis", "arm"], keep="last"))
         best = max(spec, key=lambda x: ranker(scores, x["id"], "all")[1])
         base = design(best["design"])
-        final[str(outer)] = best
+        final[str(outer)] = best | {"all_ndcg": ranker(scores, best["id"], "all")[1]}
+        nxt = []
+        if base.intercept == "krr":
+            vals = [x["design"]["anchor_penalty"] for x in spec if x["value"] == "krr"]
+            for ridge in expand_axis(vals, base.anchor_penalty):
+                nxt.append(item(f"anchor/krr/{ridge:g}", replace(base, anchor_penalty=ridge),
+                                axis="intercept", value="krr"))
+        following.append(nxt)
         ctrl = [item("R1", base, axis="control")]
         for kind in ("mask", "shuffle"):
             ctrl.append(item("LINCS/" + kind, replace(base, lincs=replace(base.lincs, control=kind)), axis="control"))
@@ -285,13 +297,37 @@ def select_anchors(work, contracts, out):
         rows.append(table)
     out.mkdir(parents=True, exist_ok=False)
     pd.concat(rows).to_csv(out / "points.tsv", sep="\t", index=False, na_rep="NA")
-    publish_json(out / "selected.json", final)
-    write_manifest(out / "r1controls.json", control, interaction=True)
+    publish_json(out / "selected.json", final | {"settled": not any(following)})
+    if any(following):
+        for i, options in enumerate(following):
+            if not options:
+                options.append(final[str(i)] | {"id": "incumbent-check", "axis": "replay"})
+        write_manifest(out / "next.json", following)
+    else:
+        write_manifest(out / "r1controls.json", control, interaction=True)
+
+
+def r1gate(work, contracts, out):
+    summaries, results = [], {}
+    for outer in range(3):
+        spec, unit, points = stage_input(work, contracts, "r1controls", outer)
+        del spec
+        reports = {}
+        for support in ("lincs", "all"):
+            reports[support] = {
+                arm: {metric: common_score(unit, arm, "R1", support, metric) for metric in
+                      ("spearman", "interaction_spearman", "ndcg_at_5")}
+                for arm in ("H2-v1", "LINCS/mask", "LINCS/shuffle")}
+        results[str(outer)] = reports
+        summaries.append(points)
+    out.mkdir(exist_ok=False)
+    pd.concat(summaries).to_csv(out / "points.tsv", sep="\t", index=False, na_rep="NA")
+    publish_json(out / "paired.json", results)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("stage", choices=("core", "core_update", "refine", "polish", "anchors"))
+    parser.add_argument("stage", choices=("core", "core_update", "refine", "polish", "anchors", "r1gate"))
     parser.add_argument("out", type=Path)
     parser.add_argument("--work", type=Path)
     parser.add_argument("--contracts", type=Path)
@@ -305,5 +341,7 @@ if __name__ == "__main__":
         refine(a.work, a.contracts, a.out)
     elif a.stage == "polish":
         polish(a.work, a.contracts, a.out, a.stages)
+    elif a.stage == "anchors":
+        select_anchors(a.work, a.contracts, a.out, a.stages or ["anchors"])
     else:
-        select_anchors(a.work, a.contracts, a.out)
+        r1gate(a.work, a.contracts, a.out)

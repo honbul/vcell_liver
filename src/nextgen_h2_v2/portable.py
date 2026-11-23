@@ -89,9 +89,9 @@ class KernelRow:
 
     def predict(self, chemistry, raw_lincs, cell_cross, matched, base_y):
         spec = self.params
-        tani, target, props, id_gram = chemistry
+        tani, target, props, id_gram, bit_present = chemistry
         gram = .1 + spec.tanimoto * tani + spec.target * target[0] + spec.properties * props + spec.identity * id_gram
-        diag = .1 + spec.tanimoto * (tani.sum(1) > 0) + spec.target * target[1] + spec.properties + spec.identity
+        diag = .1 + spec.tanimoto * bit_present + spec.target * target[1] + spec.properties + spec.identity
         if raw_lincs is not None and self.fit_lincs is not None:
             view, self_diag = view_cross(raw_lincs, self.fit_lincs, spec.lincs.kernel)
             gram = gram + (spec.lincs.weight * view + spec.lincs.mask) * self.lincs_seen[None, :]
@@ -143,7 +143,7 @@ class Portable:
         tv = normalize(torch.tensor([[float(x in terms) for x in self.vocabulary]]), dim=1)
         cross = cross_rbf(.5 * props, .5 * self.props, 2.)
         same = torch.as_tensor(self.known_drugs == key, dtype=torch.float32)[None, :]
-        return key, (tani, (tv @ self.reference.fit_tx.T, tv.square().sum(1)), cross, same)
+        return key, (tani, (tv @ self.reference.fit_tx.T, tv.square().sum(1)), cross, same, bs.sum(1) > 0)
 
     def predict(self, smiles, cells, view=None):
         key, chem = self.features(smiles)
