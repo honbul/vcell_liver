@@ -80,8 +80,8 @@ def external_labels(assets, asset):
     gdsc_y = (gdsc_y.assign(truth=-pd.to_numeric(gdsc_y.AUC, errors="coerce"))
               .groupby("row_id", as_index=False).truth.median())
     labels = pd.concat([part[["row_id", "truth"]] for part in (limore_y, licob, gdsc_y)], ignore_index=True)
-    if labels.row_id.duplicated().any() or not np.isfinite(labels.truth).all():
-        raise ValueError("External outcome rosters changed or contain nonfinite measurements")
+    if labels.row_id.duplicated().any() or not np.isfinite(pd.concat([limore_y.truth, licob.truth])).all():
+        raise ValueError("External outcome rosters changed or contain invalid LIMORE/LICOB measurements")
     external_registry = canonical_registry(pd.concat([limore, licob, gdsc], ignore_index=True))
     return labels, licob, linked_groups(external_registry)
 
@@ -207,8 +207,13 @@ def run(root, assets):
         print(f"Scored DRP fold {fold}", flush=True)
     labels, licob, external_groups = external_labels(assets, asset)
     external = frames[3].merge(labels, on="row_id", validate="one_to_one", how="left")
-    if not np.isfinite(external.truth).all() or set(labels.row_id) != set(frames[3].row_id):
+    if set(labels.row_id) != set(frames[3].row_id):
         raise ValueError("External forecast and label keys differ")
+    finite = np.isfinite(external.truth)
+    if not external.loc[~finite, "source_id"].eq("GDSC1").all():
+        raise ValueError("Nonfinite outcome outside the public GDSC1 roster")
+    external_unavailable = external.loc[~finite].groupby("source_id").size().to_dict()
+    external = external.loc[finite]
     for dataset in ("LIMORE", "LICOB", "GDSC1"):
         subset = external[external.source_id.eq(dataset)]
         if dataset == "LICOB":
@@ -224,16 +229,17 @@ def run(root, assets):
     t_d, t_c = stack(tissue)
     points = pd.concat([summary(d, DRUG).assign(axis="drug"), summary(c, CELL).assign(axis="cell")])
     breakdown = pd.concat([summary(t_d, DRUG[:2]).assign(axis="drug"), summary(t_c, CELL).assign(axis="cell")])
-    points.to_csv(score / "H2_METRICS.tsv", sep="\t", index=False)
-    breakdown.to_csv(score / "H2_PANCANCER_BY_TISSUE.tsv", sep="\t", index=False)
+    points.to_csv(score / "H2_METRICS.tsv", sep="\t", index=False, na_rep="NA")
+    breakdown.to_csv(score / "H2_PANCANCER_BY_TISSUE.tsv", sep="\t", index=False, na_rep="NA")
     paired = prereg_contrasts(d, c)
-    paired.to_csv(score / "H2_PAIRED_95CI.tsv", sep="\t", index=False)
+    paired.to_csv(score / "H2_PAIRED_95CI.tsv", sep="\t", index=False, na_rep="NA")
     for name, data in [("unit_drug", d), ("unit_cell", c)]:
         data.to_parquet(score / f"{name}.parquet", index=False)
     publish_json(score / "score_receipt.json", {"score_passes": 1, "forecasts": receipts,
         "champion_sha256": sha256(root / "champion.json"), "score_guard_sha256": sha256(lock),
         "source_rows": sum(len(part) for part in frames[:3]), "source_unique_parents": len(registry),
         "external_rows": external.groupby("source_id").size().to_dict(),
+        "external_rows_missing_native_response": external_unavailable,
         "results": {path.name: sha256(path) for path in sorted(score.iterdir())}})
 
 
