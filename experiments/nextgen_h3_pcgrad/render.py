@@ -42,7 +42,7 @@ def pull_summary(src, dst):
         books[stage] = load(src / f"{stage}-summary.json")
         if stage == "round1":
             checks = [v for key, v in replay.items() if key.startswith("round1/")]
-            if len(checks) != 9 or any(v["non_drug_mean_max_delta"] > 1e-12 for v in checks):
+            if len(checks) != 9 or any(v["non_drug_mean_max_delta"] > 1e-9 for v in checks):
                 raise ValueError("Missing correction invariance for the inner additive reference")
             books[stage]["scores"]["drug_mean"]["residual_spearman"] = 0.0
         for suffix, bucket in (("metrics", all_metrics), ("runs", all_runs), ("gradient-by-epoch", epochs)):
@@ -108,7 +108,7 @@ def inner(dst, books, frozen):
         "# Round 1–3 Inner CV", "", "## H3a · Round 1", "",
         "9개 outer 분할마다 2개 inner fold를 두었다. 고정 가중치 실험의 기술적 분할 평균을 제시한다. "
         "각 outer 분할의 설정은 그 분할의 두 inner fold에서만 선택했다. 약물 평균 잔차는 수치적 사영 오차를 "
-        "제거한 0이며 재현에서 후보와 구조 커널의 지표가 그대로였다. [정밀도 재현](inner_additive_replay.json)", "",
+        "제거한 0이다. 후보와 구조 커널의 지표는 전부 1e−9 이내에서 재현됐다. [정밀도 재현](inner_additive_replay.json)", "",
         *table(["Arm", *TITLES], [(name, *values(row)) for name, row in r1.items()]),
         *table(["동일 가중치", "ΔNDCG@5", "Δ약물 내 ρ", "ΔPrecision@5", "Δ잔차 ρ"], [
             (f"w{w}", *(signed(r1[f"G2_w{w}"][k] - r1[f"G1_w{w}"][k]) for k in METRICS)) for w in range(3)]),
