@@ -73,7 +73,10 @@ def read(root, fit, query):
     source=read_json(ASSETS/"data_receipt.json")["files"]
     digests=[]
     for dataset, key in (("lincs_modz24.parquet","lincs"),("paths_modz24.parquet","perturb_paths")):
-        raw=load_registered(dataset).reindex(ids).to_numpy(np.float32)
+        observed=load_registered(dataset).reindex(ids)
+        if key=="perturb_paths":
+            observed=observed.reindex(columns=load_registered("pathway_weights.parquet").columns)
+        raw=observed.to_numpy(np.float32)
         if not np.array_equal(np.isfinite(raw).all(1),measured):
             raise ValueError("LINCS reattachment cannot change natural measurement support")
         atlas[key],_=active_scores(raw,measured,fit_drugs)
