@@ -39,7 +39,7 @@ def v1_reference(task, stamp):
         return dict(p)
 
 
-def controls(task, packet, k, q, index, package, historical):
+def controls(task, packet, k, q, index, package, historical, *, published_dual=None):
     seal, old = v1_package(V1 / f"freeze-v1/{task}")
     a8 = old.anchors
     can_reuse = k in {0, 3, 5, 8}
@@ -62,7 +62,9 @@ def controls(task, packet, k, q, index, package, historical):
         controls["v1-Bsimple"] = old.predict(packet[index][:, old.anchors[:k]], k, settings, rna_index=index)[:, q]
     if seal["rna_control"] is not None:
         historical_dual = f"H1-RNA+Anchor-Best/{k}"
-        if "H1-RNA+Anchor-Best/5" in historical:
+        if published_dual is None:
+            published_dual = "H1-RNA+Anchor-Best/5" in historical
+        if published_dual:
             recipe = seal["rna_secondary"] or seal["primary"]
             controls["v1-RNA+Anchor"] = historical[historical_dual] if can_reuse else old.predict(
                 packet[index][:, old.anchors[:k]], k, recipe, rna_index=index)[:, q]

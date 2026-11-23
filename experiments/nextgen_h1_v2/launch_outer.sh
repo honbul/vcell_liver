@@ -37,6 +37,6 @@ fore=$(submit predict --dependency="afterok:$solid" --array=0-15%8 --time=00:45:
 pseal=$(submit seal-predictions --dependency="afterok:$fore" --time=00:10:00 "$run" "$code" predict seal     "$primary" "$gate" "$p_gate")
 replay=$(submit replay-primary --dependency="afterok:$pseal" --cpus-per-task=6 --time=00:50:00 "$run" "$code" replay     "$freeze" "$primary" "$root/no-aux-before-score" "$root/replay-primary" "$root/primary_replay_receipt.json")
 dry=$(submit prelabel --dependency="afterok:$replay:$collect" --time=00:35:00 "$run" "$code" prelabel     "$freeze" "$gate" "$primary" "$p_gate" "$root/primary_replay_receipt.json" "$root/prelabel_receipt.json")
-scored=$(submit score --dependency="afterok:$dry" --cpus-per-task=18 --mem=56G --time=03:30:00 "$run" "$code" score     "$freeze" "$gate" "$primary" "$p_gate" "$score_dir")
+scored=$(submit score --dependency="afterok:$dry" --cpus-per-task=18 --mem=56G --time=03:30:00 "$run" "$code" score     "$freeze" "$gate" "$primary" "$p_gate" "$score_dir" --prelabel "$root/prelabel_receipt.json")
 complete=$(submit replay-final --dependency="afterok:$scored" --cpus-per-task=6 --time=00:55:00 "$run" "$code" replay     "$freeze" "$primary" "$score_dir/aux" "$root/replay-final" "$root/replay_receipt.json")
 cat "$ledger"

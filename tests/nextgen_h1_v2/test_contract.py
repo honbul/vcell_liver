@@ -1,3 +1,7 @@
+from hashlib import sha256
+import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
 import unittest
 
 import numpy as np
@@ -7,9 +11,9 @@ from nextgen_h1_anchor.metrics import batch_stats, sample_summaries
 from nextgen_h1_anchor.score import Task
 from nextgen_h1_v2.anchors import extend_reserve, greedy, restricted_order
 from nextgen_h1_v2.boost import region
-from nextgen_h1_v2.data import build, partitions, training_context
+from nextgen_h1_v2.data import TASKS, partitions, training_context
 from nextgen_h1_v2.neural import SetProcess
-from nextgen_h1_v2.score import fit_metrics
+from nextgen_h1_v2.score import fit_metrics, verify_prelabel
 from nextgen_h1_v2.search import extrapolate, fit_model, seed_grid, template
 
 
@@ -89,6 +93,24 @@ class H1V2Contract(unittest.TestCase):
         indices = t.drawn_indices
         expected = batch_stats(y[indices], p[indices], sample_summaries(y, p)[indices])
         np.testing.assert_allclose(metrics["model/5"], expected, equal_nan=True)
+
+    def test_score_prelabel_checks_coverage_and_both_seals(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            frozen, forecast, prelabel = (root / field for field in ("frozen", "forecast", "prelabel"))
+            frozen.write_bytes(b"models")
+            forecast.write_bytes(b"predictions")
+            stamp = {"holdout_outcomes_opened": False, "tasks": dict.fromkeys(TASKS),
+                     "sealed_models": sha256(frozen.read_bytes()).hexdigest(),
+                     "sealed_forecasts": sha256(forecast.read_bytes()).hexdigest()}
+            prelabel.write_text(json.dumps(stamp))
+            self.assertEqual(verify_prelabel(prelabel, frozen, forecast), sha256(prelabel.read_bytes()).hexdigest())
+            changed = [dict(stamp, holdout_outcomes_opened=True), dict(stamp, sealed_models="bad"),
+                       dict(stamp, sealed_forecasts="bad"), dict(stamp, tasks={})]
+            for receipt in changed:
+                prelabel.write_text(json.dumps(receipt))
+                with self.assertRaises(ValueError):
+                    verify_prelabel(prelabel, frozen, forecast)
 
 
 if __name__ == "__main__":

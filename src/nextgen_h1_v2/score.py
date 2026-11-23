@@ -46,6 +46,14 @@ def validate(forecasts, prediction_gate, freezes, model_gate):
     return records
 
 
+def verify_prelabel(prelabel, frozen, predictions):
+    receipt = json.loads(prelabel.read_text())
+    if (receipt["holdout_outcomes_opened"] or set(receipt["tasks"]) != set(TASKS)
+            or receipt["sealed_models"] != sha256(frozen) or receipt["sealed_forecasts"] != sha256(predictions)):
+        raise ValueError("Prelabel validation does not cover the sealed models and predictions")
+    return sha256(prelabel)
+
+
 def open_once(task, frozen, model_gate, forecasts, aux, registered):
     """Restrict released extras to A12, then form observed query masks locally."""
     seal, package = verify_freeze(frozen, model_gate, task)
@@ -82,7 +90,7 @@ def open_once(task, frozen, model_gate, forecasts, aux, registered):
     a = np.full(y.shape, np.nan)
     a[np.ix_(index12, all_anchor)] = y[np.ix_(index12, all_anchor)]
     result = models_predict(package, a, 12, q12, index12)
-    result.update(controls(task, a, 12, q12, index12, package, {}))
+    result.update(controls(task, a, 12, q12, index12, package, {}, published_dual="v1-RNA+Anchor/5" in p))
     p12 = {f"{name}/12": b for name, b in result.items()}
     auxfile = aux / f"{task}.npz"
     np.savez_compressed(auxfile, anchors=a[index12][:, all_anchor], codes=all_anchor,
@@ -254,13 +262,15 @@ def tki_table(tasks):
     return results
 
 
-def execute(freezes, frozen, forecasts, predictions, out, study_lock=ROOT / "outer_score_claim.json"):
+def execute(freezes, frozen, forecasts, predictions, out, prelabel, study_lock=ROOT / "outer_score_claim.json"):
     verified = validate(forecasts, predictions, freezes, frozen)
+    checked = verify_prelabel(prelabel, frozen, predictions)
     out.mkdir()
     # The exclusive claim is outside the output directory, so a different
     # output path cannot repeat the v2 scoring run.
     json_write(study_lock, {"score_passes_started": 1, "frozen_sha256": sha256(frozen),
-                            "predictions_sha256": sha256(predictions), "cohort_sha256": sha256(STUDY / "receipt.json")})
+                            "predictions_sha256": sha256(predictions), "prelabel_sha256": checked,
+                            "cohort_sha256": sha256(STUDY / "receipt.json")})
     aux = out / "aux"
     aux.mkdir()
     register = json.loads((STUDY / "receipt.json").read_text())
@@ -289,7 +299,8 @@ def execute(freezes, frozen, forecasts, predictions, out, study_lock=ROOT / "out
         pd.DataFrame(payload).to_csv(out / name, index=False, sep="\t", float_format="%.9g", na_rep="NA")
     json_write(out / "score_receipt.json", {"score_passes": 1, "bootstrap_draws": DRAWS, "support": support,
                                             "claim_sha256": sha256(study_lock), "freeze_sha256": sha256(frozen),
-                                            "predictions_sha256": sha256(predictions), "previously_exposed": True,
+                                            "predictions_sha256": sha256(predictions), "prelabel_sha256": checked,
+                                            "previously_exposed": True,
                                             "outputs": {n: sha256(out / n) for n in outputs}})
 
 
@@ -297,4 +308,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     for arg in ("freezes", "frozen", "forecasts", "predictions", "out"):
         parser.add_argument(arg, type=Path)
+    parser.add_argument("--prelabel", type=Path, required=True)
     execute(**vars(parser.parse_args()))

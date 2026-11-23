@@ -5,7 +5,7 @@ import csv
 import json
 import math
 from pathlib import Path
-from statistics import mean
+from statistics import mean, median
 
 ANCHOR = "H1-v2-AnchorOnly-Best"
 DUAL = "H1-v2-Dual-Best"
@@ -46,6 +46,37 @@ def grouped(rows, keys):
     for row in rows:
         result[tuple(row[k] for k in keys)].append(row)
     return result
+
+
+def average(rows, key):
+    values = [num(row[key]) for row in rows if math.isfinite(num(row[key]))]
+    return mean(values) if values else float("nan")
+
+
+def learning_summary(root):
+    rows = load(root, "H1V2_LEARNING_CURVES.tsv")
+    traces = []
+    for (task, mode, family, _, head), points in grouped(rows, ("task", "modality", "family", "fold", "head")).items():
+        points.sort(key=lambda r: int(r["epoch"]))
+        metric = "NDCG@5" if family == "C" else points[0]["metric"]
+        train, val = ("train_ndcg", "val_ndcg") if family == "C" else ("train", "val")
+        direction = -1 if metric == "rmse" else 1
+        best = max(points, key=lambda row: direction * num(row[val]))
+        traces.append(dict(study=study(task), modality=mode, family=family, head=head, metric=metric,
+                           start=points[0][val], peak=best[val], end=points[-1][val], train=best[train],
+                           epoch=best["epoch"]))
+    lines = ["### Selected train and validation curves", "",
+             "| Study | Mode | Family | Head / metric | Validation first | Validation best | Train at best | Validation last | Mean best step |",
+             "|---|---|---|---|---:|---:|---:|---:|---:|"]
+    for (s, mode, family, head, metric), points in sorted(grouped(traces, ("study", "modality", "family", "head", "metric")).items()):
+        metrics = [fmt(str(average(points, field))) for field in ("start", "peak", "train", "end")]
+        lines.append(f"| {s} | {mode} | {family} | {head if head != 'NA' else 'set'} / {metric} | "
+                     f"{' | '.join(metrics)} | {average(points, 'epoch'):.1f} |")
+    lines += ["", "For each fold, the table reports the first, best and final recorded validation points and the train value "
+              "at the best validation point. A late validation decline despite continued fit separates overfitting from lack "
+              "of early learning. Neural checkpoint selection used the combined ranking and Spearman objective. "
+              "The full selected traces include neural within-drug Spearman. [Learning curves](H1V2_LEARNING_CURVES.tsv)", ""]
+    return lines
 
 
 def inner(root):
@@ -102,18 +133,56 @@ def inner(root):
         "[Selected recipes](H1V2_INNER_WINNERS.tsv) · [Train and validation curves](H1V2_LEARNING_CURVES.tsv) · "
         "[Tissue, mechanism and TKI errors](H1V2_INNER_ERRORS.tsv) · [Budget and noise sensitivity](H1V2_INNER_BUDGET.tsv)", "",
     ]
+    grid = load(root, "H1V2_INNER_GRID.tsv")
+    lines += ["| Family | Boundary recipes | Targeted refinements | Refined recipe wins | Median winning utility gain over Round 2 |",
+              "|---|---:|---:|---:|---:|"]
+    for family in "ABCD":
+        explored = [r for r in grid if r["family"] == family]
+        refined = [r for r in explored if r["phase"] == "round3-error-refinement"]
+        expanded = sum(r["phase"].startswith(("round3-expansion", "round3-closure", "round3-final-boundary")) for r in explored)
+        gains = [num(r["objective"]) - num(r["round2"]) for r in winners if r["family"] == family]
+        wins = sum(r["winner"].casefold() == "true" for r in refined)
+        lines.append(f"| {family} | {expanded} | {len(refined)} | {wins} | {median(gains):+.4f} |")
+    lines += ["", *learning_summary(root)]
+    leaders = {
+        (task, mode, r["family"]) for (task, mode), fits in grouped(winners, ("task", "modality")).items()
+        for r in sorted(fits, key=lambda item: num(item["round2"]), reverse=True)[:2]
+    }
+    errors = [r | {"study": study(r["task"])} for r in load(root, "H1V2_INNER_ERRORS.tsv")
+              if (r["task"], r["modality"], r["family"]) in leaders]
+    lines += ["### Subgroup errors in the two leading Round 2 families", "",
+              "| Study | Modality | Group type | Group | Summed validation entries | Mean fold MAE |",
+              "|---|---|---|---|---:|---:|"]
+    for (s, mode, typ), points in sorted(grouped(errors, ("study", "modality", "group_type")).items()):
+        ranked = [(name, sum(int(r["n"]) for r in entries), average(entries, "mae"))
+                  for (name,), entries in grouped(points, ("group",)).items()]
+        if typ != "drug":
+            ranked = sorted((r for r in ranked if r[1] >= 10), key=lambda r: (-r[2], r[0]))[:2]
+        for name, n, error in sorted(ranked, key=lambda row: -row[2]):
+            lines.append(f"| {s} | {mode} | {typ} | {name} | {n} | {error:.4f} |")
+    lines += ["", "The counts sum across family and fold evaluations. Each outcome can contribute to both families. "
+              "The table lists the two highest-error supported tissue and mechanism groups per study and modality, "
+              "plus all observed HCC TKIs. MAE uses the study-specific response scale.", ""]
     size = root / "H1V2_LICOB_SAMPLE_SIZE.tsv"
     if size.is_file():
+        size_rows = load(root, size.name)
         lines += ["### LICOB reference sample size", "",
                   "| Modality | Fraction | Mean fit donors | Mean NDCG@5 | Mean within-drug Spearman |",
                   "|---|---:|---:|---:|---:|"]
-        for (mode, fraction), values in sorted(grouped(load(root, size.name),
+        for (mode, fraction), values in sorted(grouped(size_rows,
                                                        ("modality", "training_fraction")).items()):
             f, n, rho = (mean(num(x[k]) for x in values) for k in ("fit_groups", "ndcg", "rho"))
             lines.append(f"| {mode} | {fraction} | {f:.1f} | {n:.4f} | {rho:.4f} |")
         lines += ["", "The two leading families retained their fixed inner recipes, anchor ordering and validation donors "
                   "while reference fit sizes varied. This estimates sample-size sensitivity conditional on the chosen strategy. "
                   "[Sample-size results](H1V2_LICOB_SAMPLE_SIZE.tsv)", ""]
+        for (mode,), rows in sorted(grouped(size_rows, ("modality",)).items()):
+            half, full = ([r for r in rows if num(r["training_fraction"]) == f] for f in (.5, 1.))
+            lines.append(f"- **{mode}** mean fit size increased from {average(half, 'fit_groups'):.1f} to "
+                         f"{average(full, 'fit_groups'):.1f} donors. The corresponding mean changes were "
+                         f"{average(full, 'ndcg') - average(half, 'ndcg'):+.4f} NDCG@5 and "
+                         f"{average(full, 'rho') - average(half, 'rho'):+.4f} within-drug Spearman.")
+        lines.append("")
     (root / "ROUND1_TO_3_CEILING_TUNING.md").write_text("\n".join(lines))
 
 
@@ -213,16 +282,17 @@ def results(root):
         lines.append(f"| {s} | {' | '.join(vals)} |")
     lines += ["", "범암·LIMORE의 패밀리 대표는 RNA+Anchor, LICOB·Tier 4의 대표는 Anchor-only다. "
               "[패밀리 지표와 95% CI](H1V2_FAMILY_BENCHMARK.tsv)", "",
-              "## K 예산 곡선", "",
+        "## K 예산 곡선", "", "각 셀은 NDCG@5 / 약물 내 Spearman이다.", "",
               "| 연구 / 모델 | K=0 | K=1 | K=3 | K=5 | K=8 | K=12 별도 Q12 | Q12 그룹 |",
               "|---|---:|---:|---:|---:|---:|---:|---:|"]
     for s in MAIN_STUDIES:
         for arm in (ANCHOR, DUAL):
             if get(s, arm) is None:
                 continue
-            vals = [fmt(get(s, arm, k)["value"]) for k in (0, 1, 3, 5, 8)]
+            vals = [f"{fmt(get(s, arm, k)['value'])} / {fmt(get(s, arm, k, RHO)['value'])}"
+                    for k in (0, 1, 3, 5, 8)]
             aux = get(s, arm, 12, panel="Q12")
-            vals.append(fmt(aux["value"]) if aux else "—")
+            vals.append(f"{fmt(aux['value'])} / {fmt(get(s, arm, 12, RHO, 'Q12')['value'])}" if aux else "—")
             lines.append(f"| {s} / {arm} | {' | '.join(vals)} | {aux['independent_groups'] if aux else '—'} |")
     tissues = load(root, "H1V2_PANCANCER_BY_TISSUE.tsv")
     lines += ["", f"범암 조직 표는 등록 라벨 {len(set(t['tissue'] for t in tissues))}개를 포함한다. "
@@ -236,11 +306,26 @@ def results(root):
         rho = interval({"value": row["spearman"], "lo95": row["spearman_lo95"], "hi95": row["spearman_hi95"]})
         lines.append(f"| {row['study']} | {row['tki']} | {row['arm'] or '지원 없음'} | {row['n']} | {rho} |")
     lines += ["", "Cabozantinib은 LICOB 등록 패널에 없다. 나머지 TKI의 분모는 폴드별 Q 포함 여부를 반영한다.",
-              "", "## 96웰 비용과 오프라인 검증", "",
+              "", "## 96웰 비용과 민감도", "",
               "K=5에서 11농도 × 2반복 + 대조 12웰은 122웰이다. 8농도는 92웰, 7농도는 82웰, "
               "6농도는 72웰이다. 농도별 LICOB 실측이 등록 입력에 없으므로 농도별 절삭 성능 대신 "
               "Inner-fit 표준편차 0.10·0.25·0.50 배의 앵커 노이즈 감도를 계산했다. "
               "[비용 영수증](cost_receipt.json) · [노이즈 감도](H1V2_INNER_BUDGET.tsv)", "",
+              "| LICOB Inner 모델 | K | 무노이즈 NDCG / rho | 0.10 SD의 Δ | 0.25 SD의 Δ | 0.50 SD의 Δ |",
+              "|---|---:|---:|---:|---:|---:|"]
+    budgets = load(root, "H1V2_INNER_BUDGET.tsv")
+    loc_winners = {(task, mode): max(fits, key=lambda r: num(r["objective"]))["family"]
+                   for (task, mode), fits in grouped(inner_winners, ("task", "modality")).items()
+                   if study(task) == "LICOB"}
+    chosen = [r for r in budgets if r["family"] == loc_winners.get((r["task"], r["modality"]))
+              and r["k"] in {"3", "5", "8"}]
+    for (mode, k), rows in sorted(grouped(chosen, ("modality", "k")).items()):
+        noise = {spread: [r for r in rows if num(r["noise_sd"]) == spread] for spread in (0., .1, .25, .5)}
+        n0, r0 = (average(noise[0.], m) for m in ("ndcg", "rho"))
+        changes = [f"{average(noise[sd], 'ndcg') - n0:+.4f} / {average(noise[sd], 'rho') - r0:+.4f}"
+                   for sd in (.1, .25, .5)]
+        lines.append(f"| {mode} | {k} | {n0:.4f} / {r0:.4f} | {' | '.join(changes)} |")
+    lines += ["", "## 오프라인 검증", "",
               f"오프라인 CPU CLI 최대 절대 차이 `{replay['max_abs_diff']:.4g}`. "
               f"리플레이 기준 `1e-6` {'통과' if replay['passed'] else '미통과'}. "
               "[CPU 리플레이](replay_receipt.json) · [모델 카드](model_card.md) · [채점 영수증](score_receipt.json)"]

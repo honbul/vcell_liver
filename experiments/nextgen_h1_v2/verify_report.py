@@ -47,6 +47,8 @@ def verify(root, v1):
          "Prediction seal mismatch")
     need(not prelabel["holdout_outcomes_opened"] and prelabel["sealed_models"] == score["freeze_sha256"]
          and prelabel["sealed_forecasts"] == score["predictions_sha256"], "Prelabel checks did not cover the score")
+    need(score["prelabel_sha256"] == claim["prelabel_sha256"] == digest(root / "prelabel_receipt.json"),
+         "Scoring claim did not verify the prelabel receipt")
     need(freeze["v1_study_sha256"] == claim["cohort_sha256"] == old["input_sha256"], "v1 lineage support changed")
     need(not any(rec["outer_labels_opened"] for rec in (freeze, forecasts, inner)),
          "One of the pre-score stages opened query outcomes")
@@ -97,6 +99,8 @@ def verify(root, v1):
                   *(f"Family-{f}" for f in "ABCD")}
         if "_to_" not in s:
             expect.update((DUAL, "B1", "N2", "N1-Dual"))
+        if s in {"Tier1-macro", "GDSC2", "CTRPv2", "PRISM20Q2"}:
+            expect.add("v1-RNA+Anchor")
         for k in ("0", "1", "3", "5", "8", "12"):
             panel = "Q12" if k == "12" else "Q8"
             found = {r["arm"] for r in metrics if r["study"] == s and r["panel"] == panel
