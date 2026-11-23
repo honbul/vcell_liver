@@ -138,6 +138,9 @@ def render(root):
                 "LICOB에서는 개별 시료의 5개 앵커를 사용했다. 현지 공여자 아틀라스와 RNA를 사용하지 않았다. "
                 "Wong 보조 평가는 LIMORE와 일치한 27약물 중 Q 19개가 실측된 10명에서 수행됐다. "
                 "Yang은 5약물 패널로 제외됐다.",
+                "", f"Tier 4의 K=5는 최강 단순 기준선보다 ΔNDCG@5 {interval(d('LIMORE_to_LICOB', 'Bsimple/5'))}, "
+                f"ΔPrecision@5 {interval(d('LIMORE_to_LICOB', 'Bsimple/5', PREC))}였다. "
+                f"K=0 대비 ΔNDCG@5는 {interval(d('LIMORE_to_LICOB', f'{P}/0'))}로 구간에 0이 포함됐다.",
                 "", "### K=5 모델별 성능", "",
                 "| 연구 범위 | 모델 | NDCG@5 | Precision@5 | 시료 내 Spearman | 약물 내 Spearman | 약물 내 Pearson | 상호작용 PCC | 상호작용 Spearman | MAE | RMSE |",
                 "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|"]
@@ -151,7 +154,8 @@ def render(root):
             outputs.append(f"| {s} | {m} | " + " | ".join(fields) + " |")
     outputs += ["", "구간과 전체 K 비교는 [절대 성능](H1_METRICS.tsv)과 [짝지은 차이](H1_PAIRED_95CI.tsv)에 있다. "
                 "약물 내 상관과 이중 중심화 상호작용 상관은 폴드 내부에서 계산했다. "
-                "MAE/RMSE는 동일 assay 안에서 해석한다. 범암 macro의 원척도 오차는 assay 간 단위가 달라 본문에서 생략했다.",
+                "MAE/RMSE는 동일 assay 안에서 해석한다. 범암 macro의 원척도 오차는 assay 간 단위가 달라 본문에서 생략했다. "
+                "B0의 이중 중심화 예측은 이론상 0이다. 부동소수점 수준의 잔차에 순위를 매기면서 일부 B0 상호작용 Spearman에 작은 수치가 남았다.",
                 "", "| RNA 보조 비교 | K=5 ΔNDCG@5 vs anchor-only |",
                 "|---|---:|"]
     for s in STUDIES[:4]:
@@ -194,7 +198,7 @@ def render(root):
             outputs.append(f"| {name} | {', '.join(map(str, dose))} | {2 * sum(dose) + 12} | {data['fit_groups']} | "
                            f"{q} → 5 ({100 * (q-5)/q:.1f}% 축소) |")
     outputs += ["", "LICOB Tier 4의 아틀라스 50개는 LIMORE 계통이다. 현지 LICOB 아틀라스 공여자 수는 0명이다. "
-                "아틀라스 비용은 연구용 재사용 자료의 규모다. 같은 실험 재현에 필요한 신규 아틀라스 규모나 실제 임상 적중률을 추정하지 않았다.",
+                "아틀라스 수는 이번 연구에서 재사용한 적합 그룹의 규모다. 등록 농도 수를 그대로 적용하면 LICOB의 118–122개 웰은 시료당 96웰 플레이트 한 장의 용량을 넘는다.",
                 "", f"오프라인 CPU CLI의 최대 절대 오차는 `{replay['max_abs_diff']:.3g}`였고 "
                 f"`1e-6` 기준을 충족했다. {sum(bool(x['tested_rows']) for x in replay['tasks'].values())}개 모델 패키지에서 단일/배치 결과를 비교하고 "
                 "앵커 누락, 미측정값, 허용 범위 초과를 거절했다. Wong 시료 10명의 앵커는 모두 입력 범위를 벗어나 CLI에서 거절됐다. "
