@@ -16,6 +16,7 @@ AXES = {"spearman":.01,"interaction_spearman":.02,"ndcg_at_5":.015}
 COHORTS = {"GDSC1":39545,"LIMORE":3400,"LICOB":2888}
 SEEDS = {"11711", "11729", "11743"}
 PARTITIONS = {f"{track}-{i}" for track in ("drug", "cell", "CTRPv2", "GDSC2", "PRISM20Q2") for i in range(3)}
+CURVE_FIGURES = {"H3V2_FAMILY_LEARNING_CURVES.png", "H3V2_GRID_SATURATION.png"}
 
 
 def digest(file):
@@ -46,6 +47,9 @@ def verify(root):
     for name,sha in verify["deliverables"].items():
         if digest(root/name)!=sha:
             raise ValueError(f"Verified artifact changed while exporting {name}")
+    for name in CURVE_FIGURES:
+        if name not in verify["deliverables"] or not (root / name).read_bytes().startswith(b"\x89PNG\r\n\x1a\n"):
+            raise ValueError(f"Missing verified curve figure {name}")
     if {key:receipt["parts"][key] for key in COHORTS}!=COHORTS or lock["outer_labels_opened"]:
         raise ValueError("Registered technical cohort support or outcome handling changed")
     if set(manifest["split_support"]) != PARTITIONS or set(lock["splits"]) != PARTITIONS:
