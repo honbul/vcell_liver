@@ -162,7 +162,7 @@ def results(dst, frozen, receipt):
     if promoted:
         next_step = "GO-DEV 후보 " + ", ".join(promoted) + "의 [조건부 검증](TECHNICAL_CONFIRMATION.md)."
     lines = [
-        "- **가설** H3a 순수 PCGrad의 두 축 개선과 H3b 배치·최적화·분해의 개선을 독립 검정했다.",
+        "- **가설** H3a 순수 PCGrad의 두 축 개선과 H3b 배치·최적화·분해의 개선을 각각 평가했다.",
         "- **달라진 점** H3a는 기울기 투영만 적용했고 H3b는 같은 입력과 관측 예산에서 세 요소를 비교했다.",
         f"- **결과** {a_summary} {b_summary}",
         f"- **판정** H3a **{a['verdict']}** ({a['stage']}) · H3b **{b['verdict']}** ({b['stage']}).",
