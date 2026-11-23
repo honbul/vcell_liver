@@ -20,7 +20,7 @@ job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
 35063	ng2-h1-prelabel	verify_scoring_paths	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
 35064	ng2-h1-score	outer_score	cpu	0	0	CANCELLED	Replaced while pending, runtime zero, no scoring claim
 35065	ng2-h1-replay-final	replay_final	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
-35122	ng2-h1-licob-size	inner_licob_sample_sensitivity	gpu	1	1	DEPENDENT	Starts after the revised two-GPU closure array 35355; verifies nested 50/75/100 percent reference sizes before scoring
+35122	ng2-h1-licob-size	inner_licob_sample_sensitivity	gpu	1	1	DEPENDENT	Starts after the revised two-GPU closure array 35376; verifies nested 50/75/100 percent reference sizes before scoring
 35147	ng2-h1-prelabel-sealed	verify_scoring_paths	cpu	0	0	DEPENDENT	Verifies synthetic auxiliary predictions and matched v1 arms before opening held outcomes
 35148	ng2-h1-score-sealed	outer_score	cpu	0	0	CANCELLED	Replaced while pending by the complete tissue analysis, runtime zero, no scoring claim
 35149	ng2-h1-replay-final-sealed	replay_final	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
@@ -30,4 +30,6 @@ job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
 35195	ng2-h1-score-shape	blind_bootstrap_and_tissue_integration	cpu	0	0	COMPLETED	2,000 paired group draws on 220 groups and 18 arms with simulated query outcomes; nine metric axes across 26 tissues
 35220	ng2-h1-cost-registry	cost_workbook_registry_audit	cpu	0	0	COMPLETED	Signed workbook hash and six descriptive sheet titles verified; cost registry receipt
 35270	ng2-h1-release-verify	verify_release	cpu	0	0	CANCELLED	Replaced while pending to use the ledger of the extended neural search; runtime zero
-35355	ng2-h1-boundary-neural-wide	inner_boundary_c	gpu	1	2	DEPENDENT	After 34955; completes all clipped width doublings and continues the search above 256; required by collection, model freeze and sample-size analysis
+35355	ng2-h1-boundary-neural-wide	inner_boundary_c	gpu	1	2	CANCELLED	Replaced while pending when the completed Inner traces also showed clipped learning-rate and epoch probes; runtime zero
+35359	ng2-h1-release-wide	verify_release	cpu	0	0	CANCELLED	Replaced while pending to package the full numerical boundary audit; runtime zero
+35376	ng2-h1-boundary-neural-full	inner_boundary_c	gpu	1	2	DEPENDENT	After 34955; completes all clipped numerical doublings and halvings; required by collection, model freeze and sample-size analysis
