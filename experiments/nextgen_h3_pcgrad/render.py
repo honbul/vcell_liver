@@ -133,6 +133,31 @@ def inner(dst, books, frozen):
     for stage in STAGES[1:]:
         lines.extend([f"### {stage}", "", *table(["구성", *TITLES], [
             (name, *values(row)) for name, row in books[stage]["scores"].items()])])
+    comparisons = []
+    for stage in STAGES[1:]:
+        book = books[stage]
+        for name in book["scores"]:
+            gains = []
+            for tag, test in book["scores_by_split"].items():
+                setting = book["settings_by_split"][tag][name]
+                if stage == "round2-block":
+                    base = a["fold_choices"][tag]
+                    control = base["strongest_g1" if setting["method"] == "sum" else "strongest_g2"]
+                    prior = books["round1"]["scores_by_split"][tag]
+                elif stage == "round2-head" and setting["method"] != "sum":
+                    prior = books["round2-opt"]["scores_by_split"][tag]
+                    control = "O_" + setting["method"]
+                else:
+                    prior = books["round2-block"]["scores_by_split"][tag]
+                    control = "B_sum_" + setting["batch"]
+                gains.append([test[name][key] - prior[control][key] for key in METRICS])
+            comparisons.append((name, *(signed(v) for v in np.mean(gains, axis=0))))
+    lines.extend([
+        "### 설정 일치 대비", "",
+        "배치 비교는 같은 G1 또는 G2의 무작위 관측쌍 배치, 최적화기 비교는 같은 블록의 G1, "
+        "분해 비교는 같은 블록·최적화기의 단일 헤드를 대조군으로 사용했다.", "",
+        *table(["구성", "ΔNDCG@5", "Δ약물 내 ρ", "ΔPrecision@5", "Δ잔차 ρ"], comparisons),
+    ])
     rows = []
     for split, row in b["fold_choices"].items():
         best = row["best_by_ndcg"]
