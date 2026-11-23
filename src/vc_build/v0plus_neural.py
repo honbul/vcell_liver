@@ -66,8 +66,9 @@ class MolecularPredictor(nn.Module):
         self.cell = nn.Sequential(nn.LayerNorm(width), nn.GELU(), nn.Dropout(0.25), nn.Linear(width, width))
         self.drug = nn.Sequential(nn.Linear(n_chemical, width * 2), nn.LayerNorm(width * 2),
                                   nn.GELU(), nn.Dropout(0.15), nn.Linear(width * 2, width))
-        self.drug_id = nn.Embedding(n_drugs, width)
-        nn.init.normal_(self.drug_id.weight, std=0.04)
+        if config.get("drug_identity", True):
+            self.drug_id = nn.Embedding(n_drugs, width)
+            nn.init.normal_(self.drug_id.weight, std=0.04)
         if config["chronos"]:
             self.dependency = nn.Linear(width, n_targets + 1)
             self.dependency_state = nn.Linear(n_targets + 1, width, bias=False)
@@ -96,7 +97,9 @@ class MolecularPredictor(nn.Module):
         if self.config["drivers"]:
             drivers = self.drivers(state)
             interaction_state = interaction_state + 0.4 * self.driver_state(drivers)
-        chemical_state = self.drug(chemical) + self.drug_id(drug)
+        chemical_state = self.drug(chemical)
+        if self.config.get("drug_identity", True):
+            chemical_state = chemical_state + self.drug_id(drug)
         if self.config["targets"]:
             target_dependency = dependency.gather(1, drug_targets) if dependency is not None else torch.zeros_like(target_rna)
             chemical_state = chemical_state + self.interactions(
@@ -118,12 +121,19 @@ class MolecularData:
     expression_positions: np.ndarray
 
     @classmethod
-    def prepare(cls, fit, fit_rna, edges, targets, configuration):
-        features = ExpressionFeatures.fit(fit_rna, edges, targets, n_variable=768, rank=configuration["rank"])
-        drugs = sorted(fit.compound_id.unique())
-        rows = fit[["compound_id", "isomeric_smiles"]].drop_duplicates()
+    def prepare(cls, fit, fit_rna, edges, targets, configuration, *, registry=None):
+        structures = ["compound_id", "isomeric_smiles"]
+        rows = fit[structures].drop_duplicates()
+        fit_targets = targets
+        if registry is not None:
+            known_drugs = set(rows.compound_id)
+            fit_targets = {drug: genes for drug, genes in targets.items() if drug in known_drugs}
+            unfamiliar = registry.loc[~registry.compound_id.isin(known_drugs), structures]
+            rows = pd.concat([rows, unfamiliar], ignore_index=True).drop_duplicates("compound_id")
+        features = ExpressionFeatures.fit(fit_rna, edges, fit_targets, n_variable=768, rank=configuration["rank"])
+        drugs = sorted(rows.compound_id.unique())
         chemistry = _chemistry(rows, fp_size=2048).loc[drugs].to_numpy(dtype="float32")
-        genes = sorted(set(features.columns) & set().union(*targets.values()))
+        genes = sorted(set(features.columns) & set().union(*fit_targets.values()))
         indexed = {gene: i + 1 for i, gene in enumerate(genes)}
         items = [[indexed[gene] for gene in sorted(set(targets.get(drug, ())) & set(genes))] for drug in drugs]
         target_positions = np.zeros((len(drugs), max(map(len, items), default=0) + 1), dtype=np.int64)
@@ -207,8 +217,10 @@ class FittedMolecular:
 
 
 def fit_molecular(arm, width, epochs, source, anchor, fit_rna, query_rna, edges, targets, auxiliary, *,
-                  gpu, interaction_target=False):
-    configs = ABLATIONS["v0plus_inductive"] | ABLATIONS[arm]
+                  gpu, interaction_target=False, registry=None, options=None, batch_size=1024):
+    configs = ABLATIONS["v0plus_inductive"] | ABLATIONS[arm] | (options or {})
+    if registry is not None and (configs.get("drug_identity", True) or configs["adapt"] == "query"):
+        raise ValueError("A cold compound requires an ID-free inductive model")
     if not gpu or not torch.cuda.is_available():
         raise RuntimeError("V0+ molecular model requires CUDA")
     device = torch.device("cuda")
@@ -216,7 +228,7 @@ def fit_molecular(arm, width, epochs, source, anchor, fit_rna, query_rna, edges,
     torch.set_num_threads(4)
     torch.set_float32_matmul_precision("high")
     rng = np.random.default_rng(11711)
-    molecular = MolecularData.prepare(source, fit_rna, edges, targets, configs)
+    molecular = MolecularData.prepare(source, fit_rna, edges, targets, configs, registry=registry)
     state, target_rna = molecular.inputs(fit_rna, device)
     chemical, target_positions, target_mask = molecular.drug_inputs(device)
     feature_count = len(molecular.features.indices)
@@ -241,7 +253,7 @@ def fit_molecular(arm, width, epochs, source, anchor, fit_rna, query_rna, edges,
     for epoch in range(epochs):
         axis = ["source_id", "compound_id" if epoch % 2 == 0 else "cell_id"]
         pair = torch.as_tensor(grouped_pair_indices(source, axis, rng), device=device)
-        for primary in torch.randperm(len(source), device=device).split(1024):
+        for primary in torch.randperm(len(source), device=device).split(batch_size):
             rows = torch.cat([primary, pair[primary]])
             cell, drug = row_cells[rows], row_drugs[rows]
             latent = network.encode(state[cell])
