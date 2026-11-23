@@ -22,19 +22,21 @@ def best(scores, models):
                                          -scores[name]["precision_at_k"], name))
 
 
-def options(stage):
+def options(stage, split):
     if stage == "round1":
         return first_arms()
-    return [Arm(**x) for x in read_json(ROOT / f"{stage}-lock.json")["arms"]]
+    return [Arm(**x) for x in read_json(ROOT / f"{stage}-lock.json")["splits"][split]["arms"]]
 
 
 def measure(stage):
-    models = [arm.name for arm in options(stage)]
-    if stage == "round1":
-        models += ["structured", "drug_mean"]
-    metrics, hashes, runs, diag = [], {}, [], []
+    metrics, hashes, runs, diag, settings = [], {}, [], [], {}
     for index in range(9):
         tag = split_id(index)
+        arms = options(stage, tag)
+        settings[tag] = {arm.name: arm.record() for arm in arms}
+        models = list(settings[tag])
+        if stage == "round1":
+            models += ["structured", "drug_mean"]
         root = ROOT / stage / tag
         receipt = read_json(root / "receipt.json")
         file = root / "forecast.parquet"
@@ -95,6 +97,7 @@ def measure(stage):
             "valid_pair_batches": len(kept),
             "all_pair_batches": len(all_diag),
             "g1_negative_cosine_frequency": float(kept.loc[kept.arm.str.startswith("G1"), "conflict"].mean()),
+            "g1_frequency_by_split": kept.loc[kept.arm.str.startswith("G1")].groupby("split").conflict.mean().to_dict(),
         }
 
     if stage == "round1":
@@ -108,7 +111,9 @@ def measure(stage):
         measured = run_frame[run_frame.timing_replay.eq(True)]
         if len(measured) != 4 or not measured.max_forecast_difference.le(1e-3).all():
             raise ValueError("Gradient audit changes the replay predictions")
-    summary = {"arms": [arm.record() for arm in options(stage)], "scores": aggregates,
+    summary = {"settings_by_split": settings, "scores": aggregates,
+               "scores_by_split": {split: table.set_index("arm")[list(ALL_METRICS)].to_dict(orient="index")
+                                   for split, table in scores.groupby("split")},
                "inputs_sha256": hashes, "diagnostics": diag_summary}
     publish_json(output / f"{stage}-summary.json", summary)
     return summary
@@ -118,70 +123,106 @@ def point_deltas(candidate, base):
     return {key: candidate[key] - base[key] for key in ALL_METRICS}
 
 
-def choose(stage, summary):
-    scores = summary["scores"]
-    if stage == "round1":
+def select_round1(summary):
+    decisions, block_options = {}, {}
+    for tag, scores in summary["scores_by_split"].items():
         g1, g2 = [best(scores, [name for name in scores if name.startswith(prefix)])
                   for prefix in ("G1_", "G2_")]
-        g1_at_g2 = g2.replace("G2", "G1")
-        conflict = summary["diagnostics"]["g1_negative_cosine_frequency"]
+        match = g2.replace("G2", "G1")
+        conflict = summary["diagnostics"]["g1_frequency_by_split"][tag]
         matching = {w: point_deltas(scores[f"G2_w{w}"], scores[f"G1_w{w}"]) for w in range(3)}
         stop = conflict < contract()["pilot_conflict_floor"] and max(
             result["ndcg_at_5"] for result in matching.values()) <= 0
-        decision = {"strongest_g1": g1, "strongest_g2": g2, "matched_g1": g1_at_g2,
-                    "early_stop": stop, "matched_weight_deltas": matching}
-        publish_json(ROOT / "round1-decision.json", decision)
-        lookup = {x.name: x for x in first_arms()}
-        choose_block = [Arm(f"B_{source.method}_{batch}", source.method, source.weight, batch).record()
-                        for source in (lookup[g1], lookup[g2]) for batch in ("block4x3", "block6x2")]
-        publish_json(ROOT / "round2-block-lock.json", {"arms": choose_block, "preceding": decision})
-        return
+        decisions[tag] = {"strongest_g1": g1, "strongest_g2": g2, "matched_g1": match,
+                          "pilot_stop": stop, "matched_weight_deltas": matching}
+        sources = [Arm(**summary["settings_by_split"][tag][name]) for name in (g1, g2)]
+        block_options[tag] = {"arms": [
+            Arm(f"B_{arm.method}_{batch}", arm.method, arm.weight, batch).record()
+            for arm in sources for batch in ("block4x3", "block6x2")
+        ]}
+    publish_json(ROOT / "round1-decision.json", {"splits": decisions})
+    publish_json(ROOT / "round2-block-lock.json", {"splits": block_options})
 
-    base = read_json(ROOT / "round1-decision.json")
-    reference = {x.name: x for x in first_arms()}
-    weight = reference[base["strongest_g1"]].weight
-    if stage == "round2-block":
-        # Select the layout under the common H3b anchor optimizer.
-        chosen = best(scores, [name for name in scores if name.startswith("B_sum_")])
-        batch = chosen.removeprefix("B_sum_")
-        arms = [Arm(f"O_{method}", method, weight, batch).record()
-                for method in ("normalized", "gradnorm", "cagrad")]
-        publish_json(ROOT / "round2-opt-lock.json", {"arms": arms, "best_block_under_g1": chosen})
-        return
 
-    if stage == "round2-opt":
-        best_opt = best(scores, list(scores)).removeprefix("O_")
-        batch = summary["arms"][0]["batch"]
-        arms = [Arm(f"D_{head}_{method}", method, weight, batch, head).record()
-                for method in ("sum", best_opt) for head in ("shared", "separate")]
-        publish_json(ROOT / "round2-head-lock.json", {"arms": arms, "best_optimizer_under_block": best_opt})
-        return
+def select_optimization(stage, summary, first):
+    following = {}
+    for tag, scores in summary["scores_by_split"].items():
+        local_g1 = first["splits"][tag]["strongest_g1"]
+        weight = next(arm.weight for arm in first_arms() if arm.name == local_g1)
+        if stage == "round2-block":
+            chosen = best(scores, [name for name in scores if name.startswith("B_sum_")])
+            batch = chosen.removeprefix("B_sum_")
+            arms = [Arm(f"O_{method}", method, weight, batch).record()
+                    for method in ("normalized", "gradnorm", "cagrad")]
+        else:
+            chosen = best(scores, list(scores))
+            best_opt = chosen.removeprefix("O_")
+            batch = summary["settings_by_split"][tag][chosen]["batch"]
+            arms = [Arm(f"D_{head}_{label}", method, weight, batch, head).record()
+                    for label, method in (("sum", "sum"), ("adaptive", best_opt))
+                    for head in ("shared", "separate")]
+        following[tag] = {"arms": arms, "selected_prior_arm": chosen}
+    next_stage = "round2-opt" if stage == "round2-block" else "round2-head"
+    publish_json(ROOT / f"{next_stage}-lock.json", {"splits": following})
 
-    books = [read_json(ROOT / f"analysis/{s}-summary.json") for s in STAGES]
-    combined = {key: value for book in books[1:] for key, value in book["scores"].items()}
-    arms = {item["name"]: item for book in books for item in book["arms"]}
-    comparators = [base["strongest_g1"], "structured"]
-    candidates = {}
+
+def final_lock(first):
+    books = [read_json(ROOT / f"analysis/{stage}-summary.json") for stage in STAGES]
     cfg = contract()["go"]
-    for candidate, metrics in combined.items():
-        changes = {name: point_deltas(metrics, books[0]["scores"][name]) for name in comparators}
-        qualifying = all(d["ndcg_at_5"] >= cfg["ndcg_delta"]
-                         and min(d["within_drug_spearman"], d["precision_at_k"]) >= cfg["protection"]
-                         and d["residual_spearman"] > 0 for d in changes.values())
-        candidates[candidate] = {"inner_gains": changes, "qualifying": qualifying}
-    qualified = [name for name, row in candidates.items() if row["qualifying"]]
-    champion = best(combined, qualified) if qualified else None
-    best_unconstrained = best(combined, list(combined))
-    outer = [base["strongest_g1"]]
-    if not base["early_stop"]:
-        outer.extend([base["strongest_g2"], base["matched_g1"]])
-    if champion:
-        outer.append(champion)
-    record = {"a": base, "b": {"champion": champion, "best_by_ndcg": best_unconstrained,
-                               "candidates": candidates, "inner_comparators": comparators},
-              "seeds": contract()["seeds"], "arms": [arms[name] for name in dict.fromkeys(outer)],
-              "inner_summary_sha256": {s: sha256(ROOT / f"analysis/{s}-summary.json") for s in STAGES}}
+    outer, choices = {}, {}
+    stop_a = all(value["pilot_stop"] for value in first["splits"].values())
+    for tag, a in first["splits"].items():
+        initial = books[0]["scores_by_split"][tag]
+        experiments = {name: row for book in books[1:] for name, row in book["scores_by_split"][tag].items()}
+        arms = {name: row for book in books for name, row in book["settings_by_split"][tag].items()}
+        comparisons = (a["strongest_g1"], "structured")
+        candidates = {}
+        for candidate, metrics in experiments.items():
+            gains = {name: point_deltas(metrics, initial[name]) for name in comparisons}
+            eligible = all(d["ndcg_at_5"] >= cfg["ndcg_delta"]
+                           and min(d["within_drug_spearman"], d["precision_at_k"]) >= cfg["protection"]
+                           and d["residual_spearman"] > 0 for d in gains.values())
+            candidates[candidate] = {"inner_gains": gains, "qualifying": eligible}
+        available = [name for name, row in candidates.items() if row["qualifying"]]
+        champion = best(experiments, available) if available else None
+        choices[tag] = {"champion": champion, "best_by_ndcg": best(experiments, list(experiments)),
+                        "candidates": candidates, "inner_comparators": list(comparisons)}
+        options = [arms[a["strongest_g1"]] | {"name": "G1_best"}]
+        if not stop_a:
+            options.extend([arms[a["strongest_g2"]] | {"name": "G2"},
+                            arms[a["matched_g1"]] | {"name": "G1_matched"}])
+        if champion:
+            choices[tag]["selected_configuration"] = arms[champion]
+            options.append(arms[champion] | {"name": "H3b"})
+        outer[tag] = {"arms": options}
+
+    successful = sum(row["champion"] is not None for row in choices.values())
+    # A complete candidate policy has to furnish a challenger in every historical fold.
+    if successful != len(choices):
+        for value in outer.values():
+            value["arms"] = [arm for arm in value["arms"] if arm["name"] != "H3b"]
+    names = [arm["name"] for arm in next(iter(outer.values()))["arms"]]
+    record = {
+        "a": {"strongest_g1": "G1_best", "strongest_g2": "G2", "matched_g1": "G1_matched",
+              "early_stop": stop_a, "fold_choices": first["splits"]},
+        "b": {"champion": "H3b" if "H3b" in names else None, "qualified_folds": successful,
+              "fold_choices": choices},
+        "arms": [{"name": name} for name in names], "folds": outer, "seeds": contract()["seeds"],
+        "selection_scope": "all choices fitted and selected only inside their corresponding outer fit split",
+        "inner_summary_sha256": {s: sha256(ROOT / f"analysis/{s}-summary.json") for s in STAGES},
+    }
     publish_json(ROOT / "final-lock.json", record)
+
+
+def choose(stage, summary):
+    if stage == "round1":
+        select_round1(summary)
+        return
+    first = read_json(ROOT / "round1-decision.json")
+    if stage in ("round2-block", "round2-opt"):
+        select_optimization(stage, summary, first)
+    else:
+        final_lock(first)
 
 
 def main():

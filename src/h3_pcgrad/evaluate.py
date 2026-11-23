@@ -45,6 +45,9 @@ def check_forecasts():
         if len(names) != len(set(names)) or set(names) != set(columns) - set(REFERENCES):
             raise ValueError("Missing or duplicate seed checkpoint")
         checks = pd.DataFrame(prov["runs"])
+        expected = {row["name"]: row for row in lock["folds"][tag]["arms"]}
+        if any(expected[entry["arm"]["name"]] != entry["arm"] for entry in prov["runs"]):
+            raise ValueError("Outer fit used a different inner fold operating point")
         for metric in ("initial_sha256", "batch_order_sha256"):
             native = checks.loc[checks.arm.map(lambda arm: arm["batch"] == "pairs" and arm["head"] == "native")]
             if not native.groupby("seed")[metric].nunique().eq(1).all():

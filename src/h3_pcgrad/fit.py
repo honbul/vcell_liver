@@ -32,7 +32,7 @@ def inner_stage(stage, index):
     rna = expression()
     ranked = pd.DataFrame(sample_rank(rna.to_numpy(np.float32)), index=rna.index, columns=rna.columns)
     lock = None if stage == "round1" else read_json(ROOT / f"{stage}-lock.json")
-    arms = first_arms() if lock is None else [Arm(**arm) for arm in lock["arms"]]
+    arms = first_arms() if lock is None else [Arm(**arm) for arm in lock["splits"][name]["arms"]]
     evidence, tables = [], []
     for inner in range(2):
         fit = read_part(files / f"inner{inner}-fit.parquet")
@@ -93,10 +93,17 @@ def outer(index):
     references, previous_hash = outer_reference(p, name)
     for method, forecast in references.items():
         parts.append(results.assign(method=method, predicted_value=forecast))
-    for option in lock["arms"]:
+    cache = {}
+    for option in lock["folds"][name]["arms"]:
         arm = Arm(**option)
         for seed in conf["seeds"]:
-            fitted, stamp, _ = train(view, arm, conf, seed, device="cuda")
+            key = (arm.method, arm.weight, arm.batch, arm.head, seed)
+            reused = key in cache
+            if not reused:
+                fitted, stamp, _ = train(view, arm, conf, seed, device="cuda")
+                cache[key] = fitted, stamp, predict(fitted, view, "cuda")
+            fitted, stamp, prediction = cache[key]
+            stamp = stamp | {"arm": arm.record(), "reused_matched_fit": reused}
             component = f"{arm.name}__{seed}"
             target = output / f"{component}.pt"
             torch.save({"arm": arm.record(), "source": sha256(files / "fit.parquet"), "seed": seed,
@@ -104,7 +111,7 @@ def outer(index):
                         "features": {key: view[key] for key in
                                      ("genes", "center", "spread", "drugs", "scale", "anchor", "drug", "x")}},
                        target)
-            parts.append(results.assign(method=component, predicted_value=predict(fitted, view, "cuda")))
+            parts.append(results.assign(method=component, predicted_value=prediction))
             evidence.append({"checkpoint": target.name, "checkpoint_sha256": sha256(target), **stamp})
             print(name, component, round(stamp["wall_seconds"], 2), flush=True)
     freeze_table(pd.concat(parts, ignore_index=True), output / "forecast.parquet",
