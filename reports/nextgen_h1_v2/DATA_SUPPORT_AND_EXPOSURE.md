@@ -12,3 +12,5 @@ H1-v2 reuses the signed v1 split, group identities, panel and held query support
 | 4 | LIMORE → LICOB | 38 target, 50 source | 53 | 45 |
 
 Main results use the exact v1 parent panels and registered high-density within-screen support. Cabozantinib is unregistered in the LICOB panel. Its subgroup row will report lack of support. The Tier 4 target has no RNA inputs or local donor fits. Wong is outside the H1-v2 Tier 1–4 scope.
+
+The preflight verified the immutable v1 input and score receipts and the 16 included task denominators. G1 provided LightGBM 4.6.0 and PyTorch 2.6.0+cu118. A typing-extensions version mismatch on three CPU nodes was repaired with a read-only module copy under the H1-v2 dependency directory. [Data and runtime receipt](preflight_receipt.json) · [Isolated module receipt](dependency_overlay_receipt.json)

@@ -9,3 +9,14 @@ job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
 34984	ng2-h1-boundary-cpu	inner_boundary_abd	cpu	0	0	COMPLETED	48 signed A/B/D final search receipts
 34985	ng2-h1-boundary-neural	inner_boundary_c	gpu	1	2	DEPENDENT	Eligible only after job 34955 completes
 34986	ng2-h1-cost	cost_registry	cpu	0	0	COMPLETED	Workbook sheet metadata only and registered budget scenarios
+35072	ng2-h1-boundary-resolve	inner_boundary_prism_b	cpu	0	0	COMPLETED	13 newly applicable L2 ranges examined in the PRISM20Q2-2 anchor task
+35083	ng2-h1-publish-boundary	inner_boundary_publish	cpu	0	0	COMPLETED	Final PRISM20Q2-2 B receipt linked and predecessor preserved
+35057	ng2-h1-collect-inner	inner_evidence	cpu	0	0	DEPENDENT	Waits for both boundary arrays and the PRISM B publication job
+35058	ng2-h1-fit-outer	fit_frozen_models	cpu	0	0	DEPENDENT	Waits for both boundary arrays and the PRISM B publication job
+35059	ng2-h1-seal-models	seal_models	cpu	0	0	DEPENDENT	Precedes primary forecast and scorer
+35060	ng2-h1-predict	predict_primary	cpu	0	0	DEPENDENT	Uses the immutable model receipts and v1 released anchors
+35061	ng2-h1-seal-predictions	seal_predictions	cpu	0	0	DEPENDENT	Seals primary predictions before Q access
+35062	ng2-h1-replay-primary	replay_primary	cpu	0	0	DEPENDENT	Checks CPU CLI and Q8 primary parity before any held scoring
+35063	ng2-h1-prelabel	verify_scoring_paths	cpu	0	0	DEPENDENT	Uses synthetic auxiliary anchors before held scoring
+35064	ng2-h1-score	outer_score	cpu	0	0	DEPENDENT	Single held score dependency after all prelabel checks
+35065	ng2-h1-replay-final	replay_final	cpu	0	0	DEPENDENT	Full forced CPU replay including Q12 after scoring
