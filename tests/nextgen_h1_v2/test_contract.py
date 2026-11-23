@@ -13,7 +13,7 @@ from nextgen_h1_v2.anchors import extend_reserve, greedy, restricted_order
 from nextgen_h1_v2.boost import region
 from nextgen_h1_v2.data import TASKS, partitions, training_context
 from nextgen_h1_v2.neural import SetProcess
-from nextgen_h1_v2.score import fit_metrics, verify_prelabel
+from nextgen_h1_v2.score import TISSUE_ARMS, fit_metrics, fit_tissues, restrict_tissue, tissue_table, verify_prelabel
 from nextgen_h1_v2.search import extrapolate, fit_model, seed_grid, template
 
 
@@ -111,6 +111,20 @@ class H1V2Contract(unittest.TestCase):
                 prelabel.write_text(json.dumps(receipt))
                 with self.assertRaises(ValueError):
                     verify_prelabel(prelabel, frozen, forecast)
+
+    def test_tissue_score_reuses_paired_draws_for_all_metrics(self):
+        y = self.rng.normal(size=(6, 15))
+        labels = np.array(["Liver", "Lung", "Liver", "Lung", "Lung", "Liver"])
+        forecasts = {f"{arm}/5": y + self.rng.normal(size=y.shape) for arm in TISSUE_ARMS}
+        draws = np.array([[0, 1, 2, 3, 4, 5, -1], [5, 5, 1, 2, 1, 4, -1], [1, 1, 4, 4, -1, -1, -1]])
+        task = Task("GDSC2-0", y, forecasts, np.arange(len(y)), labels, None, draws)
+        liver = restrict_tissue(task, "Liver")
+        np.testing.assert_array_equal(liver.drawn_indices, [[0, 1, 2], [1, 2, 2], [-1, -1, -1]])
+        reported = tissue_table([fit_tissues(task)])
+        for label in ("Liver", "Lung"):
+            self.assertEqual(len([row for row in reported if row["tissue"] == label]), 9 * len(TISSUE_ARMS))
+        row = next(row for row in reported if row["arm"] == "Bsimple" and row["metric"] == "ndcg_at_5")
+        self.assertEqual(row["delta_vs_bsimple"], 0.)
 
 
 if __name__ == "__main__":

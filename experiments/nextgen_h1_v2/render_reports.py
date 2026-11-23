@@ -296,7 +296,14 @@ def results(root):
             lines.append(f"| {s} / {arm} | {' | '.join(vals)} | {aux['independent_groups'] if aux else '—'} |")
     tissues = load(root, "H1V2_PANCANCER_BY_TISSUE.tsv")
     lines += ["", f"범암 조직 표는 등록 라벨 {len(set(t['tissue'] for t in tissues))}개를 포함한다. "
-              "조직별 지표와 신뢰구간을 함께 제공한다. [범암 조직별](H1V2_PANCANCER_BY_TISSUE.tsv)", "",
+              "조직별 9개 지표와 짝지은 신뢰구간을 함께 제공한다. [범암 조직별](H1V2_PANCANCER_BY_TISSUE.tsv)", "",
+              "| 범암 패널의 Liver | 계통 | RNA+Anchor NDCG@5 | 최강 단순 기준선 대비 Δ |",
+              "|---|---:|---:|---:|"]
+    for row in tissues:
+        if row['tissue'].casefold() == 'liver' and row['arm'] == DUAL and row['metric'] == NDCG:
+            paired_liver = {"delta": row["delta_vs_bsimple"], "lo95": row["delta_lo95"], "hi95": row["delta_hi95"]}
+            lines.append(f"| {row['study']} | {row['n_groups']} | {interval(row)} | {interval(paired_liver, 'delta')} |")
+    lines += ["",
               "## 4대 HCC TKI", "",
               "| 연구 | 약물 | 팔 | 관측 수 | 약물 내 Spearman [95% CI] |",
               "|---|---|---|---:|---:|"]

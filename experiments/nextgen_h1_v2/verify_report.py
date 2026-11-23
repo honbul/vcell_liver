@@ -7,6 +7,10 @@ from pathlib import Path
 
 from render_reports import ANCHOR, DUAL, MAIN_STUDIES, NDCG, load, num
 
+AXES = {NDCG, "precision_at_5", "within_sample_spearman", "within_drug_spearman", "within_drug_pearson",
+        "interaction_spearman", "interaction_pearson", "mae", "rmse"}
+TKIS = {"Sorafenib", "Lenvatinib", "Regorafenib", "Cabozantinib"}
+
 REQUIRED = """
 PLAN_LOCK.md DATA_SUPPORT_AND_EXPOSURE.md ROUND1_TO_3_CEILING_TUNING.md
 RESULTS.md H1V2_METRICS.tsv H1V2_PAIRED_95CI.tsv H1V2_FAMILY_BENCHMARK.tsv
@@ -49,6 +53,8 @@ def verify(root, v1):
          and prelabel["sealed_forecasts"] == score["predictions_sha256"], "Prelabel checks did not cover the score")
     need(score["prelabel_sha256"] == claim["prelabel_sha256"] == digest(root / "prelabel_receipt.json"),
          "Scoring claim did not verify the prelabel receipt")
+    need(prelabel["prelabel_replay"] == digest(root / "primary_replay_receipt.json"),
+         "Prelabel replay provenance mismatch")
     need(freeze["v1_study_sha256"] == claim["cohort_sha256"] == old["input_sha256"], "v1 lineage support changed")
     need(not any(rec["outer_labels_opened"] for rec in (freeze, forecasts, inner)),
          "One of the pre-score stages opened query outcomes")
@@ -78,6 +84,15 @@ def verify(root, v1):
     need(len(families) == len(expected) and {(r["task"], r["family"], r["modality"]) for r in families} == expected,
          "Inner family coverage mismatch")
     need(all(int(r["remaining"]) == 0 for r in families), "Unexamined winning numerical boundary")
+    size = read("size_probe_receipt.json")
+    size_rows = load(root, "H1V2_LICOB_SAMPLE_SIZE.tsv")
+    expected_size = {f"{row['task']}/{row['family']}": row["receipt_sha256"] for row in families
+                     if row["task"].startswith("LICOB-")}
+    need(not size["outer_labels_opened"] and size["rows"] == len(size_rows)
+         and size["table_sha256"] == digest(root / "H1V2_LICOB_SAMPLE_SIZE.tsv")
+         and size["family_receipts"] == expected_size,
+         "LICOB sample-size sensitivity did not use the sealed inner recipes")
+    need({num(r["training_fraction"]) for r in size_rows} == {.5, .75, 1.}, "Incomplete sample-size sensitivity")
     grid = defaultdict(set)
     for row in load(root, "H1V2_INNER_GRID.tsv"):
         data = json.loads(row["recipe"])
@@ -87,6 +102,12 @@ def verify(root, v1):
     need({"l2", "huber", "rank", "dual"} <= grid["B"] and {"listnet", "pairwise"} <= grid["C"]
          and "rank" in grid["D"], "Required direct ranking losses were not evaluated")
     metrics = load(root, "H1V2_METRICS.tsv")
+    metric_axes = defaultdict(set)
+    for row in metrics:
+        metric_axes[tuple(row[k] for k in ("study", "panel", "arm", "k"))].add(row["metric"])
+    need(all(a == AXES for a in metric_axes.values()), "One or more registered metric axes are missing")
+    pairs = load(root, "H1V2_PAIRED_95CI.tsv")
+    need(pairs and all(int(row["draws"]) == 2000 for row in pairs), "Paired comparator draws are incomplete")
     old_metrics = {(row["study"], row["method"], row["k"], row["metric"]): row
                    for row in load(v1, "H1_METRICS.tsv")}
     ref = {"v1-Anchor-Best":"H1-Anchor-Best", "v1-RNA+Anchor":"H1-RNA+Anchor-Best", "v1-Bsimple":"Bsimple"}
@@ -106,6 +127,16 @@ def verify(root, v1):
             found = {r["arm"] for r in metrics if r["study"] == s and r["panel"] == panel
                      and r["k"] == k and r["metric"] == NDCG}
             need(expect <= found, f"Missing matched arms at {s}/{panel}/K{k}: {expect - found}")
+    expected_tissues = {(r["study"], r["tissue"]) for r in load(v1, "H1_PANCANCER_BY_TISSUE.tsv")}
+    tissue_axes = defaultdict(set)
+    for row in load(root, "H1V2_PANCANCER_BY_TISSUE.tsv"):
+        tissue_axes[row["study"], row["tissue"], row["arm"]].add(row["metric"])
+    need(len({label for _, label in expected_tissues}) == 28
+         and {(s, t) for s, t, _ in tissue_axes} == expected_tissues
+         and all(a == AXES for a in tissue_axes.values()), "Incomplete 28-tissue metric coverage")
+    found_tkis = {(r["study"], r["tki"]) for r in load(root, "H1V2_HCC_TKI.tsv")}
+    need(found_tkis == {(s, d) for s in ("LIMORE", "LICOB", "LIMORE_to_LICOB") for d in TKIS},
+         "Incomplete HCC TKI coverage or support accounting")
     jobs = load(root, "SLURM_JOBS.tsv")
     need(sum(r["stage"] == "outer_score" and r["status"] == "COMPLETED" for r in jobs) == 1,
          "Expected one completed score in the Slurm ledger")

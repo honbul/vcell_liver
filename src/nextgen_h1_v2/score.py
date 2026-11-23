@@ -23,6 +23,7 @@ from .predict import controls, models_predict, verify_freeze
 
 TKIS = ("Sorafenib", "Lenvatinib", "Regorafenib", "Cabozantinib")
 TRACKS = ("Tier1-macro", *PAN, "LIMORE", "LICOB", "LIMORE_to_LICOB")
+TISSUE_ARMS = (DUAL, ANCHOR, "B1", "Bsimple", "v1-Anchor-Best", "v1-RNA+Anchor")
 
 
 def validate(forecasts, prediction_gate, freezes, model_gate):
@@ -188,41 +189,46 @@ def tables(batch, scoped, panel):
     return estimates, pairs, bench
 
 
-def tissue_table(batch, scope):
+def restrict_tissue(task, tissue):
+    selected = np.flatnonzero(task.tissue == tissue)
+    lookup = np.full(len(task.group) + 1, -1, dtype=int)
+    lookup[selected] = np.arange(len(selected))
+    draws = lookup[task.drawn_indices]
+    width = int((draws >= 0).sum(axis=1).max())
+    draws.sort(axis=1)
+    forecasts = {f"{arm}/5": task.p[f"{arm}/5"][selected] for arm in TISSUE_ARMS}
+    return Task(task.task, task.y[selected], forecasts, task.group[selected], task.tissue[selected],
+                task.meta, draws[:, -width:])
+
+
+def fit_tissues(task):
+    result = []
+    for label in sorted(set(task.tissue)):
+        sub = restrict_tissue(task, label)
+        _, metrics, _, counts = fit_metrics(sub)
+        result.append((label, sub, (metrics, {}, counts)))
+    return result
+
+
+def tissue_table(scored_tissues):
+    grouped = defaultdict(list)
+    for block in scored_tissues:
+        for name, sub, stats in block:
+            grouped[sub.study, name].append((sub, stats))
     rows = []
-    for study in PAN:
-        tasks = [t for t in batch if t.study == study]
-        methods = [DUAL, ANCHOR, "B1", "Bsimple", "v1-Anchor-Best", "v1-RNA+Anchor"]
-        for tissue in sorted(set(np.concatenate([t.tissue for t in tasks]))):
-            for method in methods:
-                sums = np.zeros((DRAWS + 1, 3))
-                baseline = sums.copy()
-                counts = sums.copy()
-                n = 0
-                for t in tasks:
-                    select = np.flatnonzero(t.tissue == tissue)
-                    n += len(select)
-                    if not len(select):
-                        continue
-                    table = scope[t.task][1]
-                    index = t.drawn_indices
-                    # Compress the expanded draw into weights before subgroup aggregation.
-                    w = np.array([np.bincount(i[i >= 0], minlength=len(t.group))[select] for i in index])
-                    a = table[f"{method}/5"][select, :3]
-                    b = table["Bsimple/5"][select, :3]
-                    use = np.isfinite(a) & np.isfinite(b)
-                    sums += w @ np.where(use, a, 0.)
-                    baseline += w @ np.where(use, b, 0.)
-                    counts += w @ use
-                with np.errstate(divide="ignore", invalid="ignore"):
-                    value = sums / counts
-                    diff = (sums - baseline) / counts
-                for j, metric in enumerate(NAMES[:3]):
-                    lower, upper = quantiles(value[1:, j])
-                    dl, du = quantiles(diff[1:, j])
-                    rows.append(dict(study=study, tissue=tissue, arm=method, k=5, n_groups=n, metric=metric,
-                                     value=value[0, j], lo95=lower, hi95=upper, delta_vs_bsimple=diff[0, j],
-                                     delta_lo95=dl, delta_hi95=du, exposure=EXPOSURE[study]))
+    for (study, tissue), records in sorted(grouped.items()):
+        subsets = [sub for sub, _ in records]
+        values = combined(subsets, {sub.task: stats for sub, stats in records})
+        n = sum(len(sub.group) for sub in subsets)
+        for arm in TISSUE_ARMS:
+            value = values[f"{arm}/5"]
+            diff = value - values["Bsimple/5"]
+            for j, metric in enumerate(NAMES):
+                lower, upper = quantiles(value[1:, j])
+                dl, du = quantiles(diff[1:, j])
+                rows.append(dict(study=study, tissue=tissue, arm=arm, k=5, n_groups=n, metric=metric,
+                                 value=value[0, j], lo95=lower, hi95=upper, delta_vs_bsimple=diff[0, j],
+                                 delta_lo95=dl, delta_hi95=du, exposure=EXPOSURE[study]))
     return rows
 
 
@@ -288,11 +294,12 @@ def execute(freezes, frozen, forecasts, predictions, out, prelabel, study_lock=R
         for scope, batch in (("Q8", primary), ("Q12", auxiliary)):
             points[scope] = {name: (metrics, samples, counts)
                              for name, metrics, samples, counts in pool.map(fit_metrics, batch)}
+        tissues = tissue_table(pool.map(fit_tissues, (t for t in primary if t.study in PAN)))
     m, p, b = tables(primary, points["Q8"], "Q8")
     m12, p12, _ = tables(auxiliary, points["Q12"], "Q12")
     outputs = {
         "H1V2_METRICS.tsv": m + m12, "H1V2_PAIRED_95CI.tsv": p + p12,
-        "H1V2_FAMILY_BENCHMARK.tsv": b, "H1V2_PANCANCER_BY_TISSUE.tsv": tissue_table(primary, points["Q8"]),
+        "H1V2_FAMILY_BENCHMARK.tsv": b, "H1V2_PANCANCER_BY_TISSUE.tsv": tissues,
         "H1V2_HCC_TKI.tsv": tki_table(primary),
     }
     for name, payload in outputs.items():

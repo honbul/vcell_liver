@@ -17,7 +17,10 @@ job_id	job_name	stage	partition	gpu_each	gpu_concurrent_cap	status	evidence
 35060	ng2-h1-predict	predict_primary	cpu	0	0	DEPENDENT	Uses the immutable model receipts and v1 released anchors
 35061	ng2-h1-seal-predictions	seal_predictions	cpu	0	0	DEPENDENT	Seals primary predictions before Q access
 35062	ng2-h1-replay-primary	replay_primary	cpu	0	0	DEPENDENT	Checks CPU CLI and Q8 primary parity before any held scoring
-35063	ng2-h1-prelabel	verify_scoring_paths	cpu	0	0	DEPENDENT	Uses synthetic auxiliary anchors before held scoring
-35064	ng2-h1-score	outer_score	cpu	0	0	DEPENDENT	Single held score dependency after all prelabel checks
-35065	ng2-h1-replay-final	replay_final	cpu	0	0	DEPENDENT	Full forced CPU replay including Q12 after scoring
+35063	ng2-h1-prelabel	verify_scoring_paths	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
+35064	ng2-h1-score	outer_score	cpu	0	0	CANCELLED	Replaced while pending, runtime zero, no scoring claim
+35065	ng2-h1-replay-final	replay_final	cpu	0	0	CANCELLED	Replaced while pending, runtime zero
 35122	ng2-h1-licob-size	inner_licob_sample_sensitivity	gpu	1	1	DEPENDENT	Starts after the two-GPU closure array; verifies nested 50/75/100 percent reference sizes before scoring
+35147	ng2-h1-prelabel-sealed	verify_scoring_paths	cpu	0	0	DEPENDENT	Verifies synthetic auxiliary predictions and matched v1 arms before opening held outcomes
+35148	ng2-h1-score-sealed	outer_score	cpu	0	0	DEPENDENT	Waits for prelabel seal and LICOB sample-size job, verifies both forecast and model hashes before the score claim
+35149	ng2-h1-replay-final-sealed	replay_final	cpu	0	0	DEPENDENT	CPU replay including Q12 after the single held score
