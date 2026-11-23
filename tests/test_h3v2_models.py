@@ -21,7 +21,10 @@ def fixture():
 
 
 def test_every_neural_family_learns_with_masked_modalities():
-    at=on_device(fixture(),"cpu")
+    arr=fixture()
+    arr["rna"]=arr["rna"].astype(np.float64)
+    at=on_device(arr,"cpu")
+    assert at["rna"].dtype==torch.float32
     i,j=torch.arange(15).repeat_interleave(4),torch.arange(4).repeat(15)
     cases=[initial("film")[0],initial("attention")[0],*initial("gnn"),initial("hybrid")[-1]]
     for cfg in cases:

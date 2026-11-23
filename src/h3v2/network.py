@@ -149,5 +149,6 @@ class CrossAttention(nn.Module):
 
 
 def on_device(array,device):
-    return {name:torch.as_tensor(block,device=device) for name,block in array.items()
+    return {name:torch.as_tensor(block,device=device,dtype=torch.float32 if block.dtype.kind=="f" else None)
+            for name,block in array.items()
             if isinstance(block,np.ndarray) and block.dtype.kind not in "UOS"}
