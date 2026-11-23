@@ -2,7 +2,7 @@
 - **실제 바뀐 것**　9개 커밋의 원안·동결 계약·결과와 G1 원장을 연결하고 LICOB 분자 전이의 예측 및 채점 단계를 대조했다.
 - **주 비교 결과·구간**　H2-v2 전체 NDCG@5는 v1 대비 +0.1337 [0.1296, 0.1381], H1-v2 범암 RNA+Anchor는 RNA-only 대비 +0.0052 [0.0039, 0.0066]이었다.
 - **판정**　H1과 H2는 통과 축이 제한된다. H3-v1은 STOPPED-AS-PLANNED, H3-v2는 IN-PROGRESS, 별도 LICOB 분자 전이는 중단됐다.
-- **다음 결정**　기존 채택 범위와 후속 E3 판정을 분리 적용하고, LICOB 분자 전이에는 완료 성적을 부여하지 않는다.
+- **다음 결정**　H2는 등록된 세포 맥락의 신규 약물 선별로 제한한다. LICOB 분자 전이에는 완료 성적을 부여하지 않는다.
 
 # 연구 상태 및 주장 원장
 
@@ -23,3 +23,7 @@
 ## LICOB_COLD_MOLECULAR_PROTOCOL 실행 상태
 
 `RUN_LEDGER.tsv`의 33496–33499는 `licob-cold-5bf53fc`의 앞선 구조 전이다. 추가 분자 실험의 G1 기록 `licob-cold-molecular-5ec8ed2/jobs.tsv`에는 예측 34427과 채점 34428이 있다. 원래 세 공동 차단 fold 및 LICOB·LIMORE 예측 5개는 각 동결 영수증과 SHA-256이 일치했다. 채점 하위 로그 3개에는 2026-11-23 10:09 KST 취소가 확인됐다. 계약이 지정한 `source.json`, `licob.json`, `limore.json`은 전부 없었다. 이 후속 작업에서 해당 프로토콜을 재제출하지 않았다. [기존 원장](https://github.com/honbul/vcell_liver/blob/5ec8ed2/reports/vc_build_v1/v0plus/RUN_LEDGER.tsv) · [실행·중단 영수증](p0_status_receipt.json)
+
+## H2 채택 범위의 후속 확인
+
+E1의 전체 NDCG 증분 중 95.8%가 공통 약물 절편에서 나왔다. E3의 독립 REF-EXCLUDED 정책은 699약물에서 C1 대비 Δρ +.0106 [+.0016, +.0195]로 사전 문턱 +.020에 미달했다. 등록 세포에서의 기존 GO-UPGRADE를 유지하고, 새 세포 계통의 확장은 NO-GO-NEW-CELL로 기록한다. [E1 분해](E1_H2_KERNEL_INTERCEPT_ATTRIBUTION.md) · [E3 일반화](E3_H2_DOUBLE_COLD.md)
