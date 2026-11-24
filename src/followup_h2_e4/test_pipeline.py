@@ -16,7 +16,7 @@ from vc_build.io import publish_json
 
 from .data import COLD, cpu_threads, lincs_profiles, observed, registry, source_metadata, utc_now
 from .forecast import (
-    E1_COMPONENTS, adult_predictions, frozen_components, outcomes_locked, read_forecast, selection_lock,
+    E1_COMPONENTS, adult_predictions, frozen_components, licob18, outcomes_locked, read_forecast, selection_lock,
 )
 from .model import FULL, KERNEL_ONLY
 from .split import construct, overlaps
@@ -39,10 +39,6 @@ def rank_invariance(panel):
 def licence():
     note = read_json(COLD / "receipt.json")
     return parquet_lock(COLD / "query.parquet", note["files"]["query.parquet"])
-
-
-def licob18(rows):
-    return rows.loc[~rows.in_source & rows.remaining_unspecified_stereo.eq(0)]
 
 
 def verify(preflight, selected, forecasts, out):
@@ -116,7 +112,10 @@ def verify(preflight, selected, forecasts, out):
                 self.assertEqual(panel_hash(rows), split["source_roster_sha256"])
                 self.assertEqual(rows[KEY].nunique(), 1186)
                 self.assertEqual(rows.loc[rows.lincs_observed, KEY].nunique(), 724)
-            ext = panels[-1][0]
+            ext, note = panels[-1]
+            evidence["external_holdout"] = note["external_holdout"]
+            self.assertEqual(note["external_holdout"]["GDSC1_transitive_scaffolds"], 66)
+            self.assertEqual(set(note["external_holdout"]["source_and_GDSC1_overlap"].values()), {0})
             gdsc = ext.loc[ext.source_id.eq("GDSC1")]
             self.assertEqual((len(gdsc), gdsc[KEY].nunique(), gdsc.cell_id.nunique()), (39545, 66, 713))
             self.assertEqual(gdsc.loc[gdsc.lincs_observed, KEY].nunique(), 48)

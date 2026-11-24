@@ -11,7 +11,7 @@ import pandas as pd
 from followup_h2.common import V1_RUN, V2_FORECAST, context, panel_hash, parquet_lock, sha256
 from followup_h2.e1 import arms, checked_delta
 from followup_h2.e3 import frozen_policies, v1_predict
-from nextgen_h2.assets import KEY, LIMORE
+from nextgen_h2.assets import KEY, LIMORE, canonical_registry, linked_groups
 from nextgen_h2.replay import network_deny
 from nextgen_h2.run import META, read_json
 from nextgen_h2.score import adult_licob
@@ -108,6 +108,10 @@ def adult_predictions(frame, licence):
     return data.assign(**{KERNEL_ONLY: data[PERSONAL] + data[V2_OFFSET], FULL: data[PERSONAL] + data[FULL_OFFSET]})
 
 
+def licob18(rows):
+    return rows.loc[~rows.in_source & rows.remaining_unspecified_stereo.eq(0)]
+
+
 def baseline_panel(engine, pieces, personal, chosen, support):
     query = engine.query
     if not query[META].equals(pieces[META]):
@@ -128,6 +132,7 @@ def freeze(preflight, selected, out, index):
     split, proof, selection_hash = selection_lock(preflight, selected)
     reg = registry()
     external = index == len(split["evaluations"])
+    external_holdout = None
     if not external:
         internal_only()
         role = split["evaluations"][index]
@@ -138,6 +143,13 @@ def freeze(preflight, selected, out, index):
         outcomes_locked()
         data, other_reg, query = context(CPU, external=True)
         assert other_reg.equals(reg)
+        gdsc = canonical_registry(query.loc[query.source_id.eq("GDSC1")])
+        assert not set(gdsc.index) & set(reg.index)
+        assert not set(gdsc.connectivity) & set(reg.connectivity)
+        joined = linked_groups(pd.concat([reg, gdsc], verify_integrity=True))
+        assert not set(joined.loc[gdsc.index]) & set(joined.loc[reg.index])
+        external_holdout = {"GDSC1_parents": len(gdsc), "GDSC1_transitive_scaffolds": joined.loc[gdsc.index].nunique(),
+                            "source_and_GDSC1_overlap": {"exact_parent": 0, "connectivity": 0, "transitive_scaffold": 0}}
         fit = source_rows(sorted(reg.index), sorted(split["roles"]["T2/0/outer"]["fit_screens"]), labels=True)
         query = query[META].sort_values("row_id", ignore_index=True)
         if panel_hash(fit) != split["source_roster_sha256"]:
@@ -196,7 +208,7 @@ def freeze(preflight, selected, out, index):
         "created_at_utc": utc_now(), "selection_sha256": selection_hash, "query_outcomes_opened": 0,
         "roster_sha256": panel_hash(panel), "predictions_sha256": sha256(file), "role": name,
         "selected_drug_gram": gram_record | {"sha256": sha256(gram_path)}, "solve": solve, "frozen_replay": replay,
-        "fit_calibration": engine.calibration, **increment,
+        "fit_calibration": engine.calibration, "external_holdout": external_holdout, **increment,
     })
     print(track, fold, len(panel), gram_record, flush=True)
 

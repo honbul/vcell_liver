@@ -15,11 +15,10 @@ from nextgen_h2.score import external_labels
 from vc_build.external import native_sensitivity
 from vc_build.io import publish_json
 
-from .data import OUTCOMES, V1_ASSETS, cpu_threads, registry, train_hash, utc_now
-from .forecast import PERSONAL, adult_predictions, read_forecast, selection_lock
-from .model import CALIBRATED, CONTROLS, FULL, KERNEL_ONLY, LOSO, PENALTIES, POOLED, Candidate
+from .data import OUTCOMES, ROOT, V1_ASSETS, cpu_threads, registry, train_hash, utc_now
+from .forecast import PERSONAL, adult_predictions, licob18, read_forecast, selection_lock
+from .model import CONTROLS, FULL, KERNEL_ONLY, LOSO, PENALTIES, POOLED, Candidate
 from .selection import InnerMetrics
-from .test_pipeline import licob18
 
 TRACK_NAMES = {"T1": "E4-Nested-CrossScreen", "T2": "E4-DRP-Nested", "T3": "E4-External"}
 ORDERS = {
@@ -195,7 +194,7 @@ def run(preflight, selected, forecasts, tested, out):
     # This exclusive guard is non-reentrant. Validation failures above do not consume a pass.
     out.mkdir(exist_ok=False, parents=True)
     started = utc_now()
-    access = out / "outcome_access.json"
+    access = ROOT / "official-outcome-access.json"
     publish_json(access, {
         "score_passes": 1, "opened_at_utc": started, "selection_sha256": selection_sha,
         "selection_locked_at_utc": selection["locked_at_utc"], "test_sha256": sha256(test_file),
@@ -210,7 +209,7 @@ def run(preflight, selected, forecasts, tested, out):
     by_track = defaultdict(list)
     for panel, note in ready[:-1]:
         by_track[note["track"]].append((note["fold"], panel.assign(truth=panel.row_id.map(values))))
-    ext, labels_proof = ready[-1]
+    ext, _ = ready[-1]
     labels, licence_table, ext_groups = external_labels(V1_ASSETS, read_json(V1_ASSETS / "data_receipt.json"))
     label_map = labels.set_index("row_id").truth
     assert set(label_map.index) == set(ext.row_id) and np.isfinite(label_map).all()

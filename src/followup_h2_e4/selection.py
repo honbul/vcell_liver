@@ -9,6 +9,7 @@ import pandas as pd
 from scipy.stats import rankdata
 
 from followup_h2.common import panel_hash, parquet_lock, sha256
+from followup_h2.e3 import frozen_policies, v1_predict
 from nextgen_h2.assets import KEY
 from nextgen_h2.metrics import ScoreBlock, correlation
 from nextgen_h2.run import META, read_json
@@ -17,7 +18,8 @@ from vc_build.io import publish_json
 
 from .data import PLAN, cpu_threads, internal_only, registry, source_context, source_rows, train_hash, utc_now
 from .model import (
-    ANCHORS, BASES, BLENDS, GRID, GRID_PARTS, PENALTIES, SHRINKS, Candidate, Kernel, anchor_key, settings,
+    ANCHORS, BLENDS, CONTROL_SEED, GRID, GRID_PARTS, SHRINKS, Candidate, Kernel, anchor_key, role_fold, settings,
+    v2_policy,
 )
 
 
@@ -107,6 +109,7 @@ def stage1(preflight, out, index):
         "table_sha256": sha256(dest / "scores.tsv"),
         "split_sha256": sha256(preflight / "e4_split_manifest.json"),
         "external_cohort_access": 0, "role_outside_outer_fit_labels_read": 0,
+        "features": "Parquet predicates on each role’s registered source parents and cell IDs",
     })
     print(name, group, len(records), flush=True)
 
@@ -186,6 +189,21 @@ def stage2(preflight, kernels, out, index):
     query["residual"] = personal[engine.selector]
     query["warm"] = engine.warm[engine.selector[1]]
     query["truth"] = native_sensitivity(query).to_numpy()
+    native = v2_policy(name)
+    actual = {
+        "native-H2-v1": (v1_predict(engine, frozen_policies(role_fold(name))["v1"], CONTROL_SEED),
+                         {"penalty": 4., "weight": .5, "shape": "cos", "base": "v1_base",
+                          "recipe": "modz24", "mask": .15}),
+        "native-H2-v2": (engine.extract_rows(engine.solve(native, CONTROL_SEED)),
+                         {"penalty": native.penalty, "weight": native.lincs.weight,
+                          "shape": native.lincs.kernel, "base": "v2_base",
+                          "recipe": native.lincs.recipe, "mask": native.lincs.mask}),
+    }
+    ev = InnerMetrics(query, reg.scaffold_block, supported[engine.selector[1]])
+    references = [
+        config | {"role": name, "candidate": label, "screen": screen, "value": rho, "n": n}
+        for label, (predicted, config) in actual.items() for screen, rho, n in ev.rank(predicted)
+    ]
     dest = out / f"{index:02d}"
     dest.mkdir(exist_ok=False, parents=True)
     file = dest / "inner.parquet"
@@ -194,6 +212,7 @@ def stage2(preflight, kernels, out, index):
         "name": name, "grand_mean": float(engine.target_mean.mean()), "rows": len(query),
         "selection_role": group, "kernel": asdict(choice), "panel_sha256": sha256(file),
         "kernel_selection_sha256": sha256(kernels / "kernels.json"), "external_cohort_access": 0,
+        "native_references_outside_search": references,
     })
     print(name, len(query), flush=True)
 
@@ -217,7 +236,7 @@ def choose_anchors(preflight, kernels, stage2_dir, out):
     roles = ordered_roles(split)
     grid, choices, evidence = [], {}, {}
     for group, names in split["selections"].items():
-        evaluators = []
+        evaluators, references = [], []
         for name in names:
             folder = stage2_dir / f"{roles.index(name):02d}"
             proof = read_json(folder / "receipt.json")
@@ -227,6 +246,8 @@ def choose_anchors(preflight, kernels, stage2_dir, out):
             assert panel_hash(data) == split["roles"][name]["query_roster_sha256"]
             evidence[name] = sha256(folder / "receipt.json")
             evaluators.append((name, InnerMetrics(data, reg.scaffold_block), proof["grand_mean"]))
+            references.extend(proof["native_references_outside_search"])
+        grid.append(pd.DataFrame(references).assign(selection=group, stage=1, tier="frozen_reference", chosen=False))
 
         rows = []
         simple = [anchor_key(*spec) for spec in ANCHORS]
