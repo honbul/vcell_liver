@@ -5,6 +5,10 @@ import csv
 from hashlib import sha256
 import json
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+from h3v2.grid import boundary_neighbors, identify
 
 REQUIRED = {
     "PLAN_LOCK.md","DATA_SUPPORT_AND_EXPOSURE.md","ROUND1_TO_2_FAMILY_TUNING.md","RESULTS.md",
@@ -17,6 +21,7 @@ COHORTS = {"GDSC1":39545,"LIMORE":3400,"LICOB":2888}
 SEEDS = {"11711", "11729", "11743"}
 PARTITIONS = {f"{track}-{i}" for track in ("drug", "cell", "CTRPv2", "GDSC2", "PRISM20Q2") for i in range(3)}
 CURVE_FIGURES = {"H3V2_FAMILY_LEARNING_CURVES.png", "H3V2_GRID_SATURATION.png"}
+GRID_TABLE = "H3V2_GRID_SATURATION.tsv"
 
 
 def digest(file):
@@ -26,6 +31,37 @@ def digest(file):
 def rows(file):
     with file.open() as handle:
         return list(csv.DictReader(handle,delimiter="\t"))
+
+
+def verify_frontier(grid, splits, replicated):
+    groups = defaultdict(list)
+    for row in grid:
+        split, family, stage, candidate = (row[key] for key in ("split", "family", "round", "config_id"))
+        config = json.loads(row["configuration"])
+        if config["family"] != family or identify(config) != candidate:
+            raise ValueError(f"Grid configuration identity changed for {split}/{family}/{stage}/{candidate}")
+        if replicated[split, family, stage, candidate] != {"0", "1", "2"}:
+            raise ValueError(f"Missing measured inner folds for {split}/{family}/{stage}/{candidate}")
+        groups[split, family].append({
+            "config": config, "id": candidate, "stage": stage, "frozen": row["frozen"] == "True",
+            "order": (-float(row["utility"]), -float(row["ndcg_at_5"]), -float(row["spearman"]), candidate),
+            "max_iteration": int(row["max_budget_pressure_iteration"]),
+        })
+    expected = {(split, family) for split in splits for family in FAMILIES}
+    if set(groups) != expected:
+        raise ValueError("The saturation grid does not cover every split and family")
+    for (split, family), points in groups.items():
+        identity = f"{split}/{family}"
+        if len({point["id"] for point in points}) != len(points):
+            raise ValueError(f"Duplicate settings in the saturation grid for {identity}")
+        selected = min(points, key=lambda point: point["order"])
+        lock = splits[split]["families"][family]
+        if [point for point in points if point["frozen"]] != [selected] or any(
+            selected[key] != lock[key] for key in ("config", "id", "stage")
+        ):
+            raise ValueError(f"Frozen candidate differs from the measured inner winner for {identity}")
+        if boundary_neighbors(selected["config"], [point["config"] for point in points], selected["max_iteration"]):
+            raise ValueError(f"Unmeasured saturation neighbors remain for {identity}")
 
 
 def verify(root):
@@ -50,6 +86,8 @@ def verify(root):
     for name in CURVE_FIGURES:
         if name not in verify["deliverables"] or not (root / name).read_bytes().startswith(b"\x89PNG\r\n\x1a\n"):
             raise ValueError(f"Missing verified curve figure {name}")
+    if GRID_TABLE not in verify["deliverables"]:
+        raise ValueError("Missing verified saturation grid")
     if {key:receipt["parts"][key] for key in COHORTS}!=COHORTS or lock["outer_labels_opened"]:
         raise ValueError("Registered technical cohort support or outcome handling changed")
     if set(manifest["split_support"]) != PARTITIONS or set(lock["splits"]) != PARTITIONS:
@@ -90,6 +128,7 @@ def verify(root):
             counts[split, family, round_name] += 1
     if any(counts[part, family, stage] < 2 for part in PARTITIONS for family in FAMILIES for stage in ("r1", "r2")):
         raise ValueError("A split or family is missing two measured configurations in a round")
+    verify_frontier(rows(root / GRID_TABLE), lock["splits"], replicated)
     checks=[r for r in rows(root/"H3V2_PAIRED_95CI.tsv") if r["baseline"]=="H2" and r["support"]=="all"]
     if set(receipt["verdicts"]) != FAMILIES | {"Champion"}:
         raise ValueError("Missing one or more preregistered promotion decisions")
@@ -108,7 +147,7 @@ def verify(root):
             }
         if outcome["by_axis"]!=expected or (outcome["verdict"]=="GO-MODEL")!=any(all(x.values()) for x in expected.values()):
             raise ValueError(f"The report did not enforce the registered gates: {model}")
-    print(f"Verified {len(REQUIRED)} required reports, five comparable model families and 28 tissue strata")
+    print(f"Verified {len(REQUIRED)} required reports, the closed inner grids and 28 tissue strata")
 
 
 if __name__=="__main__":
