@@ -163,7 +163,8 @@ def inner_results(lock):
                     if not chosen and len(trial)>12:
                         trainonly=np.linspace(0,len(trial)-1,num=11,dtype=int)
                         trial=trial.iloc[np.unique(np.r_[trainonly,len(trial)-1])]
-                    curves.append(trial.assign(**key,inner=i,frozen=chosen,backend=config["backend"],
+                    device=meta["training"].get("device","cpu" if config["backend"]=="gbdt" else "cuda")
+                    curves.append(trial.assign(**key,inner=i,frozen=chosen,backend=config["backend"],device=device,
                                                fit_wall_seconds=meta["training"]["wall_seconds"],
                                                best_iteration=meta["training"]["best_iteration"]))
     return pd.DataFrame(grid),pd.concat(curves,ignore_index=True),completed
@@ -302,15 +303,15 @@ def report_docs(root,points,ci,curves,grid,score,lock):
     put(root/"RESULTS.md",raw)
     sweep=grid.groupby(["family","round"]).agg(configurations=("config_id","count"),
                inner_best=("utility","max"),typical_best_budget=("budget","median")).reset_index()
-    wall=curves.drop_duplicates(["split","family","round","config_id","inner"]).groupby(
-        ["family","round","backend"]).fit_wall_seconds.sum()/3600
+    unique_fits=curves.drop_duplicates(["split","family","round","config_id","inner"])
+    wall=unique_fits.groupby(["family","round",unique_fits.device.str.split(":").str[0]]).fit_wall_seconds.sum()/3600
     put(root/"ROUND1_TO_2_FAMILY_TUNING.md",[
         "# 계열별 Inner CV 학습 및 포화 탐색", "",
         "각 행은 외부 보류 지원과 독립인 3개 inner 분할의 고정 설정 비교다. 블록 미니배치는 관측만 방문했다. "
         "다음 표는 후보의 최대 inner 점수와 wall-clock 학습 시간을 참조용으로 집계한다.", "",
         *md_table(["패밀리","라운드","분할별 설정 수 합","내측 최상 점수","최적 budget 중앙값","GPU fit 시간(h)","CPU fit 시간(h)"],[
           (x.family,x.round,x.configurations,f"{x.inner_best:.4f}",x.typical_best_budget,
-           f"{wall.get((x.family,x.round,'torch'),0):.2f}", f"{wall.get((x.family,x.round,'gbdt'),0):.2f}")
+           f"{wall.get((x.family,x.round,'cuda'),0):.2f}", f"{wall.get((x.family,x.round,'cpu'),0):.2f}")
           for x in sweep.itertuples()]),
         "LightGBM은 L2/Huber/LambdaRank를, FiLM은 반복 조건부 residual 블록을, Transformer는 결측 마스크가 있는 교차 "
         "어텐션을 사용했다. GNN은 GINE/GATv2/AttentiveFP와 등록된 CLAMP·Uni-Mol 서브암을 포함했다. "

@@ -9,9 +9,25 @@ import numpy as np
 import pandas as pd
 
 from vc_build.external import native_sensitivity
+from vc_build.io import sha256
+from .data import ROOT
 from .features import tabular
 from .fit_neural import aligned_values
 from .quality import quality, utility
+
+
+def g3_cuda_library():
+    import torch
+
+    overlay = ROOT / "deps/lightgbm-cuda-4.6.0/runtime"
+    library = overlay / "lightgbm/lib/lib_lightgbm.so"
+    if (lgb.__version__ != "4.6.0" or Path(lgb.basic._LIB._name).resolve() != library.resolve()
+            or sha256(library) != (overlay / "library.sha256").read_text().strip()):
+        raise ValueError("Expected the verified isolated CUDA LightGBM runtime")
+    if (os.environ.get("SLURMD_NODENAME") != "g3" or torch.cuda.device_count() != 1
+            or "A40" not in torch.cuda.get_device_name(0)):
+        raise ValueError("CUDA LightGBM requires one assigned G3 A40 per task")
+    return library
 
 
 def ranking(rows):

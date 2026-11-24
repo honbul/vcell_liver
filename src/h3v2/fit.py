@@ -43,6 +43,8 @@ def options(stage,split,family,backend):
 
 def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="cpu",
              candidate_id=None, diagnostic=False):
+    if tree_device == "cuda" and backend != "gbdt":
+        raise ValueError("The LightGBM device option applies only to tree fits")
     config_list=options(stage,split,family,backend)
     if candidate_id is not None:
         config_list = [config for config in config_list if identify(config) == candidate_id]
@@ -111,5 +113,11 @@ if __name__=="__main__":
     p.add_argument("inner",type=int,choices=range(3))
     p.add_argument("backend",choices=("torch","gbdt"))
     p.add_argument("--smoke",action="store_true")
+    p.add_argument("--tree-device",choices=("cpu","cuda"),default="cpu")
     x=p.parse_args()
-    fold_fit(x.stage,x.split,x.family,x.inner,x.backend,smoke=x.smoke)
+    if x.tree_device == "cuda":
+        if x.backend != "gbdt":
+            p.error("--tree-device cuda requires the gbdt backend")
+        from .fit_tree import g3_cuda_library
+        g3_cuda_library()
+    fold_fit(x.stage,x.split,x.family,x.inner,x.backend,smoke=x.smoke,tree_device=x.tree_device)

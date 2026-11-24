@@ -2,7 +2,6 @@
 import os
 from pathlib import Path
 
-import lightgbm as lgb
 import numpy as np
 import pandas as pd
 import torch
@@ -11,19 +10,12 @@ from nextgen_h2.run import read_json
 from vc_build.io import publish_json, sha256
 from .data import ROOT
 from .fit import fold_fit
+from .fit_tree import g3_cuda_library
 from .selection import receipt
 
 
 def main():
-    overlay = ROOT / "deps/lightgbm-cuda-4.6.0/runtime"
-    library = overlay / "lightgbm/lib/lib_lightgbm.so"
-    if (lgb.__version__ != "4.6.0" or Path(lgb.basic._LIB._name).resolve() != library.resolve()
-            or sha256(library) != (overlay / "library.sha256").read_text().strip()):
-        raise ValueError("Expected the verified isolated CUDA LightGBM runtime")
-    if (os.environ.get("SLURMD_NODENAME") != "g3" or torch.cuda.device_count() != 1
-            or "A40" not in torch.cuda.get_device_name(0)):
-        raise ValueError("Each CUDA check requires one assigned G3 A40")
-
+    library = g3_cuda_library()
     cases = read_json(ROOT / "locks/cuda-g3-checks.json")["cases"]
     case = cases[int(os.environ["SLURM_ARRAY_TASK_ID"])]
     stage, split, inner, family, config_id = (case[key] for key in
