@@ -11,8 +11,10 @@ from .final_fit import external_operating_point
 from .grid import FAMILIES,SEEDS,identify,initial
 from .selection import select
 
-TRAINING_CONCURRENCY = {"gbdt": 3, "torch": 6}
 CPUS_PER_TRAINING_TASK = 8
+GPU_TRAINING_CONCURRENCY = 6
+CPU_PRIMARY_CONCURRENCY = 5
+CPU_SECONDARY_THREADS = 6
 CPU_NODE = "c5"
 GPU_NODE = "g4"
 
@@ -66,17 +68,37 @@ def inner_tasks(stage):
     return tasks
 
 
+def submit_training_arrays(name, script, arguments, backend, indexed, *, deps=()):
+    indices = sorted(indexed)
+    if backend == "torch":
+        lanes = [("", indices, GPU_TRAINING_CONCURRENCY, CPUS_PER_TRAINING_TASK)]
+    else:
+        # Five 8-core jobs and one 6-core job leave two C5 cores for the ledger.
+        secondary = indices[5::7]
+        secondary_set = set(secondary)
+        primary = [index for index in indices if index not in secondary_set]
+        lanes = [("", primary, CPU_PRIMARY_CONCURRENCY, CPUS_PER_TRAINING_TASK),
+                 ("-6core", secondary, 1, CPU_SECONDARY_THREADS)]
+    return [submit(name + suffix, script, arguments, gpu=backend == "torch",
+                   array=",".join(map(str, batch)) + f"%{concurrency}", threads=threads, deps=deps)
+            for suffix, batch, concurrency, threads in lanes if batch]
+
+
+def controller_dependency():
+    job_id = os.environ.get("SLURM_JOB_ID")
+    return (job_id,) if job_id else ()
+
+
 def schedule_inner(stages, snap, *, retry=False, tasks=None):
     stage = stages[-1]
     planned = inner_tasks(stage) if tasks is None else tasks
     suffix = "-retry" if retry else ""
     helpers = slurm(snap)
     jobs = []
+    predecessor = controller_dependency()
     for backend, indexed in planned.items():
-        if indexed:
-            array = ",".join(map(str, indexed)) + f"%{TRAINING_CONCURRENCY[backend]}"
-            jobs.append(submit(f"{stage}-{backend}{suffix}", helpers / "inner.sbatch", [snap, stage, backend],
-                               gpu=backend == "torch", array=array))
+        jobs.extend(submit_training_arrays(f"{stage}-{backend}{suffix}", helpers / "inner.sbatch",
+                                           [snap, stage, backend], backend, indexed, deps=predecessor))
     if not jobs:
         raise ValueError("An inner round was selected with no fits")
     arguments = [snap, "-m", "h3v2.pipeline", "settle", "--snapshot", snap, *stages]
@@ -118,16 +140,16 @@ def schedule_final(snap):
     lock=ROOT/"locks/final-jobs.json"
     publish_json(lock,jobs)
     ext=submit("external-atlas",helpers/"job.sbatch",[snap,"-m","h3v2.final_fit","external-atlas"],
-               threads=8,memory="28G",limit="01:00:00")
-    finals={backend:submit(f"final-{backend}",helpers/"job.sbatch",
-                   [snap,"-m","h3v2.pipeline","fit-task","--backend",backend],
-                   gpu=backend=="torch",array=f"0-{len(parts)-1}%{TRAINING_CONCURRENCY[backend]}",deps=(ext,))
-            for backend,parts in jobs.items() if parts}
-    reference_deps=(ext,finals["gbdt"]) if "gbdt" in finals else (ext,)
+               threads=8,memory="28G",limit="01:00:00",deps=controller_dependency())
+    finals = {backend: submit_training_arrays(f"final-{backend}", helpers/"job.sbatch",
+               [snap,"-m","h3v2.pipeline","fit-task","--backend",backend], backend, range(len(parts)), deps=(ext,))
+              for backend,parts in jobs.items()}
+    reference_deps = (ext, *finals["gbdt"])
+    fit_deps = tuple(job for group in finals.values() for job in group)
     refs=submit("references",helpers/"job.sbatch",[snap,"-m","h3v2.pipeline","references-task"],
                 deps=reference_deps,array=f"0-{len(SPLITS)}%3",threads=6,memory="20G",limit="02:00:00")
     before=submit("preflight",helpers/"job.sbatch",[snap,"-m","h3v2.score","--preflight"],
-                  deps=(refs,*finals.values()),threads=8,memory="42G",limit="03:00:00")
+                  deps=(refs,*fit_deps),threads=8,memory="42G",limit="03:00:00")
     after=submit("score-once",helpers/"job.sbatch",[snap,"-m","h3v2.score"],
                  deps=(before,),threads=18,memory="66G",limit="1-00:00:00")
     package=submit("report",helpers/"job.sbatch",[snap,"-m","h3v2.report"],

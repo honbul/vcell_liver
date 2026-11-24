@@ -189,7 +189,8 @@ def jobs():
         changes = history.loc[history.field.eq("ArrayTaskThrottle")].copy()
         changes["record"] = changes.time + " " + changes.previous.astype(str) + "→" + changes.updated.astype(str)
         frame["array_throttle_changes"] = frame.job_id.map(changes.groupby("job_id").record.agg(" | ".join))
-        placement_fields = ["CPUsPerTask", "ExcNodeList", "ReqNodeList", "C4PartialCancel", "MigrationCores"]
+        placement_fields = ["CPUsPerTask", "ExcNodeList", "ReqNodeList", "C4PartialCancel", "MigrationCores",
+                            "RestoredPendingIndices"]
         placement = history.loc[history.field.isin(placement_fields)].copy()
         placement["record"] = (
             placement.time + " " + placement.field + " " + placement.previous.astype(str) + "→" + placement.updated.astype(str))
