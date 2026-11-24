@@ -10,12 +10,12 @@ job_id	job_name	partition	excluded_nodes	gpu_requested	cpus_per_task	array_tasks
 37359	fu-e5-block-benchmark	cpu	c4,g1,g2,g3,g4	0	4	1	1	CANCELLED	4e95346	pre-emptively replaced with per-drug weighting
 37360	fu-e5-block-benchmark	cpu	c4,g1,g2,g3,g4	0	4	1	1	COMPLETED	b714f8c	screen-local preconditioned exact solve: A 100.312 s; B 112.483 s
 37364	fu-e5-synthetic-smoke	cpu	c4,g1,g2,g3,g4	0	2	1	1	COMPLETED	d394f2e	synthetic Kronecker reference and scoring logic passed; no held labels
-37509	fu-e5-kernel-grid	cpu	c4,g1,g2,g3,g4	0	4	156	8	IN_PROGRESS	61cb85e	grid-final; 39 source-only roles and their four geometry quadrants
-37510	fu-e5-minimax	cpu	c4,g1,g2,g3,g4	0	2	1	1	WAITING	61cb85e	afterok:37509; kernels/kernels.json
-37511	fu-e5-anchor-grid	cpu	c4,g1,g2,g3,g4	0	4	39	8	WAITING	61cb85e	afterok:37510; anchor-roles
-37512	fu-e5-selection-seal	cpu	c4,g1,g2,g3,g4	0	4	1	1	WAITING	61cb85e	afterok:37511; selection/e5_selection_receipt.json
-37513	fu-e5-forecast	cpu	c4,g1,g2,g3,g4	0	4	7	7	WAITING	61cb85e	afterok:37512; outcome-blind forecasts
-37514	fu-e5-invariants	cpu	c4,g1,g2,g3,g4	0	4	1	1	WAITING	61cb85e	afterok:37513; tests/test_receipt.json
+37509	fu-e5-kernel-grid	cpu	c4,g1,g2,g3,g4	0	4	156	8	COMPLETED	61cb85e	grid-final; 156 verified shards, 780 checkpoints, 84,960 internal rows
+37510	fu-e5-minimax	cpu	c4,g1,g2,g3,g4	0	2	1	1	COMPLETED	61cb85e	00:58:21 KST on 2026-11-25; 19,040 objective rows and 49 kernel placements verified
+37511	fu-e5-anchor-grid	cpu	c4,g1,g2,g3,g4	0	4	39	8	COMPLETED	61cb85e	39 source-only anchor role receipts verified; 18 LOSO and 21 pooled
+37512	fu-e5-selection-seal	cpu	c4,g1,g2,g3,g4	0	4	1	1	COMPLETED	61cb85e	sealed 01:07:09 KST on 2026-11-25; zero external access, selection SHA-256 2422af579a1a9c6a04cdec721bc6a58c1aa92a18b088b6c75a6a760dc3cc6b86
+37513	fu-e5-forecast	cpu	c4,g1,g2,g3,g4	0	4	7	7	COMPLETED	61cb85e	seven verified outcome-blind forecast receipts; upstream of successful invariant test
+37514	fu-e5-invariants	cpu	c4,g1,g2,g3,g4	0	4	1	1	COMPLETED	61cb85e	PASS 01:15:19 KST on 2026-11-25; 5 tests across 45 splits and 2,858 drug rank groups
 37515	fu-e5-score-once	cpu	c4,g1,g2,g3,g4	0	4	1	1	CANCELLED	61cb85e	Superseded while pending to add H2-v1 paired contrasts; zero outcome reads
-37579	fu-e5-score-once	cpu	c4,g1,g2,g3,g4	0	4	1	1	WAITING	d9900bc	afterok:37514; no requeue; exclusive official-outcome-access.json
-37580	fu-e5-report	cpu	c4,g1,g2,g3,g4	0	1	1	1	WAITING	d9900bc	afterok:37579; render report from aggregate artifacts only
+37579	fu-e5-score-once	cpu	c4,g1,g2,g3,g4	0	4	1	1	COMPLETED	d9900bc	01:17:45 KST on 2026-11-25; one outcome pass; guard and output hashes verified
+37580	fu-e5-report	cpu	c4,g1,g2,g3,g4	0	1	1	1	COMPLETED	d9900bc	01:17:50 KST on 2026-11-25; aggregate-only report; one process thread and two CPUs billed
