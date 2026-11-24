@@ -53,7 +53,10 @@ def report_rendering():
         grid, curves = pd.DataFrame(grid), pd.DataFrame(curves)
         grid.to_csv(root / "H3V2_GRID_SATURATION.tsv", sep="\t", index=False)
         curves.to_csv(root / "H3V2_FAMILY_LEARNING_CURVES.tsv", sep="\t", index=False)
-        statuses = {name:{"verdict":"NO-GO"} for name in (*FAMILIES, "Champion")}
+        statuses = {name:{"verdict":"NO-GO", "by_axis":{axis:{
+            "minimum_improvement_and_ci":False, "other_two_axes_protected":True,
+            "two_screens_improved":False, "gdsc1_three_axes_protected":True,
+        } for axis in AXES}} for name in (*FAMILIES, "Champion")}
         score = {"overall":"CEILING-CONFIRMED", "verdicts":statuses, "score_passes":1, "tissue_roster":tissues}
         lock = {"external":{"champion":"hybrid", "operating_point":{"id":"simulated"}}}
         replay = ("opencl", "boundary-1", "drug-0", 1, "test-config", "42.4", "20.6", "2.06×",
@@ -63,6 +66,7 @@ def report_rendering():
         assert "+0.01000" in result.splitlines()[2]
         assert all(f"| {tissue} |" in result for tissue in tissues)
         assert "| Tissue 27 | 미추정 | 미추정 | 미추정 | 0 | 0 |" in result
+        assert "| Champion | NDCG@5 | 미충족 | 충족 | 미충족 | 충족 |" in result
         tuning = (root / "ROUND1_TO_2_FAMILY_TUNING.md").read_text().splitlines()
         assert "| " + " | ".join(map(str, replay)) + " |" in tuning
         assert "| gbdt | l2 | 127 | 4–16 | 3000 | 0.05 | — | 5 | — |" in tuning

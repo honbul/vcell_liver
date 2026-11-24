@@ -441,6 +441,13 @@ def report_docs(root,points,ci,curves,grid,score,lock,*,replays=()):
     promoted = [name for name in (*FAMILIES, "Champion") if statuses[name]["verdict"] == "GO-MODEL"]
     next_decision = ("승격 기준 충족 모델은 " + ", ".join(promoted) + "이다." if promoted else
                      "현재 패널과 동결된 탐색 범위에서 승격 기준을 충족한 모델이 없었다.")
+    gates = ("minimum_improvement_and_ci", "other_two_axes_protected", "two_screens_improved",
+             "gdsc1_three_axes_protected")
+    gate_rows = []
+    for model in (*FAMILIES, "Champion"):
+        for metric in AXES:
+            decision = statuses[model]["by_axis"][metric]
+            gate_rows.append((model, labels[metric], *("충족" if decision[key] else "미충족" for key in gates)))
     raw=[
         "- **가설** 같은 전체 관측으로 현대적 모델 다섯 패밀리와 구조 커널의 세 평가축을 비교했다.",
         "- **달라진 점** 1,186 exact parent, 전체 RNA 및 결측 인식 멀티뷰, 분할 내 포화 탐색을 적용했다.",
@@ -454,6 +461,10 @@ def report_docs(root,points,ci,curves,grid,score,lock,*,replays=()):
         "## 신규 골격 · 1,186 parents", "",*score_table(primary),
         "### Champion − H2 · 짝지은 구간","",
         *md_table(["지표","Δ","95% CI","클러스터"],compare("Champion")),
+        "### 패밀리별 승격 조건", "",
+        "개선 축마다 H2 대비 사전 지정 효과 크기와 95% 하한, 다른 두 축의 비열등, "
+        "세 스크린 중 두 개의 개선, GDSC1 세 축의 비열등을 함께 적용했다.", "",
+        *md_table(["모델", "개선 축", "효과와 95% 하한", "다른 두 축 비열등", "스크린 재현", "GDSC1 비열등"], gate_rows),
         "### LINCS 관측 724", "",*score_table(axis[axis.scope.eq("drug")&axis.support.eq("lincs724")]),
         "### 구조 지원 462", "",*score_table(axis[axis.scope.eq("drug")&axis.support.eq("structure462")]),
         "## 계통 보류와 세포·스크린 동시 보류", "",
