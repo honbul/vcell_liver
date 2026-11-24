@@ -40,10 +40,18 @@ def has_lead(group, destination):
     return sum(not path.is_file() for path in before) >= 2
 
 
-def register(path):
+def local_batch(batch):
+    if batch < 0:
+        raise ValueError("The local CPU batch must be nonnegative")
+    suffix = f"-batch-{batch}" if batch else ""
+    return LOCK.with_stem(LOCK.stem + suffix), RESULTS.with_name(RESULTS.name + suffix), f"daea-cpu-imports{suffix}.tsv"
+
+
+def register(path, *, batch=0):
     plan = read_json(path)
     expected = read_json(ROOT / "step0_verification.json")["versions"]["lightgbm_so_sha256"]
     if (plan["worker"] != "daea" or plan["stage"] != STAGE or plan["threads"] != 8
+            or plan.get("batch", 0) != batch
             or plan["plan_sha256"] != sha256(ROOT / "locks" / f"{STAGE}.json")
             or plan["lightgbm_so_sha256"] != expected or (ROOT / "score/consumed.json").exists()):
         raise ValueError("The CPU-worker registration differs from the sealed inner run")
@@ -64,12 +72,14 @@ def register(path):
                     or not has_lead(group, path)):
                 raise ValueError(f"Expected an unstarted, registered tail candidate: {path}")
             seen.add(path)
-    publish_json(LOCK, plan)
+    lock, _, _ = local_batch(batch)
+    publish_json(lock, plan)
     print("Registered", len(seen), "inner Huber candidates on", plan["worker"], flush=True)
 
 
-def publish(group_index, identity, *, plan_path=None, staged=None):
-    plan = read_json(plan_path or LOCK)
+def publish(group_index, identity, *, plan_path=None, staged=None, batch=0):
+    lock, local_results, local_ledger = local_batch(batch)
+    plan = read_json(plan_path or lock)
     group = plan["groups"][group_index]
     if identity not in group["candidates"] or (ROOT / "score/consumed.json").exists():
         raise ValueError("The candidate was not registered for CPU-worker import")
@@ -80,7 +90,7 @@ def publish(group_index, identity, *, plan_path=None, staged=None):
     if not owner_running(group) or not has_lead(group, destination):
         print("CLUSTER-OWNER", identity, flush=True)
         return
-    staged = staged or RESULTS / str(group_index) / identity
+    staged = staged or local_results / str(group_index) / identity
     if set(path.name for path in staged.iterdir() if path.is_file() and not path.is_symlink()) != FILES:
         raise ValueError("The CPU-worker result does not contain the complete fit artifacts")
     receipt = read_json(staged / "receipt.json")
@@ -117,7 +127,7 @@ def publish(group_index, identity, *, plan_path=None, staged=None):
     except FileExistsError:
         print("COVERED", identity, flush=True)
         return
-    ledger = "daea-cpu-imports.tsv" if plan_path is None else "slurm-cpu-tail-imports.tsv"
+    ledger = local_ledger if plan_path is None else "slurm-cpu-tail-imports.tsv"
     with (ROOT / "logs" / ledger).open("a") as stream:
         print(datetime.now(timezone.utc).isoformat(), group["owner"], identity, sha256(staged / "receipt.json"),
               sep="\t", file=stream)
@@ -147,18 +157,21 @@ def fit_slurm_tail(plan_path, group_index):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     actions = parser.add_subparsers(dest="action", required=True)
-    actions.add_parser("register").add_argument("plan", type=Path)
+    registration = actions.add_parser("register")
+    registration.add_argument("plan", type=Path)
     command = actions.add_parser("publish")
     command.add_argument("group", type=int)
     command.add_argument("config_id")
+    for action in (registration, command):
+        action.add_argument("--batch", type=int, default=0)
     tail = actions.add_parser("slurm-tail")
     tail.add_argument("plan", type=Path)
     tail.add_argument("group", type=int, default=None, nargs="?")
     args = parser.parse_args()
     if args.action == "register":
-        register(args.plan)
+        register(args.plan, batch=args.batch)
     elif args.action == "publish":
-        publish(args.group, args.config_id)
+        publish(args.group, args.config_id, batch=args.batch)
     else:
         index = args.group if args.group is not None else int(os.environ["SLURM_ARRAY_TASK_ID"])
         fit_slurm_tail(args.plan, index)
