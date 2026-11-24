@@ -3,8 +3,9 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
 
-from h3v2 import pipeline
+from h3v2 import inner_cpu, pipeline
 from h3v2.final_fit import final_output
+from h3v2.grid import identify, tree
 
 
 def test_only_array_elements_missing_a_registered_arm_are_retried():
@@ -82,6 +83,38 @@ def test_g3_shares_its_cpu_cap_with_registered_early_fits():
     assert len(assigned) == len(indices) and set(assigned) == indices
 
 
+def test_tree_batches_keep_each_missing_registered_fit_once():
+    with TemporaryDirectory(dir=pipeline.ROOT / "tmp") as scratch:
+        root = Path(scratch)
+        (root / "locks").mkdir()
+        stage = "boundary-2"
+        source = root / "locks" / f"{stage}.json"
+        configs = [tree("gbdt", "huber", depth, 63, .05, .5, 50, 5.) for depth in range(3, 11)]
+        configs.append(tree("gbdt", "l2", 6, 63, .05, .5, 50, 5.))
+        source.write_text(json.dumps({"splits": {"drug-1": {"gbdt": configs}}}))
+        folder = root / "fits" / stage / "drug-1" / "inner-2" / "gbdt"
+        paths = [folder / identify(config) / "receipt.json" for config in configs]
+        paths[0].parent.mkdir(parents=True)
+        paths[0].touch()
+        with patch.object(inner_cpu, "ROOT", root), patch("h3v2.fit.fold_fit") as fit:
+            path, indices = inner_cpu.register_batches(stage, {10: paths})
+            batches = json.loads(path.read_text())["batches"]
+            assert list(indices) == [0, 1, 2, 3]
+            assert [len(item["candidates"]) for item in batches] == [3, 3, 1, 1]
+            assert [candidate for batch in batches for candidate in batch["candidates"]] == [
+                file.parent.name for file in paths[1:]
+            ]
+            inner_cpu.fit_batch(path, 1)
+            fit.assert_called_once_with(stage, "drug-1", "gbdt", 2, "gbdt",
+                                        candidate_ids=batches[1]["candidates"])
+            paths[1].parent.mkdir()
+            paths[1].touch()
+            retry, _ = inner_cpu.register_batches(stage, {10: paths}, retry=True)
+            assert retry != path
+            remaining = json.loads(retry.read_text())["batches"]
+            assert [c for batch in remaining for c in batch["candidates"]] == [p.parent.name for p in paths[2:]]
+
+
 def test_completed_early_gpu_arrays_are_not_resubmitted():
     with TemporaryDirectory(dir=pipeline.ROOT / "tmp") as scratch:
         root = Path(scratch)
@@ -90,6 +123,7 @@ def test_completed_early_gpu_arrays_are_not_resubmitted():
         tasks = {"gbdt": {0: [root / "cpu"]}, "torch": {3: [present], 4: [present, root / "gpu"]}}
         with patch.object(pipeline, "ROOT", root), \
                 patch.object(pipeline, "inner_tasks", return_value=tasks), \
+                patch.object(pipeline, "register_batches", return_value=(root / "batches", range(1))), \
                 patch.object(pipeline, "submit", side_effect=["37101", "37102", "37103"]) as submit:
             assert pipeline.schedule_inner(["r1", "r2", "boundary-1", "boundary-2"], root) == "37103"
             cpu, gpu, selector = submit.call_args_list
@@ -134,6 +168,7 @@ def test_next_cpu_round_advances_while_registered_gpu_fits_continue():
         stages = ["r1", "r2", "boundary-1", "boundary-2"]
         with patch.object(pipeline, "ROOT", root), patch.object(pipeline, "inner_tasks", return_value=tasks), \
                 patch.object(pipeline, "controller_dependency", return_value=("37100",)), \
+                patch.object(pipeline, "register_batches", return_value=(root / "batches", range(1))), \
                 patch.object(pipeline, "active_early_array", side_effect=[("37104", {4}), None]), \
                 patch.object(pipeline, "submit", side_effect=["37101", "37102", "37103"]) as submit:
             assert pipeline.schedule_inner(stages, root) == "37103"
@@ -156,13 +191,15 @@ def test_early_primary_tree_job_owns_its_indices_and_only_delays_g3():
         with patch.object(pipeline, "ROOT", root), \
                 patch.object(pipeline, "inner_tasks", return_value=tasks), \
                 patch.object(pipeline, "controller_dependency", return_value=("37100",)), \
+                patch.object(pipeline, "register_batches", return_value=(root / "batches", range(3))) as batch, \
                 patch.object(pipeline, "active_early_tree_array", side_effect=[("37104", {0}), None]), \
                 patch.object(pipeline, "submit", side_effect=["37101", "37102", "37103", "37105"]) as submit:
             assert pipeline.schedule_inner(stages, root) == "37105"
+            batch.assert_called_once_with("boundary-2", {i: tasks["gbdt"][i] for i in (1, 2, 3)}, retry=False)
             g4, g3, c4, controller = (call.kwargs for call in submit.call_args_list)
-            assert (g4["node"], g4["array"], g4["terminal_deps"]) == ("g4", "1%22", ())
-            assert (g3["node"], g3["array"], g3["terminal_deps"]) == ("g3", "2%12", ())
-            assert (c4["node"], c4["array"], c4["terminal_deps"]) == ("c4", "3%6", ())
+            assert (g4["node"], g4["array"], g4["terminal_deps"]) == ("g4", "0%22", ())
+            assert (g3["node"], g3["array"], g3["terminal_deps"]) == ("g3", "1%12", ())
+            assert (c4["node"], c4["array"], c4["terminal_deps"]) == ("c4", "2%6", ())
             assert controller["deps"] == ("37104", "37101", "37102", "37103")
 
         with patch.object(pipeline, "ROOT", root), \
@@ -253,6 +290,7 @@ if __name__ == "__main__":
     test_only_array_elements_missing_a_registered_arm_are_retried()
     test_cpu_training_arrays_share_the_expanded_budget()
     test_g3_shares_its_cpu_cap_with_registered_early_fits()
+    test_tree_batches_keep_each_missing_registered_fit_once()
     test_completed_early_gpu_arrays_are_not_resubmitted()
     test_followup_gpu_arrays_use_only_g3_a40()
     test_cpu_fit_on_gpu_nodes_requests_no_gpu()

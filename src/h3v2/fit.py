@@ -43,7 +43,8 @@ def options(stage,split,family,backend):
 
 
 def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="cpu",
-             candidate_id=None, diagnostic=False, early_neural=False, early_primary_tree=False):
+             candidate_id=None, diagnostic=False, early_neural=False, early_primary_tree=False,
+             candidate_ids=None):
     if tree_device != "cpu" and backend != "gbdt":
         raise ValueError("The LightGBM device option applies only to tree fits")
     if early_neural and early_primary_tree:
@@ -62,6 +63,16 @@ def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="
         config_list = [config for config in config_list if identify(config) == candidate_id]
         if len(config_list) != 1:
             raise ValueError(f"Expected registered candidate {candidate_id} in {stage}/{split}/{family}/{inner}")
+    if candidate_ids is not None:
+        if (backend, tree_device) != ("gbdt", "cpu") or (
+            candidate_id is not None or smoke or diagnostic or early_neural or early_primary_tree
+        ):
+            raise ValueError("A candidate batch applies only to regular CPU tree fits")
+        registered = {identify(config): config for config in config_list}
+        requested = set(candidate_ids)
+        if not requested or len(requested) != len(candidate_ids) or not requested <= registered.keys():
+            raise ValueError(f"Unregistered candidate batch in {stage}/{split}/{family}/{inner}")
+        config_list = [registered[identity] for identity in candidate_ids]
     if diagnostic and (tree_device not in {"cuda", "opencl"} or candidate_id is None or smoke):
         raise ValueError("The GPU diagnostic must replay one unchanged registered candidate")
     if not config_list:

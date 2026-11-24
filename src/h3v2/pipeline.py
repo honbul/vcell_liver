@@ -10,6 +10,7 @@ from vc_build.io import publish_json,sha256
 from .data import ROOT,SPLITS
 from .final_fit import external_operating_point
 from .grid import FAMILIES,SEEDS,identify,initial
+from .inner_cpu import register_batches
 from .selection import (
     NEURAL_FAMILIES, PRIMARY_TREE_SPLITS, next_boundary, read_neural_expansion, read_primary_tree_expansion, select,
 )
@@ -193,10 +194,15 @@ def schedule_inner(stages, snap, *, retry=False, tasks=None):
     for backend, indexed in planned.items():
         current = early[backend]
         if current:
-            indexed = set(indexed) - current[1]
+            indexed = {index: paths for index, paths in indexed.items() if index not in current[1]}
         drains = tuple(array[0] for array in (current, future.get(backend)) if array)
-        jobs.extend(submit_training_arrays(f"{stage}-{backend}{suffix}", helpers / "inner.sbatch",
-                                           [snap, stage, backend], backend, indexed, deps=predecessor,
+        name = f"{stage}-{backend}{suffix}"
+        script, arguments = helpers / "inner.sbatch", [snap, stage, backend]
+        if backend == "gbdt" and stage.startswith("boundary-") and stage != "boundary-1" and indexed:
+            batch_plan, indexed = register_batches(stage, indexed, retry=retry)
+            name += "-batches"
+            script, arguments = helpers / "job.sbatch", [snap, "-m", "h3v2.inner_cpu", batch_plan]
+        jobs.extend(submit_training_arrays(name, script, arguments, backend, indexed, deps=predecessor,
                                            terminal_deps=drains))
     if not jobs:
         return advance(stages, snap, dispatch_only=False)
