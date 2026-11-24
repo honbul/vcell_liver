@@ -83,11 +83,30 @@ class System:
     def __post_init__(self):
         self.root = self.mass.sqrt()
         self.y = self.root * self.values
+        self.blocks = []
+        if self.stacked and self.tau:
+            for weights in self.mass:
+                c = torch.nonzero(weights.any(dim=1))[:,0]
+                d = torch.nonzero(weights.any(dim=0))[:,0]
+                self.blocks.append((c[:,None],d[None,:],
+                                    self.cell[c[:,None],c[None,:]].contiguous(),
+                                    self.drug[d[:,None],d[None,:]].contiguous()))
+            c,d = self.mass.shape[-2:]
+            dense = len(self.mass)*c*d*(c+d)
+            local = sum(len(a)*b.numel()*(len(a)+b.numel()) for a,b,_,_ in self.blocks)
+            if c*d*(c+d)+1.12*local >= dense:
+                self.blocks.clear()
 
     def product(self, vector):
         data = self.root * vector
         if self.stacked:
-            if self.tau:
+            if self.blocks:
+                common = (self.cell @ data.sum(dim=0)) @ self.drug
+                share = common.expand_as(data).clone()
+                for s,(ci,di,c,d) in enumerate(self.blocks):
+                    local = (c @ data[s,ci,di]) @ d
+                    share[s,ci,di] += self.tau*local
+            elif self.tau:
                 specific = (self.cell @ data) @ self.drug
                 share = specific.sum(dim=0) + self.tau*specific
             else:
