@@ -10,7 +10,7 @@ import pandas as pd
 
 from h3v2.atlas import model_input_digest
 from h3v2.data import ROOT, table_hash
-from h3v2.fit import options
+from h3v2.fit import fold_fit, options
 from h3v2.grid import SEEDS, identify
 from h3v2.pipeline import inner_tasks
 from nextgen_h2.run import read_json
@@ -68,8 +68,8 @@ def register(path):
     print("Registered", len(seen), "inner Huber candidates on", plan["worker"], flush=True)
 
 
-def publish(group_index, identity):
-    plan = read_json(LOCK)
+def publish(group_index, identity, *, plan_path=None, staged=None):
+    plan = read_json(plan_path or LOCK)
     group = plan["groups"][group_index]
     if identity not in group["candidates"] or (ROOT / "score/consumed.json").exists():
         raise ValueError("The candidate was not registered for CPU-worker import")
@@ -80,7 +80,7 @@ def publish(group_index, identity):
     if not owner_running(group) or not has_lead(group, destination):
         print("CLUSTER-OWNER", identity, flush=True)
         return
-    staged = RESULTS / str(group_index) / identity
+    staged = staged or RESULTS / str(group_index) / identity
     if set(path.name for path in staged.iterdir() if path.is_file() and not path.is_symlink()) != FILES:
         raise ValueError("The CPU-worker result does not contain the complete fit artifacts")
     receipt = read_json(staged / "receipt.json")
@@ -117,10 +117,31 @@ def publish(group_index, identity):
     except FileExistsError:
         print("COVERED", identity, flush=True)
         return
-    with (ROOT / "logs/daea-cpu-imports.tsv").open("a") as stream:
+    ledger = "daea-cpu-imports.tsv" if plan_path is None else "slurm-cpu-tail-imports.tsv"
+    with (ROOT / "logs" / ledger).open("a") as stream:
         print(datetime.now(timezone.utc).isoformat(), group["owner"], identity, sha256(staged / "receipt.json"),
               sep="\t", file=stream)
     print("PUBLISHED", identity, flush=True)
+
+
+def fit_slurm_tail(plan_path, group_index):
+    plan = read_json(plan_path)
+    group = plan["groups"][group_index]
+    if (plan["stage"] != STAGE or plan["plan_sha256"] != sha256(ROOT / "locks" / f"{STAGE}.json")
+            or group["worker_node"] != os.environ["SLURMD_NODENAME"]
+            or int(os.environ["SLURM_CPUS_PER_TASK"]) != 8 or (ROOT / "score/consumed.json").exists()):
+        raise ValueError("The Slurm worker differs from the admitted CPU tail")
+    output = ROOT / "external-cpu/slurm-huber-b1" / str(group_index)
+    for identity in group["candidates"]:
+        destination = canonical(group, identity)
+        if os.path.lexists(destination) or not owner_running(group) or not has_lead(group, destination):
+            print("CLUSTER-OWNER", identity, flush=True)
+            continue
+        print("CPU tail", group["worker_node"], group["split"], group["inner"], identity, flush=True)
+        fold_fit(STAGE, group["split"], "gbdt", group["inner"], "gbdt",
+                 candidate_ids=(identity,), artifact_root=output)
+        staged = output / destination.relative_to(ROOT / "fits")
+        publish(group_index, identity, plan_path=plan_path, staged=staged)
 
 
 if __name__ == "__main__":
@@ -130,8 +151,14 @@ if __name__ == "__main__":
     command = actions.add_parser("publish")
     command.add_argument("group", type=int)
     command.add_argument("config_id")
+    tail = actions.add_parser("slurm-tail")
+    tail.add_argument("plan", type=Path)
+    tail.add_argument("group", type=int, default=None, nargs="?")
     args = parser.parse_args()
     if args.action == "register":
         register(args.plan)
-    else:
+    elif args.action == "publish":
         publish(args.group, args.config_id)
+    else:
+        index = args.group if args.group is not None else int(os.environ["SLURM_ARRAY_TASK_ID"])
+        fit_slurm_tail(args.plan, index)

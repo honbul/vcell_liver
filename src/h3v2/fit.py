@@ -44,7 +44,7 @@ def options(stage,split,family,backend):
 
 def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="cpu",
              candidate_id=None, diagnostic=False, early_neural=False, early_primary_tree=False,
-             candidate_ids=None, fit_mask=None):
+             candidate_ids=None, fit_mask=None, artifact_root=None):
     if tree_device != "cpu" and backend != "gbdt":
         raise ValueError("The LightGBM device option applies only to tree fits")
     if early_neural and early_primary_tree:
@@ -99,6 +99,10 @@ def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="
         base_val=read_bank(split,f"two-{inner}").loc[valid.row_id,"H2"].to_numpy(np.float32)
     folder="smoke" if smoke else stage
     fit_root = ROOT / (f"{tree_device}-validation" if diagnostic else "fits")
+    if artifact_root is not None:
+        fit_root = artifact_root.resolve()
+        if candidate_ids is None or not fit_root.is_relative_to((ROOT / "external-cpu").resolve()):
+            raise ValueError("Staged artifacts require registered CPU tree candidates")
     if smoke:
         c=config_list[0]
         config_list=[c|({"trees":25} if backend=="gbdt" else {"epochs":2})]
