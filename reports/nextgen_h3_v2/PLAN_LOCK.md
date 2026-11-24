@@ -110,6 +110,8 @@ C4의 두 CPU 파티션에 이전 배열과 대체 배열이 겹쳐 23:01 KST부
 
 08:29 KST에는 G4의 `CTRPv2-1/inner-2` Huber 재실행 `38551`이 33.7분 학습 후 정상 종료했다. 검증 행 84,278개와 유한한 train·validation 값 85쌍 및 영수증 SHA-256 `a86b9aabd116f7ab347196d88fe265bb89b7684bb1a03ed28fef413973acadc7`를 확인했다. 해당 결과는 격리 경로에 있으며 기존 작업 `37960_46`과 나머지 두 후보가 실행 중이었다. 08:31 KST에는 G4가 반환한 슬롯에 같은 노드의 `37959_20`에서 미시작인 `cell-0/inner-1` 후보 `788ea49e8292`를 배정했다. 새 작업 `38577`은 CPU 8코어를 사용해 격리 경로에 결과를 쓴다. 배정은 `locks/boundary-1-cell0-1-788ea-replay.json`과 `locks/boundary-1-cell0-1-788ea-replay-route.json`에 남겼다.
 
+`daea`의 두 번째 확장 `drug-2/inner-0` 후보 `942ad0a25fde`는 19.3분 학습 후 08:25 KST에 G1에 반영됐다. 검증 행 145,493개 및 유한한 train·validation 값 82쌍을 확인했다. 영수증 SHA-256은 `e1596a02b97bbcc29c7f897e22e8a0f8e6a4079e173e8ed332a804784567e5d8`이다. 08:33 KST에는 같은 로컬 슬롯과 등록된 학습 행 305,276개, 검증 행 145,493개를 사용해 미시작 후보 `e5001800e964`를 시작했다. 이 배치의 G1 등록은 `locks/boundary-2-daea-primary-huber-batch-4.json`이며 SHA-256은 `d71b7c2abd3cc7018de431ed5ea83893679b3ca2bc6901553771c57c2097ae53`이다.
+
 ## 분할과 입력
 
 - Drug-Cold는 H2-v1 1,001골격 연결 성분의 outer 3개 및 각 inner 3개를 그대로 사용한다. Cell-Cold는 확장 패널 3개 전역 계통 차단 분할, 교차스크린은 H3-v1의 9개 고정 평가 지지다. 교차스크린 훈련에는 해당 훈련 계통과 허용 소스의 확장 패널을 사용한다.
