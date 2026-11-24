@@ -11,8 +11,10 @@ from .final_fit import external_operating_point
 from .grid import FAMILIES,SEEDS,identify,initial
 from .selection import select
 
-TRAINING_CONCURRENCY = {"gbdt": 24, "torch": 6}
+TRAINING_CONCURRENCY = {"gbdt": 3, "torch": 6}
 CPUS_PER_TRAINING_TASK = 8
+CPU_NODE = "c5"
+GPU_NODE = "g4"
 
 
 def slurm(snap):
@@ -29,11 +31,9 @@ def submit(name, script, arguments, *, deps=(), gpu=False,
     reserve=memory or ("32G" if gpu else "52G")
     log=ROOT/"logs"/(f"{name}-%A_%a.log" if array else f"{name}-%j.log")
     command=["sbatch","--parsable","-J",f"ng2-h3-{name}","-p","gpu" if gpu else "cpu",
-             "-c",str(n),f"--mem={reserve}","-t",limit,"-o",str(log)]
+             f"--nodelist={GPU_NODE if gpu else CPU_NODE}","-c",str(n),f"--mem={reserve}","-t",limit,"-o",str(log)]
     if gpu:
         command.extend(["--gres=gpu:a100:1"])
-    else:
-        command.extend(["--exclude=c4"])
     if array is not None:
         command.append(f"--array={array}")
     if deps:
@@ -119,14 +119,15 @@ def schedule_final(snap):
     publish_json(lock,jobs)
     ext=submit("external-atlas",helpers/"job.sbatch",[snap,"-m","h3v2.final_fit","external-atlas"],
                threads=8,memory="28G",limit="01:00:00")
-    finals=[submit(f"final-{backend}",helpers/"job.sbatch",
+    finals={backend:submit(f"final-{backend}",helpers/"job.sbatch",
                    [snap,"-m","h3v2.pipeline","fit-task","--backend",backend],
                    gpu=backend=="torch",array=f"0-{len(parts)-1}%{TRAINING_CONCURRENCY[backend]}",deps=(ext,))
-            for backend,parts in jobs.items() if parts]
+            for backend,parts in jobs.items() if parts}
+    reference_deps=(ext,finals["gbdt"]) if "gbdt" in finals else (ext,)
     refs=submit("references",helpers/"job.sbatch",[snap,"-m","h3v2.pipeline","references-task"],
-                deps=(ext,),array=f"0-{len(SPLITS)}%4",threads=6,memory="20G",limit="02:00:00")
+                deps=reference_deps,array=f"0-{len(SPLITS)}%3",threads=6,memory="20G",limit="02:00:00")
     before=submit("preflight",helpers/"job.sbatch",[snap,"-m","h3v2.score","--preflight"],
-                  deps=tuple([refs,*finals]),threads=8,memory="42G",limit="03:00:00")
+                  deps=(refs,*finals.values()),threads=8,memory="42G",limit="03:00:00")
     after=submit("score-once",helpers/"job.sbatch",[snap,"-m","h3v2.score"],
                  deps=(before,),threads=18,memory="66G",limit="1-00:00:00")
     package=submit("report",helpers/"job.sbatch",[snap,"-m","h3v2.report"],
