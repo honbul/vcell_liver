@@ -102,5 +102,5 @@ def source_context(reg, cells, parents):
     rna = parquet_lock(COLD / "rna.parquet", source["files"]["rna.parquet"]).reindex(cells)
     edges, _, _ = molecular_inputs(PRIOR, HALLMARK, TARGET)
     aux, _ = load_auxiliary(AUXILIARY)
-    return Inputs(V1_ASSETS, molecular_features(reg.loc[parents]), lincs_profiles(parents), None,
+    return Inputs(V1_ASSETS, molecular_features(reg.loc[list(parents)]), lincs_profiles(parents), None,
                   rna, edges, read_json(target_file), aux, CPU)
