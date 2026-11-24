@@ -15,7 +15,7 @@ tar -xzf "$prefix/lightgbm-4.6.0.tar.gz" --strip-components=1 -C "$source"
 
 # LightGBM replaces CMAKE_CUDA_ARCHITECTURES on its targets. Compile only the G3 architecture.
 sed -i '/message(STATUS "CUDA_ARCHITECTURES: ${CUDA_ARCHS}")/i\    set(CUDA_ARCHS "86-real")' "$source/CMakeLists.txt"
-rg -Fq 'set(CUDA_ARCHS "86-real")' "$source/CMakeLists.txt"
+[[ $(< "$source/CMakeLists.txt") == *'set(CUDA_ARCHS "86-real")'* ]]
 "$cuda_compiler" --version
 "$cmake_tool" --version
 "$cmake_tool" -S "$source" -B "$build/objects" -DCMAKE_BUILD_TYPE=Release -DBUILD_CLI=OFF -DUSE_CUDA=ON \
