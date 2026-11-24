@@ -84,6 +84,8 @@ C4의 두 CPU 파티션에 이전 배열과 대체 배열이 겹쳐 23:01 KST부
 
 07:44 KST에는 G4 `38457_15`가 `GDSC2-0/inner-0` Huber 후보 `45dad9d5e94b`를 반영하고 정상 종료했다. G1에서 검증 행 130,684개와 유한한 train·validation Huber 값 122쌍을 확인했다. 학습은 61.6분 걸렸으며 영수증 SHA-256은 `43a90e1a7a08edd6bcf66d2c4236895eb1a2cf0bd82b3c1dd8daa75b343c7438`이다. 반환된 CPU 8개에 C4 `38038_82`의 `PRISM20Q2-1/inner-2` 미시작 후보 `788ea49e8292`를 배정했다. G4 `38525_24`의 CPU 전용 실행과 H3 CPU 배정 176개를 확인했다. 선택 작업 `38500`의 선행 조건과 후보 등록은 G1의 `locks/boundary-1-slurm-huber-tails-jobs-v20.json` 및 `locks/boundary-1-slurm-huber-tails-v20.json`에 남겼다.
 
+07:48 KST에는 G3 선행 신규 골격 GBM `38292_16`이 반환한 8코어에 C4 `38041_88`의 `PRISM20Q2-2/inner-2` 미시작 Huber 후보 `45dad9d5e94b`를 배정했다. 선행 작업의 `drug-2/inner-2` 후보 11건과 유한한 train·validation 지점 546쌍을 검증했다. 마지막 영수증 SHA-256은 `ad3e2773b3ed2cda7693045e79d4ba351596d491527522282a80bc4783a44398`이다. G3 `38541_25`의 CPU 전용 실행, GBM CPU 배정 144개, 선택 작업 `38500`의 선행 조건을 확인했다. 후보 목록과 배정은 G1의 `locks/boundary-1-slurm-huber-tails-v21.json`과 `locks/boundary-1-slurm-huber-tails-jobs-v21.json`에 남겼다.
+
 ## 분할과 입력
 
 - Drug-Cold는 H2-v1 1,001골격 연결 성분의 outer 3개 및 각 inner 3개를 그대로 사용한다. Cell-Cold는 확장 패널 3개 전역 계통 차단 분할, 교차스크린은 H3-v1의 9개 고정 평가 지지다. 교차스크린 훈련에는 해당 훈련 계통과 허용 소스의 확장 패널을 사용한다.
