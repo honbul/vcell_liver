@@ -7,6 +7,7 @@ import torch
 
 from followup_h2_e4.model import Kernel
 from nextgen_h2.assets import KEY
+from nextgen_h2.run import META
 from vc_build.external import SOURCE
 from vc_build.structured_kernel import training_grid
 
@@ -209,7 +210,7 @@ def solve_shifts(system, penalties, *, tol=5e-5, max_steps=1400):
 
 class ScreenKernel(Kernel):
     def __init__(self, data, fit, query, registry, role):
-        super().__init__(data, fit, query, registry, role)
+        super().__init__(data, fit, query[META], registry, role)
         self._transformed = {}
         self._task_grids = None
 
@@ -267,6 +268,11 @@ class ScreenKernel(Kernel):
         base = self.baseline_residual[self.selector]
         return np.where(supported[self.selector[1]], values.astype(float), base)
 
+    def projections(self, coef, cross, support, tau, family, mode, scale):
+        if mode == "both":
+            return {m:self.project(coef,cross,support,tau,family,m,scale) for m in ("shared","in_screen")}
+        return self.project(coef,cross,support,tau,family,mode,scale)
+
     def solutions(self, design, family, tau, penalties, *, mode="in_screen"):
         full, supported = self.geometry(design)
         g, cross = full[:self.stop, :self.stop].contiguous(), full[self.stop:, :self.stop]
@@ -279,12 +285,12 @@ class ScreenKernel(Kernel):
             personal = {}
             for p, key in keys.items():
                 coef, iterations, error, solver = solutions[key]
-                pred = self.project(coef[None]/(1.+tau), cross, supported, tau, family, mode, scale)
+                pred = self.projections(coef[None]/(1.+tau), cross, supported, tau, family, mode, scale)
                 personal[p] = (pred, iterations, error, solver)
         else:
             system = System(self.cell, g, mass, target, tau=tau, stacked=family == TASK)
             personal = {
-                p: (self.project(coef, cross, supported, tau, family, mode, scale), iterations, error, solver)
+                p: (self.projections(coef, cross, supported, tau, family, mode, scale), iterations, error, solver)
                 for p, (coef, iterations, error, solver) in solve_shifts(system, penalties).items()
             }
         return personal, full, supported, proof
