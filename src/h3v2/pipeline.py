@@ -1,5 +1,6 @@
 """Schedule H3-v2 training with the authorized Slurm caps and the one-score seal."""
 import argparse
+from getpass import getuser
 import os
 from pathlib import Path
 from subprocess import check_output
@@ -9,7 +10,7 @@ from vc_build.io import publish_json,sha256
 from .data import ROOT,SPLITS
 from .final_fit import external_operating_point
 from .grid import FAMILIES,SEEDS,identify,initial
-from .selection import select
+from .selection import NEURAL_FAMILIES, next_boundary, read_neural_expansion, select
 
 CPUS_PER_TRAINING_TASK = 8
 GPU_TRAINING_CONCURRENCY = 4
@@ -26,8 +27,9 @@ def slurm(snap):
 
 
 def submit(name, script, arguments, *, deps=(), gpu=False,
-           array=None, limit="1-12:00:00", threads=None, memory=None, dependency="afterok", node=None):
-    if not all(str(x).isdecimal() for x in deps):
+           array=None, limit="1-12:00:00", threads=None, memory=None, dependency="afterok", node=None,
+           terminal_deps=()):
+    if not all(str(x).isdecimal() for x in (*deps, *terminal_deps)):
         raise ValueError("Unexpected Slurm dependency")
     if dependency not in {"afterok", "afterany"}:
         raise ValueError("Unsupported Slurm dependency condition")
@@ -42,13 +44,15 @@ def submit(name, script, arguments, *, deps=(), gpu=False,
         command.append(f"--gres=gpu:{GPU_TYPE}:1")
     if array is not None:
         command.append(f"--array={array}")
-    if deps:
-        command.extend(["--kill-on-invalid-dep=yes", f"--dependency={dependency}:" + ":".join(map(str,deps))])
+    conditions = [rule + ":" + ":".join(map(str, jobs))
+                  for rule, jobs in ((dependency, deps), ("afterany", terminal_deps)) if jobs]
+    if conditions:
+        command.extend(["--kill-on-invalid-dep=yes", "--dependency=" + ",".join(conditions)])
     result=check_output([*command,str(script),*map(str,arguments)],cwd=ROOT,text=True).strip().split(";")[0]
     if not result.isdecimal():
         raise ValueError(f"Unexpected Slurm submission result: {result}")
     with (ROOT/"logs/trajectory.tsv").open("a") as log_tuple:
-        print(name,result,GPU_TYPE if gpu else "cpu",array or "-",",".join(deps),sep="\t",file=log_tuple)
+        print(name,result,GPU_TYPE if gpu else "cpu",array or "-",",".join(map(str, (*deps, *terminal_deps))),sep="\t",file=log_tuple)
     return result
 
 
@@ -72,13 +76,13 @@ def inner_tasks(stage):
     return tasks
 
 
-def submit_training_arrays(name, script, arguments, backend, indexed, *, deps=()):
+def submit_training_arrays(name, script, arguments, backend, indexed, *, deps=(), terminal_deps=()):
     indices = sorted(indexed)
     if backend == "torch":
         if not indices:
             return []
         array = ",".join(map(str, indices)) + f"%{GPU_TRAINING_CONCURRENCY}"
-        return [submit(name, script, arguments, gpu=True, array=array, deps=deps)]
+        return [submit(name, script, arguments, gpu=True, array=array, deps=deps, terminal_deps=terminal_deps)]
     slots = [lane for seat in range(max(lane[1] for lane in CPU_TRAINING_LANES))
              for lane in CPU_TRAINING_LANES if seat < lane[1]]
     batches = {lane: [] for lane in CPU_TRAINING_LANES}
@@ -99,16 +103,52 @@ def missing_inner(stage):
             for backend, tasks in inner_tasks(stage).items()}
 
 
+def active_early_array(stage):
+    route = ROOT / "locks" / f"{stage}-early-neural-jobs.json"
+    if not route.is_file():
+        return None
+    record = read_json(route)
+    plan = read_neural_expansion(stage)
+    if record["early_plan_sha256"] != sha256(ROOT / "locks" / f"{stage}-early-neural.json"):
+        raise ValueError("Early Slurm registration has a different settings lock")
+    planned = {outer * 12 + inner * 4 + offset
+               for outer, split in enumerate(SPLITS) for inner in range(3)
+               for offset, family in enumerate(NEURAL_FAMILIES) if plan["splits"][split][family]}
+    job = str(record["early_array"])
+    if (planned != set(record["indices"]) or record["gpu_node"] != GPU_NODE
+            or record["site_cap"] != GPU_TRAINING_CONCURRENCY or not job.isdecimal()):
+        raise ValueError("Early Slurm registration does not match the current GPU schedule")
+    queue = check_output(["squeue", "-r", "-h", "-u", getuser(), "-o", "%i|%j|%T|%N"], text=True)
+    running = set()
+    for row in queue.splitlines():
+        identity, name, state, host = row.split("|")
+        parent, _, index = identity.partition("_")
+        if parent == job:
+            if (name != f"ng2-h3-{stage}-early-neural" or host not in {"", GPU_NODE} or not index.isdecimal()
+                    or int(index) not in planned or state not in {"PENDING", "RUNNING", "COMPLETING", "CONFIGURING", "SUSPENDED"}):
+                raise ValueError(f"Unexpected early neural allocation {row}")
+            running.add(int(index))
+    return (job, planned) if running else None
+
+
 def schedule_inner(stages, snap, *, retry=False, tasks=None):
     stage = stages[-1]
     planned = missing_inner(stage) if tasks is None else tasks
     suffix = "-retry" if retry else ""
     helpers = slurm(snap)
-    jobs = []
+    early = active_early_array(stage)
+    future = active_early_array(next_boundary(stage)) if stage.startswith("boundary-") else None
+    jobs = [early[0]] if early else []
     predecessor = controller_dependency()
     for backend, indexed in planned.items():
+        drains = ()
+        if backend == "torch":
+            if early:
+                indexed = set(indexed) - early[1]
+            drains = tuple(array[0] for array in (early, future) if array)
         jobs.extend(submit_training_arrays(f"{stage}-{backend}{suffix}", helpers / "inner.sbatch",
-                                           [snap, stage, backend], backend, indexed, deps=predecessor))
+                                           [snap, stage, backend], backend, indexed, deps=predecessor,
+                                           terminal_deps=drains))
     if not jobs:
         return advance(stages, snap, dispatch_only=False)
     arguments = [snap, "-m", "h3v2.pipeline", "settle", "--snapshot", snap, *stages]

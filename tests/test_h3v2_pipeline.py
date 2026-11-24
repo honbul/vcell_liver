@@ -107,6 +107,27 @@ def test_g4_cpu_fit_requests_no_gpu():
         assert (root / "logs/trajectory.tsv").read_text().split("\t")[:3] == ["final-gbdt-g4-8core", "37104", "cpu"]
 
 
+def test_next_cpu_round_advances_while_registered_gpu_fits_continue():
+    with TemporaryDirectory(dir=pipeline.ROOT / "tmp") as scratch:
+        root = Path(scratch)
+        tasks = {"gbdt": {0: [root / "cpu"]}, "torch": {4: [root / "early"], 7: [root / "hybrid"]}}
+        stages = ["r1", "r2", "boundary-1", "boundary-2"]
+        with patch.object(pipeline, "inner_tasks", return_value=tasks), \
+                patch.object(pipeline, "controller_dependency", return_value=("37100",)), \
+                patch.object(pipeline, "active_early_array", side_effect=[("37104", {4}), None]), \
+                patch.object(pipeline, "submit", side_effect=["37101", "37102", "37103"]) as submit:
+            assert pipeline.schedule_inner(stages, root) == "37103"
+            cpu, gpu, watcher = submit.call_args_list
+            assert cpu.kwargs["deps"] == ("37100",) and "terminal_deps" not in cpu.kwargs
+            assert gpu.kwargs["array"] == "7%4" and gpu.kwargs["terminal_deps"] == ("37104",)
+            assert watcher.kwargs["deps"] == ("37104", "37101", "37102") and watcher.kwargs["dependency"] == "afterany"
+        (root / "logs").mkdir()
+        with patch.object(pipeline, "ROOT", root), \
+                patch.object(pipeline, "check_output", return_value="37102\n") as sbatch:
+            pipeline.submit("torch", Path("job.sbatch"), [], gpu=True, deps=("37100",), terminal_deps=("37104",))
+        assert "--dependency=afterok:37100,afterany:37104" in sbatch.call_args.args[0]
+
+
 def test_failed_final_jobs_are_retried_before_the_only_score_submission():
     def touch(root, relative):
         dest = root / relative
@@ -184,6 +205,7 @@ if __name__ == "__main__":
     test_completed_early_gpu_arrays_are_not_resubmitted()
     test_followup_gpu_arrays_use_only_g3_a40()
     test_g4_cpu_fit_requests_no_gpu()
+    test_next_cpu_round_advances_while_registered_gpu_fits_continue()
     test_failed_final_jobs_are_retried_before_the_only_score_submission()
     test_final_output_preserves_interrupted_and_completed_artifacts()
     print("Registered 990 arms and verified bounded recovery, dependencies and the training caps", flush=True)
