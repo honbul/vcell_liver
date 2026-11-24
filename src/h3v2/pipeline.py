@@ -12,6 +12,7 @@ from .grid import FAMILIES,SEEDS,identify,initial
 from .selection import select
 
 TRAINING_CONCURRENCY = {"gbdt": 35, "torch": 6}
+CPUS_PER_TRAINING_TASK = 8
 
 
 def slurm(snap):
@@ -24,7 +25,7 @@ def submit(name, script, arguments, *, deps=(), gpu=False,
         raise ValueError("Unexpected Slurm dependency")
     if dependency not in {"afterok", "afterany"}:
         raise ValueError("Unsupported Slurm dependency condition")
-    n=threads or (8 if gpu else 12)
+    n=threads or CPUS_PER_TRAINING_TASK
     reserve=memory or ("32G" if gpu else "52G")
     log=ROOT/"logs"/(f"{name}-%A_%a.log" if array else f"{name}-%j.log")
     command=["sbatch","--parsable","-J",f"ng2-h3-{name}","-p","gpu" if gpu else "cpu",
