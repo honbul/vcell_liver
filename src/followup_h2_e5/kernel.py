@@ -1,10 +1,8 @@
 """Fit-only screen transforms and separable weighted single- and multi-task KRR."""
 from dataclasses import dataclass
-from itertools import product
 
 import numpy as np
 import pandas as pd
-from scipy.stats import rankdata
 import torch
 
 from followup_h2_e4.model import Kernel
@@ -88,9 +86,11 @@ class System:
     def product(self, vector):
         data = self.root * vector
         if self.stacked:
-            share = (self.cell @ data.sum(dim=0)) @ self.drug
             if self.tau:
-                share = share + self.tau * ((self.cell @ data) @ self.drug)
+                specific = (self.cell @ data) @ self.drug
+                share = specific.sum(dim=0) + self.tau*specific
+            else:
+                share = (self.cell @ data.sum(dim=0)) @ self.drug
         else:
             share = (self.cell @ data) @ self.drug
         return self.root * share
@@ -104,13 +104,19 @@ class System:
                       self.tau, self.stacked)
 
 
-def pcg(system, ridge, tol, *, max_steps=4200):
+def pcg(system, ridge, tol, *, max_steps=4200, initial=None):
     """Independent residual-checked solve used for accurate replay and numerical recovery."""
     y = system.y
     scale = max(1e-12, float(y.norm()))
-    x = torch.zeros_like(y)
+    if initial is None or not torch.isfinite(initial).all():
+        x, r = torch.zeros_like(y), y.clone()
+    else:
+        x = initial.clone()
+        r = y-system.product(x)-ridge*x
     d = system.preconditioner(ridge)
-    r = y.clone()
+    relative = float(r.norm()) / scale
+    if relative <= tol:
+        return system.root*x, 0, relative
     p = r / d
     energy = (r*p).sum()
     for step in range(1, max_steps+1):
@@ -183,7 +189,7 @@ def solve_shifts(system, penalties, *, tol=5e-5, max_steps=1400):
                     del live[p]
                 # The tridiagonal residual has reached its rounding floor.
                 elif next_beta*abs(ratio) <= (.1*tol)*norm:
-                    alt, n, err = pcg(system.higher_precision(), p, tol*.8)
+                    alt, n, err = pcg(system.higher_precision(), p, tol*.8, initial=state.prediction.double())
                     output[p] = (alt.to(y.dtype), n, err, "double_pcg")
                     del live[p]
         else:
@@ -196,7 +202,7 @@ def solve_shifts(system, penalties, *, tol=5e-5, max_steps=1400):
     if live:
         high = system.higher_precision()
         for p in live:
-            alt, steps, residual = pcg(high, p, tol*.8)
+            alt, steps, residual = pcg(high, p, tol*.8, initial=live[p].prediction.double())
             output[p] = (alt.to(y.dtype), steps, residual, "double_pcg")
     return output
 

@@ -76,6 +76,7 @@ def shard(preflight, out, index):
             result, _, _, proof = model.solutions(params, family, 0., PENALTIES)
             add_scores(records, ev, role, family, 0., cfg, result)
             proofs[family] = proof
+            print(utc_now(), role, base, shape, "w", w, family, flush=True)
             if family == BALANCED and extra_baseline and fit.source_id.nunique() == 1:
                 add_scores(records, ev, role, BASELINE, 0., cfg, result)
         if extra_baseline and fit.source_id.nunique() > 1:

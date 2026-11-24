@@ -157,7 +157,7 @@ def select_anchors(evs, *, extras):
         for family in EXTRA:
             configs[family]=mix(family,.5,.5 if family==EXTRA[0] else 1.)
             def evaluate_custom(d,meta):
-                val=.5*(d[f"{family}:{chem}"]+d[f"{family}:{lincs}"])
+                val=.5*(d[f"{family}:{chem}"].astype(float)+d[f"{family}:{lincs}"].astype(float))
                 if family==EXTRA[0]:
                     val=meta["median"]+.5*val
                 return d.residual+np.where(d.warm,d["chem_top5/5"],val)
