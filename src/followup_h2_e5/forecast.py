@@ -126,7 +126,7 @@ def freeze(preflight,selected,out,index):
         query=query[META].sort_values("row_id",ignore_index=True)
     role=f"{track}/{fold}"
     policies=choice["policies"][role]
-    engine=ScreenKernel(data,fit,query,reg,role)
+    engine=ScreenKernel(data,fit,query,reg,f'{role}/outer')
     panel,fallback,replay=old_scores(index,track,fold,query,engine)
     dest=out/str(index)
     dest.mkdir(exist_ok=False,parents=True)

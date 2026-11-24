@@ -25,7 +25,7 @@ from vc_build.io import publish_json
 from .forecast import (
     E4_ARM, P1_OFFSET, P1_PERSONAL, P2_OFFSET, V2, active_task, choice_lock, pinned_e4, read_frozen,
 )
-from .kernel import DEBIASED, ScreenKernel, System, pcg, solve_shifts
+from .kernel import BALANCED, DEBIASED, ScreenKernel, System, pcg, solve_shifts
 from .select import P1,P2
 from followup_h2_e4.data import utc_now
 
@@ -164,7 +164,12 @@ def verify(preflight,selected,forecasts,out):
                     self.assertLess(measure["max_cell_mean_error"],1e-8)
                     self.assertLess(measure["max_drug_mean_error"],1e-8)
                     self.assertLess(measure["max_unit_variance_error"],1e-8)
-                transforms[str(i)]=p
+                mass=note["details"][BALANCED]["transform"]
+                before,after=mass["screen_mass_before"],mass["screen_mass_after"]
+                self.assertEqual(set(before),set(after))
+                self.assertAlmostEqual(sum(before.values()),sum(after.values()),places=6)
+                self.assertLess(max(after.values())-min(after.values()),1e-6)
+                transforms[str(i)]=p|{"equal_effective_screen_mass":mass}
             role="T1/2/outer"
             d,fit,q=role_data(split["roles"][role],reg,inner=False)
             a=ScreenKernel(d,fit,q,reg,role)
