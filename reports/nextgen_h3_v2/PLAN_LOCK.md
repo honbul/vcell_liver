@@ -34,6 +34,8 @@ C4의 두 CPU 파티션에 이전 배열과 대체 배열이 겹쳐 23:01 KST부
 
 04:04 KST에 `daea`의 첫 Huber 결과 `788ea49e8292`를 G1의 `cell-1/inner-2`에 반영했다. 이 후보는 기존 G4 작업 `37959_28`에 등록돼 있었다. CPU 학습 시간은 77.3분이었다. G1에서 149,088개 검증 행의 ID, 예측과 학습 곡선 SHA, 유한한 train·validation Huber 값 160쌍을 확인했다. 승인 기록은 G1의 `logs/daea-cpu-imports.tsv`, 영수증 SHA-256은 `021c28f03ff9c17349dc95fc45b6e382b33c02c1c9d55f472accd87fb6aa042d`다.
 
+04:05 KST에 G4 추가 배열 `38405_5`의 첫 Huber 결과를 G1의 `GDSC2-1/inner-2`에 반영했다. 기존 G4 작업 `37959_64`에 등록된 후보 `788ea49e8292`의 CPU 학습 시간은 68.9분이었다. 129,960개 검증 행의 ID, 예측과 학습 곡선 SHA, 유한한 train·validation Huber 값 120쌍을 확인했다. 승인 기록은 G1의 `logs/slurm-cpu-tail-imports.tsv`, 영수증 SHA-256은 `2f2b00b2fda6c41345ab1a40ad545f1451b75e947783d253d147f1782793e183`다.
+
 ## 분할과 입력
 
 - Drug-Cold는 H2-v1 1,001골격 연결 성분의 outer 3개 및 각 inner 3개를 그대로 사용한다. Cell-Cold는 확장 패널 3개 전역 계통 차단 분할, 교차스크린은 H3-v1의 9개 고정 평가 지지다. 교차스크린 훈련에는 해당 훈련 계통과 허용 소스의 확장 패널을 사용한다.
