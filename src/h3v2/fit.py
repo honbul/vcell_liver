@@ -20,13 +20,16 @@ def backends(name):
 
 
 def run_fit(config, atlas, schema, train, valid, registry, seed, *, base_fit=None,base_valid=None,
-            fixed=None,progress=None):
+            fixed=None,progress=None,tree_device="cpu"):
+    options = dict(train_base=base_fit, val_base=base_valid, fixed_epochs=fixed, progress=progress)
     if config["backend"]=="gbdt":
         from .fit_tree import train as fit
+        options["tree_device"] = tree_device
     else:
+        if tree_device != "cpu":
+            raise ValueError("The LightGBM device option applies only to tree fits")
         from .fit_neural import train as fit
-    return fit(atlas,schema,train,valid,registry,config,seed,
-               train_base=base_fit,val_base=base_valid,fixed_epochs=fixed,progress=progress)
+    return fit(atlas,schema,train,valid,registry,config,seed,**options)
 
 
 def options(stage,split,family,backend):
@@ -38,8 +41,15 @@ def options(stage,split,family,backend):
     return [c for c in configs if c["backend"]==backend]
 
 
-def fold_fit(stage, split, family, inner, backend, *, smoke=False):
+def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="cpu",
+             candidate_id=None, diagnostic=False):
     config_list=options(stage,split,family,backend)
+    if candidate_id is not None:
+        config_list = [config for config in config_list if identify(config) == candidate_id]
+        if len(config_list) != 1:
+            raise ValueError(f"Expected registered candidate {candidate_id} in {stage}/{split}/{family}/{inner}")
+    if diagnostic and (tree_device != "cuda" or candidate_id is None or smoke):
+        raise ValueError("The CUDA diagnostic must replay one unchanged registered candidate")
     if not config_list:
         print(f"{stage}/{split}/{family}/{inner}: no {backend} configs",flush=True)
         return
@@ -57,12 +67,13 @@ def fold_fit(stage, split, family, inner, backend, *, smoke=False):
         base_train=bank.H2.to_numpy(np.float32)
         base_val=read_bank(split,f"two-{inner}").loc[valid.row_id,"H2"].to_numpy(np.float32)
     folder="smoke" if smoke else stage
+    fit_root = ROOT / ("cuda-validation" if diagnostic else "fits")
     if smoke:
         c=config_list[0]
         config_list=[c|({"trees":25} if backend=="gbdt" else {"epochs":2})]
     for config in config_list:
         identity=identify(config)
-        dest=ROOT/"fits"/folder/split/f"inner-{inner}"/family/identity
+        dest=fit_root/folder/split/f"inner-{inner}"/family/identity
         if (dest/"receipt.json").is_file():
             previous=read_json(dest/"receipt.json")
             if (previous["config_id"],previous["forecast_sha256"],previous["curve_sha256"]) != (
@@ -78,7 +89,7 @@ def fold_fit(stage, split, family, inner, backend, *, smoke=False):
             print(stage,split,inner,family,identity,{k:point[k] for k in (
                 "iteration","branch","utility","seconds") if k in point},flush=True)
         pred,state,curves,stamp=run_fit(config,atlas,schema,train,valid,registry,SEEDS[0],
-                                       base_fit=base_train,base_valid=base_val,progress=show)
+                                       base_fit=base_train,base_valid=base_val,progress=show,tree_device=tree_device)
         score=quality(valid,pred,registry)
         pd.DataFrame(curves).to_parquet(dest/"curves.parquet",index=False)
         store(valid[["row_id"]].assign(predicted=pred),dest/"predictions.parquet")

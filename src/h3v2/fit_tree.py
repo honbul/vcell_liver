@@ -30,7 +30,7 @@ def ranking(rows):
 
 
 def train(atlas,schema,fit,query,registry,config,seed,*,train_base=None,val_base=None,
-          fixed_epochs=None,progress=None):
+          fixed_epochs=None,progress=None,tree_device="cpu"):
     start=perf_counter()
     train_a,train_b=atlas["fit_cells"],atlas["fit_drugs"]
     check_a,check_b=atlas["query_cells"],atlas["query_drugs"]
@@ -46,6 +46,12 @@ def train(atlas,schema,fit,query,registry,config,seed,*,train_base=None,val_base
         "num_threads":int(os.environ.get("SLURM_CPUS_PER_TASK","8")),"seed":seed,
         "verbosity":-1,"force_col_wise":True,"deterministic":True,"feature_pre_filter":False,
     }
+    if tree_device == "cuda":
+        params.pop("force_col_wise")
+        params.pop("deterministic")
+        params.update(device_type="cuda", gpu_device_id=0, num_gpu=1)
+    elif tree_device != "cpu":
+        raise ValueError(f"Unsupported LightGBM device {tree_device}")
     requested=config["objective"]
     stages=("l2","lambdarank") if requested=="l2_lambdarank" else (requested,)
     if fixed_epochs is None:
@@ -122,5 +128,5 @@ def train(atlas,schema,fit,query,registry,config,seed,*,train_base=None,val_base
         curves.append({"iteration":sum(b["iteration"] for b in boosters),"branch":"selected",
                         "seconds":perf_counter()-start,"utility":utility(record)}|record)
     info={"best_iteration":sum(b["iteration"] for b in boosters),"branch_iterations":[b["iteration"] for b in boosters],
-          "wall_seconds":perf_counter()-start,"train_rows":len(fit),"device":"cpu","library":lgb.__version__}
+          "wall_seconds":perf_counter()-start,"train_rows":len(fit),"device":tree_device,"library":lgb.__version__}
     return val_offset,boosters,curves,info
