@@ -46,6 +46,8 @@ C4의 두 CPU 파티션에 이전 배열과 대체 배열이 겹쳐 23:01 KST부
 
 05:14 KST에는 정상 종료한 G3 `37960_18`이 반환한 CPU 8개에 G4 `37959_62`의 `GDSC2-1/inner-1` 미시작 Huber 후보 3개를 배정했다. G3 `38434_9`는 기존 G4 추가 배열에 배정된 후보를 제외하고 시작했다. G3의 GBM CPU는 144개이며 선택 작업 `38393`은 추가 배열 종료도 기다린다. G1의 `locks/boundary-1-slurm-huber-tails-v4.json`과 `locks/boundary-1-slurm-huber-tails-jobs-v4.json`에 후보와 배정을 기록했다.
 
+05:31 KST에는 정상 종료한 C4 `37961_40`이 반환한 CPU 8개에 G3 `38290_78`의 `PRISM20Q2-1/inner-0` 미시작 Huber 후보 3개를 배정했다. C4 `38438_10`이 시작해 CPU 48개를 사용한다. 기존 G3 학습과 선택 작업 `38393`의 선행 조건을 확인했다. G1의 `locks/boundary-1-slurm-huber-tails-v5.json`과 `locks/boundary-1-slurm-huber-tails-jobs-v5.json`에 후보와 배정을 기록했다.
+
 ## 분할과 입력
 
 - Drug-Cold는 H2-v1 1,001골격 연결 성분의 outer 3개 및 각 inner 3개를 그대로 사용한다. Cell-Cold는 확장 패널 3개 전역 계통 차단 분할, 교차스크린은 H3-v1의 9개 고정 평가 지지다. 교차스크린 훈련에는 해당 훈련 계통과 허용 소스의 확장 패널을 사용한다.
