@@ -28,6 +28,10 @@ LABELS=("약물 내 ρ","약물 내 r","상호작용 ρ","상호작용 r","NDCG@
 SLURM_FIELDS = re.compile(r"(?:^| )(JobId|ArrayJobId|ArrayTaskId|JobState|StartTime|EndTime|NodeList)=([^\s]+)")
 SLURM_TIME = re.compile(r"^\d{4}-\d{2}-\d{2}T")
 TERMINAL_STATES = {"COMPLETED", "CANCELLED", "FAILED", "TIMEOUT", "OUT_OF_MEMORY", "NODE_FAIL", "PREEMPTED", "BOOT_FAIL", "DEADLINE"}
+REPLAY_LIBRARIES = {
+    "cuda": "deps/lightgbm-cuda-4.6.0/runtime/lightgbm/lib/lib_lightgbm.so",
+    "opencl": "deps/lightgbm/lib/lib_lightgbm.so",
+}
 
 
 def md_table(headers,rows):
@@ -268,6 +272,49 @@ def jobs():
     return frame
 
 
+def device_replays():
+    plan = ROOT / "locks/cuda-g3-checks.json"
+    if not plan.is_file():
+        return [], {}
+    cases = read_json(plan)["cases"]
+    rows, digests = [], {}
+    for device, library in REPLAY_LIBRARIES.items():
+        root = ROOT / f"{device}-validation"
+        if not root.is_dir():
+            continue
+        library_stamp = sha256(ROOT / library)
+        for case in cases:
+            stage, split, inner, family, identity = (case[field] for field in
+                ("stage", "split", "inner", "family", "config_id"))
+            suffix = Path(stage) / split / f"inner-{inner}" / family / identity
+            comparison = root / suffix / "comparison.json"
+            if not comparison.is_file():
+                continue
+            baseline = ROOT / "fits" / suffix / "receipt.json"
+            accelerated = comparison.with_name("receipt.json")
+            point, cpu, gpu = map(read_json, (comparison, baseline, accelerated))
+            if (any(point[field] != value for field, value in case.items()) or point["query_has_outer_labels"]
+                    or sha256(baseline) != case["cpu_receipt_sha256"]
+                    or point[f"{device}_receipt_sha256"] != sha256(accelerated)
+                    or point[f"{device}_library_sha256"] != library_stamp):
+                raise ValueError(f"The LightGBM device replay changed for {device}/{suffix}")
+            for key in ("config", "seed", "model_input_sha256", "query_has_outer_labels"):
+                if cpu[key] != gpu[key]:
+                    raise ValueError(f"The LightGBM device replay changed {key} for {device}/{suffix}")
+            times = cpu["training"]["wall_seconds"], gpu["training"]["wall_seconds"]
+            deltas = {axis: gpu["score"][axis] - score for axis, score in cpu["score"].items()}
+            if (cpu["query_has_outer_labels"] or cpu["training"]["device"] != "cpu" or gpu["training"]["device"] != device
+                    or (point["cpu_seconds"], point[f"{device}_seconds"]) != times
+                    or point["speedup"] != times[0] / times[1] or point["metric_deltas"] != deltas
+                    or point["utility_delta"] != gpu["utility"] - cpu["utility"]):
+                raise ValueError(f"The measures do not reproduce for {device}/{suffix}")
+            digests[str(comparison.relative_to(ROOT))] = sha256(comparison)
+            rows.append((device, stage, split, inner, identity, *(f"{t / 60:.1f}" for t in times),
+                         f"{point['speedup']:.2f}×", f"{point['utility_delta']:+.5f}",
+                         *(f"{deltas[axis]:+.5f}" for axis in AXES)))
+    return rows, digests
+
+
 def error_diagnosis(root):
     errors = pd.read_csv(root / "H3V2_ERROR_COMPONENTS.tsv", sep="\t")
     errors["model"] = errors.arm.str.split("__").str[0]
@@ -304,7 +351,7 @@ def tissue_deltas(root, roster):
     return rows
 
 
-def report_docs(root,points,ci,curves,grid,score,lock):
+def report_docs(root,points,ci,curves,grid,score,lock,*,replays=()):
     axis=points[(points.seed.isin(["fixed","mean"])) & points.screen.eq("macro")]
     statuses=score["verdicts"]
     primary=axis[axis.scope.eq("drug")&axis.support.eq("all")]
@@ -375,7 +422,7 @@ def report_docs(root,points,ci,curves,grid,score,lock):
     unique_fits=curves.drop_duplicates(["split","family","round","config_id","inner"])
     compute_device = unique_fits.device.str.split(":").str[0].replace({"opencl": "cuda"})
     wall=unique_fits.groupby(["family","round",compute_device]).fit_wall_seconds.sum()/3600
-    put(root/"ROUND1_TO_2_FAMILY_TUNING.md",[
+    tuning = [
         "# 계열별 Inner CV 학습 및 포화 탐색", "",
         "각 행은 외부 보류 지원과 독립인 3개 inner 분할의 고정 설정 비교다. 블록 미니배치는 관측만 방문했다. "
         "다음 표는 후보의 최대 inner 점수와 wall-clock 학습 시간을 참조용으로 집계한다.", "",
@@ -389,7 +436,17 @@ def report_docs(root,points,ci,curves,grid,score,lock):
         "학습곡선은 같은 iteration의 train 및 validation을 병기한다. Validation 모델은 best iteration으로 재적합했다. "
         "포화 그림은 Drug-Cold fold 0에서 동결 설정의 폭 또는 깊이만 바꾼 내측 비교다. 다른 축과 분할의 측정값은 설정 TSV에 있다.",
         "[학습 곡선](H3V2_FAMILY_LEARNING_CURVES.tsv) · [학습 곡선 그림](H3V2_FAMILY_LEARNING_CURVES.png) · [포화 탐색](H3V2_GRID_SATURATION.tsv) · [포화 그림](H3V2_GRID_SATURATION.png) · [최종 동결](final_lock.json)",
-    ])
+    ]
+    if replays:
+        tuning.extend([
+            "", "## A40 LightGBM 비교", "",
+            "동일 내부 분할, 설정 및 seed를 사용한 Huber 후보의 CPU, CUDA, OpenCL float64 실측이다. "
+            "검증종합은 약물 내 ρ·상호작용 ρ·NDCG@5의 가중합이고 차이는 GPU에서 CPU를 뺀 값이다. "
+            "본 GBM 후보 선정에는 등록된 CPU 학습 영수증을 사용했다.", "",
+            *md_table(["구현", "라운드", "분할", "내부 폴드", "설정", "CPU 분", "A40 분", "배속", "Δ검증종합",
+                       "Δ약물 내 ρ", "Δ상호작용 ρ", "ΔNDCG@5"], replays),
+        ])
+    put(root/"ROUND1_TO_2_FAMILY_TUNING.md",tuning)
     put(root/"model_card.md",[
        "# H3-v2 연구용 감수성 모델", "",
        f"외부 단일 모델은 {checkpoint['champion']}, 설정 {checkpoint['operating_point']['id']}이다. "
@@ -422,7 +479,8 @@ def assemble(output, score, lock, audit):
     previous.to_csv(output/"H3V2_H2_REPLAY.tsv",sep="\t",index=False)
     held=prior_held_points(metrics)
     held.to_csv(output/"H3V2_H3V1_REPLAY.tsv",sep="\t",index=False)
-    report_docs(output,metrics,ic,curves,progress,score,lock)
+    replays,replay_hashes=device_replays()
+    report_docs(output,metrics,ic,curves,progress,score,lock,replays=replays)
     plotter=Path(__file__).resolve().parents[2]/"experiments/nextgen_h3_v2/plot_curves.py"
     environment=dict(os.environ,MPLCONFIGDIR=str(ROOT/"tmp/matplotlib"))
     run(["/usr/bin/python3",str(plotter),str(output)],check=True,env=environment)
@@ -430,6 +488,7 @@ def assemble(output, score, lock, audit):
         "registered_replay_metrics":len(previous),"family_learning_curve_rows":len(curves),
         "historical_held_metric_replays":len(held),"saturation_grid_rows":len(progress),"first_pass_verification_utc":datetime.now(timezone.utc).isoformat(),
         "inner_fit_inputs": fit_inputs,
+        "gbdt_device_replay_receipts": replay_hashes,
         "deliverables":{p.name:sha256(p) for p in output.iterdir()},
     })
 

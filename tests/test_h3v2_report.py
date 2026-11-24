@@ -56,12 +56,15 @@ def report_rendering():
         statuses = {name:{"verdict":"NO-GO"} for name in (*FAMILIES, "Champion")}
         score = {"overall":"CEILING-CONFIRMED", "verdicts":statuses, "score_passes":1, "tissue_roster":tissues}
         lock = {"external":{"champion":"hybrid", "operating_point":{"id":"simulated"}}}
-        report_docs(root, points, ci, curves, grid, score, lock)
+        replay = ("opencl", "boundary-1", "drug-0", 1, "test-config", "42.4", "20.6", "2.06×",
+                  "-0.00103", "-0.00134", "-0.00142", "+0.00001")
+        report_docs(root, points, ci, curves, grid, score, lock, replays=[replay])
         result = (root / "RESULTS.md").read_text()
         assert "+0.01000" in result.splitlines()[2]
         assert all(f"| {tissue} |" in result for tissue in tissues)
         assert "| Tissue 27 | 미추정 | 미추정 | 미추정 | 0 | 0 |" in result
         tuning = (root / "ROUND1_TO_2_FAMILY_TUNING.md").read_text().splitlines()
+        assert "| " + " | ".join(map(str, replay)) + " |" in tuning
         tree_times = next(line for line in tuning if line.startswith("| gbdt | r1 |"))
         assert [column.strip() for column in tree_times.split("|")[-3:-1]] == ["0.17", "0.33"]
         script = Path(__file__).resolve().parents[1] / "experiments/nextgen_h3_v2/plot_curves.py"
