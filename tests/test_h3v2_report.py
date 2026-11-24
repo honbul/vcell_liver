@@ -65,6 +65,8 @@ def report_rendering():
         assert "| Tissue 27 | 미추정 | 미추정 | 미추정 | 0 | 0 |" in result
         tuning = (root / "ROUND1_TO_2_FAMILY_TUNING.md").read_text().splitlines()
         assert "| " + " | ".join(map(str, replay)) + " |" in tuning
+        assert "| gbdt | l2 | 127 | 4–16 | 3000 | 0.05 | — | 5 | — |" in tuning
+        assert "| attention | attention | 64–256 | 3 | 84 | 0.00065 | 0.25 | 0.01 | 헤드 8 |" in tuning
         tree_times = next(line for line in tuning if line.startswith("| gbdt | r1 |"))
         assert [column.strip() for column in tree_times.split("|")[-3:-1]] == ["0.17", "0.33"]
         script = Path(__file__).resolve().parents[1] / "experiments/nextgen_h3_v2/plot_curves.py"

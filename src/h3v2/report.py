@@ -1,4 +1,5 @@
 """Verify the completed H3-v2 experiment and assemble versionable aggregate artifacts."""
+import argparse
 from collections import Counter, defaultdict
 from datetime import datetime,timezone
 import json
@@ -364,6 +365,59 @@ def tissue_deltas(root, roster):
     return rows
 
 
+def architecture_specs(grid):
+    fitted = defaultdict(list)
+    for config in grid.configuration.map(json.loads):
+        branch = config["objective"] if config["backend"] == "gbdt" else config["arch"]
+        fitted[config["family"], branch].append(config)
+
+    def span(configs, key):
+        low, high = min(c[key] for c in configs), max(c[key] for c in configs)
+        return f"{low:g}" if low == high else f"{low:g}–{high:g}"
+
+    rows = []
+    for family in FAMILIES:
+        for (registered, branch), configs in sorted(fitted.items()):
+            if registered != family:
+                continue
+            tree = configs[0]["backend"] == "gbdt"
+            width = span(configs, "leaves" if tree else "width")
+            limit = span(configs, "trees" if tree else "epochs")
+            structure = "—"
+            if branch == "attention":
+                structure = f"헤드 {span(configs, 'heads')}"
+            elif branch == "gnn":
+                structure = f"메시지 층 {span(configs, 'message_depth')}"
+            rows.append((family, branch, width, span(configs, "depth"), limit, span(configs, "learning_rate"),
+                         "—" if tree else span(configs, "dropout"),
+                         span(configs, "lambda_l2" if tree else "weight_decay"), structure))
+    return [
+        "## 모델 구조와 실측 탐색 범위", "",
+        "- **GBDT** LightGBM 4.6.0의 결정론적 CPU 학습이다. 동일 atlas의 표형 입력으로 약물 평균을 뺀 "
+        "잔차를 L2 또는 Huber로 적합한다. LambdaRank는 약물 평균을 초기 점수로 사용하고 세포×스크린 그룹의 NDCG@5를 최적화한다. "
+        "최대 bin은 63이며 내부 objective가 130회 개선되지 않으면 중단한다.",
+        "- **FiLM-ResNet** 다중뷰 약물 인코더가 각 residual 블록의 γ·β를 생성한다. 세포 벡터에 직접 타깃·경로 매칭 벡터를 더하고, "
+        "LayerNorm과 폭 2배의 GELU 피드포워드를 거친다. LINCS 비관측이면 섭동 임베딩을 마스킹한다.",
+        "- **Cross-Attention** 세포 전역 RNA 토큰, 경로 44개, 경로·TF 모듈 12개를 키·값으로 사용한다. "
+        "질의는 직접 매칭, 화학 지문, 물성, 타깃, LINCS의 다섯 토큰이다. "
+        "약물 토큰 간 어텐션 이후 세포 토큰에 교차 어텐션을 수행하며, 비관측 LINCS는 패딩 마스크로 제외한다. "
+        "교차 어텐션은 등록 설정의 폭과 헤드 수를 사용하며 직접 매칭 토큰에서 점수를 읽는다.",
+        "- **분자 GNN** RDKit 원자·결합을 입력받아 GINE, GATv2 또는 AttentiveFP를 3–5층 적용하고 "
+        "마스크가 있는 어텐션 풀링을 한다. 그래프 표현을 ECFP4 표현에 더해 공통 FiLM-ResNet으로 전달한다. "
+        "CLAMP와 Uni-Mol은 각각 가용성 마스크를 둔 별도 서브암이다.",
+        "- **하이브리드** 훈련 행의 H2 OOF 감수성을 고정한다. 트리는 L2 잔차 뒤에 NDCG@5 LambdaRank를 순차 적용한다. "
+        "신경망은 잔차 FiLM 또는 교차 어텐션으로 SmoothL1, 약물 내 Pearson, 세포 내 ListNet을 공동 최적화한다.", "",
+        "신경망은 세포×약물 블록에서 관측 행을 매 epoch 한 번 방문한다. AdamW, 최대 8 epoch warmup, "
+        "cosine 감쇠와 내부 검증 조기 종료를 사용한다. 2차 탐색에는 기울기 크기로 손실의 균형을 조정한 설정과 "
+        "약물 평균·세포 효과·상호작용의 명시적 분해를 포함한다.", "",
+        "아래 범위는 전체 내부 분할에서 실제로 적합한 등록 설정을 집계한 값이다. 트리 계열의 용량은 잎 수이며 "
+        "신경망의 용량은 은닉 폭이다. 예산은 등록된 최대 트리 수 또는 epoch다. "
+        "이중 목적 트리는 두 분기에 예산을 나눠 사용한다.", "",
+        *md_table(["패밀리", "목적 또는 구조", "잎 수 또는 폭", "깊이", "예산 상한", "학습률", "Dropout",
+                   "L2 또는 weight decay", "어텐션·그래프"], rows),
+    ]
+
+
 def report_docs(root,points,ci,curves,grid,score,lock,*,replays=()):
     axis=points[(points.seed.isin(["fixed","mean"])) & points.screen.eq("macro")]
     statuses=score["verdicts"]
@@ -443,9 +497,8 @@ def report_docs(root,points,ci,curves,grid,score,lock,*,replays=()):
           (x.family,x.round,x.configurations,f"{x.inner_best:.4f}",x.typical_best_budget,
            f"{wall.get((x.family,x.round,'cuda'),0):.2f}", f"{wall.get((x.family,x.round,'cpu'),0):.2f}")
           for x in sweep.itertuples()]),
-        "LightGBM은 L2/Huber/LambdaRank를, FiLM은 반복 조건부 residual 블록을, Transformer는 결측 마스크가 있는 교차 "
-        "어텐션을 사용했다. GNN은 GINE/GATv2/AttentiveFP와 등록된 CLAMP·Uni-Mol 서브암을 포함했다. "
-        "하이브리드는 H2 OOF를 기본값으로 고정하고 두 단계 트리 또는 공동 손실 신경망으로 보정했다.", "",
+        *architecture_specs(grid),
+        "## 학습 및 포화 곡선", "",
         "학습곡선은 같은 iteration의 train 및 validation을 병기한다. 동결 설정은 기록한 전체 곡선을 싣고, "
         "다른 설정은 분기별로 표본을 남긴다. 각 분기의 첫·마지막 관측 및 최적 iteration을 포함한다. "
         "포화 그림은 Drug-Cold fold 0에서 동결 설정의 폭 또는 깊이만 바꾼 내측 비교다. 다른 축과 분할의 측정값은 설정 TSV에 있다.",
@@ -508,16 +561,21 @@ def assemble(output, score, lock, audit):
 
 
 def main():
-    if OUTPUT.exists():
-        raise FileExistsError(OUTPUT)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=OUTPUT)
+    target = parser.parse_args().output.resolve()
+    if not target.is_relative_to(ROOT.resolve()) or target == ROOT.resolve():
+        raise ValueError("The report directory must be inside the registered study root")
+    if target.exists():
+        raise FileExistsError(target)
     score=read_score()
     lock=read_json(ROOT/"locks/frozen.json")
     audit=evidence(lock,score)
-    with TemporaryDirectory(prefix=".reports-", dir=OUTPUT.parent) as stage:
-        output = Path(stage) / OUTPUT.name
+    with TemporaryDirectory(prefix=".reports-", dir=target.parent) as stage:
+        output = Path(stage) / target.name
         output.mkdir()
         assemble(output, score, lock, audit)
-        output.rename(OUTPUT)
+        output.rename(target)
     print("Verified final H3-v2 artifact assembly", flush=True)
 
 
