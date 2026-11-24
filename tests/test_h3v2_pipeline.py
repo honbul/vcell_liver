@@ -26,7 +26,7 @@ def test_only_array_elements_missing_a_registered_arm_are_retried():
                 pipeline.settle_inner(["r1"], root, retried=False)
                 advance.assert_not_called()
                 cpu, gpu, controller = submit.call_args_list
-                assert cpu.kwargs["array"] == "2%3" and not cpu.kwargs["gpu"]
+                assert cpu.kwargs["array"] == "2%5" and not cpu.kwargs["gpu"]
                 assert gpu.kwargs["array"] == "3%6" and gpu.kwargs["gpu"]
                 assert controller.kwargs["deps"] == ("37101", "37102")
                 assert controller.kwargs["dependency"] == "afterany" and "--retried" in controller.args[2]
@@ -46,6 +46,24 @@ def test_only_array_elements_missing_a_registered_arm_are_retried():
                 assert submit.call_count == 3
 
 
+def test_cpu_training_arrays_share_the_c5_budget():
+    indices = range(13)
+    with patch.object(pipeline, "submit", side_effect=["37101", "37102"]) as submit:
+        jobs = pipeline.submit_training_arrays("boundary-gbdt", Path("inner.sbatch"), [], "gbdt", indices)
+    assert jobs == ["37101", "37102"]
+    planned = set()
+    training_cores = 0
+    for call, threads in zip(submit.call_args_list, (8, 6), strict=True):
+        ids, concurrency = call.kwargs["array"].split("%")
+        batch = set(map(int, ids.split(",")))
+        assert not (planned & batch)
+        assert call.kwargs["threads"] == threads and not call.kwargs["gpu"]
+        planned.update(batch)
+        training_cores += threads * int(concurrency)
+    assert planned == set(indices) and training_cores + 2 == 48
+
+
 if __name__ == "__main__":
     test_only_array_elements_missing_a_registered_arm_are_retried()
+    test_cpu_training_arrays_share_the_c5_budget()
     print("Registered 990 arms and verified bounded recovery, dependencies and the training caps", flush=True)
