@@ -82,11 +82,15 @@ def lincs_profiles(parents):
     v1 = read_json(V1_ASSETS / "data_receipt.json")
     library = V2 / "assets-lincs"
     v2 = read_json(library / "receipt.json")
-    return {
-        "modz24": parquet_lock(V1_ASSETS / "lincs_modz24.parquet", v1["files"]["lincs_modz24.parquet"]).reindex(parents),
+    only = [(KEY, "in", list(parents))]
+    profiles = {
+        "modz24": parquet_lock(V1_ASSETS / "lincs_modz24.parquet",
+                               v1["files"]["lincs_modz24.parquet"], filters=only),
         "landmark_mean": parquet_lock(library / "landmark_mean.parquet",
-                                      v2["artifacts"]["landmark_mean.parquet"]).reindex(parents),
+                                      v2["artifacts"]["landmark_mean.parquet"], filters=only),
     }
+    assert all(set(frame.index) <= set(parents) for frame in profiles.values())
+    return {name: frame.reindex(parents) for name, frame in profiles.items()}
 
 
 def observed(profiles, recipe="landmark_mean"):
@@ -99,7 +103,9 @@ def source_context(reg, cells, parents):
     if sha256(target_file) != target_proof["targets_sha256"]:
         raise ValueError("Changed target registry")
     source = read_json(COLD / "receipt.json")
-    rna = parquet_lock(COLD / "rna.parquet", source["files"]["rna.parquet"]).reindex(cells)
+    rna = parquet_lock(COLD / "rna.parquet", source["files"]["rna.parquet"],
+                       filters=[("cell_id", "in", list(cells))])
+    assert set(rna.index) == set(cells)
     edges, _, _ = molecular_inputs(PRIOR, HALLMARK, TARGET)
     aux, _ = load_auxiliary(AUXILIARY)
     return Inputs(V1_ASSETS, molecular_features(reg.loc[list(parents)]), lincs_profiles(parents), None,

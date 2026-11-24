@@ -179,6 +179,7 @@ def register(out):
         "plan_sha256": sha256(PLAN), "source_file_sha256": train_hash(),
         "support_sha256": sha256(out / "e4_step0_support.tsv"), "registered_at_utc": utc_now(),
         "response_columns_read": [], "external_cohort_access": 0,
+        "lincs_projection": "Parquet predicate on registered source exact parents",
     })
     publish_json(out / "e4_split_manifest.json", manifest)
     print(manifest["source_support"], manifest["below_minimum_lincs"], flush=True)
