@@ -1,0 +1,19 @@
+job_id	job_name	partition	excluded_nodes	gpu_requested	cpus_per_task	array_tasks	max_concurrent	status	code_commit	evidence
+37337	fu-e5-preflight	cpu	c4,g1,g2,g3,g4	0	2	1	1	COMPLETED	8d530fd	preflight/split.json; verified 45 roles
+37338	fu-e5-grid-pilot	cpu	c4,g1,g2,g3,g4	0	4	2	2	PARTIALLY_COMPLETED	d86ce44	small shard 155 completed; large shard 0 stopped for solver refinement
+37340	fu-e5-full-grid	cpu	c4,g1,g2,g3,g4	0	4	156	8	STOPPED	52ed017	initial run stopped before complete shard export; faster exact solver selected
+37341	fu-e5-minimax	cpu	c4,g1,g2,g3,g4	0	2	1	1	CANCELLED	52ed017	old array dependency; selection never ran
+37342	fu-e5-anchor-grid	cpu	c4,g1,g2,g3,g4	0	4	39	8	CANCELLED	52ed017	old array dependency; selection never ran
+37343	fu-e5-selection-seal	cpu	c4,g1,g2,g3,g4	0	4	1	1	CANCELLED	52ed017	old array dependency; selection never ran
+37357	fu-e5-operator-benchmark	cpu	c4,g1,g2,g3,g4	0	4	1	1	COMPLETED	8f3d225	compressed exact shift solver: A 67.778 s; B 189.108 s
+37358	fu-e5-refinement-benchmark	cpu	c4,g1,g2,g3,g4	0	4	1	1	CANCELLED	c76c53d	global spectral path had large residual; job never ran
+37359	fu-e5-block-benchmark	cpu	c4,g1,g2,g3,g4	0	4	1	1	CANCELLED	4e95346	pre-emptively replaced with per-drug weighting
+37360	fu-e5-block-benchmark	cpu	c4,g1,g2,g3,g4	0	4	1	1	COMPLETED	b714f8c	screen-local preconditioned exact solve: A 100.312 s; B 112.483 s
+37364	fu-e5-synthetic-smoke	cpu	c4,g1,g2,g3,g4	0	2	1	1	COMPLETED	d394f2e	synthetic Kronecker reference and scoring logic passed; no held labels
+37509	fu-e5-kernel-grid	cpu	c4,g1,g2,g3,g4	0	4	156	8	IN_PROGRESS	61cb85e	grid-final; 39 source-only roles and their four geometry quadrants
+37510	fu-e5-minimax	cpu	c4,g1,g2,g3,g4	0	2	1	1	WAITING	61cb85e	afterok:37509; kernels/kernels.json
+37511	fu-e5-anchor-grid	cpu	c4,g1,g2,g3,g4	0	4	39	8	WAITING	61cb85e	afterok:37510; anchor-roles
+37512	fu-e5-selection-seal	cpu	c4,g1,g2,g3,g4	0	4	1	1	WAITING	61cb85e	afterok:37511; selection/e5_selection_receipt.json
+37513	fu-e5-forecast	cpu	c4,g1,g2,g3,g4	0	4	7	7	WAITING	61cb85e	afterok:37512; outcome-blind forecasts
+37514	fu-e5-invariants	cpu	c4,g1,g2,g3,g4	0	4	1	1	WAITING	61cb85e	afterok:37513; tests/test_receipt.json
+37515	fu-e5-score-once	cpu	c4,g1,g2,g3,g4	0	4	1	1	WAITING	61cb85e	afterok:37514; no requeue; exclusive official-outcome-access.json
