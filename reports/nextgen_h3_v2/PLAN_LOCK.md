@@ -88,6 +88,8 @@ C4의 두 CPU 파티션에 이전 배열과 대체 배열이 겹쳐 23:01 KST부
 
 07:49 KST에는 G4 `38461_16`이 `GDSC2-1/inner-0`에 Huber 후보 `45dad9d5e94b`를 반영하고 정상 종료했다. 학습은 59.7분 걸렸으며 검증 행 129,908개와 유한한 train·validation 값 122쌍을 확인했다. 영수증 SHA-256은 `4d981d5153ceaffc0b6394cbdbac2e28fe2d3d2eb940ab62d26d2a1a4cbe67b7`이다. 반환된 CPU 8개에는 G3 `37960_46`의 `CTRPv2-1/inner-2` 미시작 후보 `45dad9d5e94b`를 배정했다. G4 `38545_26`의 CPU 전용 실행과 선택 작업 `38500`의 선행 조건을 확인했다. 배정은 G1의 `locks/boundary-1-slurm-huber-tails-v22.json`과 `locks/boundary-1-slurm-huber-tails-jobs-v22.json`에 기록했다.
 
+07:55 KST에는 `CTRPv2-1/inner-2`의 Huber 후보 `55272af9a1b2`가 G3 `37960_46`에서 317분 넘게 걸려 G4 CPU 8코어에서 같은 등록 설정을 별도로 실행했다. 같은 설정의 다른 두 내부 폴드는 32.3분과 52.4분이 걸렸다. G3 프로세스는 8초 동안 CPU 시간 49초를 사용하며 계산을 계속했다. G4의 `38448_12`가 정상 종료하며 반환한 코어에 재실행 `38551`을 배정했다. G4의 배정은 H3 CPU 176개다. 재실행은 등록된 fold, 설정, atlas 및 seed를 사용하고 외부 평가 레이블을 읽지 않는다. 07:56 KST까지 격리 결과 경로에서 학습이 시작됐고 기존 결과 경로에는 새 결과를 반영하지 않았다. 계획과 Slurm 배정은 G1의 `locks/boundary-1-ctrp-55272-replay.json` 및 `locks/boundary-1-ctrp-55272-replay-route.json`에 남겼다.
+
 ## 분할과 입력
 
 - Drug-Cold는 H2-v1 1,001골격 연결 성분의 outer 3개 및 각 inner 3개를 그대로 사용한다. Cell-Cold는 확장 패널 3개 전역 계통 차단 분할, 교차스크린은 H3-v1의 9개 고정 평가 지지다. 교차스크린 훈련에는 해당 훈련 계통과 허용 소스의 확장 패널을 사용한다.
