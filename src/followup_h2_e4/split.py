@@ -155,7 +155,7 @@ def register(out):
     reg, source = registry(), source_metadata()
     assert source.row_id.is_unique and source.source_id.value_counts().to_dict() == SCREENS
     assert set(source[KEY]) == set(reg.index)
-    pd.testing.assert_series_equal(linked_groups(reg).sort_index(), reg.scaffold_block.sort_index())
+    pd.testing.assert_series_equal(linked_groups(reg).rename_axis(KEY).sort_index(), reg.scaffold_block.sort_index())
     profiles = lincs_profiles(reg.index)
     assert profiles["landmark_mean"].shape[1] == 978
     support = observed(profiles)
