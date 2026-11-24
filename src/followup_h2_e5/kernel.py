@@ -210,7 +210,7 @@ def solve_shifts(system, penalties, *, tol=5e-5, max_steps=1400):
                 # The tridiagonal residual has reached its rounding floor.
                 elif next_beta*abs(ratio) <= (.1*tol)*norm:
                     alt, n, err = pcg(system.higher_precision(), p, tol*.8, initial=state.prediction.double())
-                    output[p] = (alt.to(y.dtype), n, err, "double_pcg")
+                    output[p] = (alt, n, err, "double_pcg")
                     del live[p]
         else:
             if not live:
@@ -223,7 +223,7 @@ def solve_shifts(system, penalties, *, tol=5e-5, max_steps=1400):
         high = system.higher_precision()
         for p in live:
             alt, steps, residual = pcg(high, p, tol*.8, initial=live[p].prediction.double())
-            output[p] = (alt.to(y.dtype), steps, residual, "double_pcg")
+            output[p] = (alt, steps, residual, "double_pcg")
     return output
 
 
@@ -232,6 +232,7 @@ class ScreenKernel(Kernel):
         super().__init__(data, fit, query[META], registry, role)
         self._transformed = {}
         self._task_grids = None
+        self._warm_task = {}
 
     def screen_grids(self):
         if self._task_grids is None:
@@ -272,17 +273,18 @@ class ScreenKernel(Kernel):
         return result
 
     def project(self, coefficient, cross, supported, tau, family, mode, scale):
-        drug = cross.T.contiguous()
+        cell = self.cross.to(coefficient.dtype)
+        drug = cross.T.to(coefficient.dtype).contiguous()
         if family != TASK:
-            values = ((self.cross @ coefficient) @ drug).numpy()[self.selector] * scale
+            values = ((cell @ coefficient) @ drug).numpy()[self.selector] * scale
         else:
-            shared = ((self.cross @ coefficient.sum(0)) @ drug).numpy()[self.selector]
+            shared = ((cell @ coefficient.sum(0)) @ drug).numpy()[self.selector]
             values = shared.copy()
             if tau and mode == "in_screen":
                 for i, screen in enumerate(self.screen_grids()[0]):
                     take = self.query.source_id.eq(screen).to_numpy()
                     if take.any():
-                        specific = ((self.cross @ coefficient[i]) @ drug).numpy()
+                        specific = ((cell @ coefficient[i]) @ drug).numpy()
                         values[take] += tau * specific[tuple(j[take] for j in self.selector)]
         base = self.baseline_residual[self.selector]
         return np.where(supported[self.selector[1]], values.astype(float), base)
@@ -308,8 +310,14 @@ class ScreenKernel(Kernel):
                 personal[p] = (pred, iterations, error, solver)
         else:
             system = System(self.cell, g, mass, target, tau=tau, stacked=family == TASK)
+            if family == TASK and tau:
+                from .spectral import solve_block
+                values = solve_block(system, penalties, warm=self._warm_task)
+                self._warm_task = {p:x[0] for p,x in values.items()} if len(penalties)>1 else {}
+            else:
+                values = solve_shifts(system, penalties)
             personal = {
                 p: (self.projections(coef, cross, supported, tau, family, mode, scale), iterations, error, solver)
-                for p, (coef, iterations, error, solver) in solve_shifts(system, penalties).items()
+                for p, (coef, iterations, error, solver) in values.items()
             }
         return personal, full, supported, proof
