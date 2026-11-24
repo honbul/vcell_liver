@@ -21,6 +21,8 @@ GDSC1의 66 신규 골격은 이전 H2에 등록됐고 소스 세포와 일부 �
 
 첫 R1 연동에서 정정 RNA의 H2 span을 재구성한 Gram 최대 차이는 4.81e−8이었다. Drug-Cold 0의 첫 inner fold에서 LINCS 478,242개 관측 좌표 중 94개는 표준화 절댓값이 8을 넘었다. 따라서 두 LINCS 원자료 뷰의 정규화 좌표는 모두 절단 없이 제공하며, 최초 제한형 실행은 후보 선정에서 제외했다. H2 고정 입력을 재현하려는 목적의 수정으로, 정정 반응 파일과 분할, PCA 및 구조 자산은 그대로 사용했다. [입력 loader](../../src/h3v2/atlas.py)
 
+각 내측 학습은 공통 atlas를 읽을 때 원자료의 LINCS landmark와 경로 뷰를 같은 적합 약물 기준으로 복원한다. 최종 검증은 `step0_verification.json`의 atlas SHA에 두 LINCS 원자료의 SHA를 결합한 입력 SHA와 실제 모든 내측 학습의 영수증을 대조한다. `verification.json`에 45개 내측 분할별 입력 SHA, 적합 행 수, 검증한 후보 수를 기록한다.
+
 세 외부 입력의 동일 행 검증은 실측 개봉 전에 진행했다. GDSC1의 exact parent·connectivity·모든 골격 표현 교집합은 각각 0이다. 등록된 LICOB의 43 PDO와 성인 38공여자를 구분했다. LIMORE·GDSC1 발현은 17,871개, LICOB 발현은 14,421개 유전자의 측정 지지를 가진다. 이후 모델의 플랫폼 결측 유전자 보완은 해당 소스 적합의 유전자별 중앙 순위만 사용한다. [외부 입력 영수증](external_roster_verification.json) · [분할 명세](split_manifest.json) · [실제 feature/OOF 검사](step0_verification.json)
 
 C1 및 H2의 16개 비교 로스터와 교차스크린 9개의 H3-v1 고정 예측을 정확 행 키로 대조했다. Drug-Cold 670,830행, Cell-Cold 670,830행, 68약물 교차스크린 45,428행을 재확인했다. 실측 개봉 없이 수행한 검사다. [비교군 로스터 영수증](reference_roster_verification.json)

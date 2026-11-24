@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import shutil
 from subprocess import run
+from tempfile import TemporaryDirectory
 
 import numpy as np
 import pandas as pd
@@ -12,6 +13,7 @@ import pandas as pd
 from nextgen_h2.run import read_json
 from vc_build.io import publish_json,sha256
 
+from .atlas import model_input_digest
 from .data import ROOT,SPLITS,STUDY,V1
 from .grid import FAMILIES,SEEDS
 from .quality import AXES
@@ -141,8 +143,21 @@ def inner_results(lock):
     completed=read_json(paths[-1])
     if completed["next"] is not None or sha256(paths[-1])!=lock["selection_ledger_sha256"]:
         raise ValueError("The frozen set lacks a closed frontier ledger")
+    step0 = read_json(ROOT / "step0_verification.json")["folds"]
     grid,curves=[],[]
+    input_evidence = {}
     for split,study in completed["points"].items():
+        for registered in step0[split]["feature_receipts"]:
+            role = registered["role"]
+            if role == "outer":
+                continue
+            stamp = read_json(ROOT / "features" / split / role / "receipt.json")
+            if (stamp | {"role": role}) != registered:
+                raise ValueError(f"The atlas differs from the feature audit for {split}/{role}")
+            input_evidence[f"{split}/{role}"] = {
+                "atlas_sha256": stamp["atlas_sha256"], "fit_rows": stamp["fit_rows"],
+                "model_input_sha256": model_input_digest(stamp["atlas_sha256"]), "verified_trials": 0,
+            }
         for family,options in study.items():
             picked=lock["splits"][split]["families"][family]["id"]
             for row in options:
@@ -158,6 +173,12 @@ def inner_results(lock):
                     path=root/"curves.parquet"
                     if sha256(root/"receipt.json")!=row["receipt_sha256"][i] or sha256(path)!=meta["curve_sha256"]:
                         raise ValueError("Inner curve evidence changed")
+                    inputs = input_evidence[f"{split}/inner-{i}"]
+                    if (meta["atlas_sha256"], meta["model_input_sha256"], meta["training"]["train_rows"]) != (
+                        inputs["atlas_sha256"], inputs["model_input_sha256"], inputs["fit_rows"]
+                    ) or not meta["lincs_full_unclipped"] or meta["query_has_outer_labels"]:
+                        raise ValueError(f"Verified inputs differ from the measured trial for {root}")
+                    inputs["verified_trials"] += 1
                     trial=pd.read_parquet(path)
                     chosen=row["id"]==picked
                     if not chosen and len(trial)>12:
@@ -167,7 +188,7 @@ def inner_results(lock):
                     curves.append(trial.assign(**key,inner=i,frozen=chosen,backend=config["backend"],device=device,
                                                fit_wall_seconds=meta["training"]["wall_seconds"],
                                                best_iteration=meta["training"]["best_iteration"]))
-    return pd.DataFrame(grid),pd.concat(curves,ignore_index=True),completed
+    return pd.DataFrame(grid),pd.concat(curves,ignore_index=True),input_evidence
 
 
 def jobs():
@@ -335,36 +356,46 @@ def report_docs(root,points,ci,curves,grid,score,lock):
     ])
 
 
+def assemble(output, score, lock, audit):
+    for name in [*score["tables"],"score_receipt.json"]:
+        shutil.copy2(SCORED/name,output/name)
+    shutil.copy2(ROOT/"locks/frozen.json",output/"final_lock.json")
+    shutil.copy2(ROOT/"step0_verification.json", output/"step0_verification.json")
+    shutil.copy2(ROOT/"splits/manifest.json", output/"split_manifest.json")
+    shutil.copy2(ROOT/"external_roster_verification.json", output/"external_roster_verification.json")
+    metrics=pd.read_csv(output/"H3V2_METRICS.tsv",sep="\t")
+    ic=pd.read_csv(output/"H3V2_PAIRED_95CI.tsv",sep="\t")
+    progress,curves,fit_inputs=inner_results(lock)
+    progress.to_csv(output/"H3V2_GRID_SATURATION.tsv",sep="\t",index=False)
+    curves.to_csv(output/"H3V2_FAMILY_LEARNING_CURVES.tsv",sep="\t",index=False)
+    jobs().to_csv(output/"SLURM_JOBS.tsv",sep="\t",index=False)
+    previous=previous_metrics(metrics)
+    previous.to_csv(output/"H3V2_H2_REPLAY.tsv",sep="\t",index=False)
+    held=prior_held_points(metrics)
+    held.to_csv(output/"H3V2_H3V1_REPLAY.tsv",sep="\t",index=False)
+    report_docs(output,metrics,ic,curves,progress,score,lock)
+    plotter=Path(__file__).resolve().parents[2]/"experiments/nextgen_h3_v2/plot_curves.py"
+    environment=dict(os.environ,MPLCONFIGDIR=str(ROOT/"tmp/matplotlib"))
+    run(["/usr/bin/python3",str(plotter),str(output)],check=True,env=environment)
+    publish_json(output/"verification.json",audit|{
+        "registered_replay_metrics":len(previous),"family_learning_curve_rows":len(curves),
+        "historical_held_metric_replays":len(held),"saturation_grid_rows":len(progress),"first_pass_verification_utc":datetime.now(timezone.utc).isoformat(),
+        "inner_fit_inputs": fit_inputs,
+        "deliverables":{p.name:sha256(p) for p in output.iterdir()},
+    })
+
+
 def main():
+    if OUTPUT.exists():
+        raise FileExistsError(OUTPUT)
     score=read_score()
     lock=read_json(ROOT/"locks/frozen.json")
     audit=evidence(lock,score)
-    OUTPUT.mkdir(parents=True,exist_ok=False)
-    for name in [*score["tables"],"score_receipt.json"]:
-        shutil.copy2(SCORED/name,OUTPUT/name)
-    shutil.copy2(ROOT/"locks/frozen.json",OUTPUT/"final_lock.json")
-    shutil.copy2(ROOT/"step0_verification.json", OUTPUT/"step0_verification.json")
-    shutil.copy2(ROOT/"splits/manifest.json", OUTPUT/"split_manifest.json")
-    shutil.copy2(ROOT/"external_roster_verification.json", OUTPUT/"external_roster_verification.json")
-    metrics=pd.read_csv(OUTPUT/"H3V2_METRICS.tsv",sep="\t")
-    ic=pd.read_csv(OUTPUT/"H3V2_PAIRED_95CI.tsv",sep="\t")
-    progress,curves,completion=inner_results(lock)
-    progress.to_csv(OUTPUT/"H3V2_GRID_SATURATION.tsv",sep="\t",index=False)
-    curves.to_csv(OUTPUT/"H3V2_FAMILY_LEARNING_CURVES.tsv",sep="\t",index=False)
-    jobs().to_csv(OUTPUT/"SLURM_JOBS.tsv",sep="\t",index=False)
-    previous=previous_metrics(metrics)
-    previous.to_csv(OUTPUT/"H3V2_H2_REPLAY.tsv",sep="\t",index=False)
-    held=prior_held_points(metrics)
-    held.to_csv(OUTPUT/"H3V2_H3V1_REPLAY.tsv",sep="\t",index=False)
-    report_docs(OUTPUT,metrics,ic,curves,progress,score,lock)
-    plotter=Path(__file__).resolve().parents[2]/"experiments/nextgen_h3_v2/plot_curves.py"
-    environment=dict(os.environ,MPLCONFIGDIR=str(ROOT/"tmp/matplotlib"))
-    run(["/usr/bin/python3",str(plotter),str(OUTPUT)],check=True,env=environment)
-    publish_json(OUTPUT/"verification.json",audit|{
-        "registered_replay_metrics":len(previous),"family_learning_curve_rows":len(curves),
-        "historical_held_metric_replays":len(held),"saturation_grid_rows":len(progress),"first_pass_verification_utc":datetime.now(timezone.utc).isoformat(),
-        "deliverables":{p.name:sha256(p) for p in OUTPUT.iterdir()},
-    })
+    with TemporaryDirectory(prefix=".reports-", dir=OUTPUT.parent) as stage:
+        output = Path(stage) / OUTPUT.name
+        output.mkdir()
+        assemble(output, score, lock, audit)
+        output.rename(OUTPUT)
     print("Verified final H3-v2 artifact assembly", flush=True)
 
 

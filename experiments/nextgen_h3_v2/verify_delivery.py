@@ -1,6 +1,6 @@
 """Verify the pushed report package after the one conditional score has finished."""
 import argparse
-from collections import defaultdict
+from collections import Counter, defaultdict
 import csv
 from hashlib import sha256
 import json
@@ -72,6 +72,7 @@ def verify(root):
     receipt=json.loads((root/"score_receipt.json").read_text())
     lock=json.loads((root/"final_lock.json").read_text())
     manifest=json.loads((root/"split_manifest.json").read_text())
+    step0=json.loads((root/"step0_verification.json").read_text())
     if verify["outcomes_opened_by_independent_verification"] or verify["score_passes"]!=1 or receipt["score_passes"]!=1:
         raise ValueError("The audit cannot prove one-time score use")
     if verify["score_sha256"]!=digest(root/"score_receipt.json") or verify["frozen_sha256"]!=digest(root/"final_lock.json"):
@@ -128,7 +129,22 @@ def verify(root):
             counts[split, family, round_name] += 1
     if any(counts[part, family, stage] < 2 for part in PARTITIONS for family in FAMILIES for stage in ("r1", "r2")):
         raise ValueError("A split or family is missing two measured configurations in a round")
-    verify_frontier(rows(root / GRID_TABLE), lock["splits"], replicated)
+    grid = rows(root / GRID_TABLE)
+    verify_frontier(grid, lock["splits"], replicated)
+    trial_counts = Counter(row["split"] for row in grid)
+    expected_inputs = {f"{split}/{entry['role']}": (split, entry)
+                       for split, record in step0["folds"].items() for entry in record["feature_receipts"]
+                       if entry["role"] != "outer"}
+    input_evidence = verify["inner_fit_inputs"]
+    if (set(expected_inputs) != {f"{split}/inner-{i}" for split in PARTITIONS for i in range(3)}
+            or set(input_evidence) != set(expected_inputs)):
+        raise ValueError("The completed feature audit does not cover every inner fold")
+    for name, (split, entry) in expected_inputs.items():
+        measured = input_evidence[name]
+        if (measured["atlas_sha256"], measured["fit_rows"], measured["verified_trials"]) != (
+            entry["atlas_sha256"], entry["fit_rows"], trial_counts[split]
+        ):
+            raise ValueError(f"Completed trial inputs disagree with the feature audit for {name}")
     checks=[r for r in rows(root/"H3V2_PAIRED_95CI.tsv") if r["baseline"]=="H2" and r["support"]=="all"]
     if set(receipt["verdicts"]) != FAMILIES | {"Champion"}:
         raise ValueError("Missing one or more preregistered promotion decisions")
