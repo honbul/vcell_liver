@@ -1,0 +1,739 @@
+{
+  "anchor_strategies_per_method": 16,
+  "external_cohort_access": 0,
+  "external_score_access": 0,
+  "grid_sha256": "e34fc57fcc13fedb76bd1eb509b90ccdf656980a8df79398e182870434c63549",
+  "kernel_candidates_per_method": 160,
+  "locked_at_utc": "2026-11-24T04:47:08.805612+00:00",
+  "plan_sha256": "378897ff40a86d2a9029da1d3bd134857f1b2df6150fc1ca11cce7eee9940d7f",
+  "policy": {
+    "T1/0/Sel-LOSO": {
+      "best_chemistry": "chem_target_neighbors/20",
+      "best_lincs": "lincs_neighbors/10",
+      "expanded_kernel": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "chem",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 2.0
+        },
+        "normalization": "sum",
+        "penalty": 32.0,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "intercept": {
+        "alpha": 0.5,
+        "chem": [
+          "chem_target_neighbors",
+          20.0
+        ],
+        "family": "convex_blend",
+        "gamma": 1.0,
+        "lincs": [
+          "lincs_neighbors",
+          10.0
+        ]
+      },
+      "intercept_candidate": "convex_blend/0.5",
+      "intercept_ndcg_at_5": 0.5936251724817324,
+      "one_se": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "one_se_value": 0.08926288789793,
+      "raw_max": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "raw_max_screen_se": 0.012801379667753401,
+      "raw_max_value": 0.08926288789793,
+      "selected": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "selected_value": 0.08926288789793,
+      "shrinkage_gamma_scores": {
+        "shrinkage/gamma=0.5": 0.5797483085832456,
+        "shrinkage/gamma=0.75": 0.5894941475799006,
+        "shrinkage/gamma=1": 0.5936251724817324
+      }
+    },
+    "T1/0/Sel-Pooled": {
+      "best_chemistry": "chem_target_neighbors/20",
+      "best_lincs": "lincs_krr/1",
+      "expanded_kernel": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "chem",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 2.0
+        },
+        "normalization": "sum",
+        "penalty": 1.0,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "intercept": {
+        "alpha": 0.25,
+        "chem": [
+          "chem_target_neighbors",
+          20.0
+        ],
+        "family": "convex_blend",
+        "gamma": 1.0,
+        "lincs": [
+          "lincs_krr",
+          1.0
+        ]
+      },
+      "intercept_candidate": "convex_blend/0.25",
+      "intercept_ndcg_at_5": 0.6643632504753567,
+      "one_se": {
+        "base": "v2_base",
+        "penalty": 16.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "one_se_value": 0.2751082649831954,
+      "raw_max": {
+        "base": "v2_base",
+        "penalty": 0.5,
+        "shape": "rbf_wide",
+        "weight": 1.0
+      },
+      "raw_max_screen_se": 0.03405579940576322,
+      "raw_max_value": 0.30634831355077863,
+      "selected": {
+        "base": "v2_base",
+        "penalty": 1.0,
+        "shape": "rbf_wide",
+        "weight": 2.0
+      },
+      "selected_value": 0.30561673397534384,
+      "shrinkage_gamma_scores": {
+        "shrinkage/gamma=0.5": 0.6538988654186555,
+        "shrinkage/gamma=0.75": 0.6621820679487248,
+        "shrinkage/gamma=1": 0.66357780593763
+      }
+    },
+    "T1/1/Sel-LOSO": {
+      "best_chemistry": "chem_target_neighbors/10",
+      "best_lincs": "lincs_neighbors/10",
+      "expanded_kernel": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "chem",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 2.0
+        },
+        "normalization": "sum",
+        "penalty": 32.0,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "intercept": {
+        "family": "lincs_neighbors",
+        "parameter": 10.0
+      },
+      "intercept_candidate": "lincs_neighbors/10",
+      "intercept_ndcg_at_5": 0.587956198526161,
+      "one_se": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "one_se_value": 0.03966688598320995,
+      "raw_max": {
+        "base": "v2_base",
+        "penalty": 1.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "raw_max_screen_se": 0.014064134588643048,
+      "raw_max_value": 0.04033480621705325,
+      "selected": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "selected_value": 0.03966688598320995,
+      "shrinkage_gamma_scores": {
+        "shrinkage/gamma=0.5": 0.5797852103383121,
+        "shrinkage/gamma=0.75": 0.5686417324978756,
+        "shrinkage/gamma=1": 0.5628185626694371
+      }
+    },
+    "T1/1/Sel-Pooled": {
+      "best_chemistry": "chem_target_neighbors/5",
+      "best_lincs": "lincs_neighbors/10",
+      "expanded_kernel": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "chem",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 2.0,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "intercept": {
+        "family": "lincs_neighbors",
+        "parameter": 10.0
+      },
+      "intercept_candidate": "lincs_neighbors/10",
+      "intercept_ndcg_at_5": 0.7001147387519171,
+      "one_se": {
+        "base": "v2_base",
+        "penalty": 8.0,
+        "shape": "rbf_wide",
+        "weight": 2.0
+      },
+      "one_se_value": 0.3294274557419734,
+      "raw_max": {
+        "base": "v2_base",
+        "penalty": 1.0,
+        "shape": "rbf_wide",
+        "weight": 1.0
+      },
+      "raw_max_screen_se": 0.009074867435330564,
+      "raw_max_value": 0.33533629263034814,
+      "selected": {
+        "base": "v2_base",
+        "penalty": 2.0,
+        "shape": "rbf_wide",
+        "weight": 1.0
+      },
+      "selected_value": 0.33455230258221064,
+      "shrinkage_gamma_scores": {
+        "shrinkage/gamma=0.5": 0.6937135180731633,
+        "shrinkage/gamma=0.75": 0.6915037763875029,
+        "shrinkage/gamma=1": 0.6883747960140594
+      }
+    },
+    "T1/2/Sel-LOSO": {
+      "best_chemistry": "chem_target_krr/20",
+      "best_lincs": "lincs_neighbors/10",
+      "expanded_kernel": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.35,
+        "intercept": "chem",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 2.0
+        },
+        "normalization": "sum",
+        "penalty": 8.0,
+        "properties": 0.1,
+        "tanimoto": 0.35,
+        "target": 0.2
+      },
+      "intercept": {
+        "family": "lincs_neighbors",
+        "parameter": 10.0
+      },
+      "intercept_candidate": "lincs_neighbors/10",
+      "intercept_ndcg_at_5": 0.45241666101523714,
+      "one_se": {
+        "base": "v1_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "one_se_value": 0.17020382184297178,
+      "raw_max": {
+        "base": "v1_base",
+        "penalty": 4.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "raw_max_screen_se": 0.01842080389786921,
+      "raw_max_value": 0.1739889506653064,
+      "selected": {
+        "base": "v1_base",
+        "penalty": 8.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "selected_value": 0.17392094253603435,
+      "shrinkage_gamma_scores": {
+        "shrinkage/gamma=0.5": 0.4072646254419151,
+        "shrinkage/gamma=0.75": 0.4212367616005318,
+        "shrinkage/gamma=1": 0.43260118191764874
+      }
+    },
+    "T1/2/Sel-Pooled": {
+      "best_chemistry": "chem_target_krr/1",
+      "best_lincs": "lincs_neighbors/10",
+      "expanded_kernel": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "chem",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 0.25,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "intercept": {
+        "family": "lincs_neighbors",
+        "parameter": 10.0
+      },
+      "intercept_candidate": "lincs_neighbors/10",
+      "intercept_ndcg_at_5": 0.5723282311472343,
+      "one_se": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "rbf_wide",
+        "weight": 2.0
+      },
+      "one_se_value": 0.3121439027490931,
+      "raw_max": {
+        "base": "v2_base",
+        "penalty": 0.25,
+        "shape": "rbf_wide",
+        "weight": 1.0
+      },
+      "raw_max_screen_se": 0.082884236879776,
+      "raw_max_value": 0.36665007246831016,
+      "selected": {
+        "base": "v2_base",
+        "penalty": 0.25,
+        "shape": "rbf_wide",
+        "weight": 1.0
+      },
+      "selected_value": 0.36665007246831016,
+      "shrinkage_gamma_scores": {
+        "shrinkage/gamma=0.5": 0.535390318434187,
+        "shrinkage/gamma=0.75": 0.5481994256902019,
+        "shrinkage/gamma=1": 0.5539578093118611
+      }
+    },
+    "T2/0/Sel-LOSO": {
+      "best_chemistry": "chem_target_neighbors/5",
+      "best_lincs": "lincs_neighbors/5",
+      "expanded_kernel": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "chem",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 2.0
+        },
+        "normalization": "sum",
+        "penalty": 32.0,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "intercept": {
+        "family": "lincs_neighbors",
+        "parameter": 5.0
+      },
+      "intercept_candidate": "lincs_neighbors/5",
+      "intercept_ndcg_at_5": 0.5554123671484503,
+      "one_se": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "one_se_value": 0.14630294878190522,
+      "raw_max": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "raw_max_screen_se": 0.03736589473861414,
+      "raw_max_value": 0.14630294878190522,
+      "selected": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "selected_value": 0.14630294878190522,
+      "shrinkage_gamma_scores": {
+        "shrinkage/gamma=0.5": 0.5304393416280814,
+        "shrinkage/gamma=0.75": 0.5293077699568951,
+        "shrinkage/gamma=1": 0.5259901284754366
+      }
+    },
+    "T2/1/Sel-LOSO": {
+      "best_chemistry": "chem_target_neighbors/5",
+      "best_lincs": "lincs_neighbors/5",
+      "expanded_kernel": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "chem",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 2.0
+        },
+        "normalization": "sum",
+        "penalty": 32.0,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.4
+      },
+      "intercept": {
+        "alpha": 0.5,
+        "chem": [
+          "chem_target_neighbors",
+          5.0
+        ],
+        "family": "convex_blend",
+        "gamma": 1.0,
+        "lincs": [
+          "lincs_neighbors",
+          5.0
+        ]
+      },
+      "intercept_candidate": "convex_blend/0.5",
+      "intercept_ndcg_at_5": 0.6130667540599412,
+      "one_se": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "one_se_value": 0.13631902073723048,
+      "raw_max": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "raw_max_screen_se": 0.03846153166018461,
+      "raw_max_value": 0.13631902073723048,
+      "selected": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "selected_value": 0.13631902073723048,
+      "shrinkage_gamma_scores": {
+        "shrinkage/gamma=0.5": 0.6104376218419326,
+        "shrinkage/gamma=0.75": 0.6121645863894879,
+        "shrinkage/gamma=1": 0.6130667540599412
+      }
+    },
+    "T2/2/Sel-LOSO": {
+      "best_chemistry": "chem_target_neighbors/5",
+      "best_lincs": "lincs_neighbors/10",
+      "expanded_kernel": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "chem",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 2.0
+        },
+        "normalization": "sum",
+        "penalty": 32.0,
+        "properties": 0.025,
+        "tanimoto": 0.0875,
+        "target": 0.8
+      },
+      "intercept": {
+        "alpha": 0.25,
+        "chem": [
+          "chem_target_neighbors",
+          5.0
+        ],
+        "family": "convex_blend",
+        "gamma": 1.0,
+        "lincs": [
+          "lincs_neighbors",
+          10.0
+        ]
+      },
+      "intercept_candidate": "convex_blend/0.25",
+      "intercept_ndcg_at_5": 0.5498650691950068,
+      "one_se": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "one_se_value": 0.1652799389966421,
+      "raw_max": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "raw_max_screen_se": 0.04731554147514789,
+      "raw_max_value": 0.1652799389966421,
+      "selected": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "selected_value": 0.1652799389966421,
+      "shrinkage_gamma_scores": {
+        "shrinkage/gamma=0.5": 0.5456776806137102,
+        "shrinkage/gamma=0.75": 0.5462761812586633,
+        "shrinkage/gamma=1": 0.5440777490603289
+      }
+    },
+    "T3/3/Sel-LOSO": {
+      "best_chemistry": "chem_target_neighbors/20",
+      "best_lincs": "lincs_neighbors/5",
+      "expanded_kernel": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "chem",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "cos",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 2.0
+        },
+        "normalization": "sum",
+        "penalty": 32.0,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "intercept": {
+        "alpha": 0.5,
+        "chem": [
+          "chem_target_neighbors",
+          20.0
+        ],
+        "family": "shrinkage",
+        "gamma": 0.5,
+        "lincs": [
+          "lincs_neighbors",
+          5.0
+        ]
+      },
+      "intercept_candidate": "shrinkage",
+      "intercept_ndcg_at_5": 0.5506121002623653,
+      "one_se": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "one_se_value": 0.1556270815060869,
+      "raw_max": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "raw_max_screen_se": 0.041851344701740345,
+      "raw_max_value": 0.1556270815060869,
+      "selected": {
+        "base": "v2_base",
+        "penalty": 32.0,
+        "shape": "cos",
+        "weight": 2.0
+      },
+      "selected_value": 0.1556270815060869,
+      "shrinkage_gamma_scores": {
+        "shrinkage/gamma=0.5": 0.5506121002623653,
+        "shrinkage/gamma=0.75": 0.5481825760193711,
+        "shrinkage/gamma=1": 0.5447698598761397
+      }
+    },
+    "T3/3/Sel-Pooled": {
+      "best_chemistry": "chem_target_neighbors/5",
+      "best_lincs": "lincs_krr/1",
+      "expanded_kernel": {
+        "anchor_penalty": 1.0,
+        "cell_views": [],
+        "drug_views": [],
+        "identity": 0.7,
+        "intercept": "chem",
+        "lincs": {
+          "control": "real",
+          "dimension": 0,
+          "kernel": "rbf_wide",
+          "mask": 0.6,
+          "name": "lincs",
+          "recipe": "landmark_mean",
+          "transform": "raw",
+          "weight": 1.0
+        },
+        "normalization": "sum",
+        "penalty": 1.0,
+        "properties": 0.025,
+        "tanimoto": 0.175,
+        "target": 0.4
+      },
+      "intercept": {
+        "family": "lincs_krr",
+        "parameter": 1.0
+      },
+      "intercept_candidate": "lincs_krr/1",
+      "intercept_ndcg_at_5": 0.6862450744622149,
+      "one_se": {
+        "base": "v2_base",
+        "penalty": 8.0,
+        "shape": "rbf_wide",
+        "weight": 2.0
+      },
+      "one_se_value": 0.34045229895508294,
+      "raw_max": {
+        "base": "v2_base",
+        "penalty": 1.0,
+        "shape": "rbf_wide",
+        "weight": 1.0
+      },
+      "raw_max_screen_se": 0.011675892504249026,
+      "raw_max_value": 0.3511613706882242,
+      "selected": {
+        "base": "v2_base",
+        "penalty": 1.0,
+        "shape": "rbf_wide",
+        "weight": 1.0
+      },
+      "selected_value": 0.3511613706882242,
+      "shrinkage_gamma_scores": {
+        "shrinkage/gamma=0.5": 0.6668771581995526,
+        "shrinkage/gamma=0.75": 0.6741225267559936,
+        "shrinkage/gamma=1": 0.6750383654881232
+      }
+    }
+  },
+  "split_sha256": "3bae4c230adf0811edc810449396a67ff06991ddf5f2c1f498c7f1e4899f3143",
+  "stage1_selection_sha256": "6676ba84347bb46339b971b54c9b73f9194f3b60c774755c4c078201d117587c",
+  "stage2_role_receipts": {
+    "T1/0/Sel-LOSO/GDSC2": "d8481988254b89059d1e3f7a13a971227994bad9f857dcd27688609aeb7f5267",
+    "T1/0/Sel-LOSO/PRISM20Q2": "940d2bc704a9aac6fe6a77a345ef4dcf823221dde456811649c579ce538ba2aa",
+    "T1/0/Sel-Pooled/0": "31dd5fd337eefbc75a2f7796f35e674f76152bbd24383f07c1d2a27401f21923",
+    "T1/0/Sel-Pooled/1": "cab1bec8f7d6b3a0bbef18e45481a22f53450112f1a936ad1706c4c4d84cd23d",
+    "T1/0/Sel-Pooled/2": "f23b62e0319977fb10ed25c8516c22645c92e67019d2717bd373ba16bbaa0b11",
+    "T1/1/Sel-LOSO/CTRPv2": "7c348c0dea5aca9e38a781a5bf71f0a784e0181e4c78b869ea7998d1dfe5b654",
+    "T1/1/Sel-LOSO/PRISM20Q2": "907cb9cc350caef6e8856a96af288ce338a547eee7836cedc9a691787b9131e7",
+    "T1/1/Sel-Pooled/0": "b02d4877b5eaa12c57db613f7343f21242ef2851f1be70bfd512c125538b7636",
+    "T1/1/Sel-Pooled/1": "75c08355b0389a271cb692c75edb03af485542509d211a6adc0b0a7ae66728ff",
+    "T1/1/Sel-Pooled/2": "0c59e4502159d12edee22e4000b2dcf839c0722cbd6c4a82438932afef8c0002",
+    "T1/2/Sel-LOSO/CTRPv2": "ddb18f83e729efd4f05a21a58d00115dc9e36a0958d61ac446466397fd807fa7",
+    "T1/2/Sel-LOSO/GDSC2": "96fd387c97db6e5499dc318437222c05bdea2fbfdba17237f4a56f9a77a94600",
+    "T1/2/Sel-Pooled/0": "a418c9caeeafa2f6f4c23b8f58b4b23ece692691db03cc923ab2e83b62e9923b",
+    "T1/2/Sel-Pooled/1": "f02268af9ef419313ad040e63879b0fa0ea18975e8cb1896f210bb38da02f889",
+    "T1/2/Sel-Pooled/2": "34c8bfa574a0e92151919098788a42f7d245688e893d5bd8d7fa54d28764897c",
+    "T2/0/Sel-LOSO/CTRPv2": "d4946262dd2ecd3c9661acfa5bd87a7ec26fe1a8eb84d877f695bd5eafcd8c8d",
+    "T2/0/Sel-LOSO/GDSC2": "4d2e0406d301c23c9bf7025b54b40247ade36d33609e2198f71f653eaaf9a23b",
+    "T2/0/Sel-LOSO/PRISM20Q2": "048a6848b7634262a584607aab5a6a1767d5faedfd0dd2670e27fe1a36d7c33f",
+    "T2/1/Sel-LOSO/CTRPv2": "c7cf6b4c92a5768b853639cd42097ff0b57347ac2a9012ab0b75583ec4ef5dd3",
+    "T2/1/Sel-LOSO/GDSC2": "6aa4e73111bd9fa3c97325bd4790a11c93bdaa2bc2bc305ede9c193ffaae4c34",
+    "T2/1/Sel-LOSO/PRISM20Q2": "1a23bb5b478a7782f62ce933add3d99964de8a2ddd6e460577858756956542f2",
+    "T2/2/Sel-LOSO/CTRPv2": "2a67d1ed80d6518f5bb8429b61e1244ac0412873a18bd942f951fc96270b350d",
+    "T2/2/Sel-LOSO/GDSC2": "c2a1eb20c09a127ecddc1111acabdb354afe5d399716b40b40e68ce64d49fd56",
+    "T2/2/Sel-LOSO/PRISM20Q2": "b1a97f41a599b17cd4e1590aa61d4256bb814ce7284f77f08d462dfb03527f40",
+    "T3/3/Sel-LOSO/CTRPv2": "c1f5267c0256987d87badae0a1bc2ce0d3881453efec96aad00944b12fcaacc4",
+    "T3/3/Sel-LOSO/GDSC2": "bd2afe1322906cfa90ad513fda2e4d5ed968e366f27dc58eaaf1cf548c7400ec",
+    "T3/3/Sel-LOSO/PRISM20Q2": "7ca3189ca7218b7fe0545f3ae28712b96965f700c7ee99582addc5418331d9f1",
+    "T3/3/Sel-Pooled/0": "6f445e99e2490b764e251e891ab398248fe6a9f4328077baeea8dc8bad342111",
+    "T3/3/Sel-Pooled/1": "3f731c5bc7d63064851d2ebf5c9f9aaf21575222dce84bbf3968bd837a6246f8",
+    "T3/3/Sel-Pooled/2": "0ae093b35f2b2fb2ecfe35f8e54e20602d1826d6069f29f5c2e2e0ed43eb8159"
+  }
+}
