@@ -76,7 +76,7 @@ def test_g3_shares_its_cpu_cap_with_registered_early_fits():
     g3 = [call for call in submit.call_args_list if call.kwargs["node"] == "g3"]
     assert len(jobs) == 6 and len(g3) == 2
     assert [(c.kwargs["array"].split("%")[1], c.kwargs["terminal_deps"]) for c in g3] == [
-        ("12", ()), ("6", ("37000",))
+        ("9", ()), ("9", ("37000",))
     ]
     assigned = [int(index) for c in submit.call_args_list
                 for index in c.kwargs["array"].split("%")[0].split(",")]
@@ -198,7 +198,7 @@ def test_early_primary_tree_job_owns_its_indices_and_only_delays_g3():
             batch.assert_called_once_with("boundary-2", {i: tasks["gbdt"][i] for i in (1, 2, 3)}, retry=False)
             g4, g3, c4, controller = (call.kwargs for call in submit.call_args_list)
             assert (g4["node"], g4["array"], g4["terminal_deps"]) == ("g4", "0%22", ())
-            assert (g3["node"], g3["array"], g3["terminal_deps"]) == ("g3", "1%12", ())
+            assert (g3["node"], g3["array"], g3["terminal_deps"]) == ("g3", "1%9", ())
             assert (c4["node"], c4["array"], c4["terminal_deps"]) == ("c4", "2%6", ())
             assert controller["deps"] == ("37104", "37101", "37102", "37103")
 
@@ -210,7 +210,7 @@ def test_early_primary_tree_job_owns_its_indices_and_only_delays_g3():
             assert pipeline.schedule_inner(stages[:-1], root, retry=True, tasks=retry) == "37105"
             g4, g3, c4, controller = (call.kwargs for call in submit.call_args_list)
             assert g4["array"] == "0%22" and not g4["terminal_deps"]
-            assert g3["array"] == "1%12" and not g3["terminal_deps"]
+            assert g3["array"] == "1%9" and not g3["terminal_deps"]
             assert c4["array"] == "2%6" and not c4["terminal_deps"]
             assert controller["deps"] == ("37101", "37102", "37103")
 

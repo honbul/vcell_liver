@@ -21,7 +21,7 @@ CPU_NODE = "c5"
 GPU_NODE = "g3"
 GPU_TYPE = "a40"
 EARLY_TREE_NODE = "g3"
-EARLY_TREE_CONCURRENCY = 6
+EARLY_TREE_CONCURRENCY = 9
 # Three 8-core tasks and one 6-core task leave two C5 cores for the ledger.
 CPU_TRAINING_LANES = (("g4", 22, 8), ("g3", 18, 8), ("c4", 6, 8), ("c5", 3, 8), ("c5", 1, 6))
 FINAL_PARTITIONS = (*SPLITS, "external")
@@ -173,7 +173,13 @@ def active_early_tree_array(stage):
         )):
             raise ValueError("Replacement early tree jobs change the registered work")
         record = expanded
-    if record["cpu_node"] != EARLY_TREE_NODE or record["site_cap"] != EARLY_TREE_CONCURRENCY:
+    capacity = route.with_name(f"{stage}-early-primary-tree-capacity.json")
+    if capacity.is_file():
+        update = read_json(capacity)
+        if (update["early_array"], update["early_plan_sha256"]) != (record["early_array"], record["early_plan_sha256"]):
+            raise ValueError("Early tree capacity refers to different registered work")
+        record = record | {"site_cap": update["site_cap"]}
+    if record["cpu_node"] != EARLY_TREE_NODE or not 1 <= record["site_cap"] <= EARLY_TREE_CONCURRENCY:
         raise ValueError("Early Slurm registration does not match the current CPU schedule")
     plan = read_primary_tree_expansion(stage)
     planned = {outer * 6 + inner * 2 for outer, split in enumerate(PRIMARY_TREE_SPLITS)
