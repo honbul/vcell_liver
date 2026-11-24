@@ -35,7 +35,7 @@ CORE=("DRP","CrossScreen")
 def planned_pairs(track):
     order=TRACK_ARMS[track]
     anchors={"C1",V2,E4_ARM,POOLED,LOSO}
-    cases=[(x,y) for x in order if x not in anchors and x!="H2-v1" for y in order if y in anchors]
+    cases=[(x,y) for x in order if x not in anchors for y in order if y in anchors]
     cases.extend((a,b) for a,b in combinations((x for x in order if x in anchors),2))
     cases.append((P2,P1))
     if track=="T2":
