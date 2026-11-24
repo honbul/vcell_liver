@@ -8,7 +8,7 @@ import pandas as pd
 
 from h3v2.data import ROOT
 from h3v2.grid import FAMILIES, initial
-from h3v2.report import DISPLAY, report_docs
+from h3v2.report import DISPLAY, job_observations, report_docs
 from h3v2.score import AXES
 
 
@@ -72,5 +72,29 @@ def report_rendering():
     print("Rendered numeric summary, 28 tissue rows and both curve figures using simulated results", flush=True)
 
 
+def test_slurm_job_observations_preserve_actual_placement_and_terminal_times():
+    first = "2026-11-24T21:00:46"
+    ended = "2026-11-24T21:39:53"
+    predicted = "2026-11-26T09:00:46"
+    samples = [
+        f"JobId=36483 ArrayJobId=36483 ArrayTaskId=0-179 JobState=PENDING StartTime={predicted} NodeList=(null)",
+        f"JobId=36793 ArrayJobId=36483 ArrayTaskId=177 JobState=RUNNING StartTime={first} EndTime={predicted} NodeList=g4",
+        f"JobId=36793 ArrayJobId=36483 ArrayTaskId=177 JobState=COMPLETED StartTime={first} EndTime={ended} NodeList=g4",
+        f"JobId=36800 ArrayJobId=36483 ArrayTaskId=178 JobState=RUNNING StartTime={ended} EndTime={predicted} NodeList=g4",
+        f"JobId=37586 JobState=CANCELLED StartTime=Unknown EndTime={ended} NodeList=(null)",
+        f"JobId=37886 JobState=RUNNING StartTime={ended} EndTime={predicted} NodeList=g3",
+    ]
+    with TemporaryDirectory(dir=ROOT / "tmp") as scratch:
+        log = Path(scratch) / "logs.txt"
+        log.write_text("\n".join(samples) + "\nJobId=38000 JobState=RUNNING", encoding="utf-8")
+        result = job_observations(log, [36483, 37586, 38000])
+    assert set(result) == {36483, 37586}
+    assert result[36483] == {"observed_elements": 2, "observed_last_states": "COMPLETED=1 | RUNNING=1",
+                             "observed_nodes": "g4", "first_observed_start_local": first,
+                             "last_observed_terminal_end_local": ended}
+    assert result[37586]["observed_nodes"] == result[37586]["first_observed_start_local"] == ""
+
+
 if __name__ == "__main__":
     report_rendering()
+    test_slurm_job_observations_preserve_actual_placement_and_terminal_times()

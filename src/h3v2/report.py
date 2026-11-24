@@ -1,8 +1,10 @@
 """Verify the completed H3-v2 experiment and assemble versionable aggregate artifacts."""
+from collections import Counter, defaultdict
 from datetime import datetime,timezone
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 from subprocess import run
 from tempfile import TemporaryDirectory
@@ -23,6 +25,9 @@ OUTPUT=ROOT/"reports-final"
 SCORED=ROOT/"score"
 DISPLAY=("spearman","pearson","interaction_spearman","interaction_pearson","ndcg_at_5","precision_at_5")
 LABELS=("약물 내 ρ","약물 내 r","상호작용 ρ","상호작용 r","NDCG@5","Precision@5")
+SLURM_FIELDS = re.compile(r"(?:^| )(JobId|ArrayJobId|ArrayTaskId|JobState|StartTime|EndTime|NodeList)=([^\s]+)")
+SLURM_TIME = re.compile(r"^\d{4}-\d{2}-\d{2}T")
+TERMINAL_STATES = {"COMPLETED", "CANCELLED", "FAILED", "TIMEOUT", "OUT_OF_MEMORY", "NODE_FAIL", "PREEMPTED", "BOOT_FAIL", "DEADLINE"}
 
 
 def md_table(headers,rows):
@@ -191,6 +196,44 @@ def inner_results(lock):
     return pd.DataFrame(grid),pd.concat(curves,ignore_index=True),input_evidence
 
 
+def job_observations(path, job_ids):
+    """Summarize observed allocation and state by Slurm job or array parent."""
+    allowed = {str(job_id) for job_id in job_ids}
+    observed = defaultdict(dict)
+    nodes = defaultdict(set)
+    starts, ends = {}, {}
+    if not path.is_file():
+        return {}
+    with path.open() as source:
+        for line in source:
+            if not line.endswith("\n"):
+                continue
+            fields = dict(SLURM_FIELDS.findall(line))
+            parent = fields.get("ArrayJobId", fields.get("JobId"))
+            task = fields.get("ArrayTaskId", "0")
+            if parent not in allowed or not task.isdecimal() or "JobState" not in fields:
+                continue
+            state = fields["JobState"]
+            observed[parent][task] = state
+            node = fields.get("NodeList", "(null)")
+            if node != "(null)":
+                nodes[parent].add(node)
+            if state != "PENDING" and node != "(null)" and SLURM_TIME.match(started := fields.get("StartTime", "")):
+                starts[parent] = min(starts.get(parent, started), started)
+            if state in TERMINAL_STATES and SLURM_TIME.match(ended := fields.get("EndTime", "")):
+                ends[parent] = max(ends.get(parent, ended), ended)
+    return {
+        int(parent): {
+            "observed_elements": len(tasks),
+            "observed_last_states": " | ".join(f"{name}={count}" for name, count in sorted(Counter(tasks.values()).items())),
+            "observed_nodes": ",".join(sorted(nodes[parent])),
+            "first_observed_start_local": starts.get(parent, ""),
+            "last_observed_terminal_end_local": ends.get(parent, ""),
+        }
+        for parent, tasks in observed.items()
+    }
+
+
 def jobs():
     logs=ROOT/"logs"
     initial=[
@@ -217,6 +260,11 @@ def jobs():
         placement["record"] = (
             placement.time + " " + placement.field + " " + placement.previous.astype(str) + "→" + placement.updated.astype(str))
         frame["cpu_resource_changes"] = frame.job_id.map(placement.groupby("job_id").record.agg(" | ".join))
+    observed = job_observations(logs / "slurm-observations.txt", frame.job_id)
+    if observed:
+        detail = pd.DataFrame.from_dict(observed, orient="index")
+        detail["observed_elements"] = detail.observed_elements.astype("Int64")
+        frame = frame.join(detail, on="job_id")
     return frame
 
 
