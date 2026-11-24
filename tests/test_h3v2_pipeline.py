@@ -119,7 +119,7 @@ def test_next_cpu_round_advances_while_registered_gpu_fits_continue():
                 patch.object(pipeline, "submit", side_effect=["37101", "37102", "37103"]) as submit:
             assert pipeline.schedule_inner(stages, root) == "37103"
             cpu, gpu, watcher = submit.call_args_list
-            assert cpu.kwargs["deps"] == ("37100",) and "terminal_deps" not in cpu.kwargs
+            assert cpu.kwargs["deps"] == ("37100",) and not cpu.kwargs["terminal_deps"]
             assert gpu.kwargs["array"] == "7%4" and gpu.kwargs["terminal_deps"] == ("37104",)
             assert watcher.kwargs["deps"] == ("37104", "37101", "37102") and watcher.kwargs["dependency"] == "afterany"
         (root / "logs").mkdir()
@@ -127,6 +127,36 @@ def test_next_cpu_round_advances_while_registered_gpu_fits_continue():
                 patch.object(pipeline, "check_output", return_value="37102\n") as sbatch:
             pipeline.submit("torch", Path("job.sbatch"), [], gpu=True, deps=("37100",), terminal_deps=("37104",))
         assert "--dependency=afterok:37100,afterany:37104" in sbatch.call_args.args[0]
+
+
+def test_early_primary_tree_job_owns_its_indices_and_only_delays_g3():
+    with TemporaryDirectory(dir=pipeline.ROOT / "tmp") as scratch:
+        root = Path(scratch)
+        tasks = {"gbdt": {i: [root / f"cpu-{i}"] for i in range(4)}, "torch": {}}
+        stages = ["r1", "r2", "boundary-1", "boundary-2"]
+        with patch.object(pipeline, "ROOT", root), \
+                patch.object(pipeline, "inner_tasks", return_value=tasks), \
+                patch.object(pipeline, "controller_dependency", return_value=("37100",)), \
+                patch.object(pipeline, "active_early_tree_array", side_effect=[("37104", {0}), None]), \
+                patch.object(pipeline, "submit", side_effect=["37101", "37102", "37103", "37105"]) as submit:
+            assert pipeline.schedule_inner(stages, root) == "37105"
+            g4, g3, c4, controller = (call.kwargs for call in submit.call_args_list)
+            assert (g4["node"], g4["array"], g4["terminal_deps"]) == ("g4", "1%16", ())
+            assert (g3["node"], g3["array"], g3["terminal_deps"]) == ("g3", "2%6", ("37104",))
+            assert (c4["node"], c4["array"], c4["terminal_deps"]) == ("c4", "3%6", ())
+            assert controller["deps"] == ("37104", "37101", "37102", "37103")
+
+        with patch.object(pipeline, "ROOT", root), \
+                patch.object(pipeline, "controller_dependency", return_value=("37100",)), \
+                patch.object(pipeline, "active_early_tree_array", side_effect=[None, ("37104", {0})]), \
+                patch.object(pipeline, "submit", side_effect=["37101", "37102", "37103", "37105"]) as submit:
+            retry = {"gbdt": {i: [root / f"cpu-{i}"] for i in range(3)}, "torch": {}}
+            assert pipeline.schedule_inner(stages[:-1], root, retry=True, tasks=retry) == "37105"
+            g4, g3, c4, controller = (call.kwargs for call in submit.call_args_list)
+            assert g4["array"] == "0%16" and not g4["terminal_deps"]
+            assert g3["array"] == "1%6" and g3["terminal_deps"] == ("37104",)
+            assert c4["array"] == "2%6" and not c4["terminal_deps"]
+            assert controller["deps"] == ("37101", "37102", "37103")
 
 
 def test_failed_final_jobs_are_retried_before_the_only_score_submission():
@@ -207,6 +237,7 @@ if __name__ == "__main__":
     test_followup_gpu_arrays_use_only_g3_a40()
     test_g4_cpu_fit_requests_no_gpu()
     test_next_cpu_round_advances_while_registered_gpu_fits_continue()
+    test_early_primary_tree_job_owns_its_indices_and_only_delays_g3()
     test_failed_final_jobs_are_retried_before_the_only_score_submission()
     test_final_output_preserves_interrupted_and_completed_artifacts()
     print("Registered 990 arms and verified bounded recovery, dependencies and the training caps", flush=True)

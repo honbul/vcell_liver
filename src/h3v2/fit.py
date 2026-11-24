@@ -13,7 +13,7 @@ from .data import ROOT,SPLITS,nested,read_data,register,store
 from .grid import FAMILIES,SEEDS,identify,initial
 from .kernel import oof_fit,read_bank
 from .quality import quality,utility
-from .selection import NEURAL_FAMILIES,read_neural_expansion
+from .selection import NEURAL_FAMILIES, PRIMARY_TREE_SPLITS, read_neural_expansion, read_primary_tree_expansion
 
 
 def backends(name):
@@ -43,13 +43,19 @@ def options(stage,split,family,backend):
 
 
 def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="cpu",
-             candidate_id=None, diagnostic=False, early_neural=False):
+             candidate_id=None, diagnostic=False, early_neural=False, early_primary_tree=False):
     if tree_device != "cpu" and backend != "gbdt":
         raise ValueError("The LightGBM device option applies only to tree fits")
+    if early_neural and early_primary_tree:
+        raise ValueError("Choose one registered early expansion")
     if early_neural:
         if backend != "torch" or family not in NEURAL_FAMILIES or smoke or diagnostic:
             raise ValueError("The early expansion applies only to registered neural fits")
         config_list = read_neural_expansion(stage)["splits"][split][family]
+    elif early_primary_tree:
+        if (backend, family, tree_device) != ("gbdt", "gbdt", "cpu") or split not in PRIMARY_TREE_SPLITS or smoke or diagnostic:
+            raise ValueError("The early primary expansion applies only to registered CPU GBDT fits")
+        config_list = read_primary_tree_expansion(stage)["splits"][split][family]
     else:
         config_list=options(stage,split,family,backend)
     if candidate_id is not None:
@@ -119,7 +125,9 @@ if __name__=="__main__":
     p.add_argument("inner",type=int,choices=range(3))
     p.add_argument("backend",choices=("torch","gbdt"))
     p.add_argument("--smoke",action="store_true")
-    p.add_argument("--early-neural",action="store_true")
+    early=p.add_mutually_exclusive_group()
+    early.add_argument("--early-neural",action="store_true")
+    early.add_argument("--early-primary-tree",action="store_true")
     p.add_argument("--tree-device",choices=("cpu","cuda","opencl"),default="cpu")
     x=p.parse_args()
     if x.tree_device != "cpu" and x.backend != "gbdt":
@@ -128,4 +136,4 @@ if __name__=="__main__":
         from .fit_tree import g3_cuda_library
         g3_cuda_library()
     fold_fit(x.stage,x.split,x.family,x.inner,x.backend,smoke=x.smoke,tree_device=x.tree_device,
-             early_neural=x.early_neural)
+             early_neural=x.early_neural,early_primary_tree=x.early_primary_tree)

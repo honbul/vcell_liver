@@ -10,13 +10,17 @@ from vc_build.io import publish_json,sha256
 from .data import ROOT,SPLITS
 from .final_fit import external_operating_point
 from .grid import FAMILIES,SEEDS,identify,initial
-from .selection import NEURAL_FAMILIES, next_boundary, read_neural_expansion, select
+from .selection import (
+    NEURAL_FAMILIES, PRIMARY_TREE_SPLITS, next_boundary, read_neural_expansion, read_primary_tree_expansion, select,
+)
 
 CPUS_PER_TRAINING_TASK = 8
 GPU_TRAINING_CONCURRENCY = 4
 CPU_NODE = "c5"
 GPU_NODE = "g3"
 GPU_TYPE = "a40"
+EARLY_TREE_NODE = "g3"
+EARLY_TREE_CONCURRENCY = 6
 # Three 8-core tasks and one 6-core task leave two C5 cores for the ledger.
 CPU_TRAINING_LANES = (("g4", 16, 8), ("g3", 6, 8), ("c4", 6, 8), ("c5", 3, 8), ("c5", 1, 6))
 FINAL_PARTITIONS = (*SPLITS, "external")
@@ -89,7 +93,8 @@ def submit_training_arrays(name, script, arguments, backend, indexed, *, deps=()
     for offset, index in enumerate(indices):
         batches[slots[offset % len(slots)]].append(index)
     return [submit(f"{name}-{node}-{threads}core", script, arguments, node=node,
-                   array=",".join(map(str, batch)) + f"%{concurrency}", threads=threads, deps=deps)
+                   array=",".join(map(str, batch)) + f"%{concurrency}", threads=threads, deps=deps,
+                   terminal_deps=terminal_deps if node == EARLY_TREE_NODE else ())
             for (node, concurrency, threads), batch in batches.items() if batch]
 
 
@@ -103,32 +108,55 @@ def missing_inner(stage):
             for backend, tasks in inner_tasks(stage).items()}
 
 
+def live_early_array(stage, kind, record, planned, *, node, gres):
+    if record["early_plan_sha256"] != sha256(ROOT / "locks" / f"{stage}-early-{kind}.json"):
+        raise ValueError("Early Slurm registration has a different settings lock")
+    job = str(record["early_array"])
+    if planned != set(record["indices"]) or not job.isdecimal():
+        raise ValueError("Early Slurm registration does not match the planned array indices")
+    queue = check_output(["squeue", "-r", "-h", "-u", getuser(), "-o", "%i|%j|%T|%N|%C|%b"], text=True)
+    live = set()
+    allocating = 0
+    for row in queue.splitlines():
+        identity, name, state, host, cpus, resources = row.split("|")
+        parent, _, index = identity.partition("_")
+        if parent == job:
+            if (name != f"ng2-h3-{stage}-early-{kind}" or host not in {"", node} or not index.isdecimal()
+                    or int(index) not in planned or int(cpus) != CPUS_PER_TRAINING_TASK or resources != gres
+                    or state not in {"PENDING", "RUNNING", "COMPLETING", "CONFIGURING", "SUSPENDED"}):
+                raise ValueError(f"Unexpected early {kind} allocation {row}")
+            live.add(int(index))
+            allocating += state in {"RUNNING", "CONFIGURING"}
+    if allocating > record["site_cap"]:
+        raise ValueError(f"Early {kind} training exceeds its registered concurrency")
+    return (job, planned) if live else None
+
+
 def active_early_array(stage):
     route = ROOT / "locks" / f"{stage}-early-neural-jobs.json"
     if not route.is_file():
         return None
     record = read_json(route)
+    if record["gpu_node"] != GPU_NODE or record["site_cap"] != GPU_TRAINING_CONCURRENCY:
+        raise ValueError("Early Slurm registration does not match the current GPU schedule")
     plan = read_neural_expansion(stage)
-    if record["early_plan_sha256"] != sha256(ROOT / "locks" / f"{stage}-early-neural.json"):
-        raise ValueError("Early Slurm registration has a different settings lock")
     planned = {outer * 12 + inner * 4 + offset
                for outer, split in enumerate(SPLITS) for inner in range(3)
                for offset, family in enumerate(NEURAL_FAMILIES) if plan["splits"][split][family]}
-    job = str(record["early_array"])
-    if (planned != set(record["indices"]) or record["gpu_node"] != GPU_NODE
-            or record["site_cap"] != GPU_TRAINING_CONCURRENCY or not job.isdecimal()):
-        raise ValueError("Early Slurm registration does not match the current GPU schedule")
-    queue = check_output(["squeue", "-r", "-h", "-u", getuser(), "-o", "%i|%j|%T|%N"], text=True)
-    running = set()
-    for row in queue.splitlines():
-        identity, name, state, host = row.split("|")
-        parent, _, index = identity.partition("_")
-        if parent == job:
-            if (name != f"ng2-h3-{stage}-early-neural" or host not in {"", GPU_NODE} or not index.isdecimal()
-                    or int(index) not in planned or state not in {"PENDING", "RUNNING", "COMPLETING", "CONFIGURING", "SUSPENDED"}):
-                raise ValueError(f"Unexpected early neural allocation {row}")
-            running.add(int(index))
-    return (job, planned) if running else None
+    return live_early_array(stage, "neural", record, planned, node=GPU_NODE, gres=f"gres:gpu:{GPU_TYPE}:1")
+
+
+def active_early_tree_array(stage):
+    route = ROOT / "locks" / f"{stage}-early-primary-tree-jobs.json"
+    if not route.is_file():
+        return None
+    record = read_json(route)
+    if record["cpu_node"] != EARLY_TREE_NODE or record["site_cap"] != EARLY_TREE_CONCURRENCY:
+        raise ValueError("Early Slurm registration does not match the current CPU schedule")
+    plan = read_primary_tree_expansion(stage)
+    planned = {outer * 6 + inner * 2 for outer, split in enumerate(PRIMARY_TREE_SPLITS)
+               for inner in range(3) if plan["splits"][split]["gbdt"]}
+    return live_early_array(stage, "primary-tree", record, planned, node=EARLY_TREE_NODE, gres="N/A")
 
 
 def schedule_inner(stages, snap, *, retry=False, tasks=None):
@@ -136,16 +164,16 @@ def schedule_inner(stages, snap, *, retry=False, tasks=None):
     planned = missing_inner(stage) if tasks is None else tasks
     suffix = "-retry" if retry else ""
     helpers = slurm(snap)
-    early = active_early_array(stage)
-    future = active_early_array(next_boundary(stage)) if stage.startswith("boundary-") else None
-    jobs = [early[0]] if early else []
+    arrays = {"torch": active_early_array, "gbdt": active_early_tree_array}
+    early = {backend: active(stage) for backend, active in arrays.items()}
+    future = {backend: active(next_boundary(stage)) for backend, active in arrays.items()} if stage.startswith("boundary-") else {}
+    jobs = [array[0] for array in early.values() if array]
     predecessor = controller_dependency()
     for backend, indexed in planned.items():
-        drains = ()
-        if backend == "torch":
-            if early:
-                indexed = set(indexed) - early[1]
-            drains = tuple(array[0] for array in (early, future) if array)
+        current = early[backend]
+        if current:
+            indexed = set(indexed) - current[1]
+        drains = tuple(array[0] for array in (current, future.get(backend)) if array)
         jobs.extend(submit_training_arrays(f"{stage}-{backend}{suffix}", helpers / "inner.sbatch",
                                            [snap, stage, backend], backend, indexed, deps=predecessor,
                                            terminal_deps=drains))

@@ -11,6 +11,8 @@ from .data import ROOT, SPLITS
 from .grid import FAMILIES, SEEDS, boundary_neighbors, identify, initial, nearby
 
 NEURAL_FAMILIES = ("film", "attention", "gnn")
+PRIMARY_TREE_STAGES = ("r1", "r2", "boundary-1")
+PRIMARY_TREE_SPLITS = tuple(SPLITS[:3])
 
 
 def stage_options(split, family, stage):
@@ -82,17 +84,51 @@ def adaptive_candidates(chosen, sweep):
     return boundary_neighbors(chosen["config"], explored, chosen["max_budget_pressure_iteration"])
 
 
-def read_neural_expansion(stage):
-    path = ROOT / "locks" / f"{stage}-early-neural.json"
+def read_early_expansion(stage, kind):
+    path = ROOT / "locks" / f"{stage}-early-{kind}.json"
     plan = read_json(path)
     source = ROOT / "locks" / f"{plan['stages'][-1]}.json"
     if stage != next_boundary(plan["stages"][-1]) or sha256(source) != plan["source_plan_sha256"]:
-        raise ValueError("The early neural expansion does not match its source stage")
+        raise ValueError(f"The early {kind} expansion does not match its source stage")
+    return plan
+
+
+def read_neural_expansion(stage):
+    plan = read_early_expansion(stage, "neural")
     if set(plan["splits"]) != set(SPLITS) or any(
         set(families) != set(NEURAL_FAMILIES) for families in plan["splits"].values()
     ):
         raise ValueError("The early expansion must use the three independent neural families")
     return plan
+
+
+def read_primary_tree_expansion(stage):
+    plan = read_early_expansion(stage, "primary-tree")
+    if tuple(plan["stages"]) != PRIMARY_TREE_STAGES or set(plan["splits"]) != set(PRIMARY_TREE_SPLITS):
+        raise ValueError("The early CPU expansion must use only the three primary splits")
+    for arms in plan["splits"].values():
+        if set(arms) != {"gbdt"} or any(config["backend"] != "gbdt" or config["family"] != "gbdt"
+                                       for config in arms["gbdt"]):
+            raise ValueError("The early CPU expansion applies to GBDT only")
+    return plan
+
+
+def register_primary_tree_expansion(stages):
+    if tuple(stages) != PRIMARY_TREE_STAGES or (ROOT / "score/consumed.json").exists():
+        raise ValueError("The early CPU expansion requires the registered, unsealed source stages")
+    stage = next_boundary(stages[-1])
+    if (ROOT / "locks" / f"{stage}.json").exists():
+        raise ValueError("The complete CPU expansion has already been registered")
+    splits = {}
+    for split in PRIMARY_TREE_SPLITS:
+        sweep = evaluated(split, "gbdt", stages)
+        configs = adaptive_candidates(best(sweep), sweep)
+        splits[split] = {"gbdt": list({identify(config): config for config in configs}.values())}
+    publish_json(ROOT / "locks" / f"{stage}-early-primary-tree.json", {
+        "stages": stages, "splits": splits,
+        "source_plan_sha256": sha256(ROOT / "locks" / f"{stages[-1]}.json"),
+    })
+    print(stage, "early primary GBDT", sum(len(arms["gbdt"]) for arms in splits.values()), flush=True)
 
 
 def register_neural_expansion(stages):
@@ -156,14 +192,14 @@ def select(stages):
             pending[split][family]=list({identify(c):c for c in candidates
                                          if identify(c) not in {r["id"] for r in variants}}.values())
             boundary_status[split][family]=[identify(c) for c in pending[split][family]]
-    early = ROOT / "locks" / f"{next_round}-early-neural.json"
-    if early.is_file():
-        plan = read_neural_expansion(next_round)
-        if plan["stages"] != stages or any(
-            [identify(cfg) for cfg in configs] != boundary_status[split][family]
-            for split, families in plan["splits"].items() for family, configs in families.items()
-        ):
-            raise ValueError("Early neural candidates differ from the complete inner selection")
+    for kind, read_plan in (("neural", read_neural_expansion), ("primary-tree", read_primary_tree_expansion)):
+        if (ROOT / "locks" / f"{next_round}-early-{kind}.json").is_file():
+            plan = read_plan(next_round)
+            if plan["stages"] != stages or any(
+                [identify(cfg) for cfg in configs] != boundary_status[split][family]
+                for split, families in plan["splits"].items() for family, configs in families.items()
+            ):
+                raise ValueError(f"Early {kind} candidates differ from the complete inner selection")
     has_work=any(configs for families in pending.values() for configs in families.values())
     ledger=ROOT/"locks"/f"{label}-selection.json"
     publish_json(ledger,{
@@ -196,6 +232,13 @@ def select(stages):
 if __name__=="__main__":
     p=argparse.ArgumentParser()
     p.add_argument("stages",nargs="+")
-    p.add_argument("--early-neural", action="store_true")
+    operation = p.add_mutually_exclusive_group()
+    operation.add_argument("--early-neural", action="store_true")
+    operation.add_argument("--early-primary-tree", action="store_true")
     args = p.parse_args()
-    (register_neural_expansion if args.early_neural else select)(args.stages)
+    if args.early_neural:
+        register_neural_expansion(args.stages)
+    elif args.early_primary_tree:
+        register_primary_tree_expansion(args.stages)
+    else:
+        select(args.stages)
