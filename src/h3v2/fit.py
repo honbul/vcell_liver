@@ -44,7 +44,7 @@ def options(stage,split,family,backend):
 
 def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="cpu",
              candidate_id=None, diagnostic=False, early_neural=False, early_primary_tree=False,
-             candidate_ids=None):
+             candidate_ids=None, fit_mask=None):
     if tree_device != "cpu" and backend != "gbdt":
         raise ValueError("The LightGBM device option applies only to tree fits")
     if early_neural and early_primary_tree:
@@ -80,7 +80,13 @@ def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="
         return
     registry=register()
     all_rows=read_data(split,"fit")
-    train,valid=nested(all_rows,split,registry,inner)
+    if fit_mask is None:
+        train,valid=nested(all_rows,split,registry,inner)
+    else:
+        fit_mask = np.asarray(fit_mask)
+        if candidate_ids is None or fit_mask.dtype != np.bool_ or fit_mask.shape != (len(all_rows),):
+            raise ValueError("An imported inner row mask requires a registered CPU candidate batch")
+        train, valid = all_rows.loc[fit_mask], all_rows.loc[~fit_mask]
     root=ROOT/"features"/split/f"inner-{inner}"
     atlas,receipt=read(root,train,valid)
     with (root/"schema.pkl").open("rb") as stream:
