@@ -60,6 +60,8 @@ C4의 두 CPU 파티션에 이전 배열과 대체 배열이 겹쳐 23:01 KST부
 
 06:31 KST에는 G4 `38405_4`가 Huber 세 후보를 반영하고 정상 종료했다. 최종 후보 `3505919266de`의 검증 행 130,694개, 유한한 train·validation Huber 값 122쌍과 영수증 SHA-256 `cf7b39e519573c3e2cac865b65b3a9d79ae77524c79259b8fb415e4dc04b8564`를 확인했다. 반환된 CPU 8개에 C5 `37333_22`의 `cell-0/inner-2` 미시작 Huber 후보 `788ea49e8292`, `0a851673e3dd`를 배정했다. G4 `38454_14`의 CPU 전용 실행과 H3 CPU 배정 176개를 확인했다. 새 배열과 선택 작업 `38393`의 선행 조건은 G1의 `locks/boundary-1-slurm-huber-tails-v9.json`과 `locks/boundary-1-slurm-huber-tails-jobs-v9.json`에 남겼다.
 
+06:42 KST에는 G4 `38405_3`이 세 후보를 반영하고 정상 종료했다. 같은 GDSC2 내부 분할에서 아직 시작하지 않은 다른 Huber 후보 두 건을 반환된 CPU 8개에 배정했다. 후보 `45dad9d5e94b`, `92a020823054`의 기존 G4 작업은 `37959_54`의 `GDSC2-0/inner-0`이며 새 작업 `38457_15`가 CPU로 실행한다. G4의 H3 CPU 배정은 176개였다. 선택 작업 `38393`의 선행 조건을 포함한 새 등록은 G1의 `locks/boundary-1-slurm-huber-tails-v10.json` 및 `locks/boundary-1-slurm-huber-tails-jobs-v10.json`에 남겼다.
+
 ## 분할과 입력
 
 - Drug-Cold는 H2-v1 1,001골격 연결 성분의 outer 3개 및 각 inner 3개를 그대로 사용한다. Cell-Cold는 확장 패널 3개 전역 계통 차단 분할, 교차스크린은 H3-v1의 9개 고정 평가 지지다. 교차스크린 훈련에는 해당 훈련 계통과 허용 소스의 확장 패널을 사용한다.
