@@ -11,7 +11,7 @@ from .final_fit import external_operating_point
 from .grid import FAMILIES,SEEDS,identify,initial
 from .selection import select
 
-TRAINING_CONCURRENCY = {"gbdt": 35, "torch": 6}
+TRAINING_CONCURRENCY = {"gbdt": 24, "torch": 6}
 CPUS_PER_TRAINING_TASK = 8
 
 
@@ -32,6 +32,8 @@ def submit(name, script, arguments, *, deps=(), gpu=False,
              "-c",str(n),f"--mem={reserve}","-t",limit,"-o",str(log)]
     if gpu:
         command.extend(["--gres=gpu:a100:1"])
+    else:
+        command.extend(["--exclude=c4"])
     if array is not None:
         command.append(f"--array={array}")
     if deps:
