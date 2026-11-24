@@ -325,7 +325,8 @@ def report_docs(root,points,ci,curves,grid,score,lock):
     sweep=grid.groupby(["family","round"]).agg(configurations=("config_id","count"),
                inner_best=("utility","max"),typical_best_budget=("budget","median")).reset_index()
     unique_fits=curves.drop_duplicates(["split","family","round","config_id","inner"])
-    wall=unique_fits.groupby(["family","round",unique_fits.device.str.split(":").str[0]]).fit_wall_seconds.sum()/3600
+    compute_device = unique_fits.device.str.split(":").str[0].replace({"opencl": "cuda"})
+    wall=unique_fits.groupby(["family","round",compute_device]).fit_wall_seconds.sum()/3600
     put(root/"ROUND1_TO_2_FAMILY_TUNING.md",[
         "# 계열별 Inner CV 학습 및 포화 탐색", "",
         "각 행은 외부 보류 지원과 독립인 3개 inner 분할의 고정 설정 비교다. 블록 미니배치는 관측만 방문했다. "

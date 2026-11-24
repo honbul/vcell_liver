@@ -43,15 +43,15 @@ def options(stage,split,family,backend):
 
 def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="cpu",
              candidate_id=None, diagnostic=False):
-    if tree_device == "cuda" and backend != "gbdt":
+    if tree_device != "cpu" and backend != "gbdt":
         raise ValueError("The LightGBM device option applies only to tree fits")
     config_list=options(stage,split,family,backend)
     if candidate_id is not None:
         config_list = [config for config in config_list if identify(config) == candidate_id]
         if len(config_list) != 1:
             raise ValueError(f"Expected registered candidate {candidate_id} in {stage}/{split}/{family}/{inner}")
-    if diagnostic and (tree_device != "cuda" or candidate_id is None or smoke):
-        raise ValueError("The CUDA diagnostic must replay one unchanged registered candidate")
+    if diagnostic and (tree_device not in {"cuda", "opencl"} or candidate_id is None or smoke):
+        raise ValueError("The GPU diagnostic must replay one unchanged registered candidate")
     if not config_list:
         print(f"{stage}/{split}/{family}/{inner}: no {backend} configs",flush=True)
         return
@@ -69,7 +69,7 @@ def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="
         base_train=bank.H2.to_numpy(np.float32)
         base_val=read_bank(split,f"two-{inner}").loc[valid.row_id,"H2"].to_numpy(np.float32)
     folder="smoke" if smoke else stage
-    fit_root = ROOT / ("cuda-validation" if diagnostic else "fits")
+    fit_root = ROOT / (f"{tree_device}-validation" if diagnostic else "fits")
     if smoke:
         c=config_list[0]
         config_list=[c|({"trees":25} if backend=="gbdt" else {"epochs":2})]
@@ -113,11 +113,11 @@ if __name__=="__main__":
     p.add_argument("inner",type=int,choices=range(3))
     p.add_argument("backend",choices=("torch","gbdt"))
     p.add_argument("--smoke",action="store_true")
-    p.add_argument("--tree-device",choices=("cpu","cuda"),default="cpu")
+    p.add_argument("--tree-device",choices=("cpu","cuda","opencl"),default="cpu")
     x=p.parse_args()
+    if x.tree_device != "cpu" and x.backend != "gbdt":
+        p.error("--tree-device requires the gbdt backend for GPU fits")
     if x.tree_device == "cuda":
-        if x.backend != "gbdt":
-            p.error("--tree-device cuda requires the gbdt backend")
         from .fit_tree import g3_cuda_library
         g3_cuda_library()
     fold_fit(x.stage,x.split,x.family,x.inner,x.backend,smoke=x.smoke,tree_device=x.tree_device)

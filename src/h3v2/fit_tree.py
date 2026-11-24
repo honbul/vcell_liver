@@ -1,4 +1,6 @@
 """LightGBM regression and LambdaRank with fit-only alignment and OOF offsets."""
+from ctypes import CDLL, byref, c_char, c_int, c_size_t, c_uint, c_ulong, c_void_p
+from functools import cache
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from time import perf_counter
@@ -8,6 +10,7 @@ import lightgbm as lgb
 import numpy as np
 import pandas as pd
 
+from nextgen_h2.run import read_json
 from vc_build.external import native_sensitivity
 from vc_build.io import sha256
 from .data import ROOT
@@ -16,17 +19,49 @@ from .fit_neural import aligned_values
 from .quality import quality, utility
 
 
-def g3_cuda_library():
+def g3_a40():
     import torch
 
+    if (os.environ.get("SLURMD_NODENAME") != "g3" or torch.cuda.device_count() != 1
+            or "A40" not in torch.cuda.get_device_name(0)):
+        raise ValueError("GPU LightGBM requires one assigned G3 A40 per task")
+
+
+@cache
+def g3_cuda_library():
+    g3_a40()
     overlay = ROOT / "deps/lightgbm-cuda-4.6.0/runtime"
     library = overlay / "lightgbm/lib/lib_lightgbm.so"
     if (lgb.__version__ != "4.6.0" or Path(lgb.basic._LIB._name).resolve() != library.resolve()
             or sha256(library) != (overlay / "library.sha256").read_text().strip()):
         raise ValueError("Expected the verified isolated CUDA LightGBM runtime")
-    if (os.environ.get("SLURMD_NODENAME") != "g3" or torch.cuda.device_count() != 1
-            or "A40" not in torch.cuda.get_device_name(0)):
-        raise ValueError("CUDA LightGBM requires one assigned G3 A40 per task")
+    return library
+
+
+@cache
+def g3_opencl_library():
+    g3_a40()
+    library = ROOT / "deps/lightgbm/lib/lib_lightgbm.so"
+    verified = read_json(ROOT / "step0_verification.json")["versions"]["lightgbm_so_sha256"]
+    if (lgb.__version__ != "4.6.0" or Path(lgb.basic._LIB._name).resolve() != library.resolve()
+            or sha256(library) != verified):
+        raise ValueError("Expected the registered OpenCL LightGBM library")
+    driver = CDLL("libcuda.so.1")
+    assigned, cuda_uuid = c_int(), (c_char * 16)()
+    if driver.cuInit(0) or driver.cuDeviceGet(byref(assigned), 0) or driver.cuDeviceGetUuid(cuda_uuid, assigned):
+        raise ValueError("Unable to identify the allocated A40")
+    opencl = CDLL("libOpenCL.so.1")
+    platform, device = c_void_p(), c_void_p()
+    platforms, devices = c_uint(), c_uint()
+    all_devices = c_ulong(0xffffffff)
+    if (opencl.clGetPlatformIDs(1, byref(platform), byref(platforms)) or platforms.value != 1
+            or opencl.clGetDeviceIDs(platform, all_devices, 1, byref(device), byref(devices)) or devices.value != 1):
+        raise ValueError("Expected one OpenCL device visible to the Slurm task")
+    opencl_uuid = (c_char * 16)()
+    device_uuid_khr = 0x106A
+    if (opencl.clGetDeviceInfo(device, device_uuid_khr, c_size_t(len(opencl_uuid)), opencl_uuid, None)
+            or bytes(opencl_uuid) != bytes(cuda_uuid)):
+        raise ValueError("OpenCL UUID differs from the allocated A40")
     return library
 
 
@@ -62,10 +97,14 @@ def train(atlas,schema,fit,query,registry,config,seed,*,train_base=None,val_base
         "num_threads":int(os.environ.get("SLURM_CPUS_PER_TASK","8")),"seed":seed,
         "verbosity":-1,"force_col_wise":True,"deterministic":True,"feature_pre_filter":False,
     }
-    if tree_device == "cuda":
+    if tree_device != "cpu":
         params.pop("force_col_wise")
         params.pop("deterministic")
+    if tree_device == "cuda":
         params.update(device_type="cuda", gpu_device_id=0, num_gpu=1)
+    elif tree_device == "opencl":
+        g3_opencl_library()
+        params.update(device_type="gpu", gpu_platform_id=0, gpu_device_id=0, gpu_use_dp=True)
     elif tree_device != "cpu":
         raise ValueError(f"Unsupported LightGBM device {tree_device}")
     requested=config["objective"]
