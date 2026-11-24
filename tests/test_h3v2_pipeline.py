@@ -28,7 +28,7 @@ def test_only_array_elements_missing_a_registered_arm_are_retried():
                 pipeline.settle_inner(["r1"], root, retried=False)
                 advance.assert_not_called()
                 cpu, gpu, controller = submit.call_args_list
-                assert cpu.kwargs["array"] == "2%16" and cpu.kwargs["node"] == "g4"
+                assert cpu.kwargs["array"] == "2%22" and cpu.kwargs["node"] == "g4"
                 assert gpu.kwargs["array"] == "3%4" and gpu.kwargs["gpu"]
                 assert controller.kwargs["deps"] == ("37101", "37102")
                 assert controller.kwargs["dependency"] == "afterany" and "--retried" in controller.args[2]
@@ -64,7 +64,22 @@ def test_cpu_training_arrays_share_the_expanded_budget():
         node = call.kwargs["node"]
         training_cores[node] = training_cores.get(node, 0) + call.kwargs["threads"] * int(concurrency)
     assert planned == set(indices)
-    assert training_cores == {"g4": 128, "g3": 48, "c4": 48, "c5": 30}
+    assert training_cores == {"g4": 176, "g3": 144, "c4": 48, "c5": 30}
+
+
+def test_g3_shares_its_cpu_cap_with_registered_early_fits():
+    indices = set(range(90))
+    with patch.object(pipeline, "submit", side_effect=map(str, range(37101, 37110))) as submit:
+        jobs = pipeline.submit_training_arrays("boundary-gbdt", Path("inner.sbatch"), [], "gbdt", indices,
+                                                terminal_deps=("37000",))
+    g3 = [call for call in submit.call_args_list if call.kwargs["node"] == "g3"]
+    assert len(jobs) == 6 and len(g3) == 2
+    assert [(c.kwargs["array"].split("%")[1], c.kwargs["terminal_deps"]) for c in g3] == [
+        ("12", ()), ("6", ("37000",))
+    ]
+    assigned = [int(index) for c in submit.call_args_list
+                for index in c.kwargs["array"].split("%")[0].split(",")]
+    assert len(assigned) == len(indices) and set(assigned) == indices
 
 
 def test_completed_early_gpu_arrays_are_not_resubmitted():
@@ -78,7 +93,7 @@ def test_completed_early_gpu_arrays_are_not_resubmitted():
                 patch.object(pipeline, "submit", side_effect=["37101", "37102", "37103"]) as submit:
             assert pipeline.schedule_inner(["r1", "r2", "boundary-1", "boundary-2"], root) == "37103"
             cpu, gpu, selector = submit.call_args_list
-            assert cpu.kwargs["array"] == "0%16" and gpu.kwargs["array"] == "4%4"
+            assert cpu.kwargs["array"] == "0%22" and gpu.kwargs["array"] == "4%4"
             assert selector.kwargs["deps"] == ("37101", "37102")
 
 
@@ -95,17 +110,21 @@ def test_followup_gpu_arrays_use_only_g3_a40():
         assert (root / "logs/trajectory.tsv").read_text().split("\t")[:3] == ["final-torch", "37104", "a40"]
 
 
-def test_g4_cpu_fit_requests_no_gpu():
+def test_cpu_fit_on_gpu_nodes_requests_no_gpu():
     with TemporaryDirectory(dir=pipeline.ROOT / "tmp") as scratch:
         root = Path(scratch)
         (root / "logs").mkdir()
         with patch.object(pipeline, "ROOT", root), \
                 patch.object(pipeline, "check_output", return_value="37104\n") as sbatch:
             pipeline.submit_training_arrays("final-gbdt", Path("job.sbatch"), [], "gbdt", range(1))
-        command = sbatch.call_args.args[0]
-        assert command[command.index("-p") + 1] == "gpu" and "--nodelist=g4" in command
-        assert all(not argument.startswith("--gres=") for argument in command)
-        assert (root / "logs/trajectory.tsv").read_text().split("\t")[:3] == ["final-gbdt-g4-8core", "37104", "cpu"]
+            command = sbatch.call_args.args[0]
+            assert command[command.index("-p") + 1] == "gpu" and "--nodelist=g4" in command
+            assert all(not argument.startswith("--gres=") for argument in command)
+            assert (root / "logs/trajectory.tsv").read_text().split("\t")[:3] == ["final-gbdt-g4-8core", "37104", "cpu"]
+            pipeline.submit_training_arrays("final-gbdt", Path("job.sbatch"), [], "gbdt", range(2))
+            g3 = sbatch.call_args.args[0]
+            assert g3[g3.index("-p") + 1] == "gpu" and "--nodelist=g3" in g3
+            assert all(not argument.startswith("--gres=") for argument in g3)
 
 
 def test_next_cpu_round_advances_while_registered_gpu_fits_continue():
@@ -113,7 +132,7 @@ def test_next_cpu_round_advances_while_registered_gpu_fits_continue():
         root = Path(scratch)
         tasks = {"gbdt": {0: [root / "cpu"]}, "torch": {4: [root / "early"], 7: [root / "hybrid"]}}
         stages = ["r1", "r2", "boundary-1", "boundary-2"]
-        with patch.object(pipeline, "inner_tasks", return_value=tasks), \
+        with patch.object(pipeline, "ROOT", root), patch.object(pipeline, "inner_tasks", return_value=tasks), \
                 patch.object(pipeline, "controller_dependency", return_value=("37100",)), \
                 patch.object(pipeline, "active_early_array", side_effect=[("37104", {4}), None]), \
                 patch.object(pipeline, "submit", side_effect=["37101", "37102", "37103"]) as submit:
@@ -141,8 +160,8 @@ def test_early_primary_tree_job_owns_its_indices_and_only_delays_g3():
                 patch.object(pipeline, "submit", side_effect=["37101", "37102", "37103", "37105"]) as submit:
             assert pipeline.schedule_inner(stages, root) == "37105"
             g4, g3, c4, controller = (call.kwargs for call in submit.call_args_list)
-            assert (g4["node"], g4["array"], g4["terminal_deps"]) == ("g4", "1%16", ())
-            assert (g3["node"], g3["array"], g3["terminal_deps"]) == ("g3", "2%6", ("37104",))
+            assert (g4["node"], g4["array"], g4["terminal_deps"]) == ("g4", "1%22", ())
+            assert (g3["node"], g3["array"], g3["terminal_deps"]) == ("g3", "2%12", ())
             assert (c4["node"], c4["array"], c4["terminal_deps"]) == ("c4", "3%6", ())
             assert controller["deps"] == ("37104", "37101", "37102", "37103")
 
@@ -153,8 +172,8 @@ def test_early_primary_tree_job_owns_its_indices_and_only_delays_g3():
             retry = {"gbdt": {i: [root / f"cpu-{i}"] for i in range(3)}, "torch": {}}
             assert pipeline.schedule_inner(stages[:-1], root, retry=True, tasks=retry) == "37105"
             g4, g3, c4, controller = (call.kwargs for call in submit.call_args_list)
-            assert g4["array"] == "0%16" and not g4["terminal_deps"]
-            assert g3["array"] == "1%6" and g3["terminal_deps"] == ("37104",)
+            assert g4["array"] == "0%22" and not g4["terminal_deps"]
+            assert g3["array"] == "1%12" and not g3["terminal_deps"]
             assert c4["array"] == "2%6" and not c4["terminal_deps"]
             assert controller["deps"] == ("37101", "37102", "37103")
 
@@ -179,7 +198,7 @@ def test_failed_final_jobs_are_retried_before_the_only_score_submission():
                 patch.object(pipeline, "submit", side_effect=map(str, range(37101, 37120))) as submit:
             assert pipeline.settle_final(root, retried=False) == "37104"
             cpu, gpu, refs, watcher = submit.call_args_list
-            assert cpu.kwargs["array"] == "1%16" and gpu.kwargs["array"] == "0%4"
+            assert cpu.kwargs["array"] == "1%22" and gpu.kwargs["array"] == "0%4"
             assert refs.kwargs["array"] == "1%3" and refs.kwargs["deps"] == ("37101",)
             assert watcher.kwargs["dependency"] == "afterany" and "--retried" in watcher.args[2]
             assert not (root / "locks/score-dispatch.json").exists()
@@ -233,9 +252,10 @@ def test_final_output_preserves_interrupted_and_completed_artifacts():
 if __name__ == "__main__":
     test_only_array_elements_missing_a_registered_arm_are_retried()
     test_cpu_training_arrays_share_the_expanded_budget()
+    test_g3_shares_its_cpu_cap_with_registered_early_fits()
     test_completed_early_gpu_arrays_are_not_resubmitted()
     test_followup_gpu_arrays_use_only_g3_a40()
-    test_g4_cpu_fit_requests_no_gpu()
+    test_cpu_fit_on_gpu_nodes_requests_no_gpu()
     test_next_cpu_round_advances_while_registered_gpu_fits_continue()
     test_early_primary_tree_job_owns_its_indices_and_only_delays_g3()
     test_failed_final_jobs_are_retried_before_the_only_score_submission()

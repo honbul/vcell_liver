@@ -22,7 +22,7 @@ GPU_TYPE = "a40"
 EARLY_TREE_NODE = "g3"
 EARLY_TREE_CONCURRENCY = 6
 # Three 8-core tasks and one 6-core task leave two C5 cores for the ledger.
-CPU_TRAINING_LANES = (("g4", 16, 8), ("g3", 6, 8), ("c4", 6, 8), ("c5", 3, 8), ("c5", 1, 6))
+CPU_TRAINING_LANES = (("g4", 22, 8), ("g3", 18, 8), ("c4", 6, 8), ("c5", 3, 8), ("c5", 1, 6))
 FINAL_PARTITIONS = (*SPLITS, "external")
 
 
@@ -40,7 +40,7 @@ def submit(name, script, arguments, *, deps=(), gpu=False,
     n=threads or CPUS_PER_TRAINING_TASK
     reserve=memory or ("32G" if gpu else "52G")
     host = node or (GPU_NODE if gpu else CPU_NODE)
-    partition = "gpu" if gpu or host == "g4" else "cpu"
+    partition = "gpu" if gpu or host in {"g3", "g4"} else "cpu"
     log=ROOT/"logs"/(f"{name}-%A_%a.log" if array else f"{name}-%j.log")
     command=["sbatch","--parsable","-J",f"ng2-h3-{name}","-p",partition,
              f"--nodelist={host}","-c",str(n),f"--mem={reserve}","-t",limit,"-o",str(log)]
@@ -92,10 +92,22 @@ def submit_training_arrays(name, script, arguments, backend, indexed, *, deps=()
     batches = {lane: [] for lane in CPU_TRAINING_LANES}
     for offset, index in enumerate(indices):
         batches[slots[offset % len(slots)]].append(index)
-    return [submit(f"{name}-{node}-{threads}core", script, arguments, node=node,
-                   array=",".join(map(str, batch)) + f"%{concurrency}", threads=threads, deps=deps,
-                   terminal_deps=terminal_deps if node == EARLY_TREE_NODE else ())
-            for (node, concurrency, threads), batch in batches.items() if batch]
+    jobs = []
+    for (node, concurrency, threads), batch in batches.items():
+        base = f"{name}-{node}-{threads}core"
+        if node == EARLY_TREE_NODE and terminal_deps:
+            shared = concurrency - EARLY_TREE_CONCURRENCY
+            ready = [index for position, index in enumerate(batch) if position % concurrency < shared]
+            later = [index for position, index in enumerate(batch) if position % concurrency >= shared]
+            groups = ((base, ready, shared, ()),
+                      (base + "-after-early", later, EARLY_TREE_CONCURRENCY, terminal_deps))
+        else:
+            groups = ((base, batch, concurrency, ()),)
+        for label, assigned, limit, drains in groups:
+            if assigned:
+                jobs.append(submit(label, script, arguments, node=node, threads=threads, deps=deps,
+                                   array=",".join(map(str, assigned)) + f"%{limit}", terminal_deps=drains))
+    return jobs
 
 
 def controller_dependency():
@@ -151,6 +163,15 @@ def active_early_tree_array(stage):
     if not route.is_file():
         return None
     record = read_json(route)
+    replacement = route.with_name(f"{stage}-early-primary-tree-jobs-cpu-expansion.json")
+    if replacement.is_file():
+        expanded = read_json(replacement)
+        if (expanded["supersedes"] != record["early_array"] or any(
+            expanded[field] != record[field] for field in
+            ("cpu_node", "site_cap", "threads", "early_plan_sha256", "indices")
+        )):
+            raise ValueError("Replacement early tree jobs change the registered work")
+        record = expanded
     if record["cpu_node"] != EARLY_TREE_NODE or record["site_cap"] != EARLY_TREE_CONCURRENCY:
         raise ValueError("Early Slurm registration does not match the current CPU schedule")
     plan = read_primary_tree_expansion(stage)
