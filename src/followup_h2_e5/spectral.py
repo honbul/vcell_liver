@@ -110,8 +110,12 @@ class BlockSpectral:
             coords=(cells[:,None],drugs[None,:])
             weights=w[coords]
             c,uc=separate(system.cell[cells[:,None],cells[None,:]])
-            d,ud=separate(system.drug[drugs[:,None],drugs[None,:]])
-            diagonal=(1.+system.tau)*float(weights.mean())*(c[:,None]*d[None,:])
+            # Per-screen row weighting is constant within each drug on observed rows.
+            # Preserve that exact scale in each local spectral preconditioner.
+            drug_scale=(weights.sum(0)/(weights>0).sum(0)).sqrt()
+            block=system.drug[drugs[:,None],drugs[None,:]]
+            d,ud=separate(block*drug_scale[:,None]*drug_scale[None,:])
+            diagonal=(1.+system.tau)*(c[:,None]*d[None,:])
             self.parts.append((coords,weights>0,uc,ud,diagonal))
 
     def build(self,ridge):
@@ -127,12 +131,18 @@ class BlockSpectral:
             return z if self.stacked else z[0]
         return inverse
 
-    def solve(self,system,ridge,tol=5e-5,max_steps=550):
+    def solve(self,system,ridge,tol=5e-5,max_steps=550,initial=None):
         R=self.build(ridge)
         y=system.y
         scale=max(float(y.norm()),1e-12)
-        x=torch.zeros_like(y)
-        r=y.clone()
+        if initial is None:
+            x,r=torch.zeros_like(y),y.clone()
+        else:
+            x=initial.clone()
+            r=y-system.product(x)-ridge*x
+        e=float(r.norm())/scale
+        if e<=tol:
+            return x,0,e
         p=R(r)
         energy=(p*r).sum()
         for step in range(1,max_steps+1):
@@ -164,7 +174,7 @@ def solve_block(system,penalties,*,tol=5e-5):
     except ValueError:
         return solve_shifts(system,penalties,tol=tol)
     out={}
-    high=None
+    high,block_high=None,None
     for p in penalties:
         initial,n,error=basis.solve(system,p,tol)
         if error<=tol:
@@ -172,6 +182,12 @@ def solve_block(system,penalties,*,tol=5e-5):
             continue
         if high is None:
             high=system.higher_precision()
-        coef,m,error=pcg(high,p,tol*.8,initial=initial.double())
+            block_high=BlockSpectral(high)
+        alpha,m,error=block_high.solve(high,p,tol*.8,initial=initial.double())
+        if error>tol:
+            coef,more,error=pcg(high,p,tol*.8,initial=alpha)
+            m+=more
+        else:
+            coef=high.root*alpha
         out[p]=coef.to(system.y.dtype),n+m,error,"block_double_pcg"
     return out
