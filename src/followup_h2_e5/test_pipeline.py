@@ -76,6 +76,9 @@ def synthetic_numerics():
     c,d=a@a.T+.3*torch.eye(7),b@b.T+.4*torch.eye(8)
     w=torch.rand((3,7,8),dtype=torch.float64)
     w[w<.31]=0
+    w[0,4:]=0
+    w[1,:3]=0
+    w[2,:,5:]=0
     y=torch.randn_like(w)
     system=System(c,d,w,y,tau=.5,stacked=True)
     k=torch.kron(torch.ones((3,3),dtype=torch.float64)+.5*torch.eye(3),torch.kron(c,d))

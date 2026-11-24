@@ -67,9 +67,27 @@ def shard(preflight, out, index):
     ev = InnerMetrics(x, reg.scaffold_block, mask)
     mode = "shared" if evidence["kind"] == "loso" else "in_screen"
     extra_baseline = role.startswith("T2/") and evidence["kind"] == "pooled"
-    records, proofs = [], {}
+    frames, proofs = [], {}
     base, shape = GRID_PARTS[quadrant]
+    directory = out / f"{index:03d}"
+    directory.mkdir(exist_ok=True, parents=True)
+    locked = sha256(preflight / "split.json")
+    if (directory/"receipt.json").exists():
+        receipt = read_json(directory/"receipt.json")
+        assert receipt["registration_sha256"] == locked and receipt["scores_sha256"] == sha256(directory/"scores.tsv")
+        print("Already sealed", index, flush=True)
+        return
     for w in WEIGHTS:
+        partial = directory / f"w-{w:g}.tsv"
+        check = partial.with_suffix(".json")
+        if check.exists():
+            sealed = read_json(check)
+            assert sealed["role"] == role and sealed["registration_sha256"] == locked
+            assert sealed["partial_sha256"] == sha256(partial)
+            frames.append(pd.read_csv(partial, sep="\t"))
+            proofs.update(sealed["fit_transform"])
+            continue
+        records = []
         cfg = Candidate(base, shape, w, PENALTIES[0])
         params = settings(role, cfg)
         for family in (DEBIASED, BALANCED):
@@ -92,14 +110,17 @@ def shard(preflight, out, index):
                 add_scores(records, ev, role, TASK, tau, cfg, result)
                 proofs[TASK] = proof
                 print(utc_now(), role, base, shape, "w", w, "tau", tau, flush=True)
+        piece = pd.DataFrame(records)
+        piece.to_csv(partial, index=False, sep="\t")
+        publish_json(check, {"role":role,"registration_sha256":locked,
+                            "partial_sha256":sha256(partial),"fit_transform":proofs})
+        frames.append(piece)
         print(utc_now(), role, base, shape, "w", w, "finished", flush=True)
-    table = pd.DataFrame(records)
-    directory = out / f"{index:03d}"
-    directory.mkdir(exist_ok=False, parents=True)
+    table = pd.concat(frames, ignore_index=True)
     file = directory / "scores.tsv"
     table.to_csv(file, index=False, sep="\t")
     publish_json(directory / "receipt.json", {
-        "registration_sha256": sha256(preflight / "split.json"), "role": role, "index": index,
+        "registration_sha256": locked, "role": role, "index": index,
         "grid_part": [base, shape], "scores_sha256": sha256(file),
         "row_count": len(table), "fit_rows": len(fit), "inner_rows": len(query),
         "scope": mode, "external_cohort_access": 0, "fit_transform": proofs,
