@@ -1,0 +1,21 @@
+job_id	job_name	stage	partition	gpu_requested	cpu_per_task	array_tasks	throttle	verified_completed	status	code_commit	evidence
+36879	fu-e4-preflight	preflight	cpu	0	2	1	1	0	FAILED	951ccd0	pandas index-name equality check
+36880	fu-e4-preflight	preflight	cpu	0	2	1	1	0	FAILED	3419cae	set indexer type
+36881	fu-e4-preflight	preflight	cpu	0	2	1	1	1	SUPERSEDED	a1a5efa	first response-blind split validation
+36884	fu-e4-kernel-grid	stage1	cpu	0	6	120	14	0	STOPPED	e7ff128	compound_id index name failure; array cancelled
+36899	fu-e4-kernel-select	stage1 merge	cpu	0	2	1	1	0	CANCELLED	e7ff128	upstream cancellation; dependency never ran
+36900	fu-e4-anchor-grid	stage2	cpu	0	6	30	10	0	CANCELLED	e7ff128	upstream cancellation; dependency never ran
+36901	fu-e4-selection-lock	selection seal	cpu	0	4	1	1	0	CANCELLED	e7ff128	upstream cancellation; dependency never ran
+36956	fu-e4-kernel-grid	stage1	cpu	0	6	120	14	43	STOPPED	c37a971	discarded all shards before selection; strengthened shared feature reads
+36971	fu-e4-kernel-select	stage1 merge	cpu	0	2	1	1	0	CANCELLED	c37a971	upstream cancellation; dependency never ran
+36972	fu-e4-anchor-grid	stage2	cpu	0	6	30	10	0	CANCELLED	c37a971	upstream cancellation; dependency never ran
+36973	fu-e4-selection-lock	selection seal	cpu	0	4	1	1	0	CANCELLED	c37a971	upstream cancellation; dependency never ran
+37018	fu-e4-preflight-projection	preflight	cpu	0	3	1	1	1	COMPLETED	c5f7cd3	preflight-projected/e4_split_manifest.json
+37020	fu-e4-kernel-grid-projected	stage1	cpu	0	6	120	16	120	COMPLETED	98d854f	stage1-projected/{000..119}/receipt.json
+37021	fu-e4-kernel-select	stage1 merge	cpu	0	2	1	1	1	COMPLETED	98d854f	kernels/kernels.json
+37022	fu-e4-anchor-grid	stage2	cpu	0	6	30	12	30	COMPLETED	98d854f	stage2/{00..29}/receipt.json
+37023	fu-e4-selection-lock	selection seal	cpu	0	4	1	1	1	COMPLETED	98d854f	selection/e4_selection_receipt.json
+37024	fu-e4-forecasts	fit and forecast	cpu	0	8	7	7	7	COMPLETED	98d854f	forecasts/{0..6}/receipt.json
+37025	fu-e4-unit-tests	required tests	cpu	0	4	1	1	1	COMPLETED	98d854f	tests/test_receipt.json
+37058	fu-e4-synthetic-smoke	synthetic scorer smoke	cpu	0	2	1	1	1	COMPLETED	98d854f	smoke/E4_LAMBDA_GENERALIZATION_CURVE.tsv; synthetic labels only
+37188	fu-e4-score-once	official score and descriptive lambda curves	cpu	0	8	1	1	1	COMPLETED	98d854f	score/score_receipt.json; sole official-outcome-access.json
