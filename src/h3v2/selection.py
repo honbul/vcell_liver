@@ -10,6 +10,8 @@ from nextgen_h2.run import read_json
 from .data import ROOT, SPLITS
 from .grid import FAMILIES, SEEDS, boundary_neighbors, identify, initial, nearby
 
+NEURAL_FAMILIES = ("film", "attention", "gnn")
+
 
 def stage_options(split, family, stage):
     if stage == "r1":
@@ -68,6 +70,49 @@ def compact(row):
         "receipt_sha256":[x["receipt_sha256"] for x in row["folds"]]}
 
 
+def next_boundary(stage):
+    prefix, index = stage.rsplit("-", 1)
+    if prefix != "boundary" or not index.isdecimal() or int(index) < 1:
+        raise ValueError(f"Expected an adaptive boundary stage, got {stage}")
+    return f"boundary-{int(index) + 1}"
+
+
+def adaptive_candidates(chosen, sweep):
+    explored = [row["config"] for row in sweep]
+    return boundary_neighbors(chosen["config"], explored, chosen["max_budget_pressure_iteration"])
+
+
+def read_neural_expansion(stage):
+    path = ROOT / "locks" / f"{stage}-early-neural.json"
+    plan = read_json(path)
+    source = ROOT / "locks" / f"{plan['stages'][-1]}.json"
+    if stage != next_boundary(plan["stages"][-1]) or sha256(source) != plan["source_plan_sha256"]:
+        raise ValueError("The early neural expansion does not match its source stage")
+    if set(plan["splits"]) != set(SPLITS) or any(
+        set(families) != set(NEURAL_FAMILIES) for families in plan["splits"].values()
+    ):
+        raise ValueError("The early expansion must use the three independent neural families")
+    return plan
+
+
+def register_neural_expansion(stages):
+    stage = next_boundary(stages[-1])
+    expected = ["r1", "r2", *(f"boundary-{i}" for i in range(1, int(stage.rsplit("-", 1)[-1])))]
+    if stages != expected or (ROOT / "score/consumed.json").exists():
+        raise ValueError("The early expansion requires the complete, unsealed inner trajectory")
+    splits = {}
+    for split in SPLITS:
+        splits[split] = {}
+        for family in NEURAL_FAMILIES:
+            sweep = evaluated(split, family, stages)
+            candidates = adaptive_candidates(best(sweep), sweep)
+            splits[split][family] = list({identify(cfg): cfg for cfg in candidates}.values())
+    path = ROOT / "locks" / f"{stage}-early-neural.json"
+    publish_json(path, {"stages": stages, "splits": splits,
+                        "source_plan_sha256": sha256(ROOT / "locks" / f"{stages[-1]}.json")})
+    print(stage, sum(len(configs) for families in splits.values() for configs in families.values()), flush=True)
+
+
 def fit_gap(split, family, winner):
     gaps=[]
     if winner["config"]["backend"]!="torch":
@@ -93,7 +138,7 @@ def select(stages):
     elif label=="r2":
         next_round="boundary-1"
     else:
-        next_round="boundary-"+str(int(label.split("-")[-1])+1)
+        next_round=next_boundary(label)
     pending={}
     boundary_status={}
     diagnostics={}
@@ -102,16 +147,23 @@ def select(stages):
         top=sorted(winners[split],key=lambda f:-winners[split][f]["utility"])[:3]
         for family, variants in results.items():
             chosen=winners[split][family]
-            explored=[row["config"] for row in variants]
             if label=="r1":
                 diagnosis=fit_gap(split,family,chosen)
                 diagnostics[split][family]=diagnosis
                 candidates=nearby(chosen["config"],intensive=family in top,diagnosis=diagnosis["diagnosis"])
             else:
-                candidates=boundary_neighbors(chosen["config"],explored,chosen["max_budget_pressure_iteration"])
+                candidates=adaptive_candidates(chosen,variants)
             pending[split][family]=list({identify(c):c for c in candidates
                                          if identify(c) not in {r["id"] for r in variants}}.values())
             boundary_status[split][family]=[identify(c) for c in pending[split][family]]
+    early = ROOT / "locks" / f"{next_round}-early-neural.json"
+    if early.is_file():
+        plan = read_neural_expansion(next_round)
+        if plan["stages"] != stages or any(
+            [identify(cfg) for cfg in configs] != boundary_status[split][family]
+            for split, families in plan["splits"].items() for family, configs in families.items()
+        ):
+            raise ValueError("Early neural candidates differ from the complete inner selection")
     has_work=any(configs for families in pending.values() for configs in families.values())
     ledger=ROOT/"locks"/f"{label}-selection.json"
     publish_json(ledger,{
@@ -144,4 +196,6 @@ def select(stages):
 if __name__=="__main__":
     p=argparse.ArgumentParser()
     p.add_argument("stages",nargs="+")
-    select(p.parse_args().stages)
+    p.add_argument("--early-neural", action="store_true")
+    args = p.parse_args()
+    (register_neural_expansion if args.early_neural else select)(args.stages)

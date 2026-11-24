@@ -1,10 +1,14 @@
 import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
 
 from h3v2.fit_tree import train
-from h3v2.grid import boundary_neighbors, initial
+from h3v2 import selection
+from h3v2.grid import boundary_neighbors, identify, initial
 from h3v2.selection import branch_budgets
 from test_h3v2_models import fixture
 
@@ -39,7 +43,40 @@ def test_frozen_boosting_keeps_the_independent_inner_budgets():
     assert np.isfinite(forecast).all()
 
 
+def test_early_neural_plan_matches_complete_inner_selection():
+    stages = ["r1", "r2", "boundary-1"]
+
+    def sweep(split, family, prior):
+        assert prior == stages
+        config = initial(family)[0]
+        return [{"config": config, "id": identify(config), "utility": .5,
+                 "point": {"ndcg_at_5": .4, "spearman": .6}, "max_budget_pressure_iteration": 12,
+                 "folds": [{"receipt_sha256": str(i)} for i in range(3)]}]
+
+    with TemporaryDirectory(dir=selection.ROOT / "tmp") as scratch:
+        root = Path(scratch)
+        with patch.multiple(selection, ROOT=root, SPLITS=("drug-0",)), \
+                patch.object(selection, "evaluated", side_effect=sweep) as evaluated:
+            (root / "locks").mkdir()
+            (root / "locks/boundary-1.json").write_text("{}", encoding="utf-8")
+            selection.register_neural_expansion(stages)
+            assert [call.args[1] for call in evaluated.call_args_list] == list(selection.NEURAL_FAMILIES)
+            plan = selection.read_neural_expansion("boundary-2")
+            with patch.object(selection, "read_neural_expansion", return_value=plan | {"stages": ["r1"]}):
+                try:
+                    selection.select(stages)
+                except ValueError as exc:
+                    assert "differ from the complete inner selection" in str(exc)
+                else:
+                    raise AssertionError("A mismatched plan was accepted")
+            assert not (root / "locks/boundary-1-selection.json").exists()
+            selection.select(stages)
+            registered = selection.read_json(root / "locks/boundary-2.json")["splits"]["drug-0"]
+            assert {family: registered[family] for family in selection.NEURAL_FAMILIES} == plan["splits"]["drug-0"]
+
+
 if __name__ == "__main__":
     test_matched_boundary_expands_and_brackets()
     test_frozen_boosting_keeps_the_independent_inner_budgets()
+    test_early_neural_plan_matches_complete_inner_selection()
     print("Matched saturation neighbors and independent frozen L2 / LambdaRank budgets passed")

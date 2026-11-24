@@ -63,7 +63,22 @@ def test_cpu_training_arrays_share_the_c5_budget():
     assert planned == set(indices) and training_cores + 2 == 48
 
 
+def test_completed_early_gpu_arrays_are_not_resubmitted():
+    with TemporaryDirectory(dir=pipeline.ROOT / "tmp") as scratch:
+        root = Path(scratch)
+        present = root / "complete"
+        present.touch()
+        tasks = {"gbdt": {0: [root / "cpu"]}, "torch": {3: [present], 4: [present, root / "gpu"]}}
+        with patch.object(pipeline, "inner_tasks", return_value=tasks), \
+                patch.object(pipeline, "submit", side_effect=["37101", "37102", "37103"]) as submit:
+            assert pipeline.schedule_inner(["r1", "r2", "boundary-1", "boundary-2"], root) == "37103"
+            cpu, gpu, selector = submit.call_args_list
+            assert cpu.kwargs["array"] == "0%5" and gpu.kwargs["array"] == "4%6"
+            assert selector.kwargs["deps"] == ("37101", "37102")
+
+
 if __name__ == "__main__":
     test_only_array_elements_missing_a_registered_arm_are_retried()
     test_cpu_training_arrays_share_the_c5_budget()
+    test_completed_early_gpu_arrays_are_not_resubmitted()
     print("Registered 990 arms and verified bounded recovery, dependencies and the training caps", flush=True)

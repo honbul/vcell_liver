@@ -13,6 +13,7 @@ from .data import ROOT,SPLITS,nested,read_data,register,store
 from .grid import FAMILIES,SEEDS,identify,initial
 from .kernel import oof_fit,read_bank
 from .quality import quality,utility
+from .selection import NEURAL_FAMILIES,read_neural_expansion
 
 
 def backends(name):
@@ -42,10 +43,15 @@ def options(stage,split,family,backend):
 
 
 def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="cpu",
-             candidate_id=None, diagnostic=False):
+             candidate_id=None, diagnostic=False, early_neural=False):
     if tree_device != "cpu" and backend != "gbdt":
         raise ValueError("The LightGBM device option applies only to tree fits")
-    config_list=options(stage,split,family,backend)
+    if early_neural:
+        if backend != "torch" or family not in NEURAL_FAMILIES or smoke or diagnostic:
+            raise ValueError("The early expansion applies only to registered neural fits")
+        config_list = read_neural_expansion(stage)["splits"][split][family]
+    else:
+        config_list=options(stage,split,family,backend)
     if candidate_id is not None:
         config_list = [config for config in config_list if identify(config) == candidate_id]
         if len(config_list) != 1:
@@ -113,6 +119,7 @@ if __name__=="__main__":
     p.add_argument("inner",type=int,choices=range(3))
     p.add_argument("backend",choices=("torch","gbdt"))
     p.add_argument("--smoke",action="store_true")
+    p.add_argument("--early-neural",action="store_true")
     p.add_argument("--tree-device",choices=("cpu","cuda","opencl"),default="cpu")
     x=p.parse_args()
     if x.tree_device != "cpu" and x.backend != "gbdt":
@@ -120,4 +127,5 @@ if __name__=="__main__":
     if x.tree_device == "cuda":
         from .fit_tree import g3_cuda_library
         g3_cuda_library()
-    fold_fit(x.stage,x.split,x.family,x.inner,x.backend,smoke=x.smoke,tree_device=x.tree_device)
+    fold_fit(x.stage,x.split,x.family,x.inner,x.backend,smoke=x.smoke,tree_device=x.tree_device,
+             early_neural=x.early_neural)

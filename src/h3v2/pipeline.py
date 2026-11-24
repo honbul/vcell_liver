@@ -89,9 +89,14 @@ def controller_dependency():
     return (job_id,) if job_id else ()
 
 
+def missing_inner(stage):
+    return {backend: {index: files for index, files in tasks.items() if not all(p.is_file() for p in files)}
+            for backend, tasks in inner_tasks(stage).items()}
+
+
 def schedule_inner(stages, snap, *, retry=False, tasks=None):
     stage = stages[-1]
-    planned = inner_tasks(stage) if tasks is None else tasks
+    planned = missing_inner(stage) if tasks is None else tasks
     suffix = "-retry" if retry else ""
     helpers = slurm(snap)
     jobs = []
@@ -100,7 +105,7 @@ def schedule_inner(stages, snap, *, retry=False, tasks=None):
         jobs.extend(submit_training_arrays(f"{stage}-{backend}{suffix}", helpers / "inner.sbatch",
                                            [snap, stage, backend], backend, indexed, deps=predecessor))
     if not jobs:
-        raise ValueError("An inner round was selected with no fits")
+        return advance(stages, snap, dispatch_only=False)
     arguments = [snap, "-m", "h3v2.pipeline", "settle", "--snapshot", snap, *stages]
     if retry:
         arguments.append("--retried")
@@ -113,8 +118,7 @@ def settle_inner(stages, snapshot, *, retried):
     if (ROOT / "score/consumed.json").exists():
         raise ValueError("Inner tuning is closed after the outer release")
     stage = stages[-1]
-    missing = {backend: {index: files for index, files in tasks.items() if not all(p.is_file() for p in files)}
-               for backend, tasks in inner_tasks(stage).items()}
+    missing = missing_inner(stage)
     if any(missing.values()):
         indices = {backend: list(tasks) for backend, tasks in missing.items() if tasks}
         if retried:
@@ -172,7 +176,9 @@ def advance(stages,snapshot,*,dispatch_only):
         raise FileExistsError("Already submitted the next wave for this phase")
     publish_json(marker,{"input_sha256":sha256(file),"stage":stage})
     successor=schedule_inner([*stages,choice["next"]],snapshot) if choice["next"] else schedule_final(snapshot)
-    print("Next phase will be handled by",successor,flush=True)
+    if successor is not None:
+        print("Next phase will be handled by",successor,flush=True)
+    return successor
 
 
 if __name__=="__main__":
