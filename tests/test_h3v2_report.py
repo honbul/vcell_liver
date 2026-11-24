@@ -8,7 +8,7 @@ import pandas as pd
 
 from h3v2.data import ROOT
 from h3v2.grid import FAMILIES, initial
-from h3v2.report import DISPLAY, job_observations, report_docs
+from h3v2.report import DISPLAY, job_observations, report_docs, sampled_learning_curve
 from h3v2.score import AXES
 
 
@@ -98,6 +98,18 @@ def test_slurm_job_observations_preserve_actual_placement_and_terminal_times():
     assert result[37586]["observed_nodes"] == result[37586]["first_observed_start_local"] == ""
 
 
+def test_sampled_curves_keep_short_rank_branch_and_both_best_iterations():
+    native = pd.DataFrame([{"branch":branch, "iteration":i} for branch,count in
+                           (("l2",151), ("lambdarank",4), ("selected",1)) for i in range(1,count+1)])
+    sampled = sampled_learning_curve(native, {"best_iteration":78,"branch_iterations":[75,3]})
+    assert {1,75,151} <= set(sampled[sampled.branch.eq("l2")].iteration)
+    assert set(sampled[sampled.branch.eq("lambdarank")].iteration) == {1,2,3,4}
+    assert sampled.iloc[-1].branch == "selected"
+    neural = native.loc[native.branch.eq("l2"), ["iteration"]]
+    assert {1,75,151} <= set(sampled_learning_curve(neural, {"best_iteration":75}).iteration)
+
+
 if __name__ == "__main__":
     report_rendering()
     test_slurm_job_observations_preserve_actual_placement_and_terminal_times()
+    test_sampled_curves_keep_short_rank_branch_and_both_best_iterations()

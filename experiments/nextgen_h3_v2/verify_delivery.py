@@ -4,6 +4,7 @@ from collections import Counter, defaultdict
 import csv
 from hashlib import sha256
 import json
+from math import isfinite
 from pathlib import Path
 import sys
 
@@ -62,6 +63,25 @@ def verify_frontier(grid, splits, replicated):
             raise ValueError(f"Frozen candidate differs from the measured inner winner for {identity}")
         if boundary_neighbors(selected["config"], [point["config"] for point in points], selected["max_iteration"]):
             raise ValueError(f"Unmeasured saturation neighbors remain for {identity}")
+
+
+def verify_curve_branches(grid, fits):
+    measured = defaultdict(set)
+    for row in fits:
+        key = tuple(row[name] for name in ("split", "family", "round", "config_id", "inner"))
+        neural = (row.get("train_huber"), row.get("val_huber"))
+        trees = (row.get("train_objective"), row.get("validation_objective"))
+        if all(value and isfinite(float(value)) for value in neural):
+            measured[key].add("neural")
+        if all(value and isfinite(float(value)) for value in trees):
+            measured[key].add(row["branch"])
+    for row in grid:
+        key = tuple(row[name] for name in ("split", "family", "round", "config_id"))
+        config = json.loads(row["configuration"])
+        required = set(config["objective"].split("_")) if config["backend"] == "gbdt" else {"neural"}
+        for fold in ("0", "1", "2"):
+            if measured[(*key, fold)] != required:
+                raise ValueError(f"Missing or unexpected learning curve branch for {'/'.join((*key, fold))}")
 
 
 def verify(root):
@@ -130,6 +150,7 @@ def verify(root):
     if any(counts[part, family, stage] < 2 for part in PARTITIONS for family in FAMILIES for stage in ("r1", "r2")):
         raise ValueError("A split or family is missing two measured configurations in a round")
     grid = rows(root / GRID_TABLE)
+    verify_curve_branches(grid, fits)
     verify_frontier(grid, lock["splits"], replicated)
     trial_counts = Counter(row["split"] for row in grid)
     expected_inputs = {f"{split}/{entry['role']}": (split, entry)

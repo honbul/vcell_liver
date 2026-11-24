@@ -146,6 +146,20 @@ def prior_held_points(points):
     return pd.DataFrame(comparisons)
 
 
+def sampled_learning_curve(trial, training):
+    groups = trial.groupby("branch", sort=False, dropna=False) if "branch" in trial else [("neural", trial)]
+    budgets = training.get("branch_iterations", [training["best_iteration"]])
+    samples = []
+    for position, (branch, frame) in enumerate(groups):
+        if len(frame) > 12:
+            best = budgets[position] if branch != "selected" else training["best_iteration"]
+            measured = np.flatnonzero(frame.iteration.to_numpy() == best)
+            regular = np.linspace(0, len(frame) - 1, num=11, dtype=int)
+            frame = frame.iloc[np.unique(np.r_[regular, measured])]
+        samples.append(frame)
+    return pd.concat(samples).sort_index()
+
+
 def inner_results(lock):
     paths=sorted((ROOT/"locks").glob("*-selection.json"),
                  key=lambda x:(0 if x.name.startswith("r") else 1,len(x.name),x.name))
@@ -191,8 +205,7 @@ def inner_results(lock):
                     trial=pd.read_parquet(path)
                     chosen=row["id"]==picked
                     if not chosen and len(trial)>12:
-                        trainonly=np.linspace(0,len(trial)-1,num=11,dtype=int)
-                        trial=trial.iloc[np.unique(np.r_[trainonly,len(trial)-1])]
+                        trial=sampled_learning_curve(trial, meta["training"])
                     device=meta["training"].get("device","cpu" if config["backend"]=="gbdt" else "cuda")
                     curves.append(trial.assign(**key,inner=i,frozen=chosen,backend=config["backend"],device=device,
                                                fit_wall_seconds=meta["training"]["wall_seconds"],
@@ -433,7 +446,8 @@ def report_docs(root,points,ci,curves,grid,score,lock,*,replays=()):
         "LightGBM은 L2/Huber/LambdaRank를, FiLM은 반복 조건부 residual 블록을, Transformer는 결측 마스크가 있는 교차 "
         "어텐션을 사용했다. GNN은 GINE/GATv2/AttentiveFP와 등록된 CLAMP·Uni-Mol 서브암을 포함했다. "
         "하이브리드는 H2 OOF를 기본값으로 고정하고 두 단계 트리 또는 공동 손실 신경망으로 보정했다.", "",
-        "학습곡선은 같은 iteration의 train 및 validation을 병기한다. Validation 모델은 best iteration으로 재적합했다. "
+        "학습곡선은 같은 iteration의 train 및 validation을 병기한다. 동결 설정은 기록한 전체 곡선을 싣고, "
+        "다른 설정은 분기별로 표본을 남긴다. 각 분기의 첫·마지막 관측 및 최적 iteration을 포함한다. "
         "포화 그림은 Drug-Cold fold 0에서 동결 설정의 폭 또는 깊이만 바꾼 내측 비교다. 다른 축과 분할의 측정값은 설정 TSV에 있다.",
         "[학습 곡선](H3V2_FAMILY_LEARNING_CURVES.tsv) · [학습 곡선 그림](H3V2_FAMILY_LEARNING_CURVES.png) · [포화 탐색](H3V2_GRID_SATURATION.tsv) · [포화 그림](H3V2_GRID_SATURATION.png) · [최종 동결](final_lock.json)",
     ]
