@@ -1,7 +1,10 @@
 """Refit only frozen family settings and emit sealed forecasts on the registered rosters."""
 import argparse
 from collections import Counter
+from contextlib import contextmanager
+from pathlib import Path
 import pickle
+from tempfile import TemporaryDirectory, mkdtemp
 
 import numpy as np
 import pandas as pd
@@ -17,6 +20,25 @@ from .features import SourceFeatures
 from .fit import run_fit
 from .grid import FAMILIES, SEEDS
 from .kernel import oof_fit, read_bank
+
+
+@contextmanager
+def final_output(target):
+    """Publish a complete fitted artifact directory, preserving interrupted legacy output."""
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if (target / "receipt.json").exists():
+        raise FileExistsError(target)
+    with TemporaryDirectory(prefix=f".{target.name}-working-", dir=target.parent) as temporary:
+        stage = Path(temporary) / target.name
+        yield stage
+        if not (stage / "receipt.json").is_file():
+            raise RuntimeError(f"Missing final artifact receipt for {target}")
+        if target.exists():
+            if (target / "receipt.json").exists():
+                raise FileExistsError(target)
+            interrupted = Path(mkdtemp(prefix=f".{target.name}-interrupted-", dir=target.parent))
+            target.rename(interrupted / target.name)
+        stage.rename(target)
 
 
 def external_query():
@@ -49,7 +71,8 @@ def prepare_external():
         raise ValueError("External fit must wait for the frozen operating points")
     fit,query=external_data()
     source=SourceFeatures.read(extra=query)
-    save(fit,query,source,ROOT/"features/external")
+    with final_output(ROOT/"features/external") as stage:
+        save(fit,query,source,stage)
 
 
 def old_h2(part):
@@ -120,8 +143,7 @@ def fixed_kernel(split,fit,query):
 def final_candidate(split,family,seed):
     lock,fit,query,atlas,meta,schema,point=rig(split,family)
     config=point["config"]
-    root=ROOT/"final"/split/family/str(seed)
-    root.mkdir(parents=True,exist_ok=False)
+    target=ROOT/"final"/split/family/str(seed)
     train_base=val_base=kernel_stamp=None
     if family=="hybrid":
         train_base,val_base,kernel_stamp=fixed_kernel(split,fit,query)
@@ -132,21 +154,22 @@ def final_candidate(split,family,seed):
                                       progress=lambda d:print(split,family,seed,d,flush=True))
     if not np.isfinite(prediction).all() or len(prediction)!=len(query):
         raise ValueError("Final package did not forecast the entire registered test roster")
-    file=root/"forecast.parquet"
-    store(query[META].assign(predicted=prediction),file)
-    model=root/"state.pkl"
-    with model.open("xb") as stream:
-        pickle.dump({"model":state,"config":config,"seed":seed,"scale":float(atlas["scale"]),
-                     "source_atlas_sha256":meta["atlas_sha256"],"model_input_sha256":meta["model_input_sha256"],"kernel_base_sha256":kernel_stamp},stream,protocol=5)
-    publish_json(root/"receipt.json",{
-        "split":split,"family":family,"seed":seed,"training":stamp,"operating_point":point["id"],
-        "selected_budget":budget,
-        "lock_sha256":sha256(ROOT/"locks/frozen.json"),"atlas_sha256":meta["atlas_sha256"],
-        "model_input_sha256":meta["model_input_sha256"],"lincs_full_unclipped":meta["lincs_full_unclipped"],
-        "forecast_sha256":sha256(file),"checkpoint_sha256":sha256(model),"query_id_sha256":table_hash(query),
-        "query_rows":len(query),"outer_labels_loaded":False,"schema_sha256":meta["schema_sha256"],
-        "kernel_base_sha256":kernel_stamp,
-    })
+    with final_output(target) as root:
+        file=root/"forecast.parquet"
+        store(query[META].assign(predicted=prediction),file)
+        model=root/"state.pkl"
+        with model.open("xb") as stream:
+            pickle.dump({"model":state,"config":config,"seed":seed,"scale":float(atlas["scale"]),
+                         "source_atlas_sha256":meta["atlas_sha256"],"model_input_sha256":meta["model_input_sha256"],"kernel_base_sha256":kernel_stamp},stream,protocol=5)
+        publish_json(root/"receipt.json",{
+            "split":split,"family":family,"seed":seed,"training":stamp,"operating_point":point["id"],
+            "selected_budget":budget,
+            "lock_sha256":sha256(ROOT/"locks/frozen.json"),"atlas_sha256":meta["atlas_sha256"],
+            "model_input_sha256":meta["model_input_sha256"],"lincs_full_unclipped":meta["lincs_full_unclipped"],
+            "forecast_sha256":sha256(file),"checkpoint_sha256":sha256(model),"query_id_sha256":table_hash(query),
+            "query_rows":len(query),"outer_labels_loaded":False,"schema_sha256":meta["schema_sha256"],
+            "kernel_base_sha256":kernel_stamp,
+        })
 
 
 def ridge_extrapolate(atlas,penalty=64.):
@@ -187,7 +210,6 @@ def final_references(split):
     mode,idx=(split.rsplit("-",1) if split!="external" else ("external","3"))
     readings={}
     target=ROOT/"final"/split/"references"
-    target.mkdir(parents=True,exist_ok=False)
     if mode in ("drug","external"):
         old,digest=old_h2(int(idx))
         old=exact_join(query,old)
@@ -214,12 +236,13 @@ def final_references(split):
         result["drug_mean_v1"]=known.drug_mean.to_numpy()
         for seed in SEEDS:
             result[f"H3v1__{seed}"]=known[f"G2__{seed}"].to_numpy()
-    path=target/"forecast.parquet"
-    store(result,path)
-    publish_json(target/"receipt.json",{
-        "split":split,"lock_sha256":sha256(ROOT/"locks/frozen.json"),"forecast_sha256":sha256(path),
-        "rows":len(result),"roster_sha256":table_hash(query),"outer_labels_loaded":False,"read_only_sources":readings,
-    })
+    with final_output(target) as stage:
+        path=stage/"forecast.parquet"
+        store(result,path)
+        publish_json(stage/"receipt.json",{
+            "split":split,"lock_sha256":sha256(ROOT/"locks/frozen.json"),"forecast_sha256":sha256(path),
+            "rows":len(result),"roster_sha256":table_hash(query),"outer_labels_loaded":False,"read_only_sources":readings,
+        })
 
 
 if __name__=="__main__":

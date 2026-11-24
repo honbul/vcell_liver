@@ -13,11 +13,12 @@ from .selection import select
 
 CPUS_PER_TRAINING_TASK = 8
 GPU_TRAINING_CONCURRENCY = 4
-CPU_PRIMARY_CONCURRENCY = 5
-CPU_SECONDARY_THREADS = 6
 CPU_NODE = "c5"
 GPU_NODE = "g3"
 GPU_TYPE = "a40"
+# Three 8-core tasks and one 6-core task leave two C5 cores for the ledger.
+CPU_TRAINING_LANES = (("g4", 16, 8), ("g3", 6, 8), ("c4", 6, 8), ("c5", 3, 8), ("c5", 1, 6))
+FINAL_PARTITIONS = (*SPLITS, "external")
 
 
 def slurm(snap):
@@ -25,16 +26,18 @@ def slurm(snap):
 
 
 def submit(name, script, arguments, *, deps=(), gpu=False,
-           array=None, limit="1-12:00:00", threads=None, memory=None, dependency="afterok"):
+           array=None, limit="1-12:00:00", threads=None, memory=None, dependency="afterok", node=None):
     if not all(str(x).isdecimal() for x in deps):
         raise ValueError("Unexpected Slurm dependency")
     if dependency not in {"afterok", "afterany"}:
         raise ValueError("Unsupported Slurm dependency condition")
     n=threads or CPUS_PER_TRAINING_TASK
     reserve=memory or ("32G" if gpu else "52G")
+    host = node or (GPU_NODE if gpu else CPU_NODE)
+    partition = "gpu" if gpu or host == "g4" else "cpu"
     log=ROOT/"logs"/(f"{name}-%A_%a.log" if array else f"{name}-%j.log")
-    command=["sbatch","--parsable","-J",f"ng2-h3-{name}","-p","gpu" if gpu else "cpu",
-             f"--nodelist={GPU_NODE if gpu else CPU_NODE}","-c",str(n),f"--mem={reserve}","-t",limit,"-o",str(log)]
+    command=["sbatch","--parsable","-J",f"ng2-h3-{name}","-p",partition,
+             f"--nodelist={host}","-c",str(n),f"--mem={reserve}","-t",limit,"-o",str(log)]
     if gpu:
         command.append(f"--gres=gpu:{GPU_TYPE}:1")
     if array is not None:
@@ -72,17 +75,18 @@ def inner_tasks(stage):
 def submit_training_arrays(name, script, arguments, backend, indexed, *, deps=()):
     indices = sorted(indexed)
     if backend == "torch":
-        lanes = [("", indices, GPU_TRAINING_CONCURRENCY, CPUS_PER_TRAINING_TASK)]
-    else:
-        # Five 8-core jobs and one 6-core job leave two C5 cores for the ledger.
-        secondary = indices[5::7]
-        secondary_set = set(secondary)
-        primary = [index for index in indices if index not in secondary_set]
-        lanes = [("", primary, CPU_PRIMARY_CONCURRENCY, CPUS_PER_TRAINING_TASK),
-                 ("-6core", secondary, 1, CPU_SECONDARY_THREADS)]
-    return [submit(name + suffix, script, arguments, gpu=backend == "torch",
+        if not indices:
+            return []
+        array = ",".join(map(str, indices)) + f"%{GPU_TRAINING_CONCURRENCY}"
+        return [submit(name, script, arguments, gpu=True, array=array, deps=deps)]
+    slots = [lane for seat in range(max(lane[1] for lane in CPU_TRAINING_LANES))
+             for lane in CPU_TRAINING_LANES if seat < lane[1]]
+    batches = {lane: [] for lane in CPU_TRAINING_LANES}
+    for offset, index in enumerate(indices):
+        batches[slots[offset % len(slots)]].append(index)
+    return [submit(f"{name}-{node}-{threads}core", script, arguments, node=node,
                    array=",".join(map(str, batch)) + f"%{concurrency}", threads=threads, deps=deps)
-            for suffix, batch, concurrency, threads in lanes if batch]
+            for (node, concurrency, threads), batch in batches.items() if batch]
 
 
 def controller_dependency():
@@ -134,9 +138,8 @@ def settle_inner(stages, snapshot, *, retried):
 
 def schedule_final(snap):
     selected=read_json(ROOT/"locks/frozen.json")
-    helpers=slurm(snap)
     jobs={"torch":[],"gbdt":[]}
-    for partition in (*SPLITS,"external"):
+    for partition in FINAL_PARTITIONS:
         for family in FAMILIES:
             settings=external_operating_point(selected,family) if partition=="external" else (
                 selected["splits"][partition]["families"][family])
@@ -144,23 +147,67 @@ def schedule_final(snap):
             jobs[backend].extend({"split":partition,"family":family,"seed":seed} for seed in SEEDS)
     lock=ROOT/"locks/final-jobs.json"
     publish_json(lock,jobs)
-    ext=submit("external-atlas",helpers/"job.sbatch",[snap,"-m","h3v2.final_fit","external-atlas"],
-               threads=8,memory="28G",limit="01:00:00",deps=controller_dependency())
-    finals = {backend: submit_training_arrays(f"final-{backend}", helpers/"job.sbatch",
-               [snap,"-m","h3v2.pipeline","fit-task","--backend",backend], backend, range(len(parts)), deps=(ext,))
-              for backend,parts in jobs.items()}
-    reference_deps = (ext, *finals["gbdt"])
-    fit_deps = tuple(job for group in finals.values() for job in group)
-    refs=submit("references",helpers/"job.sbatch",[snap,"-m","h3v2.pipeline","references-task"],
-                deps=reference_deps,array=f"0-{len(SPLITS)}%3",threads=6,memory="20G",limit="02:00:00")
+    return schedule_final_attempt(snap, missing_final(jobs), retried=False)
+
+
+def missing_final(jobs):
+    atlas = not (ROOT / "features/external/receipt.json").is_file()
+    fits = {backend: [i for i, item in enumerate(group) if not (
+        ROOT / "final" / item["split"] / item["family"] / str(item["seed"]) / "receipt.json").is_file()]
+            for backend, group in jobs.items()}
+    references = [i for i, split in enumerate(FINAL_PARTITIONS) if not (
+        ROOT / "final" / split / "references/receipt.json").is_file()]
+    return {"atlas": atlas, "fits": fits, "references": references}
+
+
+def schedule_final_attempt(snap, missing, *, retried):
+    script = slurm(snap) / "job.sbatch"
+    suffix = "-retry" if retried else ""
+    previous = controller_dependency()
+    atlas = ()
+    if missing["atlas"]:
+        atlas = (submit("external-atlas" + suffix, script, [snap, "-m", "h3v2.final_fit", "external-atlas"],
+                        threads=8, memory="28G", limit="01:00:00", deps=previous),)
+    finals = {backend: submit_training_arrays(f"final-{backend}{suffix}", script,
+              [snap, "-m", "h3v2.pipeline", "fit-task", "--backend", backend],
+              backend, group, deps=atlas or previous) for backend, group in missing["fits"].items()}
+    refs = ()
+    if missing["references"]:
+        array = ",".join(map(str, missing["references"])) + "%3"
+        parent = (*atlas, *finals["gbdt"]) or previous
+        refs = (submit("references" + suffix, script, [snap, "-m", "h3v2.pipeline", "references-task"],
+                       deps=parent, array=array, threads=6, memory="20G", limit="02:00:00"),)
+    watched = (*atlas, *finals["gbdt"], *finals["torch"], *refs)
+    if not watched:
+        return settle_final(snap, retried=retried)
+    arguments = [snap, "-m", "h3v2.pipeline", "settle-final", "--snapshot", snap]
+    if retried:
+        arguments.append("--retried")
+    return submit("final-settle" + suffix, script, arguments, deps=watched, threads=6, memory="18G",
+                  limit="01:00:00", dependency="afterany")
+
+
+def settle_final(snap, *, retried):
+    if (ROOT / "score/consumed.json").exists():
+        raise ValueError("Final fitting is closed after the outer release")
+    missing = missing_final(read_json(ROOT / "locks/final-jobs.json"))
+    if missing["atlas"] or any(missing["fits"].values()) or missing["references"]:
+        if retried:
+            raise RuntimeError(f"Incomplete final artifacts after the registered retry: {missing}")
+        publish_json(ROOT / "locks/final-missing-retry.json", missing)
+        return schedule_final_attempt(snap, missing, retried=True)
+    frozen_sha256 = sha256(ROOT / "locks/frozen.json")
+    parents = controller_dependency()
+    publish_json(ROOT / "locks/score-dispatch.json", {"settled_by": parents, "frozen_sha256": frozen_sha256})
+    helpers=slurm(snap)
     before=submit("preflight",helpers/"job.sbatch",[snap,"-m","h3v2.score","--preflight"],
-                  deps=(refs,*fit_deps),threads=8,memory="42G",limit="03:00:00")
+                  deps=parents,threads=8,memory="42G",limit="03:00:00")
     after=submit("score-once",helpers/"job.sbatch",[snap,"-m","h3v2.score"],
                  deps=(before,),threads=18,memory="66G",limit="1-00:00:00")
     package=submit("report",helpers/"job.sbatch",[snap,"-m","h3v2.report"],
                    deps=(after,),threads=6,memory="20G",limit="02:00:00")
-    publish_json(ROOT/"locks/terminal_jobs.json",{"kernel_and_reference":refs,"preflight":before,"score":after,"reports":package,
-                                                   "frozen_sha256":sha256(ROOT/"locks/frozen.json")})
+    publish_json(ROOT/"locks/terminal_jobs.json",{"settled_by": parents,"preflight":before,"score":after,"reports":package,
+                                                   "frozen_sha256":frozen_sha256})
     return package
 
 
@@ -184,7 +231,7 @@ def advance(stages,snapshot,*,dispatch_only):
 
 if __name__=="__main__":
     p=argparse.ArgumentParser()
-    p.add_argument("command",choices=("advance","dispatch","settle","fit-task","references-task"))
+    p.add_argument("command",choices=("advance","dispatch","settle","settle-final","fit-task","references-task"))
     p.add_argument("stages",nargs="*")
     p.add_argument("--snapshot",type=Path)
     p.add_argument("--backend",choices=("gbdt","torch"))
@@ -194,6 +241,8 @@ if __name__=="__main__":
         advance(args.stages,args.snapshot,dispatch_only=args.command=="dispatch")
     elif args.command=="settle":
         settle_inner(args.stages,args.snapshot,retried=args.retried)
+    elif args.command=="settle-final":
+        settle_final(args.snapshot,retried=args.retried)
     else:
         from .final_fit import final_candidate,final_references
         index=int(os.environ["SLURM_ARRAY_TASK_ID"])
@@ -201,4 +250,4 @@ if __name__=="__main__":
             work=read_json(ROOT/"locks/final-jobs.json")[args.backend]
             final_candidate(**work[index])
         else:
-            final_references((*SPLITS,"external")[index])
+            final_references(FINAL_PARTITIONS[index])
