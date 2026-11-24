@@ -182,6 +182,13 @@ def jobs():
     if (logs/"trajectory.tsv").exists():
         remaining=pd.read_csv(logs/"trajectory.tsv",sep="\t",names=frame.columns,dtype={"dependency":str})
         frame=pd.concat([frame,remaining],ignore_index=True)
+    adjustments = logs / "runtime-adjustments.tsv"
+    if adjustments.is_file():
+        history = pd.read_csv(adjustments, sep="\t", header=None,
+                              names=["time", "job_id", "field", "previous", "updated"])
+        changes = history.loc[history.field.eq("ArrayTaskThrottle")].copy()
+        changes["record"] = changes.time + " " + changes.previous.astype(str) + "→" + changes.updated.astype(str)
+        frame["array_throttle_changes"] = frame.job_id.map(changes.groupby("job_id").record.agg(" | ".join))
     return frame
 
 

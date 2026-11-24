@@ -1,4 +1,4 @@
-"""Schedule only H3-v2 waves, respecting the three-GPU cap and the one-score seal."""
+"""Schedule H3-v2 training with the authorized Slurm caps and the one-score seal."""
 import argparse
 import os
 from pathlib import Path
@@ -10,6 +10,8 @@ from .data import ROOT,SPLITS
 from .final_fit import external_operating_point
 from .grid import FAMILIES,SEEDS,identify,initial
 from .selection import select
+
+TRAINING_CONCURRENCY = {"gbdt": 35, "torch": 6}
 
 
 def slurm(snap):
@@ -69,8 +71,7 @@ def schedule_inner(stages, snap, *, retry=False, tasks=None):
     jobs = []
     for backend, indexed in planned.items():
         if indexed:
-            concurrent = 3 if backend == "torch" else 5
-            array = ",".join(map(str, indexed)) + f"%{concurrent}"
+            array = ",".join(map(str, indexed)) + f"%{TRAINING_CONCURRENCY[backend]}"
             jobs.append(submit(f"{stage}-{backend}{suffix}", helpers / "inner.sbatch", [snap, stage, backend],
                                gpu=backend == "torch", array=array))
     if not jobs:
@@ -117,7 +118,7 @@ def schedule_final(snap):
                threads=8,memory="28G",limit="01:00:00")
     finals=[submit(f"final-{backend}",helpers/"job.sbatch",
                    [snap,"-m","h3v2.pipeline","fit-task","--backend",backend],
-                   gpu=backend=="torch",array=f"0-{len(parts)-1}%{3 if backend=='torch' else 5}",deps=(ext,))
+                   gpu=backend=="torch",array=f"0-{len(parts)-1}%{TRAINING_CONCURRENCY[backend]}",deps=(ext,))
             for backend,parts in jobs.items() if parts]
     refs=submit("references",helpers/"job.sbatch",[snap,"-m","h3v2.pipeline","references-task"],
                 deps=(ext,),array=f"0-{len(SPLITS)}%4",threads=6,memory="20G",limit="02:00:00")

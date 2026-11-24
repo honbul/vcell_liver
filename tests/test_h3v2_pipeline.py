@@ -26,8 +26,8 @@ def test_only_array_elements_missing_a_registered_arm_are_retried():
                 pipeline.settle_inner(["r1"], root, retried=False)
                 advance.assert_not_called()
                 cpu, gpu, controller = submit.call_args_list
-                assert cpu.kwargs["array"] == "2%5" and not cpu.kwargs["gpu"]
-                assert gpu.kwargs["array"] == "3%3" and gpu.kwargs["gpu"]
+                assert cpu.kwargs["array"] == "2%35" and not cpu.kwargs["gpu"]
+                assert gpu.kwargs["array"] == "3%6" and gpu.kwargs["gpu"]
                 assert controller.kwargs["deps"] == ("37101", "37102")
                 assert controller.kwargs["dependency"] == "afterany" and "--retried" in controller.args[2]
 
@@ -48,4 +48,4 @@ def test_only_array_elements_missing_a_registered_arm_are_retried():
 
 if __name__ == "__main__":
     test_only_array_elements_missing_a_registered_arm_are_retried()
-    print("Registered 990 arms and verified bounded recovery, dependencies and the three-GPU cap", flush=True)
+    print("Registered 990 arms and verified bounded recovery, dependencies and the training caps", flush=True)
