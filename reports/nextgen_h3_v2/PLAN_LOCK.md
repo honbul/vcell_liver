@@ -122,6 +122,12 @@ G3 원본 `37960_46`의 `CTRPv2-1/inner-2` 후보 `55272af9a1b2`는 08:41 KST에
 
 08:45 KST에는 정상 종료한 G3 `38541_25`가 학습한 `PRISM20Q2-2/inner-2` Huber 후보 `45dad9d5e94b`를 C4 `38041_88`에 반영했다. 학습은 55.0분 걸렸으며 검증 행 81,718개, 유한한 train·validation 값 122쌍과 영수증 SHA-256 `9774fce66e8ed750226ec3769716dd987a3475ee728c8ef79dabf9c05863ac4e`를 확인했다.
 
+08:46 KST에는 정상 종료한 C4 `38438_10`의 `PRISM20Q2-1/inner-0` Huber 후보 `3505919266de`를 G3 `38290_78`에 반영했다. 학습은 55.3분 걸렸으며 검증 행 82,659개, 유한한 train·validation 값 122쌍과 영수증 SHA-256 `f50903de00306dcb5c4ace0aef7cbeec5bebf8e8d7ffac9ed993ca921b3b2151`을 확인했다.
+
+08:48 KST에는 `daea`에서 13.9분간 학습한 두 번째 확장 `drug-2/inner-0` Huber 후보 `e5001800e964`를 반영했다. 검증 행 145,493개, 유한한 train·validation 값 69쌍과 영수증 SHA-256 `1a9e3daa87ba2ff33c5cbe541d2ccee684fb1df8105bf9d298aafcb0a6217da9`를 확인했다.
+
+08:50 KST에는 첫 번째 확장 `cell-1/inner-2`의 남은 후보 `92a020823054`를 `daea`의 논리 CPU 8개에서 추가로 시작했다. 로컬 학습은 사용자에게 허용된 29개 중 21개를 비워 두며 G4 `37959_28`과 별도 경로에 기록한다. 등록된 훈련 행 298,143개와 검증 행 149,088개, 역할 마스크, 스키마 및 CPU LightGBM 바이너리 해시를 시작 전에 대조했다. 등록 파일은 G1의 `locks/boundary-1-cell1-2-92a0-daea-replay.json`이며 SHA-256은 `283edc691973d3362e6a55187a87ef185315db303379823850328548e16a53f1`이다. 전송 작업이 검증한 결과는 G1의 격리 경로 `external-cpu/cell1-2-92a0-daea-replay`에 보관한다.
+
 ## 분할과 입력
 
 - Drug-Cold는 H2-v1 1,001골격 연결 성분의 outer 3개 및 각 inner 3개를 그대로 사용한다. Cell-Cold는 확장 패널 3개 전역 계통 차단 분할, 교차스크린은 H3-v1의 9개 고정 평가 지지다. 교차스크린 훈련에는 해당 훈련 계통과 허용 소스의 확장 패널을 사용한다.
