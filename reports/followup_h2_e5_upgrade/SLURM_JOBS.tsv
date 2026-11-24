@@ -16,4 +16,6 @@ job_id	job_name	partition	excluded_nodes	gpu_requested	cpus_per_task	array_tasks
 37512	fu-e5-selection-seal	cpu	c4,g1,g2,g3,g4	0	4	1	1	WAITING	61cb85e	afterok:37511; selection/e5_selection_receipt.json
 37513	fu-e5-forecast	cpu	c4,g1,g2,g3,g4	0	4	7	7	WAITING	61cb85e	afterok:37512; outcome-blind forecasts
 37514	fu-e5-invariants	cpu	c4,g1,g2,g3,g4	0	4	1	1	WAITING	61cb85e	afterok:37513; tests/test_receipt.json
-37515	fu-e5-score-once	cpu	c4,g1,g2,g3,g4	0	4	1	1	WAITING	61cb85e	afterok:37514; no requeue; exclusive official-outcome-access.json
+37515	fu-e5-score-once	cpu	c4,g1,g2,g3,g4	0	4	1	1	CANCELLED	61cb85e	Superseded while pending to add H2-v1 paired contrasts; zero outcome reads
+37579	fu-e5-score-once	cpu	c4,g1,g2,g3,g4	0	4	1	1	WAITING	d9900bc	afterok:37514; no requeue; exclusive official-outcome-access.json
+37580	fu-e5-report	cpu	c4,g1,g2,g3,g4	0	1	1	1	WAITING	d9900bc	afterok:37579; render report from aggregate artifacts only
