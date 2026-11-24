@@ -96,3 +96,82 @@ def solve_hybrid(system,penalties,*,tol=5e-5,cell=None,drug=None):
         coef,m,error=pcg(high,p,tol*.8,initial=initial.double())
         out[p]=coef.to(system.y.dtype),n+m,error,"spectral_pcg"
     return out
+
+
+class BlockSpectral:
+    """Restricted spectral block-Jacobi preconditioner on each observed screen grid."""
+    def __init__(self,system):
+        self.stacked=system.stacked
+        self.parts=[]
+        arrays=system.mass if self.stacked else system.mass[None]
+        for w in arrays:
+            cells=torch.nonzero(w.any(1))[:,0]
+            drugs=torch.nonzero(w.any(0))[:,0]
+            coords=(cells[:,None],drugs[None,:])
+            weights=w[coords]
+            c,uc=separate(system.cell[cells[:,None],cells[None,:]])
+            d,ud=separate(system.drug[drugs[:,None],drugs[None,:]])
+            diagonal=(1.+system.tau)*float(weights.mean())*(c[:,None]*d[None,:])
+            self.parts.append((coords,weights>0,uc,ud,diagonal))
+
+    def build(self,ridge):
+        pieces=[(*entry[:-1],(entry[-1]+ridge).reciprocal()) for entry in self.parts]
+
+        def inverse(r):
+            view=r if self.stacked else r[None]
+            z=torch.zeros_like(view)
+            for i,(coords,mask,uc,ud,diagonal) in enumerate(pieces):
+                v=(uc.T @ view[i][coords]) @ ud
+                ans=(uc @ (v*diagonal)) @ ud.T
+                z[i][coords]=ans*mask
+            return z if self.stacked else z[0]
+        return inverse
+
+    def solve(self,system,ridge,tol=5e-5,max_steps=550):
+        R=self.build(ridge)
+        y=system.y
+        scale=max(float(y.norm()),1e-12)
+        x=torch.zeros_like(y)
+        r=y.clone()
+        p=R(r)
+        energy=(p*r).sum()
+        for step in range(1,max_steps+1):
+            a=system.product(p)+ridge*p
+            n=energy/(p*a).sum().clamp_min(1e-30)
+            x.add_(p*n)
+            r.sub_(a*n)
+            if float(r.norm()) <= tol*scale:
+                e=(y-system.product(x)-ridge*x).norm().item()/scale
+                if e<=tol:
+                    return x,step,e
+                if float(r.norm()) <= .14*tol*scale:
+                    return x,step,e
+            z=R(r)
+            new=(z*r).sum()
+            p=z+(new/energy.clamp_min(1e-30))*p
+            energy=new
+        return x,max_steps,(y-system.product(x)-ridge*x).norm().item()/scale
+
+
+def solve_block(system,penalties,*,tol=5e-5):
+    """Precondition observational PCG without changing its target system."""
+    from .kernel import pcg,solve_shifts
+
+    if system.mass.numel() < 95000:
+        return solve_shifts(system,penalties,tol=tol)
+    try:
+        basis=BlockSpectral(system)
+    except ValueError:
+        return solve_shifts(system,penalties,tol=tol)
+    out={}
+    high=None
+    for p in penalties:
+        initial,n,error=basis.solve(system,p,tol)
+        if error<=tol:
+            out[p]=system.root*initial,n,error,"block_pcg"
+            continue
+        if high is None:
+            high=system.higher_precision()
+        coef,m,error=pcg(high,p,tol*.8,initial=initial.double())
+        out[p]=coef.to(system.y.dtype),n+m,error,"block_double_pcg"
+    return out
