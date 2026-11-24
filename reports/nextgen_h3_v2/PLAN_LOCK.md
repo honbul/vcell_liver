@@ -76,6 +76,8 @@ C4의 두 CPU 파티션에 이전 배열과 대체 배열이 겹쳐 23:01 KST부
 
 07:17 KST에는 G3 `38406_6`이 세 Huber 후보를 모두 반영하고 정상 종료해 CPU 8개를 반환했다. `cell-1/inner-1`의 마지막 결과 `3505919266de`는 학습에 66.5분이 걸렸다. 검증 행 149,076개와 유한한 train·validation Huber 값 122쌍을 확인했다. 영수증 SHA-256은 `9714feccec6defcc8855ee91432485cdbb2c280ccec67cfebedc31ce15cbdf07`이다. G3의 새 CPU 전용 작업 `38496_21`에는 G4 `37959_64`의 `GDSC2-1/inner-2` 미시작 후보 `45dad9d5e94b`를 배정했다. G3 GBM CPU 배정은 144개였다. 새 배정과 선택 작업 `38393` 선행 조건은 G1의 `locks/boundary-1-slurm-huber-tails-v16.json` 및 `locks/boundary-1-slurm-huber-tails-jobs-v16.json`에 기록했다.
 
+07:23 KST에는 최종 보고서를 실제 실행 경로에 연결하기 위해 C5의 대기 중인 선택 작업을 `38500`으로 교체했다. `full-lincs-v29`는 기존 v25의 925개 파일을 SHA-256으로 대조했으며 보고서 모듈과 그 테스트만 v28에서 가져왔다. 선택·학습·채점 코드와 미완료 선행 조건 27개를 대조했고, 등록된 Huber 후보 목록의 SHA-256도 일치했다. 첫 대체 작업 `38499`는 Slurm 해제 직후의 상태 확인에서 취소됐고, 다시 등록한 `38500`이 선행 조건을 기다리는 상태임을 확인했다. `38393`과 `38499`의 실행 시간은 모두 0초다. 변경 증거는 G1의 `locks/boundary-1-select-v29.json`과 `locks/boundary-1-slurm-huber-tails-jobs-v17.json`에 보관했다.
+
 ## 분할과 입력
 
 - Drug-Cold는 H2-v1 1,001골격 연결 성분의 outer 3개 및 각 inner 3개를 그대로 사용한다. Cell-Cold는 확장 패널 3개 전역 계통 차단 분할, 교차스크린은 H3-v1의 9개 고정 평가 지지다. 교차스크린 훈련에는 해당 훈련 계통과 허용 소스의 확장 패널을 사용한다.
