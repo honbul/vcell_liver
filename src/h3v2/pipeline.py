@@ -12,11 +12,12 @@ from .grid import FAMILIES,SEEDS,identify,initial
 from .selection import select
 
 CPUS_PER_TRAINING_TASK = 8
-GPU_TRAINING_CONCURRENCY = 6
+GPU_TRAINING_CONCURRENCY = 4
 CPU_PRIMARY_CONCURRENCY = 5
 CPU_SECONDARY_THREADS = 6
 CPU_NODE = "c5"
-GPU_NODE = "g4"
+GPU_NODE = "g3"
+GPU_TYPE = "a40"
 
 
 def slurm(snap):
@@ -35,7 +36,7 @@ def submit(name, script, arguments, *, deps=(), gpu=False,
     command=["sbatch","--parsable","-J",f"ng2-h3-{name}","-p","gpu" if gpu else "cpu",
              f"--nodelist={GPU_NODE if gpu else CPU_NODE}","-c",str(n),f"--mem={reserve}","-t",limit,"-o",str(log)]
     if gpu:
-        command.extend(["--gres=gpu:a100:1"])
+        command.append(f"--gres=gpu:{GPU_TYPE}:1")
     if array is not None:
         command.append(f"--array={array}")
     if deps:
@@ -44,7 +45,7 @@ def submit(name, script, arguments, *, deps=(), gpu=False,
     if not result.isdecimal():
         raise ValueError(f"Unexpected Slurm submission result: {result}")
     with (ROOT/"logs/trajectory.tsv").open("a") as log_tuple:
-        print(name,result,"a100" if gpu else "cpu",array or "-",",".join(deps),sep="\t",file=log_tuple)
+        print(name,result,GPU_TYPE if gpu else "cpu",array or "-",",".join(deps),sep="\t",file=log_tuple)
     return result
 
 
