@@ -70,6 +70,10 @@ C4의 두 CPU 파티션에 이전 배열과 대체 배열이 겹쳐 23:01 KST부
 
 06:59 KST에는 G4 `38405_2`가 세 후보를 반영하고 정상 종료해 CPU 8개를 반환했다. 같은 시각 영수증 `a9da9be0da43befde14ef403f24db82747a40cfaf7909913527f6730120e3df3`의 검증 행 130,688개와 유한한 train·validation Huber 값 122쌍을 확인했다. 반환된 CPU에는 C4 `38039_84`의 `PRISM20Q2-2/inner-0` 미시작 후보 `788ea49e8292`, `0a851673e3dd`, `3505919266de`를 배정했다. G4 `38468_19`의 CPU 전용 실행과 H3 CPU 배정 176개를 확인했다. 새 목록과 선택 작업 `38393` 선행 조건은 G1의 `locks/boundary-1-slurm-huber-tails-v14.json`과 `locks/boundary-1-slurm-huber-tails-jobs-v14.json`에 기록했다.
 
+07:01 KST에 `daea` 첫 작업의 네 번째 후보 `45dad9d5e94b`를 G4 `37959_28`의 `cell-1/inner-2`에 반영했다. 로컬 CPU 학습은 59.2분 걸렸으며 검증 행 149,088개와 유한한 train·validation Huber 값 121쌍을 확인했다. 영수증 SHA-256은 `ed241a37677cbefa1e573963600b516317fdfc893afd664de781554c4c1392a1`이다. 07:06 KST에는 정상 종료한 이 작업이 반환한 로컬 CPU 8개에 G4 `37959_56`의 `GDSC2-0/inner-1`에서 아직 시작하지 않은 다른 `45dad9d5e94b`를 배정했다. G1 내부 분할의 학습 행 261,378개와 검증 행 130,688개를 기준으로 옮긴 행 마스크와 입력 해시를 대조했다. `ng2-h3-daea-batch-2-cpu-0` 실행을 확인했으며, 세 로컬 작업에 24코어를 배정하고 5코어를 남겼다. 새 등록은 G1의 `locks/boundary-1-daea-huber-batch-2.json`에 기록했다.
+
+07:08 KST에는 G3 `38434_9`의 정상 종료로 반환된 CPU 8개에 C5 `37332_34`의 `cell-2/inner-2` 미시작 Huber 후보 `92a020823054`를 배정했다. 새 G3 작업 `38495_20`의 CPU 전용 실행과 GBM CPU 배정 144개를 확인했다. 이미 로컬 배정한 후보는 제외했다. 새 등록과 선택 작업 `38393` 선행 조건은 G1의 `locks/boundary-1-slurm-huber-tails-v15.json`과 `locks/boundary-1-slurm-huber-tails-jobs-v15.json`에 남겼다.
+
 ## 분할과 입력
 
 - Drug-Cold는 H2-v1 1,001골격 연결 성분의 outer 3개 및 각 inner 3개를 그대로 사용한다. Cell-Cold는 확장 패널 3개 전역 계통 차단 분할, 교차스크린은 H3-v1의 9개 고정 평가 지지다. 교차스크린 훈련에는 해당 훈련 계통과 허용 소스의 확장 패널을 사용한다.
