@@ -10,9 +10,11 @@ import pandas as pd
 
 from h3v2.atlas import model_input_digest
 from h3v2.data import ROOT, table_hash
-from h3v2.fit import fold_fit, options
+from h3v2.fit import fold_fit
 from h3v2.grid import SEEDS, identify
+from h3v2.local_cpu import huber_options, plan_source
 from h3v2.pipeline import inner_tasks
+from h3v2.selection import PRIMARY_TREE_SPLITS
 from nextgen_h2.run import read_json
 from vc_build.io import publish_json, sha256
 
@@ -22,16 +24,16 @@ RESULTS = ROOT / "external-cpu/daea-20261125"
 FILES = {"receipt.json", "predictions.parquet", "curves.parquet"}
 
 
-def owner_running(group):
+def owner_running(group, stage=STAGE):
     raw = check_output(["scontrol", "-o", "show", "job", group["owner"]], text=True)
     state = dict(part.split("=", 1) for part in raw.split() if "=" in part)
     return (state["JobState"] == "RUNNING" and state["JobId"] == group["slurm_job_id"]
-            and state["NodeList"] == group["owner_node"] and state["JobName"].startswith("ng2-h3-boundary-1-"))
+            and state["NodeList"] == group["owner_node"] and state["JobName"].startswith(f"ng2-h3-{stage}-"))
 
 
-def canonical(group, identity):
+def canonical(group, identity, stage=STAGE):
     inner = f"inner-{group['inner']}"
-    return ROOT / "fits" / STAGE / group["split"] / inner / "gbdt" / identity
+    return ROOT / "fits" / stage / group["split"] / inner / "gbdt" / identity
 
 
 def has_lead(group, destination):
@@ -40,19 +42,34 @@ def has_lead(group, destination):
     return sum(not path.is_file() for path in before) >= 2
 
 
-def local_batch(batch):
+def local_batch(batch, stage=STAGE):
     if batch < 0:
         raise ValueError("The local CPU batch must be nonnegative")
     suffix = f"-batch-{batch}" if batch else ""
-    return LOCK.with_stem(LOCK.stem + suffix), RESULTS.with_name(RESULTS.name + suffix), f"daea-cpu-imports{suffix}.tsv"
+    if stage != STAGE and (stage != "boundary-2" or not batch):
+        raise ValueError("The early primary expansion requires a distinct CPU batch")
+    lock = LOCK if stage == STAGE else LOCK.with_name("boundary-2-daea-primary-huber.json")
+    return lock.with_stem(lock.stem + suffix), RESULTS.with_name(RESULTS.name + suffix), f"daea-cpu-imports{suffix}.tsv"
+
+
+def registered_receipts(stage, group):
+    if stage == STAGE:
+        return inner_tasks(stage)["gbdt"][group["index"]]
+    inner = group["inner"]
+    if inner not in range(3) or group["index"] != PRIMARY_TREE_SPLITS.index(group["split"]) * 6 + inner * 2:
+        raise ValueError("The group does not use the registered early-tree array index")
+    return [canonical(group, identify(config), stage) / "receipt.json"
+            for config in huber_options(stage, group["split"])]
 
 
 def register(path, *, batch=0):
     plan = read_json(path)
+    stage = plan["stage"]
+    lock, _, _ = local_batch(batch, stage)
     expected = read_json(ROOT / "step0_verification.json")["versions"]["lightgbm_so_sha256"]
-    if (plan["worker"] != "daea" or plan["stage"] != STAGE or plan["threads"] != 8
+    if (plan["worker"] != "daea" or plan["threads"] != 8
             or plan.get("batch", 0) != batch
-            or plan["plan_sha256"] != sha256(ROOT / "locks" / f"{STAGE}.json")
+            or plan["plan_sha256"] != sha256(plan_source(ROOT, stage))
             or plan["lightgbm_so_sha256"] != expected or (ROOT / "score/consumed.json").exists()):
         raise ValueError("The CPU-worker registration differs from the sealed inner run")
     reserve = plan["reserved_cpu_ids"]
@@ -60,34 +77,33 @@ def register(path, *, batch=0):
     if (len(set(reserve)) < 4 or set(reserve).intersection(assigned) or len(set(assigned)) != len(assigned)
             or any(len(group["affinity"]) != plan["threads"] for group in plan["groups"])):
         raise ValueError("The CPU-worker registration does not leave four CPUs free")
-    tasks = inner_tasks(STAGE)["gbdt"]
     seen = set()
     for group in plan["groups"]:
-        registered = tasks[group["index"]]
-        if [str(file.relative_to(ROOT)) for file in registered] != group["ordered_receipts"] or not owner_running(group):
+        registered = registered_receipts(stage, group)
+        if [str(file.relative_to(ROOT)) for file in registered] != group["ordered_receipts"] or not owner_running(group, stage):
             raise ValueError("The original Slurm owner or candidate order has changed")
         for identity in group["candidates"]:
-            path = canonical(group, identity)
+            path = canonical(group, identity, stage)
             if (path / "receipt.json" not in registered or path in seen or os.path.lexists(path)
                     or not has_lead(group, path)):
                 raise ValueError(f"Expected an unstarted, registered tail candidate: {path}")
             seen.add(path)
-    lock, _, _ = local_batch(batch)
     publish_json(lock, plan)
     print("Registered", len(seen), "inner Huber candidates on", plan["worker"], flush=True)
 
 
-def publish(group_index, identity, *, plan_path=None, staged=None, batch=0):
-    lock, local_results, local_ledger = local_batch(batch)
+def publish(group_index, identity, *, plan_path=None, staged=None, batch=0, stage=STAGE):
+    lock, local_results, local_ledger = local_batch(batch, stage)
     plan = read_json(plan_path or lock)
     group = plan["groups"][group_index]
-    if identity not in group["candidates"] or (ROOT / "score/consumed.json").exists():
+    if (plan["stage"] != stage or identity not in group["candidates"]
+            or plan["plan_sha256"] != sha256(plan_source(ROOT, stage)) or (ROOT / "score/consumed.json").exists()):
         raise ValueError("The candidate was not registered for CPU-worker import")
-    destination = canonical(group, identity)
+    destination = canonical(group, identity, stage)
     if (destination / "receipt.json").is_file() or os.path.lexists(destination):
         print("COVERED", identity, flush=True)
         return
-    if not owner_running(group) or not has_lead(group, destination):
+    if not owner_running(group, stage) or not has_lead(group, destination):
         print("CLUSTER-OWNER", identity, flush=True)
         return
     staged = staged or local_results / str(group_index) / identity
@@ -95,11 +111,11 @@ def publish(group_index, identity, *, plan_path=None, staged=None, batch=0):
         raise ValueError("The CPU-worker result does not contain the complete fit artifacts")
     receipt = read_json(staged / "receipt.json")
     atlas = read_json(ROOT / "features" / group["split"] / f"inner-{group['inner']}" / "receipt.json")
-    config = {identify(c): c for c in options(STAGE, group["split"], "gbdt", "gbdt")}[identity]
+    config = {identify(c): c for c in huber_options(stage, group["split"])}[identity]
     training = receipt["training"]
     if (receipt["stage"], receipt["split"], receipt["inner"], receipt["family"], receipt["seed"],
             receipt["config_id"], receipt["config"], receipt["query_has_outer_labels"]) != (
-        STAGE, group["split"], group["inner"], "gbdt", SEEDS[0], identity, config, False
+        stage, group["split"], group["inner"], "gbdt", SEEDS[0], identity, config, False
     ) or config["objective"] != "huber":
         raise ValueError("The CPU-worker fit used a different arm or partition")
     if ((training["device"], training["library"], training["train_rows"]) != ("cpu", "4.6.0", atlas["fit_rows"])
@@ -162,6 +178,7 @@ if __name__ == "__main__":
     command = actions.add_parser("publish")
     command.add_argument("group", type=int)
     command.add_argument("config_id")
+    command.add_argument("--stage", default=STAGE, choices=(STAGE, "boundary-2"))
     for action in (registration, command):
         action.add_argument("--batch", type=int, default=0)
     tail = actions.add_parser("slurm-tail")
@@ -171,7 +188,7 @@ if __name__ == "__main__":
     if args.action == "register":
         register(args.plan, batch=args.batch)
     elif args.action == "publish":
-        publish(args.group, args.config_id, batch=args.batch)
+        publish(args.group, args.config_id, batch=args.batch, stage=args.stage)
     else:
         index = args.group if args.group is not None else int(os.environ["SLURM_ARRAY_TASK_ID"])
         fit_slurm_tail(args.plan, index)

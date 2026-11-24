@@ -65,7 +65,7 @@ def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="
             raise ValueError(f"Expected registered candidate {candidate_id} in {stage}/{split}/{family}/{inner}")
     if candidate_ids is not None:
         if (backend, tree_device) != ("gbdt", "cpu") or (
-            candidate_id is not None or smoke or diagnostic or early_neural or early_primary_tree
+            candidate_id is not None or smoke or diagnostic or early_neural
         ):
             raise ValueError("A candidate batch applies only to regular CPU tree fits")
         registered = {identify(config): config for config in config_list}

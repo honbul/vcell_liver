@@ -6,6 +6,23 @@ from pathlib import Path
 from socket import gethostname
 
 
+def plan_source(root, stage):
+    if stage == "boundary-1":
+        return root / "locks/boundary-1.json"
+    if stage == "boundary-2":
+        return root / "locks/boundary-2-early-primary-tree.json"
+    raise ValueError(f"Unsupported local Huber stage {stage}")
+
+
+def huber_options(stage, split):
+    from .fit import options
+    from .selection import read_primary_tree_expansion
+
+    if stage == "boundary-2":
+        return read_primary_tree_expansion(stage)["splits"][split]["gbdt"]
+    return options(stage, split, "gbdt", "gbdt")
+
+
 def run(storage, plan_file, group_index):
     import numpy as np
 
@@ -14,7 +31,7 @@ def run(storage, plan_file, group_index):
 
     assets.STORAGE = storage.resolve()
     from .data import ROOT
-    from .fit import fold_fit, options
+    from .fit import fold_fit
     from .grid import identify
 
     plan = json.loads(plan_file.read_text())
@@ -24,9 +41,9 @@ def run(storage, plan_file, group_index):
     if (gethostname().split(".")[0] != plan["worker"] or affinity != group["affinity"]
             or len(affinity) != plan["threads"] or int(os.environ["OMP_NUM_THREADS"]) != plan["threads"]):
         raise ValueError("CPU worker or affinity differs from the registered run")
-    if sha256(ROOT / "locks" / f"{stage}.json") != plan["plan_sha256"]:
+    if sha256(plan_source(ROOT, stage)) != plan["plan_sha256"]:
         raise ValueError("The staged selection plan has changed")
-    available = {identify(config): config for config in options(stage, group["split"], "gbdt", "gbdt")}
+    available = {identify(config): config for config in huber_options(stage, group["split"])}
     if any(available[candidate]["objective"] != "huber" for candidate in group["candidates"]):
         raise ValueError("Local work must be a registered Huber candidate")
     split, inner = group["split"], group["inner"]
@@ -45,7 +62,8 @@ def run(storage, plan_file, group_index):
         fit_mask = record["fit_mask"]
     print(f"CPU Huber worker {gethostname()} PID {os.getpid()} affinity {affinity} "
           f"for {group['split']}/{group['inner']} with {len(group['candidates'])} candidates", flush=True)
-    fold_fit(stage, split, "gbdt", inner, "gbdt", candidate_ids=group["candidates"], fit_mask=fit_mask)
+    fold_fit(stage, split, "gbdt", inner, "gbdt", candidate_ids=group["candidates"], fit_mask=fit_mask,
+             early_primary_tree=stage == "boundary-2")
 
 
 if __name__ == "__main__":

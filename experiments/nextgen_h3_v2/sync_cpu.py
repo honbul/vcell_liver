@@ -16,16 +16,17 @@ def remote(*command):
     return check_output([*SSH, "g1", join(map(str, command))], text=True, timeout=120).strip()
 
 
-def deliver(local, root, publisher, group, identity, *, batch=0):
+def deliver(local, root, publisher, group, identity, *, batch=0, stage="boundary-1"):
     suffix = f"-batch-{batch}" if batch else ""
     remote_dir = root / f"external-cpu/daea-20261125{suffix}" / str(group) / identity
     remote("mkdir", "-p", remote_dir)
     run(["rsync", "-a", "--ignore-existing", "-e", join(SSH),
          *(str(local / file) for file in ARTIFACTS), f"g1:{remote_dir}/"], check=True, timeout=120)
-    snapshot = root / "code/full-lincs-v24"
+    snapshot = root / "code/full-lincs-v24" if stage == "boundary-1" else publisher.parent / "snapshot"
     batch_args = ("--batch", batch) if batch else ()
+    stage_args = ("--stage", stage) if stage != "boundary-1" else ()
     result = remote("env", "SLURM_CPUS_PER_TASK=1", snapshot / "experiments/nextgen_h3_v2/job.sbatch",
-                    snapshot, publisher, "publish", group, identity, *batch_args)
+                    snapshot, publisher, "publish", group, identity, *batch_args, *stage_args)
     state, verified_id = result.rsplit(maxsplit=1)
     if state not in FINAL_STATES or verified_id != identity:
         raise ValueError(f"Unexpected CPU result disposition: {result}")
@@ -54,7 +55,7 @@ def watch(work, root):
                          if (index, identity) not in handled and (folder / identity / "receipt.json").is_file())
         for index, identity, local in ready:
             try:
-                state = deliver(local, root, publisher, index, identity, batch=batch)
+                state = deliver(local, root, publisher, index, identity, batch=batch, stage=stage)
             except SubprocessError as exc:
                 print(f"G1 import for {identity} will retry after {exc}", flush=True)
                 continue
