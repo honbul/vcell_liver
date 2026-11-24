@@ -4,8 +4,9 @@ from collections import Counter, defaultdict
 import csv
 from hashlib import sha256
 import json
-from math import isfinite
+from math import isclose, isfinite
 from pathlib import Path
+from statistics import mean, stdev
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
@@ -17,12 +18,20 @@ REQUIRED = {
     "model_card.md","verification.json","score_receipt.json","SLURM_JOBS.tsv",
 }
 FAMILIES = {"gbdt","film","attention","gnn","hybrid"}
+SCORED_MODELS = FAMILIES | {"Champion"}
+FIXED_MODELS = {"C1", "H2", "drug_mean", "drug_ridge", "Champion-ensemble"}
+NATIVE_DRUG = {"spearman", "pearson", "interaction_spearman", "interaction_pearson"}
+NATIVE_CELL = {"ndcg_at_5", "precision_at_5"}
+HELD_METRICS = (NATIVE_DRUG - {"interaction_pearson"}) | NATIVE_CELL | {"within_cell_spearman"}
 AXES = {"spearman":.01,"interaction_spearman":.02,"ndcg_at_5":.015}
 COHORTS = {"GDSC1":39545,"LIMORE":3400,"LICOB":2888}
+SCREENS = ("CTRPv2", "GDSC2", "PRISM20Q2")
 SEEDS = {"11711", "11729", "11743"}
-PARTITIONS = {f"{track}-{i}" for track in ("drug", "cell", "CTRPv2", "GDSC2", "PRISM20Q2") for i in range(3)}
+PARTITIONS = {f"{track}-{i}" for track in ("drug", "cell", *SCREENS) for i in range(3)}
 CURVE_FIGURES = {"H3V2_FAMILY_LEARNING_CURVES.png", "H3V2_GRID_SATURATION.png"}
 GRID_TABLE = "H3V2_GRID_SATURATION.tsv"
+SCORE_TABLES = {"H3V2_METRICS.tsv", "H3V2_PAIRED_95CI.tsv", "H3V2_PANCANCER_BY_TISSUE.tsv",
+                "H3V2_ERROR_COMPONENTS.tsv"}
 
 
 def digest(file):
@@ -84,6 +93,73 @@ def verify_curve_branches(grid, fits):
                 raise ValueError(f"Missing or unexpected learning curve branch for {'/'.join((*key, fold))}")
 
 
+def verify_score_block(points, axes, label, *, held=False):
+    """Check every model/axis identity and the score-level seed aggregates."""
+    fixed = FIXED_MODELS
+    replicated = SCORED_MODELS
+    if held:
+        fixed = fixed | {"structured_v1", "drug_ridge_v1", "drug_mean_v1"}
+        replicated = replicated | {"H3v1"}
+    arms = {(model, "fixed") for model in fixed}
+    arms |= {(model, seed) for model in replicated for seed in SEEDS | {"mean"}}
+    by_key = {(r["metric"], r["model"], r["seed"]): r for r in points}
+    expected = {(axis, model, seed) for axis in axes for model, seed in arms}
+    if len(points) != len(by_key) or set(by_key) != expected:
+        raise ValueError(f"Missing, duplicate or unexpected score rows for {label}")
+    for axis in axes:
+        for model in replicated:
+            values = [by_key[axis, model, seed]["value"] for seed in sorted(SEEDS)]
+            values = [float(value) for value in values if value]
+            aggregate = by_key[axis, model, "mean"]
+            expected_stats = {"value": mean(values) if values else None,
+                              "seed_sd": stdev(values) if len(values) > 1 else None}
+            for name, expected_value in expected_stats.items():
+                measured = float(aggregate[name]) if aggregate[name] else None
+                if measured is None or expected_value is None:
+                    matches = measured is expected_value
+                else:
+                    matches = isclose(measured, expected_value, rel_tol=1e-9, abs_tol=1e-12)
+                if not matches:
+                    raise ValueError(f"Incorrect {name} for {label}/{axis}/{model}")
+
+
+def verify_reported_scores(root, receipt):
+    metrics = defaultdict(list)
+    for row in rows(root / "H3V2_METRICS.tsv"):
+        metrics[row["scope"], row["support"], row["screen"]].append(row)
+    internal = [("drug", support) for support in ("all", "lincs724", "structure462")]
+    internal.append(("cell", "all"))
+    native = [(scope, support, screen) for scope, support in internal for screen in ("macro", *SCREENS)]
+    native += [(scope, "all", screen) for scope in COHORTS for screen in ("macro", scope)]
+    for scope, support, screen in native:
+        verify_score_block(metrics[scope, support, screen], NATIVE_DRUG | NATIVE_CELL,
+                           f"{scope}/{support}/{screen}")
+    for screen in ("macro", *SCREENS):
+        verify_score_block(metrics["held", "core68", screen], HELD_METRICS, f"held/core68/{screen}", held=True)
+
+    tissue_rows = defaultdict(list)
+    for row in rows(root / "H3V2_PANCANCER_BY_TISSUE.tsv"):
+        tissue_rows[row["tissue"]].append(row)
+    roster = set(receipt["tissue_roster"])
+    if len(roster) != 28 or set(tissue_rows) != roster:
+        raise ValueError("Incomplete tissue stratification")
+    for tissue, points in tissue_rows.items():
+        if len(points) == 1 and points[0]["status"] == "insufficient_native_support":
+            continue
+        screens = defaultdict(list)
+        for point in points:
+            if (point["scope"], point["support"], point["status"]) != ("drug", "all", "estimated"):
+                raise ValueError(f"Unexpected tissue score support for {tissue}")
+            screens[point["screen"]].append(point)
+        if "macro" not in screens:
+            raise ValueError(f"Missing pooled tissue scores for {tissue}")
+        for screen, group in screens.items():
+            axes = {row["metric"] for row in group}
+            if axes not in (NATIVE_DRUG, NATIVE_CELL, NATIVE_DRUG | NATIVE_CELL):
+                raise ValueError(f"Incomplete set of native metrics for {tissue}/{screen}")
+            verify_score_block(group, axes, f"{tissue}/{screen}")
+
+
 def verify(root):
     for name in REQUIRED:
         if not (root/name).is_file() or (root/name).stat().st_size==0:
@@ -99,11 +175,17 @@ def verify(root):
         raise ValueError("Score/selection evidence differs from the published release")
     if verify["step0_sha256"]!=digest(root/"step0_verification.json"):
         raise ValueError("Feature parity evidence was not exported as verified")
-    if verify["partition_manifest_sha256"]!=digest(root/"split_manifest.json"):
+    manifest_sha = digest(root / "split_manifest.json")
+    if manifest_sha != verify["partition_manifest_sha256"] or manifest_sha != receipt["source_manifest_sha256"]:
         raise ValueError("Feature support changed")
     for name,sha in verify["deliverables"].items():
         if digest(root/name)!=sha:
             raise ValueError(f"Verified artifact changed while exporting {name}")
+    if set(receipt["tables"]) != SCORE_TABLES:
+        raise ValueError("Incomplete score table receipt")
+    for name, sha in receipt["tables"].items():
+        if verify["deliverables"].get(name) != sha:
+            raise ValueError(f"Published score table differs from the single sealed pass: {name}")
     for name in CURVE_FIGURES:
         if name not in verify["deliverables"] or not (root / name).read_bytes().startswith(b"\x89PNG\r\n\x1a\n"):
             raise ValueError(f"Missing verified curve figure {name}")
@@ -116,7 +198,7 @@ def verify(root):
     if any(receipt["parts"][part] != entry["query_rows"] for part, entry in manifest["split_support"].items()):
         raise ValueError("A scored partition differs from its frozen row support")
     for track, expected in (("drug", 670830), ("cell", 670830), ("held", 45428)):
-        prefixes = ("CTRPv2-", "GDSC2-", "PRISM20Q2-") if track == "held" else (track + "-",)
+        prefixes = tuple(screen + "-" for screen in SCREENS) if track == "held" else (track + "-",)
         if sum(receipt["parts"][part] for part in PARTITIONS if part.startswith(prefixes)) != expected:
             raise ValueError(f"Incomplete measured row support for {track}")
     all_sites = PARTITIONS | {"external"}
@@ -130,12 +212,7 @@ def verify(root):
     for label,line in zip(("가설","달라진 점","결과","판정","다음 결정"),(root/"RESULTS.md").read_text().splitlines()[:5]):
         if not line.startswith(f"- **{label}**"):
             raise ValueError("First five summary lines must precede the results tables")
-    primary={(r["model"],r["seed"]) for r in rows(root/"H3V2_METRICS.tsv")
-             if (r["scope"],r["screen"],r["support"],r["metric"])==("drug","macro","all","ndcg_at_5")}
-    if {(model,seed) for model in FAMILIES|{"Champion"} for seed in SEEDS|{"mean"}} - primary:
-        raise ValueError("At least one family or seed was lost before scoring")
-    if {r["tissue"] for r in rows(root/"H3V2_PANCANCER_BY_TISSUE.tsv")}!=set(receipt["tissue_roster"]):
-        raise ValueError("Incomplete tissue stratification")
+    verify_reported_scores(root, receipt)
     fits=rows(root/"H3V2_FAMILY_LEARNING_CURVES.tsv")
     replicated = defaultdict(set)
     for row in fits:
@@ -179,7 +256,7 @@ def verify(root):
                 "minimum_improvement_and_ci":float(here["delta"])>=margin and float(here["lower"])>0,
                 "other_two_axes_protected":all(float(r["lower"])>=-.005 for r in other),
                 "two_screens_improved":sum(float(evidence["drug",s,axis]["delta"])>0
-                                           for s in ("CTRPv2","GDSC2","PRISM20Q2"))>=2,
+                                           for s in SCREENS)>=2,
                 "gdsc1_three_axes_protected":all(float(evidence["GDSC1","macro",m]["lower"])>=-.005 for m in AXES),
             }
         if outcome["by_axis"]!=expected or (outcome["verdict"]=="GO-MODEL")!=any(all(x.values()) for x in expected.values()):
