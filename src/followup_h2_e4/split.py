@@ -17,7 +17,7 @@ def role_id(track, outer, method):
 
 
 def identities(reg, parents):
-    a = reg.loc[parents]
+    a = reg.loc[list(parents)]
     return {
         "exact_parent": set(a.index),
         "connectivity": set(a.connectivity),
@@ -71,13 +71,24 @@ def construct(reg, source, support, legacy_support):
             summary.append({"section": kind, "role": name, "side": side, "screens": ",".join(
                 sorted(frame.source_id.unique())), **info,
                 "warning": "FIT_LINCS_LT100" if side == "fit" and info["lincs_parents"] < 100 else ""})
+        bridge = {}
+        if len(fit_sources) > 1:
+            reference = "GDSC2" if "GDSC2" in fit_sources else fit_sources[0]
+            pairs = {s: pd.MultiIndex.from_frame(p[[KEY, "cell_id"]]).unique()
+                     for s, p in fit.groupby("source_id")}
+            for s in fit_sources:
+                if s != reference:
+                    match = pairs[s].intersection(pairs[reference])
+                    counts = pd.Series(match.get_level_values(KEY)).value_counts()
+                    bridge[s] = {"reference": reference, "parents": int(counts.ge(12).sum()),
+                                 "pairs": int(counts[counts.ge(12)].sum())}
         roles[name] = {
             "kind": kind, "fit_screens": fit_sources, "query_screens": query_sources,
             "fit_parents": fit_ids, "query_parents": query_ids,
             "fit_parents_sha256": keys_hash(fit_ids), "query_parents_sha256": keys_hash(query_ids),
             "fit_roster_sha256": panel_hash(fit), "query_roster_sha256": panel_hash(query),
             "fit": describe(fit, reg, support), "query": describe(query, reg, support),
-            "overlap": common, "outer_overlap": outer,
+            "overlap": common, "outer_overlap": outer, "fit_calibration_support": bridge,
         }
         if name not in evaluations and fit[KEY].map(support).groupby(fit[KEY]).first().sum() < 10:
             checks.append(name)
