@@ -80,6 +80,17 @@ def ranking(rows):
     return order,groups,relevance
 
 
+def tree_progress(callback, branch, start):
+    def report(env):
+        iteration = env.iteration - env.begin_iteration + 1
+        if iteration == 1 or iteration % 250 == 0:
+            callback({"branch": branch, "phase": "boosting", "iteration": iteration,
+                      "limit": env.end_iteration - env.begin_iteration, "seconds": perf_counter() - start})
+
+    report.order = 25
+    return report
+
+
 def train(atlas,schema,fit,query,registry,config,seed,*,train_base=None,val_base=None,
           fixed_epochs=None,progress=None,tree_device="cpu"):
     start=perf_counter()
@@ -147,6 +158,8 @@ def train(atlas,schema,fit,query,registry,config,seed,*,train_base=None,val_base
                 choice|={"ndcg_eval_at":[5],"lambdarank_truncation_level":5,"label_gain":list(range(64))}
             watch={}
             checks=[lgb.record_evaluation(watch)]
+            if progress is not None:
+                checks.append(tree_progress(progress, stage, start))
             if preddata is not None:
                 checks.append(lgb.early_stopping(130,first_metric_only=True,verbose=False))
             train_sets=[treedata] if preddata is None else [treedata,preddata]
@@ -176,7 +189,7 @@ def train(atlas,schema,fit,query,registry,config,seed,*,train_base=None,val_base
                     curves.append(stats)
             boosters.append({"objective":stage,"iteration":best,"multiplier":applied,"model":model.model_to_string(num_iteration=best)})
             if progress is not None:
-                progress({"branch":stage,"iteration":best,"seconds":perf_counter()-start})
+                progress({"branch":stage,"phase":"complete","iteration":best,"seconds":perf_counter()-start})
             del model,treedata,preddata,train_x,valid_x
     if not fixed_epochs:
         record=quality(query,val_offset,registry)

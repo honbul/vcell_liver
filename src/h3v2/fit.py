@@ -122,7 +122,7 @@ def fold_fit(stage, split, family, inner, backend, *, smoke=False, tree_device="
         dest.mkdir(parents=True,exist_ok=False)
         def show(point):
             print(stage,split,inner,family,identity,{k:point[k] for k in (
-                "iteration","branch","utility","seconds") if k in point},flush=True)
+                "iteration","branch","phase","limit","utility","seconds") if k in point},flush=True)
         pred,state,curves,stamp=run_fit(config,atlas,schema,train,valid,registry,SEEDS[0],
                                        base_fit=base_train,base_valid=base_val,progress=show,tree_device=tree_device)
         score=quality(valid,pred,registry)
