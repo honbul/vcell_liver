@@ -102,6 +102,8 @@ C4의 두 CPU 파티션에 이전 배열과 대체 배열이 겹쳐 23:01 KST부
 
 08:16 KST에는 G3 `38495_20`이 학습한 `cell-2/inner-2` Huber 후보 `92a020823054`를 C5 `37332_34`에 반영했다. 기존 작업의 선행 후보가 학습 중이며 해당 설정은 미시작 상태였다. 검증 행 149,065개와 유한한 train·validation 값 121쌍, 영수증 SHA-256 `b4a31189f1d16b2cd7b92a0d1a54ed4091448697df77cbe9e1c3173b306c3c17`를 대조했다. 같은 시각 G4의 반환된 CPU 8코어에 `cell-2/inner-1`의 미시작 후보 `0a851673e3dd`를 배정했다. `38569`는 C5 `37334_32`와 동일 등록 분할의 데이터를 사용해 격리 경로에서 적합한다. G4의 H3 CPU 배정은 168개였다. 배정은 G1의 `locks/boundary-1-cell2-1-0a851-replay.json`과 `locks/boundary-1-cell2-1-0a851-replay-route.json`에 남겼다.
 
+08:19 KST에는 `daea`의 `cell-2/inner-2` Huber 후보 `45dad9d5e94b`를 G1에 반영했다. 검증 행 149,065개, 유한한 train·validation 값 122쌍과 영수증 SHA-256 `69dd750a1d362d741913313656ee288e973c67140d1b6d9568dcb30235735074`를 대조했다. 08:20 KST에는 G3의 반환된 CPU 8개에 C5 `37333_22`의 미시작 `cell-0/inner-2` 후보 `0a851673e3dd`를 배정했다. `38572`는 G1 격리 경로에서 실행 중이다. G3 GBM CPU 배정은 128개였다. 등록은 `locks/boundary-1-cell0-2-0a851-replay.json` 및 `locks/boundary-1-cell0-2-0a851-replay-route.json`에 남겼다.
+
 ## 분할과 입력
 
 - Drug-Cold는 H2-v1 1,001골격 연결 성분의 outer 3개 및 각 inner 3개를 그대로 사용한다. Cell-Cold는 확장 패널 3개 전역 계통 차단 분할, 교차스크린은 H3-v1의 9개 고정 평가 지지다. 교차스크린 훈련에는 해당 훈련 계통과 허용 소스의 확장 패널을 사용한다.
