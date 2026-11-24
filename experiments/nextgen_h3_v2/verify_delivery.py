@@ -26,6 +26,11 @@ HELD_METRICS = (NATIVE_DRUG - {"interaction_pearson"}) | NATIVE_CELL | {"within_
 AXES = {"spearman":.01,"interaction_spearman":.02,"ndcg_at_5":.015}
 COHORTS = {"GDSC1":39545,"LIMORE":3400,"LICOB":2888}
 SCREENS = ("CTRPv2", "GDSC2", "PRISM20Q2")
+NATIVE_SUPPORTS = {"drug": ("all", "lincs724", "structure462"), "cell": ("all",)}
+NATIVE_BLOCKS = tuple((scope, support, screen) for scope, supports in NATIVE_SUPPORTS.items()
+                      for support in supports for screen in ("macro", *SCREENS)) + tuple(
+    (scope, "all", screen) for scope in COHORTS for screen in ("macro", scope)
+)
 SEEDS = {"11711", "11729", "11743"}
 PARTITIONS = {f"{track}-{i}" for track in ("drug", "cell", *SCREENS) for i in range(3)}
 CURVE_FIGURES = {"H3V2_FAMILY_LEARNING_CURVES.png", "H3V2_GRID_SATURATION.png"}
@@ -127,11 +132,7 @@ def verify_reported_scores(root, receipt):
     metrics = defaultdict(list)
     for row in rows(root / "H3V2_METRICS.tsv"):
         metrics[row["scope"], row["support"], row["screen"]].append(row)
-    internal = [("drug", support) for support in ("all", "lincs724", "structure462")]
-    internal.append(("cell", "all"))
-    native = [(scope, support, screen) for scope, support in internal for screen in ("macro", *SCREENS)]
-    native += [(scope, "all", screen) for scope in COHORTS for screen in ("macro", scope)]
-    for scope, support, screen in native:
+    for scope, support, screen in NATIVE_BLOCKS:
         verify_score_block(metrics[scope, support, screen], NATIVE_DRUG | NATIVE_CELL,
                            f"{scope}/{support}/{screen}")
     for screen in ("macro", *SCREENS):
@@ -158,6 +159,42 @@ def verify_reported_scores(root, receipt):
             if axes not in (NATIVE_DRUG, NATIVE_CELL, NATIVE_DRUG | NATIVE_CELL):
                 raise ValueError(f"Incomplete set of native metrics for {tissue}/{screen}")
             verify_score_block(group, axes, f"{tissue}/{screen}")
+
+
+def verify_reported_intervals(root):
+    expected = {
+        (*block, candidate, baseline, metric): ("scaffold" if metric in NATIVE_DRUG else "global_lineage", 2000)
+        for block in NATIVE_BLOCKS for candidate in SCORED_MODELS for baseline in ("H2", "C1", "drug_ridge")
+        for metric in NATIVE_DRUG | NATIVE_CELL
+    }
+    expected.update({
+        ("held", "core68", screen, candidate, baseline, metric): ("global_lineage", 1200)
+        for screen in ("macro", *SCREENS) for candidate in SCORED_MODELS
+        for baseline in ("structured_v1", "drug_ridge_v1", "H3v1")
+        for metric in ("spearman", "ndcg_at_5", "precision_at_5")
+    })
+    intervals = rows(root / "H3V2_PAIRED_95CI.tsv")
+    seen = set()
+    for row in intervals:
+        key = tuple(row[name] for name in ("scope", "support", "screen", "candidate", "baseline", "metric"))
+        if key not in expected or key in seen:
+            raise ValueError(f"Unexpected or duplicate paired interval for {'/'.join(key)}")
+        seen.add(key)
+        if (row["cluster_axis"], int(row["draws"])) != expected[key]:
+            raise ValueError(f"Incorrect paired resampling for {'/'.join(key)}")
+        estimates = tuple(row[name] for name in ("delta", "lower", "upper"))
+        clusters = int(row["clusters"])
+        if clusters > 0:
+            estimate, lower, upper = map(float, estimates)
+            valid = all(map(isfinite, (estimate, lower, upper))) and lower <= upper
+        else:
+            valid = clusters == 0 and not any(estimates)
+        if not valid:
+            raise ValueError(f"Invalid paired interval or cluster support for {'/'.join(key)}")
+    missing = expected.keys() - seen
+    if missing:
+        raise ValueError(f"Missing {len(missing)} paired intervals, including {'/'.join(min(missing))}")
+    return intervals
 
 
 def verify(root):
@@ -213,6 +250,7 @@ def verify(root):
         if not line.startswith(f"- **{label}**"):
             raise ValueError("First five summary lines must precede the results tables")
     verify_reported_scores(root, receipt)
+    intervals = verify_reported_intervals(root)
     fits=rows(root/"H3V2_FAMILY_LEARNING_CURVES.tsv")
     replicated = defaultdict(set)
     for row in fits:
@@ -243,7 +281,7 @@ def verify(root):
             entry["atlas_sha256"], entry["fit_rows"], trial_counts[split]
         ):
             raise ValueError(f"Completed trial inputs disagree with the feature audit for {name}")
-    checks=[r for r in rows(root/"H3V2_PAIRED_95CI.tsv") if r["baseline"]=="H2" and r["support"]=="all"]
+    checks=[r for r in intervals if r["baseline"]=="H2" and r["support"]=="all"]
     if set(receipt["verdicts"]) != FAMILIES | {"Champion"}:
         raise ValueError("Missing one or more preregistered promotion decisions")
     for model,outcome in receipt["verdicts"].items():
