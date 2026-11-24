@@ -10,10 +10,10 @@ from nextgen_h2.run import META
 
 from .kernel import DEBIASED,TASK,ScreenKernel,System,solve_shifts
 from .registration import read_split,source_only
-from .spectral import SpectralBasis
+from .spectral import SpectralBasis,solve_hybrid
 
 
-def benchmark(preflight):
+def benchmark(preflight,hybrid=False):
     source_only()
     split=read_split(preflight)
     role="T3/3/Sel-Pooled/0"
@@ -25,6 +25,11 @@ def benchmark(preflight):
         w,y,_,_=model.targets_for(family)
         system=System(model.cell,g[:model.stop,:model.stop].contiguous(),w,y,tau,family==TASK)
         start=monotonic()
+        if hybrid:
+            ans=solve_hybrid(system,(.25,.5,1.,2.,4.,8.,16.,32.))
+            print(family,"hybrid",[(p,a[1:]) for p,a in ans.items()],
+                  "time",round(monotonic()-start,3),flush=True)
+            continue
         spectral=SpectralBasis(system)
         for p in (.25,1.,4.,32.):
             begin=monotonic()
@@ -41,4 +46,6 @@ if __name__=="__main__":
     cpu_threads()
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("preflight",type=Path)
-    benchmark(p.parse_args().preflight)
+    p.add_argument("--hybrid",action="store_true")
+    args=p.parse_args()
+    benchmark(args.preflight,args.hybrid)

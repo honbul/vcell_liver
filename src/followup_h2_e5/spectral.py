@@ -72,3 +72,27 @@ class SpectralBasis:
             norm=update
         val,err=physical()
         return val,max_steps,err
+
+
+def solve_hybrid(system,penalties,*,tol=5e-5,cell=None,drug=None):
+    """Finish every spectral warm start on the original weighted problem."""
+    from .kernel import pcg,solve_shifts
+
+    if system.mass.numel() < 95000:
+        return solve_shifts(system,penalties,tol=tol)
+    try:
+        basis=SpectralBasis(system,cell,drug)
+    except ValueError:
+        return solve_shifts(system,penalties,tol=tol)
+    out={}
+    high=None
+    for p in penalties:
+        initial,n,error=basis.solve(p,tol,max_steps=156)
+        if error <= tol:
+            out[p]=system.root*initial,n,error,"spectral"
+            continue
+        if high is None:
+            high=system.higher_precision()
+        coef,m,error=pcg(high,p,tol*.8,initial=initial.double())
+        out[p]=coef.to(system.y.dtype),n+m,error,"spectral_pcg"
+    return out
