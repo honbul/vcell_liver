@@ -517,7 +517,9 @@ def report_docs(root,points,ci,curves,grid,score,lock,*,replays=(),open_neighbor
         "## 학습 및 포화 곡선", "",
         "학습곡선은 같은 iteration의 train 및 validation을 병기한다. 동결 설정은 기록한 전체 곡선을 싣고, "
         "다른 설정은 분기별로 표본을 남긴다. 각 분기의 첫·마지막 관측 및 최적 iteration을 포함한다. "
-        "포화 그림은 Drug-Cold fold 0에서 동결 설정의 폭 또는 깊이만 바꾼 내측 비교다. 다른 축과 분할의 측정값은 설정 TSV에 있다.",
+        "포화 그림은 Drug-Cold fold 0에서 동결 모델과 같은 구조의 용량별 실측 최고점과, 동결 설정에 맞춘 단일 축 비교를 함께 보여준다. "
+        "용량별 최고점에는 다른 설정의 차이도 반영된다. "
+        "다른 축과 분할의 측정값은 설정 TSV에 있다.",
         "[학습 곡선](H3V2_FAMILY_LEARNING_CURVES.tsv) · [학습 곡선 그림](H3V2_FAMILY_LEARNING_CURVES.png) · [포화 탐색](H3V2_GRID_SATURATION.tsv) · [포화 그림](H3V2_GRID_SATURATION.png) · [최종 동결](final_lock.json)",
     ]
     if open_neighbors is not None:

@@ -51,16 +51,23 @@ def capacity_slice(rows):
     winner, = [row for row in rows if row["frozen"] == "True"]
     chosen = json.loads(winner["configuration"])
     axis = "depth" if chosen["backend"] == "gbdt" else "width"
+    selected_utility = float(winner["utility"])
     ignored = {axis}
     if axis == "width" and chosen["arch"] == "attention":
         ignored.update(("batch", "eval_batch"))
     lock = {name: value for name, value in chosen.items() if name not in ignored}
     matched = []
+    measured = {}
     for row in rows:
         config = json.loads(row["configuration"])
+        if (config["backend"], config.get("arch")) != (chosen["backend"], chosen.get("arch")):
+            continue
+        capacity = config[axis]
+        difference = float(row["utility"]) - selected_utility
+        measured[capacity] = max(measured.get(capacity, difference), difference)
         if {name: value for name, value in config.items() if name not in ignored} == lock:
-            matched.append((config[axis], float(row["utility"]) - float(winner["utility"])))
-    return axis, chosen[axis], sorted(matched)
+            matched.append((capacity, difference))
+    return axis, chosen[axis], sorted(matched), sorted(measured.items())
 
 
 def plot_saturation(root):
@@ -68,10 +75,12 @@ def plot_saturation(root):
     fig, axes = plt.subplots(2, 3, figsize=(12, 7), layout="constrained")
     for (family, label), ax in zip(LABELS.items(), axes.ravel()):
         rows = [row for row in grid if row["split"] == "drug-0" and row["family"] == family]
-        axis, selected, values = capacity_slice(rows)
-        x, delta = zip(*values)
-        ax.plot(x, delta, "o-", color="#2a658a")
-        ax.scatter(selected, 0, color="#bd632c", s=55, zorder=3)
+        axis, selected, matched, measured = capacity_slice(rows)
+        x, delta = zip(*measured)
+        best, = ax.plot(x, delta, "o--", color="#777f88", label="Best measured score at each capacity")
+        matched_x, matched_delta = zip(*matched)
+        fixed, = ax.plot(matched_x, matched_delta, "o-", color="#2a658a", label="Matched grid slice")
+        winner = ax.scatter(selected, 0, color="#bd632c", s=55, zorder=3, label="Frozen operating point")
         ax.axhline(0, color="#a5aab0", lw=.75)
         if axis == "width":
             ax.set_xscale("log", base=2)
@@ -80,8 +89,10 @@ def plot_saturation(root):
         ax.set_ylabel("Inner utility minus selected")
         ax.set_title(label, loc="left", fontweight="bold")
         ax.grid(axis="y", alpha=.2)
-    axes.ravel()[-1].set_axis_off()
-    fig.suptitle("Drug-Cold fold 0 · Measured capacity around each selected setting", fontsize=15, fontweight="bold")
+    legend_axis = axes.ravel()[-1]
+    legend_axis.set_axis_off()
+    legend_axis.legend(handles=[best, fixed, winner], loc="center left", frameon=False)
+    fig.suptitle("Drug-Cold fold 0 · Observed inner utility by capacity", fontsize=15, fontweight="bold")
     fig.savefig(root / "H3V2_GRID_SATURATION.png", dpi=170)
     plt.close(fig)
 
