@@ -1,0 +1,3496 @@
+{
+  "external": {
+    "champion": "hybrid",
+    "operating_point": {
+      "config": {
+        "arch": "film",
+        "backend": "torch",
+        "balance": true,
+        "batch": [
+          96,
+          96
+        ],
+        "check_every": 4,
+        "depth": 4,
+        "dropout": 0.25,
+        "epochs": 84,
+        "eval_batch": 16384,
+        "family": "hybrid",
+        "fm": null,
+        "graph": "gine",
+        "heads": 4,
+        "hybrid": true,
+        "learning_rate": 0.000325,
+        "loss": [
+          1.0,
+          0.35,
+          0.35
+        ],
+        "message_depth": 3,
+        "min_epochs": 32,
+        "patience": 24,
+        "weight_decay": 0.01,
+        "width": 256
+      },
+      "id": "b2ca48a7e587",
+      "max_budget_pressure_iteration": 12,
+      "point": {
+        "interaction_pearson": 0.2227116473854122,
+        "interaction_spearman": 0.2251340533740674,
+        "ndcg_at_5": 0.6055668796091718,
+        "pearson": 0.33132538851989796,
+        "precision_at_5": 0.3076074638733932,
+        "spearman": 0.3143461280944733
+      },
+      "receipt_sha256": [
+        "c52337b3bfa500fdcbfcc8e8e43f172490cde58d97d5cd97b2c6df5cc1ef84d3",
+        "352268732cf08b8f5d36eacf962ab0dfee7103acd30ec5cc1c5d792dbe0bb183",
+        "4945038717c3cfec6ab0c3f6322acc5cba6bb3d7811c13da0f321c24f147ad0c"
+      ],
+      "selected_branch_budgets": null,
+      "selected_budget": 4,
+      "stage": "boundary-1",
+      "utility": 0.3603876935570261
+    },
+    "rule": "most frequent primary inner-selected family, then mean inner utility; then modal setting"
+  },
+  "freeze_reason": "pre_unsealing_round_cap_after_boundary_1",
+  "max_boundary_round": 1,
+  "outer_labels_opened": false,
+  "seeds": [
+    11711,
+    11729,
+    11743
+  ],
+  "selection_ledger_sha256": "f648cc494fb2a14210a5b6a695bfe8b409d4e1e36c05f5b1457223a80610e4d6",
+  "splits": {
+    "CTRPv2-0": {
+      "champion": "gnn",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.4,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.2,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.04,
+            "width": 256
+          },
+          "id": "5036d29de4c1",
+          "max_budget_pressure_iteration": 64,
+          "point": {
+            "interaction_pearson": 0.2560290911630482,
+            "interaction_spearman": 0.2561528591644899,
+            "ndcg_at_5": 0.9119225739747379,
+            "pearson": 0.2265460178564266,
+            "precision_at_5": 0.6277099894593481,
+            "spearman": 0.23003488779069373
+          },
+          "receipt_sha256": [
+            "aa7332a7474ab7b4c0f8464f8863b57fb0e7cf549bf4540dd5e4723b65d3f713",
+            "5462a8537662fed7e42600b8e4e494987711e06ee0f6963838f6f0b09e713663",
+            "4922b7171e3337d3fc8383123bb57386503875342ba14afd7006c9f3bacd2449"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 48,
+          "stage": "boundary-1",
+          "utility": 0.4083422007488436
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 2,
+            "dropout": 0.1,
+            "epochs": 60,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.0013,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.0001,
+            "width": 128
+          },
+          "id": "b1215816da10",
+          "max_budget_pressure_iteration": 20,
+          "point": {
+            "interaction_pearson": 0.2732719104265008,
+            "interaction_spearman": 0.2698085543047911,
+            "ndcg_at_5": 0.9111443986067186,
+            "pearson": 0.2490800490577188,
+            "precision_at_5": 0.6226736631809281,
+            "spearman": 0.24480745710484428
+          },
+          "receipt_sha256": [
+            "5426e5bfc9867f4bded7205e75161e8c9fa2cdd0e3d6f9d8b714388f5996ba1c",
+            "864d0ddf1d2c4b743cdda6b5b8d82f3c75d31f0645e3c3adf2654ed65701d784",
+            "37847403937c7f7a63ef9974ca44cfe800c9e9018034addadbd72a7cc2b8fa80"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 16,
+          "stage": "boundary-1",
+          "utility": 0.4188920216402969
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.6,
+            "depth": 10,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 12.0,
+            "learning_rate": 0.02,
+            "leaves": 255,
+            "min_child": 25,
+            "objective": "huber",
+            "trees": 3000
+          },
+          "id": "d43846ced4f9",
+          "max_budget_pressure_iteration": 2996,
+          "point": {
+            "interaction_pearson": 0.2656180457072783,
+            "interaction_spearman": 0.2589841463400511,
+            "ndcg_at_5": 0.9211260422494255,
+            "pearson": 0.23184773620268015,
+            "precision_at_5": 0.6368427105449398,
+            "spearman": 0.21894555698045842
+          },
+          "receipt_sha256": [
+            "99ded8153cf7410524283ab5571f75b61dbf3408d4e06bbf7e3dbdf7b388e74d",
+            "41b8d24a0def8c0136ea815944b8692af8625deb6dba81a794f7cf1b3b244224",
+            "7bd627c6d43769e4e0c5882734f7a6310fe196498d623e8fa5b28db81b95f7f6"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 2237,
+          "stage": "boundary-1",
+          "utility": 0.40650225510557797
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": "clamp",
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 4,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "a4e69e98c09f",
+          "max_budget_pressure_iteration": 32,
+          "point": {
+            "interaction_pearson": 0.27162633143676196,
+            "interaction_spearman": 0.2705960653299735,
+            "ndcg_at_5": 0.9069182878664178,
+            "pearson": 0.2445986499170092,
+            "precision_at_5": 0.6149877133374786,
+            "spearman": 0.24756740812684724
+          },
+          "receipt_sha256": [
+            "04c667548879607a57a688fbdabe99ae7a493a54fea38fd8276a6ed54a8ed350",
+            "2fde56e8df77361f6d2ac0c1d2df3923cdfad9dbfd80acca184e9ac1f8fea6ca",
+            "7e84f7b812cefe59691a36c9bc4e01c3ea93c07da8f0e1261f66c8d257f8fbf0"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 16,
+          "stage": "r2",
+          "utility": 0.41931372522267774
+        },
+        "hybrid": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.38,
+            "depth": 4,
+            "family": "hybrid",
+            "hybrid": true,
+            "lambda_l2": 15.0,
+            "learning_rate": 0.06999999999999999,
+            "leaves": 15,
+            "min_child": 90,
+            "objective": "l2",
+            "trees": 3000
+          },
+          "id": "c1efb3d360d6",
+          "max_budget_pressure_iteration": 20,
+          "point": {
+            "interaction_pearson": 0.28920305154047005,
+            "interaction_spearman": 0.27540371093494703,
+            "ndcg_at_5": 0.9195194677762323,
+            "pearson": 0.23186908732506986,
+            "precision_at_5": 0.626052315656986,
+            "spearman": 0.21990157082288783
+          },
+          "receipt_sha256": [
+            "76911e96c601c28b5c921e7ee1943f1c7fe9d80db1a2d40e39d08cd239118d7e",
+            "30b4f2c5b69e17e8df6feae5901396d0b9dc8d4ea65cecd55cf916ffead9ac08",
+            "bddcb54d88418bc53a1cecb2ee16d45679f0cdb92cd2da8a7fe356ccbd301018"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 2,
+          "stage": "boundary-1",
+          "utility": 0.41145668709484173
+        }
+      }
+    },
+    "CTRPv2-1": {
+      "champion": "film",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.4,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.2,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.04,
+            "width": 256
+          },
+          "id": "5036d29de4c1",
+          "max_budget_pressure_iteration": 56,
+          "point": {
+            "interaction_pearson": 0.24256844591125842,
+            "interaction_spearman": 0.24713997994830542,
+            "ndcg_at_5": 0.9137803535292273,
+            "pearson": 0.21685972921293367,
+            "precision_at_5": 0.6284607788582902,
+            "spearman": 0.22000971578825554
+          },
+          "receipt_sha256": [
+            "ba3ebd6d1943f7dd3eadf9469bc50b8e291884afa3d4ba5fe8f126135d8f02d6",
+            "7b7a866741bdb7d9152ef25487111dd7adc115f367d98c9275c15ea2185d1836",
+            "fddb774dbc443a6ec71aae9dc00dddf76044f1341d294bc530e1300ee34cc1cb"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 56,
+          "stage": "boundary-1",
+          "utility": 0.40159145447151345
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 5,
+            "dropout": 0.25,
+            "epochs": 100,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.002,
+            "width": 512
+          },
+          "id": "a043c459fb3e",
+          "max_budget_pressure_iteration": 20,
+          "point": {
+            "interaction_pearson": 0.26388195517468643,
+            "interaction_spearman": 0.2669289182033783,
+            "ndcg_at_5": 0.9056277974988908,
+            "pearson": 0.23823434838515306,
+            "precision_at_5": 0.6137753312312916,
+            "spearman": 0.24324589665059163
+          },
+          "receipt_sha256": [
+            "ea3dbb4f64aedf13aa65a3c3ee8ef996627e04ed9abd7cd9672467e22b6ff33c",
+            "2b3c0559686e16f58b487695234d3c3ea9a4ba74a1e6b5b50d08f1a72a1f1a82",
+            "978c98e4ef4d9074cfa6856e28cf8c67db0a1bdf1553b0f0302db6a2c58edac3"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 20,
+          "stage": "boundary-1",
+          "utility": 0.41594627832850245
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.72,
+            "depth": 12,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 8.399999999999999,
+            "learning_rate": 0.013999999999999999,
+            "leaves": 511,
+            "min_child": 33,
+            "objective": "huber",
+            "trees": 3000
+          },
+          "id": "45dad9d5e94b",
+          "max_budget_pressure_iteration": 2687,
+          "point": {
+            "interaction_pearson": 0.24611488528492723,
+            "interaction_spearman": 0.2388105074955395,
+            "ndcg_at_5": 0.9210222699684746,
+            "pearson": 0.21128132851654213,
+            "precision_at_5": 0.6342643269569744,
+            "spearman": 0.20529322448773143
+          },
+          "receipt_sha256": [
+            "5e41fd65bd30ec5d534c0920084069237f95bb66729269d003208ccc61ddb123",
+            "140137a1a70685c4aa69965d5c4f02553c8359a35cd80093007c6e2c04e56bda",
+            "55abd02f9a078899168ce68987081c3003267c5b597c96dd012562e998c298a1"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 2240,
+          "stage": "boundary-1",
+          "utility": 0.39428067076025963
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": null,
+            "graph": "attentivefp",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 5,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 512
+          },
+          "id": "75a043e3ff2a",
+          "max_budget_pressure_iteration": 36,
+          "point": {
+            "interaction_pearson": 0.26240038985439823,
+            "interaction_spearman": 0.2679719784587986,
+            "ndcg_at_5": 0.9079584788239051,
+            "pearson": 0.23405476463167532,
+            "precision_at_5": 0.6212110813718724,
+            "spearman": 0.2376735943283482
+          },
+          "receipt_sha256": [
+            "0661294dbefbf05fd02d299ee37cfc156b0f286fd4062bc3f9bffd4beb5457de",
+            "3a929a465bceadf65addf99227ae441e01d401a4d81cb785f5762961618dbf95",
+            "11b0b3ad1e2aa92a01c2c6f682356e76d827e6df54d6e23a4fb08cd61411a8cc"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 36,
+          "stage": "boundary-1",
+          "utility": 0.41433433069137254
+        },
+        "hybrid": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.62,
+            "depth": 8,
+            "family": "hybrid",
+            "hybrid": true,
+            "lambda_l2": 7.0,
+            "learning_rate": 0.034999999999999996,
+            "leaves": 255,
+            "min_child": 42,
+            "objective": "l2",
+            "trees": 3000
+          },
+          "id": "413dcfcf7844",
+          "max_budget_pressure_iteration": 32,
+          "point": {
+            "interaction_pearson": 0.2836122242427604,
+            "interaction_spearman": 0.26868309054370615,
+            "ndcg_at_5": 0.9190656488340646,
+            "pearson": 0.23262861396993204,
+            "precision_at_5": 0.6253113078386926,
+            "spearman": 0.21724210184267276
+          },
+          "receipt_sha256": [
+            "e56eaffa433765c5f0e03361db412f18c944fe6254eea55d2c750959a3cc9374",
+            "c127ed80d77c173138107706e666f41ec77e239c788701d4a27fcea989d52d08",
+            "e97fee62f5450a173f0d11e31eb764a23deaa801eeab163cfaa3eb40090b00ed"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 10,
+          "stage": "boundary-1",
+          "utility": 0.4081302852008308
+        }
+      }
+    },
+    "CTRPv2-2": {
+      "champion": "film",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "e61e17cab0d2",
+          "max_budget_pressure_iteration": 44,
+          "point": {
+            "interaction_pearson": 0.2503866721518194,
+            "interaction_spearman": 0.24763148183206038,
+            "ndcg_at_5": 0.9154919915260012,
+            "pearson": 0.22687016915421052,
+            "precision_at_5": 0.6294549203401173,
+            "spearman": 0.22474219421863165
+          },
+          "receipt_sha256": [
+            "6ea4a000b9582070408770d4777058dc93f64085f464430379862541e910e815",
+            "cc428523de74a084111d00408ebe920f398617d3e532c659080962ad911ea612",
+            "8613fc6e3296026e80a44ffc1a482acbb599740cc485590493ae5a53649d1a88"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 32,
+          "stage": "boundary-1",
+          "utility": 0.40429642982950265
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.001,
+            "width": 256
+          },
+          "id": "0bbdfff01bc9",
+          "max_budget_pressure_iteration": 80,
+          "point": {
+            "interaction_pearson": 0.2754438955877617,
+            "interaction_spearman": 0.27001388981237123,
+            "ndcg_at_5": 0.9008807305671582,
+            "pearson": 0.2502256138657482,
+            "precision_at_5": 0.619895601676544,
+            "spearman": 0.24646717608361662
+          },
+          "receipt_sha256": [
+            "71d5b936da886528ca2e37a9b08843de33217ddb807336783b5fd4a696fb4a91",
+            "b9a48599c87985f240a7e5a19c2087eb7fa9b09580378e9379632cc76b27779d",
+            "87e0c9f47e419c23a7e352dc63248f1222be5fae38dd95f0c706e53fc5552f0d"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 36,
+          "stage": "boundary-1",
+          "utility": 0.4171345788231284
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.62,
+            "depth": 12,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 8.399999999999999,
+            "learning_rate": 0.013999999999999999,
+            "leaves": 511,
+            "min_child": 24,
+            "objective": "huber",
+            "trees": 3000
+          },
+          "id": "ebc5b5e09068",
+          "max_budget_pressure_iteration": 2515,
+          "point": {
+            "interaction_pearson": 0.25539900403784116,
+            "interaction_spearman": 0.24642672038178823,
+            "ndcg_at_5": 0.9223781711307163,
+            "pearson": 0.2237675424218425,
+            "precision_at_5": 0.6379868173512688,
+            "spearman": 0.2104068392598405
+          },
+          "receipt_sha256": [
+            "5f19e56827fdc10db90a07fbd4d44aba280742c680359dd72af2276301f7872d",
+            "8537d698d52a6e675884aef3e31fb3d4a7f6d0d68f12adc42e00333eea150420",
+            "54024abf91cb29fbdf8a77ba2c79f35112e35c578422c1c8f548d287b426d3a2"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 2206,
+          "stage": "boundary-1",
+          "utility": 0.39920563656414376
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 3,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": "unimol",
+            "graph": "gatv2",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 4,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "8b2006c4c775",
+          "max_budget_pressure_iteration": 44,
+          "point": {
+            "interaction_pearson": 0.2666307388645675,
+            "interaction_spearman": 0.2722552281901452,
+            "ndcg_at_5": 0.9053158945049934,
+            "pearson": 0.23865248819192056,
+            "precision_at_5": 0.6157467412776836,
+            "spearman": 0.24031810286311583
+          },
+          "receipt_sha256": [
+            "1ea6851c685d499ecab78c578afbb82f40174e317fc7904ef1b381c5a9d390eb",
+            "c039fe872de6e0c3456314bbceb956fecf18c1119c291795c2fcf49da9b6a5c2",
+            "31b2ca4ff0a2fd3ddb749e1fe13492fcac0174396f2a29f58360bb7fabc7a818"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 36,
+          "stage": "boundary-1",
+          "utility": 0.416148688371694
+        },
+        "hybrid": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.62,
+            "depth": 8,
+            "family": "hybrid",
+            "hybrid": true,
+            "lambda_l2": 7.0,
+            "learning_rate": 0.034999999999999996,
+            "leaves": 255,
+            "min_child": 42,
+            "objective": "l2",
+            "trees": 3000
+          },
+          "id": "413dcfcf7844",
+          "max_budget_pressure_iteration": 817,
+          "point": {
+            "interaction_pearson": 0.2793892907240123,
+            "interaction_spearman": 0.2661605083622851,
+            "ndcg_at_5": 0.9206473246556865,
+            "pearson": 0.23946567520333012,
+            "precision_at_5": 0.6309240801848045,
+            "spearman": 0.2264254342889368
+          },
+          "receipt_sha256": [
+            "af97880df15c8d67798361d025df477fc7365c4bff8625a09d4fa67737fc5e4f",
+            "b5558599cfad334f8597db4e0ec2d4c4a293a20259f66ee81f698147eca9569a",
+            "d641e409b5fd445e34975ba4fd99af6e3065de37c13203bec44fc529f944e5ed"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 2,
+          "stage": "boundary-1",
+          "utility": 0.4119014291026287
+        }
+      }
+    },
+    "GDSC2-0": {
+      "champion": "hybrid",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "e61e17cab0d2",
+          "max_budget_pressure_iteration": 44,
+          "point": {
+            "interaction_pearson": 0.22309556573008618,
+            "interaction_spearman": 0.22344600996149278,
+            "ndcg_at_5": 0.9322626919624519,
+            "pearson": 0.22514744563876116,
+            "precision_at_5": 0.6143697160613774,
+            "spearman": 0.22118596490639514
+          },
+          "receipt_sha256": [
+            "f2acefcb2eb972c822a1c750266508d5b63f612e41ef86378403f1f98f0692f4",
+            "52170f6ea6564145d4422b5870fafc184e8ed17a561d68a2a34c4688ba46fe6c",
+            "23a9b5416fcd0dd3f86038c8b7991fac06f174379460ee2949e98f248797e471"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 24,
+          "stage": "boundary-1",
+          "utility": 0.3996331601869386
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 2,
+            "dropout": 0.1,
+            "epochs": 60,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.0001,
+            "width": 128
+          },
+          "id": "64e7f0b093b3",
+          "max_budget_pressure_iteration": 28,
+          "point": {
+            "interaction_pearson": 0.23288045917293498,
+            "interaction_spearman": 0.2355893814841854,
+            "ndcg_at_5": 0.9301696029015396,
+            "pearson": 0.23379512167886538,
+            "precision_at_5": 0.6130246881968077,
+            "spearman": 0.22973233688600778
+          },
+          "receipt_sha256": [
+            "04c6e977413fb719e958751a398c3aaa7180ab9284c200ea69eb6c61d9b3db6a",
+            "da3d1cf38a8052ac4cb8b74c9ddecd5a66f59bfb1d2d8795aa44943dd211ae84",
+            "dd38f2c5e25eb5bb6e8d8520ffdf35ee4cedd0e807ae1f0f0b7b8f1077c83d2e"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 20,
+          "stage": "r1",
+          "utility": 0.40659876676934403
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.72,
+            "depth": 12,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 8.399999999999999,
+            "learning_rate": 0.013999999999999999,
+            "leaves": 511,
+            "min_child": 24,
+            "objective": "huber",
+            "trees": 4500
+          },
+          "id": "788ea49e8292",
+          "max_budget_pressure_iteration": 4363,
+          "point": {
+            "interaction_pearson": 0.23963691214619603,
+            "interaction_spearman": 0.23341493532339883,
+            "ndcg_at_5": 0.9392376773556849,
+            "pearson": 0.23516628913455345,
+            "precision_at_5": 0.6298312687794705,
+            "spearman": 0.22868393914037716
+          },
+          "receipt_sha256": [
+            "951426504566115ac2d53dddfbfbd37c44522322eeb3d9a5e50bec4423f8267b",
+            "990c9cbc10bf53fb6b719ede61d8a351491ace0cd262b6acd94039401d216ee5",
+            "4d6a1e6452a288bd3153b022bf381fbd836ade6f41d985d0badce9ca43825547"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 4277,
+          "stage": "boundary-1",
+          "utility": 0.4077416725491106
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": null,
+            "graph": "gatv2",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 4,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.005,
+            "width": 256
+          },
+          "id": "8076e25dcafc",
+          "max_budget_pressure_iteration": 52,
+          "point": {
+            "interaction_pearson": 0.2342268593379326,
+            "interaction_spearman": 0.23596770999195407,
+            "ndcg_at_5": 0.9246487753585886,
+            "pearson": 0.23301467629807954,
+            "precision_at_5": 0.5969989075862838,
+            "spearman": 0.2330893383681902
+          },
+          "receipt_sha256": [
+            "6931a6c49b458fefb7248590055acbb6abba55b161407f9eb229acccf1997f45",
+            "8b96158848149fb84cf8548d38835c28d7ae5e9429682f0000ee84a1c8e2e040",
+            "a879166c6921a072f108225f1797220ac5ae4a690447e6e6b7719fcc0861671a"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 52,
+          "stage": "boundary-1",
+          "utility": 0.4068427091029189
+        },
+        "hybrid": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.62,
+            "depth": 8,
+            "family": "hybrid",
+            "hybrid": true,
+            "lambda_l2": 7.0,
+            "learning_rate": 0.017499999999999998,
+            "leaves": 127,
+            "min_child": 42,
+            "objective": "l2",
+            "trees": 3000
+          },
+          "id": "ce12d795ddff",
+          "max_budget_pressure_iteration": 1496,
+          "point": {
+            "interaction_pearson": 0.2519741290182106,
+            "interaction_spearman": 0.2427577038467218,
+            "ndcg_at_5": 0.9379965121148561,
+            "pearson": 0.23535197331359176,
+            "precision_at_5": 0.6227486926487481,
+            "spearman": 0.2290842819958744
+          },
+          "receipt_sha256": [
+            "3a40a1e8b5104f2d5a0b38512eb14da1a5562d6fe412ae519eb17301a795a124",
+            "8dd30c913319ad1e8e4bcb7c52e54404d3d21a4e3cf20e7414a0aa02146d31fc",
+            "5a67c6c875fc39000b00edf4ecf83029527d747aa3dc9cec09829a7bb71dbea7"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 34,
+          "stage": "boundary-1",
+          "utility": 0.41041436608087406
+        }
+      }
+    },
+    "GDSC2-1": {
+      "champion": "hybrid",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.4,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.2,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.04,
+            "width": 256
+          },
+          "id": "5036d29de4c1",
+          "max_budget_pressure_iteration": 104,
+          "point": {
+            "interaction_pearson": 0.2100569126937099,
+            "interaction_spearman": 0.21581475037389952,
+            "ndcg_at_5": 0.9290402026128719,
+            "pearson": 0.2127392743192611,
+            "precision_at_5": 0.6075975488134817,
+            "spearman": 0.21495135798469214
+          },
+          "receipt_sha256": [
+            "8bc15e53fa5c9d6b046c2b3d8b0dfa30839e0720a5879df558569701c7974968",
+            "cf674f0174ddccbd91b04c6647c7a9c4792545722ae4bd89c4ea3de60e63538c",
+            "592fb082740d5434b1f8aaaf05e6de66f6bdfe357836b0f2d6c7f392af305d49"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 68,
+          "stage": "boundary-1",
+          "utility": 0.39373258685849927
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 2,
+            "dropout": 0.1,
+            "epochs": 60,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "parts": true,
+            "patience": 24,
+            "weight_decay": 0.0001,
+            "width": 128
+          },
+          "id": "e5845a24ba89",
+          "max_budget_pressure_iteration": 52,
+          "point": {
+            "interaction_pearson": 0.2252220270391094,
+            "interaction_spearman": 0.23056548726096684,
+            "ndcg_at_5": 0.9269672136545886,
+            "pearson": 0.223203539191773,
+            "precision_at_5": 0.6069981838954586,
+            "spearman": 0.22457159524860038
+          },
+          "receipt_sha256": [
+            "5420ac903fc93e6dd92af2854a4ea3555d2b8d9ea4971b6fc792ff5527131a73",
+            "beed7588515c422cea368f7d5ec64d7fe56296ebc775393e5d05e40734728136",
+            "2764e85cdb9adbdc8b71fd648f33ec575180b5146637936e57c6ad6a8d39c9ba"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 44,
+          "stage": "boundary-1",
+          "utility": 0.4019686674538073
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.72,
+            "depth": 13,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 8.399999999999999,
+            "learning_rate": 0.013999999999999999,
+            "leaves": 511,
+            "min_child": 24,
+            "objective": "huber",
+            "trees": 3000
+          },
+          "id": "9afbff45ff6b",
+          "max_budget_pressure_iteration": 2982,
+          "point": {
+            "interaction_pearson": 0.22212310277088365,
+            "interaction_spearman": 0.21966410132996564,
+            "ndcg_at_5": 0.9368658344664207,
+            "pearson": 0.21889802219476318,
+            "precision_at_5": 0.623069317513762,
+            "spearman": 0.21197431126154465
+          },
+          "receipt_sha256": [
+            "05094c8a1a4533e00ab1e419ecbf30d1fdbf0864ba06965db6766696701f2f45",
+            "9200e83a5b18650dd275a93c0435e6b7d8dfc935b23c8f0af5ab93af204c7eab",
+            "3fc2eda411d29a80e3545d8e2a86e20ff174e173fc11f54e2c2f2e4ddd98a8a7"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 2818,
+          "stage": "boundary-1",
+          "utility": 0.3955041290832899
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.16999999999999998,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": null,
+            "graph": "gatv2",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 4,
+            "min_epochs": 32,
+            "parts": true,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "a85fe4721978",
+          "max_budget_pressure_iteration": 40,
+          "point": {
+            "interaction_pearson": 0.227883286629289,
+            "interaction_spearman": 0.2314890363116068,
+            "ndcg_at_5": 0.9260320299522539,
+            "pearson": 0.22481871256754293,
+            "precision_at_5": 0.6050463908325543,
+            "spearman": 0.2246065704160424
+          },
+          "receipt_sha256": [
+            "a80c316c7e4e8bfe0b2621aa608983f52f4b4e790eefbf025cd86423b52f5d93",
+            "0d9d22e65f54d09b03b68b0e4807e4c29efd6e4ce5589cba1ec10bd988b7881c",
+            "cb5068a0534670eef88c8f33b5d164eb0826dda9af3f03dd01202e91ce838dd5"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 32,
+          "stage": "boundary-1",
+          "utility": 0.4020276750687646
+        },
+        "hybrid": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.5,
+            "depth": 6,
+            "family": "hybrid",
+            "hybrid": true,
+            "lambda_l2": 20.0,
+            "learning_rate": 0.05,
+            "leaves": 63,
+            "min_child": 60,
+            "objective": "l2",
+            "trees": 3000
+          },
+          "id": "974a7589784e",
+          "max_budget_pressure_iteration": 21,
+          "point": {
+            "interaction_pearson": 0.24017746272215254,
+            "interaction_spearman": 0.23565590744105866,
+            "ndcg_at_5": 0.9366124325876612,
+            "pearson": 0.22214751394717902,
+            "precision_at_5": 0.6206146117257229,
+            "spearman": 0.21794424751924873
+          },
+          "receipt_sha256": [
+            "dd50bcb2e9f8b5a4151f8c6cf8dd7b8a61e56b8bda589d9cf50718366dd6d000",
+            "1853c766f2860d4a24f0fa07d6906f457b964bac7ab7659851774ebb96360dc9",
+            "abe878d062c75c8166b414d619ca2fb2054a9befaa14abee42b418369ef51671"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 17,
+          "stage": "boundary-1",
+          "utility": 0.40292479176289486
+        }
+      }
+    },
+    "GDSC2-2": {
+      "champion": "gnn",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.02,
+            "width": 256
+          },
+          "id": "4ba1c467d7ea",
+          "max_budget_pressure_iteration": 48,
+          "point": {
+            "interaction_pearson": 0.1995573623294162,
+            "interaction_spearman": 0.20428096966731824,
+            "ndcg_at_5": 0.929087971219236,
+            "pearson": 0.21447846749711436,
+            "precision_at_5": 0.6091761253771713,
+            "spearman": 0.2141672035364436
+          },
+          "receipt_sha256": [
+            "9ce182a0251f84937cfa3cda6cfe5214363ff38fd5b2656ee34b3e20236febb7",
+            "2e5fbba750ca22f7a92759cec89729c250ab6d77a0a823235810707a9d0baa48",
+            "eee6cf2718d23ac2cc564a322ed919f14be5000d61bab56c9615974e44dad9b9"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 40,
+          "stage": "boundary-1",
+          "utility": 0.3899315252964041
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 5,
+            "dropout": 0.16999999999999998,
+            "epochs": 124,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 1024
+          },
+          "id": "e174b03addb4",
+          "max_budget_pressure_iteration": 60,
+          "point": {
+            "interaction_pearson": 0.21647679139870607,
+            "interaction_spearman": 0.218398071710388,
+            "ndcg_at_5": 0.9262878877476387,
+            "pearson": 0.22665065537505505,
+            "precision_at_5": 0.6046279128572835,
+            "spearman": 0.225966443882417
+          },
+          "receipt_sha256": [
+            "0e6bd66ac2aad018440cdbabcf0ba5ece0ef6b3457513caf69773f8dc5c7ed7d",
+            "28ef3e898614b9fc65e8170bf21967368ffd437f8f77c65f442e28a515cbe1a3",
+            "0f9007b408210ab4bf0be1ca4ef8b320c01b93472e1548fe482044e0e6a1b1f4"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 36,
+          "stage": "boundary-1",
+          "utility": 0.3987762931971137
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.6,
+            "depth": 10,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 12.0,
+            "learning_rate": 0.02,
+            "leaves": 255,
+            "min_child": 49,
+            "objective": "huber",
+            "trees": 3000
+          },
+          "id": "be860622421c",
+          "max_budget_pressure_iteration": 3000,
+          "point": {
+            "interaction_pearson": 0.2183692209478923,
+            "interaction_spearman": 0.2168279623558823,
+            "ndcg_at_5": 0.9350390269829062,
+            "pearson": 0.21743124037675132,
+            "precision_at_5": 0.6217373526318496,
+            "spearman": 0.21804903252101235
+          },
+          "receipt_sha256": [
+            "4824616a48e5dea3a8439c7270958342667b6608059063569329671b7499de87",
+            "4242d1d5f96532ac67b37394783963e3103065efdfb72c6bad6f27220748c881",
+            "e6b7ea92c0cacfe74faacb655cbd378044dc0d353ee630d760e88adfc8771d98"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 3000,
+          "stage": "boundary-1",
+          "utility": 0.3969302100869468
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": null,
+            "graph": "attentivefp",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 5,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "467e9b357065",
+          "max_budget_pressure_iteration": 64,
+          "point": {
+            "interaction_pearson": 0.22297497432480812,
+            "interaction_spearman": 0.22471133008488323,
+            "ndcg_at_5": 0.9212118718611717,
+            "pearson": 0.22799861519339087,
+            "precision_at_5": 0.5917294351177624,
+            "spearman": 0.22651068065262558
+          },
+          "receipt_sha256": [
+            "61d550298da4efe5dcd4da0d63485892cd761026b856dc61ff30cd6711011b79",
+            "9863aa93832f53a37a5ee6d537455a66bed130e2e5d5b85e6862f0cc33cf3d43",
+            "4f9d6ec0493e545d4fa4e033ebce0a29208e90324a5dd67de0f31f721b7abd49"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 52,
+          "stage": "boundary-1",
+          "utility": 0.3996461732844394
+        },
+        "hybrid": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.62,
+            "depth": 8,
+            "family": "hybrid",
+            "hybrid": true,
+            "lambda_l2": 7.0,
+            "learning_rate": 0.034999999999999996,
+            "leaves": 127,
+            "min_child": 42,
+            "objective": "l2",
+            "trees": 3000
+          },
+          "id": "8a40b89bb1de",
+          "max_budget_pressure_iteration": 12,
+          "point": {
+            "interaction_pearson": 0.23002620632910686,
+            "interaction_spearman": 0.2241542926653599,
+            "ndcg_at_5": 0.9356814318691934,
+            "pearson": 0.21726131143269278,
+            "precision_at_5": 0.6198614232830516,
+            "spearman": 0.21588222318717304
+          },
+          "receipt_sha256": [
+            "09e57955699ad08d66784349df9d9cd5ccc4d39ba8a9c33bc32071e02fdb7ae3",
+            "ebb560b3243e36ab1f79f7d1bfa5fe5f44322cdfa729b0c6b5be112df49b7e6b",
+            "e27e1bb20dae5c39b058941d7ea60db138a15bc0da6206a1ad61cea7180e7fdf"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 10,
+          "stage": "r2",
+          "utility": 0.3983136462011342
+        }
+      }
+    },
+    "PRISM20Q2-0": {
+      "champion": "hybrid",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "e61e17cab0d2",
+          "max_budget_pressure_iteration": 52,
+          "point": {
+            "interaction_pearson": 0.39247052967561247,
+            "interaction_spearman": 0.38338194841119483,
+            "ndcg_at_5": 0.8314758041906228,
+            "pearson": 0.34176272623877646,
+            "precision_at_5": 0.502593006283157,
+            "spearman": 0.3176996046627338
+          },
+          "receipt_sha256": [
+            "1a5c0caaad895b47a5a72b5cfe941440d0ebf89250da823e46c3c3899fc1d545",
+            "ccbeeb312403cd0153fa78eaf4d7b972267a431673f04e755ef3aba26e96eed3",
+            "5ff629138cba1f7499a71a2309c53c57285df1fce31609958d095971f8570f23"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 48,
+          "stage": "boundary-1",
+          "utility": 0.4658483576692444
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 3,
+            "dropout": 0.25,
+            "epochs": 108,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "parts": true,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 512
+          },
+          "id": "989f30217885",
+          "max_budget_pressure_iteration": 28,
+          "point": {
+            "interaction_pearson": 0.3983487234029819,
+            "interaction_spearman": 0.38868609436629964,
+            "ndcg_at_5": 0.8427412916996281,
+            "pearson": 0.347432565321626,
+            "precision_at_5": 0.49736694954533545,
+            "spearman": 0.32619248977408755
+          },
+          "receipt_sha256": [
+            "547199fcfe86bd4c875dc87443d13037ab72cb66b7c5fb3976d64cfae85edc41",
+            "1481736194e48022c0666f5fc0fd98d55de4941655b582681e1141b6fb66769f",
+            "5a1cab8115ce3179196af8bbabcc1fe0255deea122e68ec1b0450e5f824b395d"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 16,
+          "stage": "boundary-1",
+          "utility": 0.4740777716331363
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.72,
+            "depth": 12,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 8.399999999999999,
+            "learning_rate": 0.013999999999999999,
+            "leaves": 511,
+            "min_child": 24,
+            "objective": "huber",
+            "trees": 4500
+          },
+          "id": "788ea49e8292",
+          "max_budget_pressure_iteration": 4499,
+          "point": {
+            "interaction_pearson": 0.40830154408063085,
+            "interaction_spearman": 0.3873589662996283,
+            "ndcg_at_5": 0.8525740285229075,
+            "pearson": 0.35528668371288175,
+            "precision_at_5": 0.5138614803120904,
+            "spearman": 0.32171541500652207
+          },
+          "receipt_sha256": [
+            "9eacd7a42068cf3a621e9165d46531b2a3f2b1737e9872c4fc12b679c727639e",
+            "3d011dbe62e2af44eeb54961d1a0dc9c2895c02f33f628e50217bf0a6149a793",
+            "583be4f5ed23c8a926776b31641e312815612c912c56af261bc7bd33197955d5"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 4498,
+          "stage": "boundary-1",
+          "utility": 0.4741231337735503
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 3,
+            "dropout": 0.1,
+            "epochs": 60,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "parts": true,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 128
+          },
+          "id": "7990f7908f50",
+          "max_budget_pressure_iteration": 32,
+          "point": {
+            "interaction_pearson": 0.4066226335170327,
+            "interaction_spearman": 0.39194912655757186,
+            "ndcg_at_5": 0.8441827077309811,
+            "pearson": 0.34661106745329723,
+            "precision_at_5": 0.49958193753334723,
+            "spearman": 0.32402684669083187
+          },
+          "receipt_sha256": [
+            "9a86a63c2317bdc7f12e3e0f8511ea20acb09b7e993f2654941402a85ff1a6b6",
+            "7281e416122a8a55d8eabec3dadce9da3144657080b53b34cb93fae9764bddda",
+            "6a531e3c64d399ddb66e71bfff76fb366c5971a2823a3a105c4bca20791c7c22"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 16,
+          "stage": "boundary-1",
+          "utility": 0.4744424959108912
+        },
+        "hybrid": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.62,
+            "depth": 7,
+            "family": "hybrid",
+            "hybrid": true,
+            "lambda_l2": 7.0,
+            "learning_rate": 0.034999999999999996,
+            "leaves": 127,
+            "min_child": 42,
+            "objective": "l2",
+            "trees": 3000
+          },
+          "id": "d0cb1c665508",
+          "max_budget_pressure_iteration": 1636,
+          "point": {
+            "interaction_pearson": 0.4208789332855477,
+            "interaction_spearman": 0.39870814439679453,
+            "ndcg_at_5": 0.8537068884917581,
+            "pearson": 0.35210326543749265,
+            "precision_at_5": 0.5107589256006853,
+            "spearman": 0.31494845998605236
+          },
+          "receipt_sha256": [
+            "075ce5689432198f212ff51f51e76f581bd6afa57ef75a36c1e34f9e73eb84fe",
+            "16a489de123ab9749f64a52320b075a80939408e8076597e3d273d103de3ecf1",
+            "0ed8ed6b52678e9cc681b543b14ef1b78f5a3faf67233d3b9031dfd38ff31351"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 864,
+          "stage": "boundary-1",
+          "utility": 0.47476597243570146
+        }
+      }
+    },
+    "PRISM20Q2-1": {
+      "champion": "gbdt",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "e61e17cab0d2",
+          "max_budget_pressure_iteration": 88,
+          "point": {
+            "interaction_pearson": 0.3606082074493428,
+            "interaction_spearman": 0.35709282375602647,
+            "ndcg_at_5": 0.8190237482556758,
+            "pearson": 0.31945703171912,
+            "precision_at_5": 0.488781626711327,
+            "spearman": 0.30871411151712597
+          },
+          "receipt_sha256": [
+            "f4e2bcffa5b8826467e8131370f77e3a83678b4e388ef1930965c295540b10c7",
+            "61678724edd06b4c8c6e49d049278c329efb4f3691c1457f48795e2512d77691",
+            "9f924e3a4e82f6ba6e0e8a6422d1ee890740a65fbe002a42354bdf06d0f751b4"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 48,
+          "stage": "boundary-1",
+          "utility": 0.45080513437343356
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 5,
+            "dropout": 0.25,
+            "epochs": 124,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 512
+          },
+          "id": "bff8b3d915fa",
+          "max_budget_pressure_iteration": 32,
+          "point": {
+            "interaction_pearson": 0.381036350280405,
+            "interaction_spearman": 0.37978232034952725,
+            "ndcg_at_5": 0.8147557064598789,
+            "pearson": 0.3385146363562496,
+            "precision_at_5": 0.4844524232581589,
+            "spearman": 0.32710338025188346
+          },
+          "receipt_sha256": [
+            "9111669075e2b2b49f17a1515d53363f4400110bb4991d5ce88b96a7cf1c3396",
+            "b6fd6022d25ee2462aa346c50066b9cf92c3ec8d62d7d8934d35df60c84fdc3c",
+            "c935cddb5741299381750d91a3b5b71a38af8e0aeae31b9eb3b00308ae9d32fe"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 32,
+          "stage": "boundary-1",
+          "utility": 0.46482014383317544
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.72,
+            "depth": 12,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 8.399999999999999,
+            "learning_rate": 0.013999999999999999,
+            "leaves": 511,
+            "min_child": 24,
+            "objective": "huber",
+            "trees": 4500
+          },
+          "id": "788ea49e8292",
+          "max_budget_pressure_iteration": 4500,
+          "point": {
+            "interaction_pearson": 0.3848971105942884,
+            "interaction_spearman": 0.37063620686127247,
+            "ndcg_at_5": 0.8554812902189649,
+            "pearson": 0.34250286818825537,
+            "precision_at_5": 0.513268356288216,
+            "spearman": 0.31170447438791554
+          },
+          "receipt_sha256": [
+            "a028500d9a4d1684ca60be14e9ceb4317cadadbd9ae3ae4ada3b925ca6626740",
+            "79d9a21c7ae00552f519a2a6c84aa719a56d9001acafb6c0caecdf79e804cb94",
+            "aa190805d0aeceff714709737d9bb48f65660cc9c147348de997186872828fcc"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 4496,
+          "stage": "boundary-1",
+          "utility": 0.46532819808768494
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.16999999999999998,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": "unimol",
+            "graph": "gatv2",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 4,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "c6d62800c262",
+          "max_budget_pressure_iteration": 36,
+          "point": {
+            "interaction_pearson": 0.3839433483262582,
+            "interaction_spearman": 0.3795111959296409,
+            "ndcg_at_5": 0.8016626840702011,
+            "pearson": 0.3427566991039541,
+            "precision_at_5": 0.4678017031117137,
+            "spearman": 0.3299268699065708
+          },
+          "receipt_sha256": [
+            "e69717df68d043b69c8cd0f87e373d02a83f8071a5dcf3ad7f306174cc576b55",
+            "8e446288ed872a75501ab8bcd0ae93ba47c9762ba88be321287511a9cb8df95a",
+            "449d65ea742b7579ea6f03b42d8cf64b1529606e38021a8b4a67206b5ffe1be7"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 36,
+          "stage": "boundary-1",
+          "utility": 0.4627361212543994
+        },
+        "hybrid": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.38,
+            "depth": 4,
+            "family": "hybrid",
+            "hybrid": true,
+            "lambda_l2": 15.0,
+            "learning_rate": 0.06999999999999999,
+            "leaves": 31,
+            "min_child": 125,
+            "objective": "l2",
+            "trees": 3000
+          },
+          "id": "44101f428711",
+          "max_budget_pressure_iteration": 6,
+          "point": {
+            "interaction_pearson": 0.39460793487260487,
+            "interaction_spearman": 0.37852177375219115,
+            "ndcg_at_5": 0.8560661076758985,
+            "pearson": 0.33537423101582886,
+            "precision_at_5": 0.512335856600633,
+            "spearman": 0.30587296815019316
+          },
+          "receipt_sha256": [
+            "13c2c27cc85ad5697a1b349083f54c3cff7587d85f0f750387548025581b44f7",
+            "308f2595a60aba955604be20d943d55357467e933f7b96f95b9265b05f5271eb",
+            "dd4855df623eaab9dc5772b9cbcb7aa7a4eba5d6ea481d5e00f749bb42f06f08"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 5,
+          "stage": "boundary-1",
+          "utility": 0.46521589471221886
+        }
+      }
+    },
+    "PRISM20Q2-2": {
+      "champion": "film",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "e61e17cab0d2",
+          "max_budget_pressure_iteration": 84,
+          "point": {
+            "interaction_pearson": 0.3562751508108229,
+            "interaction_spearman": 0.3390665449815565,
+            "ndcg_at_5": 0.8273034829272394,
+            "pearson": 0.31753015867979756,
+            "precision_at_5": 0.49789244571853264,
+            "spearman": 0.29722717234479246
+          },
+          "receipt_sha256": [
+            "20825b0cf99d57cc74feffc89ed40565909668c7a8ddf1eeb9ac9997e0fb58ef",
+            "5a74777c71f4687e5e05be9af1bd38cb0b19254edfca6393f801a5b4b1672f05",
+            "910c572df20ba7a8fe1d6840a6302e86b971e65bd3083e1e22e08782c26bf360"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 64,
+          "stage": "boundary-1",
+          "utility": 0.44229806178143344
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 5,
+            "dropout": 0.25,
+            "epochs": 100,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.0005,
+            "width": 512
+          },
+          "id": "3d25f76015c7",
+          "max_budget_pressure_iteration": 40,
+          "point": {
+            "interaction_pearson": 0.3765647571484646,
+            "interaction_spearman": 0.36260840448571857,
+            "ndcg_at_5": 0.8210421797235865,
+            "pearson": 0.3359452159465884,
+            "precision_at_5": 0.4798813505335245,
+            "spearman": 0.3174872999940333
+          },
+          "receipt_sha256": [
+            "a09cf47cc84b337f78362b05be70df144c1dc145ca89e416bee92674142572e0",
+            "2991a48a670e691366232fbdff1dea53d40482d22e592e94456840604fead187",
+            "f7563cb1e7014302fbc19a58e71286497f34db4f673cfa8f372dade178a076ef"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 32,
+          "stage": "boundary-1",
+          "utility": 0.45691235127392715
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.72,
+            "depth": 12,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 8.399999999999999,
+            "learning_rate": 0.013999999999999999,
+            "leaves": 511,
+            "min_child": 24,
+            "objective": "huber",
+            "trees": 4500
+          },
+          "id": "788ea49e8292",
+          "max_budget_pressure_iteration": 4500,
+          "point": {
+            "interaction_pearson": 0.385798488717004,
+            "interaction_spearman": 0.36075556751466736,
+            "ndcg_at_5": 0.8529262737021215,
+            "pearson": 0.3365080194397676,
+            "precision_at_5": 0.5088841110580241,
+            "spearman": 0.2967779170991377
+          },
+          "receipt_sha256": [
+            "9e9274e0b5dd3f067f7158c7aa6d8540650cb59b40afc8610f39c1cd1d72a8c8",
+            "1e8143ac50f767e45f716d0fa9232d1dd7cddf5c65b1795b79e741ee89799bc1",
+            "7950567c00a8cc86b0462f106e5d4aaf0aa5f78a6710fb61cff97db329046a15"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 4500,
+          "stage": "boundary-1",
+          "utility": 0.45500830137454257
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": null,
+            "graph": "gatv2",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 4,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 512
+          },
+          "id": "b6ecb5dbf09f",
+          "max_budget_pressure_iteration": 24,
+          "point": {
+            "interaction_pearson": 0.3692974862277219,
+            "interaction_spearman": 0.3587278027509042,
+            "ndcg_at_5": 0.823206209100309,
+            "pearson": 0.33180063181776137,
+            "precision_at_5": 0.4858324043106652,
+            "spearman": 0.3133629164098311
+          },
+          "receipt_sha256": [
+            "1c941c9c098702f88ad3ea4473d748a92492f33ec0d57f20509e472637a62e9a",
+            "246ac6e8f217e83e0078303203624f3c20aedc79ff484dc5bad40f8562b8681d",
+            "3109ff4ad317a8c0f67ff397666c57a29b59932d9afb7e4e22a1792336e699ef"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 24,
+          "stage": "boundary-1",
+          "utility": 0.4544332054847725
+        },
+        "hybrid": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.62,
+            "depth": 8,
+            "family": "hybrid",
+            "hybrid": true,
+            "lambda_l2": 7.0,
+            "learning_rate": 0.034999999999999996,
+            "leaves": 255,
+            "min_child": 42,
+            "objective": "l2",
+            "trees": 3000
+          },
+          "id": "413dcfcf7844",
+          "max_budget_pressure_iteration": 1685,
+          "point": {
+            "interaction_pearson": 0.3907540035033316,
+            "interaction_spearman": 0.36150385977423527,
+            "ndcg_at_5": 0.8544334351291004,
+            "pearson": 0.326302977827051,
+            "precision_at_5": 0.5118490205446727,
+            "spearman": 0.28876268793001114
+          },
+          "receipt_sha256": [
+            "815e4609ef2cbf2fb417bdc92a55501986ee9e1ca517f4bdc075e5f20b4eea64",
+            "b34e9e5efe41e6895b38aaa8d8716de189a8b5da3f1a594e97cf3a7a3bfbe381",
+            "a52a391fcc0a31a4aa3eac916a891435df511052f74633a61e2d8c8cfb72fd41"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 2,
+          "stage": "boundary-1",
+          "utility": 0.4520027262830507
+        }
+      }
+    },
+    "cell-0": {
+      "champion": "film",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.02,
+            "width": 256
+          },
+          "id": "4ba1c467d7ea",
+          "max_budget_pressure_iteration": 56,
+          "point": {
+            "interaction_pearson": 0.27826206044759355,
+            "interaction_spearman": 0.27533482444108337,
+            "ndcg_at_5": 0.8724081558602639,
+            "pearson": 0.25703803395024777,
+            "precision_at_5": 0.5581613884671567,
+            "spearman": 0.2428723963901374
+          },
+          "receipt_sha256": [
+            "f6dd5a8f16ed279c4c722fddaf539118e0073b554be3ba3ad095ce92b5f4a00e",
+            "38cf0c63930a7b2a4758d99157f00076016b7290aabfb1ddad4a530cc266ed2e",
+            "5d995f44fcc1030c25c810a18db5368b7b35a7004738e5544b20c95524fa7e95"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 28,
+          "stage": "boundary-1",
+          "utility": 0.4099950646729528
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.1,
+            "epochs": 76,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.0001,
+            "width": 256
+          },
+          "id": "7c0bac61b12f",
+          "max_budget_pressure_iteration": 36,
+          "point": {
+            "interaction_pearson": 0.29204167860462527,
+            "interaction_spearman": 0.28896623172333924,
+            "ndcg_at_5": 0.8834929857456735,
+            "pearson": 0.27146198743411,
+            "precision_at_5": 0.5600575690006538,
+            "spearman": 0.25832766609566177
+          },
+          "receipt_sha256": [
+            "31eb0e15d983915b59e31c72fa2b6c473dd88957c2213904138291ff2b017a64",
+            "205b8cde14c976e8ba5f1fd75c521e05f634d9d5cfe815f313e4fb44517b5c56",
+            "809ae40d769792832d09d360ad5b532eb77504932b396cbfa60c56122db4e40d"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 36,
+          "stage": "boundary-1",
+          "utility": 0.4238105656964679
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.72,
+            "depth": 12,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 8.399999999999999,
+            "learning_rate": 0.013999999999999999,
+            "leaves": 511,
+            "min_child": 24,
+            "objective": "huber",
+            "trees": 4500
+          },
+          "id": "788ea49e8292",
+          "max_budget_pressure_iteration": 4500,
+          "point": {
+            "interaction_pearson": 0.2901448800553945,
+            "interaction_spearman": 0.2812443618868014,
+            "ndcg_at_5": 0.8849147620859211,
+            "pearson": 0.2695470560698146,
+            "precision_at_5": 0.569427234260241,
+            "spearman": 0.2468930906435066
+          },
+          "receipt_sha256": [
+            "ccb16ee96f55d51834a0bbf70f515dc7d1cec84efec8c1a52692374c4291d87a",
+            "f9dc16f6f2c514d2bb58ddf399ae0011430c7145e050f5879b2bbd3eb1eb77d2",
+            "09a02205c2aad9e623ff771be7365dd4840816083dd33441c0baf4867a852148"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 4200,
+          "stage": "boundary-1",
+          "utility": 0.41670388987709867
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              48,
+              64
+            ],
+            "check_every": 4,
+            "depth": 5,
+            "dropout": 0.16999999999999998,
+            "epochs": 100,
+            "eval_batch": 4096,
+            "family": "gnn",
+            "fm": "clamp",
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 4,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 512
+          },
+          "id": "4417a3c90773",
+          "max_budget_pressure_iteration": 28,
+          "point": {
+            "interaction_pearson": 0.2906739121683617,
+            "interaction_spearman": 0.28386429983568073,
+            "ndcg_at_5": 0.8746997268596998,
+            "pearson": 0.2698525167242025,
+            "precision_at_5": 0.5592312895153339,
+            "spearman": 0.25825435525867374
+          },
+          "receipt_sha256": [
+            "04ee83a22561b4d8cd5aedd056a18f870e7382cc2aefe6efbca667d9faf62b43",
+            "eac7e3fafa9091eea7369b6a6bacd546d71067a227a953ee167092dbcd808952",
+            "84c237528e57a160c0e60780d953655f566958b22d2da421db40a88661cfe492"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 28,
+          "stage": "boundary-1",
+          "utility": 0.42004868153203234
+        },
+        "hybrid": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.38,
+            "depth": 4,
+            "family": "hybrid",
+            "hybrid": true,
+            "lambda_l2": 30.0,
+            "learning_rate": 0.06999999999999999,
+            "leaves": 31,
+            "min_child": 90,
+            "objective": "l2",
+            "trees": 3000
+          },
+          "id": "6f53337f09ce",
+          "max_budget_pressure_iteration": 2,
+          "point": {
+            "interaction_pearson": 0.30565300320775696,
+            "interaction_spearman": 0.2889870706781997,
+            "ndcg_at_5": 0.8879167441146312,
+            "pearson": 0.262513768309192,
+            "precision_at_5": 0.566695368495721,
+            "spearman": 0.24233227610910696
+          },
+          "receipt_sha256": [
+            "7c58177506147505402dab81871ac73c5411c29d3f7d3e0687aec3731e3a9473",
+            "500d784e27c1a9945b63ec69fb5066cc52ec593a3cbb3aba5a4f7034abaec7ae",
+            "ba4ebfe0fa7248c545b2ac817e56efe02c985b94b5fa92a21f182866b6478694"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 2,
+          "stage": "boundary-1",
+          "utility": 0.4177248314812158
+        }
+      }
+    },
+    "cell-1": {
+      "champion": "film",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 3,
+            "dropout": 0.25,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "e371a8a24676",
+          "max_budget_pressure_iteration": 52,
+          "point": {
+            "interaction_pearson": 0.2740210369633912,
+            "interaction_spearman": 0.2707781076451568,
+            "ndcg_at_5": 0.8700336161004754,
+            "pearson": 0.2509759873942203,
+            "precision_at_5": 0.566351767005552,
+            "spearman": 0.24273807083464588
+          },
+          "receipt_sha256": [
+            "bdf3b9a585f176f8be705b42f04ec984736b7b272ce32e73bccd75aaab22486f",
+            "c7ec4466563baec6bac6c8ffa1c6d18747b370442272556bbc96e19ae7d6baae",
+            "985f757673edee3e6caf5debae5a7ead3021754e27713d9c3459f0bc086a9dd8"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 40,
+          "stage": "boundary-1",
+          "utility": 0.4079739681942565
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 3,
+            "dropout": 0.1,
+            "epochs": 76,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.0001,
+            "width": 256
+          },
+          "id": "681f66f465ed",
+          "max_budget_pressure_iteration": 44,
+          "point": {
+            "interaction_pearson": 0.2917371252890536,
+            "interaction_spearman": 0.28338513512706875,
+            "ndcg_at_5": 0.8729178352640087,
+            "pearson": 0.2675317178082263,
+            "precision_at_5": 0.5678545537679605,
+            "spearman": 0.25480786495436447
+          },
+          "receipt_sha256": [
+            "81c8b044227d2bb2ffab0ea5ef5de334e6cd1e82c7662afbd3b6b176e9dfed4d",
+            "02be64a7c2f3431edb3214b6364e077d067f8dd3adda3a21a185354958879008",
+            "4dd8b2513bc7f23fabf7f6efd95ecf32da93497742048cb6a005edf05e4ecac2"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 36,
+          "stage": "boundary-1",
+          "utility": 0.4179085385835868
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.72,
+            "depth": 12,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 8.399999999999999,
+            "learning_rate": 0.013999999999999999,
+            "leaves": 511,
+            "min_child": 24,
+            "objective": "huber",
+            "trees": 4500
+          },
+          "id": "788ea49e8292",
+          "max_budget_pressure_iteration": 4497,
+          "point": {
+            "interaction_pearson": 0.2846414961910436,
+            "interaction_spearman": 0.2721369499390034,
+            "ndcg_at_5": 0.8881948195072912,
+            "pearson": 0.25242414903167637,
+            "precision_at_5": 0.5821368422387205,
+            "spearman": 0.2296955041456264
+          },
+          "receipt_sha256": [
+            "e9e1bdb04884305cbce8680be5771ef7a689981921540a53eef0398077e5c616",
+            "271400004b7193d6b2d6fa393492e0d0b9064a2c2dc097877baa5ed65b9a56e4",
+            "021c28f03ff9c17349dc95fc45b6e382b33c02c1c9d55f472accd87fb6aa042d"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 3832,
+          "stage": "boundary-1",
+          "utility": 0.4070527667240557
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              48,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 100,
+            "eval_batch": 4096,
+            "family": "gnn",
+            "fm": null,
+            "graph": "attentivefp",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 5,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 512
+          },
+          "id": "a68b4f8ec471",
+          "max_budget_pressure_iteration": 32,
+          "point": {
+            "interaction_pearson": 0.28490493948778584,
+            "interaction_spearman": 0.2797702999516236,
+            "ndcg_at_5": 0.8770355311972576,
+            "pearson": 0.26088987320497986,
+            "precision_at_5": 0.5704668631028826,
+            "spearman": 0.24855050893218103
+          },
+          "receipt_sha256": [
+            "e4bb9709c5b15a254b543ba24a17ac17a910ee1fd2750bddfc317d4aacc6fcff",
+            "e889756fe91e9af032cb3e704939041271dc27bf09647e1ec05c940f72158e46",
+            "5289db8261c59e8b64291d0ccf783d14be444d483e21a0ffd979901ebcbdacee"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 32,
+          "stage": "boundary-1",
+          "utility": 0.41503770180428295
+        },
+        "hybrid": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.62,
+            "depth": 8,
+            "family": "hybrid",
+            "hybrid": true,
+            "lambda_l2": 7.0,
+            "learning_rate": 0.06999999999999999,
+            "leaves": 127,
+            "min_child": 42,
+            "objective": "l2",
+            "trees": 3000
+          },
+          "id": "bc16f7726fab",
+          "max_budget_pressure_iteration": 8,
+          "point": {
+            "interaction_pearson": 0.30538579006204464,
+            "interaction_spearman": 0.2883746421509527,
+            "ndcg_at_5": 0.8871101483384989,
+            "pearson": 0.2607006325728872,
+            "precision_at_5": 0.5721312370761823,
+            "spearman": 0.24015562549718905
+          },
+          "receipt_sha256": [
+            "cb0be96fa55cc6e69c1db1113a40fa619c1e5408cc921a5c3ebc2d5e4e9464bd",
+            "9eb1015e023b9741a06249383efa707bb6f039a4b64c781347cec4093b36a0d5",
+            "2c276b2ba9ae465b80164e1d182f928ea2c0705fa0d77b5dfe4f8919df78fdd0"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 2,
+          "stage": "boundary-1",
+          "utility": 0.4163599612036456
+        }
+      }
+    },
+    "cell-2": {
+      "champion": "film",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.4,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.2,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.04,
+            "width": 256
+          },
+          "id": "5036d29de4c1",
+          "max_budget_pressure_iteration": 52,
+          "point": {
+            "interaction_pearson": 0.27968537907519353,
+            "interaction_spearman": 0.2777725797503195,
+            "ndcg_at_5": 0.8731037354279078,
+            "pearson": 0.2573155737657753,
+            "precision_at_5": 0.5647020624218114,
+            "spearman": 0.24456248802654554
+          },
+          "receipt_sha256": [
+            "8034afdba5d253e4da834c25fb97c9bf31aba65619b6790c87a5cf140f5e9fbc",
+            "32836fd623f4ba1d1d31db9f21f80e3ea22844a8145d944d2444cd8c053d8f81",
+            "21caffc14018cb672e2884c234ac6ab9249d625e07f011d86bb423965fd5b8b4"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 52,
+          "stage": "boundary-1",
+          "utility": 0.41166082739401827
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              128
+            ],
+            "check_every": 4,
+            "depth": 3,
+            "dropout": 0.025,
+            "epochs": 76,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.2,
+              0.15
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.0001,
+            "width": 256
+          },
+          "id": "ac72bf46100a",
+          "max_budget_pressure_iteration": 28,
+          "point": {
+            "interaction_pearson": 0.2965609834817461,
+            "interaction_spearman": 0.2886638262368076,
+            "ndcg_at_5": 0.872957379521761,
+            "pearson": 0.2757818048640468,
+            "precision_at_5": 0.570905225893981,
+            "spearman": 0.26411109844933905
+          },
+          "receipt_sha256": [
+            "2b3f92486da56b78e8cc78927962d968fb4928f697122775a8b4dfeca617b4a4",
+            "f3d2fbf062436b56778fe6e98eae889b83f970b4190faa225a3dae000a3034c5",
+            "0f1df7702d6f6d1c7adaa513df2112af88f19b6ae0807f385d5d79a1a18828af"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 28,
+          "stage": "boundary-1",
+          "utility": 0.42368848705368506
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.72,
+            "depth": 12,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 8.399999999999999,
+            "learning_rate": 0.013999999999999999,
+            "leaves": 511,
+            "min_child": 24,
+            "objective": "huber",
+            "trees": 4500
+          },
+          "id": "788ea49e8292",
+          "max_budget_pressure_iteration": 4495,
+          "point": {
+            "interaction_pearson": 0.2937630969771661,
+            "interaction_spearman": 0.28455528633280697,
+            "ndcg_at_5": 0.8913985840865445,
+            "pearson": 0.2606225908150611,
+            "precision_at_5": 0.5741569742662286,
+            "spearman": 0.24354318630821026
+          },
+          "receipt_sha256": [
+            "0360c888b5f51a76c9b8f1edfd5c54014bf40ecc61289414e198d1a6b66059b1",
+            "bdab98a841217ed6d56745cc51fad7fd8f68e159a7e0933e3d2096b92ace5975",
+            "18cc2768a7c5413e9555bfe4059f9555f073d35d0309e008c1d7d9c35185236a"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 4459,
+          "stage": "boundary-1",
+          "utility": 0.41781066576017284
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 2,
+            "dropout": 0.1,
+            "epochs": 60,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 128
+          },
+          "id": "abd173b65958",
+          "max_budget_pressure_iteration": 44,
+          "point": {
+            "interaction_pearson": 0.2971586659252582,
+            "interaction_spearman": 0.29175390148339064,
+            "ndcg_at_5": 0.8694703552136145,
+            "pearson": 0.2733535093656843,
+            "precision_at_5": 0.5621557662663988,
+            "spearman": 0.26296761113262823
+          },
+          "receipt_sha256": [
+            "ee7ca254e8859ed762fc5eee29d19d8d6268186d98d738f6d04b8836a8ab63ff",
+            "9a753926c48b3daab99ee1987f82a1e2f0a655e43c7cfebbfda90688846b0df0",
+            "635681eb302cdbb070b85caa5592567485623ade688bf2808ae1381961fc7a42"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 36,
+          "stage": "boundary-1",
+          "utility": 0.4232291842581035
+        },
+        "hybrid": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.38,
+            "depth": 4,
+            "family": "hybrid",
+            "hybrid": true,
+            "lambda_l2": 15.0,
+            "learning_rate": 0.13999999999999999,
+            "leaves": 31,
+            "min_child": 90,
+            "objective": "l2",
+            "trees": 3000
+          },
+          "id": "7ecfbd531380",
+          "max_budget_pressure_iteration": 10,
+          "point": {
+            "interaction_pearson": 0.3064441940114396,
+            "interaction_spearman": 0.29371436096883197,
+            "ndcg_at_5": 0.8864854466337615,
+            "pearson": 0.252003957525489,
+            "precision_at_5": 0.5635190037168435,
+            "spearman": 0.2381185658965419
+          },
+          "receipt_sha256": [
+            "6d6a185e602442667b8b073f88d8e1ae0605ff25fd95ff72fbf878ad06209881",
+            "0f7c95e8fe39251080e8fad77195dd470b27d3581f74cd623c232ccdaae8cf23",
+            "d346086c71cebaf5f8a1ebd330641267642b13995fe282ee30ef2fe0e9819dfa"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 1,
+          "stage": "boundary-1",
+          "utility": 0.4168890246025338
+        }
+      }
+    },
+    "drug-0": {
+      "champion": "hybrid",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "e61e17cab0d2",
+          "max_budget_pressure_iteration": 104,
+          "point": {
+            "interaction_pearson": 0.1982581971074089,
+            "interaction_spearman": 0.19640922938474906,
+            "ndcg_at_5": 0.49365637293863857,
+            "pearson": 0.30022849869362406,
+            "precision_at_5": 0.20083172647554956,
+            "spearman": 0.2806389969628505
+          },
+          "receipt_sha256": [
+            "d59777168fc73af412bc94398d348987b56fd008e8ef2d8bc4c6f668500d3031",
+            "3e14e6a48170f42d17488d619cad03fc2c531163e8f52d179ccd87aaf8609fbd",
+            "d216c307b49ac73464fae205fcc0a00627f8e7a932741985e1cf2643155cfd7d"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 48,
+          "stage": "boundary-1",
+          "utility": 0.3086244106833671
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.001,
+            "width": 256
+          },
+          "id": "0bbdfff01bc9",
+          "max_budget_pressure_iteration": 72,
+          "point": {
+            "interaction_pearson": 0.24316904078108756,
+            "interaction_spearman": 0.23419369815061417,
+            "ndcg_at_5": 0.5106790817388147,
+            "pearson": 0.3325705497124953,
+            "precision_at_5": 0.21427315980508904,
+            "spearman": 0.3076847018650306
+          },
+          "receipt_sha256": [
+            "dc1f24254748cf8720734d685b34e9dc20739056e025dc808a5a1d59ac8957b5",
+            "f8666e94278551d0fb6f098f5f52edf52193b7763a6641fd2c79377c270ce84e",
+            "e07dc0fe629e17352e9086774ef88e50e27dd9b5986839de6db6c6fd58785a19"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 68,
+          "stage": "boundary-1",
+          "utility": 0.33638599571915173
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.6,
+            "depth": 10,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 24.0,
+            "learning_rate": 0.02,
+            "leaves": 255,
+            "min_child": 35,
+            "objective": "huber",
+            "trees": 3000
+          },
+          "id": "af2180a722a4",
+          "max_budget_pressure_iteration": 2198,
+          "point": {
+            "interaction_pearson": 0.21028426176637105,
+            "interaction_spearman": 0.21252503840133785,
+            "ndcg_at_5": 0.4775690637695103,
+            "pearson": 0.33613122155016517,
+            "precision_at_5": 0.18942280116550167,
+            "spearman": 0.3163193511900861
+          },
+          "receipt_sha256": [
+            "5cc28d27a21597473ddcd30438c1a40d8a04083d9a41e8c4a5929375e5b54453",
+            "1a4d7a9cbe74165b31bb68f6fa4e20e30e4c46ca0beb20b8e21ebaff228bb8b6",
+            "e693ed36816276041a4ebfeef35064050dbdaf0ce2cc9138155a0b8653c78a60"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 1980,
+          "stage": "boundary-1",
+          "utility": 0.32549348549831764
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": "clamp",
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 4,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "762123306453",
+          "max_budget_pressure_iteration": 76,
+          "point": {
+            "interaction_pearson": 0.24405675875649158,
+            "interaction_spearman": 0.23914423877144225,
+            "ndcg_at_5": 0.5136205814788601,
+            "pearson": 0.33789148573963385,
+            "precision_at_5": 0.21757449771296192,
+            "spearman": 0.3134562467891828
+          },
+          "receipt_sha256": [
+            "bd4e1cebc1d00acf387b7fee96fe52e4f2ed0e4e6ed77c9a73028515d42aa651",
+            "694d1ac7407f7df92f4db518fc39d0350ddb8e0dd8ff3d16ebd32f22e80b77e0",
+            "ad717597166ddc3d61272162d8aa8a4b7b3743815d43aa2597528196a14e8b39"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 72,
+          "stage": "boundary-1",
+          "utility": 0.34120372805627996
+        },
+        "hybrid": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "hybrid",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": true,
+            "learning_rate": 0.00065,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 512
+          },
+          "id": "6be0bc85ef69",
+          "max_budget_pressure_iteration": 32,
+          "point": {
+            "interaction_pearson": 0.22957620155853614,
+            "interaction_spearman": 0.22177465918937375,
+            "ndcg_at_5": 0.5453286492463009,
+            "pearson": 0.32956687953361413,
+            "precision_at_5": 0.2325611960407034,
+            "spearman": 0.308893557692679
+          },
+          "receipt_sha256": [
+            "70e43a86f6fefcfe07e5da8b0693ca18901ba127d1dd95b95a11cb65d82eac50",
+            "d7c764674cf69a8e91b3197c62c046989ea1ae17123f511e9a83e117792c7378",
+            "6114bb48cd2d46a8e482eb48c74f88da32d19e14967c82c2600be66da7f9ff21"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 4,
+          "stage": "boundary-1",
+          "utility": 0.34186666103009294
+        }
+      }
+    },
+    "drug-1": {
+      "champion": "hybrid",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 2,
+            "dropout": 0.1,
+            "epochs": 60,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.001,
+            "width": 128
+          },
+          "id": "9890cbfa3928",
+          "max_budget_pressure_iteration": 36,
+          "point": {
+            "interaction_pearson": 0.1676479231504046,
+            "interaction_spearman": 0.17736473086146323,
+            "ndcg_at_5": 0.5955173560843069,
+            "pearson": 0.2773023735452756,
+            "precision_at_5": 0.2892482373529377,
+            "spearman": 0.2671365209200162
+          },
+          "receipt_sha256": [
+            "4e3e3ec33ddc1b3db848bb057810a0ddc508a7a9ac0741d2d623aac5393b3dc3",
+            "b50b2c7af9fe7ec7ba9d8ae80674d271a2e463fc10f9581789153af9d14b6d46",
+            "eac107ae76e38ccc285f6cefcbcec45db6c9badfd533bf3ebd8b124fdb255190"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 12,
+          "stage": "boundary-1",
+          "utility": 0.322300192693523
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 108,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 512
+          },
+          "id": "8fbb5977132d",
+          "max_budget_pressure_iteration": 36,
+          "point": {
+            "interaction_pearson": 0.21681290665473305,
+            "interaction_spearman": 0.21879765907018586,
+            "ndcg_at_5": 0.602315562906262,
+            "pearson": 0.29981135582354956,
+            "precision_at_5": 0.2971083776247472,
+            "spearman": 0.2840402193373787
+          },
+          "receipt_sha256": [
+            "057b9de8063bfe6218933984ba3d8923f8baf25ba28809ca9829e4a0256a2649",
+            "17856f66ff4a0b479c969834d34469d1f736293f5fefa3abfa227052a63c8d05",
+            "d7c26ad4a962b7b8e8bc7555dc32735e8c1746803b832c9b42d17b356d8ac65a"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 32,
+          "stage": "boundary-1",
+          "utility": 0.3440362871494417
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.5,
+            "depth": 10,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 12.0,
+            "learning_rate": 0.02,
+            "leaves": 255,
+            "min_child": 35,
+            "objective": "huber",
+            "trees": 3000
+          },
+          "id": "6f343c95bb89",
+          "max_budget_pressure_iteration": 1693,
+          "point": {
+            "interaction_pearson": 0.19395241685340833,
+            "interaction_spearman": 0.2021305364493657,
+            "ndcg_at_5": 0.5912619097251739,
+            "pearson": 0.3096548441803935,
+            "precision_at_5": 0.286033126962778,
+            "spearman": 0.28993656033782506
+          },
+          "receipt_sha256": [
+            "725f5b53c31bd188acb093e35e8995b80d16480250c961ea180698f9b656d79c",
+            "0ed00957f5fccbfb9ee1ff55b39dbc67f90065b060d8511e2806bc5db7d5ea4b",
+            "0a5f3a79e306685af799583b7bda8094f4f88f6d50992442bbb9f0bb4628613c"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 1597,
+          "stage": "boundary-1",
+          "utility": 0.33892609051812445
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": null,
+            "graph": "attentivefp",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 5,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "467e9b357065",
+          "max_budget_pressure_iteration": 44,
+          "point": {
+            "interaction_pearson": 0.21221757202893113,
+            "interaction_spearman": 0.22236176935624893,
+            "ndcg_at_5": 0.6070216104301747,
+            "pearson": 0.2952558553823145,
+            "precision_at_5": 0.3007566181031898,
+            "spearman": 0.28349957877446785
+          },
+          "receipt_sha256": [
+            "50d21fd767e81918e28676499e6c625091a20be9c8200ec1cefbcb1d0679097e",
+            "1c46620b555308db0ca210226e3c84ad8093c13bf8eca54182070d4ac668a353",
+            "6cf07719db9390c624105b6a2814f6c11afdf2ce501d0f49024474b683d0fbd7"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 32,
+          "stage": "boundary-1",
+          "utility": 0.3460387438629289
+        },
+        "hybrid": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "hybrid",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": true,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "b2ca48a7e587",
+          "max_budget_pressure_iteration": 16,
+          "point": {
+            "interaction_pearson": 0.22041481689005196,
+            "interaction_spearman": 0.22112641743433425,
+            "ndcg_at_5": 0.6196929141332099,
+            "pearson": 0.3184885218171762,
+            "precision_at_5": 0.33115563908658247,
+            "spearman": 0.3023375038115228
+          },
+          "receipt_sha256": [
+            "6047e2b7cca953022092440b12190192a58e0e511f2c68a61073d145ff9f3246",
+            "8f4cb84e8db1c57657e3fc3f4b5350953afe620f423f5809982995d9309a3ec1",
+            "0228b91c3c04cdc8aaa90a51606687d734ea80a5a3845d4fa74a465d5da151fe"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 12,
+          "stage": "boundary-1",
+          "utility": 0.35731303047878804
+        }
+      }
+    },
+    "drug-2": {
+      "champion": "hybrid",
+      "families": {
+        "attention": {
+          "config": {
+            "arch": "attention",
+            "backend": "torch",
+            "batch": [
+              64,
+              64
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 108,
+            "eval_batch": 6144,
+            "family": "attention",
+            "fm": null,
+            "graph": "gine",
+            "heads": 8,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "e61e17cab0d2",
+          "max_budget_pressure_iteration": 72,
+          "point": {
+            "interaction_pearson": 0.194679596673044,
+            "interaction_spearman": 0.2011158846431773,
+            "ndcg_at_5": 0.5016147074981157,
+            "pearson": 0.2981336776784141,
+            "precision_at_5": 0.21114202778152932,
+            "spearman": 0.28647050966283494
+          },
+          "receipt_sha256": [
+            "96583b7fac70bc3b90b2804416dac2ee89c68a42354d4053dc9f7f574ee7f6c9",
+            "4a391fa0dd922817402739b2b39d3524fb82ef8dd9c52fc8ba758ab32d5c21e0",
+            "7c313a85e5563d32ef2c47c354c0cc84c0f6c72862f8e23a936f15bc617c0c5c"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 24,
+          "stage": "boundary-1",
+          "utility": 0.31465017161575787
+        },
+        "film": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "film",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.001,
+            "width": 256
+          },
+          "id": "0bbdfff01bc9",
+          "max_budget_pressure_iteration": 72,
+          "point": {
+            "interaction_pearson": 0.23260452291378458,
+            "interaction_spearman": 0.2312728904887215,
+            "ndcg_at_5": 0.5135158592651226,
+            "pearson": 0.3263080344688464,
+            "precision_at_5": 0.21716283222883953,
+            "spearman": 0.31145203930378323
+          },
+          "receipt_sha256": [
+            "dc56c4e79dbc3470321a1eb3ed5199f3ff25e195398cdcdc20699a4737ce65ea",
+            "32d6492ff1c0497ff3746205b90355267748b721f79daab918cc051ba71eb9fe",
+            "08abc432c65fe4d31d56de9cc506883c2d8bcbfb786dd9e06a855f55d8257b73"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 36,
+          "stage": "boundary-1",
+          "utility": 0.33791424964959954
+        },
+        "gbdt": {
+          "config": {
+            "backend": "gbdt",
+            "colsample": 0.5,
+            "depth": 10,
+            "family": "gbdt",
+            "hybrid": false,
+            "lambda_l2": 12.0,
+            "learning_rate": 0.02,
+            "leaves": 255,
+            "min_child": 35,
+            "objective": "huber",
+            "trees": 3000
+          },
+          "id": "6f343c95bb89",
+          "max_budget_pressure_iteration": 1719,
+          "point": {
+            "interaction_pearson": 0.19346083752248813,
+            "interaction_spearman": 0.19993864465479053,
+            "ndcg_at_5": 0.49949795151579657,
+            "pearson": 0.32517006748268545,
+            "precision_at_5": 0.21171038037684775,
+            "spearman": 0.3095601539251526
+          },
+          "receipt_sha256": [
+            "d16bb2e16d7d516d0d480e940383bac326e430923276ad854ccb2d77364c68b5",
+            "e992cab6f925292db816bbc2a079b736bd8b5217f0db0385ac79885f3ed8f1e9",
+            "5e809566927d7187be1df6c83285b0b45e3bf6ad0efe2637c1ba6239f8a4028e"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 1287,
+          "stage": "boundary-1",
+          "utility": 0.324158150541705
+        },
+        "gnn": {
+          "config": {
+            "arch": "gnn",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "gnn",
+            "fm": "unimol",
+            "graph": "gatv2",
+            "heads": 4,
+            "hybrid": false,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 4,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "3e813708eeaa",
+          "max_budget_pressure_iteration": 68,
+          "point": {
+            "interaction_pearson": 0.22849594840813026,
+            "interaction_spearman": 0.22813161779728158,
+            "ndcg_at_5": 0.5193025401754514,
+            "pearson": 0.3211071379187758,
+            "precision_at_5": 0.2204126700045624,
+            "spearman": 0.31007407132266396
+          },
+          "receipt_sha256": [
+            "bbd8230b66b986523fa8ad27ffb72384efbe5c731d48fc89c38d04cd95103d0b",
+            "c59964db55b05d1aa7edaa31454a22d91df9b813542b0bb97f16c7cf2e67c2b9",
+            "5f937bfea85ed1a1980d5744700b533959927302177a58d01b36cce5bf4e7f06"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 48,
+          "stage": "boundary-1",
+          "utility": 0.33779845247824614
+        },
+        "hybrid": {
+          "config": {
+            "arch": "film",
+            "backend": "torch",
+            "balance": true,
+            "batch": [
+              96,
+              96
+            ],
+            "check_every": 4,
+            "depth": 4,
+            "dropout": 0.25,
+            "epochs": 84,
+            "eval_batch": 16384,
+            "family": "hybrid",
+            "fm": null,
+            "graph": "gine",
+            "heads": 4,
+            "hybrid": true,
+            "learning_rate": 0.000325,
+            "loss": [
+              1.0,
+              0.35,
+              0.35
+            ],
+            "message_depth": 3,
+            "min_epochs": 32,
+            "patience": 24,
+            "weight_decay": 0.01,
+            "width": 256
+          },
+          "id": "b2ca48a7e587",
+          "max_budget_pressure_iteration": 12,
+          "point": {
+            "interaction_pearson": 0.2227116473854122,
+            "interaction_spearman": 0.2251340533740674,
+            "ndcg_at_5": 0.6055668796091718,
+            "pearson": 0.33132538851989796,
+            "precision_at_5": 0.3076074638733932,
+            "spearman": 0.3143461280944733
+          },
+          "receipt_sha256": [
+            "c52337b3bfa500fdcbfcc8e8e43f172490cde58d97d5cd97b2c6df5cc1ef84d3",
+            "352268732cf08b8f5d36eacf962ab0dfee7103acd30ec5cc1c5d792dbe0bb183",
+            "4945038717c3cfec6ab0c3f6322acc5cba6bb3d7811c13da0f321c24f147ad0c"
+          ],
+          "selected_branch_budgets": null,
+          "selected_budget": 4,
+          "stage": "boundary-1",
+          "utility": 0.3603876935570261
+        }
+      }
+    }
+  }
+}
