@@ -1,0 +1,31 @@
+Both archived metric replays passed; beginning native
+Frozen forecast roster verified CTRPv2-0 7175
+Frozen forecast roster verified CTRPv2-1 7044
+Frozen forecast roster verified CTRPv2-2 7239
+Frozen forecast roster verified GDSC2-0 5664
+Frozen forecast roster verified GDSC2-1 5779
+Frozen forecast roster verified GDSC2-2 5588
+Frozen forecast roster verified PRISM20Q2-0 2290
+Frozen forecast roster verified PRISM20Q2-1 2350
+Frozen forecast roster verified PRISM20Q2-2 2299
+Frozen forecast roster verified cell-0 223624
+Frozen forecast roster verified cell-1 223599
+Frozen forecast roster verified cell-2 223607
+Frozen forecast roster verified drug-0 218445
+Frozen forecast roster verified drug-1 232324
+Frozen forecast roster verified drug-2 220061
+Frozen forecast roster verified external 46213
+Traceback (most recent call last):
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/paper_b_h2_posthoc/analysis/h3_closing_run.py", line 127, in <module>
+    
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/paper_b_h2_posthoc/analysis/h3_closing_run.py", line 86, in run
+    panels, parity, ext_groups = a1_panels(frames,external)
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/paper_b_h2_posthoc/analysis/h3_closing_native.py", line 81, in a1_panels
+    own_h3 = adult_licob(joint[[*META,*h3_cols]].rename(columns={"lincs":"lincs_observed"}), licence)
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/nextgen_5track/runtime/lib/python3.10/site-packages/pandas/core/frame.py", line 3811, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/nextgen_5track/runtime/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 6108, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/nextgen_5track/runtime/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 6171, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: "['lincs'] not in index"

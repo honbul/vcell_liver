@@ -1,0 +1,21 @@
+Both archived metric replays passed; beginning null
+Frozen forecast roster verified cell-0 223624
+Frozen forecast roster verified cell-1 223599
+Frozen forecast roster verified cell-2 223607
+Frozen forecast roster verified drug-0 218445
+Frozen forecast roster verified drug-1 232324
+Frozen forecast roster verified drug-2 220061
+Frozen forecast roster verified external 46213
+A3 clamp H3 Drug-Cold
+A3 clamp H3 Cell-Cold
+A3 clamp H3 GDSC1
+A3 clamp H3 LIMORE
+A3 clamp H3 LICOB
+Traceback (most recent call last):
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/paper_b_h2_posthoc/analysis/h3_closing_run.py", line 127, in <module>
+    "rows":output,"output_sha256":{name:sha256(STAGE/name) for name in output},
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/paper_b_h2_posthoc/analysis/h3_closing_run.py", line 117, in run
+    output["family980_held.tsv"] = save(pd.DataFrame(held_exclusion(old,new)),"family980_held.tsv")
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/paper_b_h2_posthoc/analysis/h3_closing_null.py", line 193, in audit_null
+    assert max_raw<=TOL and max_collapsed<=TOL and delta_row<=TOL
+AssertionError

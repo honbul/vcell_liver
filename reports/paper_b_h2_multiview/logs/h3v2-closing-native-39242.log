@@ -1,0 +1,61 @@
+Both archived metric replays passed; beginning native
+Frozen forecast roster verified drug-0 218445
+Frozen forecast roster verified drug-1 232324
+Frozen forecast roster verified drug-2 220061
+Frozen forecast roster verified external 46213
+A1 exact row and truth parity [{'scope': 'drug-0', 'raw_rows': 218445, 'parents': 396, 'truth_max_abs_diff': 0.0, 'lincs_identical': True, 'H2_v1_and_C1_exact': True}, {'scope': 'drug-1', 'raw_rows': 232324, 'parents': 395, 'truth_max_abs_diff': 0.0, 'lincs_identical': True, 'H2_v1_and_C1_exact': True}, {'scope': 'drug-2', 'raw_rows': 220061, 'parents': 395, 'truth_max_abs_diff': 0.0, 'lincs_identical': True, 'H2_v1_and_C1_exact': True}, {'scope': 'external', 'raw_rows': 46213, 'parents': 154, 'truth_max_abs_diff': 0.0, 'lincs_identical': True, 'H2_v1_and_C1_exact': True}, {'scope': 'GDSC1', 'scored_rows': 39545, 'parents': 66, 'truth_max_abs_diff': 0.0}, {'scope': 'LIMORE', 'scored_rows': 3400, 'parents': 68, 'truth_max_abs_diff': 0.0}, {'scope': 'LICOB', 'scored_rows': 2888, 'parents': 76, 'truth_max_abs_diff': 0.0}, {'scope': 'LICOB18', 'scored_rows': 684, 'parents': 18, 'truth_max_abs_diff': 0.0}]
+A1 Drug-Cold all {'rows': 670830, 'parents': 1186, 'cells': 1014}
+A1 Drug-Cold lincs_obs {'rows': 430159, 'parents': 724, 'cells': 1014}
+A1 Drug-Cold lincs_unobs {'rows': 240671, 'parents': 462, 'cells': 1014}
+A1 GDSC1 all {'rows': 39545, 'parents': 66, 'cells': 713}
+A1 GDSC1 lincs_obs {'rows': 28181, 'parents': 48, 'cells': 713}
+A1 GDSC1 lincs_unobs {'rows': 11364, 'parents': 18, 'cells': 711}
+A1 LICOB18 all {'rows': 684, 'parents': 18, 'cells': 38}
+A1 LICOB18 lincs_obs {'rows': 342, 'parents': 9, 'cells': 38}
+A1 LICOB18 lincs_unobs {'rows': 342, 'parents': 9, 'cells': 38}
+A1 LICOB all {'rows': 2888, 'parents': 76, 'cells': 38}
+A1 LICOB lincs_obs {'rows': 2090, 'parents': 55, 'cells': 38}
+A1 LICOB lincs_unobs {'rows': 798, 'parents': 21, 'cells': 38}
+A1 LIMORE all {'rows': 3400, 'parents': 68, 'cells': 50}
+A1 LIMORE lincs_obs {'rows': 2950, 'parents': 59, 'cells': 50}
+A1 LIMORE lincs_unobs {'rows': 450, 'parents': 9, 'cells': 50}
+Frozen forecast roster verified cell-0 223624
+Frozen forecast roster verified cell-1 223599
+Frozen forecast roster verified cell-2 223607
+Traceback (most recent call last):
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/nextgen_5track/runtime/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3800, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 138, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 165, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 5745, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 5753, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: ('ndcg_at_5',)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/paper_b_h2_posthoc/analysis/h3_closing_run.py", line 134, in <module>
+    run(sys.argv[1])
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/paper_b_h2_posthoc/analysis/h3_closing_run.py", line 102, in run
+    sensitive.extend(family_ndcg(cell_units,roster,scope,baselines))
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/paper_b_h2_posthoc/analysis/h3_closing_native.py", line 262, in family_ndcg
+    both = [paired_native(x,("ndcg_at_5",),scope,"all",{},baselines,models=H3_MODELS,only_macro=True)[1]
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/paper_b_h2_posthoc/analysis/h3_closing_native.py", line 262, in <listcomp>
+    both = [paired_native(x,("ndcg_at_5",),scope,"all",{},baselines,models=H3_MODELS,only_macro=True)[1]
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/paper_b_h2_posthoc/analysis/h3_closing_native.py", line 159, in paired_native
+    points, boots, clusters = boot_points(table,names)
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/paper_b_h2_posthoc/analysis/h3_closing_native.py", line 136, in boot_points
+    pivot = table.pivot(index=id_cols, columns="arm", values=names).sort_index()
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/nextgen_5track/runtime/lib/python3.10/site-packages/pandas/util/_decorators.py", line 317, in wrapper
+    return func(*args, **kwargs)
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/nextgen_5track/runtime/lib/python3.10/site-packages/pandas/core/frame.py", line 8557, in pivot
+    return pivot(self, index=index, columns=columns, values=values)
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/nextgen_5track/runtime/lib/python3.10/site-packages/pandas/util/_decorators.py", line 317, in wrapper
+    return func(*args, **kwargs)
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/nextgen_5track/runtime/lib/python3.10/site-packages/pandas/core/reshape/pivot.py", line 524, in pivot
+    indexed = data._constructor_sliced(data[values]._values, index=multiindex)
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/nextgen_5track/runtime/lib/python3.10/site-packages/pandas/core/frame.py", line 3805, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/mnt/S1/sdata/workbench/Virtual_Cell/gssong/nextgen_5track/runtime/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3802, in get_loc
+    raise KeyError(key) from err
+KeyError: ('ndcg_at_5',)

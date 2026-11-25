@@ -1,0 +1,205 @@
+{
+  "audit_name": "E1_Cchem_int_vs_E4_vs_E5_zero_retraining_paired_bootstrap",
+  "started_at_utc": "2026-11-25T01:46:58.520467+00:00",
+  "finished_at_utc": "2026-11-25T01:48:16.376972+00:00",
+  "retrained_models": 0,
+  "bootstrap_draws": 2000,
+  "bootstrap_seed": 495123,
+  "resampling_units": {
+    "spearman": "transitive_scaffold_block (Bayesian cluster bootstrap)",
+    "interaction_spearman": "transitive_scaffold_block (Bayesian cluster bootstrap)",
+    "ndcg_at_5": "lineage_group (Bayesian cluster bootstrap)",
+    "precision_at_5": "lineage_group (Bayesian cluster bootstrap)",
+    "unique_top5_sets": "descriptive_only_no_bootstrap_claim"
+  },
+  "role_parity_proofs": [
+    {
+      "e1_part": 0,
+      "e4_idx": 3,
+      "e5_idx": 3,
+      "rows": 218445,
+      "roster_sha256": "74d2991686ac459c75540a225c1d4fb33ce66398becc36ac1b894187669d52e7",
+      "e1_forecast_sha256": "9a46d9e1e603932bb20790f1dcc3fe33bbb531a9fca3531b269ec8ed1a0f1936",
+      "e4_predictions_sha256": "b1eadf6be1c7a39fb5b1e05ecb0ef21f6676f0110db59dc7dbb7ada30b15dae8",
+      "e5_predictions_sha256": "a377563bc7d9c9bb7f17ea48aad65386cb8de19923eb877d628a5432b3e3e104",
+      "max_abs_diff_E1_F11_vs_E5_H2v2": 0.0,
+      "max_abs_diff_E1_F00_vs_E5_H2v1": 0.0,
+      "max_abs_diff_E4_vs_E5_LOSO": 0.0
+    },
+    {
+      "e1_part": 1,
+      "e4_idx": 4,
+      "e5_idx": 4,
+      "rows": 232324,
+      "roster_sha256": "27a5bdd4521a97760cb1cee856f4d7da907a904b10026d80fe4e6bf8c1895661",
+      "e1_forecast_sha256": "17bdc8514061655e5756e3f4582d9dffd8ffc83bc9e105b132f393f0cef9f444",
+      "e4_predictions_sha256": "09078652d92cdb9d187314270c8190244eaae41468f01d757bbd10ef6b63a25b",
+      "e5_predictions_sha256": "ed00f4baff0ad52b889056bf1094fab9acb74fa7daf447a6c2ea4492459ef4f9",
+      "max_abs_diff_E1_F11_vs_E5_H2v2": 0.0,
+      "max_abs_diff_E1_F00_vs_E5_H2v1": 0.0,
+      "max_abs_diff_E4_vs_E5_LOSO": 0.0
+    },
+    {
+      "e1_part": 2,
+      "e4_idx": 5,
+      "e5_idx": 5,
+      "rows": 220061,
+      "roster_sha256": "5c7269f9ecc05cca76dc6451f1c1fac664d709757eea6039b5f4d28656800e51",
+      "e1_forecast_sha256": "839760f315742ecbcd8069dcfb31c3d185690def0ce0f764e749b9546ca69908",
+      "e4_predictions_sha256": "0ae550793325c455099515c159f132dc16fa07c7b1ede9b728657b409e48d95a",
+      "e5_predictions_sha256": "4974ac3940dc0c369fc29f3ee4d22671e5915b3c325870cd7db2ef9f7c690ca2",
+      "max_abs_diff_E1_F11_vs_E5_H2v2": 0.0,
+      "max_abs_diff_E1_F00_vs_E5_H2v1": 0.0,
+      "max_abs_diff_E4_vs_E5_LOSO": 0.0
+    },
+    {
+      "e1_part": 3,
+      "e4_idx": 6,
+      "e5_idx": 6,
+      "rows": 46213,
+      "roster_sha256": "20ffdd1fabe2137ee4702ec1b5fc26aee03761068c5f460bb269be6e32149cf9",
+      "e1_forecast_sha256": "bb5daefda8b5b551ef351a36895c34b8570eaabe56e932de12dfa9d6a98e3883",
+      "e4_predictions_sha256": "d3d4c10775924a1445e9cc68739acc15a8a62529cd2c6affc92f3fcd9fb86c8f",
+      "e5_predictions_sha256": "3a3bd140ea7fedb7d7a79c41dac7459746b5c33c9c1fafac5d5cd29be3ad7d33",
+      "max_abs_diff_E1_F11_vs_E5_H2v2": 0.0,
+      "max_abs_diff_E1_F00_vs_E5_H2v1": 0.0,
+      "max_abs_diff_E4_vs_E5_LOSO": 0.0
+    }
+  ],
+  "exact_replay_vs_archived": {
+    "e5_metrics_checked": 870,
+    "e5_metrics_max_abs_diff": 2.842170943040401e-14,
+    "e5_metrics_worst_case": "(2.842170943040401e-14, ('DRP', 'lincs_observed', 'P3B-InScreen', 'unique_top5_sets'), 185.44444444444449, 185.44444444444446)",
+    "e5_ci_checked": 1152,
+    "e5_ci_max_abs_diff": 9.974659986866641e-17,
+    "e5_ci_worst_case": "(9.974659986866641e-17, ('LICOB', 'lincs_observed', 'P2-Decoupled - H2-v2', 'interaction_spearman', 'scaffold'))",
+    "e1_metrics_checked": 300,
+    "e1_metrics_max_abs_diff": 3.236107493087559e-10,
+    "e1_metrics_worst_case": "(3.236107493087559e-10, ('DRP', 'lincs_unobserved', 'H2-v2', 'interaction_spearman'), 0.1298193972018307, 0.12981939752544144)",
+    "e1_ci_checked": 180,
+    "e1_ci_max_abs_diff": 1.2867777537950431e-09,
+    "e1_ci_worst_case": "(1.2867777537950431e-09, ('DRP', 'lincs_unobserved', 'H2-v2 - F01-only', 'interaction_spearman', 'scaffold'))"
+  },
+  "supports": {
+    "DRP": {
+      "all": {
+        "rows": 670830,
+        "parents": 1186,
+        "cells": 1014,
+        "scaffolds": 1001,
+        "lineages": 991
+      },
+      "lincs_observed": {
+        "rows": 430159,
+        "parents": 724,
+        "cells": 1014,
+        "scaffolds": 619,
+        "lineages": 991
+      },
+      "lincs_unobserved": {
+        "rows": 240671,
+        "parents": 462,
+        "cells": 1014,
+        "scaffolds": 417,
+        "lineages": 991
+      }
+    },
+    "GDSC1": {
+      "all": {
+        "rows": 39545,
+        "parents": 66,
+        "cells": 713,
+        "scaffolds": 66,
+        "lineages": 713
+      },
+      "lincs_observed": {
+        "rows": 28181,
+        "parents": 48,
+        "cells": 713,
+        "scaffolds": 48,
+        "lineages": 713
+      },
+      "lincs_unobserved": {
+        "rows": 11364,
+        "parents": 18,
+        "cells": 711,
+        "scaffolds": 18,
+        "lineages": 711
+      }
+    },
+    "LIMORE": {
+      "all": {
+        "rows": 3400,
+        "parents": 68,
+        "cells": 50,
+        "scaffolds": 64,
+        "lineages": 50
+      },
+      "lincs_observed": {
+        "rows": 2950,
+        "parents": 59,
+        "cells": 50,
+        "scaffolds": 56,
+        "lineages": 50
+      },
+      "lincs_unobserved": {
+        "rows": 450,
+        "parents": 9,
+        "cells": 50,
+        "scaffolds": 8,
+        "lineages": 50
+      }
+    },
+    "LICOB": {
+      "all": {
+        "rows": 2888,
+        "parents": 76,
+        "cells": 38,
+        "scaffolds": 73,
+        "lineages": 38
+      },
+      "lincs_observed": {
+        "rows": 2090,
+        "parents": 55,
+        "cells": 38,
+        "scaffolds": 53,
+        "lineages": 38
+      },
+      "lincs_unobserved": {
+        "rows": 798,
+        "parents": 21,
+        "cells": 38,
+        "scaffolds": 20,
+        "lineages": 38
+      }
+    },
+    "LICOB18": {
+      "all": {
+        "rows": 684,
+        "parents": 18,
+        "cells": 38,
+        "scaffolds": 18,
+        "lineages": 38
+      },
+      "lincs_observed": {
+        "rows": 342,
+        "parents": 9,
+        "cells": 38,
+        "scaffolds": 9,
+        "lineages": 38
+      },
+      "lincs_unobserved": {
+        "rows": 342,
+        "parents": 9,
+        "cells": 38,
+        "scaffolds": 9,
+        "lineages": 38
+      }
+    }
+  },
+  "output_sha256": {
+    "E1_E4_E5_METRICS.tsv": "e101f5d93758a1882e24267fa66d4ff1e208e602caf02a7da98da4e0568bd38c",
+    "E1_E4_E5_PAIRED_95CI.tsv": "76ef0bbe6639aaee13ed2b04481be05593912292d2746b9c98c06fcc1df9825e",
+    "E1_E4_E5_DRUG_POTENCY_DIAGNOSTIC.tsv": "04a9d3ba07e416bdd0dd612a302e0e182db8ca4c4f3daa87ebf2b83382d28417"
+  }
+}
