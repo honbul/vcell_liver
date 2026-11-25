@@ -61,14 +61,17 @@ def report_rendering():
         lock = {"external":{"champion":"hybrid", "operating_point":{"id":"simulated"}}}
         replay = ("opencl", "boundary-1", "drug-0", 1, "test-config", "42.4", "20.6", "2.06×",
                   "-0.00103", "-0.00134", "-0.00142", "+0.00001")
-        report_docs(root, points, ci, curves, grid, score, lock, replays=[replay])
+        frontier = {"drug-0": {family:["neighbor"] if family=="gnn" else [] for family in FAMILIES}}
+        report_docs(root, points, ci, curves, grid, score, lock, replays=[replay], open_neighbors=frontier)
         result = (root / "RESULTS.md").read_text()
         assert "+0.01000" in result.splitlines()[2]
         assert all(f"| {tissue} |" in result for tissue in tissues)
         assert "| Tissue 27 | 미추정 | 미추정 | 미추정 | 0 | 0 |" in result
         assert "| Champion | NDCG@5 | 미충족 | 충족 | 미충족 | 충족 |" in result
+        assert "4,071" in result and "inner_selection_ledger.json" in result
         tuning = (root / "ROUND1_TO_2_FAMILY_TUNING.md").read_text().splitlines()
         assert "| " + " | ".join(map(str, replay)) + " |" in tuning
+        assert "| drug-0 | 0 | 0 | 0 | 1 | 0 |" in tuning
         assert "| gbdt | l2 | 127 | 4–16 | 3000 | 0.05 | — | 5 | — |" in tuning
         assert "| attention | attention | 64–256 | 3 | 84 | 0.00065 | 0.25 | 0.01 | 헤드 8 |" in tuning
         tree_times = next(line for line in tuning if line.startswith("| gbdt | r1 |"))

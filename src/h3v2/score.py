@@ -17,6 +17,7 @@ from .data import ASSETS, ROOT, SCREENS, SPLITS, register, read_data
 from .error_components import decompose
 from .final_fit import exact_join, external_query, external_operating_point
 from .grid import SEEDS, FAMILIES
+from .selection import PRE_UNSEALING_FREEZE
 
 ARMS = (*FAMILIES,"Champion","Champion-ensemble")
 AXES = ("spearman","interaction_spearman","ndcg_at_5")
@@ -311,11 +312,14 @@ def evaluate():
     for label,table in (("drug_units",d),("cell_units",c)):
         _publish(root/f"{label}.parquet",lambda p:table.to_parquet(p,index=False))
     verdicts=rules(CI)
+    ceiling_scope = "The frozen candidate grids, input modalities, and registered data. This is an empirical joint-gate outcome."
+    if lock.get("freeze_reason") == PRE_UNSEALING_FREEZE:
+        ceiling_scope += " Selection covers r1, r2, and boundary-1. The ledger records the open neighboring settings."
     publish_json(root/"score_receipt.json",claim|{
         "finished_utc":datetime.now(timezone.utc).isoformat(),"parts":handled,
         "claim_sha256":sha256(root/"consumed.json"),"verdicts":verdicts,
         "overall":"GO-MODEL" if any(r["verdict"]=="GO-MODEL" for r in verdicts.values()) else "CEILING-CONFIRMED",
-        "ceiling_scope":"The frozen candidate grids, input modalities, and registered data. This is an empirical joint-gate outcome.",
+        "ceiling_scope":ceiling_scope,
         "source_manifest_sha256":sha256(ROOT/"splits/manifest.json"),
         "tables":{name:sha256(root/name) for name in tables},"tissue_roster":sorted(tissue.unique()),
         "seed_accounting":"point mean and sample SD of seed-level scores; explicit Champion-ensemble separate",

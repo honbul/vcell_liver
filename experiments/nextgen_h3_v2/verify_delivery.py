@@ -35,6 +35,8 @@ SEEDS = {"11711", "11729", "11743"}
 PARTITIONS = {f"{track}-{i}" for track in ("drug", "cell", *SCREENS) for i in range(3)}
 CURVE_FIGURES = {"H3V2_FAMILY_LEARNING_CURVES.png", "H3V2_GRID_SATURATION.png"}
 GRID_TABLE = "H3V2_GRID_SATURATION.tsv"
+CAP_REASON = "pre_unsealing_round_cap_after_boundary_1"
+CAPPED_STAGE_COUNTS = {"r1": 330, "r2": 212, "boundary-1": 815}
 SCORE_TABLES = {"H3V2_METRICS.tsv", "H3V2_PAIRED_95CI.tsv", "H3V2_PANCANCER_BY_TISSUE.tsv",
                 "H3V2_ERROR_COMPONENTS.tsv"}
 
@@ -48,7 +50,7 @@ def rows(file):
         return list(csv.DictReader(handle,delimiter="\t"))
 
 
-def verify_frontier(grid, splits, replicated):
+def verify_frontier(grid, splits, replicated, *, open_neighbors=None):
     groups = defaultdict(list)
     for row in grid:
         split, family, stage, candidate = (row[key] for key in ("split", "family", "round", "config_id"))
@@ -65,6 +67,10 @@ def verify_frontier(grid, splits, replicated):
     expected = {(split, family) for split in splits for family in FAMILIES}
     if set(groups) != expected:
         raise ValueError("The saturation grid does not cover every split and family")
+    if open_neighbors is not None and (set(open_neighbors) != set(splits) or any(
+        set(arms) != FAMILIES for arms in open_neighbors.values()
+    )):
+        raise ValueError("The open-neighbor ledger does not cover all split/family arms")
     for (split, family), points in groups.items():
         identity = f"{split}/{family}"
         if len({point["id"] for point in points}) != len(points):
@@ -75,8 +81,37 @@ def verify_frontier(grid, splits, replicated):
             selected[key] != lock[key] for key in ("config", "id", "stage")
         ):
             raise ValueError(f"Frozen candidate differs from the measured inner winner for {identity}")
-        if boundary_neighbors(selected["config"], [point["config"] for point in points], selected["max_iteration"]):
+        explored = {point["id"] for point in points}
+        neighbors = {identify(config) for config in boundary_neighbors(
+            selected["config"], [point["config"] for point in points], selected["max_iteration"]
+        )} - explored
+        if open_neighbors is not None:
+            recorded = open_neighbors[split][family]
+            if len(recorded) != len(neighbors) or set(recorded) != neighbors:
+                raise ValueError(f"Open-neighbor evidence differs from the measured inner grid for {identity}")
+        elif neighbors:
             raise ValueError(f"Unmeasured saturation neighbors remain for {identity}")
+
+
+def capped_frontier(root, lock, verified, grid):
+    if lock.get("freeze_reason") is None and lock.get("max_boundary_round") is None:
+        return None
+    if (lock.get("freeze_reason"), lock.get("max_boundary_round")) != (CAP_REASON, 1):
+        raise ValueError("Unexpected pre-unsealing round-cap policy")
+    name = "inner_selection_ledger.json"
+    path = root / name
+    if verified["deliverables"].get(name) != lock["selection_ledger_sha256"] or digest(path) != lock["selection_ledger_sha256"]:
+        raise ValueError("The capped selection ledger differs from the frozen lock")
+    ledger = json.loads(path.read_text())
+    if (ledger["freeze_reason"], ledger["max_boundary_round"], ledger["stages"], ledger["next"],
+            ledger["no_outer_scores_loaded"]) != (CAP_REASON, 1, list(CAPPED_STAGE_COUNTS), None, True):
+        raise ValueError("The capped selection ledger used an unexpected stage or outcome")
+    identities = {(row["split"], row["family"], row["round"], row["config_id"]) for row in grid}
+    registered = {(split, family, row["stage"], row["id"]) for split, arms in ledger["points"].items()
+                  for family, points in arms.items() for row in points}
+    if identities != registered or Counter(row["round"] for row in grid) != CAPPED_STAGE_COUNTS:
+        raise ValueError("Capped selection must include all 4,071 R1/R2/B1 fits and only those fits")
+    return ledger["open_neighbors"]
 
 
 def verify_curve_branches(grid, fits):
@@ -266,7 +301,8 @@ def verify(root):
         raise ValueError("A split or family is missing two measured configurations in a round")
     grid = rows(root / GRID_TABLE)
     verify_curve_branches(grid, fits)
-    verify_frontier(grid, lock["splits"], replicated)
+    open_neighbors = capped_frontier(root, lock, verify, grid)
+    verify_frontier(grid, lock["splits"], replicated, open_neighbors=open_neighbors)
     trial_counts = Counter(row["split"] for row in grid)
     expected_inputs = {f"{split}/{entry['role']}": (split, entry)
                        for split, record in step0["folds"].items() for entry in record["feature_receipts"]
@@ -299,7 +335,7 @@ def verify(root):
             }
         if outcome["by_axis"]!=expected or (outcome["verdict"]=="GO-MODEL")!=any(all(x.values()) for x in expected.values()):
             raise ValueError(f"The report did not enforce the registered gates: {model}")
-    print(f"Verified {len(REQUIRED)} required reports, the closed inner grids and 28 tissue strata")
+    print(f"Verified {len(REQUIRED)} required reports, the frozen inner grids and 28 tissue strata")
 
 
 if __name__=="__main__":

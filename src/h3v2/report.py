@@ -21,6 +21,7 @@ from .data import ROOT,SPLITS,STUDY,V1
 from .grid import FAMILIES,SEEDS
 from .quality import AXES
 from .score import preflight
+from .selection import PRE_UNSEALING_FREEZE
 
 OUTPUT=ROOT/"reports-final"
 SCORED=ROOT/"score"
@@ -161,12 +162,17 @@ def sampled_learning_curve(trial, training):
     return pd.concat(samples).sort_index()
 
 
-def inner_results(lock):
+def selection_ledger(lock):
     paths=sorted((ROOT/"locks").glob("*-selection.json"),
                  key=lambda x:(0 if x.name.startswith("r") else 1,len(x.name),x.name))
-    completed=read_json(paths[-1])
-    if completed["next"] is not None or sha256(paths[-1])!=lock["selection_ledger_sha256"]:
+    path = paths[-1]
+    completed=read_json(path)
+    if completed["next"] is not None or sha256(path)!=lock["selection_ledger_sha256"]:
         raise ValueError("The frozen set lacks a closed frontier ledger")
+    return path, completed
+
+
+def inner_results(lock, completed):
     step0 = read_json(ROOT / "step0_verification.json")["folds"]
     grid,curves=[],[]
     input_evidence = {}
@@ -418,7 +424,7 @@ def architecture_specs(grid):
     ]
 
 
-def report_docs(root,points,ci,curves,grid,score,lock,*,replays=()):
+def report_docs(root,points,ci,curves,grid,score,lock,*,replays=(),open_neighbors=None):
     axis=points[(points.seed.isin(["fixed","mean"])) & points.screen.eq("macro")]
     statuses=score["verdicts"]
     primary=axis[axis.scope.eq("drug")&axis.support.eq("all")]
@@ -494,7 +500,6 @@ def report_docs(root,points,ci,curves,grid,score,lock,*,replays=()):
         "[전체 지표](H3V2_METRICS.tsv) · [채점 영수증](score_receipt.json) · [검증](verification.json) · "
         "[모델 카드](model_card.md) · [Slurm 원장](SLURM_JOBS.tsv)",
     ])
-    put(root/"RESULTS.md",raw)
     sweep=grid.groupby(["family","round"]).agg(configurations=("config_id","count"),
                inner_best=("utility","max"),typical_best_budget=("budget","median")).reset_index()
     unique_fits=curves.drop_duplicates(["split","family","round","config_id","inner"])
@@ -515,6 +520,24 @@ def report_docs(root,points,ci,curves,grid,score,lock,*,replays=()):
         "포화 그림은 Drug-Cold fold 0에서 동결 설정의 폭 또는 깊이만 바꾼 내측 비교다. 다른 축과 분할의 측정값은 설정 TSV에 있다.",
         "[학습 곡선](H3V2_FAMILY_LEARNING_CURVES.tsv) · [학습 곡선 그림](H3V2_FAMILY_LEARNING_CURVES.png) · [포화 탐색](H3V2_GRID_SATURATION.tsv) · [포화 그림](H3V2_GRID_SATURATION.png) · [최종 동결](final_lock.json)",
     ]
+    if open_neighbors is not None:
+        total = sum(len(ids) for arms in open_neighbors.values() for ids in arms.values())
+        tuning.extend([
+            "", "## 외부 라벨 개봉 전 탐색 상한 개정", "",
+            "동일한 r1, r2, boundary-1 내부 학습 4,071건으로 75개 분할·패밀리의 운영점을 동결했다. "
+            "단일 축 exact-match 확장에서 작은 점수 차이로 후보가 계속 생성되어 라벨 개봉 전에 boundary-1을 상한으로 정했다. "
+            "일부 먼저 실행된 boundary-2 결과는 선택과 동결에서 제외했다.", "",
+            f"추가로 측정할 수 있었던 후보는 {total:,}개다. 각 분할·패밀리별 수와 정확한 설정 ID를 남겼다. "
+            "포화 곡선과 최종 판정은 동결까지 실제 측정한 범위를 설명한다.", "",
+            *md_table(["분할", *FAMILIES], [(split, *(len(arms[family]) for family in FAMILIES))
+                                            for split, arms in open_neighbors.items()]),
+            "", "[동결 당시 선택 원장과 미측정 후보](inner_selection_ledger.json)",
+        ])
+        raw.extend(["", "## 내부 탐색 상한", "",
+                    "외부 라벨을 열기 전에 boundary-1까지의 4,071건으로 동결했다. "
+                    f"추가 탐색 후보 {total:,}개는 원장에 남겼으며 결과는 실제 탐색 범위에 한정한다. "
+                    "[동결 당시 선택 원장](inner_selection_ledger.json)"])
+    put(root/"RESULTS.md",raw)
     if replays:
         tuning.extend([
             "", "## A40 LightGBM 비교", "",
@@ -549,7 +572,12 @@ def assemble(output, score, lock, audit):
     shutil.copy2(ROOT/"external_roster_verification.json", output/"external_roster_verification.json")
     metrics=pd.read_csv(output/"H3V2_METRICS.tsv",sep="\t")
     ic=pd.read_csv(output/"H3V2_PAIRED_95CI.tsv",sep="\t")
-    progress,curves,fit_inputs=inner_results(lock)
+    ledger_path, ledger = selection_ledger(lock)
+    frontier = None
+    if lock.get("freeze_reason") == PRE_UNSEALING_FREEZE:
+        shutil.copy2(ledger_path, output/"inner_selection_ledger.json")
+        frontier = ledger["open_neighbors"]
+    progress,curves,fit_inputs=inner_results(lock,ledger)
     progress.to_csv(output/"H3V2_GRID_SATURATION.tsv",sep="\t",index=False)
     curves.to_csv(output/"H3V2_FAMILY_LEARNING_CURVES.tsv",sep="\t",index=False)
     jobs().to_csv(output/"SLURM_JOBS.tsv",sep="\t",index=False)
@@ -558,7 +586,7 @@ def assemble(output, score, lock, audit):
     held=prior_held_points(metrics)
     held.to_csv(output/"H3V2_H3V1_REPLAY.tsv",sep="\t",index=False)
     replays,replay_hashes=device_replays()
-    report_docs(output,metrics,ic,curves,progress,score,lock,replays=replays)
+    report_docs(output,metrics,ic,curves,progress,score,lock,replays=replays,open_neighbors=frontier)
     plotter=Path(__file__).resolve().parents[2]/"experiments/nextgen_h3_v2/plot_curves.py"
     environment=dict(os.environ,MPLCONFIGDIR=str(ROOT/"tmp/matplotlib"))
     run(["/usr/bin/python3",str(plotter),str(output)],check=True,env=environment)

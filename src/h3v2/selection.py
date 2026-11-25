@@ -13,6 +13,7 @@ from .grid import FAMILIES, SEEDS, boundary_neighbors, identify, initial, nearby
 NEURAL_FAMILIES = ("film", "attention", "gnn")
 PRIMARY_TREE_STAGES = ("r1", "r2", "boundary-1")
 PRIMARY_TREE_SPLITS = tuple(SPLITS[:3])
+PRE_UNSEALING_FREEZE = "pre_unsealing_round_cap_after_boundary_1"
 
 
 def stage_options(split, family, stage):
@@ -27,7 +28,7 @@ def receipt(stage, split, family, config, inner):
     data=read_json(path/"receipt.json")
     if (data["stage"],data["split"],data["family"],data["inner"],data["config_id"],data["seed"]) != (
         stage,split,family,inner,identity,SEEDS[0]
-    ) or data["query_has_outer_labels"] or not data.get("lincs_full_unclipped"):
+    ) or identify(data["config"]) != identity or data["query_has_outer_labels"] or not data.get("lincs_full_unclipped"):
         raise ValueError("A submission did not match the registered inner arm")
     if (sha256(path/"curves.parquet"),sha256(path/"predictions.parquet")) != (
         data["curve_sha256"],data["forecast_sha256"]
@@ -163,7 +164,13 @@ def fit_gap(split, family, winner):
             "validation_train_relative_gap":gap,"individual_inner_gaps":gaps}
 
 
-def select(stages):
+def select(stages, *, max_boundary_round=None):
+    if (ROOT / "score/consumed.json").exists():
+        raise ValueError("Inner selection is closed after the outer release")
+    capped = max_boundary_round is not None
+    if capped and (max_boundary_round != 1 or tuple(stages) != PRIMARY_TREE_STAGES):
+        raise ValueError("The pre-unsealing cap uses exactly r1, r2, and boundary-1")
+    freeze_policy = {"freeze_reason": PRE_UNSEALING_FREEZE, "max_boundary_round": 1} if capped else {}
     scores={}
     for split in SPLITS:
         scores[split]={family:evaluated(split,family,stages) for family in FAMILIES}
@@ -192,17 +199,20 @@ def select(stages):
             pending[split][family]=list({identify(c):c for c in candidates
                                          if identify(c) not in {r["id"] for r in variants}}.values())
             boundary_status[split][family]=[identify(c) for c in pending[split][family]]
-    for kind, read_plan in (("neural", read_neural_expansion), ("primary-tree", read_primary_tree_expansion)):
-        if (ROOT / "locks" / f"{next_round}-early-{kind}.json").is_file():
-            plan = read_plan(next_round)
-            if plan["stages"] != stages or any(
-                [identify(cfg) for cfg in configs] != boundary_status[split][family]
-                for split, families in plan["splits"].items() for family, configs in families.items()
-            ):
-                raise ValueError(f"Early {kind} candidates differ from the complete inner selection")
-    has_work=any(configs for families in pending.values() for configs in families.values())
+    if not capped:
+        for kind, read_plan in (("neural", read_neural_expansion), ("primary-tree", read_primary_tree_expansion)):
+            if (ROOT / "locks" / f"{next_round}-early-{kind}.json").is_file():
+                plan = read_plan(next_round)
+                if plan["stages"] != stages or any(
+                    [identify(cfg) for cfg in configs] != boundary_status[split][family]
+                    for split, families in plan["splits"].items() for family, configs in families.items()
+                ):
+                    raise ValueError(f"Early {kind} candidates differ from the complete inner selection")
+    has_work=not capped and any(configs for families in pending.values() for configs in families.values())
     ledger=ROOT/"locks"/f"{label}-selection.json"
-    publish_json(ledger,{
+    if (ROOT / "score/consumed.json").exists():
+        raise ValueError("Inner selection is closed after the outer release")
+    publish_json(ledger,freeze_policy|{
         "stages":stages,"no_outer_scores_loaded":True,
         "points":{split:{f:[compact(row) for row in rows] for f,rows in res.items()} for split,res in scores.items()},
         "winners":{split:{f:compact(row) for f,row in res.items()} for split,res in winners.items()},
@@ -221,7 +231,7 @@ def select(stages):
     options=[x["families"][chosen] for x in drug]
     counts=Counter([x["id"] for x in options])
     exterior=min(options,key=lambda x:(-counts[x["id"]],-x["utility"],x["id"]))
-    publish_json(ROOT/"locks/frozen.json",{
+    publish_json(ROOT/"locks/frozen.json",freeze_policy|{
         "splits":local,"external":{"champion":chosen,"operating_point":exterior,
           "rule":"most frequent primary inner-selected family, then mean inner utility; then modal setting"},
         "selection_ledger_sha256":sha256(ledger),"seeds":list(SEEDS),"outer_labels_opened":False,
@@ -235,10 +245,11 @@ if __name__=="__main__":
     operation = p.add_mutually_exclusive_group()
     operation.add_argument("--early-neural", action="store_true")
     operation.add_argument("--early-primary-tree", action="store_true")
+    operation.add_argument("--max-boundary-round", type=int, choices=(1,))
     args = p.parse_args()
     if args.early_neural:
         register_neural_expansion(args.stages)
     elif args.early_primary_tree:
         register_primary_tree_expansion(args.stages)
     else:
-        select(args.stages)
+        select(args.stages, max_boundary_round=args.max_boundary_round)

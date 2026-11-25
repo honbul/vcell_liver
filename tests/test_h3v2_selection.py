@@ -75,8 +75,39 @@ def test_early_neural_plan_matches_complete_inner_selection():
             assert {family: registered[family] for family in selection.NEURAL_FAMILIES} == plan["splits"]["drug-0"]
 
 
+def test_round_cap_freezes_every_arm_and_preserves_open_neighbors():
+    stages = ["r1", "r2", "boundary-1"]
+    def sweep(split, family, examined):
+        assert examined == stages
+        config = initial(family)[0]
+        return [{"config": config, "id": identify(config), "stage": "boundary-1", "utility": .5,
+                 "point": {"ndcg_at_5": .4, "spearman": .6}, "max_budget_pressure_iteration": 12,
+                 "folds": [{"receipt_sha256": str(i)} for i in range(3)]}]
+
+    with TemporaryDirectory(dir=selection.ROOT / "tmp") as scratch:
+        root = Path(scratch)
+        locks = root / "locks"
+        locks.mkdir()
+        for kind in ("neural", "primary-tree"):
+            (locks / f"boundary-2-early-{kind}.json").write_text("unused", encoding="utf-8")
+        with patch.object(selection, "ROOT", root), patch.object(selection, "evaluated", side_effect=sweep) as measured:
+            selection.select(stages, max_boundary_round=1)
+        assert len(measured.call_args_list) == 75
+        ledger = selection.read_json(locks / "boundary-1-selection.json")
+        frozen = selection.read_json(locks / "frozen.json")
+        assert ledger["stages"] == stages and ledger["no_outer_scores_loaded"] is True and ledger["next"] is None
+        assert ledger["freeze_reason"] == frozen["freeze_reason"] == selection.PRE_UNSEALING_FREEZE
+        assert ledger["max_boundary_round"] == frozen["max_boundary_round"] == 1
+        assert frozen["outer_labels_opened"] is False and frozen["seeds"] == list(selection.SEEDS)
+        assert frozen["selection_ledger_sha256"] == selection.sha256(locks / "boundary-1-selection.json")
+        assert set(frozen["splits"]) == set(selection.SPLITS)
+        assert len(ledger["open_neighbors"]) == 15 and any(ids for arms in ledger["open_neighbors"].values() for ids in arms.values())
+        assert not (locks / "boundary-2.json").exists()
+
+
 if __name__ == "__main__":
     test_matched_boundary_expands_and_brackets()
     test_frozen_boosting_keeps_the_independent_inner_budgets()
     test_early_neural_plan_matches_complete_inner_selection()
+    test_round_cap_freezes_every_arm_and_preserves_open_neighbors()
     print("Matched saturation neighbors and independent frozen L2 / LambdaRank budgets passed")

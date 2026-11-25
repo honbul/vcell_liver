@@ -312,9 +312,12 @@ def settle_final(snap, *, retried):
     return package
 
 
-def advance(stages,snapshot,*,dispatch_only):
+def advance(stages,snapshot,*,dispatch_only,max_boundary_round=None):
     if not dispatch_only:
-        select(stages)
+        if max_boundary_round is None:
+            select(stages)
+        else:
+            select(stages, max_boundary_round=max_boundary_round)
     file=ROOT/"locks"/(stages[-1]+"-selection.json")
     choice=read_json(file)
     if choice["stages"]!=stages:
@@ -336,10 +339,13 @@ if __name__=="__main__":
     p.add_argument("stages",nargs="*")
     p.add_argument("--snapshot",type=Path)
     p.add_argument("--backend",choices=("gbdt","torch"))
+    p.add_argument("--max-boundary-round", type=int, choices=(1,))
     p.add_argument("--retried", action="store_true")
     args=p.parse_intermixed_args()
+    if args.max_boundary_round is not None and args.command != "advance":
+        p.error("--max-boundary-round requires advance")
     if args.command in ("advance","dispatch"):
-        advance(args.stages,args.snapshot,dispatch_only=args.command=="dispatch")
+        advance(args.stages,args.snapshot,dispatch_only=args.command=="dispatch",max_boundary_round=args.max_boundary_round)
     elif args.command=="settle":
         settle_inner(args.stages,args.snapshot,retried=args.retried)
     elif args.command=="settle-final":
