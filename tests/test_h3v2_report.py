@@ -3,12 +3,13 @@ import os
 from pathlib import Path
 from subprocess import run
 from tempfile import TemporaryDirectory
+from unittest.mock import patch
 
 import pandas as pd
 
 from h3v2.data import ROOT
 from h3v2.grid import FAMILIES, initial
-from h3v2.report import DISPLAY, job_observations, report_docs, sampled_learning_curve
+from h3v2.report import DISPLAY, job_observations, jobs, report_docs, sampled_learning_curve
 from h3v2.score import AXES
 
 
@@ -118,7 +119,27 @@ def test_sampled_curves_keep_short_rank_branch_and_both_best_iterations():
     assert {1,75,151} <= set(sampled_learning_curve(neural, {"best_iteration":75}).iteration)
 
 
+def test_slurm_runtime_adjustments_join_when_log_contains_legacy_notes():
+    timestamp = "2026-11-25T11:24:31+09:00"
+    with TemporaryDirectory(dir=ROOT / "tmp") as scratch:
+        root = Path(scratch)
+        logs = root / "logs"
+        logs.mkdir()
+        (logs / "round1-jobs.tsv").write_text("gpu\t35131\n")
+        (logs / "trajectory.tsv").write_text("final-gbdt-c4-8core\t38655\tcpu\t61,65,68,71%6\t38651\n")
+        (logs / "runtime-adjustments.tsv").write_text(
+            f"{timestamp}\tlegacy-note\t38292\t5_to_6\tprevious capacity\n"
+            f"{timestamp}\t38655\tReqNodeList\tc4:61,65,68,71\tg4:61,65,68,71\n"
+            f"{timestamp}\t38655\tArrayTaskThrottle\t6\t10\n"
+        )
+        with patch("h3v2.report.ROOT", root):
+            row = jobs().set_index("job_id").loc[38655]
+    assert row["array_throttle_changes"] == f"{timestamp} 6→10"
+    assert row["cpu_resource_changes"] == f"{timestamp} ReqNodeList c4:61,65,68,71→g4:61,65,68,71"
+
+
 if __name__ == "__main__":
     report_rendering()
     test_slurm_job_observations_preserve_actual_placement_and_terminal_times()
     test_sampled_curves_keep_short_rank_branch_and_both_best_iterations()
+    test_slurm_runtime_adjustments_join_when_log_contains_legacy_notes()

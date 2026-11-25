@@ -273,17 +273,17 @@ def jobs():
         frame=pd.concat([frame,remaining],ignore_index=True)
     adjustments = logs / "runtime-adjustments.tsv"
     if adjustments.is_file():
-        history = pd.read_csv(adjustments, sep="\t", header=None,
+        history = pd.read_csv(adjustments, sep="\t", header=None, dtype=str, keep_default_na=False,
                               names=["time", "job_id", "field", "previous", "updated"])
+        job_keys = frame.job_id.astype(str)
         changes = history.loc[history.field.eq("ArrayTaskThrottle")].copy()
-        changes["record"] = changes.time + " " + changes.previous.astype(str) + "→" + changes.updated.astype(str)
-        frame["array_throttle_changes"] = frame.job_id.map(changes.groupby("job_id").record.agg(" | ".join))
+        changes["record"] = changes.time + " " + changes.previous + "→" + changes.updated
+        frame["array_throttle_changes"] = job_keys.map(changes.groupby("job_id").record.agg(" | ".join))
         placement_fields = ["CPUsPerTask", "ExcNodeList", "ReqNodeList", "C4PartialCancel", "MigrationCores",
                             "RestoredPendingIndices"]
         placement = history.loc[history.field.isin(placement_fields)].copy()
-        placement["record"] = (
-            placement.time + " " + placement.field + " " + placement.previous.astype(str) + "→" + placement.updated.astype(str))
-        frame["cpu_resource_changes"] = frame.job_id.map(placement.groupby("job_id").record.agg(" | ".join))
+        placement["record"] = placement.time + " " + placement.field + " " + placement.previous + "→" + placement.updated
+        frame["cpu_resource_changes"] = job_keys.map(placement.groupby("job_id").record.agg(" | ".join))
     observed = job_observations(logs / "slurm-observations.txt", frame.job_id)
     if observed:
         detail = pd.DataFrame.from_dict(observed, orient="index")
